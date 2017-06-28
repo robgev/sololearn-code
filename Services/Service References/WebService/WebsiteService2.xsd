@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/SoloLearn.Entities" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SoloLearn.Entities" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/services/WebsiteService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="WebAuthenticationResult">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:AuthenticationResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="UniqueId" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="WebAuthenticationResult" nillable="true" type="tns:WebAuthenticationResult" />
+  <xs:complexType name="AuthenticationResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DeviceId" type="xs:int" />
+      <xs:element minOccurs="0" name="SessionId" type="ser:guid" />
+      <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="User" nillable="true" type="tns:UserBase" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AuthenticationResult" nillable="true" type="tns:AuthenticationResult" />
+  <xs:complexType name="UserBase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="HasAvatar" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserBase" nillable="true" type="tns:UserBase" />
+  <xs:complexType name="UserCode">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreatedDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CssCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="IsPublic" type="xs:boolean" />
+      <xs:element minOccurs="0" name="JsCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Language" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ModifiedDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PublicId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SourceCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
+      <xs:element minOccurs="0" name="Votes" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserCode" nillable="true" type="tns:UserCode" />
+</xs:schema>

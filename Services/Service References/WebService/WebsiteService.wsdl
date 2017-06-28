@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="WebsiteService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="NetNamedPipeBinding_IWebsiteService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" />
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <msf:WindowsTransportSecurity xmlns:msf="http://schemas.microsoft.com/ws/2006/05/framing/policy">
+                  <msf:ProtectionLevel>EncryptAndSign</msf:ProtectionLevel>
+                </msf:WindowsTransportSecurity>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost/services/WebsiteService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost/services/WebsiteService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/SoloLearn" />
+      <xsd:import schemaLocation="http://localhost/services/WebsiteService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost/services/WebsiteService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SoloLearn.Entities" />
+      <xsd:import schemaLocation="http://localhost/services/WebsiteService.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/Message" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IWebsiteService_Authenticate_InputMessage">
+    <wsdl:part name="parameters" element="tns:Authenticate" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_Authenticate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AuthenticateResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_Authenticate_ServiceExceptionDetailFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q1:ServiceExceptionDetail" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_Register_InputMessage">
+    <wsdl:part name="parameters" element="tns:Register" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_Register_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RegisterResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_Register_ServiceExceptionDetailFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q2:ServiceExceptionDetail" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_SocialAuthentication_InputMessage">
+    <wsdl:part name="parameters" element="tns:SocialAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_SocialAuthentication_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SocialAuthenticationResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_SocialAuthentication_ServiceExceptionDetailFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q3:ServiceExceptionDetail" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_DisconnectService_InputMessage">
+    <wsdl:part name="parameters" element="tns:DisconnectService" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_DisconnectService_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DisconnectServiceResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_DisconnectService_ServiceExceptionDetailFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q4:ServiceExceptionDetail" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_UpdateProfileAndPassword_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateProfileAndPassword" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_UpdateProfileAndPassword_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateProfileAndPasswordResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_UpdateProfileAndPassword_ServiceExceptionDetailFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q5:ServiceExceptionDetail" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_UpdateProfile_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateProfile" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_UpdateProfile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateProfileResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_UpdateProfile_ServiceExceptionDetailFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q6:ServiceExceptionDetail" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_UpdateAvatar_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateAvatar" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_UpdateAvatar_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateAvatarResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_UpdateAvatar_ServiceExceptionDetailFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q7:ServiceExceptionDetail" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_RemoveAvatar_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveAvatar" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_RemoveAvatar_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveAvatarResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_RemoveAvatar_ServiceExceptionDetailFault_FaultMessage">
+    <wsdl:part xmlns:q8="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q8:ServiceExceptionDetail" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_SendEmail_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendEmail" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_SendEmail_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_ForgotPassword_InputMessage">
+    <wsdl:part name="parameters" element="tns:ForgotPassword" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_ForgotPassword_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ForgotPasswordResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_ForgotPassword_ServiceExceptionDetailFault_FaultMessage">
+    <wsdl:part xmlns:q9="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q9:ServiceExceptionDetail" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_ResetPassword_InputMessage">
+    <wsdl:part name="parameters" element="tns:ResetPassword" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_ResetPassword_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ResetPasswordResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_CheckCertificate_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckCertificate" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_CheckCertificate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckCertificateResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_CheckCertificateOfUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckCertificateOfUser" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_CheckCertificateOfUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckCertificateOfUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_SaveCode_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveCode" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_SaveCode_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveCodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_ResetProgress_InputMessage">
+    <wsdl:part name="parameters" element="tns:ResetProgress" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_ResetProgress_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ResetProgressResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IWebsiteService">
+    <wsdl:operation name="Authenticate">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/Authenticate" message="tns:IWebsiteService_Authenticate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWebsiteService/AuthenticateResponse" message="tns:IWebsiteService_Authenticate_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IWebsiteService/AuthenticateServiceExceptionDetailFault" name="ServiceExceptionDetailFault" message="tns:IWebsiteService_Authenticate_ServiceExceptionDetailFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Register">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/Register" message="tns:IWebsiteService_Register_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWebsiteService/RegisterResponse" message="tns:IWebsiteService_Register_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IWebsiteService/RegisterServiceExceptionDetailFault" name="ServiceExceptionDetailFault" message="tns:IWebsiteService_Register_ServiceExceptionDetailFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SocialAuthentication">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/SocialAuthentication" message="tns:IWebsiteService_SocialAuthentication_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWebsiteService/SocialAuthenticationResponse" message="tns:IWebsiteService_SocialAuthentication_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IWebsiteService/SocialAuthenticationServiceExceptionDetailFault" name="ServiceExceptionDetailFault" message="tns:IWebsiteService_SocialAuthentication_ServiceExceptionDetailFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DisconnectService">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/DisconnectService" message="tns:IWebsiteService_DisconnectService_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWebsiteService/DisconnectServiceResponse" message="tns:IWebsiteService_DisconnectService_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IWebsiteService/DisconnectServiceServiceExceptionDetailFault" name="ServiceExceptionDetailFault" message="tns:IWebsiteService_DisconnectService_ServiceExceptionDetailFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateProfileAndPassword">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/UpdateProfileAndPassword" message="tns:IWebsiteService_UpdateProfileAndPassword_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWebsiteService/UpdateProfileAndPasswordResponse" message="tns:IWebsiteService_UpdateProfileAndPassword_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IWebsiteService/UpdateProfileAndPasswordServiceExceptionDetailFault" name="ServiceExceptionDetailFault" message="tns:IWebsiteService_UpdateProfileAndPassword_ServiceExceptionDetailFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateProfile">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/UpdateProfile" message="tns:IWebsiteService_UpdateProfile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWebsiteService/UpdateProfileResponse" message="tns:IWebsiteService_UpdateProfile_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IWebsiteService/UpdateProfileServiceExceptionDetailFault" name="ServiceExceptionDetailFault" message="tns:IWebsiteService_UpdateProfile_ServiceExceptionDetailFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateAvatar">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/UpdateAvatar" message="tns:IWebsiteService_UpdateAvatar_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWebsiteService/UpdateAvatarResponse" message="tns:IWebsiteService_UpdateAvatar_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IWebsiteService/UpdateAvatarServiceExceptionDetailFault" name="ServiceExceptionDetailFault" message="tns:IWebsiteService_UpdateAvatar_ServiceExceptionDetailFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveAvatar">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/RemoveAvatar" message="tns:IWebsiteService_RemoveAvatar_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWebsiteService/RemoveAvatarResponse" message="tns:IWebsiteService_RemoveAvatar_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IWebsiteService/RemoveAvatarServiceExceptionDetailFault" name="ServiceExceptionDetailFault" message="tns:IWebsiteService_RemoveAvatar_ServiceExceptionDetailFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SendEmail">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/SendEmail" message="tns:IWebsiteService_SendEmail_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWebsiteService/SendEmailResponse" message="tns:IWebsiteService_SendEmail_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ForgotPassword">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/ForgotPassword" message="tns:IWebsiteService_ForgotPassword_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWebsiteService/ForgotPasswordResponse" message="tns:IWebsiteService_ForgotPassword_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IWebsiteService/ForgotPasswordServiceExceptionDetailFault" name="ServiceExceptionDetailFault" message="tns:IWebsiteService_ForgotPassword_ServiceExceptionDetailFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ResetPassword">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/ResetPassword" message="tns:IWebsiteService_ResetPassword_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWebsiteService/ResetPasswordResponse" message="tns:IWebsiteService_ResetPassword_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckCertificate">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/CheckCertificate" message="tns:IWebsiteService_CheckCertificate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWebsiteService/CheckCertificateResponse" message="tns:IWebsiteService_CheckCertificate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckCertificateOfUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/CheckCertificateOfUser" message="tns:IWebsiteService_CheckCertificateOfUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWebsiteService/CheckCertificateOfUserResponse" message="tns:IWebsiteService_CheckCertificateOfUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveCode">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/SaveCode" message="tns:IWebsiteService_SaveCode_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWebsiteService/SaveCodeResponse" message="tns:IWebsiteService_SaveCode_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ResetProgress">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/ResetProgress" message="tns:IWebsiteService_ResetProgress_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWebsiteService/ResetProgressResponse" message="tns:IWebsiteService_ResetProgress_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NetNamedPipeBinding_IWebsiteService" type="tns:IWebsiteService">
+    <wsp:PolicyReference URI="#NetNamedPipeBinding_IWebsiteService_policy" />
+    <soap12:binding transport="http://schemas.microsoft.com/soap/named-pipe" />
+    <wsdl:operation name="Authenticate">
+      <soap12:operation soapAction="http://tempuri.org/IWebsiteService/Authenticate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceExceptionDetailFault">
+        <soap12:fault use="literal" name="ServiceExceptionDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Register">
+      <soap12:operation soapAction="http://tempuri.org/IWebsiteService/Register" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceExceptionDetailFault">
+        <soap12:fault use="literal" name="ServiceExceptionDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SocialAuthentication">
+      <soap12:operation soapAction="http://tempuri.org/IWebsiteService/SocialAuthentication" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceExceptionDetailFault">
+        <soap12:fault use="literal" name="ServiceExceptionDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DisconnectService">
+      <soap12:operation soapAction="http://tempuri.org/IWebsiteService/DisconnectService" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceExceptionDetailFault">
+        <soap12:fault use="literal" name="ServiceExceptionDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateProfileAndPassword">
+      <soap12:operation soapAction="http://tempuri.org/IWebsiteService/UpdateProfileAndPassword" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceExceptionDetailFault">
+        <soap12:fault use="literal" name="ServiceExceptionDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateProfile">
+      <soap12:operation soapAction="http://tempuri.org/IWebsiteService/UpdateProfile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceExceptionDetailFault">
+        <soap12:fault use="literal" name="ServiceExceptionDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateAvatar">
+      <soap12:operation soapAction="http://tempuri.org/IWebsiteService/UpdateAvatar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceExceptionDetailFault">
+        <soap12:fault use="literal" name="ServiceExceptionDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveAvatar">
+      <soap12:operation soapAction="http://tempuri.org/IWebsiteService/RemoveAvatar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceExceptionDetailFault">
+        <soap12:fault use="literal" name="ServiceExceptionDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SendEmail">
+      <soap12:operation soapAction="http://tempuri.org/IWebsiteService/SendEmail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ForgotPassword">
+      <soap12:operation soapAction="http://tempuri.org/IWebsiteService/ForgotPassword" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceExceptionDetailFault">
+        <soap12:fault use="literal" name="ServiceExceptionDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ResetPassword">
+      <soap12:operation soapAction="http://tempuri.org/IWebsiteService/ResetPassword" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckCertificate">
+      <soap12:operation soapAction="http://tempuri.org/IWebsiteService/CheckCertificate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckCertificateOfUser">
+      <soap12:operation soapAction="http://tempuri.org/IWebsiteService/CheckCertificateOfUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveCode">
+      <soap12:operation soapAction="http://tempuri.org/IWebsiteService/SaveCode" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResetProgress">
+      <soap12:operation soapAction="http://tempuri.org/IWebsiteService/ResetProgress" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WebsiteService">
+    <wsdl:port name="NetNamedPipeBinding_IWebsiteService" binding="tns:NetNamedPipeBinding_IWebsiteService">
+      <soap12:address location="net.pipe://desktop-c8nles5/services/WebsiteService.svc" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>net.pipe://desktop-c8nles5/services/WebsiteService.svc</wsa10:Address>
+        <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+          <Spn>host/DESKTOP-C8NLES5</Spn>
+        </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

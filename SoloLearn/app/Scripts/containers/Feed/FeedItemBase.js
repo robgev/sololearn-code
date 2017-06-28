@@ -1,0 +1,106 @@
+﻿//React modules
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+
+//Material UI components
+import Avatar from 'material-ui/Avatar';
+import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
+import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
+import { grey500 } from 'material-ui/styles/colors';
+
+//Utils
+import getSyles from '../../utils/styleConverter';
+import updateDate from '../../utils/dateFormatter';
+
+const styles = {
+    content: {
+        display: 'flex'
+    },
+
+    wrapper: {
+        margin: '0 0 0 5px',
+        flexGrow: 1,
+        width: '90%'
+    },
+
+    title: {
+        fontSize: '13px',
+        color: '#545454',
+        margin: '0 0 7px 0'
+    },
+
+    userName: {
+        fontWeight: 500,
+        color: '#8BC34A',
+        textDecoration: 'none'
+    },
+
+    date: {
+        fontSize: '11px',
+        position: 'absolute',
+        bottom: '10px',
+        right: '10px'
+    },
+
+    votes: {
+        margin: '7px 0 0 0'
+    },
+
+    voteIcon: {
+        width: '15px',
+        height: '15px',
+        verticalAlign: 'middle'
+    },
+
+    voteText: {
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        margin: '0 5px',
+        color: '#9e9e9e',
+        fontSize: '13px',
+        width: '25px',
+        textAlign: 'center'
+    },
+
+    linkStyle: {
+        position: 'relative',
+        textDecoration: 'none',
+        zIndex: 2
+    }
+}
+
+class FeedItemBase extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        const user = this.props.user;
+
+        return (
+            <div className="content" style={styles.content}>
+                <Link to={"/profile/" + user.id} style={styles.linkStyle}> 
+                    <Avatar size={30} style={styles.avatar}>{user.name.charAt(0).toUpperCase()}</Avatar>
+                </Link>
+                <div className="wrapper" style={styles.wrapper}>
+                    <p style={styles.title}>
+                        <Link to={"/profile/" + user.id} style={getSyles(styles.userName, styles.linkStyle)}>{user.name} </Link>
+                        {this.props.title}
+                    </p>
+                    {this.props.children}
+                    {
+                        this.props.votes !== null &&
+                        <div className="votes" style={styles.votes}>
+                            <ThumbUp color={grey500} style={styles.voteIcon} />
+                            <span style={styles.voteText}>{this.props.votes > 0 ? '+' + this.props.votes : this.props.votes}</span>
+                            <ThumbDown color={grey500} style={styles.voteIcon} />
+                        </div>
+                    }
+                </div>
+                <p className="date" style={styles.date}>{updateDate(this.props.date)}</p>
+            </div>
+        );
+    }
+}
+
+export default FeedItemBase;
