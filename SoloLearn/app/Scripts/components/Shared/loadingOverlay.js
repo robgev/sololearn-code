@@ -18,6 +18,10 @@ const styles = {
             bottom: 0,
             textAlign: 'center',
             zIndex: 1000
+        },
+
+        background: {
+            background: 'rgba(255, 255, 255, 0.8)'
         }
     },
 
@@ -50,7 +54,7 @@ class LoadingOverlay extends Component {
         };
 
         return (
-            <div className="loading-overlay" style={styles.overlay.base}>
+            <div className="loading-overlay" style={this.props.withBackground ? getStyles(styles.overlay.base, styles.overlay.background) : styles.overlay.base}>
                 <CircularProgress 
                     size={size} 
                     thickness={thickness}

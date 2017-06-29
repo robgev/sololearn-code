@@ -126,7 +126,9 @@ class CommentsBase extends Component {
             activeComment: {
                 id: null,
                 parentId: null,
-                userName: ""
+                userName: "",
+                previousId: null, //REFACTOR THIS SHIT
+                previousParentId: null //REFACTOR THIS SHIT
             }
         }
 
@@ -149,9 +151,12 @@ class CommentsBase extends Component {
                 activeComment: {
                     id: null,
                     parentId: null,
-                    userName: ""
+                    userName: "",
+                    previousId: this.state.activeComment.id,
+                    previousParentId: this.state.activeComment.parentId
                 }
             }, () => {
+                console.log(this.state);
                 resolve();
             });
         });
@@ -219,7 +224,7 @@ class CommentsBase extends Component {
         const { id, type, commentsType } = this.props;
         const parentId = activeComment.parentId == null ? activeComment.id : activeComment.parentId;
 
-        this.props.addCommentInternal(id, parentId, message, type, commentsType, ordering).then(() => {
+        return this.props.addCommentInternal(id, parentId, message, type, commentsType, ordering).then(() => {
             this.cancelAll();
         });
     }

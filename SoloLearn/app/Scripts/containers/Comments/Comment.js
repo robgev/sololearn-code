@@ -219,11 +219,11 @@ class Comment extends Component {
     }
 
     closeEdit() {
-        this.props.cancelAll();
-
-        this.setState({
-            errorText: "",
-            textFieldValue: this.props.comment.message
+        this.props.cancelAll().then(() => {
+            this.setState({
+                errorText: "",
+                textFieldValue: this.props.comment.message
+            });
         });
     }
 
@@ -316,7 +316,7 @@ class Comment extends Component {
     }
 
     render() {
-        console.log("RENDER");
+        console.log("RENDER"); //, this.props.isEditing, this.props.activeComment);
 
         const comment = this.props.comment;
         const isReply = comment.parentID != null;
@@ -389,14 +389,28 @@ class Comment extends Component {
         }
     }
 
+    compareReplies(currentReplies, nextReplies) {
+        if (currentReplies.length !== nextReplies.length) return true;
+
+        for (let i = 0; i < currentReplies.length; i++) {
+            if (currentReplies[i].id !== nextReplies[i].id) return true;
+            if (currentReplies[i].votes !== nextReplies[i].votes) return true;
+        }
+
+        return false;
+    }
+
     shouldComponentUpdate(nextProps, nextState) {
         return (((this.props.comment.id === nextProps.activeComment.id || this.props.comment.id === nextProps.activeComment.parentId)
+                || (this.props.comment.id === nextProps.activeComment.previousId || this.props.comment.id === nextProps.activeComment.previousParentId)
                 && (this.props.isEditing !== nextProps.isEditing || this.props.isReplying !== nextProps.isReplying))
-            || this.props.comment.replies.length !== nextProps.comment.replies.length
             || this.props.comment.vote !== nextProps.comment.vote
             || this.state.errorText !== nextState.errorText
-            || this.state.textFieldValue !== nextState.textFieldValue);
+            || this.state.textFieldValue !== nextState.textFieldValue
+            || this.compareReplies(this.props.comment.replies, nextProps.comment.replies));
     }
 }
 
 export default Comment;
+
+//|| this.props.comment.replies.length !== nextProps.comment.replies.length

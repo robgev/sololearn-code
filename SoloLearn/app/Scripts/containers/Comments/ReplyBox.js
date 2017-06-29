@@ -2,6 +2,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
+//Additional components
+import LoadingOverlay from '../../components/Shared/LoadingOverlay';
+
 //Material UI components
 import Avatar from 'material-ui/Avatar';
 import TextField from 'material-ui/TextField';
@@ -54,7 +57,8 @@ const styles = {
     },
 
     textField: {
-        fontSize: '13px'
+        fontSize: '13px',
+        margin: '0 0 10px 0'
     },
 
     replyBoxToolbar: {
@@ -102,9 +106,12 @@ class ReplyBox extends Component {
         super(props);
 
         this.state = {
+            isLoading: false,
             errorText: "",
             textFieldValue: ""
         }
+
+        this.submitReply = this.submitReply.bind(this);
     }
 
     onChange(e) {
@@ -122,8 +129,16 @@ class ReplyBox extends Component {
         }
     }
 
-    handleReplyClick() {
+    submitReply() {
+        this.setState({ isLoading: true });
 
+        this.props.reply(this.state.textFieldValue).then(() => {
+            this.setState({
+                isLoading: false,
+                errorText: "",
+                textFieldValue: ""
+            });
+        }); 
     }
 
     render() {
@@ -132,6 +147,7 @@ class ReplyBox extends Component {
 
         return (
             <div id="reply-box-wrapper" style={!isPrimary ? getStyles(styles.replyBox.base, styles.replyBox.elevated) : styles.replyBox.base}>
+                {this.state.isLoading && < LoadingOverlay withBackground={true} size={30} />}
                 {!isPrimary &&
                     <div className="toolbar" style={styles.replyBoxToolbar}>
                         <p style={styles.replyBoxToolbarText}>Repling to <span style={styles.replyBoxToolbarText.user}>{userName}</span></p>
@@ -150,7 +166,7 @@ class ReplyBox extends Component {
                         </div>
                     </div>
                     <div className="controls" style={styles.replyBoxControls}>
-                        <FlatButton label="Reply" primary={replyDisabled} disabled={!replyDisabled} onClick={() => this.props.reply(this.state.textFieldValue)} />
+                        <FlatButton label="Reply" primary={replyDisabled} disabled={!replyDisabled} onClick={this.submitReply} />
                     </div>
                 </div>
             </div>
