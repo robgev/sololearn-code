@@ -17,7 +17,7 @@ import Quiz from '../containers/Learn/Quiz';
 import Shortcut from '../containers/Learn/Shortcut';
 
 //Discuss
-import Questions from '../containers/Discuss/QuestionsBase';
+import Questions from '../containers/Discuss/QuestionsBase'; 
 import Post from '../containers/Discuss/Post';
 import NewQuestion from '../containers/Discuss/NewQuestion';
 import EditQuestion from '../containers/Discuss/EditQuestion';
@@ -34,6 +34,9 @@ import Feed from '../containers/Feed/Feed';
 
 //Profile
 import Profile from '../containers/Profile/Profile';
+
+//Chalenges
+import Contests from '../containers/Challenges/Contests'
 
 export default (
     [<Route component={MainLayout} key="mainLayoutRoutes">
@@ -55,6 +58,7 @@ export default (
         <Route path="/discuss/:id(/:questionName)" component={Post} />
         <Route path="/feed" component={Feed} />
         <Route path="/profile/:id(/:tab)" component={Profile} />
+        <Route path="/contests" component={Contests} />
     </Route>,
     <Route component={EmptyLayout} key="emptyLayoutRoutes">
         <Route path="/notifications" component={Notifications} />

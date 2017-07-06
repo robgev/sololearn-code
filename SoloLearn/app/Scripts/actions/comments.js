@@ -125,7 +125,7 @@ export const voteCommentInternal = (comment, vote, commentsType) => {
 
     return dispatch => {
         dispatch(voteComment(comment.id, comment.parentID, isPrimary, userVote, votes)).then(() => {
-            //Service.request(path, { id: comment.id, vote: userVote });
+            Service.request(path, { id: comment.id, vote: userVote });
         }).catch((error) => {
             console.log(error);
         });
@@ -197,7 +197,7 @@ export const deleteCommentInternal = (id, parentId, commentsType) => {
 
     return dispatch => {
         return dispatch(deleteComment(id, parentId, isPrimary)).then(() => {
-            //Service.request(path, { id: id });
+            Service.request(path, { id: id });
         }).catch((error) => {
             console.log(error);
         });

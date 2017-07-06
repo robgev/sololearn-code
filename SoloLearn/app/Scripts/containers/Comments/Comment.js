@@ -412,5 +412,3 @@ class Comment extends Component {
 }
 
 export default Comment;
-
-//|| this.props.comment.replies.length !== nextProps.comment.replies.length

@@ -37,6 +37,9 @@ import ProfileReducer from './reducer_profile';
 //Comments
 import CommentsReducer from './reducer_comments';
 
+//Play
+import ChallengesReducer from './reducer_challenges';
+
 const reducers = {
     tabs: TabsReducer,
     activeTab: ActiveTabReducer,
@@ -60,7 +63,8 @@ const reducers = {
     userSuggestions: UserSuggestions,
     userProfile: UserReducer,
     profile: ProfileReducer,
-    comments: CommentsReducer
+    comments: CommentsReducer,
+    challenges: ChallengesReducer
 };
 
 // Redux selector for detecting data state
@@ -92,6 +96,8 @@ export const isLoaded = (state, componentName) => {
             return state.profile.following.length > 0;
         case "comments":
             return state.comments.length > 0;
+        case "contests":
+            return state.challenges.contests != null;
     }
 }
 

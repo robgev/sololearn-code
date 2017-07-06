@@ -18,7 +18,7 @@ import Popup from '../../api/popupService';
 import QuizSelector from '../Learn/QuizSelector';
 import QuizText from '../Learn/QuizText';
 import { QuizType } from '../Learn/QuizSelector';
-import Comments from './Comments';
+import Comments from '../Comments/CommentsBase';
 import { LessonType } from './QuizManager'
 
 //Marterial UI components

@@ -3,3 +3,5 @@
 /Services/bin/
 /Services/obj/
 /SoloLearn/node_modules
+/SoloLearn/obj/
+/.vs/SoloLearn/v15
