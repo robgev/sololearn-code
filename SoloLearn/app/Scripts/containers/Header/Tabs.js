@@ -8,33 +8,29 @@ import { bindActionCreators } from 'redux';
 import { selectTab } from '../../actions/tabs';
 
 //Material UI components
-import {Tabs, Tab} from 'material-ui/Tabs';
+import { Tabs, Tab } from 'material-ui/Tabs';
 
 class TabList extends Component {
-    constructor(props) {
-        super(props);
-
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    renderList() {
-        return this.props.tabs.map((tab) => {
-            return (
-                <Tab label={tab.name} containerElement={<Link to={tab.url} />} key={tab.id}
-                     onClick={() => this.handleClick(tab)} className="tab-item">
-                </Tab>
-            );
-        });
-    }
-
-    handleClick(tab) {
-        this.props.selectTab(tab);
-    }
-
+    tabList = this.props.tabs.map(tab => {
+        return (
+            <Tab
+                key={tab.id}
+                value={tab.id}
+                label={tab.name}
+                containerElement={ <Link to={tab.url} /> }
+                onClick={() => this.props.selectTab(tab)}
+                className='tab-item'
+            >
+            </Tab>
+        );
+    });
     render() {
         return (
-            <Tabs className="tabs">
-                {this.renderList()}
+            <Tabs
+                className='tabs'
+                value={this.props.activeTabId}
+            >
+                {this.tabList}
             </Tabs>
         );
     }
@@ -47,12 +43,8 @@ function mapStateToProps(state) {
     };
 }
 
-//Anything returned from this function will end up as props on TabList container
 function mapDispatchToProps(dispatch) {
-    //Whenever selectTab is called, the result should be passed to all of our reducers
-    return bindActionCreators({ selectTab: selectTab }, dispatch);
+    return bindActionCreators({ selectTab }, dispatch);
 }
 
-//Promote TabList from a component to container - it need to know about this new dispatch method, selectTab. 
-//Make it available as prop.
 export default connect(mapStateToProps, mapDispatchToProps)(TabList);

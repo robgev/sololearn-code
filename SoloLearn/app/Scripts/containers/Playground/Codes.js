@@ -30,7 +30,7 @@ const styles = {
             transform: 'translateY(0)'
         }
     },
-
+    
     noResults: {
         position: 'absolute',
         top: '50%',
@@ -42,87 +42,23 @@ const styles = {
 }
 
 class Codes extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            isLoading: false,
-            fullyLoaded: false
-        }
-
-        this.handleScroll = this.handleScroll.bind(this);
+    state = {
+        isLoading: true,
+        fullyLoaded: false
     }
-
-    loadCodes() {
-        const { codes, ordering, language, query, userId } = this.props;
-        this.setState({ isLoading: true }); //if (this.props.codes.length > 0) 
-
-        const index = codes ? codes.length : 0;
-        this.props.getCodes(index, ordering, language, query, userId).then(count => {
-            if (count < 20) this.setState({ fullyLoaded: true });
-
-            this.setState({ isLoading: false });
-        }).catch((error) => {
-            console.log(error);
-        });
-    }
-
-    //Load codes when condition changes
-    loadCodesByState() {
-        this.props.emptyCodes().then(() => {
-            this.setState({ fullyLoaded: false });
-            this.loadCodes();
-        }).catch((error) => {
-            console.log(error);
-        });
-    }
-
-    //Check scroll state
-    handleScroll() {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            if (!this.state.isLoading && !this.state.fullyLoaded) {
-                this.loadCodes();
-            }
-        }
-    }
-
-    renderCodes() {
-        return this.props.codes.map((code, index) => {
-            return (
-                <CodeItem code={code} key={code.id} />
-            );
-        });
-    }
-
-    render() {
-        const { isLoaded, codes, isUserProfile } = this.props;
-
-        return (
-            <div className="codes">
-                {(isLoaded && codes.length > 0) && this.renderCodes()}
-                {((!isLoaded || codes.length == 0) && !this.state.fullyLoaded && !isUserProfile) && <LoadingOverlay />}
-                {
-                    ((isUserProfile || codes.length > 0) && !this.state.fullyLoaded) &&
-                    <div className="loading" style={!this.state.isLoading ? styles.bottomLoading.base : [styles.bottomLoading.base, styles.bottomLoading.active]}>
-                        <LoadingOverlay size={30} />
-                    </div>
-                }
-                {(this.state.fullyLoaded && codes.length == 0) && <div style={styles.noResults}>No Results Found</div>}
-            </div>
-        );
-    }
-
     componentWillMount() {
         const { defaultsLoaded, isLoaded } = this.props;
 
         if(!defaultsLoaded) {
-            this.props.loadDefaults().then((response) => {
-                if(!isLoaded) {
-                    this.loadCodes();
-                }
-            }).catch((error) => {
-                console.log(error);
-            });
+            this.props.loadDefaults()
+                .then(() => {
+                    if(!isLoaded) {
+                        this.loadCodes();
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
         else {
             if(!isLoaded) {
@@ -138,7 +74,67 @@ class Codes extends Component {
 
     //Remove event listeners after component unmounts
     componentWillUnmount() {
-        window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('scroll', () => console.log('removed'));
+    }
+
+    loadCodes = () => {
+        const { codes, ordering, language, query, userId } = this.props;
+        // this.setState({ isLoading: true }); //if (this.props.codes.length > 0) 
+        const index = codes ? codes.length : 0;
+        this.props.getCodesInternal(index, ordering, language, query, userId)
+            .then(count => {
+                if (count < 20) this.setState({ fullyLoaded: true });
+                this.setState({ isLoading: false });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    //Load codes when condition changes
+    loadCodesByState = () => {
+        this.props.emptyCodes()
+            .then(() => {
+                this.setState({ fullyLoaded: false });
+                this.loadCodes();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    //Check scroll state
+    handleScroll = () => {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            if (!this.state.isLoading && !this.state.fullyLoaded) {
+                this.loadCodes();
+            }
+        }
+    }
+
+    renderCodes = () => {
+        return this.props.codes.map(code => {
+            return (
+                <CodeItem code={code} key={code.id} />
+            );
+        });
+    }
+
+    render() {
+        const { isLoaded, codes, isUserProfile } = this.props;
+        return (
+            <div className="codes">
+                {(isLoaded && codes.length > 0) && this.renderCodes()}
+                {((!isLoaded || codes.length == 0) && !this.state.fullyLoaded && !isUserProfile) && <LoadingOverlay />}
+                {
+                    ((isUserProfile || codes.length > 0) && !this.state.fullyLoaded) &&
+                    <div className="loading" style={!this.state.isLoading ? styles.bottomLoading.base : [styles.bottomLoading.base, styles.bottomLoading.active]}>
+                        <LoadingOverlay size={30} />
+                    </div>
+                }
+                {(this.state.fullyLoaded && codes.length == 0) && <div style={styles.noResults}>No Results Found</div>}
+            </div>
+        );
     }
 }
 
@@ -150,9 +146,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        loadDefaults: loadDefaults,
-        getCodes: getCodesInternal,
-        emptyCodes: emptyCodes
+        loadDefaults,
+        getCodesInternal,
+        emptyCodes
     }, dispatch);
 }
 

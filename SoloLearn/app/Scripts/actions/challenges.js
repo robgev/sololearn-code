@@ -58,3 +58,75 @@ export const clearContestsInternal = () => {
         });
     }
 }
+
+export const chooseContestCourse = (courseId) => {
+    return dispatch => {
+        return new Promise((resolve, reject) => {
+            dispatch({
+                type: types.CHOOSE_CHALLENGE_COURSE,
+                payload: courseId
+            });
+            resolve();
+        });
+    }
+}
+
+export const getAllPlayers = (players) => {
+    return {
+        type: types.GET_ALL_PLAYERS,
+        payload: players
+    }
+}
+
+export const getAllPlayersInternal = (name, courseId) => {
+    return dispatch => {
+        return Service.request("Challenge/FindPlayers", { name: name, courseId: courseId }).then(response => {
+            dispatch(getAllPlayers(response.users));
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+}
+
+export const emptyAllPlayers = () => {
+    return dispatch => {
+        return new Promise((resolve, reject) => {
+            dispatch({
+                type: types.EMPTY_ALL_PLAYERS
+            });
+            resolve();
+        });
+    }
+}
+
+export const getContest = (contest) => {
+    return {
+        type: types.GET_CONTEST,
+        payload: contest
+    }
+}
+
+export const createContestInternal = (opponentId) => {
+    return (dispatch, getState) => {
+        const store = getState();
+        let courseId = store.challenges.courseId;
+
+        return Service.request("Challenge/CreateContest", { courseId: courseId, opponentId: opponentId }).then(response => {
+            const contest = response.contest;
+            dispatch(getContest(contest));
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+}
+
+export const getContestInternal = (contestId) => {
+    return dispatch => {
+        return Service.request("Challenge/GetContest", { id: contestId }).then(response => {
+            const contest = response.contest;
+            dispatch(getContest(contest));
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+}

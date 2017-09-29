@@ -37,13 +37,8 @@ const styles = {
 }
 
 class Code extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
-        const code = this.props.code;
-
+        const { code } = this.props;
         return (
             <Link to={"/playground/" + code.publicID} className="code" style={styles.code}>
                 <p style={styles.codeSnippet}>{truncate(code.sourceCode, 500, 6, true)}</p>

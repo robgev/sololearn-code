@@ -24,6 +24,11 @@ import defaultSyles from '../styles/defaults';
 const muiTheme = getMuiTheme(Theme);
 
 class App extends Component {
+    componentWillMount() {
+        if(!this.props.defaultsLoaded) {
+            this.props.loadDefaults();
+        }
+    }
     render() {
         return (
           <MuiThemeProvider muiTheme={muiTheme}>
@@ -34,12 +39,6 @@ class App extends Component {
             </div>
           </MuiThemeProvider>
         );
-    }
-
-    componentWillMount() {
-        if(!this.props.defaultsLoaded) {
-            this.props.loadDefaults();
-        }
     }
 }
 

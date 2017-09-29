@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
+import Service from './api/service'
 
 //Redux modules
 import ReduxPromise from 'redux-promise';
@@ -22,9 +23,9 @@ const createStoreWithMiddleware = applyMiddleware(ReduxPromise, ReduxThunk)(crea
 const store = createStoreWithMiddleware(combineReducers(reducers));
 
 /*LOGGING APPLICATION STATE*/
-store.subscribe(() =>
+store.subscribe(() => {
     console.log("STORE STATE(INDEX FILE LOG): ", store.getState())
-)
+})
 /******/
 
 ReactDOM.render(

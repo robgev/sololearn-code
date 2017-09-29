@@ -9,19 +9,16 @@ import types from '../../defaults/appTypes';
 
 
 class FeedItems extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-        }
-    }
-
-    renderFeedItems() {
+    renderFeedItems = () => {
         //console.log(this.props.feedItems.filter(item => { return item.id == 29719773; }));
 
-        return this.props.feedItems.map((feedItem, index) => {
+        return this.props.feedItems.map(feedItem => {
             return (
-                <FeedItem key={feedItem.type == types.mergedChallange ? "feedGroup" + feedItem.toId : "feedItem" + feedItem.id} feedItem={feedItem} openPopup={this.props.openPopup} />
+                <FeedItem
+                    key={feedItem.type == types.mergedChallange ? "feedGroup" + feedItem.toId : "feedItem" + feedItem.id}
+                    feedItem={feedItem}
+                    openPopup={this.props.openPopup}
+                />
             );
         });
     }

@@ -63,7 +63,7 @@ const structurizeCourse = (modules, dispatch) => {
     });
 }
 
-export const loadCourse = (course) => {
+const loadCourse = (course) => {
     return {
         type: types.LOAD_COURSE,
         payload: course

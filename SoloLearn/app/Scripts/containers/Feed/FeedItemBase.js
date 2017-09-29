@@ -70,13 +70,8 @@ const styles = {
 }
 
 class FeedItemBase extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
-        const user = this.props.user;
-
+        const { user } = this.props;
         return (
             <div className="content" style={styles.content}>
                 <Link to={"/profile/" + user.id} style={styles.linkStyle}> 

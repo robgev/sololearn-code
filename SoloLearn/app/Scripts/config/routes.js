@@ -5,9 +5,10 @@ import { Route, IndexRoute } from 'react-router';
 //Layouts
 import MainLayout from '../components/Layouts/MainLayout';
 import EmptyLayout from '../components/Layouts/EmptyLayout';
+import Login from '../containers/Login/Login';
 
 //Additional components
-import App from '../containers/App';
+// import App from '../containers/App';
 
 //Learn
 import Modules from '../containers/Learn/Modules';
@@ -36,7 +37,9 @@ import Feed from '../containers/Feed/Feed';
 import Profile from '../containers/Profile/Profile';
 
 //Chalenges
-import Contests from '../containers/Challenges/Contests'
+import Contests from '../containers/Challenges/Feed/Contests';
+import OpponentSelector from '../containers/Challenges/Users/OpponentSelector';
+import Challenge from '../containers/Challenges/Challenge/Challenge';
 
 export default (
     [<Route component={MainLayout} key="mainLayoutRoutes">
@@ -59,10 +62,14 @@ export default (
         <Route path="/feed" component={Feed} />
         <Route path="/profile/:id(/:tab)" component={Profile} />
         <Route path="/contests" component={Contests} />
-    </Route>,
+        <Route path="/choose-opponent" component={OpponentSelector} />
+        <Route path="/challenge/:id" component={Challenge} />
+    </Route>, 
     <Route component={EmptyLayout} key="emptyLayoutRoutes">
         <Route path="/notifications" component={Notifications} />
-    </Route>]
+        <Route path="/login" component={Login} />
+    </Route>
+    ]
 );
 
 //<Route path="/" component={App}>     </Route>

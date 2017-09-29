@@ -103,20 +103,14 @@ export const markRead = (ids) => {
 }
 
 export const markReadInternal = (ids) => {
-    let dispatchPromise = null;
     return dispatch => {
-        if (ids != null) {
-            dispatchPromise = dispatch(markRead(ids));
-        }
-        else {
-            dispatchPromise = dispatch(markAllRead());
-        }
-
-        dispatchPromise.then(() => {
-            Service.request("Profile/MarkNotificationsClicked", { ids: ids });
-        }).catch((error) => {
-            console.log(error);
-        });
+        const dispatchPromise = ids != null ? dispatch(markRead(ids)) : dispatch(markAllRead());
+        dispatchPromise
+            .then(() => {
+                Service.request("Profile/MarkNotificationsClicked", { ids: ids });
+            }).catch((error) => {
+                console.log(error);
+            });
     }
 }
 
@@ -126,36 +120,40 @@ export const emptyProfile = () => {
     }
 }
 
-export const getFollowers = (followers) => {
+export const getFollowers = (followers, fromChallenges) => {
+    const type = fromChallenges ? types.GET_CONTEST_FOLLOWERS : types.GET_PROFILE_FOLLOWERS;
+
     return {
-        type: types.GET_PROFILE_FOLLOWERS,
+        type: type,
         payload: followers
     }
 }
 
-export const getFollowersInternal = (index, userId, count = 20) => {
+export const getFollowersInternal = (index, userId, count = 20, fromChallenges = false) => {
     return dispatch => {
         return Service.request("Profile/GetFollowers", { id: userId, index: index, count: count }).then(response => {
             const followers = response.users;
-            dispatch(getFollowers(followers));
+            dispatch(getFollowers(followers, fromChallenges));
 
             return followers.length;
         });
     }
 }
 
-export const getFollowing = (following) => {
+export const getFollowing = (following, fromChallenges) => {
+    const type = fromChallenges ? types.GET_CONTEST_FOLLOWING : types.GET_PROFILE_FOLLOWING;
+
     return {
-        type: types.GET_PROFILE_FOLLOWING,
+        type: type,
         payload: following
     }
 }
 
-export const getFollowingInternal = (index, userId, count = 20) => {
+export const getFollowingInternal = (index, userId, count = 20, fromChallenges = false) => {
     return dispatch => {
         return Service.request("Profile/GetFollowing", { id: userId, index: index, count: count }).then(response => {
             const following = response.users;
-            dispatch(getFollowing(following));
+            dispatch(getFollowing(following, fromChallenges));
 
             return following.length;
         });

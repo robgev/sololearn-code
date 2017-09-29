@@ -54,11 +54,9 @@ class FeedItem extends Component {
 
         this.votes = null;
         this.url = "";
-
-        this.handleChallengesOpen = this.handleChallengesOpen.bind(this);
     }
 
-    handleChallengesOpen() {
+    handleChallengesOpen = () => {
         this.setState({ isOpened: !this.state.isOpened })
     }
 

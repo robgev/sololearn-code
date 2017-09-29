@@ -1,5 +1,5 @@
 ﻿//React modules
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 import Radium, { Style } from 'radium';
 
@@ -79,14 +79,9 @@ const styles = {
     }
 }
 
-class QuestionItem extends Component {
-    constructor(props) {
-        super(props);
-    }
-
+class QuestionItem extends PureComponent {
     render() {
-        const question = this.props.question;
-
+        const { question } = this.props;
         return (
             <div className="question" style={styles.question}>
                 <div className="stats" style={styles.stats}>
@@ -101,8 +96,16 @@ class QuestionItem extends Component {
                         <p className="title" style={styles.title}>{question.title}</p>
                         <div className="tags">
                             {
-                                question.tags.map((tag, index) => {
-                                    return <div className="tag" key={question.id + " " + tag} style={index == 0 ? styles.tag.base : [styles.tag.base, styles.tag.margin]}>{tag}</div>
+                                [...new Set(question.tags)].map((tag, index) => {
+                                    return (
+                                        <div 
+                                            className="tag" 
+                                            key={question.id + " " + tag} 
+                                            style={index == 0 ? styles.tag.base : [styles.tag.base, styles.tag.margin]}
+                                        >
+                                            {tag}
+                                        </div>
+                                    )
                                 })
                             }
                         </div>
@@ -116,10 +119,6 @@ class QuestionItem extends Component {
                 </div>
             </div>
         );
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return this.props.question !== nextProps.question;
     }
 }
 

@@ -57,17 +57,26 @@ const aceLineStyle = <Style
 />
 
 class Editor extends Component {
-    constructor(props) {
-        super(props);
-
-        this.setState({
-        });
-
-        this.aceEditor = null;
+    aceEditor = null;
+    
+    //Add event listeners after component mounts and creacts ACE editor
+    componentDidMount() {
+        const node = findDOMNode(this.refs.editor);
+        this.aceEditor = ace.edit(node);
+        this.aceEditor.renderer.setScrollMargin(2, 0);
+        //this.aceEditor.addEventListener('change', this.handleEditorChange);
+    
+        if (!this.props.gettingCode) {
+            this.loadEditor();
+        }
     }
-
+    
+    //Remove event listeners after component unmounts
+    componentWillUnmount() {
+        //this.aceEditor.removeEventListener('change', this.handleEditorChange);
+    }
     //Load editor with requirements
-    loadEditor() {
+    loadEditor = () => {
         const { theme, mode, sourceCode, isUserCode, isCodeTemplate } = this.props;
 
         let sample = (!isUserCode && !isCodeTemplate) ? texts[mode] : sourceCode;
@@ -88,7 +97,7 @@ class Editor extends Component {
     }
 
     //Change ACE Editor mode
-    changeMode(code) {
+    changeMode = (code) => {
         let editorMode = "ace/mode/" + this.props.mode;
         this.aceEditor.session.setMode(editorMode);
         this.aceEditor.setValue(code, -1);
@@ -108,22 +117,6 @@ class Editor extends Component {
         );
     }
 
-    //Add event listeners after component mounts and creacts ACE editor
-    componentDidMount() {
-        const node = findDOMNode(this.refs.editor);
-        this.aceEditor = ace.edit(node);
-        this.aceEditor.renderer.setScrollMargin(2, 0);
-        //this.aceEditor.addEventListener('change', this.handleEditorChange);
-
-        if (!this.props.gettingCode) {
-            this.loadEditor();
-        }
-    }
-
-    //Remove event listeners after component unmounts
-    componentWillUnmount() {
-        //this.aceEditor.removeEventListener('change', this.handleEditorChange);
-    }
 }
 
 export default Radium(Editor);

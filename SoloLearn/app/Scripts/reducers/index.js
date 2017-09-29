@@ -1,103 +1,113 @@
-﻿//General reducers
-import TabsReducer from './reducer_tabs';
-import ActiveTabReducer from './reducer_active_tab';
-import UserReducer from './reducer_user';
+﻿//General
+import tabs from './reducer_tabs';
+import activeTab from './reducer_active_tab';
+import userProfile from './reducer_user';
 
-//Learn reducers
-import CoursesReducer from './reducer_courses';
-import CourseReducer from './reducer_course';
-import LevelsReducer from './reducer_levels';
-import ModulesReducer from './reducer_modules';
-import LessonsReducer from './reducer_lessons';
-import QuizzesReducer from './reducer_quizzes';
-import ActiveModuleReducer from './reducer_active_module';
-import ActiveLessonReducer from './reducer_active_lesson';
-import ActiveQuizReducer from './reducer_active_quiz';
-import ShortcutReducer from './reducer_shortcut';
+//Learn
+import courses from './reducer_courses';
+import course from './reducer_course';
+import levels from './reducer_levels';
+import modulesMapping from './reducer_modules';
+import lessonsMapping from './reducer_lessons';
+import quizzesMapping from './reducer_quizzes';
+import activeModuleId from './reducer_active_module';
+import activeLessonId from './reducer_active_lesson';
+import activeQuiz from './reducer_active_quiz';
+import shortcutLesson from './reducer_shortcut';
 
-//Playground reducers
-import Codes from './reducer_codes';
+//Playground
+import codes from './reducer_codes';
 
-//Discuss reducers
-import Questions from './reducer_questions';
-import Post from './reducer_post';
+//Discuss
+import questions from './reducer_questions';
+import discussPost from './reducer_post';
 
-//Notifications reducers
-import Notifications from './reducer_notifications';
-import NotificationsCount from './reducer_notifications_count';
+//Notifications
+import notifications from './reducer_notifications';
+import notificationsCount from './reducer_notifications_count';
 
-//Feed reducers
-import Feed from './reducer_feed';
-import FeedPins from './reducer_feed_pins';
-import UserSuggestions from './reducer_user_suggestions';
+//Feed
+import feed from './reducer_feed';
+import feedPins from './reducer_feed_pins';
+import userSuggestions from './reducer_user_suggestions';
 
 //Profile
-import ProfileReducer from './reducer_profile';
+import profile from './reducer_profile';
 
 //Comments
-import CommentsReducer from './reducer_comments';
+import comments from './reducer_comments';
 
 //Play
-import ChallengesReducer from './reducer_challenges';
+import challenges from './reducer_challenges';
+
+//Login
+import loggedin from './login.reducer';
 
 const reducers = {
-    tabs: TabsReducer,
-    activeTab: ActiveTabReducer,
-    courses: CoursesReducer,
-    levels: LevelsReducer,
-    course: CourseReducer,
-    modulesMapping: ModulesReducer,
-    lessonsMapping: LessonsReducer,
-    quizzesMapping: QuizzesReducer,
-    activeModuleId: ActiveModuleReducer,
-    activeLessonId: ActiveLessonReducer,
-    activeQuiz: ActiveQuizReducer,
-    shortcutLesson: ShortcutReducer,
-    questions: Questions,
-    discussPost: Post,
-    codes: Codes,
-    notifications: Notifications,
-    notificationsCount: NotificationsCount,
-    feed: Feed,
-    feedPins: FeedPins,
-    userSuggestions: UserSuggestions,
-    userProfile: UserReducer,
-    profile: ProfileReducer,
-    comments: CommentsReducer,
-    challenges: ChallengesReducer
+    //General
+    tabs, activeTab, userProfile,
+    //Learn
+    courses, course, levels, modulesMapping, lessonsMapping, quizzesMapping,
+    activeModuleId, activeLessonId, activeQuiz, shortcutLesson,
+    //Playground
+    codes,
+    //Discuss
+    questions, discussPost,
+    //Notifications
+    notifications, notificationsCount,
+    //Feed
+    feed, feedPins, userSuggestions,
+    //Profile
+    profile,
+    //Comments
+    comments,
+    //Play
+    challenges,
+    //Login
+    loggedin,
 };
 
 // Redux selector for detecting data state
 export const isLoaded = (state, componentName) => {
     switch(componentName) {
-        case "modules":
+        case 'modules':
             return state.course != null;
-        case "lessons":
+        case 'lessons':
             return (state.course && state.modulesMapping && state.lessonsMapping && state.activeModuleId) != null;
-        case "quizzes":
+        case 'quizzes':
             return (state.course && state.modulesMapping && state.lessonsMapping && state.quizzesMapping && state.activeModuleId && state.activeLessonId && state.activeQuiz) != null;
-        case "shortcut":
+        case 'shortcut':
             return (state.course && state.shortcutLesson) != null;
-        case "discuss":
+        case 'discuss':
             return state.questions.length > 0;
-        case "discussPost":
+        case 'discussPost':
             return state.discussPost != null;
-        case "playground":
+        case 'playground':
             return state.codes.length > 0;
-        case "notifications":
+        case 'notifications':
             return state.notifications.length > 0;
-        case "feed":
+        case 'feed':
             return state.feed.length > 0;
-        case "profile":
+        case 'profile':
             return state.profile.data != null;
-        case "followers":
+        case 'followers':
             return state.profile.followers.length > 0;
-        case "following":
+        case 'following':
             return state.profile.following.length > 0;
-        case "comments":
+        case 'comments':
             return state.comments.length > 0;
-        case "contests":
+        case 'contests':
             return state.challenges.contests != null;
+        case 'opponentSelector':
+            return state.challenges.courseId != null;
+        case 'allPlayers':
+            return state.challenges.allPlayers.length > 0;
+        case 'challengesFollowers':
+            return state.challenges.followers.length > 0;
+        case 'challengesFollowing':
+            return state.challenges.following.length > 0;
+        case 'activeContest':
+            return state.challenges.activeContest != null;
     }
 }
 

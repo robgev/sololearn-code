@@ -35,7 +35,6 @@ const styles = {
 class Playground extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             mode: "html",
             type: "web",
@@ -46,19 +45,16 @@ class Playground extends Component {
             isRunning: false,
             showOutput: false
         }
-
         this.sourceCode = "";
         this.cssCode = "";
         this.jsCode = "";
         this.userCodeData = null;
         this.isUserCode = false;
         this.isCodeTemplate = false;
-
-        this.handleTabChange = this.handleTabChange.bind(this);
     }
 
     //Default settings
-    setDefaultSettings() {
+    setDefaultSettings = () => {
         this.sourceCode = "";
         this.cssCode = "";
         this.jsCode = "";
@@ -73,54 +69,56 @@ class Playground extends Component {
         browserHistory.replace('/playground/html');
     }
 
-    getCodeTemplate() {
+    getCodeTemplate = () => {
         const that = this;
         const params = this.props.params;
         this.setState({ isGettingCode: true });
 
         //Link requires saved code
-        Service.request("Playground/GetCodeSample", { id: parseInt(params.secondary) }).then((response) => {
-            const codeTemplate = response.code;
+        Service.request("Playground/GetCodeSample", { id: parseInt(params.secondary) })
+            .then((response) => {
+                const codeTemplate = response.code;
 
-            this.sourceCode = codeTemplate.sourceCode;
-            this.cssCode = codeTemplate.cssCode;
-            this.jsCode = codeTemplate.jsCode;
-            this.isCodeTemplate = true;
+                this.sourceCode = codeTemplate.sourceCode;
+                this.cssCode = codeTemplate.cssCode;
+                this.jsCode = codeTemplate.jsCode;
+                this.isCodeTemplate = true;
 
-            let isMatched = false;
-            let isWeb = false;
+                let isMatched = false;
+                let isWeb = false;
 
-            Object.keys(editorSettings).forEach((key, index) => {
-                let value = editorSettings[key];
+                for (let key in editorSettings){
+                    let value = editorSettings[key];
 
-                if (params.primary == value.alias) {
-                    isMatched = true;
-                    isWeb = value.alias == "html" || value.alias == "css" || value.alias == "js";
+                    if (params.primary == value.alias) {
+                        isMatched = true;
+                        isWeb = value.alias == "html" || value.alias == "css" || value.alias == "js";
 
-                    that.setState({
-                        mode: key,
-                        type: value.type,
-                        theme: "monokai",
-                        languageSelector: isWeb ? "html" : key
-                    });
+                        that.setState({
+                            mode: key,
+                            type: value.type,
+                            theme: "monokai",
+                            languageSelector: isWeb ? "html" : key
+                        });
 
-                    browserHistory.replace('/playground/' + value.alias + '/' + params.secondary);
+                        browserHistory.replace('/playground/' + value.alias + '/' + params.secondary);
+                    }
                 }
+
+                if (!isMatched) {
+                    browserHistory.replace('/playground/html/' + params.secondary);
+                }
+
+                this.setState({ isGettingCode: false });
+
+            })
+            .catch((error) => {
+                console.log(error);
             });
-
-            if (!isMatched) {
-                browserHistory.replace('/playground/html/' + params.secondary);
-            }
-
-            this.setState({ isGettingCode: false });
-
-        }).catch((error) => {
-            console.log(error);
-        });
     }
 
     //Get user saved code
-    getUserCode() {
+    getUserCode = () => {
         const params = this.props.params;
         this.setState({ isGettingCode: true });
 
@@ -163,7 +161,7 @@ class Playground extends Component {
     }
 
     //Change web tabs
-    handleTabChange(mode) {
+    handleTabChange = (mode) => {
         console.log(this);
         let code = (mode == "html" || mode == "php") ? this.sourceCode : (mode == "css" ? this.cssCode : this.jsCode);
 

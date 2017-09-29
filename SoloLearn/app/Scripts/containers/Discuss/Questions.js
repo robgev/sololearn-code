@@ -44,32 +44,52 @@ const styles = {
 class Questions extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             isLoading: false,
             fullyLoaded: false
         }
-
-        this.handleScroll = this.handleScroll.bind(this);
-        this.loadQuestionByState = this.loadQuestionByState.bind(this);
+    }
+    componentWillMount() {
+        const { defaultsLoaded, isLoaded } = this.props;
+        if (!defaultsLoaded) {
+            this.props.loadDefaults().then((response) => {
+                if (!isLoaded) {
+                    this.loadQuestions();
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
+        else {
+            if (!isLoaded) {
+                this.loadQuestions();
+            }
+        }
+    }
+    componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll);
+    }
+    
+    //Remove event listeners after component unmounts
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
     }
 
     //Check scroll state
-    handleScroll() {
+    handleScroll = () => {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
             if (!this.state.isLoading && !this.state.fullyLoaded) {
                 this.loadQuestions();
             }
         }
     }
-
-    loadQuestions() {
+    loadQuestions = () => {
         const { questions, ordering, query, userId } = this.props;
 
         this.setState({ isLoading: true }); //if (this.props.questions.length > 0)
 
         const index = questions ? questions.length : 0;
-        this.props.getQuestions(index, ordering, query, userId).then(count => {
+        this.props.getQuestionsInternal(index, ordering, query, userId).then(count => {
             if (count < 20) this.setState({ fullyLoaded: true });
 
             this.setState({ isLoading: false });
@@ -77,25 +97,21 @@ class Questions extends Component {
             console.log(error);
         });
     }
-
     //Load questions when condition changes
-    loadQuestionByState() {
+    loadQuestionByState = () => {
         this.props.emptyQuestions().then(() => {
             this.loadQuestions();
         }).catch((error) => {
             console.log(error);
         });
     }
-
-
-    renderQuestions() {
-        return this.props.questions.map((quesiton, index) => {
+    renderQuestions = () => {
+        return this.props.questions.map(quesiton => {
             return (
                 <QuestionItem question={quesiton} key={quesiton.id} />
             );
         });
     }
-
     render() {
         const { isLoaded, questions, isUserProfile } = this.props;
 
@@ -113,35 +129,6 @@ class Questions extends Component {
             </div>
         );
     }
-
-    componentWillMount() {
-        const { defaultsLoaded, isLoaded } = this.props;
-
-        if (!defaultsLoaded) {
-            this.props.loadDefaults().then((response) => {
-                if (!isLoaded) {
-                    this.loadQuestions();
-                }
-            }).catch((error) => {
-                console.log(error);
-            });
-        }
-        else {
-            if (!isLoaded) {
-                this.loadQuestions();
-            }
-        }
-    }
-
-    //Add event listeners after component mounts
-    componentDidMount() {
-        window.addEventListener('scroll', this.handleScroll);
-    }
-
-    //Remove event listeners after component unmounts
-    componentWillUnmount() {
-        window.removeEventListener('scroll', this.handleScroll);
-    }
 }
 
 function mapStateToProps(state) {
@@ -152,9 +139,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        loadDefaults: loadDefaults,
-        getQuestions: getQuestionsInternal,
-        emptyQuestions: emptyQuestions
+        loadDefaults,
+        getQuestionsInternal,
+        emptyQuestions
     }, dispatch);
 }
 

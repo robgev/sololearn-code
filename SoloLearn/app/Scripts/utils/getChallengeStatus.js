@@ -41,7 +41,7 @@ const styles = {
 const getChallengeStatus = (status) => {
     switch (status) {
         case contestTypes.Won:
-            return <p style={getStyles(styles.base, styles.small, styles.wonColor)}> YOU WON</p>;
+            return <p style={getStyles(styles.base, styles.small, styles.wonColor)}>YOU WON</p>;
         case contestTypes.Lost:
             return <p style={getStyles(styles.base, styles.small, styles.lostColor)}>YOU LOST</p>;
         case contestTypes.Draw:

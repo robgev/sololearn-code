@@ -2,26 +2,19 @@
 import Storage from '../api/storage';
 import * as types from '../constants/ActionTypes';
 
-export const getUserProfile = (profile) => {
-    return {
-        type: types.GET_USER_PROFILE,
-        payload: profile
-    }
-}
+const loadLevels = payload => ({ type: types.LOAD_LEVELS, payload });
 
-export const getProfile = (profile) => {
-    return {
-        type: types.GET_PROFILE,
-        payload: profile
-    }
-}
+const getUserProfile = payload => ({ type: types.GET_USER_PROFILE, payload });
+
+const getProfile = payload => ({ type: types.GET_PROFILE, payload });
+
+const loadCourses = payload => ({ type: types.LOAD_COURSES, payload });
 
 export const getProfileInternal = (userId) => {
     if (!userId) {
         let localStorage = new Storage(); //Caching course data
         let profile = localStorage.load("profile");
-
-        if (profile != null && profile.id == 24379) {
+        if (profile != null) {
             return dispatch => {
                 return new Promise((resolve, reject) => {
                     dispatch(getUserProfile(profile));
@@ -30,11 +23,10 @@ export const getProfileInternal = (userId) => {
             }
         }
         else {
-            return dispatch => {
-                return Service.request("Profile/GetProfile", { id: 24379 }).then(response => { //TODO
+            return (dispatch, getState) => {
+                return Service.request("Profile/GetProfile", { id: getState().loggedin }).then(response => { //TODO
                     localStorage.save("profile", response.profile); //Saveing data to localStorage
-
-                    dispatch(getUserProfile(response.profile));
+                    dispatch(getProfileInternal());
                 }).catch(error => {
                     console.log(error);
                 });
@@ -55,6 +47,7 @@ export const getProfileInternal = (userId) => {
         else {
             return dispatch => {
                 return Service.request("Profile/GetProfile", { id: userId }).then(response => { //TODO
+                    console.log('profile response => ', response)
                     dispatch(getProfile(response.profile));
                 }).catch(error => {
                     console.log(error);
@@ -64,19 +57,7 @@ export const getProfileInternal = (userId) => {
     }
 }
 
-export const loadLevels = (levels) => {
-    return {
-        type: types.LOAD_LEVELS,
-        payload: levels
-    }
-}
 
-export const loadCourses = (courses) => {
-    return {
-        type: types.LOAD_COURSES,
-        payload: courses
-    }
-}
 
 export const loadCoursesInternal = () => {
     let localStorage = new Storage(); //Caching course data
@@ -108,19 +89,13 @@ export const loadCoursesInternal = () => {
     }
 }
 
-let promise = null;
-
 export const loadDefaults = () => {
-    return dispatch => {
-        return promise || (promise = new Promise((resolve, reject) => {
-            dispatch(getProfileInternal()).then((response) => {
-                dispatch(loadCoursesInternal()).then(() => {
-                    resolve();
-                    promise = null;
-                });
-            });
-        }).catch((error) => {
-            console.log(error);
-        }));
+    return (dispatch, getState) => {
+        return new Promise((resolve) => {
+            dispatch(getProfileInternal())
+                .then(() => dispatch(loadCoursesInternal()))
+                .then(() => resolve())
+                .catch(e => console.log(e));
+        })
     }
 }

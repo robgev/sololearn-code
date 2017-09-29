@@ -176,7 +176,7 @@ class WS {
                 }
 
                 //If authentication failed, it would try again
-                if (!dontAuthenticate && error.code == that.Errors.DeviceRequired || error.code == that.Errors.UserRequired)
+                if (!dontAuthenticate && error.code == that.Errors.DeviceRequired) // || error.code == that.Errors.UserRequired)
                 {
                     that.authenticate().then(response => {
                         if(response) {
@@ -203,7 +203,7 @@ class WS {
     request = (action, data) => {
         let that = this;
 
-        console.log(that);
+        // console.log(that);
 
         if(that.isFirstRequest) {
             return this.initialize().then(() => {
@@ -222,7 +222,7 @@ class WS {
     }
 
     onUserUpdate = (user) => {
-        console.log(user);
+        // console.log(user);
         this.user = user;
     };
 }

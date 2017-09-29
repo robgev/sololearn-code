@@ -198,7 +198,6 @@ const styles = {
 class FeedItemsBase extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             isLoading: false,
             fullyLoaded: false,
@@ -207,17 +206,60 @@ class FeedItemsBase extends Component {
             totalWins: 0,
             totalLoses: 0
         }
-
         this.interval = null;
         this.popupData = {};
-
-        this.handleScroll = this.handleScroll.bind(this);
-        this.handlePopupOpen = this.handlePopupOpen.bind(this);
-        this.handlePopupClose = this.handlePopupClose.bind(this);
-        this.scrollToFeedItems = this.scrollToFeedItems.bind(this);
     }
-
-    loadFeedItems(fromId) {
+    
+    componentWillMount() {
+        const { defaultsLoaded, isLoaded, isUserProfile } = this.props;
+    
+        if (!defaultsLoaded) {
+            this.props.loadDefaults().then((response) => {
+                if (!isLoaded) {
+                    this.loadFeedItems(null).then(() => {
+                        //this.interval = setInterval(() => { this.loadNewFeedItems() }, 30000);
+                    });
+                    !isUserProfile && this.props.getPinnedFeedItems(null, null, null);
+                    !isUserProfile && this.props.getUserSuggestions();
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
+        else if (!isLoaded) {
+            this.loadFeedItems(null).then(() => {
+                //this.interval = setInterval(() => { this.loadNewFeedItems() }, 30000);
+            });
+            !isUserProfile && this.props.getPinnedFeedItems(null, null, null);
+            !isUserProfile && this.props.getUserSuggestions();
+        }
+        else {
+            //this.interval = setInterval(() => { this.loadNewFeedItems() }, 30000);
+        }
+    }
+    
+    //Add event listeners after component mounts
+    componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll);
+        //this.interval = setInterval(() => { this.loadNewFeedItems() }, 30000);
+    }
+    
+    //Remove event listeners after component unmounts
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+        //clearInterval(this.interval);
+    }
+    
+    shouldComponentUpdate(nextProps, nextState) {
+        return (this.props.feed !== nextProps.feed
+            || this.props.feedPins !== nextProps.feedPins
+            || this.state.hasNewItems !== nextState.hasNewItems
+            || this.state.isLoading !== nextState.isLoading
+            || this.state.popupOpened !== nextState.popupOpened
+            || this.state.totalWins !== nextState.totalWins
+            || this.state.totalLoses !== nextState.totalLoses);
+    }
+    loadFeedItems = (fromId) => {
         this.setState({ isLoading: true });
 
         return this.props.getFeedItems(fromId, this.props.userId).then(count => {
@@ -230,7 +272,7 @@ class FeedItemsBase extends Component {
     }
 
     //Check availability of new items above
-    loadNewFeedItems() {
+    loadNewFeedItems = () => {
         const firstItem = this.props.feed[0];
         let fromId = !firstItem.groupedItems ? firstItem.toId : firstItem.id;
 
@@ -245,7 +287,7 @@ class FeedItemsBase extends Component {
         });
     }
 
-    getScrollState() {
+    getScrollState = () => {
         const feedItems = document.getElementById("feed-items");
         const feedItemsOffset = getOffset(feedItems);
 
@@ -253,7 +295,7 @@ class FeedItemsBase extends Component {
     }
 
     //Get last feed item from feed
-    getLastFeedItem() {
+    getLastFeedItem = () => {
         const feedItems = this.props.feed;
 
         for (let i = feedItems.length - 1; i >= 0; i--) {
@@ -264,7 +306,7 @@ class FeedItemsBase extends Component {
     }
 
     //Handle window scroll
-    handleScroll() {
+    handleScroll = () => {
         if (!this.getScrollState() && this.state.hasNewItems) {
             this.setState({ hasNewItems: false });
         }
@@ -278,7 +320,7 @@ class FeedItemsBase extends Component {
     }
 
     //Scroll to top of the feed
-    scrollToFeedItems() {
+    scrollToFeedItems = () => {
         const feedItems = document.getElementById("feed-items");
         const feedItemsOffset = getOffset(feedItems);
 
@@ -290,18 +332,19 @@ class FeedItemsBase extends Component {
         scroll.scrollTo(feedItemsOffset.top - 30, options);
     }
 
-    getChallengeStats(userId, courseId) {
-        Service.request("Challenge/GetContestStats", { userId: userId, courseId: courseId }).then(response => {
-            const stats = response.stats;
+    getChallengeStats = (userId, courseId) => {
+        Service.request("Challenge/GetContestStats", { userId: userId, courseId: courseId })
+            .then(response => {
+                const stats = response.stats;
 
-            this.setState({
-                totalWins: stats.totalWins,
-                totalLoses: stats.totalLoses
+                this.setState({
+                    totalWins: stats.totalWins,
+                    totalLoses: stats.totalLoses
+                });
             });
-        });
     }
 
-    renderPopup() {
+    renderPopup = () => {
         const courses = this.props.courses;
         let courseIndex = courses.findIndex((course) => { return course.id == this.popupData.courseId });
         let course = courses[courseIndex];
@@ -376,12 +419,12 @@ class FeedItemsBase extends Component {
         }
     }
 
-    handlePopupOpen(data) {
+    handlePopupOpen = (data) => {
         this.popupData = data;
         this.setState({ popupOpened: true });
     }
 
-    handlePopupClose() {
+    handlePopupClose = () => {
         this.setState({
             popupOpened: false,
             totalWins: 0,
@@ -393,7 +436,6 @@ class FeedItemsBase extends Component {
 
     render() {
         const { feed, feedPins, userProfile, levels, isLoaded, defaultsLoaded, isUserProfile } = this.props;
-
         if ((!defaultsLoaded) && !isUserProfile) {
             return <LoadingOverlay />;
         }
@@ -446,56 +488,6 @@ class FeedItemsBase extends Component {
             </div>
         );
     }
-
-    componentWillMount() {
-        const { defaultsLoaded, isLoaded, isUserProfile } = this.props;
-
-        if (!defaultsLoaded) {
-            this.props.loadDefaults().then((response) => {
-                if (!isLoaded) {
-                    this.loadFeedItems(null).then(() => {
-                        //this.interval = setInterval(() => { this.loadNewFeedItems() }, 30000);
-                    });
-                    !isUserProfile && this.props.getPinnedFeedItems(null, null, null);
-                    !isUserProfile && this.props.getUserSuggestions();
-                }
-            }).catch((error) => {
-                console.log(error);
-            });
-        }
-        else if (!isLoaded) {
-            this.loadFeedItems(null).then(() => {
-                //this.interval = setInterval(() => { this.loadNewFeedItems() }, 30000);
-            });
-            !isUserProfile && this.props.getPinnedFeedItems(null, null, null);
-            !isUserProfile && this.props.getUserSuggestions();
-        }
-        else {
-            //this.interval = setInterval(() => { this.loadNewFeedItems() }, 30000);
-        }
-    }
-
-    //Add event listeners after component mounts
-    componentDidMount() {
-        window.addEventListener('scroll', this.handleScroll);
-        //this.interval = setInterval(() => { this.loadNewFeedItems() }, 30000);
-    }
-
-    //Remove event listeners after component unmounts
-    componentWillUnmount() {
-        window.removeEventListener('scroll', this.handleScroll);
-        //clearInterval(this.interval);
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return (this.props.feed !== nextProps.feed
-            || this.props.feedPins !== nextProps.feedPins
-            || this.state.hasNewItems !== nextState.hasNewItems
-            || this.state.isLoading !== nextState.isLoading
-            || this.state.popupOpened !== nextState.popupOpened
-            || this.state.totalWins !== nextState.totalWins
-            || this.state.totalLoses !== nextState.totalLoses);
-    }
 }
 
 function mapStateToProps(state) {
@@ -509,7 +501,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        loadDefaults: loadDefaults,
+        loadDefaults,
         getFeedItems: getFeedItemsInternal,
         getPinnedFeedItems: getPinnedFeedItemsInternal,
         getUserSuggestions: getUserSuggestionsInternal,

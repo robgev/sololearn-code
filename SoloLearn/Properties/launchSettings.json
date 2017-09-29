@@ -21,7 +21,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://www.sololearn.com:2424"
+      "applicationUrl": "http://www.sololearn.com:2525"
     }
   }
 }

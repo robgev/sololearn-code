@@ -1,5 +1,5 @@
 ﻿//React modules
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Link, browserHistory } from 'react-router';
 
 //Material UI components
@@ -58,37 +58,22 @@ const styles = {
     }
 }
 
-class Header extends Component {
-    constructor(props) {
-        super(props);
-
-        this.navigateToProfile = this.navigateToProfile.bind(this);
-    }
-
-    navigateToProfile() {
+class Header extends PureComponent {
+    navigateToProfile = () => {
         const profile = this.props.userProfile;
-
         browserHistory.push('/profile/' + profile.id);
     }
-
     render() {
-        console.log("RENDER HEADER");
-
         const { levels, profile } = this.props;
-
-        let userLevel = profile.level;
-        let currentXp = profile.xp;
+        const { level: userLevel, xp: currentXp } = profile;
         let maxXp = null;
         let status = "";
-        let levelsWithStatus = levels.filter(item => { return item.status != null; });
-        let levelsWithStatusLength = levelsWithStatus.length;
-
+        const levelsWithStatus = levels.filter(item => item.status != null);
         //TODO Write a comment
-        if (userLevel >= levelsWithStatus[levelsWithStatusLength - 1].number) {
+        if (userLevel >= levelsWithStatus[levelsWithStatus.length - 1].number) {
             maxXp = currentXp;
-            status = levelsWithStatus[levelsWithStatusLength - 1].status;
-        }
-        else {
+            status = levelsWithStatus[levelsWithStatus.length - 1].status;
+        } else {
             for (let i = userLevel; i < levels.length - 1; i++) {
                 let currentLevel = levels[i];
 
@@ -99,7 +84,6 @@ class Header extends Component {
                 }
             }
         }
-
         return (
             <Paper className="feed-header" style={styles.container} onClick={this.navigateToProfile}>
                 <div className="details-wrapper" style={styles.detailsWrapper}>
@@ -121,10 +105,6 @@ class Header extends Component {
                 </div>
             </Paper>
         );
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return (this.props.profile !== nextProps.profile || this.props.levels !== nextProps.levels);
     }
 }
 

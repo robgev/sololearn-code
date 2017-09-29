@@ -36,10 +36,6 @@ const styles = {
 }
 
 class Notifications extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <Paper style={styles.container}>

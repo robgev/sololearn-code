@@ -69,4 +69,15 @@ export const ADD_COMMENT = 'ADD_COMMENT';
 //Challenges
 export const GET_CONTESTS = 'GET_CONTESTS';
 export const CLEAR_CONTESTS = 'CLEAR_CONTESTS';
+export const CHOOSE_CHALLENGE_COURSE = 'CHOOSE_CHALLENGE_COURSE';
+export const GET_ALL_PLAYERS = 'GET_ALL_PLAYERS';
+export const EMPTY_ALL_PLAYERS = 'EMPTY_ALL_PLAYERS';
+export const GET_CONTEST_FOLLOWERS = 'GET_CONTEST_FOLLOWERS';
+export const GET_CONTEST_FOLLOWING = 'GET_CONTEST_FOLLOWING';
+export const GET_CONTEST = 'GET_CONTEST';
+
+//Log in
+export const LOG_IN = 'LOG_IN';
+export const LOG_OUT = 'LOG_OUT';
+
 

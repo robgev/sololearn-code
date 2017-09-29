@@ -86,27 +86,31 @@ const styles = {
         fontWeight: 500,
         textDecoration: 'none',
         color: '#607d8b',
-
+        
         //':hover': {
         //    textDecoration: 'underline'
         //}
     }
-
+    
 }
 
 class NotificationPopup extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    //On click away close notifications popup
     //Using fat arrow to bind to instance
     handleDocumentClick = (e) => {
         const notificationsArea = document.getElementById("notifications");
-
+        
         if (!notificationsArea.contains(e.target) && this.props.isOpened) {
             this.props.toggleNotificationsOpen();
         }
+    }
+    //Add event listeners after component mounts
+    componentDidMount() {
+        document.addEventListener('click', this.handleDocumentClick);
+    }
+    
+    //Remove event listeners after component unmounts
+    componentWillUnmount() {
+        document.removeEventListener('click', this.handleDocumentClick);
     }
 
     render() {
@@ -131,16 +135,6 @@ class NotificationPopup extends Component {
                 }
             </Motion>
         );
-    }
-
-    //Add event listeners after component mounts
-    componentDidMount() {
-        document.addEventListener('click', this.handleDocumentClick);
-    }
-
-    //Remove event listeners after component unmounts
-    componentWillUnmount() {
-        document.removeEventListener('click', this.handleDocumentClick);
     }
 }
 

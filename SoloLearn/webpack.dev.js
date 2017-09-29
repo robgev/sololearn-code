@@ -17,7 +17,7 @@ module.exports = {
     },
 
     output: {
-        path: "./wwwroot/",
+        path: path.join(__dirname, "wwwroot"),
         filename: 'dist/[name].bundle.js',
         publicPath: "/"
     },
@@ -39,9 +39,9 @@ module.exports = {
                 test: /\.jsx?$/,
                 loaders: [
                     {
-                        loader: 'babel',
+                        loader: 'babel-loader',
                         query: {
-                            presets: ['react', 'es2015', 'stage-1']
+                            presets: ['react', 'env', 'stage-0']
                         }
                     }
                 ]
