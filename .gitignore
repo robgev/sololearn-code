@@ -4,6 +4,6 @@
 /Services/obj/
 /SoloLearn/node_modules
 /SoloLearn/obj/
-/SoloLearn/wwwroot/dist
+/SoloLearn/wwwroot/dist/*
 /.vs
 /.vscode

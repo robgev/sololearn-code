@@ -16,7 +16,7 @@ import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 export default class Actions extends Component {
     render() {
         return (
-            <div className="actions">
+            <div>
                 <SettingsMenu />
                 <NotificationManager />
             </div>

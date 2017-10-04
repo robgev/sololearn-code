@@ -5,7 +5,7 @@ import { Route, IndexRoute } from 'react-router';
 //Layouts
 import MainLayout from '../components/Layouts/MainLayout';
 import EmptyLayout from '../components/Layouts/EmptyLayout';
-import Login from '../containers/Login/Login';
+import Login from '../containers/Login';
 
 //Additional components
 // import App from '../containers/App';

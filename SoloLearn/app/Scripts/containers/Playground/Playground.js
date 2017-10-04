@@ -124,6 +124,7 @@ class Playground extends Component {
 
         //Link requires saved code
         Service.request("Playground/GetCode", { publicId: params.primary }).then((response) => {
+            console.log(response)
             const userCode = response.code;
 
             this.sourceCode = userCode.sourceCode;
@@ -135,9 +136,8 @@ class Playground extends Component {
             let isWeb = false;
 
             //Check language of user code for setting up correct link
-            Object.keys(editorSettings).some((key, index) => {
+            Object.keys(editorSettings).some(key => {
                 let value = editorSettings[key];
-
                 if (userCode.language == value.language) {
                     browserHistory.replace('/playground/' + userCode.publicID + '/' + value.alias);
                     isWeb = value.alias == "html" || value.alias == "css" || value.alias == "js";

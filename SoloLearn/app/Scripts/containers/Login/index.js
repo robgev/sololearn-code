@@ -1,0 +1,90 @@
+import React, { PureComponent } from 'react';
+import { browserHistory } from 'react-router';
+import AlertContainer from 'react-alert'
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { logout, login, signup } from '../../actions/login.action';
+
+import Login from './Login';
+
+import Paper from 'material-ui/Paper';
+
+class Index extends PureComponent {
+    state = {
+        isLogin: true
+    }
+    alertOptions = {
+        offset: 14,
+        position: 'top right',
+        theme: 'dark',
+        time: 2000,
+        transition: 'fade'
+    }
+    componentWillMount() {
+        if(this.props.loggedin != null) {
+            this.props.logout();
+        }
+    }
+
+    checkToFeed = err => !err ? browserHistory.push('/feed') : this.fault(err)
+
+    fault = err => err.map(curr => this.alert(curr.split(/(?=[A-Z])/).join(' '), 'info'))
+
+    changeLogin = () => this.setState({ isLogin: !this.state.isLogin })
+    
+    alert = (msg, type = 'error') => {
+        this.msg.show(msg, {
+            time: 2000, type
+        })
+    }
+    
+    login = (data) => {
+        this.props.login(data)
+            .then(err => {
+                this.checkToFeed(err);
+            })
+            .catch(e => console.log(e));
+    }
+
+    signup = (data) => {
+        this.props.signup(data)
+            .then(err => {
+                this.checkToFeed(err);
+            })
+            .catch(e => console.log(e));
+    }
+
+    render() {
+        return(
+            <Paper
+                zDepth={2}
+                style={{
+                    width: '50%',
+                    margin: 'auto',
+                    padding: 10
+                }}
+            >
+                <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
+                <Login
+                    isLogin={this.state.isLogin}
+                    changeLogin={this.changeLogin}
+                    alert={this.alert}
+                    login={this.login}
+                    signup={this.signup}
+                />
+            </Paper>
+        )
+    }
+}
+
+const mapStateToProps = ({ loggedin }) => {
+    return { loggedin }
+}
+
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators({
+        logout, login, signup
+    }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Index);

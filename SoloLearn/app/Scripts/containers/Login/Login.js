@@ -1,41 +1,57 @@
 import React, { PureComponent } from 'react';
-import { browserHistory } from 'react-router';
-
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { logout, login } from '../../actions/login.action';
-
 import TextField from 'material-ui/TextField';
 import Divider from 'material-ui/Divider';
-import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 
-class Login extends PureComponent {
+export default
+class LoginPage extends PureComponent {
     state = {
+        name: '',
         email: '',
-        password: ''
+        password: '',
+        passwordRepeat: ''
     }
-    componentWillMount() {
-        this.props.logout();
+    login = () => {
+        const { email, password } = this.state;
+        if(email === '' || password === '') {
+            return this.props.alert('Fields can\'t be empty', 'info');
+        }
+        this.props.login({ email, password });
+    }
+    signup = () => {
+        for(let key in this.state) {
+            if(this.state[key] === '') {
+                return this.props.alert('Fields can\'t be empty', 'info');
+            }
+        }
+        if(this.state.password.length < 6) {
+            return this.props.alert('Password should be at least 6 characters long', 'info');
+        } else if(this.state.password !== this.state.passwordRepeat) {
+            return this.props.alert('Passwords don\'t match', 'info');
+        }
+        const { name, email, password: pass } = this.state;
+        this.props.signup({ name, email, pass });
     }
     updateState = e => {
         this.setState({ [e.target.name]: e.target.value });
     }
-    login = () => {
-        this.props.login(this.state.email, this.state.password)
-            .then(() => browserHistory.push('/feed'))
-            .catch(e => console.log(e));
-    }
     render() {
+        const { isLogin } = this.props;
         return(
-            <Paper
-                zDepth={2}
-                style={{
-                    width: '50%',
-                    margin: 'auto',
-                    padding: 10
-                }}
-            >
+            <div>
+                { !isLogin ? ( 
+                    <div>
+                        <TextField
+                            value={this.state.name}
+                            onChange={e => this.updateState(e)}
+                            name='name'
+                            floatingLabelText='name'
+                            underlineShow={false}
+                        />
+                        <Divider />
+                    </div>) : null
+                }
                 <TextField
                     value={this.state.email}
                     onChange={e => this.updateState(e)}
@@ -52,25 +68,30 @@ class Login extends PureComponent {
                     type='password'
                     underlineShow={false}
                 />
-                <Divider style={{margin: 10}}/>
+                <Divider style={isLogin ? {margin: 10} : null}/>
+                { !isLogin ? (
+                    <div>
+                        <TextField
+                        value={this.state.passwordRepeat}
+                        onChange={e => this.updateState(e)}
+                        name='passwordRepeat'
+                        floatingLabelText='repeat password'
+                        type='password'
+                        underlineShow={false}
+                        />
+                        <Divider style={{margin: 10}}/>
+                    </div>) : null 
+                }
                 <RaisedButton
-                    label='Login'
+                    label={isLogin ? 'Login' : 'Sign Up'}
                     primary
-                    onClick={this.login}
+                    onClick={isLogin ? this.login : this.signup}
                 />
-            </Paper>
+                <FlatButton
+                    label={isLogin ? 'Sign up' : 'Login'}
+                    onClick={this.props.changeLogin}
+                />
+            </div>
         )
     }
 }
-
-const mapStateToProps = ({ loggedIn }) => {
-    return { loggedIn }
-}
-
-const mapDispatchToProps = (dispatch) =>
-    bindActionCreators({
-        logout,
-        login
-    }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);

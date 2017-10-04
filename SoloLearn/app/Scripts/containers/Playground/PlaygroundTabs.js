@@ -80,7 +80,7 @@ class PlaygroundTabs extends Component {
         }
         else {
             return (
-                <div style={tisDarkTheme ? getStyles(styles.defaultTab.base, styles.defaultTab.dark) : getStyles(styles.defaultTab.base, styles.defaultTab.light)}>
+                <div style={isDarkTheme ? {...styles.defaultTab.base, ...styles.defaultTab.dark} : {...styles.defaultTab.base, ...styles.defaultTab.light}} >
                     {editorSettings[mode].name}
                 </div>
             );

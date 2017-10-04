@@ -1,16 +1,18 @@
 ﻿//React modules
 import React, { Component } from 'react';
 import Radium, { Style } from 'radium';
+import { browserHistory } from 'react-router';
 
 //Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { loadDefaults } from '../../actions/defaultActions';
-import { defaultsLoaded, loggedIn } from '../../reducers';
+import { defaultsLoaded } from '../../reducers';
 import { logout } from '../../actions/login.action';
 
 //Additional components
 import Header from '../../containers/Header/Header';
+import LoadingOverlay from '../Shared/LoadingOverlay';
 
 //Material UI components
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -39,13 +41,17 @@ const styles = {
 }
 
 class MainLayout extends Component {
+    state = { loading: true }
     componentWillMount() {
         //find the tab for current url and select it
         this.selectTab();
-        if (!this.props.defaultsLoaded) {
-            this.props.loadDefaults();
+        if(!this.props.defaultsLoaded || !this.props.loggedin) {
+            this.props.loadDefaults()
+                .then(() => this.setState({ loading: false }))
+                .catch(e => console.warn(e));
+        } else {
+            this.setState({ loading: false });
         }
-        // this.props.logout();
     }
     selectTab = () => {
         const { selectTab, tabs, location: { pathname } } = this.props;
@@ -57,11 +63,15 @@ class MainLayout extends Component {
     render() {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
-                <div style={styles.wrapper}>
-                    {defaultSyles}
-                    <Header />
-                    {this.props.children}
-                </div>
+                {
+                    this.state.loading ?
+                    <LoadingOverlay /> :
+                    <div style={styles.wrapper}>
+                        {defaultSyles}
+                        <Header />
+                        {this.props.children}
+                    </div>
+                }
             </MuiThemeProvider>
         );
     }
@@ -71,7 +81,7 @@ function mapStateToProps(state) {
     return {
         tabs: state.tabs,
         defaultsLoaded: defaultsLoaded(state),
-        loggedIn: state.loggedIn
+        loggedin: state.loggedin
     };
 }
 

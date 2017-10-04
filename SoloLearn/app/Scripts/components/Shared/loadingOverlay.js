@@ -35,9 +35,6 @@ const styles = {
 }
 
 class LoadingOverlay extends Component {
-    super(props) {
-    }
-
     render() {
         const defaultSize = 40;
         const defaultThickness = 3.5;

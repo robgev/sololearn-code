@@ -4,22 +4,38 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { logout } from '../../actions/login.action';
+
+import { browserHistory } from 'react-router';
+
 class SettingsMenu extends PureComponent {
+    singOut = () => {
+        this.props.logout()
+            .then(() => browserHistory.push('/login'));
+    }
     render() {
         return (
             <IconMenu
+                style={{ width: 40, height: 40, padding: 10 }}
                 iconButtonElement={<IconButton><MoreVertIcon color='#fff' /></IconButton>}
                 anchorOrigin={{horizontal: 'left', vertical: 'top'}}
                 targetOrigin={{horizontal: 'left', vertical: 'top'}}
             >
-                <MenuItem primaryText="Refresh" />
-                <MenuItem primaryText="Send feedback" />
-                <MenuItem primaryText="Settings" />
-                <MenuItem primaryText="Help" />
-                <MenuItem primaryText="Sign out" />
+                <MenuItem
+                    primaryText="Sign out"
+                    onClick={this.singOut}
+                />
             </IconMenu>
         )
     }
 }
 
-export default SettingsMenu;
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        logout
+    }, dispatch);
+}
+
+export default connect(() => ({}), mapDispatchToProps)(SettingsMenu);

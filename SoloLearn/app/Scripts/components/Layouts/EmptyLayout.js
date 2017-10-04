@@ -44,7 +44,7 @@ class EmptyLayout extends Component {
     }
 
     componentWillMount() {
-        if (!this.props.defaultsLoaded) {
+        if (!this.props.defaultsLoaded && this.props.loggedin != null) {
             this.props.loadDefaults();
         }
     }
@@ -52,7 +52,8 @@ class EmptyLayout extends Component {
 
 function mapStateToProps(state) {
     return {
-        defaultsLoaded: defaultsLoaded(state)
+        defaultsLoaded: defaultsLoaded(state),
+        loggedin: state.loggedin
     };
 }
 

@@ -1,5 +1,5 @@
 ﻿//React modules
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import Radium, { Style } from 'radium';
 
@@ -41,7 +41,7 @@ const styles = {
     }
 }
 
-class NotificationManager extends Component {
+class NotificationManager extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -50,11 +50,10 @@ class NotificationManager extends Component {
         };
 
         this.interval = null
-        this.toggleNotificationsOpen = this.toggleNotificationsOpen.bind(this);
     }
 
     //Open or close notifications list
-    toggleNotificationsOpen(e) {
+    toggleNotificationsOpen = () => {
         this.setState({ isOpened: !this.state.isOpened });
     }
 
@@ -84,10 +83,6 @@ class NotificationManager extends Component {
 
     componentWillUnmount() {
         //clearInterval(this.interval);
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return (this.props.notificationsCount !== nextProps.notificationsCount || this.state.isOpened !== nextState.isOpened);
     }
 }
 

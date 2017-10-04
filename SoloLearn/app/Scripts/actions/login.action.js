@@ -1,21 +1,43 @@
 import * as types from '../constants/ActionTypes';
 import Service from '../api/service';
 import Storage from '../api/storage';
-import hmacsha1 from 'hmacsha1';
+import hash from '../utils/hash';
+import faultGenerator from '../utils/faultGenerator';
+import { loadDefaults } from './defaultActions'; 
 const storage = new Storage();
 
 export const logout = () => dispatch => {
-    storage.clear()
+    new Storage().clear();
+    dispatch({ type: types.GET_USER_PROFILE, payload: null });
     return Service.request('Logout')
         .then(() => dispatch(logoutSync()))
         .catch(e => console.log(e));
 }
 
-export const login = (email, unhashed) => dispatch => {
-    const password = hmacsha1('password', unhashed).slice(0, -1);
-    return Service.request('Login', { email, password })
+export const login = ({ email, password }) => dispatch => {
+    return Service.request('Login', { email, password: hash(password) })
         .then(res => {
-            dispatch(loginSync(res.user.id))
+            if(res.error) {
+                return faultGenerator(res.error.data);
+            } else {
+                dispatch(loginSync(res.user.id));
+                dispatch(loadDefaults(res.user.id));
+                return false;
+            }
+        })
+        .catch(e => console.log(e));
+}
+
+export const signup = ({ name, email, pass }) => dispatch => {
+    return Service.request('Register', { name, email, password: hash(pass) })
+        .then(res => {
+            if(res.error) {
+                return faultGenerator(res.error.data);
+            } else {
+                dispatch(loginSync(res.user.id));
+                dispatch(loadDefaults(res.user.id));
+                return false;
+            }
         })
         .catch(e => console.log(e));
 }
