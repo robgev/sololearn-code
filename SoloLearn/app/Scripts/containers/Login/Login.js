@@ -7,10 +7,25 @@ import FlatButton from 'material-ui/FlatButton';
 export default
 class LoginPage extends PureComponent {
     state = {
+        forgot: false,
         name: '',
         email: '',
         password: '',
         passwordRepeat: ''
+    }
+    changeType = () => {
+        if(this.state.forgot) {
+            this.setState({ forgot: false });
+        } else {
+            this.props.changeLogin();
+        }
+    }
+    forgot = () => {
+        const { email } = this.state;
+        if(email === '') {
+            return this.props.alert('Fields can\'t be empty', 'info');
+        }
+        return this.props.forgot(email);
     }
     login = () => {
         const { email, password } = this.state;
@@ -38,6 +53,7 @@ class LoginPage extends PureComponent {
     }
     render() {
         const { isLogin } = this.props;
+        const { forgot } = this.state;
         return(
             <div>
                 { !isLogin ? ( 
@@ -59,15 +75,19 @@ class LoginPage extends PureComponent {
                     floatingLabelText='email'
                     underlineShow={false}
                 />
-                <Divider />
-                <TextField
-                    value={this.state.password}
-                    onChange={e => this.updateState(e)}
-                    name='password'
-                    floatingLabelText='password'
-                    type='password'
-                    underlineShow={false}
-                />
+                { !forgot ? (
+                    <div>
+                        <Divider />
+                        <TextField
+                            value={this.state.password}
+                            onChange={e => this.updateState(e)}
+                            name='password'
+                            floatingLabelText='password'
+                            type='password'
+                            underlineShow={false}
+                        />
+                    </div>) : null
+                }
                 <Divider style={isLogin ? {margin: 10} : null}/>
                 { !isLogin ? (
                     <div>
@@ -83,14 +103,20 @@ class LoginPage extends PureComponent {
                     </div>) : null 
                 }
                 <RaisedButton
-                    label={isLogin ? 'Login' : 'Sign Up'}
+                    label={ forgot ? 'Request' : (isLogin ? 'Login' : 'Sign Up')}
                     primary
-                    onClick={isLogin ? this.login : this.signup}
+                    onClick={forgot ? this.forgot : (isLogin ? this.login : this.signup)}
                 />
                 <FlatButton
-                    label={isLogin ? 'Sign up' : 'Login'}
-                    onClick={this.props.changeLogin}
+                    label={ forgot ? 'Login' : (isLogin ? 'Sign up' : 'Login') }
+                    onClick={this.changeType}
                 />
+                { isLogin && !forgot ? (
+                    <FlatButton
+                        label='Forgot Password'
+                        onClick={() => this.setState({ forgot: true })}
+                    />
+                ) : null}
             </div>
         )
     }

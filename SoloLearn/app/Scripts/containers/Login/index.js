@@ -4,7 +4,7 @@ import AlertContainer from 'react-alert'
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { logout, login, signup } from '../../actions/login.action';
+import { logout, login, signup, forgotPassword } from '../../actions/login.action';
 
 import Login from './Login';
 
@@ -55,6 +55,15 @@ class Index extends PureComponent {
             .catch(e => console.log(e));
     }
 
+    forgot = email => {
+        this.props.forgotPassword(email)
+            .then(err => {
+                // Will implement forgot password continuation later
+                err ? this.fault(err) : null;
+            })
+            .catch(e => console.log(e));
+    }
+
     render() {
         return(
             <Paper
@@ -72,6 +81,7 @@ class Index extends PureComponent {
                     alert={this.alert}
                     login={this.login}
                     signup={this.signup}
+                    forgot={this.forgot}
                 />
             </Paper>
         )
@@ -84,7 +94,7 @@ const mapStateToProps = ({ loggedin }) => {
 
 const mapDispatchToProps = (dispatch) =>
     bindActionCreators({
-        logout, login, signup
+        logout, login, signup, forgotPassword
     }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Index);

@@ -42,5 +42,16 @@ export const signup = ({ name, email, pass }) => dispatch => {
         .catch(e => console.log(e));
 }
 
+export const forgotPassword = email => dispatch => {
+    return Service.request('ForgotPassword', { email })
+        .then(res => {
+            if(res.error) {
+                return faultGenerator(res.error.data);
+            } else {
+                return false;
+            }
+        })
+}
+
 const logoutSync = () => ({ type: types.LOG_OUT });
 const loginSync = payload => ({ type: types.LOG_IN, payload });
