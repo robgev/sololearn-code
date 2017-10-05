@@ -18,10 +18,6 @@ const styles = {
 }
 
 class Feed extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const { feed, feedPins, isLoaded } = this.props;
 

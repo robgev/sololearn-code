@@ -60,9 +60,9 @@ export const getProfileFeedItems = (feedItems) => {
     }
 }
 
-export const getFeedItemsInternal = (fromId, userId) => {
+export const getFeedItemsInternal = (fromId, profileId) => {
     return (dispatch, getState) => {
-        return Service.request("Profile/GetFeed", { fromId: fromId, profileId: userId, count: 20 }).then(response => {
+        return Service.request("Profile/GetFeed", { fromId, profileId, count: 20 }).then(response => {
             const count = response.feed.length;
             const store = getState();
             const feed = store.feed;
@@ -73,7 +73,7 @@ export const getFeedItemsInternal = (fromId, userId) => {
                 const feedItems = response;
                 const feedItemsCount = feed.length + feedItems.length;
 
-                if (userId != null) {
+                if (profileId != null) {
                     dispatch(getProfileFeedItems(feedItems)); //Load exact profile feed items.
 
                     return count;

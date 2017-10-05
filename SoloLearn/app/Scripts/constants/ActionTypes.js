@@ -42,6 +42,7 @@ export const GET_FEED_ITEMS = 'GET_FEED_ITEMS';
 export const GET_FEED_PINS = 'GET_FEED_PINS';
 export const GET_USER_SUGESSTIONS = 'GET_USER_SUGESSTIONS';
 export const GET_NEW_FEED_ITEMS = 'GET_NEW_FEED_ITEMS';
+export const CLEAR_FEED = 'CLEAR_FEED';
 
 //Profile
 export const GET_USER_PROFILE = 'GET_USER_PROFILE';

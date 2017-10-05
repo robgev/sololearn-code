@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 
 //Material UI components
 import Avatar from 'material-ui/Avatar';
+import RaisedButton from 'material-ui/RaisedButton';
 
 //App defaults and utils
 import getSyles from '../../../utils/styleConverter';
@@ -75,6 +76,10 @@ const styles = {
         border: '2px solid #7CB342',
         color: '#7CB342',
         fontWeight: 500
+    },
+
+    button: {
+        marginTop: 50
     }
 }
 
@@ -105,6 +110,11 @@ class Start extends Component {
                 <div style={styles.result}>
                     <p style={styles.resultTitle}>WINNER GETS</p>
                     <p style={styles.rewardXp}>{contest.player.rewardXp} XP</p>
+                    <RaisedButton
+                        label='Start'
+                        style={styles.button}
+                        primary
+                    />
                 </div>
             </div>
         );

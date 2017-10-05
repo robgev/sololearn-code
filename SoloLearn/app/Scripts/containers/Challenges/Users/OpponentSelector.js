@@ -116,16 +116,10 @@ function mapStateToProps(state) {
     };
 }
 
-function mapStateToProps(state) {
-    return {
-        isLoaded: isLoaded(state, "opponentSelector")
-    };
-}
-
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        chooseContestCourse: chooseContestCourse
+        chooseContestCourse
     }, dispatch);
 }
 

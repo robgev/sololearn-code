@@ -7,6 +7,7 @@ import FlatButton from 'material-ui/FlatButton';
 export default
 class LoginPage extends PureComponent {
     state = {
+        isLogin: true,
         forgot: false,
         name: '',
         email: '',
@@ -17,7 +18,7 @@ class LoginPage extends PureComponent {
         if(this.state.forgot) {
             this.setState({ forgot: false });
         } else {
-            this.props.changeLogin();
+            this.setState({ isLogin: !this.state.isLogin });
         }
     }
     forgot = () => {
@@ -52,8 +53,7 @@ class LoginPage extends PureComponent {
         this.setState({ [e.target.name]: e.target.value });
     }
     render() {
-        const { isLogin } = this.props;
-        const { forgot } = this.state;
+        const { isLogin, forgot } = this.state;
         return(
             <div>
                 { !isLogin ? ( 

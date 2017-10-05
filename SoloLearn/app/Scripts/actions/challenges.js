@@ -123,8 +123,7 @@ export const createContestInternal = (opponentId) => {
 export const getContestInternal = (contestId) => {
     return dispatch => {
         return Service.request("Challenge/GetContest", { id: contestId }).then(response => {
-            const contest = response.contest;
-            dispatch(getContest(contest));
+            dispatch(getContest(response.contest));
         }).catch(error => {
             console.log(error);
         });

@@ -91,11 +91,8 @@ export const loadCoursesInternal = () => {
 
 export const loadDefaults = () => {
     return (dispatch, getState) => {
-        return new Promise((resolve) => {
-            dispatch(getProfileInternal())
+        return dispatch(getProfileInternal())
                 .then(() => dispatch(loadCoursesInternal()))
-                .then(() => resolve())
                 .catch(e => console.log(e));
-        })
     }
 }

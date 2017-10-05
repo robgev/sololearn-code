@@ -4,11 +4,11 @@ import Storage from '../api/storage';
 import hash from '../utils/hash';
 import faultGenerator from '../utils/faultGenerator';
 import { loadDefaults } from './defaultActions'; 
-const storage = new Storage();
 
 export const logout = () => dispatch => {
     new Storage().clear();
     dispatch({ type: types.GET_USER_PROFILE, payload: null });
+    dispatch({ type: types.CLEAR_FEED });
     return Service.request('Logout')
         .then(() => dispatch(logoutSync()))
         .catch(e => console.log(e));

@@ -44,21 +44,13 @@ const styles = {
 }
 
 class AllPlayers extends Component {
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            query: "",
-        }
-
-        this.clearSearchInput = this.clearSearchInput.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
-        this.getOpponents = this.getOpponents.bind(this);
+    state = {
+        query: "",
     }
 
     //Handle search
-    handleInputChange(e) {
+    handleInputChange = (e) => {
         let value = e.target.value;
         if (value == this.state.query) return;
 
@@ -66,7 +58,7 @@ class AllPlayers extends Component {
     }
 
     //Detect enter on input
-    handleKeyPress(e) {
+    handleKeyPress = (e) => {
         if (e.key === 'Enter' && this.state.query.length > 0) {
             this.props.emptyAllPlayers().then(() => {
                 this.refs.opponents.loadOpponents();
@@ -75,14 +67,14 @@ class AllPlayers extends Component {
     }
 
     //Clear search input
-    clearSearchInput() {
+    clearSearchInput = () => {
         this.setState({ query: "" });
         this.props.emptyAllPlayers().then(() => {
             this.refs.opponents.loadOpponents();
         });
     }
 
-    getOpponents() {
+    getOpponents = () => {
         return this.props.getAllPlayersInternal(this.state.query, this.props.courseId);
     }
 
@@ -99,9 +91,16 @@ class AllPlayers extends Component {
                         onChange={this.handleInputChange}
                         onKeyPress={this.handleKeyPress}
                         fullWidth={true} />
-                    {this.state.query.length > 0 && <Clear color={grey700} style={styles.clearIcon} onClick={this.clearSearchInput} />}
+                    {   this.state.query.length > 0 
+                        && <Clear color={grey700} style={styles.clearIcon} onClick={this.clearSearchInput} />   }
                 </div>
-                <Opponents getOpponents={this.getOpponents} opponents={this.props.opponents} isLoaded={this.props.isLoaded} notFollowers={true} ref="opponents" />
+                <Opponents
+                    getOpponents={this.getOpponents}
+                    opponents={this.props.opponents}
+                    isLoaded={this.props.isLoaded}
+                    notFollowers={true}
+                    ref="opponents"
+                />
                 <div style={styles.footer}>
                     <RaisedButton label="Random Opponent" secondary={true} />
                 </div>
@@ -120,8 +119,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        getAllPlayersInternal: getAllPlayersInternal,
-        emptyAllPlayers: emptyAllPlayers
+        getAllPlayersInternal,
+        emptyAllPlayers
     }, dispatch);
 }
 

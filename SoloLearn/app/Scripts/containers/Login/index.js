@@ -11,9 +11,6 @@ import Login from './Login';
 import Paper from 'material-ui/Paper';
 
 class Index extends PureComponent {
-    state = {
-        isLogin: true
-    }
     alertOptions = {
         offset: 14,
         position: 'top right',
@@ -21,6 +18,7 @@ class Index extends PureComponent {
         time: 2000,
         transition: 'fade'
     }
+    
     componentWillMount() {
         if(this.props.loggedin != null) {
             this.props.logout();
@@ -30,8 +28,6 @@ class Index extends PureComponent {
     checkToFeed = err => !err ? browserHistory.push('/feed') : this.fault(err)
 
     fault = err => err.map(curr => this.alert(curr.split(/(?=[A-Z])/).join(' '), 'info'))
-
-    changeLogin = () => this.setState({ isLogin: !this.state.isLogin })
     
     alert = (msg, type = 'error') => {
         this.msg.show(msg, {
@@ -76,8 +72,6 @@ class Index extends PureComponent {
             >
                 <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
                 <Login
-                    isLogin={this.state.isLogin}
-                    changeLogin={this.changeLogin}
                     alert={this.alert}
                     login={this.login}
                     signup={this.signup}

@@ -28,9 +28,6 @@ const styles = {
 }
 
 class Challenge extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     renderChallenge(contest, courses) {
         const contestStatus = contest.player.status;
