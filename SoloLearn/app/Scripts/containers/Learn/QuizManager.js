@@ -30,20 +30,10 @@ export const LessonType = {
 };
 
 class QuizManager extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            commentsOpened: false
-        }
-        
-        this.loadLessonLink = this.loadLessonLink.bind(this);
-        this.openComments = this.openComments.bind(this);
-        this.closeComments = this.closeComments.bind(this);       
+    state = {
+        commentsOpened: false
     }
-
-
-    generateTimeline(quizzes, activeQuiz) {
+    generateTimeline = (quizzes, activeQuiz) => {
         let timeline = [];
         const lesson = !this.props.isShortcut ? this.props.activeLesson : this.props.shortcutLesson;
         let progress = Progress.getLessonProgress(lesson.id);
@@ -103,7 +93,7 @@ class QuizManager extends Component {
 
     }
 
-    loadLessonLink(quizId, number, isText, state) {
+    loadLessonLink = (quizId, number, isText, state) => {
         if (state == ProgressState.Disabled) {
             this.setState(this.state);
             return;
@@ -122,7 +112,7 @@ class QuizManager extends Component {
         }
     }
 
-    getActiveQuiz(lesson) {
+    getActiveQuiz = (lesson) => {
         const quizzes = lesson.quizzes;
         const currentNumber = this.props.params.quizNumber;
         let activeQuiz = {};
@@ -141,11 +131,11 @@ class QuizManager extends Component {
         this.props.selectQuiz(activeQuiz);
     }
 
-    openComments() {
+    openComments = () => {
         this.setState({ commentsOpened: true });
     }
 
-    closeComments() {
+    closeComments = () => {
         this.setState({ commentsOpened: false });
     }
 
@@ -218,11 +208,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        loadDefaults: loadDefaults,
-        loadCourseInternal: loadCourseInternal,
-        selectLesson: selectLesson,
-        selectModule: selectModule,
-        selectQuiz: selectQuiz
+        loadDefaults,
+        loadCourseInternal,
+        selectLesson,
+        selectModule,
+        selectQuiz
     }, dispatch);
 }
 

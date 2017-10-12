@@ -174,20 +174,6 @@ class WS {
                 if (error.isOperationFault) {
                     respData.fault = error.data
                 }
-
-                //If authentication failed, it would try again
-                // if (!dontAuthenticate && error.code == that.Errors.DeviceRequired) // || error.code == that.Errors.UserRequired)
-                // {
-                //     that.authenticate().then(response => {
-                //         if(response) {
-                //             that.requestRaw(action, data, true);
-
-                //         }
-                //     });
-                // }
-                // else {
-                //     return { error: Errors.NoConnection, isSuccessful: false, fault: Faults.None };
-                // }
                 return { error };
             }
 

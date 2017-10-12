@@ -217,14 +217,8 @@ const ImageBlock = (props) => {
 }
 
 class CodeBlock extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
-        const codeId = this.props.codeId;
-        const format = this.props.format;
-        const text = this.props.text;
+        const { codeId, format, text } = this.props;
 
         if (codeId != undefined) {
             let href = "https://code.sololearn.com/" + codeId; // + "/#" + app.aliases[app.alias.toLowerCase()] + "";
@@ -234,8 +228,8 @@ class CodeBlock extends Component {
                         <span className={"code " + format} style={styles.code} dangerouslySetInnerHTML={{ __html: text }}></span>
                     </span>
                     <Link to={href} target="_blank">
-                          <FlatButton className="shortcut-button" label="Try It Yourself" style={styles.codeButton} labelStyle={styles.codeButtonLabel} />
-                      </Link>
+                        <FlatButton className="shortcut-button" label="Try It Yourself" style={styles.codeButton} labelStyle={styles.codeButtonLabel} />
+                    </Link>
                 </div>
             );
         }

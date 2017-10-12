@@ -5,9 +5,6 @@ import React, { Component } from 'react';
 import Avatar from 'material-ui/Avatar';
 import RaisedButton from 'material-ui/RaisedButton';
 
-//App defaults and utils
-import getSyles from '../../../utils/styleConverter';
-
 const styles = {
     container: {
         padding: '15px 0 0 0',
@@ -79,15 +76,11 @@ const styles = {
     },
 
     button: {
-        marginTop: 50
+        margin: '50px 10px 0 10px'
     }
 }
 
 class Start extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const { courseName, contest } = this.props;
 
@@ -110,11 +103,20 @@ class Start extends Component {
                 <div style={styles.result}>
                     <p style={styles.resultTitle}>WINNER GETS</p>
                     <p style={styles.rewardXp}>{contest.player.rewardXp} XP</p>
-                    <RaisedButton
-                        label='Start'
-                        style={styles.button}
-                        primary
-                    />
+                    <div>
+                        <RaisedButton
+                            label='Start'
+                            style={styles.button}
+                            secondary
+                            onClick={this.props.next}
+                        />
+                        <RaisedButton
+                            label='Decline'
+                            style={styles.button}
+                            primary
+                            onClick={this.props.decline}
+                        />
+                    </div>
                 </div>
             </div>
         );

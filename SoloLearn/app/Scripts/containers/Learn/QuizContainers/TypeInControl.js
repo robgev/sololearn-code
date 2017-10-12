@@ -71,12 +71,10 @@ const styles = {
 class TypeInControl extends Component {
     constructor(props) {       
         super(props);
-
         this.answer = this.props.answer;
         this.realText = this.answer.text;
         this.desiredText = this.answer.text.toLowerCase();
         this.isCorrect = false;
-
         this.state = {
             maxLength: this.realText.length,
             isChecked: this.props.isChecked,
@@ -84,9 +82,6 @@ class TypeInControl extends Component {
             wrongText: "",
             text : ""
         }
-
-        this.onChange = this.onChange.bind(this);
-        this.hint = this.hint.bind(this);
     }
 
     getInput(targetValue) {
@@ -98,7 +93,7 @@ class TypeInControl extends Component {
     };
 
 
-    onChange(e) {
+    onChange = (e) => {
         let targetValue = e.target.value;
         this.setState({
             text : targetValue
@@ -127,46 +122,6 @@ class TypeInControl extends Component {
 
         this.isCorrect = desiredText == input;
     }  
-
-    hint() {
-        const text = this.state.text;
-        const answerText = this.realText;
-        
-        if(text == answerText) {
-            this.isCorrect = true;
-            return;
-        }
-
-        if (text.length == 0 || answerText.indexOf(text) == 0) {
-            if (text.length < answerText.length) {
-                let hintLetter = answerText.substr(0, text.length + 1);
-
-                this.setState({
-                    text: hintLetter,
-                    correctText: hintLetter
-                });
-            }
-        } else {
-            for (let i = 0; i < text.length && i < answerText.length; i++) {
-                if (text[i] != answerText[i]) {
-                    let hintLetter = answerText.substr(0, i + 1);
-
-                    this.setState({
-                        text: hintLetter,
-                        correctText: hintLetter
-                    });
-                    break;
-                }
-            }
-        }
-    }
-
-    unlock() {
-        if(this.isCorrect) return;
-
-        this.hint();
-        setTimeout(this.unlock.bind(this), 300);
-    }
 
     check() {
         return this.isCorrect;

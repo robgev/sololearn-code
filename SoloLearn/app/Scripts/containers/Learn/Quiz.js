@@ -69,7 +69,6 @@ const styles = {
 class Quiz extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             hintOpened: false,
             unlockOpened: false,
@@ -77,37 +76,20 @@ class Quiz extends Component {
             notAvailable: false,
             isCorrect: false
         }
-
         this.hintPrice = 0;
         this.skipPrice = 0;
         this.retryIndex = 0;
-
-        this.handleMessageDialogClose = this.handleMessageDialogClose.bind(this);
-
-        //Hint functionality
-        this.handleHintDialogOpen = this.handleHintDialogOpen.bind(this);
-        this.handleHintDialogClose = this.handleHintDialogClose.bind(this);
-        this.handleHint = this.handleHint.bind(this);
-
-        //Unlock functionality
-        this.handleUnlockDialogOpen = this.handleUnlockDialogOpen.bind(this);       
-        this.handleUnlockDialogClose = this.handleUnlockDialogClose.bind(this);
-        this.handleUnlock = this.handleUnlock.bind(this);
-
-        //Check functionality
-        this.handleCheckDialogOpen = this.handleCheckDialogOpen.bind(this);
-        this.handleCheckDialogClose = this.handleCheckDialogClose.bind(this);      
-        this.handleCheck = this.handleCheck.bind(this);
-        this.continueQuiz = this.continueQuiz.bind(this);
-        this.tryAgain = this.tryAgain.bind(this);
     }
 
-    genereteQuestion(quiz) {
+    genereteQuestion = (quiz) => {
         const quizType = quiz.type;
         const question = quiz.question;
         let questionText = '';
 
-        if (quizType == QuizType.PlaceholderTypeIn || quizType == QuizType.PlaceholderDragAndDrop || quizType == QuizType.PlaceholderImageDragAndDrop) {
+        if (quizType == QuizType.PlaceholderTypeIn || quizType == QuizType.PlaceholderDragAndDrop ||
+            quizType == QuizType.PlaceholderImageDragAndDrop) 
+        {
+
             let formatterRegex = /\[!([a-zA-Z0-9]+)!\].*/gi;
             let match = formatterRegex.exec(question);
             if (match) {
@@ -123,7 +105,7 @@ class Quiz extends Component {
         return questionText.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\r\n/g, '<br/>');
     }
 
-    handleHint() {
+    handleHint = () => {
         if(Progress.consumePoints(this.hintPrice)) {
             Progress.applyHint(this.props.activeQuiz.id, PointExchangeTypes.Hint, this.hintPrice);
             this._child._quizSelectorChild.hint();
@@ -134,15 +116,15 @@ class Quiz extends Component {
         }       
     }
 
-    handleHintDialogOpen() {
+    handleHintDialogOpen = () => {
         this.setState({hintOpened: true});
     }
 
-    handleHintDialogClose() {
+    handleHintDialogClose = () => {
         this.setState({hintOpened: false});
     }
 
-    handleUnlock() {
+    handleUnlock = () => {
         if(Progress.consumePoints(this.skipPrice)) {
             Progress.applyHint(this.props.activeQuiz.id, PointExchangeTypes.Skip, this.skipPrice);
             this._child._quizSelectorChild.unlock();
@@ -153,19 +135,19 @@ class Quiz extends Component {
         }
     }
 
-    handleUnlockDialogOpen() {
+    handleUnlockDialogOpen = () => {
         this.setState({unlockOpened: true});        
     }
 
-    handleUnlockDialogClose() {
+    handleUnlockDialogClose = () => {
         this.setState({unlockOpened: false});
     }
 
-    handleMessageDialogClose() {
+    handleMessageDialogClose = () => {
         this.setState({notAvailable: false});
     }
 
-    handleCheck() {
+    handleCheck = () => {
         const isCorrect = this._child._quizSelectorChild.check();
 
         if (this.props.isShortcut) {
@@ -189,15 +171,15 @@ class Quiz extends Component {
         this.handleCheckDialogOpen();
     }
 
-    handleCheckDialogOpen() {
+    handleCheckDialogOpen = () => {
         this.setState({ checkOpened: true });
     }
 
-    handleCheckDialogClose() {
+    handleCheckDialogClose = () => {
         this.setState({ checkOpened: false });
     }
 
-    continueQuiz() {
+    continueQuiz = () => {
         const lesson = this.props.activeLesson;
         const activeQuizData = this.props.activeQuiz;
         const quiz = this.props.quizzes[activeQuizData.id];
@@ -256,7 +238,7 @@ class Quiz extends Component {
         }
     }
 
-    tryAgain() {
+    tryAgain = () => {
         this.setState({ 
             checkOpened: false,
             isCorrect: false
@@ -265,7 +247,7 @@ class Quiz extends Component {
         this.retryIndex++;
     }
 
-    finilizeShortcut() {
+    finilizeShortcut = () => {
         let lesson = this.props.shortcutLesson;
         let percentage = this.props.isShortcutCorrectCounts * 100 / lesson.quizzes.length;
         let points = null;
@@ -449,9 +431,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        selectModule: selectModule,
-        selectLesson: selectLesson,
-        selectQuiz: selectQuiz
+        selectModule,
+        selectLesson,
+        selectQuiz
     }, dispatch);
 }
 

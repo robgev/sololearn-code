@@ -11,7 +11,7 @@ import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 //Utils
 import getStyles from '../../../utils/styleConverter';
 
-const styles = {
+export const styles = {
     wrapper: {
         width: '600px',
         margin: '0 auto',
@@ -48,23 +48,36 @@ const styles = {
 export default class MultipleChoice extends Component {
     constructor(props) {
         super(props);
-
+        
         this.state = {
             answers: [],
             selectedAnswerId: null
         };
-
+        
         this.correctAnswersCount = this.props.quiz.answers.filter((item) => {
             return item.isCorrect;
         }).length;
-
+        
         this.isSingleChoice = this.correctAnswersCount == 1;
+    }
+    
+    componentWillMount() {
+        this.setState({
+            answers: this.getModifiedAnswers(this.props.quiz)
+        });
+    }
+    getModifiedAnswers = (quiz) => {    
+        const { answers } = quiz;
 
-        this.unlock = this.unlock.bind(this);
-        this.check = this.check.bind(this);
+        for (let i = 0; i < answers.length; i++) {
+            // const answer = answers[i];
+            answers[i]['isSelected'] = false;
+        }
+
+        return this.shuffle(answers); //this.props.quiz.answers
     }
 
-    shuffle(array) {
+    shuffle = (array) => {
         for (let i = array.length; i; i--) {
             let j = Math.floor(Math.random() * i);
             [array[i - 1], array[j]] = [array[j], array[i - 1]];
@@ -73,16 +86,16 @@ export default class MultipleChoice extends Component {
         return array;
     }
 
-    handleCheckBoxSelection(event, isChecked, index) {
+    handleCheckBoxSelection = (event, isChecked, index) => {
         const updatedAnswers = this.state.answers;
         updatedAnswers[index].isSelected = isChecked;
         
         this.setState({ answers: updatedAnswers });
     }
 
-    handleRadioButtonSelection(event, answerId) {
+    handleRadioButtonSelection = (event, answerId) => {
         this.setState({ selectedAnswerId: answerId });
-
+        
         const updatedAnswers = this.state.answers;
 
         for (let i = 0; i < updatedAnswers.length; i++) {
@@ -93,7 +106,7 @@ export default class MultipleChoice extends Component {
         this.setState({ answers: updatedAnswers });
     }
 
-    renderList(isSingleChoice) {
+    renderList = (isSingleChoice) => {
        if(isSingleChoice) {
             return (
                 <RadioButtonGroup style={styles.radioButtonGroup} name="singleChoice" onChange={(event, value) => this.handleRadioButtonSelection(event, value)} valueSelected={this.state.selectedAnswerId}>
@@ -115,8 +128,8 @@ export default class MultipleChoice extends Component {
         }
     }
 
-    unlock() {
-        const answers = this.state.answers;
+    unlock = () => {
+        const { answers } = this.state;
 
         for (var i = 0; i < answers.length; i++) {
             const answer = answers[i];
@@ -125,10 +138,10 @@ export default class MultipleChoice extends Component {
             if(this.isSingleChoice && answer.isCorrect) this.setState({ selectedAnswerId: answer.id });
         }
 
-        this.setState({ answers: answers });
+        this.setState({ answers });
     }
 
-    check() {
+    check = () => {
         const answers = this.state.answers;
         const selectedAnswers = answers.filter((item) => {
             return item.isSelected;
@@ -170,22 +183,6 @@ export default class MultipleChoice extends Component {
         );
     }
 
-    getModifiedAnswers(quiz) {    
-        const answers = quiz.answers.slice(); //MUST CHECK
-
-        for (let i = 0; i < answers.length; i++) {
-            const answer = answers[i];
-            answers[i]['isSelected'] = false;
-        }
-
-        return this.shuffle(answers); //this.props.quiz.answers
-    }
-
-    componentWillMount() {
-        this.setState({
-            answers: this.getModifiedAnswers(this.props.quiz)
-        });
-    }
 
     //componentWillReceiveProps(nextProps) {
     //    if(this.props.quiz.id == nextProps.quiz.id) {

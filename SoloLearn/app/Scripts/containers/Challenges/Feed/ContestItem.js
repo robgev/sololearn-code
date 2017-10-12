@@ -69,17 +69,13 @@ const styles = {
 }
 
 class ContestItemBase extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     getDateDifference(expireDate) {
         const relativeDate = "Expires in ";
 
         const dateNow = moment(new Date());
         const duration = moment.duration(moment(expireDate).diff(moment(dateNow)));
         const hours = Math.floor(duration.asHours());
-
+    
         if (hours < 1) {
             return relativeDate + duration.asMinutes() + " min";   
         }

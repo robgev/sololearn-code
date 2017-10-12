@@ -210,7 +210,6 @@ class NotificationList extends Component {
     componentDidMount() {
         if (this.props.isPopup) {
             var scollingArea = document.getElementById("notifications-body");
-            console.log(scollingArea);
             scollingArea.addEventListener('scroll', this.handleScroll);
         }
         else {

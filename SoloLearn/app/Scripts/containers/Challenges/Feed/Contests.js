@@ -100,17 +100,12 @@ class Contests extends Component {
         const { defaultsLoaded, isLoaded } = this.props;
     
         if (!defaultsLoaded) {
-            this.props.loadDefaults().then((response) => {
-                if (!isLoaded) {
-                    this.props.getContests();
-                }
-            }).catch((error) => {
-                console.log(error);
-            });
+            this.props.loadDefaults()
+                .catch((error) => {
+                    console.log(error);
+                });
         }
-        else if (!isLoaded) {
-            this.props.getContests();
-        }
+        this.props.getContests();
     }
     handleCoursePopup = (selectCourse) => {
         this.setState({ selectCourse });
@@ -227,10 +222,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        loadDefaults: loadDefaults,
+        loadDefaults,
         getContests: getContestsInternal,
         clearContests: clearContestsInternal,
-        chooseContestCourse: chooseContestCourse
+        chooseContestCourse
     }, dispatch);
 }
 
