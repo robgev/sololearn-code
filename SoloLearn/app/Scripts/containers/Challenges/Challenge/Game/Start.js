@@ -1,13 +1,15 @@
 ﻿//React modules
 import React, { Component } from 'react';
+import Radium from 'radium';
 
 //Material UI components
 import Avatar from 'material-ui/Avatar';
 import RaisedButton from 'material-ui/RaisedButton';
+import { fadeInRight, fadeInLeft, fadeIn, fadeInUp } from 'react-animations';
 
 const styles = {
     container: {
-        padding: '15px 0 0 0',
+        padding: '50px 0 0 0',
         textAlign: 'center'
     },
 
@@ -77,32 +79,43 @@ const styles = {
 
     button: {
         margin: '50px 10px 0 10px'
-    }
+    },
+
+    appear: (animation) => {
+        return {
+            animation: '750ms',
+            animationName: Radium.keyframes(animation, animation.name)
+        }
+    },
+
 }
 
 class Start extends Component {
     render() {
         const { courseName, contest } = this.props;
-
         return (
             <div id="challenge-start" style={styles.container}>
                 <div style={styles.userWrapper}>
-                    <div style={styles.user}>
+                    <div style={{...styles.user, ...styles.appear(fadeInLeft)}}>
                         <Avatar size={100} style={styles.avatar}>{contest.player.name.charAt(0).toUpperCase()}</Avatar>
                         <p style={styles.userName}>{contest.player.name}</p>
                         <p style={styles.level}>LEVEL {contest.player.level}</p>
                     </div>
                     <span style={styles.versusStyle}>VS</span>
-                    <div style={styles.user}>
+                    <div style={{...styles.user, ...styles.appear(fadeInRight)}}>
                         <Avatar size={100} style={styles.avatar}>{contest.opponent.name.charAt(0).toUpperCase()}</Avatar>
                         <p style={styles.userName}>{contest.opponent.name}</p>
                         <p style={styles.level}>LEVEL {contest.opponent.level}</p>
                     </div>
                 </div>
-                <p style={styles.languageName}>{courseName.toUpperCase()}</p>
-                <div style={styles.result}>
-                    <p style={styles.resultTitle}>WINNER GETS</p>
-                    <p style={styles.rewardXp}>{contest.player.rewardXp} XP</p>
+                <div style={styles.appear(fadeIn)}>
+                    <p style={styles.languageName}>{courseName.toUpperCase()}</p>
+                    <div style={styles.result}>
+                        <p style={styles.resultTitle}>WINNER GETS</p>
+                        <p style={styles.rewardXp}>{contest.player.rewardXp} XP</p>
+                    </div>
+                </div>
+                <div style={{...styles.result, ...styles.appear(fadeInUp)}}>
                     <div>
                         <RaisedButton
                             label='Start'
@@ -110,12 +123,13 @@ class Start extends Component {
                             secondary
                             onClick={this.props.next}
                         />
-                        <RaisedButton
+                        {this.props.isDeclinable ? 
+                            <RaisedButton
                             label='Decline'
                             style={styles.button}
                             primary
                             onClick={this.props.decline}
-                        />
+                        /> : null}
                     </div>
                 </div>
             </div>
@@ -123,4 +137,4 @@ class Start extends Component {
     }
 }
 
-export default Start;
+export default Radium(Start);

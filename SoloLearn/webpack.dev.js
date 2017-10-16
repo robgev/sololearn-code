@@ -1,6 +1,7 @@
 var path = require('path');
 
 var webpack = require('webpack');
+require('babel-polyfill');
 
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -13,7 +14,7 @@ module.exports = {
     devtool: 'source-map',
 
     entry: {
-        'app': './app/Scripts/index.js' // JiT compilation
+        app: ['babel-polyfill', './app/Scripts/index.js']
     },
 
     output: {
@@ -36,7 +37,7 @@ module.exports = {
         rules: [
             {
                 exclude: /(node_modules|bower_components)/,
-                test: /\.jsx?$/,
+                test: /\.(jsx|js)?$/,
                 loaders: [
                     {
                         loader: 'babel-loader',
@@ -59,7 +60,7 @@ module.exports = {
             {
                 test: /\.scss$/,
                 exclude: /node_modules/,
-                loaders: ["style", "css", "sass"]
+                loaders: ["style-loader", "css-loader", "sass-loader"]
             },
             {
                 test: /\.html$/,

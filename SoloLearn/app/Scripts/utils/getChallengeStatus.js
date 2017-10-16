@@ -38,22 +38,22 @@ const styles = {
     }
 }
 
-const getChallengeStatus = (status) => {
+const getChallengeStatus = (status, style = {}) => {
     switch (status) {
         case contestTypes.Won:
-            return <p style={getStyles(styles.base, styles.small, styles.wonColor)}>YOU WON</p>;
+            return <p style={getStyles(styles.base, styles.small, styles.wonColor, style)}>YOU WON</p>;
         case contestTypes.Lost:
-            return <p style={getStyles(styles.base, styles.small, styles.lostColor)}>YOU LOST</p>;
+            return <p style={getStyles(styles.base, styles.small, styles.lostColor, style)}>YOU LOST</p>;
         case contestTypes.Draw:
-            return <p style={getStyles(styles.base, styles.small, styles.drawColor)}>DRAW</p>;
+            return <p style={getStyles(styles.base, styles.small, styles.drawColor, style)}>DRAW</p>;
         case contestTypes.Expired:
-            return <p style={getStyles(styles.base, styles.small, styles.defaultColor)}>EXPIRED</p>;
+            return <p style={getStyles(styles.base, styles.small, styles.defaultColor, style)}>EXPIRED</p>;
         case contestTypes.GotDeclined:
-            return <p style={getStyles(styles.base, styles.small, styles.defaultColor)}>DECLINED</p>;
+            return <p style={getStyles(styles.base, styles.small, styles.defaultColor, style)}>DECLINED</p>;
         case contestTypes.Started:
-            return <p style={getStyles(styles.base, styles.small, styles.yourTurnColor)}>YOUR TURN</p>;
+            return <p style={getStyles(styles.base, styles.small, styles.yourTurnColor, style)}>YOUR TURN</p>;
         case contestTypes.Challenged:
-            return <p style={getStyles(styles.base, styles.small, styles.defaultColor)}>WAITING</p>;
+            return <p style={getStyles(styles.base, styles.small, styles.defaultColor, style)}>WAITING</p>;
         default:
             return "";
     }

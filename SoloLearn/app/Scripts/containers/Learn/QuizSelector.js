@@ -17,7 +17,7 @@ export const QuizType = {
     Reorder: 8
 };
 
-const QuizComponents = {
+export const QuizComponents = {
     1: MultipleChoice,
     2: TypeIn,
     3: PlaceholderTypeIn,

@@ -126,11 +126,11 @@ export const createContestInternal = (opponentId) => {
 export const getContestInternal = (id) => {
     return dispatch => {
         return Service.request("Challenge/GetContest", { id })
-        .then(response => {
-            dispatch(getContest(response.contest));
-        })
-        .catch(error => {
-            console.log(error);
-        });
+            .then(response => {
+                dispatch(getContest(response.contest));
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 }

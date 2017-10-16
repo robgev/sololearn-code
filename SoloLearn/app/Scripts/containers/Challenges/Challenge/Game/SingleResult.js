@@ -20,11 +20,11 @@ const styles = {
         alignItems: 'center'
     },
     appear: {
-        animation: '1s',
+        animation: '750ms',
         animationName: Radium.keyframes(fadeInUp, 'fadeInUp')
     },
     disappear: {
-        animation: '1s',
+        animation: '750ms',
         animationName: Radium.keyframes(fadeOutUp, 'fadeOutUp')
     }
 }
@@ -43,7 +43,7 @@ class SingleResult extends PureComponent {
     changeStyle = () => {
         setTimeout(() => {
             this.setState({ in: false });
-        }, 1000);
+        }, 750);
     }
     render() {
         const messageStyle = this.props.status == 1 ? 
@@ -61,4 +61,4 @@ class SingleResult extends PureComponent {
     }
 }
 
-export default SingleResult;
+export default Radium(SingleResult);

@@ -276,41 +276,39 @@ class Profile extends Component {
         );
     }
 
-    componentWillMount() {
+    selectTab = (tab) => {
+        switch (tab.toLowerCase()) {
+            case "activity":
+                this.handleTabChange(TabTypes.Activity);
+                break;
+            case "codes":
+                this.handleTabChange(TabTypes.Codes);
+                break;
+            case "posts":
+                this.handleTabChange(TabTypes.Posts);
+                break;
+            case "skills":
+                this.handleTabChange(TabTypes.Skills);
+                break;
+            case "badges":
+                this.handleTabChange(TabTypes.Badges);
+                break;
+            default:
+                browserHistory.replace('/profile/' + this.props.params.id + "/activity");
+                this.handleTabChange(TabTypes.Activity);
+                break;
+        }
+    }
+    async componentWillMount() {
         //console.log(this.props, "PROFILE");
 
-        const params = this.props.params;
-        let tab = params.tab;
-
-        if (!this.props.defaultsLoaded) {
-            this.props.loadDefaults().then(() => {
-                this.props.getProfile(params.id).then(() => {
-                    tab = !tab ? "" : tab;
-
-                    switch (tab.toLowerCase()) {
-                        case "activity":
-                            this.handleTabChange(TabTypes.Activity);
-                            break;
-                        case "codes":
-                            this.handleTabChange(TabTypes.Codes);
-                            break;
-                        case "posts":
-                            this.handleTabChange(TabTypes.Posts);
-                            break;
-                        case "skills":
-                            this.handleTabChange(TabTypes.Skills);
-                            break;
-                        case "badges":
-                            this.handleTabChange(TabTypes.Badges);
-                            break;
-                        default:
-                            browserHistory.replace('/profile/' + this.props.params.id + "/activity");
-                            this.handleTabChange(TabTypes.Activity);
-                            break;
-                    }
-                });
-            });
+        const { params } = this.props;
+        const { tab = '' } = params;
+        if(!this.props.defaultsLoaded) {
+            await this.props.loadDefaults();
         }
+        await this.props.getProfile(params.id);
+        selectTab(tab);
     }
 
     //shouldComponentUpdate(nextProps, nextState) {

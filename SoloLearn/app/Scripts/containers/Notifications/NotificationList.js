@@ -158,10 +158,10 @@ class NotificationList extends Component {
     }
 
     //Mark notifications as seen
-    markAsSeen() {
+    markAsSeen = () => {
         if (!this.isUnmounted) {
             const notifications = this.props.notifications;
-
+            
             Service.request("Profile/MarkNotificationsSeen", { fromId: notifications[0].id });
         }
     }
