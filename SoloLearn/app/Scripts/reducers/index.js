@@ -1,4 +1,9 @@
 ﻿//General
+import { createStore, applyMiddleware, combineReducers, bindActionCreators } from 'redux';
+import thunk from 'redux-thunk';
+import logger from 'redux-logger';
+
+//General reducers
 import tabs from './reducer_tabs';
 import activeTab from './reducer_active_tab';
 import userProfile from './reducer_user';
@@ -43,7 +48,7 @@ import challenges from './reducer_challenges';
 //Login
 import loggedin from './login.reducer';
 
-const reducers = {
+const reducers = combineReducers({
     //General
     tabs, activeTab, userProfile,
     //Learn
@@ -65,7 +70,9 @@ const reducers = {
     challenges,
     //Login
     loggedin,
-};
+});
+
+export const store = createStore(reducers, applyMiddleware(thunk, logger));
 
 // Redux selector for detecting data state
 export const isLoaded = (state, componentName) => {
@@ -114,5 +121,3 @@ export const isLoaded = (state, componentName) => {
 export const defaultsLoaded = (state) => {
     return (state.userProfile && state.courses && state.levels) != null;
 }
-
-export default reducers;

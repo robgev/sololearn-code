@@ -1,6 +1,8 @@
 //React modules
 import React, { Component } from 'react';
 import Radium from 'radium';
+import { connect } from 'react-redux';
+import optional from '../../../../utils/optional';
 
 //Material UI components
 import Avatar from 'material-ui/Avatar';
@@ -10,10 +12,11 @@ import getChallengeStatus from '../../../../utils/getChallengeStatus';
 import contestTypes from '../../../../defaults/contestTypes';
 import LoadingOverlay from '../../../../components/Shared/LoadingOverlay';
 import { green500, red500, blue500 } from 'material-ui/styles/colors';
+import CircularProgress from 'material-ui/CircularProgress';
 
 const styles = {
     container: {
-        padding: '50px 0 0 0',
+        padding: '20px 0 0 0',
         textAlign: 'center',
     },
 
@@ -68,13 +71,14 @@ const styles = {
         textAlign: 'center'
     },
 
-    result: {
+    result: (box) => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
         margin: 20,
-    },
+        width: box ? 95 : null
+    }),
 
     resultTitle: (color) => ({
         color: color,
@@ -102,18 +106,48 @@ const styles = {
     },
     resultBoxes: {
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'flex-end'
     }
 }
 
 const ResultBox = ({ aboveText, insideText, color }) => {
     return (
-        <div style={styles.result}>
+        <div style={styles.result(true)}>
             <p style={styles.resultTitle(color)}>{aboveText}</p>
             <p style={styles.rewardXp(color)}>{insideText} XP</p>
         </div>
     )
 }
+
+const Results = optional(({ courseName, answersBonus, matchResult, totalXp, percUntilNext }) => {
+    return (
+        <div style={styles.appear(fadeIn)}>
+            <p style={styles.languageName}>{courseName.toUpperCase()}</p>
+            <div style={styles.resultBoxes}>
+                <ResultBox
+                    aboveText='ANSWERS BONUS'
+                    insideText={answersBonus}
+                    color={blue500}
+                />
+                <ResultBox
+                    aboveText='MATCH RESULT'
+                    insideText={matchResult}
+                    color={matchResult < 0 ? red500 : green500}
+                />
+                <ResultBox
+                    aboveText='TOTAL XP'
+                    insideText={totalXp}
+                    color={totalXp < 0 ? red500 : green500}
+                />
+            </div>
+            <CircularProgress
+                mode="determinate"
+                value={percUntilNext}
+            />
+        </div>
+    );
+});
 
 class Result extends Component {
     state = { updated: false }
@@ -135,6 +169,14 @@ class Result extends Component {
     matchResultCounter = (contest) => {
         return contest.player.status == 1 ? contest.player.rewardXp : -contest.opponent.rewardXp;
     }
+    countUntilNextLevel = (totalXp) => {
+        const { player: { level, xp } } = this.props.contest;
+        const newXp = xp + totalXp;
+        const nextLevelXp = this.props.levels[level - 1].maxXp;
+        const untilNextLevelXp = nextLevelXp - newXp;
+        const percentage = 100 - 100 * (untilNextLevelXp / nextLevelXp);
+        return [untilNextLevelXp, percentage];
+    }
     render() {
         if(!this.state.updated) {
             return <LoadingOverlay />
@@ -145,6 +187,7 @@ class Result extends Component {
         const answersBonus = this.answerBonusCounter(myRes);
         const matchResult = this.matchResultCounter(contest);
         const totalXp = answersBonus + matchResult;
+        const [ xpUntilNext, percUntilNext ] = this.countUntilNextLevel(totalXp);
         return (
             <div id="challenge-start" style={styles.container}>
                 <div style={styles.appear(fadeInDown)}>
@@ -163,27 +206,10 @@ class Result extends Component {
                         <p style={styles.level}>LEVEL {contest.opponent.level}</p>
                     </div>
                 </div>
-                <div style={styles.appear(fadeIn)}>
-                    <p style={styles.languageName}>{courseName.toUpperCase()}</p>
-                    <div style={styles.resultBoxes}>
-                        <ResultBox
-                            aboveText='ANSWERS BONUS'
-                            insideText={answersBonus}
-                            color={blue500}
-                        />
-                        <ResultBox
-                            aboveText='MATCH RESULT'
-                            insideText={matchResult}
-                            color={matchResult < 0 ? red500 : green500}
-                        />
-                        <ResultBox
-                            aboveText='TOTAL XP'
-                            insideText={totalXp}
-                            color={totalXp < 0 ? red500 : green500}
-                        />
-                    </div>
-                </div>
-                
+                <Results
+                    idle={!(status == 1 || status == 2 || status == 8)}
+                    { ...{ courseName, answersBonus, matchResult, totalXp, percUntilNext } }
+                />
                 <div style={{...styles.result, ...styles.appear(fadeInUp)}}>
                     <RaisedButton
                         label='Leave'
@@ -197,4 +223,8 @@ class Result extends Component {
     }
 }
 
-export default Radium(Result);
+const mapStateToProps = ({ levels }) => {
+    return { levels };
+}
+
+export default connect(mapStateToProps)(Radium(Result));

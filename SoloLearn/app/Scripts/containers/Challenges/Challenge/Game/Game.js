@@ -10,6 +10,7 @@ import SingleResult from './SingleResult';
 import contestTypes from '../../../../defaults/contestTypes';
 import Radium, { StyleRoot } from 'radium';
 import { fadeInUp } from 'react-animations';
+import { Optional } from '../../../../utils/optional';
 
 const styles = {
     animate: (animation) => {
@@ -118,16 +119,8 @@ class Game extends Component {
             />)
     }
     render() {
-        if(this.state.result != 0) {
-            const message = this.state.result == 1 ? `Round ${this.state.step + 1}` :
-                (this.state.result == 2 ? 'Correct' : 'Wrong');
-            return (
-                <SingleResult
-                    message={message}
-                    status={this.state.result}
-                />
-            )
-        }
+        const message = this.state.result == 1 ? `Round ${this.state.step + 1}` :
+            (this.state.result == 2 ? 'Correct' : 'Wrong');
         const { contest } = this.props;
         const { step } = this.state;
         const CurrentChallenge = () => {
@@ -142,13 +135,16 @@ class Game extends Component {
                 </StyleRoot>);
         } 
         return(
-            <div>
+            <Optional
+                idle={this.state.result != 0}
+                IdleComponent={<SingleResult message={message} status={this.state.result} />}
+            >
                 {
                     this.state.end ? this.renderEnd() :
                         this.state.start ? this.renderStart() :
                             <CurrentChallenge />
                 }
-            </div>
+            </Optional>
         )
     }
 }

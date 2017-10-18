@@ -7,10 +7,8 @@ import Service from './api/service';
 import { loadDefaults } from './actions/defaultActions';
 
 //Redux modules
-// import ReduxPromise from 'redux-promise';
-import ReduxThunk from 'redux-thunk';
-import { createStore, applyMiddleware, combineReducers, bindActionCreators } from 'redux';
-import reducers, { defaultsLoaded } from './reducers';
+import { bindActionCreators } from 'redux';
+import { store, defaultsLoaded } from './reducers';
 
 //Additional data and components
 import routes from './config/routes';
@@ -19,15 +17,6 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
-
-const createStoreWithMiddleware = applyMiddleware(ReduxThunk)(createStore);
-const store = createStoreWithMiddleware(combineReducers(reducers));
-
-/*LOGGING APPLICATION STATE*/
-store.subscribe(() => {
-    console.log("STORE STATE(INDEX FILE LOG): ", store.getState())
-})
-/******/
 
 class App extends Component {
     componentWillMount() {

@@ -3,6 +3,7 @@ import TextField from 'material-ui/TextField';
 import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
+import { Optional } from '../../utils/optional';
 
 export default
 class LoginPage extends PureComponent {
@@ -55,19 +56,17 @@ class LoginPage extends PureComponent {
     render() {
         const { isLogin, forgot } = this.state;
         return(
-            <div>
-                { !isLogin ? ( 
-                    <div>
-                        <TextField
-                            value={this.state.name}
-                            onChange={e => this.updateState(e)}
-                            name='name'
-                            floatingLabelText='name'
-                            underlineShow={false}
-                        />
-                        <Divider />
-                    </div>) : null
-                }
+            <div> 
+                <Optional idle={isLogin}>
+                    <TextField
+                        value={this.state.name}
+                        onChange={e => this.updateState(e)}
+                        name='name'
+                        floatingLabelText='name'
+                        underlineShow={false}
+                    />
+                    <Divider />
+                </Optional>
                 <TextField
                     value={this.state.email}
                     onChange={e => this.updateState(e)}
@@ -75,33 +74,29 @@ class LoginPage extends PureComponent {
                     floatingLabelText='email'
                     underlineShow={false}
                 />
-                { !forgot ? (
-                    <div>
-                        <Divider />
-                        <TextField
-                            value={this.state.password}
-                            onChange={e => this.updateState(e)}
-                            name='password'
-                            floatingLabelText='password'
-                            type='password'
-                            underlineShow={false}
-                        />
-                    </div>) : null
-                }
-                <Divider style={isLogin ? {margin: 10} : null}/>
-                { !isLogin ? (
-                    <div>
-                        <TextField
-                        value={this.state.passwordRepeat}
+                <Optional idle={forgot}>
+                    <Divider />
+                    <TextField
+                        value={this.state.password}
                         onChange={e => this.updateState(e)}
-                        name='passwordRepeat'
-                        floatingLabelText='repeat password'
+                        name='password'
+                        floatingLabelText='password'
                         type='password'
                         underlineShow={false}
-                        />
-                        <Divider style={{margin: 10}}/>
-                    </div>) : null 
-                }
+                    />
+                </Optional>
+                <Divider style={isLogin ? {margin: 10} : null}/>
+                <Optional idle={isLogin}>
+                    <TextField
+                    value={this.state.passwordRepeat}
+                    onChange={e => this.updateState(e)}
+                    name='passwordRepeat'
+                    floatingLabelText='repeat password'
+                    type='password'
+                    underlineShow={false}
+                    />
+                    <Divider style={{margin: 10}}/>
+                </Optional> 
                 <RaisedButton
                     label={ forgot ? 'Request' : (isLogin ? 'Login' : 'Sign Up')}
                     primary
@@ -111,12 +106,12 @@ class LoginPage extends PureComponent {
                     label={ forgot ? 'Login' : (isLogin ? 'Sign up' : 'Login') }
                     onClick={this.changeType}
                 />
-                { isLogin && !forgot ? (
+                <Optional style={{ marginTop: 10 }} idle={forgot || !isLogin}>
                     <FlatButton
                         label='Forgot Password'
                         onClick={() => this.setState({ forgot: true })}
                     />
-                ) : null}
+                </Optional>
             </div>
         )
     }
