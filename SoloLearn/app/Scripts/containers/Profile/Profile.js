@@ -308,7 +308,7 @@ class Profile extends Component {
             await this.props.loadDefaults();
         }
         await this.props.getProfile(params.id);
-        selectTab(tab);
+        this.selectTab(tab);
     }
 
     //shouldComponentUpdate(nextProps, nextState) {

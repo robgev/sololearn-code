@@ -43,8 +43,8 @@ import Challenge from '../containers/Challenges/Challenge/Challenge';
 
 export default (
     [
-    <Route exact path='/' render={() => <Redirect to='/feed' />} />,
     <Route component={MainLayout} key='mainLayoutRoutes'>
+        <Route exact path='/' render={() => <Redirect to='/feed' />} />,
         <Route path='/learn/:courseName/:id/shortcut(/:quizNumber)' component={Shortcut}>
             <Route component={QuizManager}>
                 <IndexRoute component={Quiz} />
@@ -66,12 +66,8 @@ export default (
         <Route path='/contests' component={Contests} />
         <Route path='/choose-opponent' component={OpponentSelector} />
         <Route path='/challenge/:id' component={Challenge} />
-    </Route>, 
-    <Route component={EmptyLayout} key='emptyLayoutRoutes'>
         <Route path='/notifications' component={Notifications} />
         <Route path='/login' component={Login} />
     </Route>
     ]
 );
-
-//<Route path='/' component={App}>     </Route>
