@@ -2,13 +2,15 @@
 import React, { Component } from 'react';
 import Radium, { Style } from 'radium';
 import { browserHistory } from 'react-router';
+import Login from '../../containers/Login';
+import Auth from '../../utils/protected';
 
 //Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { loadDefaults } from '../../actions/defaultActions';
 import { defaultsLoaded } from '../../reducers';
-import { logout } from '../../actions/login.action';
+import { changeLoginModal } from '../../actions/login.action';
 
 //Additional components
 import Header from '../../containers/Header/Header';
@@ -17,6 +19,8 @@ import LoadingOverlay from '../Shared/LoadingOverlay';
 //Material UI components
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 //Theme
 import Theme from '../../defaults/theme.js';
@@ -60,6 +64,9 @@ class MainLayout extends Component {
             this.props.selectTab(currTab);
         }
     }
+    changeModalState = () => {
+        this.props.changeLoginModal(!this.props.loginModal);
+    }
     render() {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
@@ -67,6 +74,20 @@ class MainLayout extends Component {
                     this.state.loading ?
                     <LoadingOverlay /> :
                     <div style={styles.wrapper}>
+                        <Dialog
+                            title='Please login'
+                            open={this.props.loginModal}
+                            onRequestClose={this.changeModalState}
+                            actions={[
+                                <FlatButton
+                                    label='Cancel'
+                                    primary
+                                    onClick={this.changeModalState}
+                                />
+                            ]}
+                        >
+                            <Login />
+                        </Dialog>
                         {defaultSyles}
                         <Header />
                         {this.props.children}
@@ -81,7 +102,8 @@ function mapStateToProps(state) {
     return {
         tabs: state.tabs,
         defaultsLoaded: defaultsLoaded(state),
-        loggedin: state.loggedin
+        loggedin: state.loggedin,
+        loginModal: state.loginModal
     };
 }
 
@@ -89,8 +111,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         loadDefaults,
         selectTab,
-        logout
+        changeLoginModal
     }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Radium(MainLayout));
+export default connect(mapStateToProps, mapDispatchToProps)(Auth(Radium(MainLayout)));

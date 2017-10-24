@@ -3,43 +3,36 @@ import Service from '../api/service';
 import Storage from '../api/storage';
 import hash from '../utils/hash';
 import faultGenerator from '../utils/faultGenerator';
-import { loadDefaults } from './defaultActions'; 
+import { loadDefaults, getUserProfile } from './defaultActions'; 
 
 export const logout = () => dispatch => {
     new Storage().clear();
-    dispatch({ type: types.GET_USER_PROFILE, payload: null });
+    dispatch(getUserProfile(null))
     dispatch({ type: types.CLEAR_FEED });
     return Service.request('Logout')
-        .then(() => dispatch(logoutSync()))
         .catch(e => console.log(e));
 }
 
-export const login = ({ email, password }) => dispatch => {
-    return Service.request('Login', { email, password: hash(password) })
-        .then(res => {
-            if(res.error) {
-                return faultGenerator(res.error.data);
-            } else {
-                dispatch(loginSync(res.user.id));
-                dispatch(loadDefaults(res.user.id));
-                return false;
-            }
-        })
-        .catch(e => console.log(e));
+export const login = ({ email, password }) => async dispatch => {
+    try {
+        const res = await Service.request('Login', { email, password: hash(password) });
+        if(res.error) return faultGenerator(res.error.data);
+        const { profile } = await Service.request('Profile/GetProfile', { id: res.user.id });
+        new Storage().save('profile', profile);
+        dispatch(getUserProfile(profile));
+    } catch(e) {
+        console.log(e);
+    }
 }
 
-export const signup = ({ name, email, pass }) => dispatch => {
-    return Service.request('Register', { name, email, password: hash(pass) })
-        .then(res => {
-            if(res.error) {
-                return faultGenerator(res.error.data);
-            } else {
-                dispatch(loginSync(res.user.id));
-                dispatch(loadDefaults(res.user.id));
-                return false;
-            }
-        })
-        .catch(e => console.log(e));
+export const signup = ({ name, email, pass }) => async dispatch => {
+    try {
+        const res = await Service.request('Register', { name, email, password: hash(pass) });
+        if(res.error) return faultGenerator(res.error.data);
+        dispatch(login({ email, password }));
+    } catch(e) {
+        console.log(e);
+    }
 }
 
 export const forgotPassword = email => dispatch => {
@@ -53,5 +46,8 @@ export const forgotPassword = email => dispatch => {
         })
 }
 
-const logoutSync = () => ({ type: types.LOG_OUT });
-const loginSync = payload => ({ type: types.LOG_IN, payload });
+export const imitateLogout = () => ({ type: types.IMITATE_LOGIN });
+
+export const changeLoginModal = (isOpen) => {
+    return { type: types.CHANGE_LOGIN_MODAL, payload: isOpen }
+};

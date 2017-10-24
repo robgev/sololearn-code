@@ -1,6 +1,6 @@
 ﻿//React modules
 import React from 'react';
-import { Route, IndexRoute, Redirect } from 'react-router';
+import { Route, IndexRoute, Redirect, browserHistory } from 'react-router';
 
 //Layouts
 import MainLayout from '../components/Layouts/MainLayout';
@@ -44,7 +44,7 @@ import Challenge from '../containers/Challenges/Challenge/Challenge';
 export default (
     [
     <Route component={MainLayout} key='mainLayoutRoutes'>
-        <Route exact path='/' render={() => <Redirect to='/feed' />} />,
+        <Route path='/' onEnter={ () => { browserHistory.replace('/feed') } }/>
         <Route path='/learn/:courseName/:id/shortcut(/:quizNumber)' component={Shortcut}>
             <Route component={QuizManager}>
                 <IndexRoute component={Quiz} />

@@ -2,6 +2,7 @@
 import { createStore, applyMiddleware, combineReducers, bindActionCreators } from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
+import withoutLogin from '../utils/modal.middleware';
 
 //General reducers
 import tabs from './reducer_tabs';
@@ -46,7 +47,8 @@ import comments from './reducer_comments';
 import challenges from './reducer_challenges';
 
 //Login
-import loggedin from './login.reducer';
+import imitLoggedin from './login.reducer';
+import loginModal from './loginModal.reducer';
 
 const reducers = combineReducers({
     //General
@@ -69,14 +71,16 @@ const reducers = combineReducers({
     //Play
     challenges,
     //Login
-    loggedin,
+    imitLoggedin, loginModal
 });
 
-export const store = createStore(reducers, applyMiddleware(thunk, logger));
+export const store = createStore(reducers, applyMiddleware(withoutLogin, thunk, logger));
 
 // Redux selector for detecting data state
 export const isLoaded = (state, componentName) => {
     switch(componentName) {
+        case 'loggedin':
+            return state.userProfile != null;
         case 'modules':
             return state.course != null;
         case 'lessons':
@@ -115,6 +119,8 @@ export const isLoaded = (state, componentName) => {
             return state.challenges.following.length > 0;
         case 'activeContest':
             return state.challenges.activeContest != null;
+        case 'initallyLoaded':
+            return state.courses != null && state.levels != null;
     }
 }
 

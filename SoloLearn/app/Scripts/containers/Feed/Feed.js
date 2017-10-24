@@ -1,6 +1,8 @@
 ﻿//React modules
 import React, { Component } from 'react';
 
+import AuthProt from '../../utils/protected';
+
 //Redux modules
 import { connect } from 'react-redux';
 import { isLoaded } from '../../reducers';
@@ -33,8 +35,8 @@ function mapStateToProps(state) {
     return {
         isLoaded: isLoaded(state, "feed"),
         feedPins: state.feedPins,
-        feed: state.feed
+        feed: state.feed,
     };
 }
 
-export default connect(mapStateToProps, () => { return {} })(Feed);
+export default connect(mapStateToProps)(Feed);

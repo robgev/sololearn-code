@@ -8,7 +8,6 @@ export default function(state = [], action) {
         case GET_NEW_FEED_ITEMS:
             return [ ...action.payload, ...state ];
         case CLEAR_FEED:
-            console.log('feed cleared')
             return [];
         default:
             return state;

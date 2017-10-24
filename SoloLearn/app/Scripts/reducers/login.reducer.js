@@ -1,11 +1,9 @@
-import { LOG_IN, LOG_OUT } from '../constants/ActionTypes';
+import { IMITATE_LOGIN } from '../constants/ActionTypes';
 
-export default (loggedin = null, action) => {
+export default (loggedin = true, action) => {
     switch(action.type) {
-        case LOG_OUT:
-            return null;
-        case LOG_IN:
-            return action.payload;
+        case IMITATE_LOGIN:
+            return !loggedin;
         default:
             return loggedin;
     }

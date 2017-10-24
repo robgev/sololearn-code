@@ -78,7 +78,7 @@ export const GET_CONTEST_FOLLOWING = 'GET_CONTEST_FOLLOWING';
 export const GET_CONTEST = 'GET_CONTEST';
 
 //Log in
-export const LOG_IN = 'LOG_IN';
-export const LOG_OUT = 'LOG_OUT';
+export const IMITATE_LOGIN = 'IMITATE_LOGIN_CHANGE';
+export const CHANGE_LOGIN_MODAL = 'CHANGE_LOGIN_MODAL';
 
-
+export const protectedActions = [VOTE_POST, VOTE_COMMENT, EDIT_COMMENT, ADD_COMMENT, DELETE_COMMENT]

@@ -212,29 +212,10 @@ class FeedItemsBase extends Component {
     
     componentWillMount() {
         const { defaultsLoaded, isLoaded, isUserProfile } = this.props;
-    
-        if (!defaultsLoaded) {
-            this.props.loadDefaults().then((response) => {
-                if (!isLoaded) {
-                    this.loadFeedItems(null).then(() => {
-                        //this.interval = setInterval(() => { this.loadNewFeedItems() }, 30000);
-                    });
-                    !isUserProfile && this.props.getPinnedFeedItems(null, null, null);
-                    !isUserProfile && this.props.getUserSuggestions();
-                }
-            }).catch((error) => {
-                console.log(error);
-            });
-        }
-        else if (!isLoaded) {
-            this.loadFeedItems(null).then(() => {
-                //this.interval = setInterval(() => { this.loadNewFeedItems() }, 30000);
-            });
+        if(!isLoaded){
+            this.loadFeedItems(null);
             !isUserProfile && this.props.getPinnedFeedItems(null, null, null);
             !isUserProfile && this.props.getUserSuggestions();
-        }
-        else {
-            //this.interval = setInterval(() => { this.loadNewFeedItems() }, 30000);
         }
     }
     
@@ -261,7 +242,6 @@ class FeedItemsBase extends Component {
     }
     loadFeedItems = (fromId) => {
         this.setState({ isLoading: true });
-
         return this.props.getFeedItems(fromId, this.props.userId).then(count => {
             if (count == 0) this.setState({ fullyLoaded: true });
 
