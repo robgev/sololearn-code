@@ -2,7 +2,6 @@
 import { createStore, applyMiddleware, combineReducers, bindActionCreators } from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
-import withoutLogin from '../utils/modal.middleware';
 
 //General reducers
 import tabs from './reducer_tabs';
@@ -74,7 +73,7 @@ const reducers = combineReducers({
     imitLoggedin, loginModal
 });
 
-export const store = createStore(reducers, applyMiddleware(withoutLogin, thunk, logger));
+export const store = createStore(reducers, applyMiddleware(thunk, logger));
 
 // Redux selector for detecting data state
 export const isLoaded = (state, componentName) => {

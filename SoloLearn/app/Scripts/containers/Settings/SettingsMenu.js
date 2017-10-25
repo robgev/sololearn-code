@@ -6,7 +6,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { logout, imitateLogout } from '../../actions/login.action';
+import { logout, imitateLogin } from '../../actions/login.action';
 
 import { browserHistory } from 'react-router';
 
@@ -29,7 +29,7 @@ class SettingsMenu extends PureComponent {
                 />
                 <MenuItem
                     primaryText='Imitate logout'
-                    onClick={this.props.imitateLogout}
+                    onClick={this.props.imitateLogin}
                 />
             </IconMenu>
         )
@@ -39,7 +39,7 @@ class SettingsMenu extends PureComponent {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         logout,
-        imitateLogout
+        imitateLogin
     }, dispatch);
 }
 

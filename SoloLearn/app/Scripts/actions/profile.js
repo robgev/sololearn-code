@@ -1,5 +1,6 @@
 ﻿import Service from '../api/service';
 import * as types from '../constants/ActionTypes';
+import { changeLoginModal } from './login.action';
 
 export const getNotificationCount = (count) => {
     return {
@@ -9,7 +10,8 @@ export const getNotificationCount = (count) => {
 }
 
 export const getNotificationCountInternal = () => {
-    return dispatch => {
+    return (dispatch, getState) => {
+        if(!getState().imitLoggedin) return;
         Service.request("Profile/GetUnseenNotificationCount").then(response => {
             dispatch(getNotificationCount(response.count));
         }).catch(error => {
@@ -59,6 +61,7 @@ const groupNotificationItems = (notifications) => {
 
 export const getNotificationsInternal = (fromId, toId) => {
     return (dispatch, getState) => {
+        if(!getState().imitLoggedin) return dispatch(changeLoginModal(true));
         const store = getState();
         const notifications = store.notifications;
 
@@ -130,7 +133,8 @@ export const getFollowers = (followers, fromChallenges) => {
 }
 
 export const getFollowersInternal = (index, userId, count = 20, fromChallenges = false) => {
-    return dispatch => {
+    return (dispatch, getState) => {
+        if(!getState().imitLoggedin) return;
         return Service.request("Profile/GetFollowers", { id: userId, index: index, count: count }).then(response => {
             const followers = response.users;
             dispatch(getFollowers(followers, fromChallenges));
@@ -150,7 +154,8 @@ export const getFollowing = (following, fromChallenges) => {
 }
 
 export const getFollowingInternal = (index, userId, count = 20, fromChallenges = false) => {
-    return dispatch => {
+    return (dispatch, getState) => {
+        if(!getState().imitLoggedin) return;
         return Service.request("Profile/GetFollowing", { id: userId, index: index, count: count }).then(response => {
             const following = response.users;
             dispatch(getFollowing(following, fromChallenges));
@@ -177,7 +182,8 @@ export const followUser = (userId, fromFollowers, follow) => {
 }
 
 export const followUserInternal = (userId, fromFollowers) => {
-    return dispatch => {
+    return (dispatch, getState) => {
+        if(!getState().imitLoggedin) return dispatch(changeLoginModal(true));
         dispatch(followUser(userId, fromFollowers, true)).then(() => {
             Service.request("Profile/Follow", { id: userId })
         }).catch((error) => {
@@ -187,7 +193,8 @@ export const followUserInternal = (userId, fromFollowers) => {
 }
 
 export const unfollowUserInternal = (userId, fromFollowers) => {
-    return dispatch => {
+    return (dispatch, getState) => {
+        if(!getState().imitLoggedin) return dispatch(changeLoginModal(true));
         dispatch(followUser(userId, fromFollowers, false)).then(() => {
             Service.request("Profile/Unfollow", { id: userId })
         }).catch((error) => {

@@ -30,12 +30,12 @@ export default class QuizSelector extends Component {
     render() {
         const QuizComponent = QuizComponents[this.props.quiz.type];
         const key = this.props.quiz.id + (this.props.retryIndex ?  this.props.retryIndex : '');
-        // ref={(child) => this._quizSelectorChild = child }
-
+        
         return(
             <QuizComponent
                 key={key}
                 quiz={this.props.quiz}
+                ref={(child) => this._quizSelectorChild = child }
             />
         ); 
     }

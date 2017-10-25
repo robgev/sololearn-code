@@ -1,5 +1,6 @@
 ﻿import Service from '../api/service';
 import * as types from '../constants/ActionTypes';
+import { changeLoginModal } from './login.action';
 
 //Utils
 import toSeoFrendly from '../utils/linkPrettify';
@@ -122,7 +123,8 @@ export const votePostInternal = (post, vote) => {
     let votes = post.votes + userVote - post.vote;
     const isPrimary = post.parentID == null;
 
-    return dispatch => {
+    return (dispatch, getState) => {
+        if(!getState().imitLoggedin) return dispatch(changeLoginModal(true));
         dispatch(votePost(post.id, isPrimary, userVote, votes)).then(() => {
             Service.request("Discussion/VotePost", { id: post.id, vote: userVote });
         }).catch((error) => {
@@ -146,7 +148,8 @@ export const editPost = (id, isPrimary, message) => {
 export const editPostInternal = (post, message) => {
     const isPrimary = post.parentID == null;
 
-    return dispatch => {
+    return (dispatch, getState) => {
+        if(!getState().imitLoggedin) return dispatch(changeLoginModal(true));
         dispatch(editPost(post.id, isPrimary, message)).then(() => {
             Service.request("Discussion/EditPost", { id: post.id, message: message });
         }).catch((error) => {
@@ -169,8 +172,8 @@ export const deletePost = (id, isPrimary) => {
 
 export const deletePostInternal = (post) => {
     const isPrimary = post.parentID == null;
-
-    return dispatch => {
+    return (dispatch, getState) => {
+        if(!getState().imitLoggedin) return dispatch(changeLoginModal(true));
         if (!isPrimary) {
             dispatch(deletePost(post.id, isPrimary)).then(() => {
                 Service.request("Discussion/DeletePost", { id: post.id });
@@ -189,7 +192,8 @@ export const deletePostInternal = (post) => {
 }
 
 export const addQuestion = (title, message, tags) => {
-    return dispatch => {
+    return (dispatch, getState) => {
+        if(!getState().imitLoggedin) return dispatch(changeLoginModal(true));
         return Service.request("Discussion/CreatePost", { title: title, message: message, tags: tags }).then(response => {
             let post = response.post;
             post.answers = 0;
@@ -217,6 +221,7 @@ export const addQuestion = (title, message, tags) => {
 
 export const editQuestion = (id, title, message, tags) => {
     return (dispatch, getState) => {
+        if(!getState().imitLoggedin) return dispatch(changeLoginModal(true));
         const store = getState();
         let post = store.discussPost;
 
@@ -248,7 +253,8 @@ export const questionFollowing = (isFollowing) => {
 }
 
 export const questionFollowingInternal = (id, isFollowing) => {
-    return dispatch => {
+    return (dispatch, getState) => {
+        if(!getState().imitLoggedin) return dispatch(changeLoginModal(true));
         dispatch(questionFollowing(isFollowing)).then(() => {
             if (isFollowing) {
                 Service.request("Discussion/FollowPost", { id: id });
@@ -275,7 +281,8 @@ export const toggleAcceptedAnswer = (id, isAccepted) => {
 }
 
 export const toggleAcceptedAnswerInternal = (id, isAccepted) => {
-    return dispatch => {
+    return (dispatch, getState) => {
+        if(!getState().imitLoggedin) return dispatch(changeLoginModal(true));
         dispatch(toggleAcceptedAnswer(id, isAccepted)).then(() => {
             Service.request("Discussion/ToggleAcceptedAnswer", { id: id, accepted: !isAccepted });
         }).catch((error) => {

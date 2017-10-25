@@ -13,13 +13,19 @@ export const logout = () => dispatch => {
         .catch(e => console.log(e));
 }
 
-export const login = ({ email, password }) => async dispatch => {
+export const login = ({ email, password }) => async (dispatch, getState) => {
+    const { userProfile, imitLoggedin } = getState();
     try {
+        if(userProfile != null) await dispatch(logout());
         const res = await Service.request('Login', { email, password: hash(password) });
         if(res.error) return faultGenerator(res.error.data);
         const { profile } = await Service.request('Profile/GetProfile', { id: res.user.id });
         new Storage().save('profile', profile);
         dispatch(getUserProfile(profile));
+        if(!imitLoggedin) {
+            dispatch(imitateLogin());
+            dispatch(changeLoginModal(false));
+        }
     } catch(e) {
         console.log(e);
     }
@@ -46,7 +52,7 @@ export const forgotPassword = email => dispatch => {
         })
 }
 
-export const imitateLogout = () => ({ type: types.IMITATE_LOGIN });
+export const imitateLogin = () => ({ type: types.IMITATE_LOGIN });
 
 export const changeLoginModal = (isOpen) => {
     return { type: types.CHANGE_LOGIN_MODAL, payload: isOpen }

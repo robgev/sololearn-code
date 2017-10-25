@@ -25,7 +25,14 @@ class Index extends PureComponent {
         }
     }
 
-    checkToFeed = err => !err ? browserHistory.push('/feed') : this.fault(err)
+    checkToFeed = err => {
+        if(!err) {
+            if(browserHistory.getCurrentLocation().pathname === '/login') {
+                return browserHistory.push('/feed');
+            }
+        }
+        return this.fault(err);
+    }
 
     fault = err => err.map(curr => this.alert(curr.split(/(?=[A-Z])/).join(' '), 'info'))
     
