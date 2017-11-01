@@ -84,6 +84,11 @@ class TypeInControl extends Component {
         }
     }
 
+    unlock() {
+        this.setState({ correctText: this.desiredText });
+        this.isCorrect = true;
+    }
+
     getInput(targetValue) {
         var input = targetValue.trim().toLowerCase();
         if (input.length > this.realText.length) {
@@ -97,11 +102,9 @@ class TypeInControl extends Component {
         let targetValue = e.target.value;
         this.setState({
             text : targetValue
-        });  
+        });
         let input = this.getInput(targetValue);
         let desiredText = this.desiredText;
-        let realText = this.realText;
-
         if (desiredText.indexOf(input) == 0) {
             this.setState({
                 correctText: input,
@@ -112,7 +115,7 @@ class TypeInControl extends Component {
             for (let i = 0; i < input.length && i < desiredText.length; i++) {
                 if (input[i] != desiredText[i]) {
                     this.setState({
-                        correctText: realText.substr(0, i),
+                        correctText: this.realText.substr(0, i),
                         wrongText: input.substr(i)
                     });
                     break;

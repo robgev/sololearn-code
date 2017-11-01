@@ -128,6 +128,7 @@ class Quiz extends Component {
         if(Progress.consumePoints(this.skipPrice)) {
             Progress.applyHint(this.props.activeQuiz.id, PointExchangeTypes.Skip, this.skipPrice);
             this._child._quizSelectorChild.unlock();
+            this.handleCheck();
             this.handleUnlockDialogClose();
         }
         else {
