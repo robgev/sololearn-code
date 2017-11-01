@@ -25,6 +25,7 @@
     "material-ui-chip-input": "^0.13.6",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
+    "prettier": "^1.7.4",
     "radium": "^0.18.4",
     "react": "^15.6.1",
     "react-addons-create-fragment": "^15.6.0",

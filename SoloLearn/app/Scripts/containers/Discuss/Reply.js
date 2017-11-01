@@ -240,15 +240,13 @@ class Reply extends Component {
 
     //Save edited answer text
     save() {
-        let reply = this.props.reply;
+        const { reply } = this.props;
         this.setState({ isEditing: false });
         this.props.editPostInternal(reply, this.state.textFieldValue);
     }
 
     render() {
-        let reply = this.props.reply;
-        console.log("RENDER");
-
+        const { reply } = this.props;
         return (
             <div className="reply" key={reply.id} style={(reply.isAccepted && !this.state.isEditing) ? [styles.reply.base, styles.reply.accepted] : styles.reply.base}>
                 <div className="details-wrapper" style={styles.detailsWrapper}>

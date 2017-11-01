@@ -31,9 +31,10 @@ export const getProfileQuestions = (questions) => {
     }
 }
 
-export const getQuestionsInternal = (index, orderBy, query, profileId = null, count = 20) => {
-    return dispatch => {
-        return Service.request("Discussion/Search", { index, count, orderBy, query, profileId })
+export const getQuestionsInternal = (index, profileId = null, count = 20) => {
+    return (dispatch, getState) => {
+        const { discussFilters: { discussQuery, discussOrdering } } = getState();
+        return Service.request("Discussion/Search", { index, count, orderBy: discussOrdering, query: discussQuery, profileId })
             .then(response => {
                 const questions = response.posts;
 
@@ -60,15 +61,16 @@ export const loadPost = (post) => {
 
 export const loadPostInternal = (id) => {
     return dispatch => {
-        return Service.request("Discussion/GetPost", { id: id }).then(response => {
-            let post = response.post;
-            post.alias = toSeoFrendly(post.title, 100);
-            post.replies = [];
+        return Service.request("Discussion/GetPost", { id })
+            .then(response => {
+                let post = response.post;
+                post.alias = toSeoFrendly(post.title, 100);
+                post.replies = [];
 
-            dispatch(loadPost(post));
-        }).catch(error => {
-            console.log(error);
-        });
+                dispatch(loadPost(post));
+            }).catch(error => {
+                console.log(error);
+            });
     }
 }
 
@@ -293,3 +295,5 @@ export const toggleAcceptedAnswerInternal = (id, isAccepted) => {
     }
 }
 
+export const changeDiscussQuery = (query) => ({ type: types.CHANGE_DISCUSS_QUERY, payload: query });
+export const changeDiscussOrdering = (ordering) => ({ type: types.CHANGE_DISCUSS_ORDERING, payload: ordering });

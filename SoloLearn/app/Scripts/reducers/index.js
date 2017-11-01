@@ -1,5 +1,5 @@
 ﻿//General
-import { createStore, applyMiddleware, combineReducers, bindActionCreators } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
@@ -26,6 +26,7 @@ import codes from './reducer_codes';
 //Discuss
 import questions from './reducer_questions';
 import discussPost from './reducer_post';
+import discussFilters from './reducer_discuss_filers';
 
 //Notifications
 import notifications from './reducer_notifications';
@@ -58,7 +59,7 @@ const reducers = combineReducers({
     //Playground
     codes,
     //Discuss
-    questions, discussPost,
+    questions, discussPost, discussFilters,
     //Notifications
     notifications, notificationsCount,
     //Feed

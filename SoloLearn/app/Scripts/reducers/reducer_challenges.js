@@ -4,15 +4,6 @@
 } from '../constants/ActionTypes';
 import { combineReducers } from 'redux';
 
-// const initialState = {
-//     contests: null,
-//     courseId: null,
-//     allPlayers: [],
-//     followers: [],
-//     following: [],
-//     activeContest: null
-// }
-
 const contests = (state = null, action) => {
     switch(action.type) {
         case GET_CONTESTS:

@@ -69,26 +69,24 @@ class Questions extends Component {
         }
     }
     loadQuestions = () => {
-        const { questions, ordering, userId, query } = this.props;
-
+        const { questions, userId } = this.props;
         this.setState({ isLoading: true }); //if (this.props.questions.length > 0)
-
         const index = questions ? questions.length : 0;
-        this.props.getQuestionsInternal(index, ordering, query, userId).then(count => {
-            if (count < 20) this.setState({ fullyLoaded: true });
-
-            this.setState({ isLoading: false });
-        }).catch((error) => {
-            console.log(error);
-        });
+        this.props.getQuestionsInternal(index, userId)
+            .then(count => {
+                if (count < 20) this.setState({ fullyLoaded: true });
+                this.setState({ isLoading: false });
+            })
+            .catch((e) => console.log(e));
     }
     //Load questions when condition changes
     loadQuestionByState = () => {
-        this.props.emptyQuestions().then(() => {
-            this.loadQuestions();
-        }).catch((error) => {
-            console.log(error);
-        });
+        this.props.emptyQuestions()
+            .then(() => {
+                this.loadQuestions();
+            }).catch((e) => {
+                console.log(e);
+            });
     }
     renderQuestions = () => {
         return this.props.questions.map(quesiton => {
@@ -101,12 +99,15 @@ class Questions extends Component {
         const { isLoaded, questions, isUserProfile } = this.props;
 
         return (
-            <div className="questions">
+            <div>
                 {((!isLoaded || questions.length == 0) && !this.state.fullyLoaded && !isUserProfile) && <LoadingOverlay />}
                 {(isLoaded && questions.length > 0) && this.renderQuestions()}
                 {
                     ((isUserProfile || questions.length > 0) && !this.state.fullyLoaded) &&
-                    <div className="loading" style={!this.state.isLoading ? styles.bottomLoading.base : [styles.bottomLoading.base, styles.bottomLoading.active]}>
+                    <div
+                        style={!this.state.isLoading ?
+                            styles.bottomLoading.base :
+                            [styles.bottomLoading.base, styles.bottomLoading.active]}>
                         <LoadingOverlay size={30} />
                     </div>
                 }
@@ -116,18 +117,11 @@ class Questions extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        defaultsLoaded: defaultsLoaded(state)
-    };
-}
-
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        loadDefaults,
         getQuestionsInternal,
         emptyQuestions
     }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(Radium(Questions));
+export default connect(null, mapDispatchToProps, null, { withRef: true })(Radium(Questions));

@@ -6,6 +6,8 @@ import Radium, { Style } from 'radium';
 //Redux modules
 import { connect } from 'react-redux';
 import { isLoaded } from '../../reducers';
+import { bindActionCreators } from 'redux';
+import { changeDiscussQuery, changeDiscussOrdering } from '../../actions/discuss';
 
 //Service
 import Service from '../../api/service';
@@ -68,33 +70,33 @@ const styles = {
 class QuestionsBase extends Component {
     state = {
         suggestions: [],
-        query: "",
-        ordering: 8
     }
-
+    updateQuestions = () => this._questions.getWrappedInstance().loadQuestionByState();
     //Get search suggestions
     handleUpdateInput = (searchText) => {
-        if(searchText == this.state.query) return;
+        if(searchText == this.props.query) return;
+        this.props.changeDiscussQuery(searchText);
 
-        this.setState({ query: searchText });
-
-        Service.request("Discussion/getTags", { query: searchText }).then((response) => {
-            this.setState({ suggestions: response.tags })
-        }).catch((error) => {
-            console.log(error);
-        });
+        Service.request("Discussion/getTags", { query: searchText })
+            .then((response) => {
+                this.setState({ suggestions: response.tags })
+            }).catch((e) => {
+                console.log(e);
+            });
     }
-
     //Clear search input
     clearSearchInput = () => {
-        this.setState({ query: "" });
-        this.refs.questions.getWrappedInstance().loadQuestionByState();
+        this.props.changeDiscussQuery('');
+        this.updateQuestions();
     }
-
     //Change discuss oredering
     handleFilterChange = (e, index, value) => {
-        this.setState({ ordering: value });
-        this.refs.questions.getWrappedInstance().loadQuestionByState();
+        this.props.changeDiscussOrdering(value);
+        this.updateQuestions();
+    }
+    handleEnter = e => {
+        if(e.key === 'Enter')
+            this.updateQuestions();
     }
     render() {
         return (
@@ -106,15 +108,22 @@ class QuestionsBase extends Component {
                             style={styles.searchInput}
                             menuStyle={styles.searchSuggestionsList}
                             hintText="Search..."
-                            searchText={this.state.query}
+                            searchText={this.props.query}
                             underlineStyle={{display: 'none'}}
                             dataSource={this.state.suggestions} 
                             onUpdateInput={(value) => this.handleUpdateInput(value)}
                             onNewRequest={this.loadQuestionByState}
-                            filter={(searchText, key) => true} />
-                        { this.state.query.length > 0 && <Clear color={grey700} style={styles.clearIcon} onClick={this.clearSearchInput}/> }
+                            filter={(searchText, key) => true}
+                            onKeyPress={this.handleEnter}
+                        />
+                        { this.props.query.length > 0 && <Clear color={grey700} style={styles.clearIcon} onClick={this.clearSearchInput}/> }
                     </div>
-                    <DropDownMenu style={styles.discussFilter} value={this.state.ordering} onChange={this.handleFilterChange} autoWidth={false}>
+                    <DropDownMenu
+                        style={styles.discussFilter}
+                        value={this.props.ordering}
+                        onChange={this.handleFilterChange}
+                        autoWidth={false}
+                    >
                         <MenuItem style={styles.discussFilterItem} value={8} primaryText="Trending" />
                         <MenuItem style={styles.discussFilterItem} value={1} primaryText="Most Recent" />
                         <MenuItem style={styles.discussFilterItem} value={2} primaryText="Most Popular" />
@@ -127,20 +136,29 @@ class QuestionsBase extends Component {
                 <Questions
                     questions={this.props.questions}
                     isLoaded={this.props.isLoaded}
-                    ordering={this.state.ordering}
-                    query={this.state.query}
+                    ordering={this.props.ordering}
+                    query={this.props.query}
                     isUserProfile={false}
-                    ref={"questions"} />
+                    ref={questions => { this._questions = questions }}
+                />
             </div>
         );
     }
 }
 
-function mapStateToProps(state) {
+const  mapStateToProps = (state) => {
     return {
         isLoaded: isLoaded(state, "discuss"),
-        questions: state.questions       
+        questions: state.questions,
+        query: state.discussFilters.discussQuery,
+        ordering: state.discussFilters.discussOrdering
     };
 }
 
-export default connect(mapStateToProps, () => { return {} })(Radium(QuestionsBase));
+const mapDispatchToProps = dispatch => 
+    bindActionCreators({
+        changeDiscussOrdering,
+        changeDiscussQuery
+    }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(Radium(QuestionsBase));

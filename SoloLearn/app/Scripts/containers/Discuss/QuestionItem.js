@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import Radium, { Style } from 'radium';
 import DiscussTag from './DiscussTag';
 import removeDups from '../../utils/removeDups';
+import { browserHistory } from 'react-router';
 
 //Material UI components
 import ChatBubble from 'material-ui/svg-icons/communication/chat-bubble-outline';
@@ -88,7 +89,7 @@ class QuestionItem extends PureComponent {
         const { question } = this.props;
         return (
             <div className="question" style={styles.question}>
-                <Link to={`/discuss/${question.id}`} style={noStyleLink}>
+                
                     <div className="stats" style={styles.stats}>
                         <p>{question.votes > 0 ? "+" : ""}{numberFormatter(question.votes)}</p>
                         <div className="asnwers-count-wrapper" style={styles.answersCountWrapper}>
@@ -98,7 +99,9 @@ class QuestionItem extends PureComponent {
                     </div>
                     <div className="details-wrapper" style={styles.detailsWrapper}>
                         <div className="details">
-                            <p className="title" style={styles.title}>{question.title}</p>
+                            <Link to={`/discuss/${question.id}`} style={noStyleLink}>
+                                <p className="title" style={styles.title}>{question.title}</p>
+                            </Link>
                             <div className="tags">
                                 {
                                     removeDups(question.tags).map((tag, index) => (
@@ -118,7 +121,6 @@ class QuestionItem extends PureComponent {
                             <span> {question.userName}</span>
                         </div>
                     </div>
-                </Link>
             </div>
         );
     }
