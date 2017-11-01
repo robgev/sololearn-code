@@ -63,10 +63,9 @@ export const loadPostInternal = (id) => {
     return dispatch => {
         return Service.request("Discussion/GetPost", { id })
             .then(response => {
-                let post = response.post;
+                const { post } = response;
                 post.alias = toSeoFrendly(post.title, 100);
                 post.replies = [];
-
                 dispatch(loadPost(post));
             }).catch(error => {
                 console.log(error);
@@ -85,6 +84,7 @@ export const loadRepliesInternal = (ordering) => {
     return (dispatch, getState) => {
         const store = getState();
         const post = store.discussPost;
+        
 
         return Service.request("Discussion/GetReplies", { postid: post.id, index: post.replies.length, count: 20, orderBy: ordering })
             .then(response => {

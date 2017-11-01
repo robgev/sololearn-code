@@ -281,16 +281,15 @@ class Post extends Component {
         );
     }
 
-    componentWillMount() {
-        let params = this.props.params;
-
-        this.props.loadPostInternal(params.id).then(() => {
-            //Checking alias
+    async componentWillMount() {
+        try {
+            const { params } = this.props;
+            await this.props.loadPostInternal(params.id);
             this.checkAlias(params.questionName);
             this.getReplies();
-        }).catch((error) => {
-            console.log(error);
-        });
+        } catch(e) {
+            console.log(e);
+        }
     }
 
     //Add event listeners after component mounts
