@@ -316,8 +316,6 @@ class Comment extends Component {
     }
 
     render() {
-        console.log("RENDER"); //, this.props.isEditing, this.props.activeComment);
-
         const comment = this.props.comment;
         const isReply = comment.parentID != null;
         const isEditing = (this.props.isEditing && this.props.activeComment.id === comment.id);

@@ -78,13 +78,7 @@ const styles = {
 }
 
 class NotificationItem extends Component {
-    constructor(props) {
-        super(props);
-
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    handleClick() {
+    handleClick = () => {
         const notification = this.props.notification;
         let ids = [notification.id];
 
@@ -97,13 +91,13 @@ class NotificationItem extends Component {
         this.props.markRead(ids);
     }
 
-    getTitleUser(title, pattern) {
+    getTitleUser = (title, pattern) => {
         const notification = this.props.notification;
         let href = "/profile/" + notification.actionUser.id;
         return title.replace(pattern, '<a href=' + href + ' style="text-decoration:none;color:#8BC34A;font-weight:500;">' + notification.actionUser.name + "</a>");
     }
 
-    generateContent() {
+    generateContent = () => {
         const notification = this.props.notification;
         let notificationTitle = notification.groupedItems.length > 1 ? notification.message : notification.title;
 

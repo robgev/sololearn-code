@@ -1,5 +1,6 @@
 ﻿import Service from '../api/service';
 import * as types from '../constants/ActionTypes';
+import { browserHistory } from 'react-router';
 
 import contestTypes from '../defaults/contestTypes';
 
@@ -113,13 +114,14 @@ export const createContestInternal = (opponentId) => {
         const { courseId } = store.challenges;
 
         return Service.request("Challenge/CreateContest", { courseId, opponentId })
-        .then(response => {
-            const contest = response.contest;
-            dispatch(getContest(contest));
-        })
-        .catch(error => {
-            console.log(error);
-        });
+            .then(response => {
+                const contest = response.contest;
+                dispatch(getContest(contest));
+                browserHistory.push('/challenge/' + contest.id);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 }
 

@@ -42,29 +42,14 @@ const styles = {
 }
 
 class Questions extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLoading: false,
-            fullyLoaded: false
-        }
+    state = {
+        isLoading: false,
+        fullyLoaded: false
     }
     componentWillMount() {
-        const { defaultsLoaded, isLoaded } = this.props;
-        if (!defaultsLoaded) {
-            this.props.loadDefaults().then((response) => {
-                if (!isLoaded) {
-                    this.loadQuestions();
-                }
-            }).catch((error) => {
-                console.log(error);
-            });
-        }
-        else {
-            if (!isLoaded) {
-                this.loadQuestions();
-            }
-        }
+        if (!this.props.isLoaded) {
+            this.loadQuestions();
+        } 
     }
     componentDidMount() {
         window.addEventListener('scroll', this.handleScroll);
@@ -84,7 +69,7 @@ class Questions extends Component {
         }
     }
     loadQuestions = () => {
-        const { questions, ordering, query, userId } = this.props;
+        const { questions, ordering, userId, query } = this.props;
 
         this.setState({ isLoading: true }); //if (this.props.questions.length > 0)
 

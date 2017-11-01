@@ -174,16 +174,12 @@ class QuizManager extends Component {
 
     componentWillMount() {
         if(!this.props.isLoaded && !this.props.isShortcut) {
-            this.props.loadDefaults().then((response) => {
-                this.props.loadCourseInternal().then(() => {
-                    this.props.selectModule(parseInt(this.props.params.moduleId));
-                    this.props.selectLesson(parseInt(this.props.params.lessonId));
+            this.props.loadCourseInternal().then(() => {
+                this.props.selectModule(parseInt(this.props.params.moduleId));
+                this.props.selectLesson(parseInt(this.props.params.lessonId));
 
-                    const lesson = this.props.lessons[this.props.params.lessonId];
-                    this.getActiveQuiz(lesson);
-                }).catch((error) => {
-                    console.log(error);
-                });
+                const lesson = this.props.lessons[this.props.params.lessonId];
+                this.getActiveQuiz(lesson);
             }).catch((error) => {
                 console.log(error);
             });

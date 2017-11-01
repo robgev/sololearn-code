@@ -2,11 +2,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Radium, { Style } from 'radium';
+import { browserHistory } from 'react-router'
 
 //Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { loadDefaults } from '../../actions/defaultActions';
 import { loadCourseInternal, selectLesson, selectModule, selectQuiz } from '../../actions/learn';
 import { isLoaded } from '../../reducers';
 
@@ -18,6 +18,8 @@ import Progress, { ProgressState } from '../../api/progress';
 import toSeoFrendly from '../../utils/linkPrettify';
 import getStyles from '../../utils/styleConverter';
 
+import { LessonType } from './QuizManager';
+
 const styles = {
     lessons: {
         width: '1000px',
@@ -27,7 +29,8 @@ const styles = {
 
     lessonWrapper: {
         display: 'inline-block',
-        margin: '20px 0 0 0'
+        margin: '20px 0 0 0',
+        cursor: 'pointer'
     },
 
     lesson: {
@@ -80,7 +83,7 @@ const styles = {
             backgroundColor: '#8bc34a',
             color: '#fff'
         },
-
+        
         disabled: {
             backgroundColor: 'inherit',
             color: '#565656'
@@ -89,12 +92,41 @@ const styles = {
 }
 
 class Lessons extends Component {
-    constructor(props) {
-        super(props);
-
-        this.handleClick = this.handleClick.bind(this);
+    componentWillMount() {
+        if(!this.props.isLoaded) {
+            this.props.loadCourseInternal().then(() => {           
+                this.props.selectModule(parseInt(this.props.params.moduleId));
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
     }
-
+    
+    handleClick = (lessonId, lessonState, url) => {
+        if (lessonState.visualState == ProgressState.Disabled) {
+            return;
+        }
+        this.props.selectLesson(lessonId, lessonState);
+        this.props.selectQuiz(this.getActiveQuiz(this.props.lessons[lessonId]));
+        browserHistory.push(url)
+    }
+    getActiveQuiz = (lesson) => {
+        const quizzes = lesson.quizzes;
+        const currentNumber = this.props.params.quizNumber || 1;
+        let activeQuiz = {};
+        const isCheckpoint = lesson.type == LessonType.Checkpoint;
+        for (let i = 0; i < quizzes.length; i++) { 
+            if (isCheckpoint) {
+                if((i * 2) + 1 == currentNumber) {
+                    Object.assign(activeQuiz, { id: quizzes[i].id }, { number: currentNumber }, { isText: true });
+                }
+            }
+            if((isCheckpoint ? (i + 1) * 2 : i + 1) == currentNumber) {
+                Object.assign(activeQuiz, { id: quizzes[i].id }, { number: currentNumber }, { isText: false });
+            }
+        }
+        return activeQuiz;
+    }
     renderLessons() {
         const lessons = this.props.activeModule.lessons;
 
@@ -102,9 +134,8 @@ class Lessons extends Component {
             const lessonState = Progress.getLessonState(lesson);
 
             return (
-                <Link to={"/learn/" + this.props.params.courseName + "/" + this.props.params.moduleId + "/" + this.props.params.moduleName + "/" + lesson.id + "/" + toSeoFrendly(lesson.name, 100) + "/" + lessonState.activeQuizNumber} 
-                        key={lesson.id} className={"lesson-item " + lessonState.stateClass} style={styles.lessonWrapper}
-                        onClick={(e) => this.handleClick(e, lesson.id, lessonState)} >
+                <div key={lesson.id} className={"lesson-item " + lessonState.stateClass} style={styles.lessonWrapper}
+                        onClick={() => this.handleClick(lesson.id, lessonState, "/learn/" + this.props.params.courseName + "/" + this.props.params.moduleId + "/" + this.props.params.moduleName + "/" + lesson.id + "/" + toSeoFrendly(lesson.name, 100) + "/" + lessonState.activeQuizNumber)} >
                     <Paper zDepth={lessonState.visualState == ProgressState.Disabled ? 0 : 1} key={lesson.id} style={lessonState.visualState == ProgressState.Disabled ? getStyles(styles.lesson.base, styles.lesson.disabled) : styles.lesson.base}>
                         <div className="number" style={styles.lessonNumber}>{(index + 1) + '/' + lessons.length}</div>
                         <div className="name" style={styles.lessonName}>{lesson.name}</div>
@@ -112,18 +143,11 @@ class Lessons extends Component {
                             <span>{lesson.quizzes.length} questions</span>
                         </div>
                     </Paper>
-                </Link>
+                </div>
             );
         });
     }
 
-    handleClick(e, lessonId, lessonState) {
-        if (lessonState.visualState == ProgressState.Disabled) {
-            e.preventDefault();
-            return;
-        }
-        this.props.selectLesson(lessonId, lessonState);
-    }
 
     render() {
         const { course, modules, activeModule, isLoaded } = this.props;
@@ -139,19 +163,6 @@ class Lessons extends Component {
         );
     }
 
-    componentWillMount() {
-        if(!this.props.isLoaded) {
-            this.props.loadDefaults().then(() => {
-                this.props.loadCourseInternal().then(() => {           
-                    this.props.selectModule(parseInt(this.props.params.moduleId));
-                }).catch((error) => {
-                    console.log(error);
-                });
-            }).catch((error) => {
-                console.log(error);
-            });;
-        }
-    }
 }
 
 function mapStateToProps(state) {
@@ -159,17 +170,17 @@ function mapStateToProps(state) {
         isLoaded: isLoaded(state, "lessons"),
         course: state.course,
         modules: state.modulesMapping,
-        activeModule: !state.course ? null : state.modulesMapping[state.activeModuleId]
+        activeModule: !state.course ? null : state.modulesMapping[state.activeModuleId],
+        lessons: state.lessonsMapping,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        loadCourseInternal: loadCourseInternal,
-        selectLesson: selectLesson,
-        selectModule: selectModule,
-        selectQuiz: selectQuiz,
-        loadDefaults: loadDefaults
+        loadCourseInternal,
+        selectLesson,
+        selectModule,
+        selectQuiz,
     }, dispatch);
 }
 

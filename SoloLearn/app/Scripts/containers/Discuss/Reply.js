@@ -19,6 +19,7 @@ import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import AcceptedIcon from 'material-ui/svg-icons/navigation/check';
 import { grey500, grey700, blueGrey500, lightGreen500 } from 'material-ui/styles/colors';
+import DiscussAuthor from './DiscussAuthor'
 
 //Utils
 import numberFormatter from '../../utils/numberFormatter';
@@ -26,7 +27,7 @@ import updateDate from '../../utils/dateFormatter';
 import getStyles from '../../utils/styleConverter';
 
 
-const styles = {
+export const styles = {
     reply: {
         base: {
             padding: '10px',
@@ -289,13 +290,7 @@ class Reply extends Component {
                             :
                             reply.isAccepted && <AcceptedIcon color={lightGreen500} style={getStyles(styles.bestAnswerButton.icon, styles.bestAnswerButton.margin)} />
                         }
-                        <div className="author-details" style={styles.authorDetails}>
-                            <div style={styles.texts.base}>
-                                <p style={styles.texts.userName}>{reply.userName}</p>
-                                <p style={styles.texts.date}>{updateDate(reply.date)}</p>
-                            </div>
-                            <Avatar size={30} style={styles.avatar}>{reply.userName.charAt(0)}</Avatar>
-                        </div>
+                        <DiscussAuthor date={reply.date} userID={reply.userID} userName={reply.userName} />
                     </div>
                 }
             </div>

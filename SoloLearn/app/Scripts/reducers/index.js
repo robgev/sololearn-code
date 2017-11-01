@@ -73,7 +73,9 @@ const reducers = combineReducers({
     imitLoggedin, loginModal
 });
 
-export const store = createStore(reducers, applyMiddleware(thunk, logger));
+export const store = createStore(reducers, applyMiddleware(thunk, 
+    logger
+));
 
 // Redux selector for detecting data state
 export const isLoaded = (state, componentName) => {
@@ -85,7 +87,7 @@ export const isLoaded = (state, componentName) => {
         case 'lessons':
             return (state.course && state.modulesMapping && state.lessonsMapping && state.activeModuleId) != null;
         case 'quizzes':
-            return (state.course && state.modulesMapping && state.lessonsMapping && state.quizzesMapping && state.activeModuleId && state.activeLessonId && state.activeQuiz) != null;
+            return (state.course && state.modulesMapping && state.lessonsMapping && state.quizzesMapping && state.activeModuleId) != null;
         case 'shortcut':
             return (state.course && state.shortcutLesson) != null;
         case 'discuss':

@@ -3,6 +3,7 @@ import Progress from '../api/progress';
 import Storage from '../api/storage';
 import * as types from '../constants/ActionTypes';
 import { getProfileInternal } from '../actions/defaultActions';
+import { browserHistory } from 'react-router';
 
 //Identifying keys of modules, lessons and quizzes objects
 const structurizeCourse = (modules, dispatch) => {
@@ -71,11 +72,11 @@ const loadCourse = (course) => {
 }
 
 export const loadCourseInternal = (courseId) => {
-    let localStorage = new Storage(); //Caching course data
-    let selectedCourseId = courseId || localStorage.load("selectedCourseId");
-    const course = localStorage.load("c" + selectedCourseId);
-
+    
     return (dispatch, getState) => {
+        let localStorage = new Storage(); //Caching course data
+        let selectedCourseId = courseId || localStorage.load("selectedCourseId");
+        const course = localStorage.load("c" + selectedCourseId);
         dispatch(loadCourse(null));
         const store = getState();
         const userCourses = store.userProfile.skills;
@@ -86,7 +87,7 @@ export const loadCourseInternal = (courseId) => {
 
         if(course != null) {
             localStorage.save("selectedCourseId", course.id);
-
+            browserHistory.replace(`/learn/${course.alias}`)
             return new Promise((resolve, reject) => {
                 Progress.courseId = course.id;
                 Progress.loadCourse(course); //Getting progress of course
@@ -101,14 +102,13 @@ export const loadCourseInternal = (courseId) => {
                     console.log(error);
                 });
             });
-        }
-        else {
+        } else {
             selectedCourseId = selectedCourseId || userCourses[0].id;
 
             localStorage.save("selectedCourseId", selectedCourseId);
-
             return Service.request("GetCourse", { id: selectedCourseId }).then(response => {
                 const course = response.course;
+                browserHistory.replace(`/learn/${course.alias}`)
                 Progress.courseId = course.id;
                 Progress.loadCourse(course); //Getting progress of course
                 Progress.sync().then(response => {
@@ -142,7 +142,7 @@ export const toggleCourseInternal = (courseId, enable) => {
     return (dispatch, getState) => {
         const profile = getState().userProfile;
 
-        return Service.request("Profile/ToggleCourse", { courseId: courseId, enable: enable }).then(response => {
+        return Service.request("Profile/ToggleCourse", { courseId, enable }).then(response => {
             if(!enable) {
                 let index = profile.skills.findIndex(item => item.id == courseId);
                 profile.skills.splice(index, 1);

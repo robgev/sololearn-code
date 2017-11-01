@@ -9,6 +9,8 @@ export const getUserProfile = payload => ({ type: types.GET_USER_PROFILE, payloa
 
 const getProfile = payload => ({ type: types.GET_PROFILE, payload });
 
+export const clearOpenedProfile = () => getProfile(null);
+
 const loadCourses = payload => ({ type: types.LOAD_COURSES, payload });
 
 export const getProfileInternal = userId => async dispatch => {

@@ -20,10 +20,13 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { grey500, grey700, blueGrey500 } from 'material-ui/styles/colors';
+import DiscussTag from './DiscussTag';
+import DiscussAuthor from './DiscussAuthor';
 
 //Utils
 import numberFormatter from '../../utils/numberFormatter';
 import updateDate from '../../utils/dateFormatter';
+import removeDups from '../../utils/removeDups';
 
 const styles = {
     question: {
@@ -149,10 +152,6 @@ const styles = {
 }
 
 class Question extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const { question } = this.props;
 
@@ -172,9 +171,7 @@ class Question extends Component {
                         <p className="title" style={styles.title}>{question.title}</p>
                         <div className="tags">
                             {
-                                question.tags.map((tag, index) => {
-                                    return <div className="tag" key={tag} style={index == 0 ? styles.tag.base : [styles.tag.base, styles.tag.margin]}>{tag}</div> 
-                                })
+                                removeDups(question.tags).map((tag, index) => <DiscussTag tag={tag} index={index} key={tag} />)
                             }
                         </div>
                         <pre className="message" style={styles.message}>{question.message}</pre>
@@ -197,13 +194,7 @@ class Question extends Component {
                     <IconButton className="follow" style={styles.followButton.base} iconStyle={styles.followButton.icon} onClick={() => { this.props.questionFollowingInternal(question.id, !question.isFollowing) }}>
                         <FollowIcon color={question.isFollowing ? blueGrey500 : grey500} />
                     </IconButton>
-                    <div className="author-details" style={styles.authorDetails}>
-                        <div style={styles.texts.base}>
-                            <p style={styles.texts.userName}>{question.userName}</p>
-                            <p style={styles.texts.date}>{updateDate(question.date)}</p>
-                        </div>
-                        <Avatar size={30} style={styles.avatar}>{question.userName.charAt(0)}</Avatar>
-                    </div>
+                    <DiscussAuthor date={question.date} userID={question.userID} userName={question.userName} />
                 </div>
             </Paper>
         );
@@ -213,7 +204,7 @@ class Question extends Component {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        questionFollowingInternal: questionFollowingInternal
+        questionFollowingInternal
     }, dispatch);
 }
 

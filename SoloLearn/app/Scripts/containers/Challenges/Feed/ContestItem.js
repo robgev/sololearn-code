@@ -73,7 +73,7 @@ class ContestItemBase extends Component {
         const relativeDate = "Expires in ";
 
         const dateNow = moment(new Date());
-        const duration = moment.duration(moment(expireDate).diff(moment(dateNow)));
+        const duration = moment.duration(moment.utc(expireDate).diff(moment(dateNow)));
         const hours = Math.floor(duration.asHours());
     
         if (hours < 1) {

@@ -9,7 +9,7 @@ import { loadDefaults } from '../../actions/defaultActions';
 import { getFeedItemsInternal } from '../../actions/feed';
 import { getCodesInternal } from '../../actions/playground';
 import { getQuestionsInternal } from '../../actions/discuss';
-import { getProfileInternal } from '../../actions/defaultActions';
+import { getProfileInternal, clearOpenedProfile } from '../../actions/defaultActions';
 import { emptyProfileFollowers } from '../../actions/profile';
 import { defaultsLoaded, isLoaded } from '../../reducers';
 
@@ -304,11 +304,11 @@ class Profile extends Component {
 
         const { params } = this.props;
         const { tab = '' } = params;
-        if(!this.props.defaultsLoaded) {
-            await this.props.loadDefaults();
-        }
         await this.props.getProfile(params.id);
         this.selectTab(tab);
+    }
+    componentWillUnmount() {
+        this.props.clearOpenedProfile();
     }
 
     //shouldComponentUpdate(nextProps, nextState) {
@@ -333,7 +333,8 @@ function mapDispatchToProps(dispatch) {
         getProfileCodes: getCodesInternal,
         getProfileQuestions: getQuestionsInternal,
         getProfile: getProfileInternal,
-        emptyProfileFollowers: emptyProfileFollowers
+        emptyProfileFollowers: emptyProfileFollowers,
+        clearOpenedProfile
     }, dispatch);
 }
 

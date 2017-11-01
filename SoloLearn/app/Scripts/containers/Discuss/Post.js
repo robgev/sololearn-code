@@ -7,7 +7,7 @@ import Radium, { Style } from 'radium';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { loadDefaults } from '../../actions/defaultActions';
-import { loadPostInternal, loadRepliesInternal, emptyReplies, votePostInternal, deletePostInternal } from '../../actions/discuss';
+import { loadPostInternal, loadRepliesInternal, emptyReplies, votePostInternal, deletePostInternal, loadPost } from '../../actions/discuss';
 import { isLoaded, defaultsLoaded } from '../../reducers';
 
 //Service
@@ -135,7 +135,7 @@ class Post extends Component {
         const post = this.props.post;
 
         if(alias !== post.alias) {
-            browserHistory.push('/discuss/' + post.id + '/' + post.alias);
+            browserHistory.replace('/discuss/' + post.id + '/' + post.alias);
         }
     }
 
@@ -284,39 +284,13 @@ class Post extends Component {
     componentWillMount() {
         let params = this.props.params;
 
-        //Getting defaults
-        if(!this.props.defaultsLoaded) {
-            this.props.loadDefaults().then((response) => {
-                if(!this.props.isLoaded) {
-                    //Loading post data
-                    this.props.loadPostInternal(params.id).then(() => {
-                        //Checking alias
-                        this.checkAlias(params.questionName);
-                        this.getReplies();
-                    }).catch((error) => {
-                        console.log(error);
-                    });
-                }
-            }).catch((error) => {
-                console.log(error);
-            });
-        }
-        else {
-            if(!this.props.isLoaded) {
-                //Loading post data
-                this.props.loadPostInternal(params.id).then(() => {
-                    //Checking alias
-                    this.checkAlias(params.questionName);
-                    this.getReplies();
-                }).catch((error) => {
-                    console.log(error);
-                });
-            }
-            else {
-                this.checkAlias(params.questionName);
-                this.getReplies();
-            }
-        }
+        this.props.loadPostInternal(params.id).then(() => {
+            //Checking alias
+            this.checkAlias(params.questionName);
+            this.getReplies();
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 
     //Add event listeners after component mounts
@@ -326,6 +300,7 @@ class Post extends Component {
     
     //Remove event listeners after component unmounts
     componentWillUnmount() {
+        this.props.loadPost(null);
         window.removeEventListener('scroll', this.handleScroll);
     }
 }
@@ -340,12 +315,13 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ 
-        loadDefaults: loadDefaults,
-        loadPostInternal: loadPostInternal,
-        loadRepliesInternal: loadRepliesInternal,
-        deletePostInternal: deletePostInternal,
-        emptyReplies: emptyReplies,
-        votePostInternal: votePostInternal
+        loadDefaults,
+        loadPostInternal,
+        loadRepliesInternal,
+        deletePostInternal,
+        emptyReplies,
+        votePostInternal,
+        loadPost
     }, dispatch);
 }
 

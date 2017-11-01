@@ -27,11 +27,9 @@ export default (Comp) => {
         }
         turnEventListener = shoudBeOn => {
             if(shoudBeOn && !this.state.isEventListenerOn) {
-                console.log('SCROLL LISTENER IS ON')
                 addEventListener('scroll', this.scrollPrivacy);
                 this.setState({ isEventListenerOn: true });
             } else if (!shoudBeOn && this.state.isEventListenerOn) {
-                console.log('SCROLL LISTENER IS OFF')
                 removeEventListener('scroll', this.scrollPrivacy);
             }
         }

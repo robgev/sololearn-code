@@ -66,21 +66,14 @@ const styles = {
 }
 
 class QuestionsBase extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            suggestions: [],
-            query: "",
-            ordering: 8
-        }
-
-        this.clearSearchInput = this.clearSearchInput.bind(this);
-        this.handleFilterChange = this.handleFilterChange.bind(this);
+    state = {
+        suggestions: [],
+        query: "",
+        ordering: 8
     }
 
     //Get search suggestions
-    handleUpdateInput(searchText) {
+    handleUpdateInput = (searchText) => {
         if(searchText == this.state.query) return;
 
         this.setState({ query: searchText });
@@ -93,17 +86,16 @@ class QuestionsBase extends Component {
     }
 
     //Clear search input
-    clearSearchInput() {
+    clearSearchInput = () => {
         this.setState({ query: "" });
         this.refs.questions.getWrappedInstance().loadQuestionByState();
     }
 
     //Change discuss oredering
-    handleFilterChange(e, index, value) {
+    handleFilterChange = (e, index, value) => {
         this.setState({ ordering: value });
         this.refs.questions.getWrappedInstance().loadQuestionByState();
     }
-
     render() {
         return (
             <div className="discuss" style={styles.container}>
@@ -119,7 +111,7 @@ class QuestionsBase extends Component {
                             dataSource={this.state.suggestions} 
                             onUpdateInput={(value) => this.handleUpdateInput(value)}
                             onNewRequest={this.loadQuestionByState}
-                            filter={(searchText: string, key: string) => true} />
+                            filter={(searchText, key) => true} />
                         { this.state.query.length > 0 && <Clear color={grey700} style={styles.clearIcon} onClick={this.clearSearchInput}/> }
                     </div>
                     <DropDownMenu style={styles.discussFilter} value={this.state.ordering} onChange={this.handleFilterChange} autoWidth={false}>
@@ -132,7 +124,13 @@ class QuestionsBase extends Component {
                         <MenuItem style={styles.discussFilterItem} value={6} primaryText="My Answers" />
                     </DropDownMenu>
                 </div>
-                <Questions questions={this.props.questions} isLoaded={this.props.isLoaded} ordering={this.state.ordering} query={this.state.query} isUserProfile={false} ref="questions" />
+                <Questions
+                    questions={this.props.questions}
+                    isLoaded={this.props.isLoaded}
+                    ordering={this.state.ordering}
+                    query={this.state.query}
+                    isUserProfile={false}
+                    ref={"questions"} />
             </div>
         );
     }

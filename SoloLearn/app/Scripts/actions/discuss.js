@@ -31,22 +31,23 @@ export const getProfileQuestions = (questions) => {
     }
 }
 
-export const getQuestionsInternal = (index, orderBy, query, userId = null, count = 20) => {
+export const getQuestionsInternal = (index, orderBy, query, profileId = null, count = 20) => {
     return dispatch => {
-        return Service.request("Discussion/Search", { index: index, count: count, orderBy: orderBy, query: query, profileId: userId }).then(response => {
-            const questions = response.posts;
+        return Service.request("Discussion/Search", { index, count, orderBy, query, profileId })
+            .then(response => {
+                const questions = response.posts;
 
-            if (userId != null) {
-                dispatch(getProfileQuestions(questions));
-            }
-            else {
-                dispatch(getQuestions(questions));
-            }
+                if (profileId != null) {
+                    dispatch(getProfileQuestions(questions));
+                }
+                else {
+                    dispatch(getQuestions(questions));
+                }
 
-            return questions.length;
-        }).catch(error => {
-            console.log(error);
-        });
+                return questions.length;
+            }).catch(error => {
+                console.log(error);
+            });
     }
 }
 
@@ -83,8 +84,9 @@ export const loadRepliesInternal = (ordering) => {
         const store = getState();
         const post = store.discussPost;
 
-        return Service.request("Discussion/GetReplies", { postid: post.id, index: post.replies.length, count: 20, orderBy: ordering }).then(response => {
-            const posts = response.posts;
+        return Service.request("Discussion/GetReplies", { postid: post.id, index: post.replies.length, count: 20, orderBy: ordering })
+            .then(response => {
+            const { posts } = response;
             dispatch(loadReplies(posts));
 
             return posts.length;

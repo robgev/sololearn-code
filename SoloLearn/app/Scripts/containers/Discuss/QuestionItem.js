@@ -2,6 +2,8 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 import Radium, { Style } from 'radium';
+import DiscussTag from './DiscussTag';
+import removeDups from '../../utils/removeDups';
 
 //Material UI components
 import ChatBubble from 'material-ui/svg-icons/communication/chat-bubble-outline';
@@ -10,6 +12,8 @@ import { green500 } from 'material-ui/styles/colors';
 //Utils
 import numberFormatter from '../../utils/numberFormatter';
 import updateDate from '../../utils/dateFormatter';
+
+export const noStyleLink = { textDecoration: 'none' };
 
 const styles = {
     question: {
@@ -84,39 +88,37 @@ class QuestionItem extends PureComponent {
         const { question } = this.props;
         return (
             <div className="question" style={styles.question}>
-                <div className="stats" style={styles.stats}>
-                    <p>{question.votes > 0 ? "+" : ""}{numberFormatter(question.votes)}</p>
-                    <div className="asnwers-count-wrapper" style={styles.answersCountWrapper}>
-                        <p style={styles.answersCount}>{question.answers > 99 ? "99+" : question.answers}</p>
-                        <ChatBubble color={green500} style={styles.chatBubble} />
-                    </div>
-                </div>
-                <div className="details-wrapper" style={styles.detailsWrapper}>
-                    <div className="details">
-                        <p className="title" style={styles.title}>{question.title}</p>
-                        <div className="tags">
-                            {
-                                [...new Set(question.tags)].map((tag, index) => {
-                                    return (
-                                        <div 
-                                            className="tag" 
-                                            key={question.id + " " + tag} 
-                                            style={index == 0 ? styles.tag.base : [styles.tag.base, styles.tag.margin]}
-                                        >
-                                            {tag}
-                                        </div>
-                                    )
-                                })
-                            }
+                <Link to={`/discuss/${question.id}`} style={noStyleLink}>
+                    <div className="stats" style={styles.stats}>
+                        <p>{question.votes > 0 ? "+" : ""}{numberFormatter(question.votes)}</p>
+                        <div className="asnwers-count-wrapper" style={styles.answersCountWrapper}>
+                            <p style={styles.answersCount}>{question.answers > 99 ? "99+" : question.answers}</p>
+                            <ChatBubble color={green500} style={styles.chatBubble} />
                         </div>
                     </div>
-                    <div className="author-details" style={styles.authorDetails}>
-                        <span style={styles.date}>
-                            {updateDate(question.date)} by
-                    </span>
-                        <span> {question.userName}</span>
+                    <div className="details-wrapper" style={styles.detailsWrapper}>
+                        <div className="details">
+                            <p className="title" style={styles.title}>{question.title}</p>
+                            <div className="tags">
+                                {
+                                    removeDups(question.tags).map((tag, index) => (
+                                        <DiscussTag
+                                            key={question.id + " " + tag} 
+                                            tag={tag}
+                                            index={index}
+                                        />
+                                    ))
+                                }
+                            </div>
+                        </div>
+                        <div className="author-details" style={styles.authorDetails}>
+                            <span style={styles.date}>
+                                {updateDate(question.date)} by
+                        </span>
+                            <span> {question.userName}</span>
+                        </div>
                     </div>
-                </div>
+                </Link>
             </div>
         );
     }

@@ -1,6 +1,7 @@
 ﻿//React modules
 import React from 'react';
 import { Route, IndexRoute, Redirect, browserHistory } from 'react-router';
+import redirector from '../utils/redirector';
 
 //Layouts
 import MainLayout from '../components/Layouts/MainLayout';
@@ -50,7 +51,7 @@ export default (
                 <IndexRoute component={Quiz} />
             </Route>
         </Route>
-        <Route path='/learn/(:courseName)' component={Modules} />
+        <Route path='/learn(/:courseName)' component={Modules} />
         <Route path='/learn/:courseName/:moduleId(/:moduleName)' component={Lessons} />
         <Route path='/learn/:courseName/:moduleId/:moduleName/:lessonId(/:lessonName)' component={QuizManager}>
             <Route path=':quizNumber' component={Quiz} />
@@ -63,10 +64,10 @@ export default (
         <Route path='/discuss/:id(/:questionName)' component={Post} />
         <Route path='/feed' component={Feed} />
         <Route path='/profile/:id(/:tab)' component={Profile} />
-        <Route path='/contests' component={Contests} />
-        <Route path='/choose-opponent' component={OpponentSelector} />
-        <Route path='/challenge/:id' component={Challenge} />
-        <Route path='/notifications' component={Notifications} />
+        <Route path='/contests' component={redirector(Contests)} />
+        <Route path='/choose-opponent' component={redirector(OpponentSelector)} />
+        <Route path='/challenge/:id' component={redirector(Challenge)} />
+        <Route path='/notifications' component={redirector(Notifications)} />
         <Route path='/login' component={Login} />
     </Route>
     ]

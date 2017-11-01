@@ -14,7 +14,12 @@ class Replies extends Component {
 
         return replies.map((reply, index) => {
             return (
-                <Reply key={reply.id} reply={reply} votePost={this.props.votePost} remove={this.props.openDeletePopup} isUsersQuestion={this.props.isUsersQuestion} />
+                <Reply
+                    key={reply.id}
+                    reply={reply}
+                    votePost={this.props.votePost}
+                    remove={this.props.openDeletePopup}
+                    isUsersQuestion={this.props.isUsersQuestion} />
             );
         });
     }

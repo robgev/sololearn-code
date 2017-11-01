@@ -443,7 +443,6 @@ class ProgressManager {
             
             this.highlightActiveLesson();        
             this.calculateCompletionPercent();
-            console.log(this);
         });
     }
 

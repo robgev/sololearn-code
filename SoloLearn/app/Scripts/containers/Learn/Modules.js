@@ -7,9 +7,8 @@ import { browserHistory } from 'react-router';
 //Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { loadDefaults } from '../../actions/defaultActions';
 import { loadCourseInternal, toggleCourseInternal, toggleCourse, selectModule } from '../../actions/learn';
-import { isLoaded, defaultsLoaded } from '../../reducers';
+import { isLoaded } from '../../reducers';
 
 //Service
 import Service from '../../api/service';
@@ -415,14 +414,8 @@ class Modules extends Component {
 
     render() {
         const that = this;
-        const { course, isLoaded, defaultsLoaded } = this.props;
-
-        if(defaultsLoaded) {
-            if (!isLoaded && this.props.userProfile.skills.length > 0) {
-                return <CircularProgress size={80} thickness={5} />
-            }
-        }
-        else {
+        const { course, isLoaded } = this.props;
+        if (!isLoaded && this.props.userProfile.skills.length > 0) {
             return <CircularProgress size={80} thickness={5} />
         }
 
@@ -488,17 +481,12 @@ class Modules extends Component {
 
     componentWillMount() {
         if(!this.props.isLoaded) {
-            this.props.loadDefaults().then((response) => {
-                if (this.props.userProfile.skills.length > 0) {
-                    let courseName = this.props.params.courseName;
-                    let course = courseName ? this.props.courses.find(item => item.alias.toLowerCase() == courseName.toLowerCase()) : null;
-                    let courseId = course ? course.id : null;
-
-                    this.props.loadCourseInternal(courseId);
-                }
-            }).catch((error) => {
-                console.log(error);
-            });
+            if (this.props.userProfile.skills.length > 0) {
+                let courseName = this.props.params.courseName;
+                let course = courseName ? this.props.courses.find(item => item.alias.toLowerCase() == courseName.toLowerCase()) : null;
+                let courseId = course ? course.id : null;
+                this.props.loadCourseInternal(courseId);
+            }
         }
         this.props.selectModule(null);
     }
@@ -506,7 +494,6 @@ class Modules extends Component {
 
 function mapStateToProps(state) {
     return {
-        defaultsLoaded: defaultsLoaded(state),
         isLoaded: isLoaded(state, "modules"),
         course: state.course,
         courses: state.courses,
@@ -516,11 +503,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ 
-        loadCourseInternal: loadCourseInternal,
-        toggleCourse: toggleCourse,
-        toggleCourseInternal: toggleCourseInternal,
-        selectModule: selectModule,
-        loadDefaults: loadDefaults
+        loadCourseInternal,
+        toggleCourse,
+        toggleCourseInternal,
+        selectModule,
     }, dispatch);
 }
 

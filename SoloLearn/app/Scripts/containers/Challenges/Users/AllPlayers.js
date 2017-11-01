@@ -51,10 +51,7 @@ class AllPlayers extends Component {
 
     //Handle search
     handleInputChange = (e) => {
-        let value = e.target.value;
-        if (value == this.state.query) return;
-
-        this.setState({ query: value });
+        this.setState({ query: e.target.value });
     }
 
     //Detect enter on input

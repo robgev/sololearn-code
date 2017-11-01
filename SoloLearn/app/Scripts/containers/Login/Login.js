@@ -53,6 +53,12 @@ class LoginPage extends PureComponent {
     updateState = e => {
         this.setState({ [e.target.name]: e.target.value });
     }
+    _handleEnter = e => {
+        const { isLogin, forgot } = this.state;
+        if(e.key === 'Enter') {
+            forgot ? this.forgot() : (isLogin ? this.login() : this.signup())
+        }
+    }
     render() {
         const { isLogin, forgot } = this.state;
         return(
@@ -60,7 +66,8 @@ class LoginPage extends PureComponent {
                 <Optional idle={isLogin}>
                     <TextField
                         value={this.state.name}
-                        onChange={e => this.updateState(e)}
+                        onChange={this.updateState}
+                        onKeyPress={this._handleEnter}
                         name='name'
                         floatingLabelText='name'
                         underlineShow={false}
@@ -69,7 +76,8 @@ class LoginPage extends PureComponent {
                 </Optional>
                 <TextField
                     value={this.state.email}
-                    onChange={e => this.updateState(e)}
+                    onChange={this.updateState}
+                    onKeyPress={this._handleEnter}
                     name='email'
                     floatingLabelText='email'
                     underlineShow={false}
@@ -78,7 +86,8 @@ class LoginPage extends PureComponent {
                     <Divider />
                     <TextField
                         value={this.state.password}
-                        onChange={e => this.updateState(e)}
+                        onChange={this.updateState}
+                        onKeyPress={this._handleEnter}
                         name='password'
                         floatingLabelText='password'
                         type='password'
@@ -88,12 +97,13 @@ class LoginPage extends PureComponent {
                 <Divider style={isLogin ? {margin: 10} : null}/>
                 <Optional idle={isLogin}>
                     <TextField
-                    value={this.state.passwordRepeat}
-                    onChange={e => this.updateState(e)}
-                    name='passwordRepeat'
-                    floatingLabelText='repeat password'
-                    type='password'
-                    underlineShow={false}
+                        value={this.state.passwordRepeat}
+                        onChange={this.updateState}
+                        onKeyPress={this._handleEnter}
+                        name='passwordRepeat'
+                        floatingLabelText='repeat password'
+                        type='password'
+                        underlineShow={false}
                     />
                     <Divider style={{margin: 10}}/>
                 </Optional> 

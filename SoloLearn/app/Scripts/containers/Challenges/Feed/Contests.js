@@ -97,14 +97,6 @@ class Contests extends Component {
         selectCourse: false
     }
     componentDidMount() {
-        const { defaultsLoaded, isLoaded } = this.props;
-    
-        if (!defaultsLoaded) {
-            this.props.loadDefaults()
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
         this.props.getContests();
     }
     handleCoursePopup = (selectCourse) => {
@@ -154,9 +146,9 @@ class Contests extends Component {
     }
 
     render() {
-        const { defaultsLoaded, isLoaded, contests } = this.props;
+        const { isLoaded, contests } = this.props;
 
-        if (!defaultsLoaded || !isLoaded) {
+        if (!isLoaded) {
             return <LoadingOverlay />;
         }
 
@@ -213,7 +205,6 @@ class Contests extends Component {
 
 function mapStateToProps(state) {
     return {
-        defaultsLoaded: defaultsLoaded(state),
         isLoaded: isLoaded(state, "contests"),
         contests: state.challenges.contests,
         courses: state.courses
@@ -222,7 +213,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        loadDefaults,
         getContests: getContestsInternal,
         clearContests: clearContestsInternal,
         chooseContestCourse

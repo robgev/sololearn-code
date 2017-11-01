@@ -47,21 +47,13 @@ const styles = {
 }
 
 class Comments extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
+        state = {
             isLoading: false,
             fullyLoaded: false
         }
 
-        this.handleScroll = this.handleScroll.bind(this);
-        this.editComment = this.editComment.bind(this);
-        this.voteComment = this.voteComment.bind(this);
-        this.loadReplies = this.loadReplies.bind(this);
-    }
 
-    loadComments(parentId) {
+    loadComments = (parentId) => {
         const { id, type, commentsType, ordering, comments } = this.props;
         let count = 20;
         let index = comments ? comments.length - comments.filter(c => c.isForcedDown).length : 0;
@@ -86,7 +78,7 @@ class Comments extends Component {
     }
 
     //Load comment replies
-    loadReplies(commentId, type) {
+    loadReplies = (commentId, type) => {
         let comments = this.props.comments;
         let index = comments.findIndex(c => c.id == commentId);
         let activeComment = comments[index];
@@ -101,7 +93,7 @@ class Comments extends Component {
     }
 
     //Load comments when condition changes
-    loadCommentsByState() {
+    loadCommentsByState = () => {
         this.props.emptyComments().then(() => {
             this.loadComments();
         }).catch((error) => {
@@ -110,23 +102,23 @@ class Comments extends Component {
     }
 
     //Check scroll state
-    handleScroll(scrollableArea) {
+    handleScroll = (scrollableArea) => {
         if ((scrollableArea.scrollTop === (scrollableArea.scrollHeight - scrollableArea.offsetHeight)) && !this.state.isLoading && !this.state.fullyLoaded) {
             this.loadComments();
         }
     }
 
-    voteComment(comment, voteValue) {
+    voteComment = (comment, voteValue) => {
         this.props.voteCommentInternal(comment, voteValue, this.props.commentsType);
     }
 
-    editComment(comment, message) {
+    editComment = (comment, message) => {
         this.props.editCommentInternal(comment.id, comment.parentID, message, this.props.commentsType).then(() => {
             this.props.cancelAll();
         });
     }
 
-    renderComments() {
+    renderComments = () => {
         return this.props.comments.map((comment, index) => {
             return (
                 <Comment
