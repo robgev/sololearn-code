@@ -38,6 +38,21 @@ const styles = {
             width: '20px',
             height: '20px'
         }
+    },
+    zeroPlus: {
+        width: '10px',
+        height: '10px',
+        fontSize: '8px',
+        top: 30,
+        right: 29,
+        padding: '2px',
+        backgroundColor: '#F44336',
+        color: '#fff',
+        border: '1px solid #607d8b',
+        zIndex: 1
+    },
+    zero: {
+        visibility: 'hidden'
     }
 }
 
@@ -63,7 +78,7 @@ class NotificationManager extends PureComponent {
                 <Badge
                     badgeContent={0 | this.props.notificationsCount}
                     style={{ margin: '0 10px 0 0' }}
-                    badgeStyle={this.props.notificationsCount > 0 ? { width: '10px', height: '10px', fontSize: '8px', top: 30, right: 29, padding: '2px', backgroundColor: '#F44336', color: '#fff', border: '1px solid #607d8b', zIndex: 1 } : { visibility: 'hidden' }}
+                    badgeStyle={this.props.notificationsCount > 0 ? styles.zeroPlus : styles.zero}
                 >
                     <IconButton className="notifications-button" style={styles.notificationsButton.base} iconStyle={styles.notificationsButton.icon} onClick={this.toggleNotificationsOpen}>
                         <NotificationsIcon color="#fff" />

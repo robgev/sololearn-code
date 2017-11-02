@@ -1,19 +1,20 @@
 ﻿//React modules
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 
 //Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { markReadInternal } from '../../actions/profile';
+import { markReadInternal } from 'actions/profile';
 
 //Material UI components
 import Avatar from 'material-ui/Avatar';
 import { ListItem } from 'material-ui/List';
 
 //Utils And Defaults
-import types from '../../defaults/appTypes';
-import updateDate from '../../utils/dateFormatter';
-import getStyles from '../../utils/styleConverter';
+import types from 'defaults/appTypes';
+import updateDate from 'utils/dateFormatter';
+import getStyles from 'utils/styleConverter';
 
 const styles = {
     notificationItem: {
@@ -79,16 +80,38 @@ const styles = {
 
 class NotificationItem extends Component {
     handleClick = () => {
-        const notification = this.props.notification;
+        const { notification } = this.props;
         let ids = [notification.id];
-
+        
         if (notification.groupedItems.length > 1) {
             notification.groupedItems.forEach((item) => {
                 if (!item.isClicked) ids.push(item.id);
             });
         }
-
         this.props.markRead(ids);
+        this.openNotificationLink(notification);
+        this.props.handleOpenIfPopup();
+    }
+
+    openNotificationLink = (notification) => {
+        switch(notification.type) {
+            case types.completedChallange:
+                return browserHistory.push(`/challenge/${notification.contest.id}`);
+            case types.postedAnswer:
+            case types.postedQuestion:
+            case types.postedComment:
+            case types.postedCommentReply:
+            case types.upvotePost:
+            case types.upvoteComment:
+                return browserHistory.push(`/discuss/${notification.post.parentID || notification.post.id}`);
+            case types.following:
+            case types.friendJoined:
+                return browserHistory.push(`/profile/${notification.actionUser.id}`);
+            case types.badgeUnlocked:
+                return browserHistory.push(`/profile/${notification.user.id}/badges`);
+            default:
+                return;
+        }
     }
 
     getTitleUser = (title, pattern) => {

@@ -125,7 +125,7 @@ class NotificationPopup extends Component {
                                 <button type="button" style={styles.notificationsHeaderButton} onClick={() => this.props.markAllRead(null)}>Mark all as read</button>
                             </div>
                             <Divider />
-                            <NotificationList isPopup={true} />
+                            <NotificationList isPopup={true} toggleNotificationsOpen={this.props.toggleNotificationsOpen} />
                             <Divider />
                             <div className="notification-footer" style={styles.notificationsFooter}>
                                 <RadiumLink to={"/notifications"} style={styles.notificationsFooterButton}>See All</RadiumLink>

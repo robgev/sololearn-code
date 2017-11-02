@@ -8,8 +8,8 @@ import Service from '../../api/service';
 //Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getNotificationsInternal, emptyNotifications } from '../../actions/profile';
-import { isLoaded, defaultsLoaded } from '../../reducers';
+import { getNotificationsInternal, emptyNotifications } from 'actions/profile';
+import { isLoaded, defaultsLoaded } from 'reducers';
 
 //Additional components
 import LoadingOverlay from '../../components/Shared/LoadingOverlay';
@@ -109,6 +109,11 @@ class NotificationList extends Component {
         this.handleWindowScroll = this.handleWindowScroll.bind(this);
     }
 
+    handleOpenIfPopup = () => {
+        if(this.props.isPopup)
+            this.props.toggleNotificationsOpen();
+    }
+
     //Get post answers
     getNotifications(fromId, toId) {
         if (!this.isUnmounted) {
@@ -130,6 +135,7 @@ class NotificationList extends Component {
         return this.props.notifications.map((notification, index) => {
             return (
                 [<NotificationItem
+                    handleOpenIfPopup={this.handleOpenIfPopup}
                     key={"notitication" + notification.id}
                     notification={notification}
                 />,
@@ -191,12 +197,8 @@ class NotificationList extends Component {
 
     componentWillMount() {
         if (this.props.isPopup) {
-            this.props.emptyNotifications().then(() => {
-                this.getNotifications(null, null).then(() => {
-                    this.markAsSeen();
-                });
-            }).catch((error) => {
-                console.log(error);
+            this.getNotifications(null, null).then(() => {
+                this.markAsSeen();
             });
         }
         else {
