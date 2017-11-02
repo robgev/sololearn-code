@@ -22,9 +22,19 @@ module.exports = {
         filename: 'dist/[name].bundle.js',
         publicPath: "/"
     },
-   
+
     resolve: {
-        extensions: ['.js', '.jsx', '.json', '.css', '.scss', '.html']
+      extensions: ['.ts', '.js', '.json', '.css', '.scss', '.html'],
+      alias: {
+        actions: path.resolve(__dirname, 'app/Scripts/actions'),
+        api: path.resolve(__dirname, 'app/Scripts/api'),
+        config: path.resolve(__dirname, 'app/Scripts/config'),
+        constants: path.resolve(__dirname, 'app/Scripts/constants'),
+        containers: path.resolve(__dirname, 'app/Scripts/containers'),
+        defaults: path.resolve(__dirname, 'app/Scripts/defaults'),
+        reducers: path.resolve(__dirname, 'app/Scripts/reducers'),
+        utils: path.resolve(__dirname, 'app/Scripts/utils')
+      }
     },
 
     devServer: {
@@ -100,4 +110,3 @@ module.exports = {
         ])
     ],
 };
-
