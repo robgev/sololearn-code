@@ -28,7 +28,11 @@ export const getCodesInternal = (index, orderBy, language, query, profileId = nu
 		})
 			.then((res) => {
 				const { codes } = res;
-				profileId != null ? dispatch(getProfileCodes(codes)) : dispatch(getCodes(codes));
+				if (profileId != null) {
+					dispatch(getProfileCodes(codes));
+				} else {
+					dispatch(getCodes(codes));
+				}
 				return codes.length;
 			})
 			.catch(e => console.log(e));
