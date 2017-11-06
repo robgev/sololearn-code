@@ -1,9 +1,10 @@
+import { browserHistory } from 'react-router';
+
 import Service from '../api/service';
 import Progress from '../api/progress';
 import Storage from '../api/storage';
 import * as types from '../constants/ActionTypes';
 import { getProfileInternal } from '../actions/defaultActions';
-import { browserHistory } from 'react-router';
 
 // Identifying keys of modules, lessons and quizzes objects
 const structurizeCourse = (modules, dispatch) => {
@@ -15,13 +16,13 @@ const structurizeCourse = (modules, dispatch) => {
 		const currentModule = modules[i];
 		const currentModuleId = currentModule.id;
 
-		const lessons = currentModule.lessons;
+		const { lessons } = currentModule;
 
 		for (let j = 0; j < lessons.length; j++) {
 			const currentLesson = lessons[j];
 			const currentLessonId = currentLesson.id;
 
-			const quizzes = currentLesson.quizzes;
+			const { quizzes } = currentLesson;
 
 			for (let k = 0; k < quizzes.length; k++) {
 				const currentQuiz = quizzes[k];
@@ -56,7 +57,7 @@ const structurizeCourse = (modules, dispatch) => {
 		payload: structuredQuizzes,
 	};
 
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve) => {
 		dispatch(modulesMapping);
 		dispatch(lessonsMapping);
 		dispatch(quizzesMapping);
@@ -69,6 +70,27 @@ const loadCourse = course => ({
 	payload: course,
 });
 
+export const toggleCourse = skills => ({
+	type: types.TOGGLE_COURSE,
+	payload: skills,
+});
+
+export const toggleCourseInternal = (courseId, enable) => (dispatch, getState) => {
+	const profile = getState().userProfile;
+
+	return Service.request('Profile/ToggleCourse', { courseId, enable }).then(() => {
+		if (!enable) {
+			const index = profile.skills.findIndex(item => item.id === courseId);
+			profile.skills.splice(index, 1);
+			dispatch(toggleCourse(profile.skills));
+		} else {
+			dispatch(getProfileInternal());
+		}
+	}).catch((error) => {
+		console.log(error);
+	});
+};
+
 export const loadCourseInternal = courseId => (dispatch, getState) => {
 	const localStorage = new Storage(); // Caching course data
 	let selectedCourseId = courseId || localStorage.load('selectedCourseId');
@@ -76,17 +98,17 @@ export const loadCourseInternal = courseId => (dispatch, getState) => {
 	const store = getState();
 	const userCourses = store.userProfile.skills;
 
-	if (selectedCourseId && userCourses.findIndex(item => item.id == selectedCourseId) == -1) {
+	if (selectedCourseId && userCourses.findIndex(item => item.id === selectedCourseId) === -1) {
 		dispatch(toggleCourseInternal(selectedCourseId, true));
 	}
 
 	if (course != null) {
 		localStorage.save('selectedCourseId', course.id);
 		browserHistory.replace(`/learn/${course.alias}`);
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 			Progress.courseId = course.id;
 			Progress.loadCourse(course); // Getting progress of course
-			Progress.sync().then((response) => {
+			Progress.sync().then(() => {
 				structurizeCourse(course.modules, dispatch).then(() => {
 					dispatch(loadCourse(course));
 					resolve();
@@ -102,42 +124,22 @@ export const loadCourseInternal = courseId => (dispatch, getState) => {
 
 	localStorage.save('selectedCourseId', selectedCourseId);
 	return Service.request('GetCourse', { id: selectedCourseId }).then((response) => {
-		const course = response.course;
-		browserHistory.replace(`/learn/${course.alias}`);
-		Progress.courseId = course.id;
-		Progress.loadCourse(course); // Getting progress of course
-		Progress.sync().then((response) => {
-			localStorage.save(`c${selectedCourseId}`, course); // Saveing data to localStorage
-			structurizeCourse(course.modules, dispatch).then(() => new Promise((resolve, reject) => {
-				dispatch(loadCourse(course));
-				resolve();
-			})).catch((error) => {
+		const { responseCourse } = response;
+		browserHistory.replace(`/learn/${responseCourse.alias}`);
+		Progress.courseId = responseCourse.id;
+		Progress.loadCourse(responseCourse); // Getting progress of course
+		Progress.sync().then(() => {
+			localStorage.save(`c${selectedCourseId}`, responseCourse); // Saveing data to localStorage
+			structurizeCourse(responseCourse.modules, dispatch).then(() =>
+				new Promise((resolve) => {
+					dispatch(loadCourse(responseCourse));
+					resolve();
+				})).catch((error) => {
 				console.log(error);
 			});
 		}).catch((error) => {
 			console.log(error);
 		});
-	}).catch((error) => {
-		console.log(error);
-	});
-};
-
-export const toggleCourse = skills => ({
-	type: types.TOGGLE_COURSE,
-	payload: skills,
-});
-
-export const toggleCourseInternal = (courseId, enable) => (dispatch, getState) => {
-	const profile = getState().userProfile;
-
-	return Service.request('Profile/ToggleCourse', { courseId, enable }).then((response) => {
-		if (!enable) {
-			const index = profile.skills.findIndex(item => item.id == courseId);
-			profile.skills.splice(index, 1);
-			dispatch(toggleCourse(profile.skills));
-		} else {
-			dispatch(getProfileInternal());
-		}
 	}).catch((error) => {
 		console.log(error);
 	});
