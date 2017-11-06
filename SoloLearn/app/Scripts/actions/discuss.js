@@ -5,7 +5,7 @@ import { changeLoginModal } from './login.action';
 // Utils
 import toSeoFrendly from '../utils/linkPrettify';
 
-export const emptyQuestions = () => dispatch => new Promise((resolve, reject) => {
+export const emptyQuestions = () => dispatch => new Promise((resolve) => {
 	dispatch({
 		type: types.EMPTY_QUESTIONS,
 		payload: [],
@@ -23,25 +23,26 @@ export const getProfileQuestions = questions => ({
 	payload: questions,
 });
 
-export const getQuestionsInternal = (index, profileId = null, count = 20) => (dispatch, getState) => {
-	const { discussFilters: { discussQuery, discussOrdering } } = getState();
-	return Service.request('Discussion/Search', {
-		index, count, orderBy: discussOrdering, query: discussQuery, profileId,
-	})
-		.then((response) => {
-			const questions = response.posts;
+export const getQuestionsInternal = (index, profileId = null, count = 20) =>
+	(dispatch, getState) => {
+		const { discussFilters: { discussQuery, discussOrdering } } = getState();
+		return Service.request('Discussion/Search', {
+			index, count, orderBy: discussOrdering, query: discussQuery, profileId,
+		})
+			.then((response) => {
+				const questions = response.posts;
 
-			if (profileId != null) {
-				dispatch(getProfileQuestions(questions));
-			} else {
-				dispatch(getQuestions(questions));
-			}
+				if (profileId != null) {
+					dispatch(getProfileQuestions(questions));
+				} else {
+					dispatch(getQuestions(questions));
+				}
 
-			return questions.length;
-		}).catch((error) => {
-			console.log(error);
-		});
-};
+				return questions.length;
+			}).catch((error) => {
+				console.log(error);
+			});
+	};
 
 export const loadPost = post => ({
 	type: types.LOAD_DISCUSS_POST,
@@ -80,7 +81,7 @@ export const loadRepliesInternal = ordering => (dispatch, getState) => {
 		});
 };
 
-export const emptyReplies = () => dispatch => new Promise((resolve, reject) => {
+export const emptyReplies = () => dispatch => new Promise((resolve) => {
 	dispatch({
 		type: types.EMPTY_DISCUSS_POST_REPLIES,
 		payload: [],
@@ -88,7 +89,7 @@ export const emptyReplies = () => dispatch => new Promise((resolve, reject) => {
 	resolve();
 });
 
-export const votePost = (id, isPrimary, vote, votes) => dispatch => new Promise((resolve, reject) => {
+export const votePost = (id, isPrimary, vote, votes) => dispatch => new Promise((resolve) => {
 	dispatch({
 		type: types.VOTE_POST,
 		payload: {
@@ -99,9 +100,9 @@ export const votePost = (id, isPrimary, vote, votes) => dispatch => new Promise(
 });
 
 export const votePostInternal = (post, vote) => {
-	const userVote = post.vote == vote ? 0 : vote;
-	const votes = post.votes + userVote - post.vote;
-	const isPrimary = post.parentID == null;
+	const userVote = post.vote === vote ? 0 : vote;
+	const votes = (post.votes + userVote) - post.vote;
+	const isPrimary = post.parentID === null;
 
 	return (dispatch, getState) => {
 		if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
@@ -113,7 +114,7 @@ export const votePostInternal = (post, vote) => {
 	};
 };
 
-export const editPost = (id, isPrimary, message) => dispatch => new Promise((resolve, reject) => {
+export const editPost = (id, isPrimary, message) => dispatch => new Promise((resolve) => {
 	dispatch({
 		type: types.EDIT_POST,
 		payload: { id, isPrimary, message },
@@ -122,7 +123,7 @@ export const editPost = (id, isPrimary, message) => dispatch => new Promise((res
 });
 
 export const editPostInternal = (post, message) => {
-	const isPrimary = post.parentID == null;
+	const isPrimary = post.parentID === null;
 
 	return (dispatch, getState) => {
 		if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
@@ -134,7 +135,7 @@ export const editPostInternal = (post, message) => {
 	};
 };
 
-export const deletePost = (id, isPrimary) => dispatch => new Promise((resolve, reject) => {
+export const deletePost = (id, isPrimary) => dispatch => new Promise((resolve) => {
 	dispatch({
 		type: types.DELETE_POST,
 		payload: { id, isPrimary },
@@ -143,7 +144,7 @@ export const deletePost = (id, isPrimary) => dispatch => new Promise((resolve, r
 });
 
 export const deletePostInternal = (post) => {
-	const isPrimary = post.parentID == null;
+	const isPrimary = post.parentID === null;
 	return (dispatch, getState) => {
 		if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
 		if (!isPrimary) {
@@ -165,7 +166,7 @@ export const deletePostInternal = (post) => {
 export const addQuestion = (title, message, tags) => (dispatch, getState) => {
 	if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
 	return Service.request('Discussion/CreatePost', { title, message, tags }).then((response) => {
-		const post = response.post;
+		const { post } = response;
 		post.answers = 0;
 		post.hasAvatar = true; // USER HASAVATAR TODO
 		post.isFollowing = true;
@@ -195,7 +196,7 @@ export const editQuestion = (id, title, message, tags) => (dispatch, getState) =
 
 	return Service.request('Discussion/EditPost', {
 		id, title, message, tags,
-	}).then((response) => {
+	}).then(() => {
 		post.title = title;
 		post.message = message;
 		post.tags = tags;
@@ -209,7 +210,7 @@ export const editQuestion = (id, title, message, tags) => (dispatch, getState) =
 	});
 };
 
-export const questionFollowing = isFollowing => dispatch => new Promise((resolve, reject) => {
+export const questionFollowing = isFollowing => dispatch => new Promise((resolve) => {
 	dispatch({
 		type: types.QUESTION_FOLLOWING,
 		payload: isFollowing,
@@ -230,13 +231,14 @@ export const questionFollowingInternal = (id, isFollowing) => (dispatch, getStat
 	});
 };
 
-export const toggleAcceptedAnswer = (id, isAccepted) => dispatch => new Promise((resolve, reject) => {
-	dispatch({
-		type: types.ACCEPT_ANSWER,
-		payload: { id, isAccepted: !isAccepted },
+export const toggleAcceptedAnswer = (id, isAccepted) => dispatch =>
+	new Promise((resolve) => {
+		dispatch({
+			type: types.ACCEPT_ANSWER,
+			payload: { id, isAccepted: !isAccepted },
+		});
+		resolve();
 	});
-	resolve();
-});
 
 export const toggleAcceptedAnswerInternal = (id, isAccepted) => (dispatch, getState) => {
 	if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
@@ -248,4 +250,5 @@ export const toggleAcceptedAnswerInternal = (id, isAccepted) => (dispatch, getSt
 };
 
 export const changeDiscussQuery = query => ({ type: types.CHANGE_DISCUSS_QUERY, payload: query });
-export const changeDiscussOrdering = ordering => ({ type: types.CHANGE_DISCUSS_ORDERING, payload: ordering });
+export const changeDiscussOrdering = ordering =>
+	({ type: types.CHANGE_DISCUSS_ORDERING, payload: ordering });
