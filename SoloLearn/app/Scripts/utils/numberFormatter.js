@@ -1,33 +1,33 @@
-﻿const numberFormatter = (number, allowTenth) => {
-    if (number < 1000) {
-        return number;
-    }
+const numberFormatter = (number, allowTenth) => {
+	if (number < 1000) {
+		return number;
+	}
 
-    let res = tryMinify(number, 1000000000, "B", allowTenth);
-    if (res == null) res = tryMinify(number, 1000000, "M", allowTenth);
-    if (res == null) res = tryMinify(number, 1000, "K", allowTenth);
+	let res = tryMinify(number, 1000000000, 'B', allowTenth);
+	if (res == null) res = tryMinify(number, 1000000, 'M', allowTenth);
+	if (res == null) res = tryMinify(number, 1000, 'K', allowTenth);
 
-    return res;
-}
+	return res;
+};
 
 const tryMinify = (number, size, symbol, allowTenth) => {
-    let text = null;
+	let text = null;
 
-    if (number >= size / (allowTenth ? 10 : 1)) {
-        let num = number * 1.0 / size;
+	if (number >= size / (allowTenth ? 10 : 1)) {
+		const num = number * 1.0 / size;
 
-        text = Math.floor(num);
+		text = Math.floor(num);
 
-        let tenNum = Math.floor(num * 10);
+		const tenNum = Math.floor(num * 10);
 
-        if (num < 100 && num != Math.floor(num) && tenNum % 10 != 0) {
-            text += "." + (tenNum % 10);
-        }
+		if (num < 100 && num != Math.floor(num) && tenNum % 10 != 0) {
+			text += `.${tenNum % 10}`;
+		}
 
-        text += symbol;
-    }
+		text += symbol;
+	}
 
-    return text;
-}
+	return text;
+};
 
 export default numberFormatter;

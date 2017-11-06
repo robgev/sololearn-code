@@ -12,35 +12,35 @@ import { browserHistory } from 'react-router';
 
 class SettingsMenu extends PureComponent {
     singOut = () => {
-        this.props.logout()
-            .then(() => browserHistory.push('/login'));
+    	this.props.logout()
+    		.then(() => browserHistory.push('/login'));
     }
     render() {
-        return (
-            <IconMenu
-                style={{ width: 40, height: 40, padding: 10 }}
-                iconButtonElement={<IconButton><MoreVertIcon color='#fff' /></IconButton>}
-                anchorOrigin={{horizontal: 'left', vertical: 'top'}}
-                targetOrigin={{horizontal: 'left', vertical: 'top'}}
-            >
-                <MenuItem
-                    primaryText="Sign out"
-                    onClick={this.singOut}
-                />
-                <MenuItem
-                    primaryText='Imitate logout'
-                    onClick={this.props.imitateLogin}
-                />
-            </IconMenu>
-        )
+    	return (
+    		<IconMenu
+		style={{ width: 40, height: 40, padding: 10 }}
+		iconButtonElement={<IconButton><MoreVertIcon color="#fff" /></IconButton>}
+    			anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
+		targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+	>
+    			<MenuItem
+    				primaryText="Sign out"
+    				onClick={this.singOut}
+	/>
+    			<MenuItem
+    				primaryText="Imitate logout"
+		onClick={this.props.imitateLogin}
+	/>
+ </IconMenu>
+    	);
     }
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-        logout,
-        imitateLogin
-    }, dispatch);
+	return bindActionCreators({
+		logout,
+		imitateLogin,
+	}, dispatch);
 }
 
 export default connect(() => ({}), mapDispatchToProps)(SettingsMenu);

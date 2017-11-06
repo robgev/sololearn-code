@@ -1,30 +1,27 @@
-﻿const toSeoFrendly = (text, maxLength) => {
-    if (text == null) return "";
+const toSeoFrendly = (text, maxLength) => {
+	if (text == null) return '';
 
-    let pattern = /[\w]+/g;
-    let match = null;
-    let result = "";
-    let maxLengthHit = false;
+	const pattern = /[\w]+/g;
+	let match = null;
+	let result = '';
+	let maxLengthHit = false;
 
-    while ((match = pattern.exec(text.toLowerCase())) !== null && !maxLengthHit)
-    {
-        if (result.length + match[0].length <= maxLength) {
-            result += match[0] + "-";
-        }
-        else {
-            maxLengthHit = true;
-            // Handle a situation where there is only one word and it is greater than the max length.
-            if (result.length == 0) result = match[0].substring(0, maxLength);
-        }
-    }
+	while ((match = pattern.exec(text.toLowerCase())) !== null && !maxLengthHit) {
+		if (result.length + match[0].length <= maxLength) {
+			result += `${match[0]}-`;
+		} else {
+			maxLengthHit = true;
+			// Handle a situation where there is only one word and it is greater than the max length.
+			if (result.length == 0) result = match[0].substring(0, maxLength);
+		}
+	}
 
-    if (result.length > 0)
-    {
-        // Remove trailing '-'
-        if (result[result.length - 1] == '-') result = result.substring(0, result.length - 1);
-    }
+	if (result.length > 0) {
+		// Remove trailing '-'
+		if (result[result.length - 1] == '-') result = result.substring(0, result.length - 1);
+	}
 
-    return result;
-}
+	return result;
+};
 
 export default toSeoFrendly;

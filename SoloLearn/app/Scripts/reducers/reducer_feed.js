@@ -1,15 +1,15 @@
-﻿import { GET_FEED_ITEMS, GET_NEW_FEED_ITEMS, CLEAR_FEED } from '../constants/ActionTypes';
+import { GET_FEED_ITEMS, GET_NEW_FEED_ITEMS, CLEAR_FEED } from '../constants/ActionTypes';
 
-export default function(state = [], action) {
-    switch (action.type) {
-        case GET_FEED_ITEMS:
-            //console.log(action.payload);
-            return [ ...state, ...action.payload ];
-        case GET_NEW_FEED_ITEMS:
-            return [ ...action.payload, ...state ];
-        case CLEAR_FEED:
-            return [];
-        default:
-            return state;
-    }
+export default function (state = [], action) {
+	switch (action.type) {
+	case GET_FEED_ITEMS:
+		// console.log(action.payload);
+		return [ ...state, ...action.payload ];
+	case GET_NEW_FEED_ITEMS:
+		return [ ...action.payload, ...state ];
+	case CLEAR_FEED:
+		return [];
+	default:
+		return state;
+	}
 }

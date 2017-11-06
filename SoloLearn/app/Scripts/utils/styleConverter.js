@@ -1,5 +1,3 @@
-﻿const getStyles = (...keys) => {
-    return Object.assign({}, ...keys)
-}
+const getStyles = (...keys) => Object.assign({}, ...keys);
 
 export default getStyles;

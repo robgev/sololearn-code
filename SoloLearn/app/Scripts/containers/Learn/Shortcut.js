@@ -1,209 +1,207 @@
-﻿//React modules
-import React, { Component } from 'react';
+// React modules
+import React, { PureComponent } from 'react';
 import { browserHistory } from 'react-router';
 
-//Service
-import Progress, { ProgressState } from '../../api/progress';
+// Service
+import Progress, { ProgressState } from 'api/progress';
 
-//Popups
-import Popup from '../../api/popupService';
+// Popups
+import Popup from 'api/popupService';
 
-//Redux modules
+// Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { loadDefaults } from '../../actions/defaultActions';
-import { loadCourseInternal, setShortcutLesson } from '../../actions/learn';
-import { isLoaded, defaultsLoaded } from '../../reducers';
+import { loadDefaults } from 'actions/defaultActions';
+import { loadCourseInternal, setShortcutLesson } from 'actions/learn';
+import { isLoaded, defaultsLoaded } from 'reducers';
 
-//Additional data and components
+// Additional data and components
 import QuizManager from './QuizManager';
 
-//Marterial UI components
+// Marterial UI components
 import FlatButton from 'material-ui/FlatButton';
 
-class Shortcut extends Component {
-    constructor(props) {
-        super(props);
-        
-        this.state = {
-            shortcutLives: null,
-            isShortcutCorrectCounts: 0,
-            shortcutPassed: false
-        }
+class Shortcut extends PureComponent {
+	constructor(props) {
+		super(props);
 
-        this.exitShortcut = this.exitShortcut.bind(this);
-        this.updateShorctutData = this.updateShorctutData.bind(this);
-        this.backToLearn = this.backToLearn.bind(this);
-    }
+		this.state = {
+			shortcutLives: null,
+			isShortcutCorrectCounts: 0,
+			shortcutPassed: false,
+		};
+	}
 
-    backToLearn() {
-        browserHistory.push('/learn/' + this.props.params.courseName);
+    backToLearn = () => {
+    	browserHistory.push(`/learn/${this.props.params.courseName}`);
     }
 
     render() {
-        const that = this;
-        const { course, isLoaded, defaultsLoaded } = this.props;
+    	const { course, isLoaded, defaultsLoaded } = this.props;
 
-        const faledActions = [
-            {
-                componentType: FlatButton,
-                label: "popupOk",
-                primary: true,
-                actionCallback: that.backToLearn
-            }
-        ]
+    	const failedActions = [
+    		{
+    			componentType: FlatButton,
+    			label: 'popupOk',
+    			primary: true,
+    			actionCallback: this.backToLearn,
+    		},
+    	];
 
-        const successActions = [
-            {
-                componentType: FlatButton,
-                label: "shortcutContinue",
-                primary: true,
-                actionCallback: that.backToLearn
-            }
-        ];
-     
-        if (!isLoaded) {
-            return <div>Loading...</div>
-        }
+    	const successActions = [
+    		{
+    			componentType: FlatButton,
+    			label: 'shortcutContinue',
+    			primary: true,
+    			actionCallback: this.backToLearn,
+    		},
+    	];
 
-        const childrenWithProps = React.Children.map(this.props.children,
-            (child) => React.cloneElement(child, {
-                updateShorctutData: this.updateShorctutData,
-                exitShortcut: this.exitShortcut,
-                isShortcut: true,
-                shortcutLesson: this.props.shortcutLesson,
-                shortcutLives: this.state.shortcutLives,
-                isShortcutCorrectCounts: this.state.isShortcutCorrectCounts
-            })
-        );
+    	const childrenWithProps = React.Children.map(
+    		this.props.children,
+    		child => React.cloneElement(child, {
+    			updateShorctutData: this.updateShorctutData,
+    			exitShortcut: this.exitShortcut,
+    			isShortcut: true,
+    			shortcutLesson: this.props.shortcutLesson,
+    			shortcutLives: this.state.shortcutLives,
+    			isShortcutCorrectCounts: this.state.isShortcutCorrectCounts,
+    		}),
+    	);
 
-        return(
-            <div>
-                {childrenWithProps}
-                { this.state.shortcutLives == 0 && Popup.getPopup(Popup.generatePopupActions(faledActions), this.state.shortcutLives == 0, this.backToLearn, [{key: "shortcutFailed", replacemant: ""}], true) }
-                { this.state.shortcutPassed && Popup.getPopup(Popup.generatePopupActions(successActions), this.state.shortcutPassed, this.backToLearn, [{key: "shortcutSucceed", replacemant: ""}], true) }
-            </div>
-        );
+    	return (
+    		!isLoaded ? <div>Loading...</div> :
+    			<div>
+    				{childrenWithProps}
+    				{ this.state.shortcutLives == 0 && Popup.getPopup(Popup.generatePopupActions(failedActions), this.state.shortcutLives == 0, this.backToLearn, [ { key: 'shortcutFailed', replacemant: '' } ], true) }
+    				{ this.state.shortcutPassed && Popup.getPopup(Popup.generatePopupActions(successActions), this.state.shortcutPassed, this.backToLearn, [ { key: 'shortcutSucceed', replacemant: '' } ], true) }
+    			</div>
+    	);
     }
 
-    updateShorctutData(lives, correctCounts) {
-        this.setState({
-            shortcutLives: lives,
-            isShortcutCorrectCounts: correctCounts
-        });
+    updateShorctutData = (lives, correctCounts) => {
+    	this.setState({
+    		shortcutLives: lives,
+    		isShortcutCorrectCounts: correctCounts,
+    	});
     }
 
-    exitShortcut() {
-        this.setState({ shortcutPassed: true });
+    exitShortcut = () => {
+    	this.setState({ shortcutPassed: true });
     }
 
-    createShortcutLesson(moduleId) {
-        const modules = this.props.course.modules;
-        const index = modules.findIndex(module => module.id == moduleId);
-        const module = modules[index];
+    createShortcutLesson = (moduleId) => {
+    	const { course: { modules }, setShortcutLesson } = this.props;
+    	const moduleIndex = modules.findIndex(module => module.id == moduleId);
+    	const module = modules[moduleIndex];
+    	if (!module) {
+    		this.backToLearn();
+    	}
 
-        if(!module) this.backToLearn();
+    	const { visualState: moduleVisualState } = Progress.getModuleState(module);
+    	const lesson = {
+    		moduleId,
+    		type: 1,
+    	};
 
-        const moduleState = Progress.getModuleState(module);
-        let lesson = {};
-        lesson.type = 1;
-        lesson.moduleId = moduleId;
+    	let shortcutQuizzes = [];
+    	if (!module.allowShortcut || moduleVisualState != ProgressState.Disabled) {
+    		this.backToLearn();
+    	}
 
-        let shortcutQuizzes = [];
+    	for (let i = 0; i < moduleIndex; i++) {
+    		const lessons = modules[i].lessons;
 
-        if(!module.allowShortcut || moduleState.visualState != ProgressState.Disabled) this.backToLearn();
+    		for (let j = 0; j < lessons.length; j++) {
+    			const lesson = lessons[j];
 
-        for (let i = 0; i < index; i++) {
-            var lessons = modules[i].lessons;
+    			if (lesson.type == 1 && Progress.getLessonState(lesson).visualState != ProgressState.Normal) {
+    				const quizzes = lesson.quizzes;
 
-            for (let j = 0; j < lessons.length ; j++) {
-                let lesson = lessons[j];
+    				for (let k = 0; k < quizzes.length; k++) {
+    					shortcutQuizzes.push(quizzes[k]);
+    				}
+    			}
+    		}
+    	}
 
-                if (lesson.type == 1 && Progress.getLessonState(lesson).visualState != ProgressState.Normal) {
-                    let quizzes = lesson.quizzes;
+    	shortcutQuizzes.sort(() => 0.5 - Math.random());
+    	if (shortcutQuizzes.length >= 10) {
+    		shortcutQuizzes = shortcutQuizzes.slice(0, 10);
+    	}
 
-                    for (let k = 0; k < quizzes.length; k++) {
-                        shortcutQuizzes.push(quizzes[k]);
-                    }         
-                }
-            }
-        }
+    	shortcutQuizzes.map((quiz, index) => quiz.number = index + 1);
 
-        shortcutQuizzes.sort(() => 0.5 - Math.random());
-        if (shortcutQuizzes.length >= 10) {
-            shortcutQuizzes = shortcutQuizzes.slice(0, 10);
-        }
+    	lesson.quizzes = shortcutQuizzes;
 
-        shortcutQuizzes.map((quiz, index) => quiz.number = index + 1);
+    	this.setState({ shortcutLives: Math.round(30 * lesson.quizzes.length / 100) });
 
-        lesson.quizzes = shortcutQuizzes;
-        
-        this.setState({ shortcutLives: Math.round(30 * lesson.quizzes.length / 100) });
-
-        this.props.setShortcutLesson(lesson);
+    	this.props.setShortcutLesson(lesson);
     }
 
-    beforeUnload(e) { // the method that will be used for both add and remove event
-        let confirmationMessage = "Are you sure you want to leave the test?";
-
-        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-        return confirmationMessage;                            //Webkit, Safari, Chrome
+    beforeUnload = (e) => {
+    	// the method that will be used for both add and remove event
+    	const confirmationMessage = 'Are you sure you want to leave the test?';
+    	// Gecko + IE
+    	(e || window.event).returnValue = confirmationMessage;
+    	// Webkit, Safari, Chrome
+    	return confirmationMessage;
     }
 
-    componentWillMount() {
-        window.addEventListener("beforeunload", this.beforeUnload);
+    async componentWillMount() {
+    	window.addEventListener('beforeunload', this.beforeUnload);
 
-        if(!this.props.params.quizNumber) {
-            let pathName = this.props.location.pathname;
-            let newPathName = pathName.substr(pathName.length - 1) == '/' ? pathName + '1' : pathName + '/1';
-            browserHistory.push(newPathName);
-        }
+    	const {
+    		profile,
+    		params,
+    		courses,
+    		isLoaded,
+    		loadDefaults,
+    		loadCourseInternal,
+    		location: { pathName },
+    	} = this.props;
 
-        if(!this.props.isLoaded) {
-            this.props.loadDefaults().then((response) => {
-                if(this.props.profile.skills.length > 0) {
-                    let courseName = this.props.params.courseName;
-                    let course = courseName ? this.props.courses.find(item => item.alias.toLowerCase() == courseName.toLowerCase()) : null;
-                    let courseId = course ? course.id : null;
+    	const { quizNumber, courseName, id } = params;
+    	if (!quizNumber) {
+    		const newPathName = pathName.endsWith('/') ? `${pathName}1` : `${pathName}/1`;
+    		browserHistory.push(newPathName);
+    	}
 
-                    this.props.loadCourseInternal(courseId).then(() => {
-                        this.createShortcutLesson(this.props.params.id);
-                    }).catch((error) => {
-                        console.log(error);
-                    });
-                }
-            }).catch((error) => {
-                console.log(error);
-            });
-        }
-        else {
-            this.createShortcutLesson(this.props.params.id);
-        }
+    	if (!isLoaded) {
+    		try {
+    			await loadDefaults();
+    			if (profile.skills.length > 0) {
+    				const course = courseName ? courses.find(item => item.alias.toLowerCase() == courseName.toLowerCase()) : null;
+
+    				this.createShortcutLesson(id);
+    			}
+    		} catch (error) {
+    			console.log(error);
+    		}
+    	} else {
+    		this.createShortcutLesson(id);
+    	}
     }
 
     componentWillUnmount() {
-        window.removeEventListener("beforeunload", this.beforeUnload);
-        this.props.setShortcutLesson(null);
+    	window.removeEventListener('beforeunload', this.beforeUnload);
+    	this.props.setShortcutLesson(null);
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        isLoaded: isLoaded(state, "shortcut"),
-        defaultsLoaded: defaultsLoaded(state),
-        course: state.course,
-        courses: state.courses,
-        profile: state.profile,
-        shortcutLesson: state.shortcutLesson
-    };
-}
+const mapStateToProps = state => ({
+	isLoaded: isLoaded(state, 'shortcut'),
+	defaultsLoaded: defaultsLoaded(state),
+	course: state.course,
+	courses: state.courses,
+	profile: state.userProfile,
+	shortcutLesson: state.shortcutLesson,
+});
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-        loadCourseInternal: loadCourseInternal,
-        loadDefaults: loadDefaults,
-        setShortcutLesson: setShortcutLesson
-    }, dispatch);
-}
+const mapDispatchToProps = dispatch => bindActionCreators({
+	loadCourseInternal,
+	loadDefaults,
+	setShortcutLesson,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shortcut);

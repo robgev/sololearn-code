@@ -1,1 +1,1 @@
-export default array => [...new Set(array)];
+export default array => [ ...new Set(array) ];

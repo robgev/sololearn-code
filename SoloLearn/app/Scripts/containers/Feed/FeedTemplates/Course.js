@@ -1,61 +1,61 @@
-﻿//React modules
+// React modules
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
-//Utils and defaults
+// Utils and defaults
 import PopupTypes from '../../../defaults/feedPopupTypes';
 
 const styles = {
-    course: {
-        display: 'flex',
-        alignItems: 'center',
-        margin: '0 0 10px 0',
-        position: 'relative',
-        zIndex: 2,
-        textDecoration: 'none'
-    },
+	course: {
+		display: 'flex',
+		alignItems: 'center',
+		margin: '0 0 10px 0',
+		position: 'relative',
+		zIndex: 2,
+		textDecoration: 'none',
+	},
 
-    courseIcon: {
-        width: '40px',
-        height: '40px'
-    },
+	courseIcon: {
+		width: '40px',
+		height: '40px',
+	},
 
-    courseName: {
-        fontSize: '14px',
-        margin: '0 0 0 7px',
-        color: '#565353'
-    }
-}
+	courseName: {
+		fontSize: '14px',
+		margin: '0 0 0 7px',
+		color: '#565353',
+	},
+};
 
 class Course extends Component {
-    constructor(props) {
-        super(props);
-    }
+	constructor(props) {
+		super(props);
+	}
 
-    openCoursePopup(e) {
-        const course = this.props.course;
+	openCoursePopup(e) {
+		const course = this.props.course;
 
-        e.stopPropagation();
-        e.preventDefault();
+		e.stopPropagation();
+		e.preventDefault();
 
-        let data = {
-            type: PopupTypes.course,
-            courseId: course.id
-        }
+		const data = {
+			type: PopupTypes.course,
+			courseId: course.id,
+		};
 
-        this.props.openPopup(data);
-    }
+		this.props.openPopup(data);
+	}
 
-    render() {
-        const course = this.props.course;
+	render() {
+		const course = this.props.course;
 
-        return (
-            <Link to={"/learn/" + course.alias} className="course" style={styles.course} onClick={(e) => this.openCoursePopup(e)}>
-                <img src={"https://www.sololearn.com/Icons/Courses/" + course.id + ".png"} style={styles.courseIcon} />
-                <p style={styles.courseName}>{course.name}</p>
-            </Link>
-        );
-    }
+		return (
+			<Link to={`/learn/${course.alias}`} className="course" style={styles.course} onClick={e => this.openCoursePopup(e)}>
+				<img src={`https://www.sololearn.com/Icons/Courses/${course.id}.png`} style={styles.courseIcon} />
+				<p style={styles.courseName}>{course.name}</p>
+			</Link>
+		);
+	}
 }
 
 export default Course;

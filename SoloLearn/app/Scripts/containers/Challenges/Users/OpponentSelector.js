@@ -1,126 +1,131 @@
-﻿//React modules
+// React modules
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 
-//Redux modules
+// Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { chooseContestCourse } from '../../../actions/challenges';
 import { isLoaded } from '../../../reducers';
 
-//Additional data and components
+// Additional data and components
 import Followers from './Followers';
 import Following from './Following';
 import AllPlayers from './AllPlayers';
 import LoadingOverlay from '../../../components/Shared/LoadingOverlay';
 
-//Material UI components
+// Material UI components
 import Paper from 'material-ui/Paper';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { grey600 } from 'material-ui/styles/colors';
 
-//Utils
+// Utils
 import getStyles from '../../../utils/styleConverter';
 import EnumNameMapper from '../../../utils/enumNameMapper';
 
 const TabTypes = {
-    AllPlayers: 0,
-    Followers: 1,
-    Following: 2
-}
+	AllPlayers: 0,
+	Followers: 1,
+	Following: 2,
+};
 EnumNameMapper.apply(TabTypes);
 
 const styles = {
-    container: {
-        width: '1000px',
-        margin: '15px auto'
-    },
+	container: {
+		width: '1000px',
+		margin: '15px auto',
+	},
 
-    tabsWrapper: {
-        flex: 1
-    },
+	tabsWrapper: {
+		flex: 1,
+	},
 
-    tabs: {
-        backgroundColor: '#fff'
-    },
+	tabs: {
+		backgroundColor: '#fff',
+	},
 
-    tab: {
-        color: 'rgba(107, 104, 104, 0.8)'
-    },
+	tab: {
+		color: 'rgba(107, 104, 104, 0.8)',
+	},
 
-    inkBarStyle: {
-        backgroundColor: '#777'
-    }
-}
+	inkBarStyle: {
+		backgroundColor: '#777',
+	},
+};
 
 class OpponentSelector extends Component {
-    constructor(props) {
-        super(props);
+	constructor(props) {
+		super(props);
 
-        this.state = {
-            activeTab: TabTypes.AllPlayers
-        }
-    }
+		this.state = {
+			activeTab: TabTypes.AllPlayers,
+		};
+	}
 
-    handleTabChange(value) {
-        this.setState({ activeTab: value });
-    }
+	handleTabChange(value) {
+		this.setState({ activeTab: value });
+	}
 
-    render() {
-        const userId = this.props.userId;
+	render() {
+		const userId = this.props.userId;
 
-        if (!isLoaded) {
-            return <LoadingOverlay />;
-        }
+		if (!isLoaded) {
+			return <LoadingOverlay />;
+		}
 
-        return (
-            <Paper id="followers-base" style={styles.container}>
-                <Tabs value={this.state.activeTab} style={styles.tabsWrapper} tabItemContainerStyle={styles.tabs} inkBarStyle={styles.inkBarStyle}>
-                    <Tab label="All Players"
-                        value={TabTypes.AllPlayers}
-                        style={styles.tab}
-                        onClick={() => this.handleTabChange(TabTypes.AllPlayers)} />
-                    <Tab label="Followers"
-                        value={TabTypes.Followers}
-                        style={styles.tab}
-                        onClick={() => this.handleTabChange(TabTypes.Followers)} />
-                    <Tab label="Following"
-                        value={TabTypes.Following}
-                        style={styles.tab}
-                        onClick={() => this.handleTabChange(TabTypes.Following)} />
-                </Tabs>    
-                {this.state.activeTab == TabTypes.AllPlayers && <AllPlayers /> }
-                {this.state.activeTab == TabTypes.Followers && <Followers />}
-                {this.state.activeTab == TabTypes.Following && <Following />}
-            </Paper>
-        );
-    }
+		return (
+			<Paper id="followers-base" style={styles.container}>
+				<Tabs value={this.state.activeTab} style={styles.tabsWrapper} tabItemContainerStyle={styles.tabs} inkBarStyle={styles.inkBarStyle}>
+					<Tab
+						label="All Players"
+						value={TabTypes.AllPlayers}
+						style={styles.tab}
+						onClick={() => this.handleTabChange(TabTypes.AllPlayers)}
+					/>
+					<Tab
+						label="Followers"
+						value={TabTypes.Followers}
+						style={styles.tab}
+						onClick={() => this.handleTabChange(TabTypes.Followers)}
+					/>
+					<Tab
+						label="Following"
+						value={TabTypes.Following}
+						style={styles.tab}
+						onClick={() => this.handleTabChange(TabTypes.Following)}
+					/>
+				</Tabs>
+				{this.state.activeTab == TabTypes.AllPlayers && <AllPlayers /> }
+				{this.state.activeTab == TabTypes.Followers && <Followers />}
+				{this.state.activeTab == TabTypes.Following && <Following />}
+			</Paper>
+		);
+	}
 
-    componentDidMount() {
-        const isLoaded = this.props.isLoaded;
+	componentDidMount() {
+		const isLoaded = this.props.isLoaded;
 
-        if (!isLoaded) {
-            browserHistory.replace('/contests');
-        }
-    }
+		if (!isLoaded) {
+			browserHistory.replace('/contests');
+		}
+	}
 
-    //Set contest course null
-    componentWillUnmount() {
-        this.props.chooseContestCourse(null);
-    }
+	// Set contest course null
+	componentWillUnmount() {
+		this.props.chooseContestCourse(null);
+	}
 }
 
 function mapStateToProps(state) {
-    return {
-        isLoaded: isLoaded(state, "opponentSelector")
-    };
+	return {
+		isLoaded: isLoaded(state, 'opponentSelector'),
+	};
 }
 
-
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-        chooseContestCourse
-    }, dispatch);
+	return bindActionCreators({
+		chooseContestCourse,
+	}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OpponentSelector);
