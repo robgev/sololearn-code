@@ -1,6 +1,7 @@
+import { browserHistory } from 'react-router';
+
 import Service from '../api/service';
 import Storage from '../api/storage';
-import { browserHistory } from 'react-router';
 import * as types from '../constants/ActionTypes';
 
 const loadLevels = payload => ({ type: types.LOAD_LEVELS, payload });
@@ -33,7 +34,7 @@ export const loadCoursesInternal = () => {
 	const levels = localStorage.load('levels');
 
 	if (courses != null || levels != null) {
-		return dispatch => new Promise((resolve, reject) => {
+		return dispatch => new Promise((resolve) => {
 			dispatch(loadCourses(courses));
 			dispatch(loadLevels(levels));
 			resolve();
