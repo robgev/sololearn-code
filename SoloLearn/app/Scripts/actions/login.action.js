@@ -3,7 +3,11 @@ import Service from '../api/service';
 import Storage from '../api/storage';
 import hash from '../utils/hash';
 import faultGenerator from '../utils/faultGenerator';
-import { loadDefaults, getUserProfile } from './defaultActions';
+import { getUserProfile } from './defaultActions';
+
+export const imitateLogin = () => ({ type: types.IMITATE_LOGIN });
+
+export const changeLoginModal = isOpen => ({ type: types.CHANGE_LOGIN_MODAL, payload: isOpen });
 
 export const logout = () => (dispatch) => {
 	new Storage().clear();
@@ -35,20 +39,16 @@ export const signup = ({ name, email, pass }) => async (dispatch) => {
 	try {
 		const res = await Service.request('Register', { name, email, password: hash(pass) });
 		if (res.error) return faultGenerator(res.error.data);
-		dispatch(login({ email, password }));
+		dispatch(login({ email, pass }));
 	} catch (e) {
 		console.log(e);
 	}
 };
 
-export const forgotPassword = email => dispatch => Service.request('ForgotPassword', { email })
+export const forgotPassword = email => () => Service.request('ForgotPassword', { email })
 	.then((res) => {
 		if (res.error) {
 			return faultGenerator(res.error.data);
 		}
 		return false;
 	});
-
-export const imitateLogin = () => ({ type: types.IMITATE_LOGIN });
-
-export const changeLoginModal = isOpen => ({ type: types.CHANGE_LOGIN_MODAL, payload: isOpen });
