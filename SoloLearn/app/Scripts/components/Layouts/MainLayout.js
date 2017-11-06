@@ -29,7 +29,7 @@ import Theme from '../../defaults/theme.js';
 import defaultSyles from '../../styles/defaults';
 
 // Tabs
-import { selectTab } from '../../actions/tabs';
+import selectTab from '../../actions/tabs';
 
 // Lodash for tab selection
 import { find } from 'lodash';

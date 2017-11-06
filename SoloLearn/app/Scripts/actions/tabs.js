@@ -1,6 +1,8 @@
 import * as types from '../constants/ActionTypes';
 
-export const selectTab = tab => ({
+const selectTab = tab => ({
 	type: types.TAB_SELECTED,
 	payload: tab,
 });
+
+export default selectTab;

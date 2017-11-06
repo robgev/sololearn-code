@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 // Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectTab } from '../../actions/tabs';
+import selectTab from '../../actions/tabs';
 
 // Material UI components
 import { Tabs, Tab } from 'material-ui/Tabs';
