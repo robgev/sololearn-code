@@ -19,7 +19,7 @@ export const getNotificationCountInternal = () => (dispatch, getState) => {
 };
 
 export const emptyNotifications = () => dispatch =>
-	new Promise((resolve, reject) => {
+	new Promise((resolve) => {
 		dispatch({
 			type: types.EMPTY_NOTIFICATIONS,
 			payload: [],
@@ -40,31 +40,29 @@ const groupNotificationItems = (notifications) => {
 		const firstItem = temp[0];
 		temp.splice(0, 1);
 
-		const groupedItems = temp.filter(item => item.groupID == firstItem.groupID);
-		temp = temp.filter(item => item.groupID != firstItem.groupID);
+		const groupedItems = temp.filter(item => item.groupID === firstItem.groupID);
+		temp = temp.filter(item => item.groupID !== firstItem.groupID);
 		firstItem.groupedItems = groupedItems;
 
 		groupedNotifications.push(firstItem);
 	}
 
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve) => {
 		resolve(groupedNotifications);
 	});
 };
 
 export const getNotificationsInternal = (fromId, toId) => (dispatch, getState) => {
 	if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
-	const store = getState();
-	const notifications = store.notifications;
 
 	return Service.request('Profile/GetNotifications', { fromId, toId, count: 20 })
 		.then((response) => {
-			const notifications = response.notifications;
+			const { notifications } = response;
 			const count = notifications.length;
 
 			return groupNotificationItems(notifications)
-				.then((response) => {
-					dispatch(getNotifications(response));
+				.then((notificationItemsResponse) => {
+					dispatch(getNotifications(notificationItemsResponse));
 
 					return count;
 				})
@@ -78,7 +76,7 @@ export const getNotificationsInternal = (fromId, toId) => (dispatch, getState) =
 };
 
 export const markAllRead = () => dispatch =>
-	new Promise((resolve, reject) => {
+	new Promise((resolve) => {
 		dispatch({
 			type: types.MARK_ALL_READ,
 		});
@@ -86,7 +84,7 @@ export const markAllRead = () => dispatch =>
 	});
 
 export const markRead = ids => dispatch =>
-	new Promise((resolve, reject) => {
+	new Promise((resolve) => {
 		dispatch({
 			type: types.MARK_READ,
 			payload: ids,
@@ -154,7 +152,7 @@ export const getFollowingInternal = (index, userId, count = 20, fromChallenges =
 };
 
 export const followUser = (userId, fromFollowers, follow) => dispatch =>
-	new Promise((resolve, reject) => {
+	new Promise((resolve) => {
 		dispatch({
 			type: types.FOLLOW_USER,
 			payload: {
