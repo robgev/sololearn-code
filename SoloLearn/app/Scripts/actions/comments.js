@@ -14,7 +14,8 @@ export const getReplies = (commentId, comments) => ({
 	},
 });
 
-export const getCommentsInternal = (id, type, parentId, index, oredring, commentsType, count = 20) => {
+export const getCommentsInternal =
+(id, type, parentId, index, oredring, commentsType, count = 20) => {
 	let path = '';
 	const params = {
 		parentId,
@@ -23,11 +24,11 @@ export const getCommentsInternal = (id, type, parentId, index, oredring, comment
 		orderby: oredring,
 	};
 
-	if (commentsType == 'lesson') {
+	if (commentsType === 'lesson') {
 		path = 'Discussion/GetLessonComments';
 		params.quizId = id;
 		params.type = type;
-	} else if (commentsType == 'code') {
+	} else if (commentsType === 'code') {
 		path = 'Discussion/GetCodeComments';
 		params.codeId = id;
 	}
@@ -39,16 +40,17 @@ export const getCommentsInternal = (id, type, parentId, index, oredring, comment
 		return Service.request(path, params).then((response) => {
 			const responseComments = response.comments;
 
-			if (parentId == null) {
-				const forcedReplies = loadedComments.filter((c, index) => (c.isForcedDown ? Object.assign(c, { index }) : null));
+			if (parentId === null) {
+				const forcedReplies = loadedComments.filter((c, commentIndex) =>
+					(c.isForcedDown ? Object.assign(c, { commentIndex }) : null));
 
 				for (let i = 0; i < responseComments.length; i++) {
 					const comment = responseComments[i];
 					comment.repliesCount = comment.replies;
 					comment.replies = [];
 
-					for (var j = 0; j < forcedReplies.length; j++) {
-						if (forcedReplies[j].id == comment.id) {
+					for (let j = 0; j < forcedReplies.length; j++) {
+						if (forcedReplies[j].id === comment.id) {
 							loadedComments.splice(forcedReplies[j].index, 1);
 						}
 					}
@@ -56,14 +58,15 @@ export const getCommentsInternal = (id, type, parentId, index, oredring, comment
 
 				dispatch(getComments(responseComments));
 			} else {
-				const parentComment = loadedComments[loadedComments.findIndex(c => c.id == parentId)];
-				const forcedReplies = parentComment.replies.filter((c, index) => (c.isForcedDown ? Object.assign(c, { index }) : null));
+				const parentComment = loadedComments[loadedComments.findIndex(c => c.id === parentId)];
+				const forcedReplies = parentComment.replies.filter((c, parentCommentIndex) =>
+					(c.isForcedDown ? Object.assign(c, { parentCommentIndex }) : null));
 
 				for (let i = 0; i < responseComments.length; i++) {
 					const comment = responseComments[i];
 
-					for (var j = 0; j < forcedReplies.length; j++) {
-						if (forcedReplies[j].id == comment.id) {
+					for (let j = 0; j < forcedReplies.length; j++) {
+						if (forcedReplies[j].id === comment.id) {
 							parentComment.replies.splice(forcedReplies[j].index, 1);
 						}
 					}
@@ -79,7 +82,7 @@ export const getCommentsInternal = (id, type, parentId, index, oredring, comment
 	};
 };
 
-export const emptyComments = () => dispatch => new Promise((resolve, reject) => {
+export const emptyComments = () => dispatch => new Promise((resolve) => {
 	dispatch({
 		type: types.EMPTY_COMMENTS,
 		payload: [],
@@ -87,25 +90,26 @@ export const emptyComments = () => dispatch => new Promise((resolve, reject) => 
 	resolve();
 });
 
-export const voteComment = (id, parentId, isPrimary, vote, votes) => dispatch => new Promise((resolve, reject) => {
-	dispatch({
-		type: types.VOTE_COMMENT,
-		payload: {
-			id, parentId, isPrimary, vote, votes,
-		},
+export const voteComment = (id, parentId, isPrimary, vote, votes) =>
+	dispatch => new Promise((resolve) => {
+		dispatch({
+			type: types.VOTE_COMMENT,
+			payload: {
+				id, parentId, isPrimary, vote, votes,
+			},
+		});
+		resolve();
 	});
-	resolve();
-});
 
 export const voteCommentInternal = (comment, vote, commentsType) => {
 	let path = '';
-	const userVote = comment.vote == vote ? 0 : vote;
-	const votes = comment.votes + userVote - comment.vote;
-	const isPrimary = comment.parentID == null;
+	const userVote = comment.vote === vote ? 0 : vote;
+	const votes = (comment.votes + userVote) - comment.vote;
+	const isPrimary = comment.parentID === null;
 
-	if (commentsType == 'lesson') {
+	if (commentsType === 'lesson') {
 		path = 'Discussion/VoteLessonComment';
-	} else if (commentsType == 'code') {
+	} else if (commentsType === 'code') {
 		path = 'Discussion/VoteCodeComment';
 	}
 
@@ -123,23 +127,24 @@ export const emptyCommentReplies = commentId => ({
 	payload: commentId,
 });
 
-export const editComment = (id, parentId, isPrimary, message) => dispatch => new Promise((resolve, reject) => {
-	dispatch({
-		type: types.EDIT_COMMENT,
-		payload: {
-			id, parentId, isPrimary, message,
-		},
+export const editComment = (id, parentId, isPrimary, message) =>
+	dispatch => new Promise((resolve) => {
+		dispatch({
+			type: types.EDIT_COMMENT,
+			payload: {
+				id, parentId, isPrimary, message,
+			},
+		});
+		resolve();
 	});
-	resolve();
-});
 
 export const editCommentInternal = (id, parentId, message, commentsType) => {
-	const isPrimary = parentId == null;
+	const isPrimary = parentId === null;
 	let path = '';
 
-	if (commentsType == 'lesson') {
+	if (commentsType === 'lesson') {
 		path = 'Discussion/EditLessonComment';
-	} else if (commentsType == 'code') {
+	} else if (commentsType === 'code') {
 		path = 'Discussion/EditCodeComment';
 	}
 
@@ -150,21 +155,22 @@ export const editCommentInternal = (id, parentId, message, commentsType) => {
 	});
 };
 
-export const deleteComment = (id, parentId, isPrimary) => dispatch => new Promise((resolve, reject) => {
-	dispatch({
-		type: types.DELETE_COMMENT,
-		payload: { id, parentId, isPrimary },
+export const deleteComment = (id, parentId, isPrimary) =>
+	dispatch => new Promise((resolve) => {
+		dispatch({
+			type: types.DELETE_COMMENT,
+			payload: { id, parentId, isPrimary },
+		});
+		resolve();
 	});
-	resolve();
-});
 
 export const deleteCommentInternal = (id, parentId, commentsType) => {
-	const isPrimary = parentId == null;
+	const isPrimary = parentId === null;
 	let path = '';
 
-	if (commentsType == 'lesson') {
+	if (commentsType === 'lesson') {
 		path = 'Discussion/DeleteLessonComment';
-	} else if (commentsType == 'code') {
+	} else if (commentsType === 'code') {
 		path = 'Discussion/DeleteCodeComment';
 	}
 
@@ -181,40 +187,32 @@ export const addComment = (comment, isPrimary, ordering) => ({
 });
 
 export const addCommentInternal = (id, parentId, message, type, commentsType, ordering) => {
-	const isPrimary = parentId == null;
+	const isPrimary = parentId === null;
 	let path = '';
 	const params = {
 		parentId,
 		message,
 	};
 
-	if (commentsType == 'lesson') {
+	if (commentsType === 'lesson') {
 		path = 'Discussion/CreateLessonComment';
 		params.quizId = id;
 		params.type = type;
-	} else if (commentsType == 'code') {
+	} else if (commentsType === 'code') {
 		path = 'Discussion/CodeLessonComment';
 	}
 
-	return (dispatch, getState) => {
-		const store = getState();
-		const comments = store.comments;
+	return dispatch => Service.request(path, params).then((response) => {
+		const { comment } = response;
+		comment.repliesCount = 0;
+		comment.replies = [];
+		comment.userName = 'Rafael Hovhannisyan'; // TODO Change after User class implemantation
+		comment.isForcedDown = true;
 
-		return Service.request(path, params).then((response) => {
-			const comment = response.comment;
-			comment.repliesCount = 0;
-			comment.replies = [];
-			comment.userName = 'Rafael Hovhannisyan'; // TODO Change after User class implemantation
-			comment.isForcedDown = true;
-
-			if (isPrimary) {
-				dispatch(addComment(comment, isPrimary, ordering));
-			} else {
-				const index = comments.findIndex(c => c.id == comment.parentID);
-				const parentComment = comments[index];
-
-				dispatch(addComment(comment, isPrimary, ordering));
-			}
-		});
-	};
+		if (isPrimary) {
+			dispatch(addComment(comment, isPrimary, ordering));
+		} else {
+			dispatch(addComment(comment, isPrimary, ordering));
+		}
+	});
 };
