@@ -17,27 +17,30 @@ const groupFeedItems = (feedItems) => {
 
 		if (firstItem.type !== feedTypes.completedChallange) {
 			groupedFeedItems.push(firstItem);
-			continue;
+		} else {
+			const mergedItems = temp.filter(item =>
+				item.type === feedTypes.completedChallange &&
+				item.contest.player.id === firstItem.contest.player.id);
+			temp = temp.filter(item =>
+				!(item.type === feedTypes.completedChallange &&
+					item.contest.player.id === firstItem.contest.player.id));
+
+			if (mergedItems.length > 0) {
+				const challenegesCount = mergedItems.length + 1;
+				mergedItems.unshift(firstItem);
+
+				firstItem = {
+					id: mergedItems[mergedItems.length - 1].id,
+					toId: firstItem.id,
+					date: firstItem.date,
+					title: `has completed ${challenegesCount} challenges`,
+					user: firstItem.user,
+					groupedItems: mergedItems,
+					type: 444,
+				};
+			}
+			groupedFeedItems.push(firstItem);
 		}
-
-		const mergedItems = temp.filter(item => item.type == feedTypes.completedChallange && item.contest.player.id == firstItem.contest.player.id);
-		temp = temp.filter(item => !(item.type == feedTypes.completedChallange && item.contest.player.id == firstItem.contest.player.id));
-
-		if (mergedItems.length > 0) {
-			const challenegesCount = mergedItems.length + 1;
-			mergedItems.unshift(firstItem);
-
-			firstItem = {
-				id: mergedItems[mergedItems.length - 1].id,
-				toId: firstItem.id,
-				date: firstItem.date,
-				title: `has completed ${challenegesCount} challenges`,
-				user: firstItem.user,
-				groupedItems: mergedItems,
-				type: 444,
-			};
-		}
-		groupedFeedItems.push(firstItem);
 	}
 
 	if (feedItems.length > 0) {
@@ -46,7 +49,7 @@ const groupFeedItems = (feedItems) => {
 		if (lastItem.id !== groupedLastItem.id) groupedLastItem.id = lastItem.id;
 	}
 
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve) => {
 		resolve(groupedFeedItems);
 	});
 };
@@ -56,44 +59,32 @@ export const getProfileFeedItems = feedItems => ({
 	payload: feedItems,
 });
 
-export const getFeedItemsInternal = (fromId, profileId) => (dispatch, getState) => Service.request('Profile/GetFeed', { fromId, profileId, count: 20 }).then((response) => {
-	const count = response.feed.length;
-	const store = getState();
-	const feed = store.feed;
-	const userSuggestions = store.userSuggestions;
-	const suggestionsBatch = feed.filter(item => item.type == feedTypes.suggestions).length;
-
-	return groupFeedItems(response.feed).then((response) => {
-		const feedItems = response;
+export const getFeedItemsInternal = (fromId, profileId) => async (dispatch, getState) => {
+	try {
+		const response = await Service.request('Profile/GetFeed', { fromId, profileId, count: 20 });
+		const { length } = response.feed;
+		const { feed, userSuggestions } = getState();
+		const suggestionsBatch = feed.filter(item => item.type === feedTypes.suggestions).length;
+		const feedItems = await groupFeedItems(response.feed);
 		const feedItemsCount = feed.length + feedItems.length;
-
 		if (profileId != null) {
-			dispatch(getProfileFeedItems(feedItems)); // Load exact profile feed items.
-
-			return count;
+			dispatch(getProfileFeedItems(feedItems));
+			return length;
+		} else if (feedItemsCount >= 20 * (1 + suggestionsBatch) &&
+			suggestionsBatch < userSuggestions.length) {
+			const suggestionsObj = {
+				suggestions: userSuggestions[suggestionsBatch],
+				type: feedTypes.suggestions,
+				id: suggestionsBatch,
+			};
+			feedItems.push(suggestionsObj);
 		}
-
-		if (feedItemsCount >= 20 * (1 + suggestionsBatch)) {
-			if (suggestionsBatch < userSuggestions.length) {
-				const suggestionsObj = {
-					suggestions: userSuggestions[suggestionsBatch],
-					type: feedTypes.suggestions,
-					id: suggestionsBatch,
-				};
-
-				feedItems.push(suggestionsObj);
-			}
-		}
-
 		dispatch(getFeedItems(feedItems));
-
-		return count;
-	}).catch((error) => {
-		console.log(error);
-	});
-}).catch((error) => {
-	console.log(error);
-});
+		return length;
+	} catch (e) {
+		return console.log(e);
+	}
+};
 
 export const getNewFeedItems = feedItems => ({
 	type: types.GET_NEW_FEED_ITEMS,
@@ -105,25 +96,19 @@ export const getProfileNewFeedItems = feedItems => ({
 	payload: feedItems,
 });
 
-export const getNewFeedItemsInternal = (toId, userId) => (dispatch, getState) => Service.request('Profile/GetFeed', { toId, profileId: userId, count: 20 }).then((response) => {
+export const getNewFeedItemsInternal = (toId, userId) => async (dispatch) => {
+	const response = await Service.request('Profile/GetFeed', { toId, profileId: userId, count: 20 });
 	if (response.feed.length > 0) {
-		return groupFeedItems(response.feed).then((response) => {
-			const feedItems = response;
-
-			if (userId != null) {
-				dispatch(getProfileNewFeedItems(feedItems));
-			} else {
-				dispatch(getNewFeedItems(feedItems));
-			}
-
-			return feedItems.length;
-		}).catch((error) => {
-			console.log(error);
-		});
+		const feedItems = await groupFeedItems(response.feed);
+		if (userId != null) {
+			dispatch(getProfileNewFeedItems(feedItems));
+		} else {
+			dispatch(getNewFeedItems(feedItems));
+		}
+		return feedItems.length;
 	}
-
 	return response.feed.length; // Change
-});
+};
 
 export const getPinnedFeedItems = feedItems => ({
 	type: types.GET_FEED_PINS,
