@@ -77,26 +77,26 @@ class CodesBase extends Component {
 	// Detect enter on input
 	handleKeyPress = (e) => {
 		if (e.key === 'Enter' && this.state.query.length > 0) {
-			this.refs.codes.getWrappedInstance().loadCodesByState();
+			this.codes.getWrappedInstance().loadCodesByState();
 		}
 	}
 
 	// Clear search input
 	clearSearchInput = () => {
 		this.setState({ query: '' });
-		this.refs.codes.getWrappedInstance().loadCodesByState();
+		this.codes.getWrappedInstance().loadCodesByState();
 	}
 
 	// Change discuss oredering
 	handleOrderingFilterChange = (e, index, value) => {
 		this.setState({ ordering: value });
-		this.refs.codes.getWrappedInstance().loadCodesByState();
+		this.codes.getWrappedInstance().loadCodesByState();
 	}
 
 	// Change codes language
 	handleLanguageFilterChange = (e, index, value) => {
 		this.setState({ language: value });
-		this.refs.codes.getWrappedInstance().loadCodesByState();
+		this.codes.getWrappedInstance().loadCodesByState();
 	}
 
 	render() {
@@ -143,7 +143,15 @@ class CodesBase extends Component {
 						<MenuItem value={3} primaryText="My Codes" />
 					</DropDownMenu>
 				</div>
-				<Codes codes={this.props.codes} isLoaded={this.props.isLoaded} ordering={this.state.ordering} language={this.state.language} query={this.state.query} isUserProfile={false} ref="codes" />
+				<Codes
+					codes={this.props.codes}
+					isLoaded={this.props.isLoaded}
+					ordering={this.state.ordering}
+					language={this.state.language}
+					query={this.state.query}
+					isUserProfile={false}
+					ref={(codes) => { this.codes = codes; }}
+				/>
 			</div>
 		);
 	}

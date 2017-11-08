@@ -119,9 +119,9 @@ class CodeItem extends Component {
 						<div className="stats" style={styles.stats}>
 							<div style={styles.mainStats}>
 								<div className="votes">
-									<ThumbUp className="upvote" style={styles.vote.button} color={code.vote == 1 ? blueGrey500 : grey500} />
+									<ThumbUp className="upvote" style={styles.vote.button} color={code.vote === 1 ? blueGrey500 : grey500} />
 									<span style={styles.vote.text}>{code.votes > 0 ? `+${numberFormatter(code.votes)}` : numberFormatter(code.votes)}</span>
-									<ThumbDown className="downvote" style={styles.vote.button} color={code.vote == -1 ? blueGrey500 : grey500} />
+									<ThumbDown className="downvote" style={styles.vote.button} color={code.vote === -1 ? blueGrey500 : grey500} />
 								</div>
 								<div className="comments" style={styles.comments.base}>
 									<span style={styles.comments.text}>{code.comments}</span>
