@@ -2,6 +2,9 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 
+// Material UI components
+import Paper from 'material-ui/Paper';
+
 // Service
 import Service from '../../api/service';
 
@@ -10,9 +13,6 @@ import Editor from './Editor';
 import PlaygroundTabs from './PlaygroundTabs';
 import Toolbar from './Toolbar';
 import LoadingOverlay from '../../components/Shared/LoadingOverlay';
-
-// Material UI components
-import Paper from 'material-ui/Paper';
 
 // App defaults and utils
 import texts from '../../defaults/texts';
@@ -53,226 +53,216 @@ class Playground extends Component {
 		this.isCodeTemplate = false;
 	}
 
-    // Default settings
-    setDefaultSettings = () => {
-    	this.sourceCode = '';
-    	this.cssCode = '';
-    	this.jsCode = '';
+	componentDidMount() {
+		let isWeb = false;
+		let sourceCode = '';
+		let cssCode = '';
+		let jsCode = '';
+		const { params } = this.props;
+		if (typeof params.primary === 'undefined' && typeof params.secondary === 'undefined') {
+			this.setDefaultSettings();
+		} else if (params.primary.length !== 12) {
+			if (isNaN(parseInt(params.secondary))) {
+				let isMatched = false;
 
-    	this.setState({
-    		mode: 'html',
-    		type: 'web',
-    		theme: 'monokai',
-    		languageSelector: 'html',
-    	});
+				Object.keys(editorSettings).forEach((key) => {
+					const value = editorSettings[key];
 
-    	browserHistory.replace('/playground/html');
-    }
+					if (params.primary === value.alias) {
+						isMatched = true;
+						isWeb = value.alias === 'html' || value.alias === 'css' || value.alias === 'js';
 
-    getCodeTemplate = () => {
-    	const that = this;
-    	const params = this.props.params;
-    	this.setState({ isGettingCode: true });
+						if (isWeb) {
+							sourceCode = texts.html;
+							cssCode = texts.css;
+							jsCode = texts.javascript;
+						}
 
-    	// Link requires saved code
-    	Service.request('Playground/GetCodeSample', { id: parseInt(params.secondary) })
-    		.then((response) => {
-    			const codeTemplate = response.code;
+						this.sourceCode = sourceCode;
+						this.cssCode = cssCode;
+						this.jsCode = jsCode;
 
-    			this.sourceCode = codeTemplate.sourceCode;
-    			this.cssCode = codeTemplate.cssCode;
-    			this.jsCode = codeTemplate.jsCode;
-    			this.isCodeTemplate = true;
+						this.setState({
+							mode: key,
+							type: value.type,
+							theme: 'monokai',
+							languageSelector: isWeb ? 'html' : key,
+						});
 
-    			let isMatched = false;
-    			let isWeb = false;
+						browserHistory.replace(`/playground/${value.alias}`);
+					}
+				});
 
-    			for (const key in editorSettings) {
-    				const value = editorSettings[key];
+				if (!isMatched) {
+					this.setDefaultSettings();
+				}
+			} else {
+				this.getCodeTemplate();
+			}
+		} else {
+			this.getUserCode();
+		}
+	}
+	// Default settings
+	setDefaultSettings = () => {
+		this.sourceCode = '';
+		this.cssCode = '';
+		this.jsCode = '';
 
-    				if (params.primary == value.alias) {
-    					isMatched = true;
-    					isWeb = value.alias == 'html' || value.alias == 'css' || value.alias == 'js';
+		this.setState({
+			mode: 'html',
+			type: 'web',
+			theme: 'monokai',
+			languageSelector: 'html',
+		});
 
-    					that.setState({
-    						mode: key,
-    						type: value.type,
-    						theme: 'monokai',
-    						languageSelector: isWeb ? 'html' : key,
-    					});
+		browserHistory.replace('/playground/html');
+	}
 
-    					browserHistory.replace(`/playground/${value.alias}/${params.secondary}`);
-    				}
-    			}
+	getCodeTemplate = () => {
+		const that = this;
+		const { params } = this.props;
+		this.setState({ isGettingCode: true });
 
-    			if (!isMatched) {
-    				browserHistory.replace(`/playground/html/${params.secondary}`);
-    			}
+		// Link requires saved code
+		Service.request('Playground/GetCodeSample', { id: parseInt(params.secondary) })
+			.then((response) => {
+				const codeTemplate = response.code;
 
-    			this.setState({ isGettingCode: false });
-    		})
-    		.catch((error) => {
-    			console.log(error);
-    		});
-    }
+				this.sourceCode = codeTemplate.sourceCode;
+				this.cssCode = codeTemplate.cssCode;
+				this.jsCode = codeTemplate.jsCode;
+				this.isCodeTemplate = true;
 
-    // Get user saved code
-    getUserCode = () => {
-    	const params = this.props.params;
-    	this.setState({ isGettingCode: true });
+				let isMatched = false;
+				let isWeb = false;
 
-    	// Link requires saved code
-    	Service.request('Playground/GetCode', { publicId: params.primary }).then((response) => {
-    		console.log(response);
-    		const userCode = response.code;
+				for (const key in editorSettings) {
+					const value = editorSettings[key];
 
-    		this.sourceCode = userCode.sourceCode;
-    		this.cssCode = userCode.cssCode;
-    		this.jsCode = userCode.jsCode;
-    		this.isUserCode = true;
-    		this.userCodeData = userCode;
+					if (params.primary === value.alias) {
+						isMatched = true;
+						isWeb = value.alias === 'html' || value.alias === 'css' || value.alias === 'js';
 
-    		let isWeb = false;
+						that.setState({
+							mode: key,
+							type: value.type,
+							theme: 'monokai',
+							languageSelector: isWeb ? 'html' : key,
+						});
 
-    		// Check language of user code for setting up correct link
-    		Object.keys(editorSettings).some((key) => {
-    			const value = editorSettings[key];
-    			if (userCode.language == value.language) {
-    				browserHistory.replace(`/playground/${userCode.publicID}/${value.alias}`);
-    				isWeb = value.alias == 'html' || value.alias == 'css' || value.alias == 'js';
+						browserHistory.replace(`/playground/${value.alias}/${params.secondary}`);
+					}
+				}
 
-    				this.setState({
-    					mode: key,
-    					type: value.type,
-    					theme: 'monokai',
-    					languageSelector: isWeb ? 'html' : key,
-    				});
+				if (!isMatched) {
+					browserHistory.replace(`/playground/html/${params.secondary}`);
+				}
 
-    				return userCode.language == value.language;
-    			}
-    		});
+				this.setState({ isGettingCode: false });
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}
 
-    		this.setState({ isGettingCode: false });
-    	}).catch((error) => {
-    		console.log(error);
-    	});
-    }
+	// Get user saved code
+	getUserCode = () => {
+		const { params } = this.props;
+		this.setState({ isGettingCode: true });
 
-    // Change web tabs
-    handleTabChange = (mode) => {
-    	console.log(this);
-    	const code = (mode == 'html' || mode == 'php') ? this.sourceCode : (mode == 'css' ? this.cssCode : this.jsCode);
+		// Link requires saved code
+		Service.request('Playground/GetCode', { publicId: params.primary }).then((response) => {
+			const userCode = response.code;
 
-    	this.setState({
-    		mode,
-    		language: 'html',
-    		showOutput: false,
-    	}, () => {
-    		// this.changeMode(code);
-    	});
-    }
+			this.sourceCode = userCode.sourceCode;
+			this.cssCode = userCode.cssCode;
+			this.jsCode = userCode.jsCode;
+			this.isUserCode = true;
+			this.userCodeData = userCode;
 
-    render() {
-    	const {
-    		showOutput, mode, type, theme, isGettingCode, languageSelector, isSaving, isRunning,
-    	} = this.state;
-    	const showWebOutput = (showOutput && (type == 'web' || type == 'combined'));
+			let isWeb = false;
 
-    	if (isGettingCode) {
-    		return <LoadingOverlay />;
-    	}
+			// Check language of user code for setting up correct link
+			Object.keys(editorSettings).some((key) => {
+				const value = editorSettings[key];
+				if (userCode.language === value.language) {
+					browserHistory.replace(`/playground/${userCode.publicID}/${value.alias}`);
+					isWeb = value.alias === 'html' || value.alias === 'css' || value.alias === 'js';
 
-    	return (
-    		<div id="playground-container">
-    			<Paper id="playground" style={styles.playground.base}>
-		<PlaygroundTabs
-		mode={mode}
-		theme={theme}
-    					type={type}
-		handleTabChange={this.handleTabChange}
-	/>
-		<Editor
-	mode={mode}
-    					theme={theme}
-	type={type}
-    					isGettingCode={isGettingCode}
-	sourceCode={this.sourceCode}
-    					cssCode={this.cssCode}
-    					jsCode={this.jsCode}
-    					userCodeData={this.userCodeData}
-    					isUserCode={this.isUserCode}
-	isCodeTemplate={this.isCodeTemplate}
-	ref={(child) => { this._child = child; }}
-    				/>
-		<Toolbar
-	theme={theme}
-	type={type}
-    					languageSelector={languageSelector}
-    					showWebOutput={showWebOutput}
-    					isSaving={isSaving}
-    					isRunning={isRunning}
-    				/>
-	</Paper>
- </div>
-    	);
-    }
+					this.setState({
+						mode: key,
+						type: value.type,
+						theme: 'monokai',
+						languageSelector: isWeb ? 'html' : key,
+					});
 
-    componentDidMount() {
-    	const that = this;
-    	let isWeb = false;
-    	let sourceCode = '';
-    	let cssCode = '';
-    	let jsCode = '';
-    	const params = this.props.params;
+					return userCode.language === value.language;
+				}
+			});
 
-    	// If link not requires code template or user code then redirecting to playground with html language active
-    	if (typeof params.primary === 'undefined' && typeof params.secondary === 'undefined') {
-    		this.setDefaultSettings();
-    	} else {
-    		// If link primary parameter's length is not 12 then there are two options: 1.language 2.code template id
-    		if (params.primary.length != 12) {
-    			if (isNaN(parseInt(params.secondary))) {
-    				let isMatched = false;
+			this.setState({ isGettingCode: false });
+		}).catch((error) => {
+			console.log(error);
+		});
+	}
 
-    				Object.keys(editorSettings).forEach((key, index) => {
-    					const value = editorSettings[key];
+	// Change web tabs
+	handleTabChange = (mode) => {
+		// const code = (mode === 'html' || mode === 'php') ? this.sourceCode : (mode === 'css' ? this.cssCode : this.jsCode);
 
-    					if (params.primary == value.alias) {
-    						isMatched = true;
-    						isWeb = value.alias == 'html' || value.alias == 'css' || value.alias == 'js';
+		this.setState({
+			mode,
+			showOutput: false,
+		}, () => {
+			// this.changeMode(code);
+		});
+	}
 
-    						if (isWeb) {
-    							sourceCode = texts.html;
-    							cssCode = texts.css;
-    							jsCode = texts.javascript;
-    						}
+	render() {
+		const {
+			showOutput, mode, type, theme, isGettingCode, languageSelector, isSaving, isRunning,
+		} = this.state;
+		const showWebOutput = (showOutput && (type === 'web' || type === 'combined'));
 
-    						that.sourceCode = sourceCode;
-    						that.cssCode = cssCode;
-    						that.jsCode = jsCode;
+		if (isGettingCode) {
+			return <LoadingOverlay />;
+		}
 
-    						that.setState({
-    							mode: key,
-    							type: value.type,
-    							theme: 'monokai',
-    							languageSelector: isWeb ? 'html' : key,
-    						});
-
-    						browserHistory.replace(`/playground/${value.alias}`);
-    					}
-    				});
-
-    				if (!isMatched) {
-    					this.setDefaultSettings();
-    				}
-    			} else {
-    				this.getCodeTemplate();
-    			}
-    		} else {
-    			this.getUserCode();
-    		}
-    	}
-    }
+		return (
+			<div id="playground-container">
+				<Paper id="playground" style={styles.playground.base}>
+					<PlaygroundTabs
+						mode={mode}
+						theme={theme}
+						type={type}
+						handleTabChange={this.handleTabChange}
+					/>
+					<Editor
+						mode={mode}
+						theme={theme}
+						type={type}
+						isGettingCode={isGettingCode}
+						sourceCode={this.sourceCode}
+						cssCode={this.cssCode}
+						jsCode={this.jsCode}
+						userCodeData={this.userCodeData}
+						isUserCode={this.isUserCode}
+						isCodeTemplate={this.isCodeTemplate}
+						ref={(child) => { this._child = child; }}
+					/>
+					<Toolbar
+						theme={theme}
+						type={type}
+						languageSelector={languageSelector}
+						showWebOutput={showWebOutput}
+						isSaving={isSaving}
+						isRunning={isRunning}
+					/>
+				</Paper>
+			</div>
+		);
+	}
 }
 
 export default Playground;

@@ -1,6 +1,6 @@
 // React modules
 import React, { Component } from 'react';
-import Radium, { Style } from 'radium';
+import Radium from 'radium';
 
 // Redux modules
 import { connect } from 'react-redux';
@@ -42,95 +42,85 @@ const styles = {
 };
 
 class Codes extends Component {
-    state = {
-    	isLoading: true,
-    	fullyLoaded: false,
-    }
-    componentWillMount() {
-    	const { defaultsLoaded, isLoaded } = this.props;
+	state = {
+		isLoading: true,
+		fullyLoaded: false,
+	}
+	componentWillMount() {
+		const { isLoaded } = this.props;
+		if (!isLoaded) {
+			this.loadCodes();
+		}
+	}
 
-    	if (!defaultsLoaded) {
-    		this.props.loadDefaults()
-    			.then(() => {
-    				if (!isLoaded) {
-    					this.loadCodes();
-    				}
-    			})
-    			.catch((error) => {
-    				console.log(error);
-    			});
-    	} else if (!isLoaded) {
-    		this.loadCodes();
-    	}
-    }
+	// Add event listeners after component mounts
+	componentDidMount() {
+		window.addEventListener('scroll', this.handleScroll);
+	}
 
-    // Add event listeners after component mounts
-    componentDidMount() {
-    	window.addEventListener('scroll', this.handleScroll);
-    }
+	// Remove event listeners after component unmounts
+	componentWillUnmount() {
+		window.removeEventListener('scroll', () => console.log('removed'));
+	}
 
-    // Remove event listeners after component unmounts
-    componentWillUnmount() {
-    	window.removeEventListener('scroll', () => console.log('removed'));
-    }
+	loadCodes = async () => {
+		try {
+			const {
+				codes, ordering, language, query, userId,
+			} = this.props;
+			// this.setState({ isLoading: true }); //if (this.props.codes.length > 0)
+			const index = codes ? codes.length : 0;
+			const count = await this.props.getCodesInternal(index, ordering, language, query, userId);
+			if (count < 20) this.setState({ fullyLoaded: true });
+			this.setState({ isLoading: false });
+		} catch (e) {
+			console.log(e);
+		}
+	}
 
-    loadCodes = () => {
-    	const {
-    		codes, ordering, language, query, userId,
-    	} = this.props;
-    	// this.setState({ isLoading: true }); //if (this.props.codes.length > 0)
-    	const index = codes ? codes.length : 0;
-    	this.props.getCodesInternal(index, ordering, language, query, userId)
-    		.then((count) => {
-    			if (count < 20) this.setState({ fullyLoaded: true });
-    			this.setState({ isLoading: false });
-    		})
-    		.catch((error) => {
-    			console.log(error);
-    		});
-    }
+	// Load codes when condition changes
+	loadCodesByState = async () => {
+		await this.props.emptyCodes();
+		this.setState({ fullyLoaded: false });
+		this.loadCodes();
+	}
 
-    // Load codes when condition changes
-    loadCodesByState = () => {
-    	this.props.emptyCodes()
-    		.then(() => {
-    			this.setState({ fullyLoaded: false });
-    			this.loadCodes();
-    		})
-    		.catch((error) => {
-    			console.log(error);
-    		});
-    }
+	// Check scroll state
+	handleScroll = () => {
+		if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+			if (!this.state.isLoading && !this.state.fullyLoaded) {
+				this.loadCodes();
+			}
+		}
+	}
 
-    // Check scroll state
-    handleScroll = () => {
-    	if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-    		if (!this.state.isLoading && !this.state.fullyLoaded) {
-    			this.loadCodes();
-    		}
-    	}
-    }
+	renderCodes = () => this.props.codes.map(code => (
+		<CodeItem code={code} key={code.id} />
+	))
 
-    renderCodes = () => this.props.codes.map(code => (
-    	<CodeItem code={code} key={code.id} />
-    ))
-
-    render() {
-    	const { isLoaded, codes, isUserProfile } = this.props;
-    	return (
-    		<div className="codes">
-    			{(isLoaded && codes.length > 0) && this.renderCodes()}
-    			{((!isLoaded || codes.length == 0) && !this.state.fullyLoaded && !isUserProfile) && <LoadingOverlay />}
-    			{
-    				((isUserProfile || codes.length > 0) && !this.state.fullyLoaded) &&
-    <div className="loading" style={!this.state.isLoading ? styles.bottomLoading.base : [ styles.bottomLoading.base, styles.bottomLoading.active ]}>
-    	<LoadingOverlay size={30} />
-    </div>
-    			}
-    			{(this.state.fullyLoaded && codes.length == 0) && <div style={styles.noResults}>No Results Found</div>}
-	</div>
-    	);
-    }
+	render() {
+		const { isLoaded, codes, isUserProfile } = this.props;
+		return (
+			<div className="codes">
+				{(isLoaded && codes.length > 0) && this.renderCodes()}
+				{((!isLoaded || codes.length === 0) && !this.state.fullyLoaded && !isUserProfile)
+					&& <LoadingOverlay />}
+				{
+					((isUserProfile || codes.length > 0) && !this.state.fullyLoaded) &&
+					<div
+						className="loading"
+						style={!this.state.isLoading ?
+							styles.bottomLoading.base :
+							[ styles.bottomLoading.base, styles.bottomLoading.active ]}
+					>
+						<LoadingOverlay size={30} />
+					</div>
+				}
+				{(this.state.fullyLoaded && codes.length === 0)
+					&& <div style={styles.noResults}>No Results Found</div>}
+			</div>
+		);
+	}
 }
 
 function mapStateToProps(state) {

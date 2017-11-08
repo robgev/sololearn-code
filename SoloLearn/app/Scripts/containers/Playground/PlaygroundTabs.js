@@ -52,32 +52,65 @@ const styles = {
 };
 
 class PlaygroundTabs extends Component {
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
 		const { type, mode, theme } = this.props;
-		const isDarkTheme = theme == 'monokai';
+		const isDarkTheme = theme === 'monokai';
 
-		if (type == 'web') {
+		if (type === 'web') {
 			return (
-				<Tabs value={mode} tabItemContainerStyle={isDarkTheme ? styles.webTabs.dark : styles.webTabs.light} inkBarStyle={isDarkTheme ? { background: '#dedede' } : { background: '#777' }}>
-					<Tab label="HTML" style={isDarkTheme ? styles.webTab.dark : styles.webTab.light} onClick={() => this.props.handleTabChange('html')} value="html" />
-					<Tab label="CSS" style={isDarkTheme ? styles.webTab.dark : styles.webTab.light} onClick={() => this.props.handleTabChange('css')} value="css" />
-					<Tab label="JS" style={isDarkTheme ? styles.webTab.dark : styles.webTab.light} onClick={() => this.props.handleTabChange('javascript')} value="javascript" />
-					<Tab label="OUTPUT" style={isDarkTheme ? styles.webTab.dark : styles.webTab.light} onClick={this.runCode} value={null} />
+				<Tabs
+					value={mode}
+					tabItemContainerStyle={isDarkTheme ? styles.webTabs.dark : styles.webTabs.light}
+					inkBarStyle={isDarkTheme ? { background: '#dedede' } : { background: '#777' }}
+				>
+					<Tab
+						label="HTML"
+						style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
+						onClick={() => this.props.handleTabChange('html')}
+						value="html"
+					/>
+					<Tab
+						label="CSS"
+						style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
+						onClick={() => this.props.handleTabChange('css')}
+						value="css"
+					/>
+					<Tab
+						label="JS"
+						style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
+						onClick={() => this.props.handleTabChange('javascript')}
+						value="javascript"
+					/>
+					<Tab
+						label="OUTPUT"
+						style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
+						onClick={this.runCode}
+						value={null}
+					/>
 				</Tabs>
 			);
-		} else if (type == 'combined') {
+		} else if (type === 'combined') {
 			return (
-				<Tabs value={mode} tabItemContainerStyle={isDarkTheme ? styles.webTabs.dark : styles.webTabs.light} inkBarStyle={isDarkTheme ? { background: '#dedede' } : { background: '#777' }}>
-					<Tab label="PHP" style={isDarkTheme ? styles.webTab.dark : styles.webTab.light} onClick={() => this.props.handleTabChange('php')} value="php" />
-					<Tab label="OUTPUT" style={isDarkTheme ? styles.webTab.dark : styles.webTab.light} onClick={this.runCode} value={null} />
+				<Tabs
+					value={mode}
+					tabItemContainerStyle={isDarkTheme ? styles.webTabs.dark : styles.webTabs.light}
+					inkBarStyle={isDarkTheme ? { background: '#dedede' } : { background: '#777' }}
+				>
+					<Tab
+						label="PHP"
+						style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
+						onClick={() => this.props.handleTabChange('php')}
+						value="php"
+					/>
+					<Tab
+						label="OUTPUT"
+						style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
+						onClick={this.runCode}
+						value={null}
+					/>
 				</Tabs>
 			);
 		}
-
 		return (
 			<div style={isDarkTheme ? { ...styles.defaultTab.base, ...styles.defaultTab.dark } : { ...styles.defaultTab.base, ...styles.defaultTab.light }} >
 				{editorSettings[mode].name}

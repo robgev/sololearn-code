@@ -1,14 +1,6 @@
 // React modules
 import React, { Component } from 'react';
-import { Link } from 'react-router';
-import Radium, { Style } from 'radium';
-
-// Redux modules
-import { connect } from 'react-redux';
-import { isLoaded } from '../../reducers';
-
-// Additional components
-import Codes from './Codes';
+import Radium from 'radium';
 
 // Material UI components
 import TextField from 'material-ui/TextField';
@@ -16,7 +8,14 @@ import SearchIcon from 'material-ui/svg-icons/action/search';
 import Clear from 'material-ui/svg-icons/content/clear';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-import { grey500, grey700, blueGrey500 } from 'material-ui/styles/colors';
+import { grey700 } from 'material-ui/styles/colors';
+
+// Redux modules
+import { connect } from 'react-redux';
+import { isLoaded } from '../../reducers';
+
+// Additional components
+import Codes from './Codes';
 
 const styles = {
 	container: {
@@ -61,51 +60,41 @@ const styles = {
 };
 
 class CodesBase extends Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			query: '',
-			ordering: 4,
-			language: '',
-		};
-
-		this.clearSearchInput = this.clearSearchInput.bind(this);
-		this.handleOrderingFilterChange = this.handleOrderingFilterChange.bind(this);
-		this.handleLanguageFilterChange = this.handleLanguageFilterChange.bind(this);
-		this.handleInputChange = this.handleInputChange.bind(this);
-		this.handleKeyPress = this.handleKeyPress.bind(this);
-	}
+	state = {
+		query: '',
+		ordering: 4,
+		language: '',
+	};
 
 	// Handle search
-	handleInputChange(e) {
-		const value = e.target.value;
-		if (value == this.state.query) return;
-
-		this.setState({ query: value });
+	handleInputChange = (e) => {
+		const { value } = e.target;
+		if (value !== this.state.query) {
+			this.setState({ query: value });
+		}
 	}
 
 	// Detect enter on input
-	handleKeyPress(e) {
+	handleKeyPress = (e) => {
 		if (e.key === 'Enter' && this.state.query.length > 0) {
 			this.refs.codes.getWrappedInstance().loadCodesByState();
 		}
 	}
 
 	// Clear search input
-	clearSearchInput() {
+	clearSearchInput = () => {
 		this.setState({ query: '' });
 		this.refs.codes.getWrappedInstance().loadCodesByState();
 	}
 
 	// Change discuss oredering
-	handleOrderingFilterChange(e, index, value) {
+	handleOrderingFilterChange = (e, index, value) => {
 		this.setState({ ordering: value });
 		this.refs.codes.getWrappedInstance().loadCodesByState();
 	}
 
 	// Change codes language
-	handleLanguageFilterChange(e, index, value) {
+	handleLanguageFilterChange = (e, index, value) => {
 		this.setState({ language: value });
 		this.refs.codes.getWrappedInstance().loadCodesByState();
 	}
@@ -124,9 +113,15 @@ class CodesBase extends Component {
 							onChange={this.handleInputChange}
 							onKeyPress={this.handleKeyPress}
 						/>
-						{this.state.query.length > 0 && <Clear color={grey700} style={styles.clearIcon} onClick={this.clearSearchInput} />}
+						{this.state.query.length > 0 &&
+							<Clear color={grey700} style={styles.clearIcon} onClick={this.clearSearchInput} />}
 					</div>
-					<DropDownMenu style={styles.languageFilter} value={this.state.language} onChange={this.handleLanguageFilterChange} autoWidth={false}>
+					<DropDownMenu
+						style={styles.languageFilter}
+						value={this.state.language}
+						onChange={this.handleLanguageFilterChange}
+						autoWidth={false}
+					>
 						<MenuItem value="" primaryText="All" />
 						<MenuItem value="cpp" primaryText="C++" />
 						<MenuItem value="cs" primaryText="C#" />
@@ -136,7 +131,12 @@ class CodesBase extends Component {
 						<MenuItem value="php" primaryText="PHP" />
 						<MenuItem value="web" primaryText="Web" />
 					</DropDownMenu>
-					<DropDownMenu style={styles.codesFilter} value={this.state.ordering} onChange={this.handleOrderingFilterChange} autoWidth={false}>
+					<DropDownMenu
+						style={styles.codesFilter}
+						value={this.state.ordering}
+						onChange={this.handleOrderingFilterChange}
+						autoWidth={false}
+					>
 						<MenuItem value={4} primaryText="Trending" />
 						<MenuItem value={2} primaryText="Most Popular" />
 						<MenuItem value={1} primaryText="Most Recent" />
@@ -156,4 +156,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, () => ({}))(Radium(CodesBase));
+export default connect(mapStateToProps)(Radium(CodesBase));

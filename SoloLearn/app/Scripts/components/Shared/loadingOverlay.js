@@ -1,5 +1,5 @@
 // React modules
-import React, { Component } from 'react';
+import React from 'react';
 import Radium from 'radium';
 
 // Material UI components
@@ -34,32 +34,30 @@ const styles = {
 	},
 };
 
-class LoadingOverlay extends Component {
-	render() {
-		const defaultSize = 40;
-		const defaultThickness = 3.5;
+const LoadingOverlay = (props) => {
+	const defaultSize = 40;
+	const defaultThickness = 3.5;
 
-		const size = this.props.size || defaultSize;
-		const thickness = this.props.thickness || defaultThickness;
+	const size = props.size || defaultSize;
+	const thickness = props.thickness || defaultThickness;
 
-		const marginTop = size / 2;
-		const marginLeft = size / 2;
+	const marginTop = size / 2;
+	const marginLeft = size / 2;
 
-		const additionalStyle = {
-			marginTop: `${-marginTop}px`,
-			marginLeft: `${-marginLeft}px`,
-		};
+	const additionalStyle = {
+		marginTop: `${-marginTop}px`,
+		marginLeft: `${-marginLeft}px`,
+	};
 
-		return (
-			<div className="loading-overlay" style={this.props.withBackground ? getStyles(styles.overlay.base, styles.overlay.background) : styles.overlay.base}>
-				<CircularProgress
-					size={size}
-					thickness={thickness}
-					style={getStyles(styles.circle.base, additionalStyle)}
-				/>
-			</div>
-		);
-	}
-}
+	return (
+		<div className="loading-overlay" style={props.withBackground ? [ styles.overlay.base, styles.overlay.background ] : styles.overlay.base}>
+			<CircularProgress
+				size={size}
+				thickness={thickness}
+				style={getStyles(styles.circle.base, additionalStyle)}
+			/>
+		</div>
+	);
+};
 
 export default Radium(LoadingOverlay);

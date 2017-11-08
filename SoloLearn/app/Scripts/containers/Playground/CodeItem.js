@@ -1,14 +1,13 @@
 // React modules
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import Radium, { Style } from 'radium';
+import Radium from 'radium';
 
 // Material UI components
 import CommentsIcon from 'material-ui/svg-icons/communication/comment';
 import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
-import IconButton from 'material-ui/IconButton';
-import { grey500, grey700, blueGrey500 } from 'material-ui/styles/colors';
+import { grey500, blueGrey500 } from 'material-ui/styles/colors';
 
 // Utils
 import numberFormatter from '../../utils/numberFormatter';
@@ -105,13 +104,11 @@ const styles = {
 };
 
 class CodeItem extends Component {
-	constructor(props) {
-		super(props);
+	shouldComponentUpdate(nextProps) {
+		return this.props.code !== nextProps.code;
 	}
-
 	render() {
-		const code = this.props.code;
-
+		const { code } = this.props;
 		return (
 			<Link className="code" style={styles.code} to={`/playground/${code.publicID}`}>
 				<div className="language" style={[ styles.languageIcon, { backgroundColor: getLanguageColor(code.language) } ]}>{code.language}</div>
@@ -139,10 +136,6 @@ class CodeItem extends Component {
 				</div>
 			</Link>
 		);
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		return this.props.code !== nextProps.code;
 	}
 }
 
