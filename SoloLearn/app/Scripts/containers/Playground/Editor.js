@@ -1,11 +1,10 @@
 // React modules
 import React, { Component } from 'react';
 import Radium, { Style } from 'radium';
-import { findDOMNode } from 'react-dom';
 import { browserHistory } from 'react-router';
 
 // Additional data and components (ACE Editor)
-import brace from 'brace';
+import ace from 'brace';
 import 'brace/mode/html';
 import 'brace/mode/css';
 import 'brace/mode/c_cpp';
@@ -19,8 +18,7 @@ import 'brace/theme/monokai'; // Editor dark theme
 import 'brace/ext/language_tools';
 
 // App defaults and utils
-import texts from '../../defaults/texts';
-import getStyles from '../../utils/styleConverter';
+import texts from 'defaults/texts';
 
 const styles = {
 	editor: {
@@ -37,35 +35,40 @@ const styles = {
 	},
 };
 
-const aceEditorStyle = (<Style
-	scopeSelector=".ace_editor"
-	rules={{
-		font: '12px/normal \'Monaco\', \'Menlo\', \'Ubuntu Mono\', \'Consolas\', \'source-code-pro\', monospace',
-		div: {
-			font: '12px/normal \'Monaco\', \'Menlo\', \'Ubuntu Mono\', \'Consolas\', \'source-code-pro\', monospace',
-		},
-	}}
-/>);
+const defaultFontRule =
+	'12px/normal \'Monaco\', \'Menlo\', \'Ubuntu Mono\', \'Consolas\', \'source-code-pro\', monospace';
 
-const aceLineStyle = (<Style
-	scopeSelector=".ace_line"
-	rules={{
-		font: '12px/normal \'Monaco\', \'Menlo\', \'Ubuntu Mono\', \'Consolas\', \'source-code-pro\', monospace',
-		span: {
-			font: '12px/normal \'Monaco\', \'Menlo\', \'Ubuntu Mono\', \'Consolas\', \'source-code-pro\', monospace',
-		},
-	}}
-/>);
+const aceEditorStyle = (
+	<Style
+		scopeSelector=".ace_editor"
+		rules={{
+			font: defaultFontRule,
+			div: {
+				font: defaultFontRule,
+			},
+		}}
+	/>
+);
+
+const aceLineStyle = (
+	<Style
+		scopeSelector=".ace_line"
+		rules={{
+			font: defaultFontRule,
+			span: {
+				font: defaultFontRule,
+			},
+		}}
+	/>
+);
 
 class Editor extends Component {
-	aceEditor = null;
-
 	// Add event listeners after component mounts and creacts ACE editor
 	componentDidMount() {
-		const node = findDOMNode(this.refs.editor);
+		const node = this.editor;
 		this.aceEditor = ace.edit(node);
 		this.aceEditor.renderer.setScrollMargin(2, 0);
-		// this.aceEditor.addEventListener('change', this.handleEditorChange);
+		this.aceEditor.addEventListener('change', this.handleEditorChange);
 
 		if (!this.props.gettingCode) {
 			this.loadEditor();
@@ -74,15 +77,24 @@ class Editor extends Component {
 
 	// Remove event listeners after component unmounts
 	componentWillUnmount() {
-		// this.aceEditor.removeEventListener('change', this.handleEditorChange);
+		this.aceEditor.removeEventListener('change', this.handleEditorChange);
 	}
+
+	handleEditorChange = () => {
+		const editorValue = this.aceEditor.getValue();
+		this.props.handleEditorChange(editorValue);
+	}
+
 	// Load editor with requirements
 	loadEditor = () => {
 		const {
-			theme, mode, sourceCode, isUserCode, isCodeTemplate,
+			mode,
+			theme,
+			codeType,
+			sourceCode,
 		} = this.props;
 
-		const sample = (!isUserCode && !isCodeTemplate) ? texts[mode] : sourceCode;
+		const sample = !codeType ? texts[mode] : sourceCode;
 		const editorMode = `ace/mode/${mode}`;
 		const editorTheme = `ace/theme/${theme}`;
 
@@ -101,13 +113,15 @@ class Editor extends Component {
 
 	// Change ACE Editor mode
 	changeMode = (code) => {
-		const editorMode = `ace/mode/${this.props.mode}`;
+		const { mode, codeType, alias } = this.props;
+		const editorMode = `ace/mode/${mode}`;
 		this.aceEditor.session.setMode(editorMode);
 		this.aceEditor.setValue(code, -1);
+		const isUserCode = codeType === 'userCode';
 
-		const link = this.isUserCode ? `/playground/${this.userCodeData.publicID}/` : '/playground/';
+		const link = isUserCode ? `/playground/${this.userCodeData.publicID}/` : '/playground/';
 
-		browserHistory.replace(link + editorSettings[this.state.mode].alias);
+		browserHistory.replace(link + alias);
 	}
 
 	render() {
@@ -115,7 +129,7 @@ class Editor extends Component {
 			<div>
 				{aceEditorStyle}
 				{aceLineStyle}
-				<div id="editor" ref="editor" style={styles.editor.base} />
+				<div id="editor" ref={(editor) => { this.editor = editor; }} style={styles.editor.base} />
 			</div>
 		);
 	}
