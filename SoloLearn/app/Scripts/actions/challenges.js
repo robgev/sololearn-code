@@ -1,8 +1,8 @@
 import { browserHistory } from 'react-router';
-import Service from '../api/service';
-import * as types from '../constants/ActionTypes';
+import Service from 'api/service';
+import * as types from 'constants/ActionTypes';
 
-import contestTypes from '../defaults/contestTypes';
+import contestTypes from 'defaults/contestTypes';
 
 export const getContests = contests => ({
 	type: types.GET_CONTESTS,

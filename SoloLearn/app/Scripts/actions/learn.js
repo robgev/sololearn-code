@@ -1,10 +1,10 @@
 import { browserHistory } from 'react-router';
 
-import Service from '../api/service';
-import Progress from '../api/progress';
-import Storage from '../api/storage';
-import * as types from '../constants/ActionTypes';
-import { getProfileInternal } from '../actions/defaultActions';
+import Service from 'api/service';
+import Progress from 'api/progress';
+import Storage from 'api/storage';
+import * as types from 'constants/ActionTypes';
+import { getProfileInternal } from 'actions/defaultActions';
 
 // Identifying keys of modules, lessons and quizzes objects
 const structurizeCourse = (modules, dispatch) => {

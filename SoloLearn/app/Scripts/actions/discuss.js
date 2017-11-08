@@ -1,9 +1,9 @@
-import Service from '../api/service';
-import * as types from '../constants/ActionTypes';
+import Service from 'api/service';
+import * as types from 'constants/ActionTypes';
 import { changeLoginModal } from './login.action';
 
 // Utils
-import toSeoFrendly from '../utils/linkPrettify';
+import toSeoFrendly from 'utils/linkPrettify';
 
 export const emptyQuestions = () => dispatch => new Promise((resolve) => {
 	dispatch({

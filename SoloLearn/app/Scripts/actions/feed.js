@@ -1,6 +1,6 @@
-import Service from '../api/service';
-import * as types from '../constants/ActionTypes';
-import feedTypes from '../defaults/appTypes';
+import Service from 'api/service';
+import * as types from 'constants/ActionTypes';
+import feedTypes from 'defaults/appTypes';
 
 export const getFeedItems = feedItems => ({
 	type: types.GET_FEED_ITEMS,

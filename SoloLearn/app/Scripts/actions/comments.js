@@ -1,5 +1,5 @@
-import Service from '../api/service';
-import * as types from '../constants/ActionTypes';
+import Service from 'api/service';
+import * as types from 'constants/ActionTypes';
 
 export const getComments = comments => ({
 	type: types.GET_COMMENTS,

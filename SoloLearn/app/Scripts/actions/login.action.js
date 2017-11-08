@@ -1,8 +1,8 @@
-import * as types from '../constants/ActionTypes';
-import Service from '../api/service';
-import Storage from '../api/storage';
-import hash from '../utils/hash';
-import faultGenerator from '../utils/faultGenerator';
+import * as types from 'constants/ActionTypes';
+import Service from 'api/service';
+import Storage from 'api/storage';
+import hash from 'utils/hash';
+import faultGenerator from 'utils/faultGenerator';
 import { getUserProfile } from './defaultActions';
 
 export const imitateLogin = () => ({ type: types.IMITATE_LOGIN });

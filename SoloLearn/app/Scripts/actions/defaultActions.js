@@ -1,8 +1,8 @@
 import { browserHistory } from 'react-router';
 
-import Service from '../api/service';
-import Storage from '../api/storage';
-import * as types from '../constants/ActionTypes';
+import Service from 'api/service';
+import Storage from 'api/storage';
+import * as types from 'constants/ActionTypes';
 
 const loadLevels = payload => ({ type: types.LOAD_LEVELS, payload });
 
