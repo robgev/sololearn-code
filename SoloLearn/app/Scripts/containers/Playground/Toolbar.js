@@ -76,7 +76,7 @@ const Toolbar = ({
 	handleLanguageChange,
 	handleExternalSourcesPopupOpen,
 }) => (
-	<div id="toolbar" style={{ ...styles.toolbar.base, ...(!showWebOutput ? styles.toolbar.hide : {}) }}>
+	<div id="toolbar" style={{ ...styles.toolbar.base, ...(showWebOutput ? styles.toolbar.hide : {}) }}>
 		<div className="left" style={styles.toolbar.left}>
 			<DropDownMenu
 				value={languageSelector}

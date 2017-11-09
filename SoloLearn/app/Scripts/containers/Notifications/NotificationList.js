@@ -96,134 +96,129 @@ const styles = {
 class NotificationList extends Component {
 	constructor(props) {
 		super(props);
-
 		this.state = {
 			isLoading: false,
 			fullyLoaded: false,
 		};
-
 		this.isUnmounted = false;
-
-		this.handleScroll = this.handleScroll.bind(this);
-		this.handleWindowScroll = this.handleWindowScroll.bind(this);
 	}
 
-    handleOpenIfPopup = () => {
-    	if (this.props.isPopup) { this.props.toggleNotificationsOpen(); }
-    }
+	handleOpenIfPopup = () => {
+		if (this.props.isPopup) { this.props.toggleNotificationsOpen(); }
+	}
 
-    // Get post answers
-    getNotifications(fromId, toId) {
-    	if (!this.isUnmounted) {
-    		this.setState({ isLoading: true });
+	// Get post answers
+	getNotifications(fromId, toId) {
+		if (!this.isUnmounted) {
+			this.setState({ isLoading: true });
 
-    		return this.props.getNotifications(fromId, toId).then((count) => {
-    			if (count < 20) {
-    				!this.isUnmounted && this.setState({ fullyLoaded: true });
-    			}
+			return this.props.getNotifications(fromId, toId).then((count) => {
+				if (count < 20) {
+					!this.isUnmounted && this.setState({ fullyLoaded: true });
+				}
 
-    			!this.isUnmounted && this.setState({ isLoading: false });
-    		}).catch((error) => {
-    			console.log(error);
-    		});
-    	}
-    }
+				!this.isUnmounted && this.setState({ isLoading: false });
+			}).catch((error) => {
+				console.log(error);
+			});
+		}
+	}
 
-    rednerNotifications() {
-    	return this.props.notifications.map((notification, index) => (
-    		[ <NotificationItem
-    			handleOpenIfPopup={this.handleOpenIfPopup}
-    			key={`notitication${notification.id}`}
-	notification={notification}
-    		/>,
-	<Divider key={`divider ${notification.id}`} /> ]
-    	));
-    }
+	rednerNotifications() {
+		return this.props.notifications.map((notification, index) => (
+			[ <NotificationItem
+				handleOpenIfPopup={this.handleOpenIfPopup}
+				key={`notitication${notification.id}`}
+				notification={notification}
+			/>,
+				<Divider key={`divider ${notification.id}`} /> ]
+		));
+	}
 
-    // Check scroll state
-    handleScroll() {
-    	const scollingArea = document.getElementById('notifications-body');
-    	if (scollingArea.scrollTop === (scollingArea.scrollHeight - scollingArea.offsetHeight) && !this.state.fullyLoaded) {
-    		if (!this.state.isLoading && !this.state.fullyLoaded) {
-    			this.getNotifications(this.props.notifications[this.props.notifications.length - 1].id, null);
-    		}
-    	}
-    }
+	// Check scroll state
+	handleScroll = () => {
+		const scollingArea = document.getElementById('notifications-body');
+		if (scollingArea.scrollTop === (scollingArea.scrollHeight - scollingArea.offsetHeight) && !this.state.fullyLoaded) {
+			if (!this.state.isLoading && !this.state.fullyLoaded) {
+				this.getNotifications(this.props.notifications[this.props.notifications.length - 1].id, null);
+			}
+		}
+	}
 
-    // Check scroll state
-    handleWindowScroll() {
-    	if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-    		if (!this.state.isLoading && !this.state.fullyLoaded) {
-    			this.getNotifications(this.props.notifications[this.props.notifications.length - 1].id, null);
-    		}
-    	}
-    }
+	// Check scroll state
+	handleWindowScroll = () => {
+		if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+			if (!this.state.isLoading && !this.state.fullyLoaded) {
+				this.getNotifications(this.props.notifications[this.props.notifications.length - 1].id, null);
+			}
+		}
+	}
 
-    // Mark notifications as seen
-    markAsSeen = () => {
-    	if (!this.isUnmounted) {
-    		const notifications = this.props.notifications;
+	// Mark notifications as seen
+	markAsSeen = () => {
+		if (!this.isUnmounted) {
+			const notifications = this.props.notifications;
 
-    		Service.request('Profile/MarkNotificationsSeen', { fromId: notifications[0].id });
-    	}
-    }
+			Service.request('Profile/MarkNotificationsSeen', { fromId: notifications[0].id });
+		}
+	}
 
-    render() {
-    	const isPopup = this.props.isPopup;
-    	const bodyStyle = !isPopup ? styles.notificationsBody.base : (!this.props.isLoaded ? styles.notificationsBody.base : getStyles(styles.notificationsBody.base, styles.notificationsBody.fixedHeight));
-    	const bottomLoadingStyle = isPopup ? getStyles(styles.bottomLoading.base, styles.bottomLoading.small) : getStyles(styles.bottomLoading.base, styles.bottomLoading.big);
+	render() {
+		const isPopup = this.props.isPopup;
+		const bodyStyle = !isPopup ? styles.notificationsBody.base : (!this.props.isLoaded ? styles.notificationsBody.base : getStyles(styles.notificationsBody.base, styles.notificationsBody.fixedHeight));
+		const bottomLoadingStyle = isPopup ? getStyles(styles.bottomLoading.base, styles.bottomLoading.small) : getStyles(styles.bottomLoading.base, styles.bottomLoading.big);
 
-    	if (!isPopup && !this.props.isLoaded) {
-    		return <LoadingOverlay />;
-    	}
+		if (!isPopup && !this.props.isLoaded) {
+			return <LoadingOverlay />;
+		}
 
-    	return (
-    		<List id="notifications-body" style={bodyStyle}>
-    			{(!this.props.isLoaded && !this.state.fullyLoaded && isPopup) && <LoadingOverlay size={20} />}
-    			{this.props.isLoaded && this.rednerNotifications()}
-    			{
-    				(this.props.isLoaded && !this.state.fullyLoaded) &&
-    <div className="loading" style={!this.state.isLoading ? bottomLoadingStyle : [ bottomLoadingStyle, styles.bottomLoading.active ]}>
-    	<LoadingOverlay size={isPopup ? 17 : 30} thickness={isPopup ? 2 : 3.5} />
-    </div>
-    			}
-	</List>
-    	);
-    }
+		return (
+			<List id="notifications-body" style={bodyStyle}>
+				{(!this.props.isLoaded && !this.state.fullyLoaded && isPopup) && <LoadingOverlay size={20} />}
+				{this.props.isLoaded && this.rednerNotifications()}
+				{
+					(this.props.isLoaded && !this.state.fullyLoaded) &&
+					<div className="loading" style={!this.state.isLoading ? bottomLoadingStyle : [ bottomLoadingStyle, styles.bottomLoading.active ]}>
+						<LoadingOverlay size={isPopup ? 17 : 30} thickness={isPopup ? 2 : 3.5} />
+					</div>
+				}
+			</List>
+		);
+	}
 
-    componentWillMount() {
-    	if (this.props.isPopup) {
-    		this.getNotifications(null, null).then(() => {
-    			this.markAsSeen();
-    		});
-    	} else if (!this.props.isLoaded) {
-    		this.getNotifications(null, null).then(() => {
-    		this.markAsSeen();
-    	});
-    	}
-    }
+	componentWillMount() {
+		if (this.props.isPopup) {
+			this.getNotifications(null, null).then(() => {
+				this.markAsSeen();
+			});
+		} else if (!this.props.isLoaded) {
+			this.getNotifications(null, null).then(() => {
+				this.markAsSeen();
+			});
+		}
+	}
 
-    // Add event listeners after component mounts
-    componentDidMount() {
-    	if (this.props.isPopup) {
-    		const scollingArea = document.getElementById('notifications-body');
-    		scollingArea.addEventListener('scroll', this.handleScroll);
-    	} else {
-    		window.addEventListener('scroll', this.handleWindowScroll);
-    	}
-    }
+	// Add event listeners after component mounts
+	componentDidMount() {
+		if (this.props.isPopup) {
+			const scollingArea = document.getElementById('notifications-body');
+			scollingArea.addEventListener('scroll', this.handleScroll);
+		} else {
+			window.addEventListener('scroll', this.handleWindowScroll);
+		}
+	}
 
-    // Remove event listeners after component unmounts
-    componentWillUnmount() {
-    	if (this.props.isPopup) {
-    		const scollingArea = document.getElementById('notifications-body');
-    		scollingArea.removeEventListener('scroll', this.handleScroll);
-    	} else {
-    		window.removeEventListener('scroll', this.handleWindowScroll);
-    	}
+	// Remove event listeners after component unmounts
+	componentWillUnmount() {
+		if (this.props.isPopup) {
+			const scollingArea = document.getElementById('notifications-body');
+			scollingArea.removeEventListener('scroll', this.handleScroll);
+		} else {
+			window.removeEventListener('scroll', this.handleWindowScroll);
+		}
 
-    	this.isUnmounted = true;
-    }
+		this.isUnmounted = true;
+	}
 }
 
 function mapStateToProps(state) {
