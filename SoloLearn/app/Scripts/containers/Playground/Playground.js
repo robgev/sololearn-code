@@ -241,6 +241,69 @@ class Playground extends Component {
 		}
 	}
 
+	handleLanguageChange = (e, index, mode) => {
+		const { type, language } = editorSettings[mode];
+		const { codeData, codeLanguage } = this.state;
+		const isUserWritten = codeData.codeType === 'userCode' && language === codeLanguage;
+		const code = isUserWritten ? codeData.sourceCode : texts[mode];
+		this.setState({
+			code,
+			type,
+			mode,
+			showOutput: false,
+			languageSelector: mode,
+		});
+	}
+
+	handleThemeChange = (e, isInputChecked) => {
+		const theme = isInputChecked ? 'monokai' : 'chrome';
+		this.setState({ theme });
+	}
+
+	resetEditorValue = () => {
+		const { mode, codeData, languageSelector } = this.state;
+		const { language } = editorSettings[mode];
+		const {
+			jsCode,
+			cssCode,
+			codeType,
+			sourceCode,
+		} = codeData;
+		const userCodeOpened = codeType === 'userCode' && language === languageSelector;
+		const computedCssCode = userCodeOpened ? cssCode : texts[mode];
+		const computedJsCode = userCodeOpened ? jsCode : texts[mode];
+		const computedSourceCode = userCodeOpened ? sourceCode : texts[mode];
+		switch (mode) {
+		case 'css':
+			this.setState({
+				code: computedCssCode,
+				codeData: { ...codeData, computedCssCode },
+			});
+			break;
+		case 'javascript':
+			this.setState({
+				code: computedJsCode,
+				codeData: { ...codeData, computedJsCode },
+			});
+			break;
+		default:
+			this.setState({
+				code: computedSourceCode,
+				codeData: { ...codeData, computedSourceCode },
+			});
+			break;
+		}
+	}
+
+	// TODO: Implement those functions
+	// TODO: Add new state object, lastSavedCodeData, it changes only on save and
+	// is set on intialization
+	// save
+	//
+	// handleExternalSourcesPopupOpen
+	//
+	// runCode
+
 	render() {
 		const {
 			type,
@@ -281,6 +344,8 @@ class Playground extends Component {
 							isRunning={isRunning}
 							showWebOutput={showWebOutput}
 							languageSelector={languageSelector}
+							handleThemeChange={this.handleThemeChange}
+							handleLanguageChange={this.handleLanguageChange}
 						/>
 					</Paper>
 				</div>

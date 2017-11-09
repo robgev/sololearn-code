@@ -1,5 +1,5 @@
 // React modules
-import React, { Component } from 'react';
+import React from 'react';
 
 // Material UI components
 import DropDownMenu from 'material-ui/DropDownMenu';
@@ -62,47 +62,84 @@ const styles = {
 	},
 };
 
-class Toolbar extends Component {
-	constructor(props) {
-		super(props);
-	}
-
-	render() {
-		const {
-			showWebOutput, languageSelector, theme, type, isSaving, isRunning,
-		} = this.props;
-
-		return (
-			<div id="toolbar" style={!showWebOutput ? styles.toolbar.base : getStyles(styles.toolbar.base, styles.toolbar.hide)}>
-				<div className="left" style={styles.toolbar.left}>
-					<DropDownMenu value={languageSelector} onChange={this.handleLanguageChange} style={styles.languageFilter}>
-						<MenuItem value="html" primaryText="HTML/CSS/JS" />
-						<MenuItem value="c_cpp" primaryText="C++" />
-						<MenuItem value="csharp" primaryText="C#" />
-						<MenuItem value="java" primaryText="Java" />
-						<MenuItem value="python" primaryText="Python 3" />
-						<MenuItem value="php" primaryText="PHP" />
-						<MenuItem value="ruby" primaryText="Ruby" />
-					</DropDownMenu>
-					<Checkbox
-						label="Dark Theme"
-						labelPosition="left"
-						checked={theme == 'monokai'}
-						style={styles.themeToggle}
-						iconStyle={styles.themeToggleIcon}
-						onCheck={this.handleThemeChange}
-					/>
-					{type == 'web' && <FlatButton label="External Resources" labelPosition="before" style={styles.codeAction.run} icon={<InsertLink />} onClick={this.handleExternalSourcesPopupOpen} />}
-				</div>
-				<div className="right" style={styles.toolbar.right}>
-					<FlatButton label="Save" style={styles.codeAction.save} default={!isSaving} disabled={isSaving} onClick={() => { this.save(false); }} />
-					<FlatButton label="Save As" style={styles.codeAction.save} default={!isSaving} disabled={isSaving} onClick={() => { this.save(true); }} />
-					<FlatButton label="Reset" style={styles.codeAction.reset} onClick={this.resetEditorValue} />
-					<RaisedButton label="Run" labelPosition="before" style={styles.codeAction.run} secondary={!isRunning && !this.isSaving} disabled={isRunning || isSaving} icon={<RunIcon />} onClick={this.runCode} />
-				</div>
-			</div>
-		);
-	}
-}
+const Toolbar = ({
+	save,
+	type,
+	theme,
+	runCode,
+	isSaving,
+	isRunning,
+	showWebOutput,
+	languageSelector,
+	resetEditorValue,
+	handleThemeChange,
+	handleLanguageChange,
+	handleExternalSourcesPopupOpen,
+}) => (
+	<div id="toolbar" style={{ ...styles.toolbar.base, ...(!showWebOutput ? styles.toolbar.hide : {}) }}>
+		<div className="left" style={styles.toolbar.left}>
+			<DropDownMenu
+				value={languageSelector}
+				onChange={handleLanguageChange}
+				style={styles.languageFilter}
+			>
+				<MenuItem value="html" primaryText="HTML/CSS/JS" />
+				<MenuItem value="c_cpp" primaryText="C++" />
+				<MenuItem value="csharp" primaryText="C#" />
+				<MenuItem value="java" primaryText="Java" />
+				<MenuItem value="python" primaryText="Python 3" />
+				<MenuItem value="php" primaryText="PHP" />
+				<MenuItem value="ruby" primaryText="Ruby" />
+			</DropDownMenu>
+			<Checkbox
+				label="Dark Theme"
+				labelPosition="left"
+				style={styles.themeToggle}
+				checked={theme === 'monokai'}
+				iconStyle={styles.themeToggleIcon}
+				onCheck={handleThemeChange}
+			/>
+			{	type === 'web' &&
+				<FlatButton
+					icon={<InsertLink />}
+					labelPosition="before"
+					label="External Resources"
+					style={styles.codeAction.run}
+					onClick={handleExternalSourcesPopupOpen}
+				/>
+			}
+		</div>
+		<div className="right" style={styles.toolbar.right}>
+			<FlatButton
+				label="Save"
+				disabled={isSaving}
+				default={!isSaving}
+				onClick={() => save(false)}
+				style={styles.codeAction.save}
+			/>
+			<FlatButton
+				label="Save As"
+				disabled={isSaving}
+				default={!isSaving}
+				onClick={() => save(true)}
+				style={styles.codeAction.save}
+			/>
+			<FlatButton
+				label="Reset"
+				style={styles.codeAction.reset}
+				onClick={resetEditorValue}
+			/>
+			<RaisedButton
+				label="Run"
+				icon={<RunIcon />}
+				labelPosition="before"
+				onClick={runCode}
+				style={styles.codeAction.run}
+				disabled={isRunning || isSaving}
+				secondary={!isRunning && !isSaving}
+			/>
+		</div>
+	</div>
+);
 
 export default Toolbar;
