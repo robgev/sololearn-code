@@ -2,11 +2,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Radium, { Style } from 'radium';
+import Likes from '../../components/Shared/Likes';
 
 // Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { questionFollowingInternal } from '../../actions/discuss';
+import getLikesInternal from '../../actions/likes';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
@@ -151,6 +153,9 @@ const styles = {
 };
 
 class Question extends Component {
+	getLikes = () => {
+		this.props.getLikes(this.props.question.id);
+	}
 	render() {
 		const { question } = this.props;
 
@@ -161,7 +166,7 @@ class Question extends Component {
 						<IconButton className="upvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(question, 1); }}>
 							<ThumbUp color={question.vote == 1 ? blueGrey500 : grey500} />
 						</IconButton>
-						<p style={styles.vote.text}>{question.votes > 0 ? '+' : ''}{numberFormatter(question.votes)}</p>
+						<Likes style={styles.vote.text} votes={question.votes} getLikes={this.getLikes} />
 						<IconButton className="downvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(question, -1); }}>
 							<ThumbDown color={question.vote == -1 ? blueGrey500 : grey500} />
 						</IconButton>
@@ -202,8 +207,8 @@ class Question extends Component {
 
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
-		questionFollowingInternal,
+		questionFollowingInternal, getLikes: getLikesInternal(2),
 	}, dispatch);
 }
 
-export default connect(() => ({}), mapDispatchToProps)(Radium(Question));
+export default connect(null, mapDispatchToProps)(Radium(Question));

@@ -50,6 +50,9 @@ import challenges from './reducer_challenges';
 import imitLoggedin from './login.reducer';
 import loginModal from './loginModal.reducer';
 
+// Likes
+import likes from './likes.reducer';
+
 const reducers = combineReducers({
 	// General
 	tabs,
@@ -88,6 +91,8 @@ const reducers = combineReducers({
 	// Login
 	imitLoggedin,
 	loginModal,
+	// Likes
+	likes,
 });
 
 export const store = createStore(reducers, applyMiddleware(
@@ -103,9 +108,11 @@ export const isLoaded = (state, componentName) => {
 	case 'modules':
 		return state.course != null;
 	case 'lessons':
-		return (state.course && state.modulesMapping && state.lessonsMapping && state.activeModuleId) != null;
+		return (state.course && state.modulesMapping &&
+				state.lessonsMapping && state.activeModuleId) != null;
 	case 'quizzes':
-		return (state.course && state.modulesMapping && state.lessonsMapping && state.quizzesMapping && state.activeModuleId) != null;
+		return (state.course && state.modulesMapping &&
+				state.lessonsMapping && state.quizzesMapping && state.activeModuleId) != null;
 	case 'shortcut':
 		return (state.course && state.shortcutLesson) != null;
 	case 'discuss':
@@ -140,6 +147,8 @@ export const isLoaded = (state, componentName) => {
 		return state.challenges.activeContest != null;
 	case 'initallyLoaded':
 		return state.courses != null && state.levels != null;
+	default:
+		return null;
 	}
 };
 

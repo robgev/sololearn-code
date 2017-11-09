@@ -79,95 +79,95 @@ const styles = {
 };
 
 class NotificationItem extends Component {
-    handleClick = () => {
-    	const { notification } = this.props;
-    	const ids = [ notification.id ];
+	handleClick = () => {
+		const { notification } = this.props;
+		const ids = [ notification.id ];
 
-    	if (notification.groupedItems.length > 1) {
-    		notification.groupedItems.forEach((item) => {
-    			if (!item.isClicked) ids.push(item.id);
-    		});
-    	}
-    	this.props.markRead(ids);
-    	this.openNotificationLink(notification);
-    	this.props.handleOpenIfPopup();
-    }
+		if (notification.groupedItems.length > 1) {
+			notification.groupedItems.forEach((item) => {
+				if (!item.isClicked) ids.push(item.id);
+			});
+		}
+		this.props.markRead(ids);
+		this.openNotificationLink(notification);
+		this.props.handleOpenIfPopup();
+	}
 
-    openNotificationLink = (notification) => {
-    	switch (notification.type) {
-    	case types.completedChallange:
-    		return browserHistory.push(`/challenge/${notification.contest.id}`);
-    	case types.postedAnswer:
-    	case types.postedQuestion:
-    	case types.postedComment:
-    	case types.postedCommentReply:
-    	case types.upvotePost:
-    	case types.upvoteComment:
-    		return browserHistory.push(`/discuss/${notification.post.parentID || notification.post.id}`);
-    	case types.following:
-    	case types.friendJoined:
-    		return browserHistory.push(`/profile/${notification.actionUser.id}`);
-    	case types.badgeUnlocked:
-    		return browserHistory.push(`/profile/${notification.user.id}/badges`);
-    	default:
-    	}
-    }
+	openNotificationLink = (notification) => {
+		switch (notification.type) {
+		case types.completedChallange:
+			return browserHistory.push(`/challenge/${notification.contest.id}`);
+		case types.postedAnswer:
+		case types.postedQuestion:
+		case types.postedComment:
+		case types.postedCommentReply:
+		case types.upvotePost:
+		case types.upvoteComment:
+			return browserHistory.push(`/discuss/${notification.post.parentID || notification.post.id}`);
+		case types.following:
+		case types.friendJoined:
+			return browserHistory.push(`/profile/${notification.actionUser.id}`);
+		case types.badgeUnlocked:
+			return browserHistory.push(`/profile/${notification.user.id}/badges`);
+		default:
+		}
+	}
 
-    getTitleUser = (title, pattern) => {
-    	const notification = this.props.notification;
-    	const href = `/profile/${notification.actionUser.id}`;
-    	return title.replace(pattern, `<a href=${href} style="text-decoration:none;color:#8BC34A;font-weight:500;">${notification.actionUser.name}</a>`);
-    }
+	getTitleUser = (title, pattern) => {
+		const notification = this.props.notification;
+		const href = `/profile/${notification.actionUser.id}`;
+		return title.replace(pattern, `<a href=${href} style="text-decoration:none;color:#8BC34A;font-weight:500;">${notification.actionUser.name}</a>`);
+	}
 
-    generateContent = () => {
-    	const notification = this.props.notification;
-    	let notificationTitle = notification.groupedItems.length > 1 ? notification.message : notification.title;
+	generateContent = () => {
+		const notification = this.props.notification;
+		let notificationTitle = notification.groupedItems.length > 1 ? notification.message : notification.title;
 
-    	if (notificationTitle.includes('{action_user}')) {
-    		notificationTitle = this.getTitleUser(notificationTitle, '{action_user}');
-    	}
-    	if (notificationTitle.includes('{opponent}')) {
-    		notificationTitle = this.getTitleUser(notificationTitle, '{opponent}');
-    	}
-    	if (notificationTitle.includes('{main}')) {
-    		notificationTitle = this.getTitleUser(notificationTitle, '{main}');
-    	}
-    	if (notificationTitle.includes('{other}')) {
-    		notificationTitle = notificationTitle.replace('{other}', notification.groupedItems.length);
-    	}
+		if (notificationTitle.includes('{action_user}')) {
+			notificationTitle = this.getTitleUser(notificationTitle, '{action_user}');
+		}
+		if (notificationTitle.includes('{opponent}')) {
+			notificationTitle = this.getTitleUser(notificationTitle, '{opponent}');
+		}
+		if (notificationTitle.includes('{main}')) {
+			notificationTitle = this.getTitleUser(notificationTitle, '{main}');
+		}
+		if (notificationTitle.includes('{other}')) {
+			notificationTitle = notificationTitle.replace('{other}', notification.groupedItems.length);
+		}
 
-    	return (
-    		<div className="notification-content" style={styles.notificationContent}>
-    			{
-    				notification.type == types.badgeUnlocked ?
-    					<div style={getStyles(styles.badge.base, { backgroundColor: notification.achievement.color })}>
-    						<img style={styles.badge.icon} src={notification.achievement.icon} />
- </div>
-    					:
-	<Avatar size={30} style={styles.avatar}>{notification.actionUser.name.charAt(0).toUpperCase()}</Avatar>
-    			}
-    			<div className="additional-details" style={styles.additionalDetails}>
-    				<p className="title" style={styles.title} dangerouslySetInnerHTML={{ __html: notificationTitle }} />
-    				<div>
-    					<span className="date" style={styles.date}>{updateDate(notification.date)}</span>
-		{!notification.isClicked && <span style={styles.notClickedIcon} /> }
-	</div>
- </div>
- </div>
-    	);
-    }
+		return (
+			<div className="notification-content" style={styles.notificationContent}>
+				{
+					notification.type == types.badgeUnlocked ?
+						<div style={getStyles(styles.badge.base, { backgroundColor: notification.achievement.color })}>
+							<img style={styles.badge.icon} src={notification.achievement.icon} />
+						</div>
+						:
+						<Avatar size={30} style={styles.avatar}>{notification.actionUser.name.charAt(0).toUpperCase()}</Avatar>
+				}
+				<div className="additional-details" style={styles.additionalDetails}>
+					<p className="title" style={styles.title} dangerouslySetInnerHTML={{ __html: notificationTitle }} />
+					<div>
+						<span className="date" style={styles.date}>{updateDate(notification.date)}</span>
+						{!notification.isClicked && <span style={styles.notClickedIcon} />}
+					</div>
+				</div>
+			</div>
+		);
+	}
 
-    render() {
-    	return (
-    		<ListItem className="notification-item" containerElement="div" innerDivStyle={styles.notificationItemInner} style={styles.notificationItem} onClick={this.handleClick}>
-    			{this.generateContent()}
-	</ListItem>
-    	);
-    }
+	render() {
+		return (
+			<ListItem className="notification-item" containerElement="div" innerDivStyle={styles.notificationItemInner} style={styles.notificationItem} onClick={this.handleClick}>
+				{this.generateContent()}
+			</ListItem>
+		);
+	}
 
-    shouldComponentUpdate(nextProps, nextState) {
-    	return this.props.notification.isClicked !== nextProps.notification.isClicked;
-    }
+	shouldComponentUpdate(nextProps, nextState) {
+		return this.props.notification.isClicked !== nextProps.notification.isClicked;
+	}
 }
 
 function mapDispatchToProps(dispatch) {

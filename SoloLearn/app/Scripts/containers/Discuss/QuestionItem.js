@@ -5,6 +5,7 @@ import Radium, { Style } from 'radium';
 import DiscussTag from './DiscussTag';
 import removeDups from '../../utils/removeDups';
 import { browserHistory } from 'react-router';
+import Likes from '../../components/Shared/Likes';
 
 // Material UI components
 import ChatBubble from 'material-ui/svg-icons/communication/chat-bubble-outline';
@@ -91,7 +92,7 @@ class QuestionItem extends PureComponent {
 			<div className="question" style={styles.question}>
 
 				<div className="stats" style={styles.stats}>
-					<p>{question.votes > 0 ? '+' : ''}{numberFormatter(question.votes)}</p>
+					<Likes votes={question.votes} />
 					<div className="asnwers-count-wrapper" style={styles.answersCountWrapper}>
 						<p style={styles.answersCount}>{question.answers > 99 ? '99+' : question.answers}</p>
 						<ChatBubble color={green500} style={styles.chatBubble} />

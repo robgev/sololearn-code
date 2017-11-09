@@ -45,57 +45,57 @@ const styles = {
 };
 
 class MainLayout extends Component {
-    state = { loading: true }
-    componentWillMount() {
-    	// find the tab for current url and select it
-    	this.selectTab();
-    	if (!this.props.defaultsLoaded || !this.props.loggedin) {
-    		this.props.loadDefaults()
-    			.then(() => this.setState({ loading: false }))
-    			.catch(e => console.warn(e));
-    	} else {
-    		this.setState({ loading: false });
-    	}
-    }
-    selectTab = () => {
-    	const { selectTab, tabs, location: { pathname } } = this.props;
-    	const currTab = find(tabs, tab => pathname.includes(tab.url) || tab.url.includes(pathname));
-    	if (currTab) {
-    		this.props.selectTab(currTab);
-    	}
-    }
-    changeModalState = () => {
-    	this.props.changeLoginModal(!this.props.loginModal);
-    }
-    render() {
-    	return (
-    		<MuiThemeProvider muiTheme={muiTheme}>
-    			{
-    				this.state.loading ?
-    					<LoadingOverlay /> :
-	<div style={styles.wrapper}>
-	<Dialog
-    							title="Please login"
-    							open={this.props.loginModal}
-    							onRequestClose={this.changeModalState}
-	actions={[
-    								<FlatButton
-    									label="Cancel"
-			primary
-			onClick={this.changeModalState}
-		/>,
-    							]}
-    						>
-    							<Login />
-    						</Dialog>
-    						{defaultSyles}
-    						<Header />
-    						{this.props.children}
-    					</div>
-    			}
- </MuiThemeProvider>
-    	);
-    }
+	state = { loading: true }
+	componentWillMount() {
+		// find the tab for current url and select it
+		this.selectTab();
+		if (!this.props.defaultsLoaded || !this.props.loggedin) {
+			this.props.loadDefaults()
+				.then(() => this.setState({ loading: false }))
+				.catch(e => console.warn(e));
+		} else {
+			this.setState({ loading: false });
+		}
+	}
+	selectTab = () => {
+		const { selectTab, tabs, location: { pathname } } = this.props;
+		const currTab = find(tabs, tab => pathname.includes(tab.url) || tab.url.includes(pathname));
+		if (currTab) {
+			this.props.selectTab(currTab);
+		}
+	}
+	changeModalState = () => {
+		this.props.changeLoginModal(!this.props.loginModal);
+	}
+	render() {
+		return (
+			<MuiThemeProvider muiTheme={muiTheme}>
+				{
+					this.state.loading ?
+						<LoadingOverlay /> :
+						<div style={styles.wrapper}>
+							<Dialog
+								title="Please login"
+								open={this.props.loginModal}
+								onRequestClose={this.changeModalState}
+								actions={[
+									<FlatButton
+										label="Cancel"
+										primary
+										onClick={this.changeModalState}
+									/>,
+								]}
+							>
+								<Login />
+							</Dialog>
+							{defaultSyles}
+							<Header />
+							{this.props.children}
+						</div>
+				}
+			</MuiThemeProvider>
+		);
+	}
 }
 
 function mapStateToProps(state) {
