@@ -46,7 +46,7 @@ class Playground extends Component {
 			isSaving: false,
 			isRunning: false,
 			showOutput: false,
-			codeData: null,
+			codeData: {},
 			code: '',
 		};
 	}
@@ -58,7 +58,7 @@ class Playground extends Component {
 			this.setDefaultSettings();
 		} else if (params.primary.length !== customUserCodeHashLength) {
 			// if first param is not auto-generated id with predefined length
-			const isNumber = params.secondary.match(/\d+/);
+			const isNumber = params.secondary ? params.secondary.match(/\d+/) : null;
 			if (!isNumber) {
 				const foundEditorSettingKey = findKey(editorSettings, { alias: params.primary });
 				if (foundEditorSettingKey) {
@@ -209,7 +209,6 @@ class Playground extends Component {
 			showOutput: false,
 			languageSelector: 'html',
 		});
-		// TODO: Change mode
 	}
 
 	handleEditorChange = (editorValue) => {
@@ -237,6 +236,7 @@ class Playground extends Component {
 	render() {
 		const {
 			type,
+			code,
 			mode,
 			theme,
 			isSaving,
@@ -247,10 +247,10 @@ class Playground extends Component {
 			languageSelector,
 		} = this.state;
 		const {
-			jsCode,
-			cssCode,
-			codeType,
-			sourceCode,
+			jsCode = '',
+			cssCode = '',
+			codeType = '',
+			sourceCode = '',
 		} = codeData;
 		const showWebOutput = (showOutput && (type === 'web' || type === 'combined'));
 		const { alias } = editorSettings[mode];
@@ -268,6 +268,7 @@ class Playground extends Component {
 						/>
 						<Editor
 							type={type}
+							code={code}
 							alias={alias}
 							mode={mode}
 							theme={theme}
@@ -277,6 +278,7 @@ class Playground extends Component {
 							userCodeData={codeData}
 							sourceCode={sourceCode}
 							isGettingCode={isGettingCode}
+							handleEditorChange={this.handleEditorChange}
 						/>
 						<Toolbar
 							type={type}

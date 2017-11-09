@@ -111,17 +111,18 @@ class Editor extends Component {
 		});
 	}
 
-	// Change ACE Editor mode
-	changeMode = (code) => {
-		const { mode, codeType, alias } = this.props;
-		const editorMode = `ace/mode/${mode}`;
-		this.aceEditor.session.setMode(editorMode);
-		this.aceEditor.setValue(code, -1);
-		const isUserCode = codeType === 'userCode';
+	componentDidUpdate(prevProps) {
+		const { mode, codeType, alias, code } = this.props;
+		const { mode: lastKnownMode } = prevProps
+		if (lastKnownMode !== mode) {
+			const editorMode = `ace/mode/${mode}`;
+			const isUserCode = codeType === 'userCode';
+			const link = isUserCode ? `/playground/${this.userCodeData.publicID}/` : '/playground/';
 
-		const link = isUserCode ? `/playground/${this.userCodeData.publicID}/` : '/playground/';
-
-		browserHistory.replace(link + alias);
+			this.aceEditor.session.setMode(editorMode);
+			this.aceEditor.setValue(code, -1);
+			browserHistory.replace(`${link}${alias}`);
+		}
 	}
 
 	render() {
