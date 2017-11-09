@@ -38,16 +38,18 @@ class Playground extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			mode: 'html',
+			code: '',
 			type: 'web',
-			theme: 'monokai',
-			languageSelector: 'html',
-			isGettingCode: false,
+			publicID: '',
+			codeData: {},
+			mode: 'html',
 			isSaving: false,
 			isRunning: false,
+			theme: 'monokai',
 			showOutput: false,
-			codeData: {},
-			code: '',
+			isGettingCode: false,
+			codeLanguage: 'html',
+			languageSelector: 'html',
 		};
 	}
 
@@ -174,13 +176,14 @@ class Playground extends Component {
 				const isWeb = checkWeb(alias);
 				this.setState({
 					type,
+					publicID,
 					codeData,
+					code: sourceCode,
+					codeLanguage: language,
 					mode: foundEditorSettingKey,
 					languageSelector: isWeb ? 'html' : foundEditorSettingKey,
 				});
 			}
-
-			this.loadEditor();
 			this.setState({ isGettingCode: false });
 		} catch (error) {
 			console.log(error);
@@ -203,12 +206,17 @@ class Playground extends Component {
 	// Change web tabs
 	handleTabChange = (mode) => {
 		const code = this.getTabCodeData(mode);
+		const { codeData: { codeType }, publicID } = this.state;
+		const { alias } = editorSettings[mode];
+		const isUserCode = codeType === 'userCode';
+		const link = isUserCode ? `/playground/${publicID}/` : '/playground/';
 		this.setState({
 			code,
 			mode,
 			showOutput: false,
 			languageSelector: 'html',
 		});
+		browserHistory.replace(`${link}${alias}`);
 	}
 
 	handleEditorChange = (editorValue) => {
@@ -216,20 +224,20 @@ class Playground extends Component {
 		if (type === 'web') {
 			switch (mode) {
 			case 'html':
-				this.setState({ codeData: { ...codeData, sourceCode: editorValue } });
+				this.setState({ code: editorValue, codeData: { ...codeData, sourceCode: editorValue } });
 				break;
 			case 'css':
-				this.setState({ codeData: { ...codeData, cssCode: editorValue } });
+				this.setState({ code: editorValue, codeData: { ...codeData, cssCode: editorValue } });
 				break;
 			case 'javascript':
-				this.setState({ codeData: { ...codeData, jsCode: editorValue } });
+				this.setState({ code: editorValue, codeData: { ...codeData, jsCode: editorValue } });
 				break;
 			default:
 				break;
 			}
 		} else {
 			const newSourceCodeData = { ...codeData, sourceCode: editorValue };
-			this.setState({ codeData: newSourceCodeData });
+			this.setState({ code: editorValue, codeData: newSourceCodeData });
 		}
 	}
 
@@ -246,14 +254,7 @@ class Playground extends Component {
 			isGettingCode,
 			languageSelector,
 		} = this.state;
-		const {
-			jsCode = '',
-			cssCode = '',
-			codeType = '',
-			sourceCode = '',
-		} = codeData;
 		const showWebOutput = (showOutput && (type === 'web' || type === 'combined'));
-		const { alias } = editorSettings[mode];
 
 		return (
 			isGettingCode ?
@@ -267,17 +268,10 @@ class Playground extends Component {
 							handleTabChange={this.handleTabChange}
 						/>
 						<Editor
-							type={type}
 							code={code}
-							alias={alias}
 							mode={mode}
 							theme={theme}
-							jsCode={jsCode}
-							cssCode={cssCode}
-							codeType={codeType}
 							userCodeData={codeData}
-							sourceCode={sourceCode}
-							isGettingCode={isGettingCode}
 							handleEditorChange={this.handleEditorChange}
 						/>
 						<Toolbar

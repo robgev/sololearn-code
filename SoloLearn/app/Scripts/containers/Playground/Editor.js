@@ -1,7 +1,7 @@
 // React modules
-import React, { Component } from 'react';
+import React from 'react';
 import Radium, { Style } from 'radium';
-import { browserHistory } from 'react-router';
+import AceEditor from 'react-ace';
 
 // Additional data and components (ACE Editor)
 import ace from 'brace';
@@ -16,24 +16,6 @@ import 'brace/mode/ruby';
 import 'brace/theme/chrome'; // Editor light theme
 import 'brace/theme/monokai'; // Editor dark theme
 import 'brace/ext/language_tools';
-
-// App defaults and utils
-import texts from 'defaults/texts';
-
-const styles = {
-	editor: {
-		base: {
-			width: '100%',
-			height: '500px',
-			transform: 'translateZ(0)',
-		},
-
-		hide: {
-			display: 'none',
-		},
-
-	},
-};
 
 const defaultFontRule =
 	'12px/normal \'Monaco\', \'Menlo\', \'Ubuntu Mono\', \'Consolas\', \'source-code-pro\', monospace';
@@ -62,78 +44,35 @@ const aceLineStyle = (
 	/>
 );
 
-class Editor extends Component {
-	// Add event listeners after component mounts and creacts ACE editor
-	componentDidMount() {
-		const node = this.editor;
-		this.aceEditor = ace.edit(node);
-		this.aceEditor.renderer.setScrollMargin(2, 0);
-		this.aceEditor.addEventListener('change', this.handleEditorChange);
-
-		if (!this.props.gettingCode) {
-			this.loadEditor();
-		}
-	}
-
-	// Remove event listeners after component unmounts
-	componentWillUnmount() {
-		this.aceEditor.removeEventListener('change', this.handleEditorChange);
-	}
-
-	handleEditorChange = () => {
-		const editorValue = this.aceEditor.getValue();
-		this.props.handleEditorChange(editorValue);
-	}
-
-	// Load editor with requirements
-	loadEditor = () => {
-		const {
-			mode,
-			theme,
-			codeType,
-			sourceCode,
-		} = this.props;
-
-		const sample = !codeType ? texts[mode] : sourceCode;
-		const editorMode = `ace/mode/${mode}`;
-		const editorTheme = `ace/theme/${theme}`;
-
-		this.aceEditor.session.setMode(editorMode);
-		this.aceEditor.$blockScrolling = Infinity;
-		this.aceEditor.setTheme(editorTheme);
-		this.aceEditor.setValue(sample, -1);
-		this.aceEditor.session.setUseWrapMode(true);
-		this.aceEditor.session.setUndoManager(new ace.UndoManager());
-		this.aceEditor.setOptions({
-			mode: editorMode,
-			enableBasicAutocompletion: true,
-			showPrintMargin: false,
-		});
-	}
-
-	componentDidUpdate(prevProps) {
-		const { mode, codeType, alias, code } = this.props;
-		const { mode: lastKnownMode } = prevProps
-		if (lastKnownMode !== mode) {
-			const editorMode = `ace/mode/${mode}`;
-			const isUserCode = codeType === 'userCode';
-			const link = isUserCode ? `/playground/${this.userCodeData.publicID}/` : '/playground/';
-
-			this.aceEditor.session.setMode(editorMode);
-			this.aceEditor.setValue(code, -1);
-			browserHistory.replace(`${link}${alias}`);
-		}
-	}
-
-	render() {
-		return (
-			<div>
-				{aceEditorStyle}
-				{aceLineStyle}
-				<div id="editor" ref={(editor) => { this.editor = editor; }} style={styles.editor.base} />
-			</div>
-		);
-	}
-}
+const Editor = ({
+	code,
+	mode,
+	theme,
+	userCodeData,
+	handleEditorChange,
+}) => (
+	<div>
+		{aceEditorStyle}
+		{aceLineStyle}
+		<AceEditor
+			wrapEnabled
+			value={code}
+			mode={mode}
+			width="100%"
+			height="60vh"
+			theme={theme}
+			showPrintMargin={false}
+			enableBasicAutocompletion
+			name={userCodeData.publicID}
+			onChange={handleEditorChange}
+			editorProps={{ $blockScrolling: Infinity }}
+			onLoad={(editor) => {
+				editor.focus();
+				editor.getSession().setUseWrapMode(true);
+				editor.getSession().setUndoManager(new ace.UndoManager());
+			}}
+		/>
+	</div>
+);
 
 export default Radium(Editor);

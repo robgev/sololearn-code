@@ -30,6 +30,7 @@
 		"prettier": "^1.7.4",
 		"radium": "^0.18.4",
 		"react": "^15.6.1",
+		"react-ace": "^5.5.0",
 		"react-addons-create-fragment": "^15.6.0",
 		"react-addons-css-transition-group": "^15.6.2",
 		"react-alert": "^2.3.0",
