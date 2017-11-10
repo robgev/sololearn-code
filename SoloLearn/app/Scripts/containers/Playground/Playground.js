@@ -48,7 +48,7 @@ class Playground extends Component {
 			theme: 'monokai',
 			showOutput: false,
 			isGettingCode: false,
-			codeLanguage: 'html',
+			latestSavedCodeData: {},
 			languageSelector: 'html',
 		};
 	}
@@ -73,11 +73,14 @@ class Playground extends Component {
 						jsCode: isWeb ? javascript : '',
 						codeType: '',
 					};
+					const code = texts[foundEditorSettingKey];
 
 					this.setState({
 						type,
+						code,
 						codeData,
 						mode: foundEditorSettingKey,
+						latestSavedCodeData: codeData,
 						languageSelector: isWeb ? 'html' : foundEditorSettingKey,
 					});
 
@@ -108,6 +111,7 @@ class Playground extends Component {
 			mode: 'html',
 			theme: 'monokai',
 			languageSelector: 'html',
+			latestSavedCodeData: codeData,
 		});
 
 		browserHistory.replace('/playground/html');
@@ -133,7 +137,9 @@ class Playground extends Component {
 				this.setState({
 					type,
 					codeData,
+					code: sourceCode,
 					mode: foundEditorSettingKey,
+					latestSavedCodeData: codeData,
 					languageSelector: isWeb ? 'html' : foundEditorSettingKey,
 				});
 
@@ -179,8 +185,8 @@ class Playground extends Component {
 					publicID,
 					codeData,
 					code: sourceCode,
-					codeLanguage: language,
 					mode: foundEditorSettingKey,
+					latestSavedCodeData: codeData,
 					languageSelector: isWeb ? 'html' : foundEditorSettingKey,
 				});
 			}
@@ -190,21 +196,22 @@ class Playground extends Component {
 		}
 	}
 
-	getTabCodeData = (mode) => {
-		const { codeData } = this.state;
+	getTabCodeData = (mode, defaultCodeData) => {
+		const { latestSavedCodeData = defaultCodeData } = this.state
 		switch (mode) {
 		case 'html':
 		case 'php':
-			return codeData.sourceCode;
+			return latestSavedCodeData.sourceCode;
 		case 'css':
-			return codeData.cssCode;
+			return latestSavedCodeData.cssCode;
 		default:
-			return codeData.jsCode;
+			return latestSavedCodeData.jsCode;
 		}
 	}
 
 	// Change web tabs
 	handleTabChange = (mode) => {
+		const { params } = this.props;
 		const code = this.getTabCodeData(mode);
 		const { codeData: { codeType }, publicID } = this.state;
 		const { alias } = editorSettings[mode];
@@ -243,9 +250,10 @@ class Playground extends Component {
 
 	handleLanguageChange = (e, index, mode) => {
 		const { type, language } = editorSettings[mode];
-		const { codeData, codeLanguage } = this.state;
-		const isUserWritten = codeData.codeType === 'userCode' && language === codeLanguage;
-		const code = isUserWritten ? codeData.sourceCode : texts[mode];
+		const { latestSavedCodeData, languageSelector } = this.state;
+		const isUserWritten =
+			latestSavedCodeData.codeType === 'userCode' && language === languageSelector;
+		const code = isUserWritten ? latestSavedCodeData.sourceCode : texts[mode];
 		this.setState({
 			code,
 			type,
@@ -261,14 +269,14 @@ class Playground extends Component {
 	}
 
 	resetEditorValue = () => {
-		const { mode, codeData, languageSelector } = this.state;
+		const { mode, latestSavedCodeData, languageSelector } = this.state;
 		const { language } = editorSettings[mode];
 		const {
 			jsCode,
 			cssCode,
 			codeType,
 			sourceCode,
-		} = codeData;
+		} = latestSavedCodeData;
 		const userCodeOpened = codeType === 'userCode' && language === languageSelector;
 		const computedCssCode = userCodeOpened ? cssCode : texts[mode];
 		const computedJsCode = userCodeOpened ? jsCode : texts[mode];
@@ -277,27 +285,25 @@ class Playground extends Component {
 		case 'css':
 			this.setState({
 				code: computedCssCode,
-				codeData: { ...codeData, computedCssCode },
+				codeData: { ...codeData, cssCode: computedCssCode },
 			});
 			break;
 		case 'javascript':
 			this.setState({
 				code: computedJsCode,
-				codeData: { ...codeData, computedJsCode },
+				codeData: { ...codeData, jsCode: computedJsCode },
 			});
 			break;
 		default:
 			this.setState({
 				code: computedSourceCode,
-				codeData: { ...codeData, computedSourceCode },
+				codeData: { ...codeData, sourceCode: computedSourceCode },
 			});
 			break;
 		}
 	}
 
 	// TODO: Implement those functions
-	// TODO: Add new state object, lastSavedCodeData, it changes only on save and
-	// is set on intialization
 	// save
 	//
 	// handleExternalSourcesPopupOpen
