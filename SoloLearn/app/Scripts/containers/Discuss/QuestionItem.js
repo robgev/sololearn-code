@@ -1,18 +1,19 @@
 // React modules
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
-import Radium, { Style } from 'radium';
-import DiscussTag from './DiscussTag';
-import removeDups from '../../utils/removeDups';
-import { browserHistory } from 'react-router';
-import Likes from '../../components/Shared/Likes';
+import Radium from 'radium';
+import { connect } from 'react-redux';
 
 // Material UI components
 import ChatBubble from 'material-ui/svg-icons/communication/chat-bubble-outline';
 import { green500 } from 'material-ui/styles/colors';
 
+import DiscussTag from './DiscussTag';
+import Likes from '../../components/Shared/Likes';
+import getLikesInternal from '../../actions/likes';
+
 // Utils
-import numberFormatter from '../../utils/numberFormatter';
+import removeDups from '../../utils/removeDups';
 import updateDate from '../../utils/dateFormatter';
 
 export const noStyleLink = { textDecoration: 'none' };
@@ -86,13 +87,16 @@ const styles = {
 };
 
 class QuestionItem extends PureComponent {
+	getLikes = () => {
+		this.props.getLikes(this.props.question.id);
+	}
 	render() {
 		const { question } = this.props;
 		return (
 			<div className="question" style={styles.question}>
 
 				<div className="stats" style={styles.stats}>
-					<Likes votes={question.votes} />
+					<Likes votes={question.votes} getLikes={this.getLikes} />
 					<div className="asnwers-count-wrapper" style={styles.answersCountWrapper}>
 						<p style={styles.answersCount}>{question.answers > 99 ? '99+' : question.answers}</p>
 						<ChatBubble color={green500} style={styles.chatBubble} />
@@ -127,4 +131,6 @@ class QuestionItem extends PureComponent {
 	}
 }
 
-export default Radium(QuestionItem);
+const mapDispatchToProps = { getLikes: getLikesInternal(2) };
+
+export default connect(null, mapDispatchToProps)(Radium(QuestionItem));

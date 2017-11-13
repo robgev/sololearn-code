@@ -23,7 +23,11 @@ class InfiniteVirtalizedList extends Component {
 			this.canLoadMore = false;
 		}
 	}
-	rowRenderer = ({ key, index, style }) => this.props.item(this.props.list[index], key, style);
+	rowRenderer = ({ key, index, style }) => (
+		<div key={key} style={style}>
+			{this.props.item(this.props.list[index])}
+		</div>
+	);
 	render() {
 		return (
 			<List

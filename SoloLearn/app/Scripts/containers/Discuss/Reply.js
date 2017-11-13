@@ -6,6 +6,7 @@ import Radium, { Style } from 'radium';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { editPostInternal, toggleAcceptedAnswerInternal } from '../../actions/discuss';
+import getLikesInternal from '../../actions/likes';
 
 // Material UI components
 import Avatar from 'material-ui/Avatar';
@@ -25,6 +26,8 @@ import DiscussAuthor from './DiscussAuthor';
 import numberFormatter from '../../utils/numberFormatter';
 import updateDate from '../../utils/dateFormatter';
 import getStyles from '../../utils/styleConverter';
+
+import Likes from '../../components/Shared/Likes';
 
 export const styles = {
 	reply: {
@@ -177,13 +180,19 @@ class Reply extends Component {
 			textFieldValue: this.props.reply.message,
 			errorText: '',
 		};
-
-		this.openEdit = this.openEdit.bind(this);
-		this.save = this.save.bind(this);
 	}
 
-	getEditableArea() {
-		const reply = this.props.reply;
+	shouldComponentUpdate(nextProps, nextState) {
+		return (JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
+			this.state !== nextState);
+	}
+
+	getLikes = () => {
+		this.props.getLikes(this.props.reply.id);
+	}
+
+	getEditableArea = () => {
+		const { reply } = this.props;
 
 		if (!this.state.isEditing) {
 			return (
@@ -191,38 +200,40 @@ class Reply extends Component {
 			);
 		}
 
-		const saveDisabled = this.state.errorText.length == 0;
+		const saveDisabled = this.state.errorText.length === 0;
 
 		return (
-			[ <div key={`editor${reply.id}`} style={styles.editor}>
-				<TextField
-					key={`replyTextField${reply.id}`}
-					hintText="Message"
-					multiLine
-					maxLength="2048"
-					rowsMax={4}
-					fullWidth
-					defaultValue={this.state.textFieldValue}
-					errorText={this.state.errorText}
-					onChange={e => this.onChange(e)}
-					style={styles.textField}
-				/>
-				<span style={styles.textFieldCoutner} key={`replyTextCounter${reply.id}`}>{2048 - this.state.textFieldValue.length} characters remaining</span>
-     </div>,
-			<div key={`editorActions${reply.id}`} style={styles.editorActions}>
+			[
+				<div key={`editor${reply.id}`} style={styles.editor}>
+					<TextField
+						key={`replyTextField${reply.id}`}
+						hintText="Message"
+						multiLine
+						maxLength="2048"
+						rowsMax={4}
+						fullWidth
+						defaultValue={this.state.textFieldValue}
+						errorText={this.state.errorText}
+						onChange={e => this.onChange(e)}
+						style={styles.textField}
+					/>
+					<span style={styles.textFieldCoutner} key={`replyTextCounter${reply.id}`}>{2048 - this.state.textFieldValue.length} characters remaining</span>
+				</div>,
+				<div key={`editorActions${reply.id}`} style={styles.editorActions}>
 					<FlatButton label="Cancel" onClick={() => this.closeEdit()} />
 					<FlatButton label="Save" primary={saveDisabled} disabled={!saveDisabled} onClick={this.save} />
-				</div> ]
+				</div>,
+			]
 		);
 	}
 
 	// Open answer text editor
-	openEdit() {
+	openEdit = () => {
 		this.setState({ isEditing: true });
 	}
 
 	// Close answer text editor
-	closeEdit() {
+	closeEdit = () => {
 		this.setState({
 			isEditing: false,
 			textFieldValue: this.props.reply.message,
@@ -231,7 +242,7 @@ class Reply extends Component {
 	}
 
 	// Controll answer text change
-	onChange(e) {
+	onChange = (e) => {
 		if (e.target.value.length == 0) {
 			this.setState({
 				textFieldValue: e.target.value,
@@ -246,7 +257,7 @@ class Reply extends Component {
 	}
 
 	// Save edited answer text
-	save() {
+	save = () => {
 		const { reply } = this.props;
 		this.setState({ isEditing: false });
 		this.props.editPostInternal(reply, this.state.textFieldValue);
@@ -259,11 +270,11 @@ class Reply extends Component {
 				<div className="details-wrapper" style={styles.detailsWrapper}>
 					<div className="stats" style={styles.stats}>
 						<IconButton className="upvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(reply, 1); }}>
-							<ThumbUp color={reply.vote == 1 ? blueGrey500 : grey500} />
+							<ThumbUp color={reply.vote === 1 ? blueGrey500 : grey500} />
 						</IconButton>
-						<p style={styles.vote.text}>{reply.votes > 0 ? '+' : ''}{numberFormatter(reply.votes)}</p>
+						<Likes votes={reply.votes} getLikes={this.getLikes} />
 						<IconButton className="downvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(reply, -1); }}>
-							<ThumbDown color={reply.vote == -1 ? blueGrey500 : grey500} />
+							<ThumbDown color={reply.vote === -1 ? blueGrey500 : grey500} />
 						</IconButton>
 					</div>
 					<div className="details" style={!this.state.isEditing ? styles.details.base : [ styles.details.base, styles.details.editing ]}>{this.getEditableArea()}</div>
@@ -275,12 +286,12 @@ class Reply extends Component {
 							targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 						>
 							{
-                        		reply.userID == 24379 ?
-                        			[ <MenuItem primaryText="Edit" key={`edit${reply.id}`} onClick={this.openEdit} />,
+								reply.userID === 24379 ?
+									[ <MenuItem primaryText="Edit" key={`edit${reply.id}`} onClick={this.openEdit} />,
 										<MenuItem primaryText="Delete" key={`remove${reply.id}`} onClick={() => { this.props.remove(reply); }} /> ]
-                        			:
-                        			<MenuItem primaryText="Report" key={`report${reply.id}`} />
-                        	}
+									:
+									<MenuItem primaryText="Report" key={`report${reply.id}`} />
+							}
 						</IconMenu>
 					}
 				</div>
@@ -288,22 +299,22 @@ class Reply extends Component {
 					!this.state.isEditing &&
 					<div className="additional-details" style={styles.additionalDetails}>
 						{
-                    		this.props.isUsersQuestion ?
+							this.props.isUsersQuestion ?
 								<IconButton className="follow" style={styles.bestAnswerButton.base} iconStyle={styles.bestAnswerButton.icon} onClick={() => this.props.toggleAcceptedAnswerInternal(reply.id, reply.isAccepted)}>
-		<AcceptedIcon color={reply.isAccepted ? lightGreen500 : grey500} />
- </IconButton>
-                    			:
-                    			reply.isAccepted && <AcceptedIcon color={lightGreen500} style={getStyles(styles.bestAnswerButton.icon, styles.bestAnswerButton.margin)} />
-                    	}
+									<AcceptedIcon color={reply.isAccepted ? lightGreen500 : grey500} />
+								</IconButton>
+								:
+								reply.isAccepted &&
+								<AcceptedIcon
+									color={lightGreen500}
+									style={getStyles(styles.bestAnswerButton.icon, styles.bestAnswerButton.margin)}
+								/>
+						}
 						<DiscussAuthor date={reply.date} userID={reply.userID} userName={reply.userName} />
 					</div>
 				}
 			</div>
 		);
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		return (JSON.stringify(this.props) !== JSON.stringify(nextProps) || this.state !== nextState); // MUST CHECK
 	}
 }
 
@@ -311,6 +322,7 @@ function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
 		editPostInternal,
 		toggleAcceptedAnswerInternal,
+		getLikes: getLikesInternal(2),
 	}, dispatch);
 }
 

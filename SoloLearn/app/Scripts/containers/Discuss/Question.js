@@ -164,18 +164,19 @@ class Question extends Component {
 				<div className="details-wrapper" style={styles.detailsWrapper}>
 					<div className="stats" style={styles.stats}>
 						<IconButton className="upvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(question, 1); }}>
-							<ThumbUp color={question.vote == 1 ? blueGrey500 : grey500} />
+							<ThumbUp color={question.vote === 1 ? blueGrey500 : grey500} />
 						</IconButton>
-						<Likes style={styles.vote.text} votes={question.votes} getLikes={this.getLikes} />
+						<Likes votes={question.votes} getLikes={this.getLikes} />
 						<IconButton className="downvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(question, -1); }}>
-							<ThumbDown color={question.vote == -1 ? blueGrey500 : grey500} />
+							<ThumbDown color={question.vote === -1 ? blueGrey500 : grey500} />
 						</IconButton>
 					</div>
 					<div className="details" style={styles.details}>
 						<p className="title" style={styles.title}>{question.title}</p>
 						<div className="tags">
 							{
-								removeDups(question.tags).map((tag, index) => <DiscussTag tag={tag} index={index} key={tag} />)
+								removeDups(question.tags).map((tag, index) =>
+									<DiscussTag tag={tag} index={index} key={tag} />)
 							}
 						</div>
 						<pre className="message" style={styles.message}>{question.message}</pre>
@@ -186,7 +187,7 @@ class Question extends Component {
 						targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 					>
 						{
-							question.userID == 24379 ?
+							question.userID === 24379 ?
 								[ <MenuItem primaryText="Edit" key={`edit${question.id}`} containerElement={<Link to={`/discuss/edit/${question.id}`} />} />,
 									<MenuItem primaryText="Delete" key={`remove${question.id}`} onClick={() => { this.props.remove(question); }} /> ]
 								:
@@ -198,7 +199,11 @@ class Question extends Component {
 					<IconButton className="follow" style={styles.followButton.base} iconStyle={styles.followButton.icon} onClick={() => { this.props.questionFollowingInternal(question.id, !question.isFollowing); }}>
 						<FollowIcon color={question.isFollowing ? blueGrey500 : grey500} />
 					</IconButton>
-					<DiscussAuthor date={question.date} userID={question.userID} userName={question.userName} />
+					<DiscussAuthor
+						date={question.date}
+						userID={question.userID}
+						userName={question.userName}
+					/>
 				</div>
 			</Paper>
 		);

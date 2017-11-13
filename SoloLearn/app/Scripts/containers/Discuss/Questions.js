@@ -96,7 +96,8 @@ class Questions extends Component {
 
 		return (
 			<div>
-				{((!isLoaded || questions.length == 0) && !this.state.fullyLoaded && !isUserProfile) && <LoadingOverlay />}
+				{((!isLoaded || questions.length === 0) && !this.state.fullyLoaded && !isUserProfile)
+					&& <LoadingOverlay />}
 				{(isLoaded && questions.length > 0) && this.renderQuestions()}
 				{
 					((isUserProfile || questions.length > 0) && !this.state.fullyLoaded) &&
@@ -108,7 +109,8 @@ class Questions extends Component {
 						<LoadingOverlay size={30} />
 					</div>
 				}
-				{(this.state.fullyLoaded && questions.length == 0) && <div style={styles.noResults}>No Results Found</div>}
+				{(this.state.fullyLoaded && questions.length === 0) &&
+					<div style={styles.noResults}>No Results Found</div>}
 			</div>
 		);
 	}

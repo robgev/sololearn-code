@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import Popover from 'material-ui/Popover';
-import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
 import Divider from 'material-ui/Divider';
 import { connect } from 'react-redux';
@@ -8,15 +7,6 @@ import User from './User';
 import { setLikesList } from '../../actions/likes';
 import numberFormatter from '../../utils/numberFormatter';
 import InfiniteVirtualizedList from './InfiniteVirtualizedList';
-
-const styles = {
-	paperStyle: {
-		display: 'flex',
-		alignItems: 'flex-start',
-		justifyContent: 'center',
-		flexDirection: 'column',
-	},
-};
 
 class Likes extends PureComponent {
 	state = {
@@ -34,14 +24,14 @@ class Likes extends PureComponent {
 		this.setState({ open: false });
 		this.props.setLikesList(null);
 	}
-	renderOneLike = (user, key, style) => (
-		<div key={key} style={style}>
+	renderOneLike = user => (
+		<div>
 			<div key={user.id} style={{ padding: 5 }}>
 				<User user={user} />
 			</div>
 			<Divider />
 		</div >
-	)
+	);
 	render() {
 		const { votes, likes } = this.props;
 		return (

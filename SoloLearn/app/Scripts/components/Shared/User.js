@@ -26,7 +26,7 @@ const styles = {
 };
 
 const User = ({ user: { id, name }, style }) => (
-	<Link to={`/profile/${id}`} style={styles.noStyle}>
+	<Link to={`/profile/${id}`} style={{ ...style, ...styles.noStyle }}>
 		<div style={styles.authorDetails}>
 			<Avatar size={30} style={styles.avatar}>{name.charAt(0)}</Avatar>
 			<div style={styles.texts.base}>

@@ -68,81 +68,82 @@ const styles = {
 };
 
 class QuestionsBase extends Component {
-    state = {
-    	suggestions: [],
-    }
-    updateQuestions = () => this._questions.getWrappedInstance().loadQuestionByState();
-    // Get search suggestions
-    handleUpdateInput = (searchText) => {
-    	if (searchText == this.props.query) return;
-    	this.props.changeDiscussQuery(searchText);
+	state = {
+		suggestions: [],
+	}
+	updateQuestions = () => this._questions.getWrappedInstance().loadQuestionByState();
+	// Get search suggestions
+	handleUpdateInput = (searchText) => {
+		if (searchText === this.props.query) return;
+		this.props.changeDiscussQuery(searchText);
 
-    	Service.request('Discussion/getTags', { query: searchText })
-    		.then((response) => {
-    			this.setState({ suggestions: response.tags });
-    		}).catch((e) => {
-    			console.log(e);
-    		});
-    }
-    // Clear search input
-    clearSearchInput = () => {
-    	this.props.changeDiscussQuery('');
-    	this.updateQuestions();
-    }
-    // Change discuss oredering
-    handleFilterChange = (e, index, value) => {
-    	this.props.changeDiscussOrdering(value);
-    	this.updateQuestions();
-    }
-    handleEnter = (e) => {
-    	if (e.key === 'Enter') { this.updateQuestions(); }
-    }
-    render() {
-    	return (
-    		<div className="discuss" style={styles.container}>
-    			<div className="toolbar" style={styles.toolbar}>
-		<div className="search" style={styles.search}>
-    					<SearchIcon color={grey700} style={styles.searchIcon} />
-		<AutoComplete
-	style={styles.searchInput}
-	menuStyle={styles.searchSuggestionsList}
-	hintText="Search..."
-    						searchText={this.props.query}
-    						underlineStyle={{ display: 'none' }}
-	dataSource={this.state.suggestions}
-    						onUpdateInput={value => this.handleUpdateInput(value)}
-	onNewRequest={this.loadQuestionByState}
-	filter={(searchText, key) => true}
-	onKeyPress={this.handleEnter}
-    					/>
-    					{ this.props.query.length > 0 && <Clear color={grey700} style={styles.clearIcon} onClick={this.clearSearchInput} /> }
-	</div>
-		<DropDownMenu
-    					style={styles.discussFilter}
-    					value={this.props.ordering}
-	onChange={this.handleFilterChange}
-    					autoWidth={false}
-    				>
-	<MenuItem style={styles.discussFilterItem} value={8} primaryText="Trending" />
-	<MenuItem style={styles.discussFilterItem} value={1} primaryText="Most Recent" />
-    					<MenuItem style={styles.discussFilterItem} value={2} primaryText="Most Popular" />
-	<MenuItem style={styles.discussFilterItem} value={3} primaryText="Most Answered" />
-	<MenuItem style={styles.discussFilterItem} value={4} primaryText="Unanswered" />
-    					<MenuItem style={styles.discussFilterItem} value={5} primaryText="My Questions" />
-    					<MenuItem style={styles.discussFilterItem} value={6} primaryText="My Answers" />
-    				</DropDownMenu>
-	</div>
-    			<Questions
-    				questions={this.props.questions}
-    				isLoaded={this.props.isLoaded}
-    				ordering={this.props.ordering}
-		query={this.props.query}
-		isUserProfile={false}
-    				ref={(questions) => { this._questions = questions; }}
-	/>
- </div>
-    	);
-    }
+		Service.request('Discussion/getTags', { query: searchText })
+			.then((response) => {
+				this.setState({ suggestions: response.tags });
+			}).catch((e) => {
+				console.log(e);
+			});
+	}
+	// Clear search input
+	clearSearchInput = () => {
+		this.props.changeDiscussQuery('');
+		this.updateQuestions();
+	}
+	// Change discuss oredering
+	handleFilterChange = (e, index, value) => {
+		this.props.changeDiscussOrdering(value);
+		this.updateQuestions();
+	}
+	handleEnter = (e) => {
+		if (e.key === 'Enter') { this.updateQuestions(); }
+	}
+	render() {
+		return (
+			<div className="discuss" style={styles.container}>
+				<div className="toolbar" style={styles.toolbar}>
+					<div className="search" style={styles.search}>
+						<SearchIcon color={grey700} style={styles.searchIcon} />
+						<AutoComplete
+							style={styles.searchInput}
+							menuStyle={styles.searchSuggestionsList}
+							hintText="Search..."
+							searchText={this.props.query}
+							underlineStyle={{ display: 'none' }}
+							dataSource={this.state.suggestions}
+							onUpdateInput={value => this.handleUpdateInput(value)}
+							onNewRequest={this.loadQuestionByState}
+							filter={() => true}
+							onKeyPress={this.handleEnter}
+						/>
+						{this.props.query.length > 0
+							&& <Clear color={grey700} style={styles.clearIcon} onClick={this.clearSearchInput} />}
+					</div>
+					<DropDownMenu
+						style={styles.discussFilter}
+						value={this.props.ordering}
+						onChange={this.handleFilterChange}
+						autoWidth={false}
+					>
+						<MenuItem style={styles.discussFilterItem} value={8} primaryText="Trending" />
+						<MenuItem style={styles.discussFilterItem} value={1} primaryText="Most Recent" />
+						<MenuItem style={styles.discussFilterItem} value={2} primaryText="Most Popular" />
+						<MenuItem style={styles.discussFilterItem} value={3} primaryText="Most Answered" />
+						<MenuItem style={styles.discussFilterItem} value={4} primaryText="Unanswered" />
+						<MenuItem style={styles.discussFilterItem} value={5} primaryText="My Questions" />
+						<MenuItem style={styles.discussFilterItem} value={6} primaryText="My Answers" />
+					</DropDownMenu>
+				</div>
+				<Questions
+					questions={this.props.questions}
+					isLoaded={this.props.isLoaded}
+					ordering={this.props.ordering}
+					query={this.props.query}
+					isUserProfile={false}
+					ref={(questions) => { this._questions = questions; }}
+				/>
+			</div>
+		);
+	}
 }
 
 const mapStateToProps = state => ({
@@ -158,4 +159,7 @@ const mapDispatchToProps = dispatch =>
 		changeDiscussQuery,
 	}, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(Radium(QuestionsBase));
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps, null, { withRef: true },
+)(Radium(QuestionsBase));

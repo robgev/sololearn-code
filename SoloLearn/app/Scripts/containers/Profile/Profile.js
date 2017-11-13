@@ -1,17 +1,22 @@
 // React modules
 import React, { Component } from 'react';
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
+
+// Material UI components
+import Paper from 'material-ui/Paper';
+import { Tabs, Tab } from 'material-ui/Tabs';
+import FeedIcon from 'material-ui/svg-icons/image/dehaze';
+import Dialog from 'material-ui/Dialog';
+import { grey600 } from 'material-ui/styles/colors';
 
 // Redux modules
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { loadDefaults } from '../../actions/defaultActions';
 import { getFeedItemsInternal } from '../../actions/feed';
 import { getCodesInternal } from '../../actions/playground';
 import { getQuestionsInternal } from '../../actions/discuss';
 import { getProfileInternal, clearOpenedProfile } from '../../actions/defaultActions';
 import { emptyProfileFollowers } from '../../actions/profile';
-import { defaultsLoaded, isLoaded } from '../../reducers';
+import { isLoaded } from '../../reducers';
 
 // Additional data and components
 import Header from './Header';
@@ -22,14 +27,6 @@ import Skills from './Skills';
 import Badges from './Badges';
 import FollowersBase from './FollowersBase';
 import LoadingOverlay from '../../components/Shared/LoadingOverlay';
-
-// Material UI components
-import Paper from 'material-ui/Paper';
-import { Tabs, Tab } from 'material-ui/Tabs';
-import FeedIcon from 'material-ui/svg-icons/image/dehaze';
-import Dialog from 'material-ui/Dialog';
-import RaisedButton from 'material-ui/RaisedButton';
-import { grey600 } from 'material-ui/styles/colors';
 
 // Utils
 import EnumNameMapper from '../../utils/enumNameMapper';
@@ -96,68 +93,25 @@ const styles = {
 class Profile extends Component {
 	constructor(props) {
 		super(props);
-
 		this.state = {
 			activeTab: TabTypes.Activity,
-			isLoading: false,
 			popupOpened: false,
 		};
-
-		this.handlePopupOpen = this.handlePopupOpen.bind(this);
-		this.handlePopupClose = this.handlePopupClose.bind(this);
 	}
 
-	handlePopupOpen() {
-		this.setState({ popupOpened: true });
+	async componentWillMount() {
+		const { params } = this.props;
+		const { tab = '' } = params;
+		await this.props.getProfile(params.id);
+		this.selectTab(tab);
 	}
 
-	handlePopupClose() {
-		this.props.emptyProfileFollowers();
-		this.setState({ popupOpened: false });
+	componentWillUnmount() {
+		this.props.clearOpenedProfile();
 	}
 
-	handleTabChange(value) {
-		const params = this.props.params; // TODO Changes
-		const profile = this.props.profile;
-
-		this.setState({
-			activeTab: value,
-			fullyLoaded: false,
-		});
-
-		switch (value) {
-		case TabTypes.Activity:
-			browserHistory.replace(`/profile/${this.props.params.id}/activity`);
-			break;
-		case TabTypes.Codes:
-			browserHistory.replace(`/profile/${this.props.params.id}/codes`);
-			break;
-		case TabTypes.Posts:
-			browserHistory.replace(`/profile/${this.props.params.id}/posts`);
-			break;
-		case TabTypes.Skills:
-			browserHistory.replace(`/profile/${this.props.params.id}/skills`);
-			break;
-		case TabTypes.Badges:
-			browserHistory.replace(`/profile/${this.props.params.id}/badges`);
-			break;
-		}
-	}
-
-	loadFeedItems(fromId, userId) {
-		this.setState({ isLoading: true });
-
-		return this.props.getProfileFeedItems(fromId, userId).then((count) => {
-			if (count < 20) this.setState({ fullyLoaded: true });
-
-			this.setState({ isLoading: false });
-		}).catch((error) => {
-			console.log(error);
-		});
-	}
-
-	getLabel(type) {
-		const { profile } = this.props; // TODO changes
+	getLabel = (type) => {
+		const { profile } = this.props;
 
 		switch (type) {
 		case TabTypes.Codes:
@@ -195,13 +149,78 @@ class Profile extends Component {
 					<p>Activity</p>
 				</div>
 			);
+		default:
+		}
+	}
+
+	handleTabChange = (value) => {
+		this.setState({ activeTab: value });
+		switch (value) {
+		case TabTypes.Activity:
+			browserHistory.replace(`/profile/${this.props.params.id}/activity`);
+			break;
+		case TabTypes.Codes:
+			browserHistory.replace(`/profile/${this.props.params.id}/codes`);
+			break;
+		case TabTypes.Posts:
+			browserHistory.replace(`/profile/${this.props.params.id}/posts`);
+			break;
+		case TabTypes.Skills:
+			browserHistory.replace(`/profile/${this.props.params.id}/skills`);
+			break;
+		case TabTypes.Badges:
+			browserHistory.replace(`/profile/${this.props.params.id}/badges`);
+			break;
+		default:
+			break;
+		}
+	}
+
+	handlePopupOpen = () => {
+		this.setState({ popupOpened: true });
+	}
+
+	handlePopupClose = () => {
+		this.props.emptyProfileFollowers();
+		this.setState({ popupOpened: false });
+	}
+
+	loadFeedItems = async (fromId, userId) => {
+		try {
+			await this.props.getProfileFeedItems(fromId, userId);
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	selectTab = (tab) => {
+		switch (tab.toLowerCase()) {
+		case 'activity':
+			this.handleTabChange(TabTypes.Activity);
+			break;
+		case 'codes':
+			this.handleTabChange(TabTypes.Codes);
+			break;
+		case 'posts':
+			this.handleTabChange(TabTypes.Posts);
+			break;
+		case 'skills':
+			this.handleTabChange(TabTypes.Skills);
+			break;
+		case 'badges':
+			this.handleTabChange(TabTypes.Badges);
+			break;
+		default:
+			browserHistory.replace(`/profile/${this.props.params.id}/activity`);
+			this.handleTabChange(TabTypes.Activity);
+			break;
 		}
 	}
 
 	render() {
-		const { profile, levels, defaultsLoaded } = this.props; // TODO changes
+		const { profile, levels } = this.props;
 
-		if (!defaultsLoaded || !this.props.isLoaded) {
+		if (!this.props.isLoaded) {
 			return (
 				<LoadingOverlay />
 			);
@@ -212,8 +231,16 @@ class Profile extends Component {
 				<div className="cover" style={styles.cover} />
 				<div style={styles.profileOverlay}>
 					<Paper className="profile-overlay" style={styles.userInfo}>
-						<Header profile={profile.data} levels={this.props.levels} openPopup={this.handlePopupOpen} />
-						<Tabs value={this.state.activeTab} tabItemContainerStyle={styles.tabs} inkBarStyle={styles.inkBarStyle}>
+						<Header
+							profile={profile.data}
+							levels={this.props.levels}
+							openPopup={this.handlePopupOpen}
+						/>
+						<Tabs
+							value={this.state.activeTab}
+							tabItemContainerStyle={styles.tabs}
+							inkBarStyle={styles.inkBarStyle}
+						>
 							<Tab
 								label={this.getLabel(TabTypes.Codes)}
 								value={TabTypes.Codes}
@@ -247,102 +274,61 @@ class Profile extends Component {
 						</Tabs>
 					</Paper>
 					{
-						this.state.activeTab == TabTypes.Activity &&
+						this.state.activeTab === TabTypes.Activity &&
 						<div className="section" style={styles.section}>
-							<FeedItemsBase isLoaded={profile.feed.length > 0} feed={profile.feed} feedPins={[]} isUserProfile userId={profile.data.id} />
+							<FeedItemsBase
+								isLoaded={profile.feed.length > 0}
+								feed={profile.feed}
+								feedPins={[]}
+								isUserProfile
+								userId={profile.data.id}
+							/>
 						</div>
 					}
 					{
-						this.state.activeTab == TabTypes.Codes &&
+						this.state.activeTab === TabTypes.Codes &&
 						<div className="section" style={styles.section}>
 							<Codes codes={profile.codes} isLoaded={profile.codes.length > 0} ordering={3} language="" query="" isUserProfile userId={profile.data.id} />
 						</div>
 					}
 					{
-						this.state.activeTab == TabTypes.Posts &&
+						this.state.activeTab === TabTypes.Posts &&
 						<div className="section" style={styles.section}>
 							<Questions questions={profile.posts} isLoaded={profile.posts.length > 0} ordering={7} query="" isUserProfile userId={profile.data.id} />
 						</div>
 					}
-					{this.state.activeTab == TabTypes.Skills && <Skills profile={profile.data} levels={levels} skills={profile.data.skills} />}
-					{this.state.activeTab == TabTypes.Badges && <Badges badges={profile.data.badges} />}
-					{
-						this.state.popupOpened &&
-						<Dialog
-							modal={false}
-							open={this.state.popupOpened}
-							onRequestClose={this.handlePopupClose}
-							style={styles.popupOverlay}
-							bodyStyle={styles.popup}
-						>
-							<FollowersBase userId={profile.data.id} closePopup={this.handlePopupClose} />
-						</Dialog>
-					}
+					{this.state.activeTab === TabTypes.Skills &&
+						<Skills profile={profile.data} levels={levels} skills={profile.data.skills} />}
+					{this.state.activeTab === TabTypes.Badges &&
+						<Badges badges={profile.data.badges} />}
+					<Dialog
+						modal={false}
+						open={this.state.popupOpened}
+						onRequestClose={this.handlePopupClose}
+						style={styles.popupOverlay}
+						bodyStyle={styles.popup}
+					>
+						<FollowersBase userId={profile.data.id} closePopup={this.handlePopupClose} />
+					</Dialog>
 				</div>
 			</div>
 		);
 	}
-
-    selectTab = (tab) => {
-    	switch (tab.toLowerCase()) {
-    	case 'activity':
-    		this.handleTabChange(TabTypes.Activity);
-    		break;
-    	case 'codes':
-    		this.handleTabChange(TabTypes.Codes);
-    		break;
-    	case 'posts':
-    		this.handleTabChange(TabTypes.Posts);
-    		break;
-    	case 'skills':
-    		this.handleTabChange(TabTypes.Skills);
-    		break;
-    	case 'badges':
-    		this.handleTabChange(TabTypes.Badges);
-    		break;
-    	default:
-    		browserHistory.replace(`/profile/${this.props.params.id}/activity`);
-    		this.handleTabChange(TabTypes.Activity);
-    		break;
-    	}
-    }
-    async componentWillMount() {
-    	// console.log(this.props, "PROFILE");
-
-    	const { params } = this.props;
-    	const { tab = '' } = params;
-    	await this.props.getProfile(params.id);
-    	this.selectTab(tab);
-    }
-    componentWillUnmount() {
-    	this.props.clearOpenedProfile();
-    }
-
-    // shouldComponentUpdate(nextProps, nextState) {
-    //    console.log(this.props, "PROPS", nextProps, "NEXTPROPS");
-    //    return true;
-    // }
 }
 
-function mapStateToProps(state) {
-	return {
-		defaultsLoaded: defaultsLoaded(state),
-		isLoaded: isLoaded(state, 'profile'),
-		profile: state.profile,
-		levels: state.levels,
-	};
-}
+const mapStateToProps = state => ({
+	isLoaded: isLoaded(state, 'profile'),
+	profile: state.profile,
+	levels: state.levels,
+});
 
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({
-		loadDefaults,
-		getProfileFeedItems: getFeedItemsInternal,
-		getProfileCodes: getCodesInternal,
-		getProfileQuestions: getQuestionsInternal,
-		getProfile: getProfileInternal,
-		emptyProfileFollowers,
-		clearOpenedProfile,
-	}, dispatch);
-}
+const mapDispatchToProps = {
+	getProfileFeedItems: getFeedItemsInternal,
+	getProfileCodes: getCodesInternal,
+	getProfileQuestions: getQuestionsInternal,
+	getProfile: getProfileInternal,
+	emptyProfileFollowers,
+	clearOpenedProfile,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
