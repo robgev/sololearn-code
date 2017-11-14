@@ -39,17 +39,21 @@ class Playground extends Component {
 		super(props);
 		this.state = {
 			code: '',
+			jsCode: '',
+			cssCode: '',
 			type: 'web',
+			codeType: '',
 			publicID: '',
-			codeData: {},
 			mode: 'html',
+			sourceCode: '',
 			isSaving: false,
 			isRunning: false,
 			theme: 'monokai',
 			showOutput: false,
 			isGettingCode: false,
 			latestSavedCodeData: {},
-			languageSelector: 'html',
+			languageSelector: 'web',
+			userCodeLanguage: 'web',
 		};
 	}
 
@@ -72,16 +76,17 @@ class Playground extends Component {
 						cssCode: isWeb ? css : '',
 						jsCode: isWeb ? javascript : '',
 						codeType: '',
+						userCodeLanguage: isWeb ? 'web' : foundEditorSettingKey,
 					};
 					const code = texts[foundEditorSettingKey];
 
 					this.setState({
 						type,
 						code,
-						codeData,
+						...codeData,
 						mode: foundEditorSettingKey,
 						latestSavedCodeData: codeData,
-						languageSelector: isWeb ? 'html' : foundEditorSettingKey,
+						languageSelector: isWeb ? 'web' : foundEditorSettingKey,
 					});
 
 					browserHistory.replace(`/playground/${alias}`);
@@ -106,11 +111,12 @@ class Playground extends Component {
 		};
 
 		this.setState({
-			codeData,
 			type: 'web',
+			...codeData,
 			mode: 'html',
 			theme: 'monokai',
-			languageSelector: 'html',
+			languageSelector: 'web',
+			userCodeLanguage: 'web',
 			latestSavedCodeData: codeData,
 		});
 
@@ -123,24 +129,31 @@ class Playground extends Component {
 		try {
 			const codeSample = await Service.request('Playground/GetCodeSample', { id: parseInt(params.secondary, 10) });
 			const { sourceCode, cssCode, jsCode } = codeSample.code;
-			const codeData = {
-				sourceCode,
-				cssCode,
-				jsCode,
-				codeType: 'templateCode',
-			};
 			const foundEditorSettingKey = findKey(editorSettings, { alias: params.primary });
 			if (foundEditorSettingKey) {
 				const { alias, type } = editorSettings[foundEditorSettingKey];
 				const isWeb = checkWeb(alias);
+				const codeData = {
+					sourceCode,
+					cssCode,
+					jsCode,
+					codeType: 'templateCode',
+					userCodeLanguage: isWeb ? 'web' : foundEditorSettingKey,
+				};
+
+				const latestSavedCodeData = {
+					...codeSample.code,
+					codeType: 'templateCode',
+					userCodeLanguage: isWeb ? 'web' : foundEditorSettingKey,
+				}
 
 				this.setState({
 					type,
-					codeData,
+					...codeData,
 					code: sourceCode,
+					latestSavedCodeData,
 					mode: foundEditorSettingKey,
-					latestSavedCodeData: codeData,
-					languageSelector: isWeb ? 'html' : foundEditorSettingKey,
+					languageSelector: isWeb ? 'web' : foundEditorSettingKey,
 				});
 
 				browserHistory.replace(`/playground/${alias}/${params.secondary}`);
@@ -168,26 +181,34 @@ class Playground extends Component {
 				language,
 				sourceCode,
 			} = codeSample.code;
-			const codeData = {
-				sourceCode,
-				cssCode,
-				jsCode,
-				codeType: 'userCode',
-			};
 			// Check language of user code for setting up correct link
 			const foundEditorSettingKey = findKey(editorSettings, { language });
 			if (foundEditorSettingKey) {
 				const { alias, type } = editorSettings[foundEditorSettingKey];
 				browserHistory.replace(`/playground/${publicID}/${alias}`);
 				const isWeb = checkWeb(alias);
+				const codeData = {
+					sourceCode,
+					cssCode,
+					jsCode,
+					codeType: 'userCode',
+					userCodeLanguage: isWeb ? 'web' : foundEditorSettingKey,
+				};
+
+				const latestSavedCodeData = {
+					...codeSample.code,
+					codeType: 'userCode',
+					userCodeLanguage: isWeb ? 'web' : foundEditorSettingKey,
+				}
+
 				this.setState({
 					type,
 					publicID,
-					codeData,
+					...codeData,
 					code: sourceCode,
+					latestSavedCodeData,
 					mode: foundEditorSettingKey,
-					latestSavedCodeData: codeData,
-					languageSelector: isWeb ? 'html' : foundEditorSettingKey,
+					languageSelector: isWeb ? 'web' : foundEditorSettingKey,
 				});
 			}
 			this.setState({ isGettingCode: false });
@@ -213,7 +234,7 @@ class Playground extends Component {
 	handleTabChange = (mode) => {
 		const { params } = this.props;
 		const code = this.getTabCodeData(mode);
-		const { codeData: { codeType }, publicID } = this.state;
+		const { codeType, publicID } = this.state;
 		const { alias } = editorSettings[mode];
 		const isUserCode = codeType === 'userCode';
 		const link = isUserCode ? `/playground/${publicID}/` : '/playground/';
@@ -221,38 +242,33 @@ class Playground extends Component {
 			code,
 			mode,
 			showOutput: false,
-			languageSelector: 'html',
+			languageSelector: 'web',
+			userCodeLanguage: 'web',
 		});
 		browserHistory.replace(`${link}${alias}`);
 	}
 
 	handleEditorChange = (editorValue) => {
-		const { type, mode, codeData } = this.state;
-		if (type === 'web') {
-			switch (mode) {
-			case 'html':
-				this.setState({ code: editorValue, codeData: { ...codeData, sourceCode: editorValue } });
-				break;
-			case 'css':
-				this.setState({ code: editorValue, codeData: { ...codeData, cssCode: editorValue } });
-				break;
-			case 'javascript':
-				this.setState({ code: editorValue, codeData: { ...codeData, jsCode: editorValue } });
-				break;
-			default:
-				break;
-			}
-		} else {
-			const newSourceCodeData = { ...codeData, sourceCode: editorValue };
-			this.setState({ code: editorValue, codeData: newSourceCodeData });
+		const { mode } = this.state;
+		switch (mode) {
+		case 'css':
+			this.setState({ code: editorValue, cssCode: editorValue });
+			break;
+		case 'javascript':
+			this.setState({ code: editorValue, jsCode: editorValue });
+			break;
+		default:
+			this.setState({ code: editorValue, sourceCode: editorValue });
+			break;
 		}
-	}
+}
 
-	handleLanguageChange = (e, index, mode) => {
+	handleLanguageChange = (e, index, selectedLanguage) => {
+		const mode = selectedLanguage === 'web' ? 'html' : selectedLanguage;
 		const { type, language } = editorSettings[mode];
-		const { latestSavedCodeData, languageSelector } = this.state;
+		const { latestSavedCodeData, languageSelector, userCodeLanguage } = this.state;
 		const isUserWritten =
-			latestSavedCodeData.codeType === 'userCode' && language === languageSelector;
+			latestSavedCodeData.codeType === 'userCode' && language === userCodeLanguage;
 		const code = isUserWritten ? latestSavedCodeData.sourceCode : texts[mode];
 		this.setState({
 			code,
@@ -269,7 +285,7 @@ class Playground extends Component {
 	}
 
 	resetEditorValue = () => {
-		const { mode, latestSavedCodeData, languageSelector } = this.state;
+		const { mode, latestSavedCodeData, userCodeLanguage } = this.state;
 		const { language } = editorSettings[mode];
 		const {
 			jsCode,
@@ -277,7 +293,7 @@ class Playground extends Component {
 			codeType,
 			sourceCode,
 		} = latestSavedCodeData;
-		const userCodeOpened = codeType === 'userCode' && language === languageSelector;
+		const userCodeOpened = codeType === 'userCode' && language === userCodeLanguage;
 		const computedCssCode = userCodeOpened ? cssCode : texts[mode];
 		const computedJsCode = userCodeOpened ? jsCode : texts[mode];
 		const computedSourceCode = userCodeOpened ? sourceCode : texts[mode];
@@ -285,22 +301,29 @@ class Playground extends Component {
 		case 'css':
 			this.setState({
 				code: computedCssCode,
-				codeData: { ...codeData, cssCode: computedCssCode },
+				cssCode: computedCssCode,
 			});
 			break;
 		case 'javascript':
 			this.setState({
 				code: computedJsCode,
-				codeData: { ...codeData, jsCode: computedJsCode },
+				jsCode: computedJsCode,
 			});
 			break;
 		default:
 			this.setState({
 				code: computedSourceCode,
-				codeData: { ...codeData, sourceCode: computedSourceCode },
+				sourceCode: computedSourceCode,
 			});
 			break;
 		}
+	}
+
+	setLatestSavedData = (latestSavedCodeData) => {
+		console.log(latestSavedCodeData);
+		this.setState({
+			latestSavedCodeData
+		})
 	}
 
 	// TODO: Implement those functions
@@ -316,12 +339,18 @@ class Playground extends Component {
 			code,
 			mode,
 			theme,
+			jsCode,
+			cssCode,
 			isSaving,
-			codeData,
+			publicID,
+			codeType,
 			isRunning,
+			sourceCode,
 			showOutput,
 			isGettingCode,
 			languageSelector,
+			userCodeLanguage,
+			latestSavedCodeData,
 		} = this.state;
 		const showWebOutput = (showOutput && (type === 'web' || type === 'combined'));
 
@@ -340,16 +369,24 @@ class Playground extends Component {
 							code={code}
 							mode={mode}
 							theme={theme}
-							userCodeData={codeData}
+							publicID={publicID}
 							handleEditorChange={this.handleEditorChange}
 						/>
 						<Toolbar
 							type={type}
 							theme={theme}
+							jsCode={jsCode}
+							cssCode={cssCode}
+							code={sourceCode}
 							isSaving={isSaving}
 							isRunning={isRunning}
+							language={userCodeLanguage}
 							showWebOutput={showWebOutput}
+							isUserCode={codeType === 'userCode'}
+							userCodeData={latestSavedCodeData}
 							languageSelector={languageSelector}
+							resetEditorValue={this.resetEditorValue}
+							setLatestSavedData={this.setLatestSavedData}
 							handleThemeChange={this.handleThemeChange}
 							handleLanguageChange={this.handleLanguageChange}
 						/>

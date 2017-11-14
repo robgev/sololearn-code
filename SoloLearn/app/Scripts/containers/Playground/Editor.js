@@ -48,7 +48,7 @@ const Editor = ({
 	code,
 	mode,
 	theme,
-	userCodeData,
+	publicID,
 	handleEditorChange,
 }) => (
 	<div>
@@ -63,7 +63,7 @@ const Editor = ({
 			theme={theme}
 			showPrintMargin={false}
 			enableBasicAutocompletion
-			name={userCodeData.publicID}
+			name={publicID}
 			onChange={handleEditorChange}
 			editorProps={{ $blockScrolling: Infinity }}
 			onLoad={(editor) => {
