@@ -52,28 +52,19 @@ const groupNotificationItems = (notifications) => {
 	});
 };
 
-export const getNotificationsInternal = (fromId, toId) => (dispatch, getState) => {
-	if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
-
-	return Service.request('Profile/GetNotifications', { fromId, toId, count: 20 })
-		.then((response) => {
-			const { notifications } = response;
-			const count = notifications.length;
-
-			return groupNotificationItems(notifications)
-				.then((notificationItemsResponse) => {
-					dispatch(getNotifications(notificationItemsResponse));
-
-					return count;
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-};
+export const getNotificationsInternal = (fromId, toId) =>
+	async (dispatch, getState) => {
+		if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
+		try {
+			const { notifications } = await Service.request('Profile/GetNotifications', { fromId, toId, count: 20 });
+			const { length } = notifications;
+			const notificationItemsResponse = await groupNotificationItems(notifications);
+			dispatch(getNotifications(notificationItemsResponse));
+			return length;
+		} catch (e) {
+			console.log(e);
+		}
+	};
 
 export const markAllRead = () => dispatch =>
 	new Promise((resolve) => {
@@ -92,15 +83,14 @@ export const markRead = ids => dispatch =>
 		resolve();
 	});
 
-export const markReadInternal = ids => (dispatch) => {
+export const markReadInternal = ids => async (dispatch) => {
 	const dispatchPromise = ids != null ? dispatch(markRead(ids)) : dispatch(markAllRead());
-	dispatchPromise
-		.then(() => {
-			Service.request('Profile/MarkNotificationsClicked', { ids });
-		})
-		.catch((error) => {
-			console.log(error);
-		});
+	try {
+		await dispatchPromise;
+		Service.request('Profile/MarkNotificationsClicked', { ids });
+	} catch (e) {
+		console.log(e);
+	}
 };
 
 export const emptyProfile = () => ({
@@ -109,47 +99,39 @@ export const emptyProfile = () => ({
 
 export const getFollowers = (followers, fromChallenges) => {
 	const type = fromChallenges ? types.GET_CONTEST_FOLLOWERS : types.GET_PROFILE_FOLLOWERS;
+	return { type, payload: followers };
+};
 
-	return {
-		type,
-		payload: followers,
+export const getFollowersInternal = (index, userId, count = 20, fromChallenges = false) =>
+	async (dispatch, getState) => {
+		if (getState().imitLoggedin) {
+			try {
+				const { users: followers } = await Service.request('Profile/GetFollowers', { id: userId, index, count });
+				dispatch(getFollowers(followers, fromChallenges));
+				return followers.length;
+			} catch (e) {
+				console.log(e);
+			}
+		}
 	};
-};
-
-export const getFollowersInternal = (index, userId, count = 20, fromChallenges = false) => (
-	dispatch,
-	getState,
-) => {
-	if (!getState().imitLoggedin) return;
-	return Service.request('Profile/GetFollowers', { id: userId, index, count }).then((response) => {
-		const followers = response.users;
-		dispatch(getFollowers(followers, fromChallenges));
-
-		return followers.length;
-	});
-};
 
 export const getFollowing = (following, fromChallenges) => {
 	const type = fromChallenges ? types.GET_CONTEST_FOLLOWING : types.GET_PROFILE_FOLLOWING;
+	return { type, payload: following };
+};
 
-	return {
-		type,
-		payload: following,
+export const getFollowingInternal = (index, userId, count = 20, fromChallenges = false) =>
+	async (dispatch, getState) => {
+		if (getState().imitLoggedin) {
+			try {
+				const { users: following } = await Service.request('Profile/GetFollowing', { id: userId, index, count });
+				dispatch(getFollowing(following, fromChallenges));
+				return following.length;
+			} catch (e) {
+				console.log(e);
+			}
+		}
 	};
-};
-
-export const getFollowingInternal = (index, userId, count = 20, fromChallenges = false) => (
-	dispatch,
-	getState,
-) => {
-	if (!getState().imitLoggedin) return;
-	return Service.request('Profile/GetFollowing', { id: userId, index, count }).then((response) => {
-		const following = response.users;
-		dispatch(getFollowing(following, fromChallenges));
-
-		return following.length;
-	});
-};
 
 export const followUser = (userId, fromFollowers, follow) => dispatch =>
 	new Promise((resolve) => {
@@ -164,27 +146,27 @@ export const followUser = (userId, fromFollowers, follow) => dispatch =>
 		resolve();
 	});
 
-export const followUserInternal = (userId, fromFollowers) => (dispatch, getState) => {
-	if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
-	dispatch(followUser(userId, fromFollowers, true))
-		.then(() => {
-			Service.request('Profile/Follow', { id: userId });
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-};
+export const followUserInternal = (userId, fromFollowers) =>
+	async (dispatch, getState) => {
+		if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
+		try {
+			await dispatch(followUser(userId, fromFollowers, true));
+			return Service.request('Profile/Follow', { id: userId });
+		} catch (e) {
+			console.log(e);
+		}
+	};
 
-export const unfollowUserInternal = (userId, fromFollowers) => (dispatch, getState) => {
-	if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
-	dispatch(followUser(userId, fromFollowers, false))
-		.then(() => {
-			Service.request('Profile/Unfollow', { id: userId });
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-};
+export const unfollowUserInternal = (userId, fromFollowers) =>
+	async (dispatch, getState) => {
+		if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
+		try {
+			await dispatch(followUser(userId, fromFollowers, false));
+			return Service.request('Profile/Unfollow', { id: userId });
+		} catch (e) {
+			console.log(e);
+		}
+	};
 
 export const emptyProfileFollowers = () => ({
 	type: types.EMPTY_PROFILE_FOLLOWERS,

@@ -1,13 +1,10 @@
 // React modules
 import React, { Component } from 'react';
-import Radium, { Style } from 'radium';
+import Radium from 'radium';
 
 // Redux modules
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { loadDefaults } from '../../actions/defaultActions';
 import { getQuestionsInternal, emptyQuestions } from '../../actions/discuss';
-import { defaultsLoaded } from '../../reducers';
 
 // Additional components
 import LoadingOverlay from '../../components/Shared/LoadingOverlay';
@@ -23,14 +20,12 @@ const styles = {
 			opacity: 0,
 			transition: 'opacity ease 300ms, -webkit-transform ease 300ms',
 		},
-
 		active: {
 			visibility: 'visible',
 			opacity: 1,
 			transform: 'translateY(0)',
 		},
 	},
-
 	noResults: {
 		position: 'absolute',
 		top: '50%',
@@ -47,9 +42,7 @@ class Questions extends Component {
 		fullyLoaded: false,
 	}
 	componentWillMount() {
-		if (!this.props.isLoaded) {
-			this.loadQuestions();
-		}
+		this.loadQuestions();
 	}
 	componentDidMount() {
 		window.addEventListener('scroll', this.handleScroll);
@@ -68,28 +61,29 @@ class Questions extends Component {
 			}
 		}
 	}
-	loadQuestions = () => {
+	loadQuestions = async () => {
 		const { questions, userId } = this.props;
 		this.setState({ isLoading: true }); // if (this.props.questions.length > 0)
 		const index = questions ? questions.length : 0;
-		this.props.getQuestionsInternal(index, userId)
-			.then((count) => {
-				if (count < 20) this.setState({ fullyLoaded: true });
-				this.setState({ isLoading: false });
-			})
-			.catch(e => console.log(e));
+		try {
+			const count = await this.props.getQuestionsInternal(index, userId);
+			if (count < 20) this.setState({ fullyLoaded: true });
+			this.setState({ isLoading: false });
+		} catch (e) {
+			console.log(e);
+		}
 	}
 	// Load questions when condition changes
-	loadQuestionByState = () => {
-		this.props.emptyQuestions()
-			.then(() => {
-				this.loadQuestions();
-			}).catch((e) => {
-				console.log(e);
-			});
+	loadQuestionByState = async () => {
+		try {
+			await this.props.emptyQuestions();
+			this.loadQuestions();
+		} catch (e) {
+			console.log(e);
+		}
 	}
-	renderQuestions = () => this.props.questions.map(quesiton => (
-		<QuestionItem question={quesiton} key={quesiton.id} />
+	renderQuestions = () => this.props.questions.map(question => (
+		<QuestionItem question={question} key={question.id} />
 	))
 	render() {
 		const { isLoaded, questions, isUserProfile } = this.props;
@@ -116,11 +110,9 @@ class Questions extends Component {
 	}
 }
 
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({
-		getQuestionsInternal,
-		emptyQuestions,
-	}, dispatch);
-}
+const mapDispatchToProps = {
+	getQuestionsInternal,
+	emptyQuestions,
+};
 
 export default connect(null, mapDispatchToProps, null, { withRef: true })(Radium(Questions));

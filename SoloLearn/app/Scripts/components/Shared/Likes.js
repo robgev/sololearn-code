@@ -20,6 +20,9 @@ class Likes extends PureComponent {
 		this.setState({ open: true, anchorEl: e.currentTarget });
 		this.props.getLikes();
 	}
+	handleKeyPress = (e) => {
+		if (e.key === 'Enter') { this.openList(e); }
+	}
 	closeList = () => {
 		this.setState({ open: false });
 		this.props.setLikesList(null);
@@ -35,7 +38,13 @@ class Likes extends PureComponent {
 	render() {
 		const { votes, likes } = this.props;
 		return (
-			<div onClick={this.openList} style={{ ...this.props.style, cursor: 'pointer' }}>
+			<div
+				onClick={this.openList}
+				onKeyPress={this.handleKeyPress}
+				role="button"
+				tabIndex={0}
+				style={{ ...this.props.style, cursor: 'pointer' }}
+			>
 				{votes > 0 && '+'}{numberFormatter(votes)}
 				<Popover
 					open={this.state.open}

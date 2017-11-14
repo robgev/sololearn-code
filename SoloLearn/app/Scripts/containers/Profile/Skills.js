@@ -6,11 +6,10 @@ import { Link } from 'react-router';
 import Paper from 'material-ui/Paper';
 import LinearProgress from 'material-ui/LinearProgress';
 import ProgressBar from 'react-progressbar.js';
-
-const Circle = ProgressBar.Circle;
-
 // Utils and defaults
 import getStyles from '../../utils/styleConverter';
+
+const { Circle } = ProgressBar;
 
 const styles = {
 	container: {
@@ -112,17 +111,17 @@ const progressBarOptions = {
 };
 
 class Skills extends Component {
-	constructor(props) {
-		super(props);
-	}
-
 	renderCourses() {
-		const skills = this.props.skills;
+		const { skills } = this.props;
 
-		return skills.map((course, index) => (
+		return skills.map(course => (
 			<div className="course" key={course.id} style={styles.course}>
 				<div className="course-progress" style={styles.courseProgress}>
-					<Circle progress={course.progress} options={progressBarOptions} containerStyle={styles.circleProgress} />
+					<Circle
+						progress={course.progress}
+						options={progressBarOptions}
+						containerStyle={styles.circleProgress}
+					/>
 					<img src="../../../assets/1051.png" alt={course.name} style={styles.courseIcon} />
 				</div>
 				<div className="course-details" style={styles.courseDetails}>
@@ -173,7 +172,11 @@ class Skills extends Component {
 				</Paper>
 				<Paper className="skills-languages" style={styles.container}>
 					<p style={styles.heading}>Languages</p>
-					<div style={this.props.skills.length > 0 ? styles.courses.base : getStyles(styles.courses.base, styles.courses.centered)}>
+					<div
+						style={this.props.skills.length > 0 ?
+							styles.courses.base :
+							getStyles(styles.courses.base, styles.courses.centered)}
+					>
 						{
 							this.props.skills.length > 0 ?
 								this.renderCourses()

@@ -288,13 +288,28 @@ class Profile extends Component {
 					{
 						this.state.activeTab === TabTypes.Codes &&
 						<div className="section" style={styles.section}>
-							<Codes codes={profile.codes} isLoaded={profile.codes.length > 0} ordering={3} language="" query="" isUserProfile userId={profile.data.id} />
+							<Codes
+								codes={profile.codes}
+								isLoaded={profile.codes.length > 0}
+								ordering={3}
+								language=""
+								query=""
+								isUserProfile
+								userId={profile.data.id}
+							/>
 						</div>
 					}
 					{
 						this.state.activeTab === TabTypes.Posts &&
 						<div className="section" style={styles.section}>
-							<Questions questions={profile.posts} isLoaded={profile.posts.length > 0} ordering={7} query="" isUserProfile userId={profile.data.id} />
+							<Questions
+								questions={profile.posts}
+								isLoaded={profile.posts.length > 0}
+								ordering={7}
+								query=""
+								isUserProfile
+								userId={profile.data.id}
+							/>
 						</div>
 					}
 					{this.state.activeTab === TabTypes.Skills &&

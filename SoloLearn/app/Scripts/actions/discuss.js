@@ -24,24 +24,26 @@ export const getProfileQuestions = questions => ({
 });
 
 export const getQuestionsInternal = (index, profileId = null, count = 20) =>
-	(dispatch, getState) => {
+	async (dispatch, getState) => {
 		const { discussFilters: { discussQuery, discussOrdering } } = getState();
-		return Service.request('Discussion/Search', {
-			index, count, orderBy: discussOrdering, query: discussQuery, profileId,
-		})
-			.then((response) => {
-				const questions = response.posts;
-
-				if (profileId != null) {
-					dispatch(getProfileQuestions(questions));
-				} else {
-					dispatch(getQuestions(questions));
-				}
-
-				return questions.length;
-			}).catch((error) => {
-				console.log(error);
+		try {
+			const orderBy = profileId != null ? 7 : discussOrdering;
+			const { posts: questions } = await Service.request('Discussion/Search', {
+				index,
+				count,
+				orderBy,
+				query: discussQuery,
+				profileId,
 			});
+			if (profileId != null) {
+				dispatch(getProfileQuestions(questions));
+			} else {
+				dispatch(getQuestions(questions));
+			}
+			return questions.length;
+		} catch (e) {
+			console.log(e);
+		}
 	};
 
 export const loadPost = post => ({
