@@ -11,10 +11,8 @@ import FlatButton from 'material-ui/FlatButton';
 
 // Redux modules
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { loadDefaults } from '../../actions/defaultActions';
 import { loadPostInternal, loadRepliesInternal, emptyReplies, votePostInternal, deletePostInternal, loadPost } from '../../actions/discuss';
-import { isLoaded, defaultsLoaded } from '../../reducers';
+import { isLoaded } from '../../reducers';
 
 // Popups
 import Popup from '../../api/popupService';
@@ -140,24 +138,20 @@ class Post extends Component {
 	}
 
 	// Get post answers
-	getReplies = () => {
+	getReplies = async () => {
 		this.setState({ isLoading: true });
-
-		this.props.loadRepliesInternal(this.state.ordering).then((count) => {
-			if (count < 20) {
-				this.setState({ fullyLoaded: true });
-			}
-
+		try {
+			const count = await this.props.loadRepliesInternal(this.state.ordering);
+			if (count < 20) this.setState({ fullyLoaded: true });
 			this.setState({ isLoading: false });
-		}).catch((error) => {
-			console.log(error);
-		});
+		} catch (e) {
+			console.log(e);
+		}
 	}
 
 	// Check alias of post
 	checkAlias = (alias) => {
 		const { post } = this.props;
-
 		if (alias !== post.alias) {
 			browserHistory.replace(`/discuss/${post.id}/${post.alias}`);
 		}
@@ -178,12 +172,13 @@ class Post extends Component {
 	}
 
 	// Load questions when condition changes
-	loadRepliesByState = () => {
-		this.props.emptyReplies().then(() => {
+	loadRepliesByState = async () => {
+		try {
+			await this.props.emptyReplies();
 			this.getReplies();
-		}).catch((error) => {
-			console.log(error);
-		});
+		} catch (e) {
+			console.log(e);
+		}
 	}
 
 	votePost = (post, voteValue) => {
@@ -195,16 +190,12 @@ class Post extends Component {
 		const repliesWrapper = document.getElementById('replies-wrapper');
 		const addReply = document.getElementById('add-reply');
 		const marginBottom = addReply.clientHeight + 5;
-
-		console.log(addReply.clientHeight, marginBottom);
-
 		repliesWrapper.style.margin = `0 0 ${marginBottom}px 0`;
 	}
 
 	// Open deleting confimation dialog
 	openDeletePopup = (post) => {
 		this.deletingPost = post;
-
 		this.setState({ deletePopupOpened: true });
 	}
 
@@ -217,12 +208,9 @@ class Post extends Component {
 	remove = () => {
 		const isPrimary = this.deletingPost.parentID == null;
 		if (isPrimary) {
-			this.props.deletePostInternal(this.deletingPost).then(() => {
-				browserHistory.push('/discuss/');
-			});
-		} else {
-			this.props.deletePostInternal(this.deletingPost);
+			browserHistory.push('/discuss/');
 		}
+		this.props.deletePostInternal(this.deletingPost);
 		this.closeDeletePopup();
 	}
 
@@ -242,14 +230,11 @@ class Post extends Component {
 	];
 
 	render() {
-		const { isLoaded, post } = this.props;
-
-		if (!isLoaded) {
+		const { post } = this.props;
+		if (!this.props.isLoaded) {
 			return <LoadingOverlay />;
 		}
-
 		const usersQuestion = post.userID === 24379;
-
 		return (
 			<div id="post" style={styles.postWrapper}>
 				<Question question={post} votePost={this.votePost} remove={this.openDeletePopup} />
@@ -307,22 +292,18 @@ class Post extends Component {
 
 function mapStateToProps(state) {
 	return {
-		defaultsLoaded: defaultsLoaded(state),
 		isLoaded: isLoaded(state, 'discussPost'),
 		post: state.discussPost,
 	};
 }
 
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({
-		loadDefaults,
-		loadPostInternal,
-		loadRepliesInternal,
-		deletePostInternal,
-		emptyReplies,
-		votePostInternal,
-		loadPost,
-	}, dispatch);
-}
+const mapDispatchToProps = {
+	loadPostInternal,
+	loadRepliesInternal,
+	deletePostInternal,
+	emptyReplies,
+	votePostInternal,
+	loadPost,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Radium(Post));

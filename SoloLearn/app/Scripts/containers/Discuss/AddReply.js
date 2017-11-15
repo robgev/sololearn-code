@@ -1,23 +1,23 @@
 // React modules
 import React, { Component } from 'react';
-import Radium, { Style } from 'radium';
 
 // Material UI components
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import Paper from 'material-ui/Paper';
 
 const styles = {
 	container: {
 		position: 'fixed',
 		width: 'inherit',
 		bottom: 0,
-		left: 'inherit',
-		right: 'inherit',
-		top: 'inherit',
+		// left: 'inherit',
+		// right: 'inherit',
+		// top: 'inherit',
 		padding: '10px 20px',
-		background: '#fff',
-		boxSizing: 'border-box',
-		boxShadow: 'rgba(0, 0, 0, 0.156863) 0px 3px 10px, rgba(0, 0, 0, 0.227451) 0px 3px 10px',
+		// background: '#fff',
+		// boxSizing: 'border-box',
+		// boxShadow: 'rgba(0, 0, 0, 0.156863) 0px 3px 10px, rgba(0, 0, 0, 0.227451) 0px 3px 10px',
 	},
 
 	editor: {
@@ -47,19 +47,20 @@ const styles = {
 class AddReply extends Component {
 	constructor(props) {
 		super(props);
-
 		this.state = {
 			textFieldValue: '',
 			errorText: '',
 		};
-
 		this.height = 0;
-		this.handleKeyUp = this.handleKeyUp.bind(this);
+	}
+
+	componentDidMount() {
+		this.height = document.getElementById('add-reply').clientHeight;
 	}
 
 	// Controll answer text change
-	onChange(e) {
-		if (e.target.value.length == 0) {
+	onChange = (e) => {
+		if (e.target.value.length === 0) {
 			this.setState({
 				textFieldValue: e.target.value,
 				errorText: 'This field is required',
@@ -73,22 +74,21 @@ class AddReply extends Component {
 	}
 
 	// Detect enter on input
-	handleKeyUp(e) {
+	handleKeyUp = () => {
 		const addReply = document.getElementById('add-reply');
 		const height = addReply.clientHeight;
 
-		if (this.height != height) {
+		if (this.height !== height) {
 			this.height = height;
-			console.log('resized!!!');
 			this.props.updateDimensions();
 		}
 	}
 
 	render() {
-		const saveDisabled = this.state.errorText.length == 0;
+		const saveDisabled = this.state.errorText.length === 0;
 
 		return (
-			<div id="add-reply" style={styles.container}>
+			<Paper id="add-reply" style={styles.container}>
 				<div className="editor" style={styles.editor}>
 					<TextField
 						floatingLabelText="Write a new answer"
@@ -102,18 +102,17 @@ class AddReply extends Component {
 						onKeyUp={e => this.handleKeyUp(e)}
 						style={styles.textField}
 					/>
-					<span style={styles.textFieldCoutner}>{2048 - this.state.textFieldValue.length} characters remaining</span>
+					<span
+						style={styles.textFieldCoutner}
+					>
+						{2048 - this.state.textFieldValue.length} characters remaining
+					</span>
 				</div>
-
 				<div style={styles.editorActions}>
 					<RaisedButton label="Save" primary={saveDisabled} disabled={!saveDisabled} onClick={this.save} />
 				</div>
-			</div>
+			</Paper>
 		);
-	}
-
-	componentDidMount() {
-		this.height = document.getElementById('add-reply').clientHeight;
 	}
 }
 

@@ -1,20 +1,7 @@
 // React modules
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import Radium, { Style } from 'radium';
-
-// Redux modules
-import { connect } from 'react-redux';
-import { isLoaded } from '../../reducers';
-import { bindActionCreators } from 'redux';
-import { changeDiscussQuery, changeDiscussOrdering } from '../../actions/discuss';
-
-// Service
-import Service from '../../api/service';
-
-// Additional components
-import LoadingOverlay from '../../components/Shared/LoadingOverlay';
-import Questions from './Questions';
+import Radium from 'radium';
 
 // Material UI components
 import AutoComplete from 'material-ui/AutoComplete';
@@ -23,6 +10,19 @@ import Clear from 'material-ui/svg-icons/content/clear';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import { grey700 } from 'material-ui/styles/colors';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+
+// Redux modules
+import { connect } from 'react-redux';
+import { isLoaded } from '../../reducers';
+import { changeDiscussQuery, changeDiscussOrdering } from '../../actions/discuss';
+
+// Service
+import Service from '../../api/service';
+
+// Additional components
+import Questions from './Questions';
 
 const styles = {
 	container: {
@@ -64,6 +64,11 @@ const styles = {
 
 	discussFilter: {
 		float: 'right',
+	},
+	addButton: {
+		position: 'fixed',
+		bottom: 20,
+		right: 20,
 	},
 };
 
@@ -141,6 +146,15 @@ class QuestionsBase extends Component {
 					isUserProfile={false}
 					ref={(questions) => { this._questions = questions; }}
 				/>
+				<Link style={{ textDecoration: 'none' }} to="/discuss/new">
+					<FloatingActionButton
+						style={styles.addButton}
+						zDepth={3}
+						secondary
+					>
+						<ContentAdd />
+					</FloatingActionButton>
+				</Link>
 			</div>
 		);
 	}
@@ -153,13 +167,14 @@ const mapStateToProps = state => ({
 	ordering: state.discussFilters.discussOrdering,
 });
 
-const mapDispatchToProps = dispatch =>
-	bindActionCreators({
-		changeDiscussOrdering,
-		changeDiscussQuery,
-	}, dispatch);
+const mapDispatchToProps = {
+	changeDiscussOrdering,
+	changeDiscussQuery,
+};
 
 export default connect(
 	mapStateToProps,
-	mapDispatchToProps, null, { withRef: true },
+	mapDispatchToProps,
+	null,
+	{ withRef: true },
 )(Radium(QuestionsBase));

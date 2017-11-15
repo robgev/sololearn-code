@@ -1,22 +1,15 @@
 // React modules
 import React, { Component } from 'react';
-
+import { StyleRoot } from 'radium';
+// Material UI components
+import Paper from 'material-ui/Paper';
 // Redux modules
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { getContestInternal, getContest } from '../../../actions/challenges';
 import { isLoaded } from '../../../reducers';
-import Radium, { StyleRoot } from 'radium';
 // Additional components
 import Game from './Game/Game';
 import LoadingOverlay from '../../../components/Shared/LoadingOverlay';
-
-// Material UI components
-import Paper from 'material-ui/Paper';
-
-// App defaults and utils
-import contestTypes from '../../../defaults/contestTypes';
-import getSyles from '../../../utils/styleConverter';
 
 const styles = {
 	challengeWrapper: {
@@ -38,33 +31,32 @@ class Challenge extends Component {
 	componentWillUnmount() {
 		this.props.getContest(null);
 	}
-    updateContest = () => {
-    	const { id } = this.props.params;
-    	return this.props.getContestInternal(id);
-    }
-    renderChallenge = (contest, courses) => {
-    	const contestStatus = contest.player.status;
-    	const courseName = courses.find(item => item.id == contest.courseID).languageName;
-    	return (
-    		<Game
-		contest={contest}
-    			courseName={courseName}
-		updateContest={this.updateContest}
-	/>
-    	);
-    }
+	updateContest = () => {
+		const { id } = this.props.params;
+		return this.props.getContestInternal(id);
+	}
+	renderChallenge = (contest, courses) => {
+		const courseName = courses.find(item => item.id === contest.courseID).languageName;
+		return (
+			<Game
+				contest={contest}
+				courseName={courseName}
+				updateContest={this.updateContest}
+			/>
+		);
+	}
 
-    render() {
-    	const { isLoaded, contest, courses } = this.props;
+	render() {
+		const { isLoaded, contest, courses } = this.props;
 
-    	return (
-	<StyleRoot>
-    			<Paper id="challenge" style={styles.challengeWrapper}>
-    				{isLoaded ? this.renderChallenge(contest, courses) : <LoadingOverlay />}
-  </Paper>
-    		</StyleRoot>
-    	);
-    }
+		return (
+			<StyleRoot>
+				<Paper id="challenge" style={styles.challengeWrapper}>
+					{isLoaded ? this.renderChallenge(contest, courses) : <LoadingOverlay />}
+				</Paper>
+			</StyleRoot>
+		);
+	}
 }
 
 function mapStateToProps(state) {
@@ -75,10 +67,8 @@ function mapStateToProps(state) {
 	};
 }
 
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({
-		getContest, getContestInternal,
-	}, dispatch);
-}
+const mapDispatchToProps = {
+	getContest, getContestInternal,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Challenge);

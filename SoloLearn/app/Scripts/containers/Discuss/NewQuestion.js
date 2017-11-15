@@ -1,27 +1,23 @@
 // React modules
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
-import Radium, { Style } from 'radium';
-
-// Redux modules
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { loadDefaults } from '../../actions/defaultActions';
-import { addQuestion } from '../../actions/discuss';
-import { isLoaded, defaultsLoaded } from '../../reducers';
-
-// Service
-import Service from '../../api/service';
-
-// Additional components
-import LoadingOverlay from '../../components/Shared/LoadingOverlay';
+import Radium from 'radium';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import ChipInput from 'material-ui-chip-input';
-import { lightGreen400 } from 'material-ui/styles/colors';
+
+// Redux modules
+import { connect } from 'react-redux';
+import { addQuestion } from '../../actions/discuss';
+
+// Service
+import Service from '../../api/service';
+
+// Additional components
+import LoadingOverlay from '../../components/Shared/LoadingOverlay';
 
 const styles = {
 	container: {
@@ -30,21 +26,17 @@ const styles = {
 		margin: '20px auto',
 		padding: '10px 20px',
 	},
-
 	heading: {
 		fontWeight: 'normal',
 	},
-
 	questionData: {
 		position: 'relative',
 		padding: '0 0 10px 0',
 	},
-
 	textField: {
 		margin: 0,
 		fontSize: '13px',
 	},
-
 	textFieldCoutner: {
 		position: 'absolute',
 		bottom: 0,
@@ -52,12 +44,10 @@ const styles = {
 		fontSize: '13px',
 		fontWeight: '500',
 	},
-
 	editorActions: {
 		textAlign: 'right',
 		margin: '15px 0 0 0',
 	},
-
 	tag: {
 		display: 'inline-block',
 		verticalAlign: 'middle',
@@ -73,7 +63,6 @@ const styles = {
 class NewQuestion extends Component {
 	constructor(props) {
 		super(props);
-
 		this.state = {
 			title: '',
 			titleErrorText: '',
@@ -83,73 +72,63 @@ class NewQuestion extends Component {
 			suggestions: [],
 			isLoading: false,
 		};
-
-		this.onTitleChange = this.onTitleChange.bind(this);
-		this.onMessageChange = this.onMessageChange.bind(this);
-		this.handleUpdateInput = this.handleUpdateInput.bind(this);
-		this.handleTagsChange = this.handleTagsChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	// Detect title change
-	onTitleChange(e) {
+	onTitleChange = (e) => {
 		this.setState({ title: e.target.value });
 	}
 
 	// Detect title change
-	onMessageChange(e) {
+	onMessageChange = (e) => {
 		this.setState({ message: e.target.value });
 	}
 
 	// Collect tags into one array
-	handleTagsChange(chips) {
+	handleTagsChange = (chips) => {
 		this.setState({ tags: chips });
 	}
 
 	// Get search suggestions
-	handleUpdateInput(searchText) {
-		if (searchText.length < 2) return;
-
-		Service.request('Discussion/getTags', { query: searchText }).then((response) => {
-			this.setState({ suggestions: response.tags });
-		}).catch((error) => {
-			console.log(error);
-		});
-	}
-
-	// Customly render tag
-	renderChip({
-		value, isFocused, isDisabled, handleClick, handleRequestDelete,
-	}, key) {
-		return (
-			<div key={key} style={styles.tag}>{value}</div>
-		);
+	handleUpdateInput = async (query) => {
+		if (query.length < 2) return;
+		try {
+			const { tags: suggestions } = await Service.request('Discussion/getTags', { query });
+			this.setState({ suggestions });
+		} catch (e) {
+			console.log(e);
+		}
 	}
 
 	// Add question form submit
-	handleSubmit(e) {
+	handleSubmit = async (e) => {
 		e.preventDefault();
-
-		const allowSubmit = this.state.title.length != 0 && this.state.tags.length != 0;
-
+		const allowSubmit = this.state.title.length !== 0 && this.state.tags.length !== 0;
 		if (!allowSubmit) {
 			this.setState({
-				titleErrorText: this.state.title.length == 0 ? 'Question is required' : '',
-				tagsErrorText: this.state.tags.length == 0 ? 'Add at least one tag' : '',
+				titleErrorText: this.state.title.length === 0 ? 'Question is required' : '',
+				tagsErrorText: this.state.tags.length === 0 ? 'Add at least one tag' : '',
 			});
 		} else {
 			this.setState({ isLoading: true });
-			this.props.addQuestion(this.state.title, this.state.message, this.state.tags).then((response) => {
-				browserHistory.push(`/discuss/${response.id}/${response.alias}`);
-			});
+			try {
+				const { id, alias } = await this.props.addQuestion(
+					this.state.title,
+					this.state.message,
+					this.state.tags,
+				);
+				browserHistory.push(`/discuss/${id}/${alias}`);
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	}
+	// Customly render tag
+	renderChip = ({ value }, key) => (
+		<div key={key} style={styles.tag}>{value}</div>
+	)
 
 	render() {
-		if (!this.props.defaultsLoaded) {
-			return <LoadingOverlay />;
-		}
-
 		return (
 			<Paper id="new-question" style={styles.container}>
 				{this.state.isLoading && <LoadingOverlay />}
@@ -164,7 +143,11 @@ class NewQuestion extends Component {
 							onChange={e => this.onTitleChange(e)}
 							style={styles.textField}
 						/>
-						<span style={styles.textFieldCoutner}>{128 - this.state.title.length} characters remaining</span>
+						<span
+							style={styles.textFieldCoutner}
+						>
+							{128 - this.state.title.length} characters remaining
+						</span>
 					</div>
 					<div className="question-data" style={styles.questionData}>
 						<TextField
@@ -176,7 +159,11 @@ class NewQuestion extends Component {
 							onChange={e => this.onMessageChange(e)}
 							style={styles.textField}
 						/>
-						<span style={styles.textFieldCoutner}>{512 - this.state.message.length} characters remaining</span>
+						<span
+							style={styles.textFieldCoutner}
+						>
+							{512 - this.state.message.length} characters remaining
+						</span>
 					</div>
 					<div className="question-data" style={styles.questionData}>
 						<ChipInput
@@ -200,16 +187,8 @@ class NewQuestion extends Component {
 	}
 }
 
-function mapStateToProps(state) {
-	return {
-		defaultsLoaded: defaultsLoaded(state),
-	};
-}
+const mapDispatchToProps = {
+	addQuestion,
+};
 
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({
-		addQuestion,
-	}, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Radium(NewQuestion));
+export default connect(null, mapDispatchToProps)(Radium(NewQuestion));
