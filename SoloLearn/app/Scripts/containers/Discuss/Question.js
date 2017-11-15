@@ -1,18 +1,11 @@
 // React modules
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import Radium, { Style } from 'radium';
-import Likes from '../../components/Shared/Likes';
-
-// Redux modules
+import Radium from 'radium';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { questionFollowingInternal } from '../../actions/discuss';
-import getLikesInternal from '../../actions/likes';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
-import Avatar from 'material-ui/Avatar';
 import IconButton from 'material-ui/IconButton';
 import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
@@ -20,13 +13,17 @@ import FollowIcon from 'material-ui/svg-icons/toggle/star';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import { grey500, grey700, blueGrey500 } from 'material-ui/styles/colors';
+import { grey500, blueGrey500 } from 'material-ui/styles/colors';
+
+// Redux modules
+import { questionFollowingInternal } from '../../actions/discuss';
+import getLikesInternal from '../../actions/likes';
+
 import DiscussTag from './DiscussTag';
 import DiscussAuthor from './DiscussAuthor';
 
 // Utils
-import numberFormatter from '../../utils/numberFormatter';
-import updateDate from '../../utils/dateFormatter';
+import Likes from '../../components/Shared/Likes';
 import removeDups from '../../utils/removeDups';
 
 const styles = {
@@ -163,11 +160,21 @@ class Question extends Component {
 			<Paper className="question" key={question.id} style={styles.question}>
 				<div className="details-wrapper" style={styles.detailsWrapper}>
 					<div className="stats" style={styles.stats}>
-						<IconButton className="upvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(question, 1); }}>
+						<IconButton
+							className="upvote"
+							style={styles.vote.button.base}
+							iconStyle={styles.vote.button.icon}
+							onClick={() => { this.props.votePost(question, 1); }}
+						>
 							<ThumbUp color={question.vote === 1 ? blueGrey500 : grey500} />
 						</IconButton>
 						<Likes votes={question.votes} getLikes={this.getLikes} />
-						<IconButton className="downvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(question, -1); }}>
+						<IconButton
+							className="downvote"
+							style={styles.vote.button.base}
+							iconStyle={styles.vote.button.icon}
+							onClick={() => { this.props.votePost(question, -1); }}
+						>
 							<ThumbDown color={question.vote === -1 ? blueGrey500 : grey500} />
 						</IconButton>
 					</div>
@@ -188,15 +195,32 @@ class Question extends Component {
 					>
 						{
 							question.userID === 24379 ?
-								[ <MenuItem primaryText="Edit" key={`edit${question.id}`} containerElement={<Link to={`/discuss/edit/${question.id}`} />} />,
-									<MenuItem primaryText="Delete" key={`remove${question.id}`} onClick={() => { this.props.remove(question); }} /> ]
+								[
+									<MenuItem
+										primaryText="Edit"
+										key={`edit${question.id}`}
+										containerElement={<Link to={`/discuss/edit/${question.id}`} />}
+									/>,
+									<MenuItem
+										primaryText="Delete"
+										key={`remove${question.id}`}
+										onClick={() => { this.props.remove(question); }}
+									/>,
+								]
 								:
 								<MenuItem primaryText="Report" key={`report${question.id}`} />
 						}
 					</IconMenu>
 				</div>
 				<div className="additional-details" style={styles.additionalDetails}>
-					<IconButton className="follow" style={styles.followButton.base} iconStyle={styles.followButton.icon} onClick={() => { this.props.questionFollowingInternal(question.id, !question.isFollowing); }}>
+					<IconButton
+						className="follow"
+						style={styles.followButton.base}
+						iconStyle={styles.followButton.icon}
+						onClick={() => {
+							this.props.questionFollowingInternal(question.id, !question.isFollowing);
+						}}
+					>
 						<FollowIcon color={question.isFollowing ? blueGrey500 : grey500} />
 					</IconButton>
 					<DiscussAuthor
@@ -210,10 +234,8 @@ class Question extends Component {
 	}
 }
 
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({
-		questionFollowingInternal, getLikes: getLikesInternal(2),
-	}, dispatch);
-}
+const mapDispatchToProps = {
+	questionFollowingInternal, getLikes: getLikesInternal(2),
+};
 
 export default connect(null, mapDispatchToProps)(Radium(Question));

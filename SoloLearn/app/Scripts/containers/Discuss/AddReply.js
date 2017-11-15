@@ -8,16 +8,17 @@ import Paper from 'material-ui/Paper';
 
 const styles = {
 	container: {
+		zIndex: 5,
 		position: 'fixed',
 		width: 'inherit',
 		bottom: 0,
-		// left: 'inherit',
-		// right: 'inherit',
-		// top: 'inherit',
+		left: 'inherit',
+		right: 'inherit',
+		top: 'inherit',
 		padding: '10px 20px',
-		// background: '#fff',
-		// boxSizing: 'border-box',
-		// boxShadow: 'rgba(0, 0, 0, 0.156863) 0px 3px 10px, rgba(0, 0, 0, 0.227451) 0px 3px 10px',
+		background: '#fff',
+		boxSizing: 'border-box',
+		boxShadow: 'rgba(0, 0, 0, 0.156863) 0px 3px 10px, rgba(0, 0, 0, 0.227451) 0px 3px 10px',
 	},
 
 	editor: {
@@ -45,20 +46,12 @@ const styles = {
 };
 
 class AddReply extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			textFieldValue: '',
-			errorText: '',
-		};
-		this.height = 0;
-	}
+	state = {
+		textFieldValue: '',
+		errorText: '',
+	};
 
-	componentDidMount() {
-		this.height = document.getElementById('add-reply').clientHeight;
-	}
-
-	// Controll answer text change
+	// Control answer text change
 	onChange = (e) => {
 		if (e.target.value.length === 0) {
 			this.setState({
@@ -73,23 +66,16 @@ class AddReply extends Component {
 		}
 	}
 
-	// Detect enter on input
-	handleKeyUp = () => {
-		const addReply = document.getElementById('add-reply');
-		const height = addReply.clientHeight;
-
-		if (this.height !== height) {
-			this.height = height;
-			this.props.updateDimensions();
-		}
-	}
-
 	render() {
 		const saveDisabled = this.state.errorText.length === 0;
 
 		return (
-			<Paper id="add-reply" style={styles.container}>
-				<div className="editor" style={styles.editor}>
+			<Paper
+				id="add-reply"
+				zDepth={5}
+				style={styles.container}
+			>
+				<div style={styles.editor}>
 					<TextField
 						floatingLabelText="Write a new answer"
 						multiLine
@@ -99,7 +85,6 @@ class AddReply extends Component {
 						defaultValue={this.state.textFieldValue}
 						errorText={this.state.errorText}
 						onChange={e => this.onChange(e)}
-						onKeyUp={e => this.handleKeyUp(e)}
 						style={styles.textField}
 					/>
 					<span
@@ -109,7 +94,12 @@ class AddReply extends Component {
 					</span>
 				</div>
 				<div style={styles.editorActions}>
-					<RaisedButton label="Save" primary={saveDisabled} disabled={!saveDisabled} onClick={this.save} />
+					<RaisedButton
+						label="Save"
+						primary={saveDisabled}
+						disabled={!saveDisabled}
+						onClick={this.save}
+					/>
 				</div>
 			</Paper>
 		);

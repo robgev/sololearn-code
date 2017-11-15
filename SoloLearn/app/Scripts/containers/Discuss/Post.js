@@ -57,9 +57,7 @@ const styles = {
 		display: 'inline-block',
 		verticalAlign: 'middle',
 		padding: 0,
-		width: 'initial',
 		width: 'auto',
-		height: 'initial',
 		height: 'auto',
 	},
 
@@ -185,14 +183,6 @@ class Post extends Component {
 		this.props.votePostInternal(post, voteValue);
 	}
 
-	// Change add reply container's space height
-	updateDimensions = () => {
-		const repliesWrapper = document.getElementById('replies-wrapper');
-		const addReply = document.getElementById('add-reply');
-		const marginBottom = addReply.clientHeight + 5;
-		repliesWrapper.style.margin = `0 0 ${marginBottom}px 0`;
-	}
-
 	// Open deleting confimation dialog
 	openDeletePopup = (post) => {
 		this.deletingPost = post;
@@ -236,9 +226,9 @@ class Post extends Component {
 		}
 		const usersQuestion = post.userID === 24379;
 		return (
-			<div id="post" style={styles.postWrapper}>
+			<div style={styles.postWrapper}>
 				<Question question={post} votePost={this.votePost} remove={this.openDeletePopup} />
-				<div className="filter" style={styles.repliesData}>
+				<div style={styles.repliesData}>
 					<p style={styles.answersCount}>{post.answers}{post.answers === 1 ? ' ANSWER' : ' ANSWERS'}</p>
 					<div style={styles.repliesFilterWrapper}>
 						<p style={styles.dropDownLabel}>Sort by:</p>
@@ -256,7 +246,7 @@ class Post extends Component {
 						</DropDownMenu>
 					</div>
 				</div>
-				<div id="replies-wrapper" style={styles.repliesWrapper}>
+				<div style={styles.repliesWrapper}>
 					<Paper>
 						{(this.state.isLoading && post.replies.length === 0) && <LoadingOverlay size={30} />}
 						<Replies
@@ -269,7 +259,6 @@ class Post extends Component {
 					{
 						(post.replies.length > 0 && !this.state.fullyLoaded) &&
 						<div
-							className="loading"
 							style={!this.state.isLoading ?
 								styles.bottomLoading.base :
 								[ styles.bottomLoading.base, styles.bottomLoading.active ]}
@@ -278,7 +267,7 @@ class Post extends Component {
 						</div>
 					}
 				</div>
-				<AddReply updateDimensions={this.updateDimensions} />
+				<AddReply />
 
 				{this.state.deletePopupOpened &&
 					Popup.getPopup(
@@ -290,12 +279,10 @@ class Post extends Component {
 	}
 }
 
-function mapStateToProps(state) {
-	return {
-		isLoaded: isLoaded(state, 'discussPost'),
-		post: state.discussPost,
-	};
-}
+const mapStateToProps = state => ({
+	isLoaded: isLoaded(state, 'discussPost'),
+	post: state.discussPost,
+});
 
 const mapDispatchToProps = {
 	loadPostInternal,

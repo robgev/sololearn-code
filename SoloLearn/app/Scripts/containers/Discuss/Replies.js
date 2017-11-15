@@ -5,14 +5,10 @@ import React, { Component } from 'react';
 import Reply from './Reply';
 
 class Replies extends Component {
-	constructor(props) {
-		super(props);
-	}
-
 	renderReplies() {
-		const replies = this.props.replies;
+		const { replies } = this.props;
 
-		return replies.map((reply, index) => (
+		return replies.map(reply => (
 			<Reply
 				key={reply.id}
 				reply={reply}
