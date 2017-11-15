@@ -16,8 +16,13 @@ import RaisedButton from 'material-ui/RaisedButton';
 import RunIcon from 'material-ui/svg-icons/av/play-arrow';
 import InsertLink from 'material-ui/svg-icons/editor/insert-link';
 
+// Defaults
 import texts from 'defaults/texts';
-import OverlaySaveActions from './Actions';
+import externalResources from 'defaults/externalResources';
+
+// Components
+import OverlaySaveActions from './OverlaySaveActions';
+import OverlayExecutionActions from './OverlayExecutionActions';
 
 const styles = {
 	toolbar: {
@@ -75,12 +80,15 @@ class Toolbar extends PureComponent {
 	constructor() {
 		super();
 		this.state = {
+			sourceUrl: '',
 			errorText: '',
 			codeName: '',
 			isPublic: false,
 			isSaving: false,
+			selectedSource: 'none',
 			snackBarOpened: false,
 			savePopupOpened: false,
+			externalSourcesPopupOpened: false,
 		}
 	}
 
@@ -172,6 +180,90 @@ class Toolbar extends PureComponent {
 		}
 	}
 
+	handleExternalSourcesPopupOpen = () => {
+		this.setState({ externalSourcesPopupOpened: true });
+	}
+
+	handleExternalSourcesPopupClose = () => {
+		this.setState({
+			externalSourcesPopupOpened: false,
+			selectedSource: 'none',
+			sourceUrl: '',
+		});
+	}
+
+	wrapByTag = (code, tag) => {
+		const hasTag = code.includes(tag);
+		if (!hasTag) {
+			return (
+`<${tag}>
+	${code}
+</${tag}>`
+			);
+		}
+		return code;
+	}
+
+	addResourceValueAfterTag = (code, value, tag) => {
+		const tagOpeningPosition = code.indexOf(tag);
+		// Closing bracket and newline make 2;
+		const insertPosition = tagOpeningPosition + tag.length + 2;
+		const precedingSubstr = code.slice(0, insertPosition);
+		const succeedingSubstr = code.slice(insertPosition);
+		return (
+`${precedingSubstr}
+	${value}
+${succeedingSubstr}
+`
+		);
+	}
+
+	wrapAndAdd = (code, value) => {
+		const hasTag = code.includes('head');
+		const wrappedCode = this.wrapByTag(code, 'html');
+		const headWrappedValue =
+`<head>
+${value}
+</head>
+`
+		const codeToBeAdded = hasTag ? value : headWrappedValue;
+		const tagToBeAddedAfter = hasTag ? '<head' : '<html'
+		return this.addResourceValueAfterTag(wrappedCode, codeToBeAdded, tagToBeAddedAfter);
+	}
+
+
+	insertToHead = (value) => {
+		const { code, setSourceCode } = this.props;
+		const clearedCode = this.wrapAndAdd(code, value);
+		return clearedCode;
+	}
+
+	addExternalSource = () => {
+		const { mode, jsCode, handleEditorChange } = this.props;
+		const newSourceCode =
+			this.insertToHead(
+`<script src="${this.state.sourceUrl}">
+	${jsCode}
+</script>\n`
+			);
+		if (mode === 'html') {
+			handleEditorChange(newSourceCode)
+		}
+		this.handleExternalSourcesPopupClose();
+	}
+
+	handleSourceUrlChange = (e) => {
+		this.setState({ sourceUrl: e.target.value });
+	}
+
+	handleExternalResourceChange = (e, index, selectedSource)  => {
+		const sourceUrl = selectedSource === 'none' ? '' : externalResources[selectedSource];
+		this.setState({
+			selectedSource,
+			sourceUrl,
+		});
+	}
+
 	render() {
 		const {
 			id,
@@ -192,8 +284,12 @@ class Toolbar extends PureComponent {
 			handleThemeChange,
 			handleSavePopupOpen,
 			handleLanguageChange,
-			handleExternalSourcesPopupOpen,
 		} = this.props;
+		const {
+			sourceUrl,
+			selectedSource,
+			externalSourcesPopupOpened,
+		} = this.state;
 		return (
 			<div id="toolbar" style={{ ...styles.toolbar.base, ...(showWebOutput ? styles.toolbar.hide : {}) }}>
 				<div className="left" style={styles.toolbar.left}>
@@ -266,6 +362,16 @@ class Toolbar extends PureComponent {
 						handleSavePopupClose={this.handleSavePopupClose}
 						handleCodeStateChange={this.handleCodeStateChange}
 						handleCodeNameChange={this.handleCodeNameChange}
+					/>
+					<OverlayExecutionActions
+						sourceUrl={sourceUrl}
+						selectedSource={selectedSource}
+						insertToHead={this.insertToHead}
+						addExternalSource={this.addExternalSource}
+						handleSourceUrlChange={this.handleSourceUrlChange}
+						externalSourcesPopupOpened={externalSourcesPopupOpened}
+						handleExternalResourceChange={this.handleExternalResourceChange}
+						handleExternalSourcesPopupClose={this.handleExternalSourcesPopupClose}
 					/>
 				</div>
 			</div>

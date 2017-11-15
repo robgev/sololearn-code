@@ -374,6 +374,7 @@ class Playground extends Component {
 						/>
 						<Toolbar
 							type={type}
+							mode={mode}
 							theme={theme}
 							jsCode={jsCode}
 							cssCode={cssCode}
@@ -387,6 +388,7 @@ class Playground extends Component {
 							languageSelector={languageSelector}
 							resetEditorValue={this.resetEditorValue}
 							setLatestSavedData={this.setLatestSavedData}
+							handleEditorChange={this.handleEditorChange}
 							handleThemeChange={this.handleThemeChange}
 							handleLanguageChange={this.handleLanguageChange}
 						/>
