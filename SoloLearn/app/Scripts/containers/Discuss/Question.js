@@ -194,7 +194,7 @@ class Question extends Component {
 						targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 					>
 						{
-							question.userID === 24379 ?
+							question.userID === this.props.userId ?
 								[
 									<MenuItem
 										primaryText="Edit"
@@ -234,8 +234,10 @@ class Question extends Component {
 	}
 }
 
+const mapStateToProps = state => ({ userId: state.userProfile.id });
+
 const mapDispatchToProps = {
 	questionFollowingInternal, getLikes: getLikesInternal(2),
 };
 
-export default connect(null, mapDispatchToProps)(Radium(Question));
+export default connect(mapStateToProps, mapDispatchToProps)(Radium(Question));

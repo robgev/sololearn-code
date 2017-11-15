@@ -144,7 +144,7 @@ class Header extends Component {
 		return (
 			<div className="details-wrapper" style={styles.detailsWrapper}>
 				{
-					profile.id !== 24379 &&
+					profile.id !== this.props.userId &&
 					<RaisedButton
 						label={this.state.isFollowing ? 'Following' : 'Follow'}
 						primary={!this.state.isFollowing}
@@ -188,6 +188,8 @@ class Header extends Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({ userId: state.userProfile.id });
 
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({

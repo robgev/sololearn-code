@@ -66,6 +66,11 @@ class AddReply extends Component {
 		}
 	}
 
+	save = () => {
+		this.setState({ textFieldValue: '' });
+		this.props.save(this.state.textFieldValue);
+	}
+
 	render() {
 		const saveDisabled = this.state.errorText.length === 0;
 

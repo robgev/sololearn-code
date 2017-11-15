@@ -1,4 +1,12 @@
-import { LOAD_DISCUSS_POST, LOAD_DISCUSS_POST_REPLIES, EMPTY_DISCUSS_POST_REPLIES, VOTE_POST, EDIT_POST, DELETE_POST, QUESTION_FOLLOWING, ACCEPT_ANSWER } from '../constants/ActionTypes';
+import {
+	LOAD_DISCUSS_POST,
+	LOAD_DISCUSS_POST_REPLIES,
+	EMPTY_DISCUSS_POST_REPLIES,
+	VOTE_POST, EDIT_POST,
+	DELETE_POST,
+	QUESTION_FOLLOWING,
+	ACCEPT_ANSWER,
+} from '../constants/ActionTypes';
 
 export default function (state = null, action) {
 	switch (action.type) {

@@ -286,7 +286,7 @@ class Reply extends Component {
 							targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 						>
 							{
-								reply.userID === 24379 ?
+								reply.userID === this.props.userId ?
 									[ <MenuItem primaryText="Edit" key={`edit${reply.id}`} onClick={this.openEdit} />,
 										<MenuItem primaryText="Delete" key={`remove${reply.id}`} onClick={() => { this.props.remove(reply); }} /> ]
 									:
@@ -318,12 +318,12 @@ class Reply extends Component {
 	}
 }
 
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({
-		editPostInternal,
-		toggleAcceptedAnswerInternal,
-		getLikes: getLikesInternal(2),
-	}, dispatch);
-}
+const mapStateToProps = state => ({ userId: state.userProfile.id });
 
-export default connect(() => ({}), mapDispatchToProps)(Radium(Reply));
+const mapDispatchToProps = {
+	editPostInternal,
+	toggleAcceptedAnswerInternal,
+	getLikes: getLikesInternal(2),
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Radium(Reply));

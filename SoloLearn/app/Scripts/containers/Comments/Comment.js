@@ -1,5 +1,6 @@
 // React modules
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 // Material UI components
 import Avatar from 'material-ui/Avatar';
@@ -11,10 +12,9 @@ import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import { grey500, blueGrey500, blueGrey600 } from 'material-ui/styles/colors';
+import { grey500, blueGrey500 } from 'material-ui/styles/colors';
 
 // Utils
-import numberFormatter from '../../utils/numberFormatter';
 import updateDate from '../../utils/dateFormatter';
 import updateMessage from '../../utils/messageFormatter';
 import getStyles from '../../utils/styleConverter';
@@ -187,18 +187,27 @@ const styles = {
 class Comment extends Component {
 	constructor(props) {
 		super(props);
-
 		this.state = {
 			errorText: '',
 			textFieldValue: this.props.comment.message,
 		};
-
-		this.openEdit = this.openEdit.bind(this);
-		this.closeEdit = this.closeEdit.bind(this);
 	}
 
-	onChange(e) {
-		if (e.target.value.length == 0) {
+	shouldComponentUpdate(nextProps, nextState) {
+		return (((this.props.comment.id === nextProps.activeComment.id ||
+			this.props.comment.id === nextProps.activeComment.parentId) ||
+			(this.props.comment.id === nextProps.activeComment.previousId ||
+				this.props.comment.id === nextProps.activeComment.previousParentId) &&
+			(this.props.isEditing !== nextProps.isEditing ||
+				this.props.isReplying !== nextProps.isReplying)) ||
+			this.props.comment.vote !== nextProps.comment.vote ||
+			this.state.errorText !== nextState.errorText ||
+			this.state.textFieldValue !== nextState.textFieldValue ||
+			this.compareReplies(this.props.comment.replies, nextProps.comment.replies));
+	}
+
+	onChange = (e) => {
+		if (e.target.value.length === 0) {
 			this.setState({
 				textFieldValue: e.target.value,
 				errorText: 'This field is required',
@@ -210,41 +219,7 @@ class Comment extends Component {
 			});
 		}
 	}
-
-	openEdit() {
-		const comment = this.props.comment;
-
-		this.props.openEdit(comment.id, comment.parentID, comment.userName);
-	}
-
-	closeEdit() {
-		this.props.cancelAll().then(() => {
-			this.setState({
-				errorText: '',
-				textFieldValue: this.props.comment.message,
-			});
-		});
-	}
-
-	renderReplies() {
-		return this.props.comment.replies.map((reply, index) => (
-			<Comment
-				key={reply.id}
-				comment={reply}
-				isEditing={this.props.isEditing}
-				isReplying={this.state.isReplying}
-				activeComment={this.props.activeComment}
-				openEdit={this.props.openEdit}
-				cancelAll={this.props.cancelAll}
-				openReplyBoxToolbar={this.props.openReplyBoxToolbar}
-				voteComment={this.props.voteComment}
-				editComment={this.props.editComment}
-				deleteComment={this.props.deleteComment}
-			/>
-		));
-	}
-
-	getPrimaryControls(comment) {
+	getPrimaryControls = (comment) => {
 		const isReply = comment.parentID != null;
 		const hasReplies = comment.repliesCount > 0;
 
@@ -255,9 +230,49 @@ class Comment extends Component {
 			</div>
 		);
 	}
+	compareReplies = (currentReplies, nextReplies) => {
+		if (currentReplies.length !== nextReplies.length) return true;
 
-	getEditControls() {
-		const saveDisabled = this.state.errorText.length == 0;
+		for (let i = 0; i < currentReplies.length; i++) {
+			if (currentReplies[i].id !== nextReplies[i].id) return true;
+			if (currentReplies[i].votes !== nextReplies[i].votes) return true;
+		}
+
+		return false;
+	}
+
+	openEdit = () => {
+		const { comment } = this.props;
+		this.props.openEdit(comment.id, comment.parentID, comment.userName);
+	}
+
+	closeEdit = () => {
+		this.props.cancelAll().then(() => {
+			this.setState({
+				errorText: '',
+				textFieldValue: this.props.comment.message,
+			});
+		});
+	}
+
+	renderReplies = () => this.props.comment.replies.map(reply => (
+		<Comment
+			key={reply.id}
+			comment={reply}
+			isEditing={this.props.isEditing}
+			isReplying={this.state.isReplying}
+			activeComment={this.props.activeComment}
+			openEdit={this.props.openEdit}
+			cancelAll={this.props.cancelAll}
+			openReplyBoxToolbar={this.props.openReplyBoxToolbar}
+			voteComment={this.props.voteComment}
+			editComment={this.props.editComment}
+			deleteComment={this.props.deleteComment}
+		/>
+	))
+
+	getEditControls = () => {
+		const saveDisabled = this.state.errorText.length === 0;
 
 		return (
 			<div className="edit-controls" style={styles.commentControls.right}>
@@ -267,59 +282,63 @@ class Comment extends Component {
 		);
 	}
 
-	getMenuControls(comment) {
-		return (
-			<IconMenu
-				iconButtonElement={<IconButton style={styles.iconMenu.icon}><MoreVertIcon /></IconButton>}
-				anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-				targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-			>
-				{
-					comment.userID == 24379 ?
-						[ <MenuItem primaryText="Edit" key={`edit${comment.id}`} onClick={this.openEdit} />,
-							<MenuItem primaryText="Delete" key={`remove${comment.id}`} onClick={() => { this.props.deleteComment(comment); }} /> ]
-						:
-						<MenuItem primaryText="Report" key={`report${comment.id}`} />
-				}
-			</IconMenu>
-		);
-	}
+	getMenuControls = comment => (
+		<IconMenu
+			iconButtonElement={<IconButton style={styles.iconMenu.icon}><MoreVertIcon /></IconButton>}
+			anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+			targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+		>
+			{
+				comment.userID === this.props.userId ?
+					[ <MenuItem primaryText="Edit" key={`edit${comment.id}`} onClick={this.openEdit} />,
+						<MenuItem primaryText="Delete" key={`remove${comment.id}`} onClick={() => { this.props.deleteComment(comment); }} /> ]
+					:
+					<MenuItem primaryText="Report" key={`report${comment.id}`} />
+			}
+		</IconMenu>
+	)
 
-	getVoteControls(comment) {
-		return (
-			<div className="vote-controls" style={styles.commentControls.left}>
-				<IconButton className="upvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => this.props.voteComment(comment, 1)}>
-					<ThumbUp color={comment.vote == 1 ? blueGrey500 : grey500} />
-				</IconButton>
-				<span style={styles.vote.text}>{comment.votes > 0 ? `+${comment.votes}` : comment.votes}</span>
-				<IconButton className="downvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => this.props.voteComment(comment, -1)}>
-					<ThumbDown color={comment.vote == -1 ? blueGrey500 : grey500} />
-				</IconButton>
-			</div>
-		);
-	}
+	getVoteControls = comment => (
+		<div className="vote-controls" style={styles.commentControls.left}>
+			<IconButton className="upvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => this.props.voteComment(comment, 1)}>
+				<ThumbUp color={comment.vote === 1 ? blueGrey500 : grey500} />
+			</IconButton>
+			<span style={styles.vote.text}>{comment.votes > 0 ? `+${comment.votes}` : comment.votes}</span>
+			<IconButton className="downvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => this.props.voteComment(comment, -1)}>
+				<ThumbDown color={comment.vote === -1 ? blueGrey500 : grey500} />
+			</IconButton>
+		</div>
+	)
 
-	getEditableArea(comment) {
+	getEditableArea = (comment) => {
 		const isEditing = (this.props.isEditing && this.props.activeComment.id === comment.id);
 
 		return (
 			<div style={styles.commentContent}>
 				{!isEditing && <div className="original-message" dangerouslySetInnerHTML={{ __html: updateMessage(this.state.textFieldValue) }} style={styles.commentMessage} />}
 				{isEditing &&
-                    [ <TextField
-                    	key={`commentTextField${comment.id}`} hintText="Message" multiLine maxLength="2048" rowsMax={4} fullWidth defaultValue={this.state.textFieldValue}
-                    	errorText={this.state.errorText}
-                    	onChange={e => this.onChange(e)}
-                    	style={styles.textField}
-                    />,
-                    <span style={styles.textFieldCoutner} key={`commentCounter${comment.id}`}>{2048 - this.state.textFieldValue.length} characters remaining</span> ]
+					[
+						<TextField
+							key={`commentTextField${comment.id}`}
+							hintText="Message"
+							multiLine
+							maxLength="2048"
+							rowsMax={4}
+							fullWidth
+							defaultValue={this.state.textFieldValue}
+							errorText={this.state.errorText}
+							onChange={e => this.onChange(e)}
+							style={styles.textField}
+						/>,
+						<span style={styles.textFieldCoutner} key={`commentCounter${comment.id}`}>{2048 - this.state.textFieldValue.length} characters remaining</span>,
+					]
 				}
 			</div>
 		);
 	}
 
 	render() {
-		const comment = this.props.comment;
+		const { comment } = this.props;
 		const isReply = comment.parentID != null;
 		const isEditing = (this.props.isEditing && this.props.activeComment.id === comment.id);
 
@@ -355,7 +374,8 @@ class Comment extends Component {
 								{this.renderReplies()}
 							</div>
 							<div className="gap" style={styles.commentsGap}>
-								{(comment.replies.length != comment.repliesCount) && <FlatButton label="Load more" primary onClick={() => this.props.loadReplies(comment.id, 'loadMore')} />}
+								{(comment.replies.length !== comment.repliesCount) &&
+									<FlatButton label="Load more" primary onClick={() => this.props.loadReplies(comment.id, 'loadMore')} />}
 							</div>
 						</div>
 					}
@@ -388,27 +408,8 @@ class Comment extends Component {
 			</div>
 		);
 	}
-
-	compareReplies(currentReplies, nextReplies) {
-		if (currentReplies.length !== nextReplies.length) return true;
-
-		for (let i = 0; i < currentReplies.length; i++) {
-			if (currentReplies[i].id !== nextReplies[i].id) return true;
-			if (currentReplies[i].votes !== nextReplies[i].votes) return true;
-		}
-
-		return false;
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		return (((this.props.comment.id === nextProps.activeComment.id || this.props.comment.id === nextProps.activeComment.parentId)
-                || (this.props.comment.id === nextProps.activeComment.previousId || this.props.comment.id === nextProps.activeComment.previousParentId)
-                && (this.props.isEditing !== nextProps.isEditing || this.props.isReplying !== nextProps.isReplying))
-            || this.props.comment.vote !== nextProps.comment.vote
-            || this.state.errorText !== nextState.errorText
-            || this.state.textFieldValue !== nextState.textFieldValue
-            || this.compareReplies(this.props.comment.replies, nextProps.comment.replies));
-	}
 }
 
-export default Comment;
+const mapStateToProps = state => ({ userId: state.userProfile.id });
+
+export default connect(mapStateToProps)(Comment);

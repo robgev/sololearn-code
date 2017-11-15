@@ -11,11 +11,20 @@ import FlatButton from 'material-ui/FlatButton';
 
 // Redux modules
 import { connect } from 'react-redux';
-import { loadPostInternal, loadRepliesInternal, emptyReplies, votePostInternal, deletePostInternal, loadPost } from '../../actions/discuss';
+import {
+	loadPostInternal,
+	loadRepliesInternal,
+	emptyReplies,
+	votePostInternal,
+	deletePostInternal,
+	loadPost,
+	addReply,
+} from '../../actions/discuss';
 import { isLoaded } from '../../reducers';
 
 // Popups
 import Popup from '../../api/popupService';
+import Service from '../../api/service';
 
 // Additional components
 import Question from './Question';
@@ -147,6 +156,10 @@ class Post extends Component {
 		}
 	}
 
+	addReply = (message) => {
+		this.props.addReply(this.props.post.id, message);
+	}
+
 	// Check alias of post
 	checkAlias = (alias) => {
 		const { post } = this.props;
@@ -224,7 +237,7 @@ class Post extends Component {
 		if (!this.props.isLoaded) {
 			return <LoadingOverlay />;
 		}
-		const usersQuestion = post.userID === 24379;
+		const usersQuestion = post.userID === this.props.userId;
 		return (
 			<div style={styles.postWrapper}>
 				<Question question={post} votePost={this.votePost} remove={this.openDeletePopup} />
@@ -267,7 +280,7 @@ class Post extends Component {
 						</div>
 					}
 				</div>
-				<AddReply />
+				<AddReply save={this.addReply} />
 
 				{this.state.deletePopupOpened &&
 					Popup.getPopup(
@@ -282,6 +295,7 @@ class Post extends Component {
 const mapStateToProps = state => ({
 	isLoaded: isLoaded(state, 'discussPost'),
 	post: state.discussPost,
+	userId: state.userProfile.id,
 });
 
 const mapDispatchToProps = {
@@ -291,6 +305,7 @@ const mapDispatchToProps = {
 	emptyReplies,
 	votePostInternal,
 	loadPost,
+	addReply,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Radium(Post));

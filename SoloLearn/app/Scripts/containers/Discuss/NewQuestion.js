@@ -118,8 +118,8 @@ class NewQuestion extends Component {
 					this.state.tags,
 				);
 				browserHistory.push(`/discuss/${id}/${alias}`);
-			} catch (e) {
-				console.log(e);
+			} catch (err) {
+				console.log(err);
 			}
 		}
 	}

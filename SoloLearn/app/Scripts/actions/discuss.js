@@ -165,30 +165,21 @@ export const deletePostInternal = (post) => {
 	};
 };
 
-export const addQuestion = (title, message, tags) => (dispatch, getState) => {
+export const addQuestion = (title, message, tags) => async (dispatch, getState) => {
 	if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
-	return Service.request('Discussion/CreatePost', { title, message, tags }).then((response) => {
-		const { post } = response;
-		post.answers = 0;
-		post.hasAvatar = true; // USER HASAVATAR TODO
-		post.isFollowing = true;
-		post.level = 5; // USER LEVEL TODO
-		post.ordering = 0;
+	try {
+		const { post: { id } } = await Service.request('Discussion/CreatePost', { title, message, tags });
+		const { post } = await Service.request('Discussion/GetPost', { id });
 		post.replies = [];
 		post.alias = toSeoFrendly(post.title, 100);
-		post.userID = 24379; // USER ID TODO
-		post.userName = 'Rafael Hovhannisyan'; // USER ID TODO
-		post.vote = 0;
-		post.xp = 24; // USER XP TODO
-		post.tags = tags;
-
 		dispatch(loadPost(post));
-
 		return {
 			id: post.id,
 			alias: post.alias,
 		};
-	});
+	} catch (e) {
+		console.log(e);
+	}
 };
 
 export const editQuestion = (id, title, message, tags) => (dispatch, getState) => {
@@ -249,6 +240,14 @@ export const toggleAcceptedAnswerInternal = (id, isAccepted) => (dispatch, getSt
 	}).catch((error) => {
 		console.log(error);
 	});
+};
+
+export const addReply = (postId, message) => async (dispatch, getState) => {
+	const { userProfile: { name } } = getState();
+	const { post } = await Service.request('Discussion/CreateReply', { postId, message });
+	post.userName = name;
+	// const response = await Service.request('Discussion/GetReply', { id });
+	dispatch(loadReplies([ post ]));
 };
 
 export const changeDiscussQuery = query => ({ type: types.CHANGE_DISCUSS_QUERY, payload: query });
