@@ -28,6 +28,7 @@ module.exports = {
       alias: {
         actions: path.resolve(__dirname, 'app/Scripts/actions'),
         api: path.resolve(__dirname, 'app/Scripts/api'),
+				components: path.resolve(__dirname, 'app/Scripts/components'),
         config: path.resolve(__dirname, 'app/Scripts/config'),
         constants: path.resolve(__dirname, 'app/Scripts/constants'),
         containers: path.resolve(__dirname, 'app/Scripts/containers'),

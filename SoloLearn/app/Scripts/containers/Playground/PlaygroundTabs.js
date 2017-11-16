@@ -1,11 +1,11 @@
 // React modules
-import React, { Component } from 'react';
+import React from 'react';
 
 // Material UI components
 import { Tabs, Tab } from 'material-ui/Tabs';
 
 // App defaults and utils
-import editorSettings from '../../defaults/playgroundEditorSettings';
+import editorSettings from 'defaults/playgroundEditorSettings';
 
 const styles = {
 	webTabs: {
@@ -51,72 +51,75 @@ const styles = {
 	},
 };
 
-class PlaygroundTabs extends Component {
-	render() {
-		const { type, mode, theme } = this.props;
-		const isDarkTheme = theme === 'monokai';
+const PlaygroundTabs = ({
+	type,
+	mode,
+	theme,
+	runCode,
+	handleTabChange,
+}) => {
+	const isDarkTheme = theme === 'monokai';
 
-		if (type === 'web') {
-			return (
-				<Tabs
-					value={mode}
-					tabItemContainerStyle={isDarkTheme ? styles.webTabs.dark : styles.webTabs.light}
-					inkBarStyle={isDarkTheme ? { background: '#dedede' } : { background: '#777' }}
-				>
-					<Tab
-						label="HTML"
-						style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
-						onClick={() => this.props.handleTabChange('html')}
-						value="html"
-					/>
-					<Tab
-						label="CSS"
-						style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
-						onClick={() => this.props.handleTabChange('css')}
-						value="css"
-					/>
-					<Tab
-						label="JS"
-						style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
-						onClick={() => this.props.handleTabChange('javascript')}
-						value="javascript"
-					/>
-					<Tab
-						label="OUTPUT"
-						style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
-						onClick={this.runCode}
-						value={null}
-					/>
-				</Tabs>
-			);
-		} else if (type === 'combined') {
-			return (
-				<Tabs
-					value={mode}
-					tabItemContainerStyle={isDarkTheme ? styles.webTabs.dark : styles.webTabs.light}
-					inkBarStyle={isDarkTheme ? { background: '#dedede' } : { background: '#777' }}
-				>
-					<Tab
-						label="PHP"
-						style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
-						onClick={() => this.props.handleTabChange('php')}
-						value="php"
-					/>
-					<Tab
-						label="OUTPUT"
-						style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
-						onClick={this.runCode}
-						value={null}
-					/>
-				</Tabs>
-			);
-		}
+	if (type === 'web') {
 		return (
-			<div style={isDarkTheme ? { ...styles.defaultTab.base, ...styles.defaultTab.dark } : { ...styles.defaultTab.base, ...styles.defaultTab.light }} >
-				{editorSettings[mode].name}
-			</div>
+			<Tabs
+				value={mode}
+				tabItemContainerStyle={isDarkTheme ? styles.webTabs.dark : styles.webTabs.light}
+				inkBarStyle={isDarkTheme ? { background: '#dedede' } : { background: '#777' }}
+			>
+				<Tab
+					label="HTML"
+					style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
+					onClick={() => handleTabChange('html')}
+					value="html"
+				/>
+				<Tab
+					label="CSS"
+					style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
+					onClick={() => handleTabChange('css')}
+					value="css"
+				/>
+				<Tab
+					label="JS"
+					style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
+					onClick={() => handleTabChange('javascript')}
+					value="javascript"
+				/>
+				<Tab
+					label="OUTPUT"
+					style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
+					onClick={runCode}
+					value={null}
+				/>
+			</Tabs>
+		);
+	} else if (type === 'combined') {
+		return (
+			<Tabs
+				value={mode}
+				tabItemContainerStyle={isDarkTheme ? styles.webTabs.dark : styles.webTabs.light}
+				inkBarStyle={isDarkTheme ? { background: '#dedede' } : { background: '#777' }}
+			>
+				<Tab
+					label="PHP"
+					style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
+					onClick={() => handleTabChange('php')}
+					value="php"
+				/>
+				<Tab
+					label="OUTPUT"
+					style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
+					onClick={runCode}
+					value={null}
+				/>
+			</Tabs>
 		);
 	}
+	return (
+		<div style={isDarkTheme ? { ...styles.defaultTab.base, ...styles.defaultTab.dark } : { ...styles.defaultTab.base, ...styles.defaultTab.light }} >
+			{editorSettings[mode].name}
+		</div>
+	);
 }
 
 export default PlaygroundTabs;

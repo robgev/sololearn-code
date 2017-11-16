@@ -12,7 +12,7 @@ import { grey700 } from 'material-ui/styles/colors';
 
 // Redux modules
 import { connect } from 'react-redux';
-import { isLoaded } from '../../reducers';
+import { isLoaded } from 'reducers';
 
 // Additional components
 import Codes from './Codes';

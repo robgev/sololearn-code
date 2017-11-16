@@ -147,19 +147,20 @@ class Toolbar extends PureComponent {
 	}
 
 	submitSave = async () => {
-			if (this.state.codeName.trim()) {
-				try {
-					const { code } = await this.saveCodeInternal(0);
-					setLatestSavedData(code);
-					const { publicID, language } = code;
-					// this.handleInputsPopupClose();
-					browserHistory.replace(`/playground/${publicID}/${language}`);
-				} catch (error) {
-					console.log(error);
-				}
-			} else {
-				this.setState({ errorText: texts.codeNameError });
+		const { setLatestSavedData } = this.props;
+		if (this.state.codeName.trim()) {
+			try {
+				const { code } = await this.saveCodeInternal(0);
+				setLatestSavedData(code);
+				const { publicID, language } = code;
+				// this.handleInputsPopupClose();
+				browserHistory.replace(`/playground/${publicID}/${language}`);
+			} catch (error) {
+				console.log(error);
 			}
+		} else {
+			this.setState({ errorText: texts.codeNameError });
+		}
 	}
 
 	handleCodeNameChange = (e) => {
@@ -192,56 +193,10 @@ class Toolbar extends PureComponent {
 		});
 	}
 
-	wrapByTag = (code, tag) => {
-		const hasTag = code.includes(tag);
-		if (!hasTag) {
-			return (
-`<${tag}>
-	${code}
-</${tag}>`
-			);
-		}
-		return code;
-	}
-
-	addResourceValueAfterTag = (code, value, tag) => {
-		const tagOpeningPosition = code.indexOf(tag);
-		// Closing bracket and newline make 2;
-		const insertPosition = tagOpeningPosition + tag.length + 2;
-		const precedingSubstr = code.slice(0, insertPosition);
-		const succeedingSubstr = code.slice(insertPosition);
-		return (
-`${precedingSubstr}
-	${value}
-${succeedingSubstr}
-`
-		);
-	}
-
-	wrapAndAdd = (code, value) => {
-		const hasTag = code.includes('head');
-		const wrappedCode = this.wrapByTag(code, 'html');
-		const headWrappedValue =
-`<head>
-${value}
-</head>
-`
-		const codeToBeAdded = hasTag ? value : headWrappedValue;
-		const tagToBeAddedAfter = hasTag ? '<head' : '<html'
-		return this.addResourceValueAfterTag(wrappedCode, codeToBeAdded, tagToBeAddedAfter);
-	}
-
-
-	insertToHead = (value) => {
-		const { code, setSourceCode } = this.props;
-		const clearedCode = this.wrapAndAdd(code, value);
-		return clearedCode;
-	}
-
 	addExternalSource = () => {
-		const { mode, jsCode, handleEditorChange } = this.props;
+		const { mode, jsCode, handleEditorChange, insertToHead } = this.props;
 		const newSourceCode =
-			this.insertToHead(
+			insertToHead(
 `<script src="${this.state.sourceUrl}">
 	${jsCode}
 </script>\n`
@@ -274,7 +229,6 @@ ${value}
 			jsCode,
 			cssCode,
 			runCode,
-			isSaving,
 			language,
 			isRunning,
 			isUserCode,
@@ -286,6 +240,7 @@ ${value}
 			handleLanguageChange,
 		} = this.props;
 		const {
+			isSaving,
 			sourceUrl,
 			selectedSource,
 			externalSourcesPopupOpened,
@@ -328,14 +283,12 @@ ${value}
 					<FlatButton
 						label="Save"
 						disabled={isSaving}
-						default={!isSaving}
 						onClick={this.save}
 						style={styles.codeAction.save}
 					/>
 					<FlatButton
 						label="Save As"
 						disabled={isSaving}
-						default={!isSaving}
 						style={styles.codeAction.save}
 						onClick={this.openSavePopup}
 					/>
@@ -345,13 +298,13 @@ ${value}
 						onClick={resetEditorValue}
 					/>
 					<RaisedButton
+						secondary
 						label="Run"
 						icon={<RunIcon />}
-						labelPosition="before"
 						onClick={runCode}
+						labelPosition="before"
 						style={styles.codeAction.run}
 						disabled={isRunning || isSaving}
-						secondary={!isRunning && !isSaving}
 					/>
 					<OverlaySaveActions
 						{...this.state}

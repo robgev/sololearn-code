@@ -17,6 +17,19 @@ import 'brace/theme/chrome'; // Editor light theme
 import 'brace/theme/monokai'; // Editor dark theme
 import 'brace/ext/language_tools';
 
+const styles = {
+	editor: {
+		base: {
+			width: '100%',
+			height: '500px',
+			transform: 'translateZ(0)',
+		},
+		hide: {
+			display: 'none',
+		},
+	}
+}
+
 const defaultFontRule =
 	'12px/normal \'Monaco\', \'Menlo\', \'Ubuntu Mono\', \'Consolas\', \'source-code-pro\', monospace';
 
@@ -49,6 +62,7 @@ const Editor = ({
 	mode,
 	theme,
 	publicID,
+	showWebOutput,
 	handleEditorChange,
 }) => (
 	<div>
@@ -70,6 +84,10 @@ const Editor = ({
 				editor.focus();
 				editor.getSession().setUseWrapMode(true);
 				editor.getSession().setUndoManager(new ace.UndoManager());
+			}}
+			style={{
+				...styles.editor.base,
+				...(showWebOutput ? styles.editor.hide : {})
 			}}
 		/>
 	</div>

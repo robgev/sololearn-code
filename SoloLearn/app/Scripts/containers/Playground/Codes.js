@@ -5,12 +5,12 @@ import Radium from 'radium';
 // Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { loadDefaults } from '../../actions/defaultActions';
-import { getCodesInternal, emptyCodes } from '../../actions/playground';
-import { defaultsLoaded } from '../../reducers';
+import { loadDefaults } from 'actions/defaultActions';
+import { getCodesInternal, emptyCodes } from 'actions/playground';
+import { defaultsLoaded } from 'reducers';
 
 // Additional components
-import LoadingOverlay from '../../components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import CodeItem from './CodeItem';
 
 const styles = {

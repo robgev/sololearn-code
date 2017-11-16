@@ -11,6 +11,7 @@ import Service from 'api/service';
 
 // App defaults and utils
 import texts from 'defaults/texts';
+import inputRegexes from 'defaults/inputRegexes';
 import editorSettings from 'defaults/playgroundEditorSettings';
 import checkWeb from 'utils/checkWeb';
 
@@ -18,7 +19,8 @@ import checkWeb from 'utils/checkWeb';
 import Editor from './Editor';
 import PlaygroundTabs from './PlaygroundTabs';
 import Toolbar from './Toolbar';
-import LoadingOverlay from '../../components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import OutputWindow from './OutputWindow';
 
 const styles = {
 	playground: {
@@ -27,9 +29,29 @@ const styles = {
 			margin: '20px auto 0',
 			overflo: 'hidden',
 		},
-
 		hide: {
 			display: 'none',
+		},
+	},
+	defaultOutputContainer: {
+		base: {
+			position: 'relative',
+			width: '1000px',
+			minHeight: '200px',
+			margin: '20px auto',
+			display: 'none',
+		},
+		show: {
+			display: 'block',
+		},
+		defaultOutput: {
+			padding: '10px',
+		},
+		outputHeader: {
+			borderBottom: '1px solid #dedede',
+			padding: '10px',
+			fontSize: '17px',
+			fontWeight: '500',
 		},
 	},
 };
@@ -46,7 +68,6 @@ class Playground extends Component {
 			publicID: '',
 			mode: 'html',
 			sourceCode: '',
-			isSaving: false,
 			isRunning: false,
 			theme: 'monokai',
 			showOutput: false,
@@ -326,12 +347,185 @@ class Playground extends Component {
 		})
 	}
 
+	wrapByTag = (code, tag) => {
+		const hasTag = code.includes(tag);
+		if (!hasTag) {
+			return (
+`<${tag}>
+	${code}
+</${tag}>`
+			);
+		}
+		return code;
+	}
+
+	addResourceValueAfterTag = (code, value, tag) => {
+		const tagOpeningPosition = code.indexOf(tag);
+		// Closing bracket and newline make 2;
+		const insertPosition = tagOpeningPosition + tag.length + 2;
+		const precedingSubstr = code.slice(0, insertPosition);
+		const succeedingSubstr = code.slice(insertPosition);
+		return (
+`${precedingSubstr}
+	${value}
+${succeedingSubstr}
+`
+		);
+	}
+
+	wrapAndAdd = (code, value) => {
+		const hasTag = code.includes('head');
+		const wrappedCode = this.wrapByTag(code, 'html');
+		const headWrappedValue =
+`<head>
+${value}
+</head>
+`
+		const codeToBeAdded = hasTag ? value : headWrappedValue;
+		const tagToBeAddedAfter = hasTag ? '<head' : '<html'
+		return this.addResourceValueAfterTag(wrappedCode, codeToBeAdded, tagToBeAddedAfter);
+	}
+
+
+	insertToHead = (value) => {
+		const { sourceCode } = this.state;
+		return this.wrapAndAdd(sourceCode, value);
+	}
+
+	getStructurizeWebCode() {
+		const { cssCode, jsCode, sourceCode } = this.state;
+		return this.insertToHead(`<style>${cssCode}</style><script>${jsCode}</script>`);
+	}
+
 	// TODO: Implement those functions
-	// save
-	//
-	// handleExternalSourcesPopupOpen
-	//
 	// runCode
+
+	// Clear output
+	clearOutput = () => {
+		document.querySelector('.default-output').innerHTML = '';
+		document.querySelector('#js-console .error-message').innerHTML = '';
+		document.querySelector('#js-console .log-message').innerHTML = '';
+	}
+
+	compileCode = (sourceCode, language, input) => {
+		return Service.request('Playground/CompileCode', { code: sourceCode, language, input });
+	}
+
+	// Show output
+	showOutput = (language, output) => {
+		if (language == 'web') {
+			const frame = document.getElementById('output-frame');
+			const iWindow = frame.contentWindow;
+
+			iWindow.console.log = () => {
+				let consoleOutput = '';
+				for (let i = 0; i < arguments.length; i++) {
+					const current = arguments[i];
+					if (typeof current === 'string' || typeof current === 'number' || typeof current === 'boolean')
+						consoleOutput += `${arguments[i]} `;
+				}
+
+				const outputHTML = consoleOutput.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>');
+				const logMessage = document.querySelector('#js-console .log-message');
+				logMessage.append(outputHTML);
+			};
+
+			const innerScript = 'window.onerror = function (msg, url, line, col, error) {' +
+																	 'var lineText = line == 0 ? "" : "<br /><span>Line: " + (line) + "</span>";' +
+																	 'var errorMessage = msg + lineText;' +
+																	 'window.parent.document.querySelector("#js-console .error-message").innerHTML = errorMessage;' +
+																	 'return false;' +
+															 '}';
+
+			const iDoc = frame.contentDocument;
+
+			iDoc.write(`<script>${innerScript}</script>`);
+
+			iDoc.write(output);
+			iDoc.close();
+		} else if (language == 'php') {
+			const frame = document.getElementById('output-frame');
+			const iWindow = frame.contentWindow;
+			const iDoc = frame.contentDocument;
+			iDoc.write(output);
+			iDoc.close();
+		} else {
+			output = output.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;');
+			const message = output != '' ? output : 'No output.';
+
+			document.querySelector('.default-output').innerHTML = message;
+		}
+
+		this.setState({ isRunning: false });
+	}
+
+	checkForInput = (language) => {
+		const { sourceCode } = this.state;
+		// Doing some work with source code...
+		if (language == 'python') {
+			const codeBlock = sourceCode.replace(/(([^'"])(#)|(^#))((.*)$)/gm, ''); // $2
+			const inputRegex = inputRegexes[language];
+			return inputRegex.test(codeBlock);
+		} else if (language == 'ruby') {
+			const codeBlock = sourceCode.replace(/(\=begin(\n[\s\S]*?)\=end)|(([^'"])(#)|(^#))((.*)$)/gm, '');
+			const inputRegex = inputRegexes[language];
+			return inputRegex.test(codeBlock);
+		}
+
+		const codeBlock = sourceCode.replace(/(\/\*([\s\S]*?)\*\/)|(\/\/(.*)$)/gm, '');
+		const inputRegex = inputRegexes[language];
+		return inputRegex.test(codeBlock);
+	}
+
+	runCode = async () => {
+		const {
+			type,
+			mode,
+			sourceCode,
+			languageSelector: language,
+		} = this.state;
+
+		this.clearOutput();
+
+		if (type == 'web') {
+			this.setState({
+				showOutput: true,
+				isRunning: true,
+				mode: null,
+			});
+
+			const response = this.getStructurizeWebCode();
+
+			// Save compiled data
+			this.compileCode(response, language, '');
+			// Show output
+			this.showOutput(language, response);
+		} else if (type == 'combined') {
+			this.setState({
+				showOutput: true,
+				isRunning: true,
+				mode: null,
+			});
+
+			// Save compiled data
+			const compiledCode = await this.compileCode(sourceCode, language, '')
+			// Show output
+			this.showOutput(language, compiledCode.output);
+		} else if (this.checkForInput(language)) {
+			this.setState({ inputsPopupOpened: true });
+		} else {
+			this.setState({
+				showOutput: true,
+				isRunning: true,
+			});
+
+			// Save compiled data
+			const compiledCode = await this.compileCode(sourceCode, language, '')
+			// Show output
+			this.showOutput(language, compiledCode.output);
+		}
+	}
 
 	render() {
 		const {
@@ -341,7 +535,6 @@ class Playground extends Component {
 			theme,
 			jsCode,
 			cssCode,
-			isSaving,
 			publicID,
 			codeType,
 			isRunning,
@@ -352,7 +545,8 @@ class Playground extends Component {
 			userCodeLanguage,
 			latestSavedCodeData,
 		} = this.state;
-		const showWebOutput = (showOutput && (type === 'web' || type === 'combined'));
+		const showWebOutput = showOutput && (type === 'web' || type === 'combined');
+		const programRunning = isRunning && (type === 'web' || type == 'combined');
 
 		return (
 			isGettingCode ?
@@ -363,6 +557,7 @@ class Playground extends Component {
 							type={type}
 							mode={mode}
 							theme={theme}
+							runCode={this.runCode}
 							handleTabChange={this.handleTabChange}
 						/>
 						<Editor
@@ -370,8 +565,14 @@ class Playground extends Component {
 							mode={mode}
 							theme={theme}
 							publicID={publicID}
+							showWebOutput={showWebOutput}
 							handleEditorChange={this.handleEditorChange}
 						/>
+						<OutputWindow
+							type={type}
+							showWebOutput={showWebOutput}
+							programRunning={programRunning}
+						 />
 						<Toolbar
 							type={type}
 							mode={mode}
@@ -379,10 +580,11 @@ class Playground extends Component {
 							jsCode={jsCode}
 							cssCode={cssCode}
 							code={sourceCode}
-							isSaving={isSaving}
 							isRunning={isRunning}
+							runCode={this.runCode}
 							language={userCodeLanguage}
 							showWebOutput={showWebOutput}
+							insertToHead={this.insertToHead}
 							isUserCode={codeType === 'userCode'}
 							userCodeData={latestSavedCodeData}
 							languageSelector={languageSelector}
@@ -392,6 +594,19 @@ class Playground extends Component {
 							handleThemeChange={this.handleThemeChange}
 							handleLanguageChange={this.handleLanguageChange}
 						/>
+						<Paper
+							className="default-output-container"
+							style={{
+								...styles.defaultOutputContainer.base,
+								...(showOutput && type === 'default' ? styles.defaultOutputContainer.show : {})
+							}}
+						>
+								{	!(isRunning && type === 'default') ? null :
+									<LoadingOverlay size={30} />
+								}
+								<div style={styles.outputHeader}>Output: </div>
+								<pre className="default-output" style={styles.defaultOutput}></pre>
+						</Paper>
 					</Paper>
 				</div>
 		);

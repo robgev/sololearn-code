@@ -8,14 +8,14 @@ import { browserHistory } from 'react-router';
 // Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { loadDefaults } from '../../actions/defaultActions';
-import { isLoaded, defaultsLoaded } from '../../reducers';
+import { loadDefaults } from 'actions/defaultActions';
+import { isLoaded, defaultsLoaded } from 'reducers';
 
 // Service
-import Service from '../../api/service';
+import Service from 'api/service';
 
 // Popups
-import Popup from '../../api/popupService';
+import Popup from 'api/popupService';
 
 // Additional data and components (ACE Editor)
 import brace from 'brace';
@@ -30,7 +30,7 @@ import 'brace/mode/ruby';
 import 'brace/theme/chrome'; // Editor light theme
 import 'brace/theme/monokai'; // Editor dark theme
 import 'brace/ext/language_tools';
-import LoadingOverlay from '../../components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
@@ -48,10 +48,10 @@ import RunIcon from 'material-ui/svg-icons/av/play-arrow';
 import InsertLink from 'material-ui/svg-icons/editor/insert-link';
 
 // App defaults and utils
-import texts from '../../defaults/texts';
-import inputRegexes from '../../defaults/inputRegexes';
-import externalResources from '../../defaults/externalResources';
-import getSyles from '../../utils/styleConverter';
+import texts from 'defaults/texts';
+import inputRegexes from 'defaults/inputRegexes';
+import externalResources from 'defaults/externalResources';
+import getSyles from 'utils/styleConverter';
 
 const aceEditorStyle = (<Style
 	scopeSelector=".ace_editor"
