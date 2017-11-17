@@ -1,7 +1,5 @@
 // React modules
-import React, { Component } from 'react';
-
-import AuthProt from '../../utils/protected';
+import React from 'react';
 
 // Redux modules
 import { connect } from 'react-redux';
@@ -19,24 +17,16 @@ const styles = {
 	},
 };
 
-class Feed extends Component {
-	render() {
-		const { feed, feedPins, isLoaded } = this.props;
+const Feed = ({ feed, feedPins, isLoaded }) => (
+	<div id="feed" style={styles.container}>
+		<FeedItemsBase feed={feed} feedPins={feedPins} isUserProfile={false} isLoaded={isLoaded} />
+	</div>
+);
 
-		return (
-			<div id="feed" style={styles.container}>
-				<FeedItemsBase feed={feed} feedPins={feedPins} isUserProfile={false} isLoaded={isLoaded} />
-			</div>
-		);
-	}
-}
-
-function mapStateToProps(state) {
-	return {
-		isLoaded: isLoaded(state, 'feed'),
-		feedPins: state.feedPins,
-		feed: state.feed,
-	};
-}
+const mapStateToProps = state => ({
+	isLoaded: isLoaded(state, 'feed'),
+	feedPins: state.feedPins,
+	feed: state.feed,
+});
 
 export default connect(mapStateToProps)(Feed);

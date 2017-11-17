@@ -60,7 +60,7 @@ export default (
 			<Route path="/discuss" component={Questions} />
 			<Route path="/discuss/new" component={NewQuestion} />
 			<Route path="/discuss/edit/:id" component={EditQuestion} />
-			<Route path="/discuss/:id(/:questionName)" component={Post} />
+			<Route path="/discuss/:id(/:questionName)(/:replyId)" component={Post} />
 			<Route path="/feed" component={Feed} />
 			<Route path="/profile/:id(/:tab)" component={Profile} />
 			<Route path="/contests" component={redirector(Contests)} />

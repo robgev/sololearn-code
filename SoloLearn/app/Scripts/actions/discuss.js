@@ -51,36 +51,42 @@ export const loadPost = post => ({
 	payload: post,
 });
 
-export const loadPostInternal = id => dispatch => Service.request('Discussion/GetPost', { id })
-	.then((response) => {
-		const { post } = response;
+export const loadPostInternal = id => async (dispatch) => {
+	try {
+		const { post } = await Service.request('Discussion/GetPost', { id });
 		post.alias = toSeoFrendly(post.title, 100);
 		post.replies = [];
 		dispatch(loadPost(post));
-	}).catch((error) => {
-		console.log(error);
-	});
+	} catch (e) {
+		console.log(e);
+	}
+};
 
 export const loadReplies = posts => ({
 	type: types.LOAD_DISCUSS_POST_REPLIES,
 	payload: posts,
 });
 
-export const loadRepliesInternal = ordering => (dispatch, getState) => {
-	const store = getState();
-	const post = store.discussPost;
+const fetchReplies = async (postId, orderBy, index, findPostId) => {
+	try {
+		const settings = findPostId ?
+			{
+				postId, orderBy: 7, findPostId, count: 20,
+			} :
+			{
+				postId, orderBy, index, count: 20,
+			};
+		const { posts } = await Service.request('Discussion/GetReplies', settings);
+		return posts;
+	} catch (e) {
+		console.log(e);
+	}
+};
 
-	return Service.request('Discussion/GetReplies', {
-		postid: post.id, index: post.replies.length, count: 20, orderBy: ordering,
-	})
-		.then((response) => {
-			const { posts } = response;
-			dispatch(loadReplies(posts));
-
-			return posts.length;
-		}).catch((error) => {
-			console.log(error);
-		});
+export const loadRepliesInternal = (orderBy, answerId) => async (dispatch, getState) => {
+	const { discussPost: post } = getState();
+	const posts = await fetchReplies(post.id, orderBy, post.replies.length, answerId || null);
+	dispatch(loadReplies(posts));
 };
 
 export const emptyReplies = () => dispatch => new Promise((resolve) => {

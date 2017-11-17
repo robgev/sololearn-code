@@ -1,5 +1,5 @@
 // React modules
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
 
 // Material UI components
@@ -69,33 +69,40 @@ const styles = {
 	},
 };
 
-class FeedItemBase extends Component {
-	render() {
-		const { user } = this.props;
-		return (
-			<div className="content" style={styles.content}>
-				<Link to={`/profile/${user.id}`} style={styles.linkStyle}>
-					<Avatar size={30} style={styles.avatar}>{user.name.charAt(0).toUpperCase()}</Avatar>
+const FeedItemBase = ({
+	title, user, date, votes, children,
+}) => (
+	<div className="content" style={styles.content}>
+		<Link to={`/profile/${user.id}`} style={styles.linkStyle}>
+			<Avatar
+				size={30}
+				style={styles.avatar}
+			>
+				{user.name.charAt(0).toUpperCase()}
+			</Avatar>
+		</Link>
+		<div className="wrapper" style={styles.wrapper}>
+			<p style={styles.title}>
+				<Link
+					to={`/profile/${user.id}`}
+					style={getSyles(styles.userName, styles.linkStyle)}
+				>
+					{user.name}
 				</Link>
-				<div className="wrapper" style={styles.wrapper}>
-					<p style={styles.title}>
-						<Link to={`/profile/${user.id}`} style={getSyles(styles.userName, styles.linkStyle)}>{user.name} </Link>
-						{this.props.title}
-					</p>
-					{this.props.children}
-					{
-						this.props.votes !== null &&
-						<div className="votes" style={styles.votes}>
-							<ThumbUp color={grey500} style={styles.voteIcon} />
-							<span style={styles.voteText}>{this.props.votes > 0 ? `+${this.props.votes}` : this.props.votes}</span>
-							<ThumbDown color={grey500} style={styles.voteIcon} />
-						</div>
-					}
-				</div>
-				<p className="date" style={styles.date}>{updateDate(this.props.date)}</p>
-			</div>
-		);
-	}
-}
+				{title}
+			</p>
+			{children}
+			{
+				votes !== null &&
+					<div className="votes" style={styles.votes}>
+						<ThumbUp color={grey500} style={styles.voteIcon} />
+						<span style={styles.voteText}>{votes > 0 ? `+${votes}` : votes}</span>
+						<ThumbDown color={grey500} style={styles.voteIcon} />
+					</div>
+			}
+		</div>
+		<p className="date" style={styles.date}>{updateDate(date)}</p>
+	</div>
+);
 
 export default FeedItemBase;

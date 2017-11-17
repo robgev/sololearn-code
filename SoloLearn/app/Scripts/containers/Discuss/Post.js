@@ -24,7 +24,6 @@ import { isLoaded } from '../../reducers';
 
 // Popups
 import Popup from '../../api/popupService';
-import Service from '../../api/service';
 
 // Additional components
 import Question from './Question';
@@ -114,7 +113,7 @@ class Post extends Component {
 
 		this.state = {
 			ordering: 1,
-			isLoading: false,
+			isLoading: true,
 			fullyLoaded: false,
 			deletePopupOpened: false,
 		};
@@ -123,14 +122,10 @@ class Post extends Component {
 	}
 
 	async componentWillMount() {
-		try {
-			const { params } = this.props;
-			await this.props.loadPostInternal(params.id);
-			this.checkAlias(params.questionName);
-			this.getReplies();
-		} catch (e) {
-			console.log(e);
-		}
+		const { params } = this.props;
+		await this.props.loadPostInternal(params.id);
+		await this.getReplies(params.replyId);
+		this.checkAlias(params.questionName);
 	}
 
 	// Add event listeners after component mounts
@@ -145,15 +140,10 @@ class Post extends Component {
 	}
 
 	// Get post answers
-	getReplies = async () => {
-		this.setState({ isLoading: true });
-		try {
-			const count = await this.props.loadRepliesInternal(this.state.ordering);
-			if (count < 20) this.setState({ fullyLoaded: true });
-			this.setState({ isLoading: false });
-		} catch (e) {
-			console.log(e);
-		}
+	getReplies = async (replyId) => {
+		const { ordering } = this.state;
+		await this.props.loadRepliesInternal(ordering, replyId);
+		this.setState({ isLoading: false });
 	}
 
 	addReply = (message) => {
