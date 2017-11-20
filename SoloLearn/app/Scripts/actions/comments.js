@@ -40,7 +40,7 @@ export const getCommentsInternal =
 		return Service.request(path, params).then((response) => {
 			const responseComments = response.comments;
 
-			if (parentId === null) {
+			if (!parentId) {
 				const forcedReplies = loadedComments.filter((c, commentIndex) =>
 					(c.isForcedDown ? Object.assign(c, { commentIndex }) : null));
 
