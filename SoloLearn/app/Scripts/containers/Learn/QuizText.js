@@ -500,7 +500,7 @@ class QuizText extends Component {
 				{tooltipLeftPlaced}
 				{tooltipBottomPlaced}
 				<div id="text-content">{this.renderComponentParts()}</div>
-				<FlatButton style={styles.commentButton} labelStyle={styles.commentButtonLabel} label={`${this.state.countLoaded ? this.commentsCount : ''} COMMENTS`} onClick={() => { this.props.openComments(); }} />
+				<FlatButton style={styles.commentButton} labelStyle={styles.commentButtonLabel} label={`${this.state.countLoaded ? this.commentsCount : ''} COMMENTS`} onClick={this.props.openComments} />
 			</Paper>
 		);
 	}

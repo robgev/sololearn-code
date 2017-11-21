@@ -5,6 +5,7 @@ import { findKey } from 'lodash';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
+import FlatButton from 'material-ui/FlatButton';
 
 // Service
 import Service from 'api/service';
@@ -20,6 +21,7 @@ import Editor from './Editor';
 import PlaygroundTabs from './PlaygroundTabs';
 import Toolbar from './Toolbar';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import Comments from '../Comments/CommentsBase';
 import OutputWindow from './OutputWindow';
 
 const styles = {
@@ -60,12 +62,14 @@ class Playground extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			id: 0,
 			code: '',
 			jsCode: '',
 			cssCode: '',
 			type: 'web',
 			codeType: '',
 			publicID: '',
+			comments: 0,
 			mode: 'html',
 			sourceCode: '',
 			isRunning: false,
@@ -73,6 +77,7 @@ class Playground extends Component {
 			showOutput: false,
 			isGettingCode: false,
 			latestSavedCodeData: {},
+			commentsOpened: false,
 			languageSelector: 'web',
 			userCodeLanguage: 'web',
 		};
@@ -196,10 +201,12 @@ class Playground extends Component {
 		try {
 			const codeSample = await Service.request('Playground/GetCode', { publicId: params.primary });
 			const {
+				id,
 				jsCode,
 				cssCode,
 				publicID,
 				language,
+				comments,
 				sourceCode,
 			} = codeSample.code;
 			// Check language of user code for setting up correct link
@@ -223,8 +230,10 @@ class Playground extends Component {
 				}
 
 				this.setState({
+					id,
 					type,
 					publicID,
+					comments,
 					...codeData,
 					code: sourceCode,
 					latestSavedCodeData,
@@ -527,8 +536,17 @@ ${value}
 		}
 	}
 
+	closeComments = () => {
+		this.setState({ commentsOpened: false });
+	}
+
+	openComments = () => {
+		this.setState({ commentsOpened: true });
+	}
+
 	render() {
 		const {
+			id,
 			type,
 			code,
 			mode,
@@ -537,10 +555,12 @@ ${value}
 			cssCode,
 			publicID,
 			codeType,
+			comments,
 			isRunning,
 			sourceCode,
 			showOutput,
 			isGettingCode,
+			commentsOpened,
 			languageSelector,
 			userCodeLanguage,
 			latestSavedCodeData,
@@ -594,6 +614,10 @@ ${value}
 							handleThemeChange={this.handleThemeChange}
 							handleLanguageChange={this.handleLanguageChange}
 						/>
+						<FlatButton
+							onClick={this.openComments}
+							label={`${comments} COMMENTS`}
+						/>
 						<Paper
 							className="default-output-container"
 							style={{
@@ -607,6 +631,13 @@ ${value}
 								<div style={styles.outputHeader}>Output: </div>
 								<pre className="default-output" style={styles.defaultOutput}></pre>
 						</Paper>
+						<Comments
+							id={id}
+							type={1}
+							commentsType="code"
+							closeComments={this.closeComments}
+							commentsOpened={commentsOpened}
+						/>
 					</Paper>
 				</div>
 		);
