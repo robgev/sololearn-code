@@ -132,7 +132,7 @@ class Game extends Component {
 				{
 					this.state.end ? this.renderEnd() :
 						this.state.start ? this.renderStart() :
-						<CurrentChallenge />
+							<CurrentChallenge />
 				}
 			</Optional>
 		);

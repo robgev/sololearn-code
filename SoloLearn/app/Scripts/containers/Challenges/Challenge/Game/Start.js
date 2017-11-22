@@ -1,11 +1,11 @@
 // React modules
-import React, { Component } from 'react';
+import React from 'react';
 import Radium from 'radium';
-
 // Material UI components
 import Avatar from 'material-ui/Avatar';
 import RaisedButton from 'material-ui/RaisedButton';
 import { fadeInRight, fadeInLeft, fadeIn, fadeInUp } from 'react-animations';
+import Profile from './Profile';
 
 const styles = {
 	container: {
@@ -88,51 +88,45 @@ const styles = {
 
 };
 
-class Start extends Component {
-	render() {
-		const { courseName, contest } = this.props;
-		return (
-			<div id="challenge-start" style={styles.container}>
-				<div style={styles.userWrapper}>
-					<div style={{ ...styles.user, ...styles.appear(fadeInLeft) }}>
-						<Avatar size={100} style={styles.avatar}>{contest.player.name.charAt(0).toUpperCase()}</Avatar>
-						<p style={styles.userName}>{contest.player.name}</p>
-						<p style={styles.level}>LEVEL {contest.player.level}</p>
-					</div>
-					<span style={styles.versusStyle}>VS</span>
-					<div style={{ ...styles.user, ...styles.appear(fadeInRight) }}>
-						<Avatar size={100} style={styles.avatar}>{contest.opponent.name.charAt(0).toUpperCase()}</Avatar>
-						<p style={styles.userName}>{contest.opponent.name}</p>
-						<p style={styles.level}>LEVEL {contest.opponent.level}</p>
-					</div>
+const Start = (props) => {
+	const { courseName, contest } = props;
+	return (
+		<div id="challenge-start" style={styles.container}>
+			<div style={styles.userWrapper}>
+				<div style={{ ...styles.user, ...styles.appear(fadeInLeft) }}>
+					<Profile player={contest.player} />
 				</div>
-				<div style={styles.appear(fadeIn)}>
-					<p style={styles.languageName}>{courseName.toUpperCase()}</p>
-					<div style={styles.result}>
-						<p style={styles.resultTitle}>WINNER GETS</p>
-						<p style={styles.rewardXp}>{contest.player.rewardXp} XP</p>
-					</div>
-				</div>
-				<div style={{ ...styles.result, ...styles.appear(fadeInUp) }}>
-					<div>
-						<RaisedButton
-							label="Start"
-							style={styles.button}
-							secondary
-							onClick={this.props.next}
-						/>
-						{this.props.isDeclinable ?
-							<RaisedButton
-								label="Decline"
-								style={styles.button}
-								primary
-								onClick={this.props.decline}
-							/> : null}
-					</div>
+				<span style={styles.versusStyle}>VS</span>
+				<div style={{ ...styles.user, ...styles.appear(fadeInRight) }}>
+					<Profile player={contest.opponent} />
 				</div>
 			</div>
-		);
-	}
-}
+			<div style={styles.appear(fadeIn)}>
+				<p style={styles.languageName}>{courseName.toUpperCase()}</p>
+				<div style={styles.result}>
+					<p style={styles.resultTitle}>WINNER GETS</p>
+					<p style={styles.rewardXp}>{contest.player.rewardXp} XP</p>
+				</div>
+			</div>
+			<div style={{ ...styles.result, ...styles.appear(fadeInUp) }}>
+				<div>
+					<RaisedButton
+						label="Start"
+						style={styles.button}
+						secondary
+						onClick={props.next}
+					/>
+					{props.isDeclinable ?
+						<RaisedButton
+							label="Decline"
+							style={styles.button}
+							primary
+							onClick={props.decline}
+						/> : null}
+				</div>
+			</div>
+		</div>
+	);
+};
 
 export default Radium(Start);

@@ -1,10 +1,14 @@
 // React modules
 import React, { Component } from 'react';
-import Radium, { Style } from 'radium';
+import Radium from 'radium';
+import {
+	AutoSizer,
+	CellMeasurer,
+	CellMeasurerCache,
+} from 'react-virtualized';
 
 // Redux modules
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { editPostInternal, toggleAcceptedAnswerInternal } from '../../actions/discuss';
 import getLikesInternal from '../../actions/likes';
 
@@ -28,6 +32,12 @@ import updateDate from '../../utils/dateFormatter';
 import getStyles from '../../utils/styleConverter';
 
 import Likes from '../../components/Shared/Likes';
+
+const cache = new CellMeasurerCache({
+	defaultWidth: 100,
+	minWidth: 75,
+	fixedWidth: true,
+});
 
 export const styles = {
 	reply: {

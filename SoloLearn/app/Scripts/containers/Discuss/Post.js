@@ -116,33 +116,38 @@ class Post extends Component {
 			isLoading: true,
 			fullyLoaded: false,
 			deletePopupOpened: false,
+			condition: null,
 		};
 
 		this.deletingPost = null;
 	}
 
 	async componentWillMount() {
+		await this.props.loadPost(null);
 		const { params } = this.props;
 		await this.props.loadPostInternal(params.id);
 		await this.getReplies(params.replyId);
 		this.checkAlias(params.questionName);
 	}
 
-	// Add event listeners after component mounts
-	componentDidMount() {
-		window.addEventListener('scroll', this.handleScroll);
-	}
+	// // Add event listeners after component mounts
+	// componentDidMount() {
+	// 	window.addEventListener('scroll', this.handleScroll);
+	// }
 
 	// Remove event listeners after component unmounts
-	componentWillUnmount() {
-		this.props.loadPost(null);
-		window.removeEventListener('scroll', this.handleScroll);
-	}
+	// componentWillUnmount() {
+
+	// 	window.removeEventListener('scroll', this.handleScroll);
+	// }
 
 	// Get post answers
 	getReplies = async (replyId) => {
 		const { ordering } = this.state;
 		await this.props.loadRepliesInternal(ordering, replyId);
+		if (replyId) {
+			this.setState({ condition: { id: parseInt(replyId, 10) } });
+		}
 		this.setState({ isLoading: false });
 	}
 
@@ -157,14 +162,15 @@ class Post extends Component {
 			browserHistory.replace(`/discuss/${post.id}/${post.alias}`);
 		}
 	}
-	// Check scroll state
-	handleScroll = () => {
-		if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-			if (!this.state.isLoading && !this.state.fullyLoaded) {
-				this.getReplies();
-			}
-		}
-	}
+
+	// // Check scroll state
+	// handleScroll = () => {
+	// 	if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+	// 		if (!this.state.isLoading && !this.state.fullyLoaded) {
+	// 			this.getReplies();
+	// 		}
+	// 	}
+	// }
 
 	// Change ordering of replies
 	handleFilterChange = (e, index, value) => {
@@ -176,7 +182,8 @@ class Post extends Component {
 	loadRepliesByState = async () => {
 		try {
 			await this.props.emptyReplies();
-			this.getReplies();
+			this.setState({ isLoading: true });
+			await this.getReplies();
 		} catch (e) {
 			console.log(e);
 		}
@@ -250,15 +257,16 @@ class Post extends Component {
 					</div>
 				</div>
 				<div style={styles.repliesWrapper}>
-					<Paper>
-						{(this.state.isLoading && post.replies.length === 0) && <LoadingOverlay size={30} />}
-						<Replies
-							replies={post.replies}
-							votePost={this.votePost}
-							openDeletePopup={this.openDeletePopup}
-							isUsersQuestion={usersQuestion}
-						/>
-					</Paper>
+					{(this.state.isLoading && post.replies.length === 0) && <LoadingOverlay size={30} />}
+					<Replies
+						replies={post.replies}
+						votePost={this.votePost}
+						openDeletePopup={this.openDeletePopup}
+						isUsersQuestion={usersQuestion}
+						loadReplies={this.getReplies}
+						condition={this.state.condition}
+						orderBy={this.state.ordering}
+					/>
 					{
 						(post.replies.length > 0 && !this.state.fullyLoaded) &&
 						<div
@@ -298,4 +306,4 @@ const mapDispatchToProps = {
 	addReply,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Radium(Post));
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(Radium(Post));
