@@ -4,6 +4,7 @@ import ReactDOM, { findDOMNode } from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 import Radium, { Style } from 'radium';
 import { Link } from 'react-router';
+import Playground from 'containers/Playground/Playground';
 
 // Service
 import Service from '../../api/service';
@@ -210,19 +211,39 @@ const ImageBlock = props => (
 );
 
 class CodeBlock extends Component {
+	constructor() {
+		super();
+		this.state = {
+			playgroundOpened: false,
+		}
+	}
+
+	togglePlayground = () => {
+		const { playgroundOpened } = this.state;
+		this.setState({ playgroundOpened: !playgroundOpened })
+	}
+
 	render() {
 		const { codeId, format, text } = this.props;
+		const { playgroundOpened } = this.state;
 
 		if (codeId != undefined) {
 			const href = `https://code.sololearn.com/${codeId}`; // + "/#" + app.aliases[app.alias.toLowerCase()] + "";
 			return (
 				<div className="code-container" style={styles.codeContainer}>
-					<span className="code-block" data-codeid={codeId} style={styles.codeBlock}>
-						<span className={`code ${format}`} style={styles.code} dangerouslySetInnerHTML={{ __html: text }} />
-					</span>
-					<Link to={href} target="_blank">
-						<FlatButton className="shortcut-button" label="Try It Yourself" style={styles.codeButton} labelStyle={styles.codeButtonLabel} />
-					</Link>
+					{ playgroundOpened ?
+						<Playground /> :
+						<span className="code-block" data-codeid={codeId} style={styles.codeBlock}>
+							<span className={`code ${format}`} style={styles.code} dangerouslySetInnerHTML={{ __html: text }} />
+						</span>
+					}
+					<FlatButton
+						label="Try It Yourself"
+						style={styles.codeButton}
+						className="shortcut-button"
+						onClick={this.togglePlayground}
+						labelStyle={styles.codeButtonLabel}
+					/>
 				</div>
 			);
 		}
