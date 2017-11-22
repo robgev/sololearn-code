@@ -156,7 +156,6 @@ class CommentsBase extends Component {
 					previousParentId: this.state.activeComment.parentId,
 				},
 			}, () => {
-				console.log(this.state);
 				resolve();
 			});
 		});

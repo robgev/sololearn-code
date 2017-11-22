@@ -50,6 +50,7 @@ class Comments extends Component {
         state = {
         	isLoading: false,
         	fullyLoaded: false,
+					latestLoadingComment: 0,
         }
 
     loadComments = (parentId) => {
@@ -84,7 +85,7 @@ class Comments extends Component {
     	const index = comments.findIndex(c => c.id == commentId);
     	const activeComment = comments[index];
     	const loadedReplies = activeComment.replies;
-
+			this.setState({ latestLoadingComment: commentId })
     	if (type == 'openReplies' && activeComment.replies.length > 0) {
     		this.props.emptyCommentReplies(commentId);
     	} else {
@@ -118,35 +119,34 @@ class Comments extends Component {
     	});
     }
 
-    renderComments = () => this.props.comments.map((comment, index) => (
-    	<Comment
-		key={comment.id}
-		comment={comment}
-		isEditing={this.props.isEditing}
-    		isReplying={this.state.isReplying}
-		activeComment={this.props.activeComment}
-		openEdit={this.props.openEdit}
-		cancelAll={this.props.cancelAll}
-    		openReplyBoxToolbar={this.props.openReplyBoxToolbar}
-    		voteComment={this.voteComment}
-    		editComment={this.editComment}
-    		deleteComment={this.props.deleteComment}
-    		loadReplies={this.loadReplies}
-	/>
-    ))
-
     render() {
     	const { comments, isLoaded } = this.props;
-
+			const { isLoading, latestLoadingComment } = this.state;
     	return (
 	<div id="comments">
     			{(!isLoaded || comments.length == 0) && !this.state.fullyLoaded && <LoadingOverlay />}
-    			{(isLoaded && comments.length > 0) && this.renderComments()}
+    			{(isLoaded && comments.length > 0) && this.props.comments.map((comment, index) => (
+							<Comment
+							key={comment.id}
+							comment={comment}
+							isEditing={this.props.isEditing}
+							isReplying={this.state.isReplying}
+							activeComment={this.props.activeComment}
+							openEdit={this.props.openEdit}
+							cancelAll={this.props.cancelAll}
+							openReplyBoxToolbar={this.props.openReplyBoxToolbar}
+							voteComment={this.voteComment}
+							editComment={this.editComment}
+							deleteComment={this.props.deleteComment}
+							loadReplies={this.loadReplies}
+							isLoadingReplies={isLoading && latestLoadingComment === comment.id}
+						/>
+		    	))}
     			{
     				(comments.length > 0 && !this.state.fullyLoaded) &&
-    <div className="loading" style={!this.state.isLoading ? styles.bottomLoading.base : [ styles.bottomLoading.base, styles.bottomLoading.active ]}>
-    	<LoadingOverlay size={30} />
-    </div>
+						<div className="loading" style={!this.state.isLoading ? styles.bottomLoading.base : [ styles.bottomLoading.base, styles.bottomLoading.active ]}>
+							<LoadingOverlay size={30} />
+						</div>
     			}
     			{(this.state.fullyLoaded && comments.length == 0) && <div style={styles.noResults}>No Results Found</div>}
     		</div>

@@ -50,7 +50,14 @@ const LoadingOverlay = (props) => {
 	};
 
 	return (
-		<div className="loading-overlay" style={props.withBackground ? [ styles.overlay.base, styles.overlay.background ] : styles.overlay.base}>
+		<div
+			className="loading-overlay"
+			style={{
+				...styles.overlay.base,
+				...props.style,
+				...(props.withBackground ? styles.overlay.background : {})
+			}}
+		>
 			<CircularProgress
 				size={size}
 				thickness={thickness}

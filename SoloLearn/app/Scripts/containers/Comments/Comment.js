@@ -15,9 +15,10 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { grey500, blueGrey500 } from 'material-ui/styles/colors';
 
 // Utils
-import updateDate from '../../utils/dateFormatter';
-import updateMessage from '../../utils/messageFormatter';
-import getStyles from '../../utils/styleConverter';
+import updateDate from 'utils/dateFormatter';
+import updateMessage from 'utils/messageFormatter';
+import getStyles from 'utils/styleConverter';
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
 const styles = {
 	commentContainer: {
@@ -203,6 +204,7 @@ class Comment extends Component {
 			this.props.comment.vote !== nextProps.comment.vote ||
 			this.state.errorText !== nextState.errorText ||
 			this.state.textFieldValue !== nextState.textFieldValue ||
+			this.props.isLoadingReplies !== nextProps.isLoadingReplies ||
 			this.compareReplies(this.props.comment.replies, nextProps.comment.replies));
 	}
 
@@ -338,22 +340,42 @@ class Comment extends Component {
 	}
 
 	render() {
-		const { comment } = this.props;
-		const isReply = comment.parentID != null;
-		const isEditing = (this.props.isEditing && this.props.activeComment.id === comment.id);
+		const { comment, isLoadingReplies, activeComment } = this.props;
+		const {
+			id,
+			date,
+			replies,
+			parentID,
+			avatarUrl,
+			userName,
+			repliesCount
+		} = comment;
+		const isReply = parentID != null;
+		const isEditing = (this.props.isEditing && this.props.activeComment.id === id);
 
 		if (!isReply) {
 			return (
 				<div className="comment-container" style={styles.commentContainer.base}>
 					<div className="primary comment" style={styles.comment.base}>
 						<div className="content" style={styles.commentConent}>
-							<Avatar size={40} style={styles.avatar}>{comment.userName.charAt(0)}</Avatar>
+							{ avatarUrl ?
+								<Avatar
+									size={40}
+									style={styles.avatar}
+									src={avatarUrl}
+								/>
+								:
+								<Avatar
+									size={40}
+									style={styles.avatar}
+								>{userName.toUpperCase().charAt(0)}</Avatar>
+							}
 							<div className="comment-details-wrapper" style={isEditing ? getStyles(styles.commentDetailsWrapper.base, styles.commentDetailsWrapper.editing) : styles.commentDetailsWrapper.base}>
 								<div className="comment-details" style={styles.commentDetails}>
 									<div style={styles.heading}>
-										<span className="name" style={styles.userName}>{comment.userName}</span>
+										<span className="name" style={styles.userName}>{userName}</span>
 										<div style={styles.heading}>
-											<p className="date" style={styles.commentDate}>{updateDate(comment.date)}</p>
+											<p className="date" style={styles.commentDate}>{updateDate(date)}</p>
 											{!isEditing && this.getMenuControls(comment)}
 										</div>
 									</div>
@@ -367,16 +389,19 @@ class Comment extends Component {
 							</div>
 						</div>
 					</div>
-					{
-						comment.replies.length > 0 &&
+					{ replies.length > 0 ?
 						<div className="replies" style={styles.replies.base}>
 							<div className="replies-content" style={styles.replies.content}>
 								{this.renderReplies()}
 							</div>
 							<div className="gap" style={styles.commentsGap}>
-								{(comment.replies.length !== comment.repliesCount) &&
-									<FlatButton label="Load more" primary onClick={() => this.props.loadReplies(comment.id, 'loadMore')} />}
+								{(replies.length !== repliesCount) &&
+									<FlatButton label="Load more" primary onClick={() => this.props.loadReplies(id, 'loadMore')} />}
 							</div>
+						</div> :
+						isLoadingReplies &&
+						<div style={{ height: 40 }}>
+							<LoadingOverlay style={{ top: 115 }} size={30} />
 						</div>
 					}
 				</div>
