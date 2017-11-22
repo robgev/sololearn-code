@@ -19,19 +19,17 @@ class InfiniteVirtalizedList extends Component {
 		this.rowSettings = cache ?
 			{
 				rowRenderer: this.autoSizedRowRenderer,
-				deferredMeasurementCache: cache,
-				rowHeight: cache.rowHeight,
 			} :
 			{
 				rowRenderer: this.rowRenderer,
 				rowHeight: this.rowHeight,
 			};
-		// this.state = {
-		// 	scrollToIndex: 0,
-		// };
 	}
 	componentWillMount() {
 		this.loadMoreInterval = setInterval(() => { this.canLoadMore = true; }, 10 * 1000);
+	}
+	componentDidMount() {
+		this._list.forceUpdateGrid();
 	}
 	componentWillReceiveProps(nextProps) {
 		const { length: nextLength } = nextProps.list;
@@ -44,8 +42,6 @@ class InfiniteVirtalizedList extends Component {
 
 	scrollTo = (condition) => {
 		const index = findIndex(this.props.list, condition);
-		// const scrollToIndex = index === -1 ? 0 : index;
-		// this.setState({ scrollToIndex });
 		if (this.props.list.length > index + 2) this._list.scrollToRow(index + 2);
 		else this._list.scrollToRow(index);
 	}
@@ -89,6 +85,8 @@ class InfiniteVirtalizedList extends Component {
 				rowCount={this.props.list.length}
 				ref={(list) => { this._list = list; }}
 				{...this.rowSettings}
+				deferredMeasurementCache={this.props.cache}
+				rowHeight={this.props.cache.rowHeight}
 				{...props}
 			/>
 		);

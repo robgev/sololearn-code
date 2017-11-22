@@ -14,6 +14,8 @@ import LoadingOverlay from '../../../../components/Shared/LoadingOverlay';
 import { green500, red500, blue500 } from 'material-ui/styles/colors';
 import CircularProgress from 'material-ui/CircularProgress';
 
+import Profile from './Profile';
+
 const styles = {
 	container: {
 		padding: '20px 0 0 0',
@@ -146,74 +148,70 @@ const Results = optional(({
 ));
 
 class Result extends Component {
-    state = { updated: false }
-    componentDidMount() {
-    	this.props.update()
-    		.then(() => this.setState({ updated: true }));
-    }
-    counter(arr) {
-    	let result = 0;
-    	arr.forEach((curr) => {
-    		if (curr.isCompleted) { result++; }
-    	});
-    	return result;
-    }
-    answerBonusCounter = results => results.reduce((xp, current) => xp + current.earnedXp, 0)
-    matchResultCounter = contest => (contest.player.status == 1 ? contest.player.rewardXp : -contest.opponent.rewardXp)
-    countUntilNextLevel = (totalXp) => {
-    	const { player: { level, xp } } = this.props.contest;
-    	const newXp = xp + totalXp;
-    	const nextLevelXp = this.props.levels[level - 1].maxXp;
-    	const untilNextLevelXp = nextLevelXp - newXp;
-    	const percentage = 100 - 100 * (untilNextLevelXp / nextLevelXp);
-    	return [ untilNextLevelXp, percentage ];
-    }
-    render() {
-    	if (!this.state.updated) {
-    		return <LoadingOverlay />;
-    	}
-    	const { courseName, contest } = this.props;
-    	const { status } = contest.player;
-    	const { player: { results: myRes }, opponent: { results: opRes } } = contest;
-    	const answersBonus = this.answerBonusCounter(myRes);
-    	const matchResult = this.matchResultCounter(contest);
-    	const totalXp = answersBonus + matchResult;
-    	const [ xpUntilNext, percUntilNext ] = this.countUntilNextLevel(totalXp);
-    	return (
-    		<div id="challenge-start" style={styles.container}>
-		<div style={styles.appear(fadeInDown)}>
-	{status !== contestTypes.GotChallenged && getChallengeStatus(status, styles.status)}
-    			</div>
-		<div style={styles.userWrapper}>
-	<div style={{ ...styles.user, ...styles.appear(fadeInLeft) }}>
-				<Avatar size={100} style={styles.avatar}>{contest.player.name.charAt(0).toUpperCase()}</Avatar>
-    					<p style={styles.userName}>{contest.player.name}</p>
-				<p style={styles.level}>LEVEL {contest.player.level}</p>
+	state = { updated: false }
+	componentDidMount() {
+		this.props.update()
+			.then(() => this.setState({ updated: true }));
+	}
+	counter(arr) {
+		let result = 0;
+		arr.forEach((curr) => {
+			if (curr.isCompleted) { result++; }
+		});
+		return result;
+	}
+	answerBonusCounter = results => results.reduce((xp, current) => xp + current.earnedXp, 0)
+	matchResultCounter = contest => (contest.player.status == 1 ? contest.player.rewardXp : -contest.opponent.rewardXp)
+	countUntilNextLevel = (totalXp) => {
+		const { player: { level, xp } } = this.props.contest;
+		const newXp = xp + totalXp;
+		const nextLevelXp = this.props.levels[level - 1].maxXp;
+		const untilNextLevelXp = nextLevelXp - newXp;
+		const percentage = 100 - 100 * (untilNextLevelXp / nextLevelXp);
+		return [ untilNextLevelXp, percentage ];
+	}
+	render() {
+		if (!this.state.updated) {
+			return <LoadingOverlay />;
+		}
+		const { courseName, contest } = this.props;
+		const { status } = contest.player;
+		const { player: { results: myRes }, opponent: { results: opRes } } = contest;
+		const answersBonus = this.answerBonusCounter(myRes);
+		const matchResult = this.matchResultCounter(contest);
+		const totalXp = answersBonus + matchResult;
+		const [ _, percUntilNext ] = this.countUntilNextLevel(totalXp);
+		return (
+			<div id="challenge-start" style={styles.container}>
+				<div style={styles.appear(fadeInDown)}>
+					{status !== contestTypes.GotChallenged && getChallengeStatus(status, styles.status)}
+				</div>
+				<div style={styles.userWrapper}>
+					<div style={{ ...styles.user, ...styles.appear(fadeInLeft) }}>
+						<Profile player={contest.player} />
+					</div>
+					<span style={styles.versusStyle}>{this.counter(myRes)} : {this.counter(opRes)}</span>
+					<div style={{ ...styles.user, ...styles.appear(fadeInRight) }}>
+						<Profile player={contest.opponent} />
+					</div>
+				</div>
+				<Results
+					idle={!(status === 1 || status === 2 || status === 8)}
+					{...{
+						courseName, answersBonus, matchResult, totalXp, percUntilNext,
+					}}
+				/>
+				<div style={{ ...styles.result, ...styles.appear(fadeInUp) }}>
+					<RaisedButton
+						label="Leave"
+						style={styles.button}
+						secondary
+						onClick={this.props.leave}
+					/>
+				</div>
 			</div>
-	<span style={styles.versusStyle}>{this.counter(myRes)} : {this.counter(opRes)}</span>
-	<div style={{ ...styles.user, ...styles.appear(fadeInRight) }}>
-	<Avatar size={100} style={styles.avatar}>{contest.opponent.name.charAt(0).toUpperCase()}</Avatar>
-	<p style={styles.userName}>{contest.opponent.name}</p>
-	<p style={styles.level}>LEVEL {contest.opponent.level}</p>
-    				</div>
-    			</div>
-    			<Results
-		idle={!(status == 1 || status == 2 || status == 8)}
-    				{...{
-    					courseName, answersBonus, matchResult, totalXp, percUntilNext,
-    				}}
-	/>
-    			<div style={{ ...styles.result, ...styles.appear(fadeInUp) }}>
-    				<RaisedButton
-    					label="Leave"
-    					style={styles.button}
-    					secondary
-    					onClick={this.props.leave}
-	/>
-	</div>
- </div>
-    	);
-    }
+		);
+	}
 }
 
 const mapStateToProps = ({ levels }) => ({ levels });

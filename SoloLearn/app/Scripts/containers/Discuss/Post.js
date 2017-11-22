@@ -163,15 +163,6 @@ class Post extends Component {
 		}
 	}
 
-	// // Check scroll state
-	// handleScroll = () => {
-	// 	if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-	// 		if (!this.state.isLoading && !this.state.fullyLoaded) {
-	// 			this.getReplies();
-	// 		}
-	// 	}
-	// }
-
 	// Change ordering of replies
 	handleFilterChange = (e, index, value) => {
 		this.setState({ ordering: value });

@@ -8,13 +8,27 @@ import InfiniteVirtualizedList from '../../components/Shared/InfiniteVirtualized
 // Additional components
 import Reply from './Reply';
 
-const cache = new CellMeasurerCache({
-	defaultWidth: 1000,
-	minWidth: 75,
-	fixedWidth: true,
-});
-
 class Replies extends Component {
+	constructor() {
+		super();
+		this.state = {
+			cache: new CellMeasurerCache({
+				defaultWidth: 1000,
+				minWidth: 75,
+				fixedWidth: true,
+			}),
+		};
+	}
+	componentWillReceiveProps(nextProps) {
+		if (this.props.orderBy !== nextProps.orderBy) {
+			const cache = new CellMeasurerCache({
+				defaultWidth: 1000,
+				minWidth: 75,
+				fixedWidth: true,
+			});
+			this.setState({ cache });
+		}
+	}
 	forceUpdate = () => {
 		this._list.forceUpdate();
 	}
@@ -36,7 +50,7 @@ class Replies extends Component {
 					list={this.props.replies}
 					loadMore={this.props.loadReplies}
 					width={1000}
-					cache={cache}
+					cache={this.state.cache}
 					condition={this.props.condition}
 					ref={(list) => { this._list = list; }}
 					window
