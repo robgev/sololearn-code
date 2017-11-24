@@ -24,7 +24,7 @@ import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import AcceptedIcon from 'material-ui/svg-icons/navigation/check';
 import { grey500, grey700, blueGrey500, lightGreen500 } from 'material-ui/styles/colors';
-import DiscussAuthor from './DiscussAuthor';
+import DiscussAuthor from 'components/Shared/ProfileAvatar';
 
 // Utils
 import numberFormatter from '../../utils/numberFormatter';

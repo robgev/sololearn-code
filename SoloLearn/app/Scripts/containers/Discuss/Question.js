@@ -20,7 +20,7 @@ import { questionFollowingInternal } from '../../actions/discuss';
 import getLikesInternal from '../../actions/likes';
 
 import DiscussTag from './DiscussTag';
-import DiscussAuthor from './DiscussAuthor';
+import DiscussAuthor from 'components/Shared/ProfileAvatar';
 
 // Utils
 import Likes from '../../components/Shared/Likes';

@@ -3,7 +3,7 @@ import Popover from 'material-ui/Popover';
 import CircularProgress from 'material-ui/CircularProgress';
 import Divider from 'material-ui/Divider';
 import { connect } from 'react-redux';
-import User from './User';
+import ProfileAvatar from './ProfileAvatar';
 import { setLikesList } from '../../actions/likes';
 import numberFormatter from '../../utils/numberFormatter';
 import InfiniteVirtualizedList from './InfiniteVirtualizedList';
@@ -30,7 +30,11 @@ class Likes extends PureComponent {
 	renderOneLike = user => (
 		<div>
 			<div key={user.id} style={{ padding: 5 }}>
-				<User user={user} />
+				<ProfileAvatar
+					userID={user.id}
+					userName={user.name}
+					avatarUrl={user.avatarUrl}
+				/>
 			</div>
 			<Divider />
 		</div >
