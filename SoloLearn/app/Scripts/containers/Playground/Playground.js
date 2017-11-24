@@ -5,6 +5,8 @@ import { findKey } from 'lodash';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
+import Dialog from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 
 // Service
@@ -65,6 +67,7 @@ class Playground extends Component {
 			id: 0,
 			code: '',
 			jsCode: '',
+			inputs: '',
 			cssCode: '',
 			type: 'web',
 			codeType: '',
@@ -80,6 +83,7 @@ class Playground extends Component {
 			commentsOpened: false,
 			languageSelector: 'web',
 			userCodeLanguage: 'web',
+			inputsPopupOpened: false,
 		};
 	}
 
@@ -536,12 +540,47 @@ ${value}
 		}
 	}
 
+	runCondeWithInputs = async () => {
+		const {
+			type,
+			mode,
+			inputs,
+			sourceCode,
+			languageSelector: language,
+		} = this.state;
+
+		this.setState({
+			showOutput: true,
+			isRunning: true,
+			inputsPopupOpened: false,
+		});
+
+		const compiledCode = await this.compileCode(sourceCode, language, inputs);
+		this.setState({
+			inputs: '',
+		});
+		this.showOutput(language, compiledCode.output);
+	}
+
 	closeComments = () => {
 		this.setState({ commentsOpened: false });
 	}
 
 	openComments = () => {
 		this.setState({ commentsOpened: true });
+	}
+
+	handleInputsPopupClose = () => {
+		this.setState({
+			inputsPopupOpened: false,
+			inputs: '',
+		});
+	}
+
+	handleInputsChange = (e) => {
+		this.setState({
+			inputs: e.target.value,
+		});
 	}
 
 	render() {
@@ -552,6 +591,7 @@ ${value}
 			mode,
 			theme,
 			jsCode,
+			inputs,
 			cssCode,
 			publicID,
 			codeType,
@@ -563,8 +603,18 @@ ${value}
 			commentsOpened,
 			languageSelector,
 			userCodeLanguage,
+			inputsPopupOpened,
 			latestSavedCodeData,
 		} = this.state;
+
+		const inputsPopupActions = [
+			<FlatButton
+				label="Submit"
+				primary
+				onTouchTap={this.runCondeWithInputs}
+			/>,
+		];
+
 		const showWebOutput = showOutput && (type === 'web' || type === 'combined');
 		const programRunning = isRunning && (type === 'web' || type == 'combined');
 
@@ -638,6 +688,25 @@ ${value}
 							closeComments={this.closeComments}
 							commentsOpened={commentsOpened}
 						/>
+						<Dialog
+							open={inputsPopupOpened}
+							title={texts.inputsPopupTitle}
+							titleStyle={styles.popupTitle}
+							bodyStyle={styles.popupBody}
+							actions={inputsPopupActions}
+							contentStyle={styles.popupContent}
+							onRequestClose={this.handleInputsPopupClose}
+						>
+							<p style={styles.popupSubTitle}>{texts.savePopupSubTitle}</p>
+							<TextField
+								multiLine
+								fullWidth
+								id="inputs"
+								value={inputs}
+								style={styles.inputStyle}
+								onChange={this.handleInputsChange}
+							/>
+						</Dialog>
 					</Paper>
 				</div>
 		);
