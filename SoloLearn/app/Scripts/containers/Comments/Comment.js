@@ -1,6 +1,7 @@
 // React modules
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 
 // Material UI components
 import Avatar from 'material-ui/Avatar';
@@ -183,6 +184,10 @@ const styles = {
 	deleteButton: {
 		color: '#E53935',
 	},
+
+	noStyle: {
+		textDecoration: 'none',
+	}
 };
 
 class Comment extends Component {
@@ -344,6 +349,7 @@ class Comment extends Component {
 		const {
 			id,
 			date,
+			userID,
 			replies,
 			parentID,
 			avatarUrl,
@@ -358,22 +364,26 @@ class Comment extends Component {
 				<div className="comment-container" style={styles.commentContainer.base}>
 					<div className="primary comment" style={styles.comment.base}>
 						<div className="content" style={styles.commentConent}>
-							{ avatarUrl ?
-								<Avatar
-									size={40}
-									style={styles.avatar}
-									src={avatarUrl}
-								/>
-								:
-								<Avatar
-									size={40}
-									style={styles.avatar}
-								>{userName.toUpperCase().charAt(0)}</Avatar>
-							}
+							<Link to={`/profile/${userID}`} style={styles.noStyle}>
+								{ avatarUrl ?
+									<Avatar
+										size={40}
+										style={styles.avatar}
+										src={avatarUrl}
+									/>
+									:
+									<Avatar
+										size={40}
+										style={styles.avatar}
+									>{userName.toUpperCase().charAt(0)}</Avatar>
+								}
+							</Link>
 							<div className="comment-details-wrapper" style={isEditing ? getStyles(styles.commentDetailsWrapper.base, styles.commentDetailsWrapper.editing) : styles.commentDetailsWrapper.base}>
 								<div className="comment-details" style={styles.commentDetails}>
 									<div style={styles.heading}>
-										<span className="name" style={styles.userName}>{userName}</span>
+										<Link to={`/profile/${userID}`} style={styles.noStyle}>
+											<span className="name" style={styles.userName}>{userName}</span>
+										</Link>
 										<div style={styles.heading}>
 											<p className="date" style={styles.commentDate}>{updateDate(date)}</p>
 											{!isEditing && this.getMenuControls(comment)}
@@ -411,13 +421,28 @@ class Comment extends Component {
 		return (
 			<div className="secondary comment" style={styles.comment.base}>
 				<div className="content" style={styles.commentConent}>
-					<Avatar size={40} style={styles.avatar}>{comment.userName.charAt(0)}</Avatar>
+					<Link to={`/profile/${userID}`} style={styles.noStyle}>
+						{ avatarUrl ?
+							<Avatar
+								size={40}
+								style={styles.avatar}
+								src={avatarUrl}
+							/>
+							:
+							<Avatar
+								size={40}
+								style={styles.avatar}
+							>{userName.toUpperCase().charAt(0)}</Avatar>
+						}
+					</Link>
 					<div className="comment-details-wrapper" style={isEditing ? getStyles(styles.commentDetailsWrapper.base, styles.commentDetailsWrapper.editing) : styles.commentDetailsWrapper.base}>
 						<div className="comment-details" style={styles.commentDetails}>
 							<div style={styles.heading}>
-								<span className="name" style={styles.userName}>{comment.userName}</span>
+								<Link to={`/profile/${userID}`} style={styles.noStyle}>
+									<span className="name" style={styles.userName}>{userName}</span>
+								</Link>
 								<div style={styles.heading}>
-									<p className="date" style={styles.commentDate}>{updateDate(comment.date)}</p>
+									<p className="date" style={styles.commentDate}>{updateDate(date)}</p>
 									{!isEditing && this.getMenuControls(comment)}
 								</div>
 							</div>
