@@ -9,6 +9,7 @@ import {
 } from '../constants/ActionTypes';
 
 export default function (state = null, action) {
+	if (state == null && action.type !== LOAD_DISCUSS_POST) return null;
 	switch (action.type) {
 	case LOAD_DISCUSS_POST:
 		return action.payload;
@@ -47,7 +48,6 @@ export default function (state = null, action) {
 
 	case DELETE_POST:
 		const index = state.replies.findIndex(reply => reply.id == action.payload.id);
-		console.log(index);
 		return Object.assign({}, state, {
 			replies: [
 				...state.replies.slice(0, index),

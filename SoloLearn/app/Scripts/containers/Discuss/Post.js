@@ -116,20 +116,24 @@ class Post extends Component {
 			isLoading: true,
 			fullyLoaded: false,
 			deletePopupOpened: false,
-			condition: null,
+			condition: props.params.replyId ?
+				{ id: parseInt(props.params.replyId, 10) } : null,
 		};
 
 		this.deletingPost = null;
 	}
 
 	async componentWillMount() {
-		await this.props.loadPost(null);
 		const { params } = this.props;
+		this.props.loadPost(null);
 		await this.props.loadPostInternal(params.id);
 		await this.getReplies(params.replyId);
 		this.checkAlias(params.questionName);
 	}
 
+	componentWillUnmount() {
+		this.props.loadPost(null);
+	}
 	// Get post answers
 	getReplies = async (replyId) => {
 		const { ordering } = this.state;
@@ -148,7 +152,8 @@ class Post extends Component {
 	checkAlias = (alias) => {
 		const { post } = this.props;
 		if (alias !== post.alias) {
-			browserHistory.replace(`/discuss/${post.id}/${post.alias}`);
+			const answerId = `/${this.props.params.replyId}` || '';
+			browserHistory.replace(`/discuss/${post.id}/${post.alias}${answerId}`);
 		}
 	}
 

@@ -33,9 +33,9 @@ const styles = {
 	},
 };
 
-const Post = ({ post, isQuestion }) => (
+const Post = ({ post, isQuestion, url }) => (
 	<Link
-		to={`/discuss/${post.parentID}`}
+		to={url}
 		style={styles.post}
 	>
 		<QuoteIcon

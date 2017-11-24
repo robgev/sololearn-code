@@ -5,7 +5,10 @@ import {
 	WindowScroller,
 } from 'react-virtualized';
 import { findIndex } from 'lodash';
+import Radium from 'radium';
+
 import 'react-virtualized/styles.css';
+import './ListStyle.css';
 
 class InfiniteVirtalizedList extends Component {
 	constructor(props) {
@@ -15,9 +18,16 @@ class InfiniteVirtalizedList extends Component {
 		this.rowHeight = props.rowHeight || 20;
 		this.item = props.item;
 		this.canLoadMore = true;
+		this.state = { index: null };
 	}
 	componentWillMount() {
 		this.loadMoreInterval = setInterval(() => { this.canLoadMore = true; }, 10 * 1000);
+	}
+	componentDidUpdate(prevProps) {
+		const { condition, list } = this.props;
+		if (prevProps.list.length === 0 && list.length > 0 && condition) {
+			this.scrollTo(condition);
+		}
 	}
 	componentWillReceiveProps(nextProps) {
 		const { length: nextLength } = nextProps.list;
@@ -25,13 +35,12 @@ class InfiniteVirtalizedList extends Component {
 		if (nextLength !== currLengh) {
 			this.canLoadMore = true;
 		}
-		// if (nextProps.condition) this.scrollTo(nextProps.condition);
 	}
 
 	scrollTo = (condition) => {
 		const index = findIndex(this.props.list, condition);
-		if (this.props.list.length > index + 2) this._list.scrollToRow(index + 2);
-		else this._list.scrollToRow(index);
+		this._list.scrollToRow(index + 3);
+		this.setState({ index });
 	}
 
 	handleNextFetch = async ({ stopIndex }) => {
@@ -45,11 +54,16 @@ class InfiniteVirtalizedList extends Component {
 		this.props.loadPrevious();
 	}
 
-	rowRenderer = ({ key, index, style }) => (
-		<div key={key} style={style}>
-			{this.props.item(this.props.list[index])}
-		</div>
-	);
+	rowRenderer = ({ key, index, style }) => {
+		const isSelected = index === this.state.index;
+		const className = isSelected ? 'fadeOut' : '';
+		if (isSelected) setTimeout(() => this.setState({ index: null }), 2000);
+		return (
+			<div key={key} className={className} style={style}>
+				{this.props.item(this.props.list[index])}
+			</div>
+		);
+	};
 
 	autoSizedRowRenderer = ({
 		index, key, parent, style,
@@ -125,4 +139,4 @@ class InfiniteVirtalizedList extends Component {
 	}
 }
 
-export default InfiniteVirtalizedList;
+export default Radium(InfiniteVirtalizedList);

@@ -75,11 +75,11 @@ class FeedItem extends Component {
 		case types.postedQuestion:
 			this.url = `/discuss/${feedItem.post.id}`;
 			this.votes = feedItem.post.votes;
-			return <Post post={feedItem.post} isQuestion />;
+			return <Post post={feedItem.post} isQuestion url={this.url} />;
 		case types.postedAnswer:
 			this.url = `/discuss/${feedItem.post.parentID}/answer/${feedItem.post.id}`;
 			this.votes = feedItem.post.votes;
-			return <Post post={feedItem.post} isQuestion={false} />;
+			return <Post post={feedItem.post} isQuestion={false} url={this.url} />;
 		case types.postedCode:
 			this.url = `/playground/${feedItem.code.publicID}`;
 			this.votes = feedItem.code.votes;
