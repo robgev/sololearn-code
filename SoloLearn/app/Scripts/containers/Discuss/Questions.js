@@ -49,6 +49,9 @@ class Questions extends Component {
 			this.loadQuestionByState();
 		}
 	}
+	componentWillUnmount() {
+		this.props.emptyQuestions();
+	}
 	loadQuestions = async () => {
 		const {
 			questions, userId, query, ordering,

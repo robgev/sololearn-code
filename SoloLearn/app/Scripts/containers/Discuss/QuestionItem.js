@@ -93,21 +93,21 @@ class QuestionItem extends PureComponent {
 	render() {
 		const { question } = this.props;
 		return (
-			<div className="question" style={styles.question}>
+			<div style={styles.question}>
 
-				<div className="stats" style={styles.stats}>
+				<div style={styles.stats}>
 					<Likes votes={question.votes} getLikes={this.getLikes} />
-					<div className="asnwers-count-wrapper" style={styles.answersCountWrapper}>
+					<div style={styles.answersCountWrapper}>
 						<p style={styles.answersCount}>{question.answers > 99 ? '99+' : question.answers}</p>
 						<ChatBubble color={green500} style={styles.chatBubble} />
 					</div>
 				</div>
-				<div className="details-wrapper" style={styles.detailsWrapper}>
-					<div className="details">
+				<div style={styles.detailsWrapper}>
+					<div>
 						<Link to={`/discuss/${question.id}`} style={noStyleLink}>
-							<p className="title" style={styles.title}>{question.title}</p>
+							<p style={styles.title}>{question.title}</p>
 						</Link>
-						<div className="tags">
+						<div>
 							{
 								removeDups(question.tags).map((tag, index) => (
 									<DiscussTag
@@ -119,7 +119,7 @@ class QuestionItem extends PureComponent {
 							}
 						</div>
 					</div>
-					<div className="author-details" style={styles.authorDetails}>
+					<div style={styles.authorDetails}>
 						<span style={styles.date}>
 							{updateDate(question.date)} by
 						</span>
