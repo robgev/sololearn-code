@@ -1,6 +1,6 @@
 // React modules
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import Radium from 'radium';
 
 // Material UI components
@@ -76,31 +76,35 @@ class QuestionsBase extends Component {
 	state = {
 		suggestions: [],
 	}
-	updateQuestions = () => this._questions.getWrappedInstance().loadQuestionByState();
+	componentWillMount() {
+		if (this.props.params.query) this.props.changeDiscussQuery(this.props.params.query);
+		else if (this.props.query !== '' &&
+			this.props.params.query !== this.props.query) {
+			browserHistory.replace(`/discuss/filter/${this.props.query}`);
+		}
+	}
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.params.query !== this.props.params.query) {
+			this.props.changeDiscussQuery(nextProps.params.query);
+		}
+	}
 	// Get search suggestions
-	handleUpdateInput = (searchText) => {
-		if (searchText === this.props.query) return;
-		this.props.changeDiscussQuery(searchText);
-
-		Service.request('Discussion/getTags', { query: searchText })
-			.then((response) => {
-				this.setState({ suggestions: response.tags });
-			}).catch((e) => {
-				console.log(e);
-			});
+	handleUpdateInput = async (query) => {
+		const { tags } = await Service.request('Discussion/getTags', { query });
+		this.setState({ suggestions: tags });
 	}
 	// Clear search input
 	clearSearchInput = () => {
-		this.props.changeDiscussQuery('');
-		this.updateQuestions();
+		browserHistory.push('/discuss');
 	}
 	// Change discuss oredering
 	handleFilterChange = (e, index, value) => {
 		this.props.changeDiscussOrdering(value);
-		this.updateQuestions();
 	}
 	handleEnter = (e) => {
-		if (e.key === 'Enter') { this.updateQuestions(); }
+		if (e.key === 'Enter') {
+			browserHistory.push(`/discuss/filter/${e.target.value}`);
+		}
 	}
 	render() {
 		return (
@@ -115,7 +119,7 @@ class QuestionsBase extends Component {
 							searchText={this.props.query}
 							underlineStyle={{ display: 'none' }}
 							dataSource={this.state.suggestions}
-							onUpdateInput={value => this.handleUpdateInput(value)}
+							onUpdateInput={this.handleUpdateInput}
 							onNewRequest={this.loadQuestionByState}
 							filter={() => true}
 							onKeyPress={this.handleEnter}
@@ -142,7 +146,7 @@ class QuestionsBase extends Component {
 					questions={this.props.questions}
 					isLoaded={this.props.isLoaded}
 					ordering={this.props.ordering}
-					query={this.props.query}
+					query={this.props.params.query}
 					isUserProfile={false}
 					ref={(questions) => { this._questions = questions; }}
 				/>

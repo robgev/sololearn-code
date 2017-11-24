@@ -130,17 +130,6 @@ class Post extends Component {
 		this.checkAlias(params.questionName);
 	}
 
-	// // Add event listeners after component mounts
-	// componentDidMount() {
-	// 	window.addEventListener('scroll', this.handleScroll);
-	// }
-
-	// Remove event listeners after component unmounts
-	// componentWillUnmount() {
-
-	// 	window.removeEventListener('scroll', this.handleScroll);
-	// }
-
 	// Get post answers
 	getReplies = async (replyId) => {
 		const { ordering } = this.state;
@@ -297,4 +286,4 @@ const mapDispatchToProps = {
 	addReply,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(Radium(Post));
+export default connect(mapStateToProps, mapDispatchToProps)(Radium(Post));

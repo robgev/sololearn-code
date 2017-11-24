@@ -29,9 +29,6 @@ class Replies extends Component {
 			this.setState({ cache });
 		}
 	}
-	forceUpdate = () => {
-		this._list.forceUpdate();
-	}
 	renderReply = reply => (
 		<Reply
 			key={reply.id}
@@ -52,7 +49,6 @@ class Replies extends Component {
 					width={1000}
 					cache={this.state.cache}
 					condition={this.props.condition}
-					ref={(list) => { this._list = list; }}
 					window
 				/>
 			</div>

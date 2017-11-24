@@ -55,6 +55,7 @@
             2, 'tab'
         ],
         "jsx-a11y/anchor-is-valid": 0,
-        "no-underscore-dangle": 0
+        "no-underscore-dangle": 0,
+        "react/sort-comp": 0
     }
 }

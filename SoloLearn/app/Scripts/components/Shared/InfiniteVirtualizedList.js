@@ -10,26 +10,14 @@ import 'react-virtualized/styles.css';
 class InfiniteVirtalizedList extends Component {
 	constructor(props) {
 		super(props);
-		const { cache } = this.props;
 		this.width = props.width || 300;
 		this.height = props.height || 300;
 		this.rowHeight = props.rowHeight || 20;
 		this.item = props.item;
 		this.canLoadMore = true;
-		this.rowSettings = cache ?
-			{
-				rowRenderer: this.autoSizedRowRenderer,
-			} :
-			{
-				rowRenderer: this.rowRenderer,
-				rowHeight: this.rowHeight,
-			};
 	}
 	componentWillMount() {
 		this.loadMoreInterval = setInterval(() => { this.canLoadMore = true; }, 10 * 1000);
-	}
-	componentDidMount() {
-		this._list.forceUpdateGrid();
 	}
 	componentWillReceiveProps(nextProps) {
 		const { length: nextLength } = nextProps.list;
@@ -37,7 +25,7 @@ class InfiniteVirtalizedList extends Component {
 		if (nextLength !== currLengh) {
 			this.canLoadMore = true;
 		}
-		if (nextProps.condition) this.scrollTo(nextProps.condition);
+		// if (nextProps.condition) this.scrollTo(nextProps.condition);
 	}
 
 	scrollTo = (condition) => {
@@ -46,10 +34,10 @@ class InfiniteVirtalizedList extends Component {
 		else this._list.scrollToRow(index);
 	}
 
-	handleNextFetch = ({ stopIndex }) => {
+	handleNextFetch = async ({ stopIndex }) => {
 		if (stopIndex > this.props.list.length - 15 && this.canLoadMore) {
-			this.props.loadMore();
 			this.canLoadMore = false;
+			await this.props.loadMore();
 		}
 	}
 
@@ -78,39 +66,60 @@ class InfiniteVirtalizedList extends Component {
 	)
 
 	render() {
-		const MiniList = props => (
-			<List
-				onRowsRendered={this.handleNextFetch}
-				width={this.width}
-				rowCount={this.props.list.length}
-				ref={(list) => { this._list = list; }}
-				{...this.rowSettings}
-				deferredMeasurementCache={this.props.cache}
-				rowHeight={this.props.cache.rowHeight}
-				{...props}
-			/>
-		);
-		if (this.props.window) {
+		if (this.props.window && this.props.cache) {
 			return (
 				<WindowScroller
 					additional={this.props.additional}
 				>
 					{({ height, scrollTop, onChildScroll }) => (
-						<MiniList
+						<List
 							autoHeight
+							onRowsRendered={this.handleNextFetch}
+							width={this.width}
+							rowCount={this.props.list.length}
+							ref={(list) => { this._list = list; }}
 							additional={this.props.additional}
 							height={height}
 							scrollTop={scrollTop}
 							onScroll={onChildScroll}
+							rowHeight={this.props.cache.rowHeight}
+							deferredMeasurementCache={this.props.cache}
+							rowRenderer={this.autoSizedRowRenderer}
 						/>
 					)
 					}
 				</WindowScroller>
 			);
+		} else if (this.props.window) {
+			return (
+				<WindowScroller>
+					{
+						({ height, scrollTop }) => (
+							<List
+								autoHeight
+								scrollTop={scrollTop}
+								onRowsRendered={this.handleNextFetch}
+								width={this.width}
+								height={height}
+								rowCount={this.props.list.length}
+								ref={(list) => { this._list = list; }}
+								rowRenderer={this.rowRenderer}
+								rowHeight={this.rowHeight}
+							/>
+						)
+					}
+				</WindowScroller>
+			);
 		}
 		return (
-			<MiniList
+			<List
+				onRowsRendered={this.handleNextFetch}
+				width={this.width}
 				height={this.height}
+				rowCount={this.props.list.length}
+				ref={(list) => { this._list = list; }}
+				rowRenderer={this.rowRenderer}
+				rowHeight={this.rowHeight}
 			/>
 		);
 	}

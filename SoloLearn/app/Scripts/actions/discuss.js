@@ -23,28 +23,29 @@ export const getProfileQuestions = questions => ({
 	payload: questions,
 });
 
-export const getQuestionsInternal = (index, profileId = null, count = 20) =>
-	async (dispatch, getState) => {
-		const { discussFilters: { discussQuery, discussOrdering } } = getState();
-		try {
-			const orderBy = profileId != null ? 7 : discussOrdering;
-			const { posts: questions } = await Service.request('Discussion/Search', {
-				index,
-				count,
-				orderBy,
-				query: discussQuery,
-				profileId,
-			});
-			if (profileId != null) {
-				dispatch(getProfileQuestions(questions));
-			} else {
-				dispatch(getQuestions(questions));
-			}
-			return questions.length;
-		} catch (e) {
-			console.log(e);
+export const getQuestionsInternal = ({
+	index, profileId = null, count = 20, query = '', ordering,
+}) => async (dispatch) => {
+	try {
+		const orderBy = profileId != null ? 7 : ordering;
+		const settings = {
+			index,
+			count,
+			orderBy,
+			profileId,
+			query,
+		};
+		const { posts: questions } = await Service.request('Discussion/Search', settings);
+		if (profileId != null) {
+			dispatch(getProfileQuestions(questions));
+		} else {
+			dispatch(getQuestions(questions));
 		}
-	};
+		return questions.length;
+	} catch (e) {
+		return console.log(e);
+	}
+};
 
 export const loadPost = post => ({
 	type: types.LOAD_DISCUSS_POST,
@@ -256,6 +257,6 @@ export const addReply = (postId, message) => async (dispatch, getState) => {
 	dispatch(loadReplies([ post ]));
 };
 
-export const changeDiscussQuery = query => ({ type: types.CHANGE_DISCUSS_QUERY, payload: query });
+export const changeDiscussQuery = (query = '') => ({ type: types.CHANGE_DISCUSS_QUERY, payload: query });
 export const changeDiscussOrdering = ordering =>
 	({ type: types.CHANGE_DISCUSS_ORDERING, payload: ordering });

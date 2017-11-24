@@ -8,6 +8,7 @@ import { getQuestionsInternal, emptyQuestions } from '../../actions/discuss';
 
 // Additional components
 import LoadingOverlay from '../../components/Shared/LoadingOverlay';
+import InfiniteVirtualizedList from '../../components/Shared/InfiniteVirtualizedList';
 import QuestionItem from './QuestionItem';
 
 const styles = {
@@ -37,37 +38,27 @@ const styles = {
 };
 
 class Questions extends Component {
-	state = {
-		isLoading: false,
-		fullyLoaded: false,
-	}
+	state = { isLoading: false }
 	componentWillMount() {
-		this.loadQuestions();
+		const { query, ordering } = this.props;
+		this.loadQuestions({ query, ordering });
 	}
-	componentDidMount() {
-		window.addEventListener('scroll', this.handleScroll);
-	}
-
-	// Remove event listeners after component unmounts
-	componentWillUnmount() {
-		window.removeEventListener('scroll', this.handleScroll);
-	}
-
-	// Check scroll state
-	handleScroll = () => {
-		if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-			if (!this.state.isLoading && !this.state.fullyLoaded) {
-				this.loadQuestions();
-			}
+	componentDidUpdate(prevProps) {
+		if (prevProps.query !== this.props.query ||
+			prevProps.ordering !== this.props.ordering) {
+			this.loadQuestionByState();
 		}
 	}
 	loadQuestions = async () => {
-		const { questions, userId } = this.props;
+		const {
+			questions, userId, query, ordering,
+		} = this.props;
 		this.setState({ isLoading: true }); // if (this.props.questions.length > 0)
 		const index = questions ? questions.length : 0;
 		try {
-			const count = await this.props.getQuestionsInternal(index, userId);
-			if (count < 20) this.setState({ fullyLoaded: true });
+			await this.props.getQuestionsInternal({
+				index, userId, query, ordering,
+			});
 			this.setState({ isLoading: false });
 		} catch (e) {
 			console.log(e);
@@ -82,19 +73,26 @@ class Questions extends Component {
 			console.log(e);
 		}
 	}
-	renderQuestions = () => this.props.questions.map(question => (
-		<QuestionItem question={question} key={question.id} />
-	))
+	renderQuestion = question => (<QuestionItem question={question} />)
 	render() {
 		const { isLoaded, questions, isUserProfile } = this.props;
 
 		return (
 			<div>
-				{((!isLoaded || questions.length === 0) && !this.state.fullyLoaded && !isUserProfile)
+				{((!isLoaded || questions.length === 0) && !isUserProfile)
 					&& <LoadingOverlay />}
-				{(isLoaded && questions.length > 0) && this.renderQuestions()}
+				{(isLoaded && questions.length > 0) && (
+					<InfiniteVirtualizedList
+						rowHeight={100}
+						item={this.renderQuestion}
+						list={this.props.questions}
+						loadMore={this.loadQuestions}
+						width={1000}
+						window
+					/>
+				)}
 				{
-					((isUserProfile || questions.length > 0) && !this.state.fullyLoaded) &&
+					((isUserProfile || questions.length > 0)) &&
 					<div
 						style={!this.state.isLoading ?
 							styles.bottomLoading.base :
@@ -103,8 +101,6 @@ class Questions extends Component {
 						<LoadingOverlay size={30} />
 					</div>
 				}
-				{(this.state.fullyLoaded && questions.length === 0) &&
-					<div style={styles.noResults}>No Results Found</div>}
 			</div>
 		);
 	}
