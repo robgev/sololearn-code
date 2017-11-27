@@ -29,7 +29,8 @@ import OutputWindow from './OutputWindow';
 const styles = {
 	playground: {
 		base: {
-			width: '1000px',
+			width: '100%',
+			maxWidth: '1000px',
 			margin: '20px auto 0',
 			overflo: 'hidden',
 		},
@@ -40,7 +41,7 @@ const styles = {
 	defaultOutputContainer: {
 		base: {
 			position: 'relative',
-			width: '1000px',
+			width: '100%',
 			minHeight: '200px',
 			margin: '20px auto',
 			display: 'none',
@@ -621,7 +622,7 @@ ${value}
 		return (
 			isGettingCode ?
 				<LoadingOverlay /> :
-				<div id="playground-container">
+				<div id="playground-container" style={styles.playgroundContainer}>
 					<Paper id="playground" style={styles.playground.base}>
 						<PlaygroundTabs
 							type={type}
