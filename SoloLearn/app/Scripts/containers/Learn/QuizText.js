@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import ReactDOM, { findDOMNode } from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 import Radium, { Style } from 'radium';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import Playground from 'containers/Playground/Playground';
 
 // Service
@@ -218,32 +218,67 @@ class CodeBlock extends Component {
 		}
 	}
 
-	togglePlayground = () => {
-		const { playgroundOpened } = this.state;
-		this.setState({ playgroundOpened: !playgroundOpened })
+	openPlayground = () => {
+		const { pathname } = browserHistory.getCurrentLocation();
+		this.setState({
+			basePath: pathname,
+			playgroundOpened: true,
+		});
+	}
+
+	closePlayground = () => {
+		const { basePath } = this.state;
+		this.setState({
+			playgroundOpened: false,
+		});
+		browserHistory.replace(basePath);
 	}
 
 	render() {
-		const { codeId, format, text } = this.props;
-		const { playgroundOpened } = this.state;
+		const {
+			text,
+			codeId,
+			format,
+			params,
+		} = this.props;
+		const playgroundParams = {
+			primary: params.courseName.toLowerCase(),
+			secondary: codeId,
+		}
 
+		const { playgroundOpened, basePath } = this.state;
 		if (codeId != undefined) {
 			const href = `https://code.sololearn.com/${codeId}`; // + "/#" + app.aliases[app.alias.toLowerCase()] + "";
 			return (
 				<div className="code-container" style={styles.codeContainer}>
 					{ playgroundOpened ?
-						<Playground /> :
-						<span className="code-block" data-codeid={codeId} style={styles.codeBlock}>
-							<span className={`code ${format}`} style={styles.code} dangerouslySetInnerHTML={{ __html: text }} />
-						</span>
+						<div>
+							<Playground
+								codeId={codeId}
+								basePath={basePath}
+								params={playgroundParams}
+							 />
+							 <FlatButton
+		 						label="Close the sandbox"
+		 						style={styles.codeButton}
+		 						className="shortcut-button"
+		 						onClick={this.closePlayground}
+		 						labelStyle={styles.codeButtonLabel}
+		 					/>
+						</div> :
+						<div>
+							<span className="code-block" data-codeid={codeId} style={styles.codeBlock}>
+								<span className={`code ${format}`} style={styles.code} dangerouslySetInnerHTML={{ __html: text }} />
+							</span>
+							<FlatButton
+								label="Try It Yourself"
+								style={styles.codeButton}
+								className="shortcut-button"
+								onClick={this.openPlayground}
+								labelStyle={styles.codeButtonLabel}
+							/>
+						</div>
 					}
-					<FlatButton
-						label="Try It Yourself"
-						style={styles.codeButton}
-						className="shortcut-button"
-						onClick={this.togglePlayground}
-						labelStyle={styles.codeButtonLabel}
-					/>
 				</div>
 			);
 		}
@@ -492,27 +527,33 @@ class QuizText extends Component {
 	}
 
 	renderComponentParts() {
+		const { params } = this.props;
 		const renderItems = this.formattingText();
 
 		return renderItems.map((element, index) => {
 			switch (element.componentType) {
 			case 'text':
 				return <TextContent html={element.props.html} key={index} />;
-				break;
 			case 'code':
-				return <CodeBlock codeId={element.props.codeId} format={element.props.format} text={element.props.codeText} key={index} />;
-				break;
+				return (
+					<CodeBlock
+						key={index}
+						params={params}
+						text={element.props.codeText}
+						codeId={element.props.codeId}
+						format={element.props.format}
+					/>
+				)
 			case 'note':
 				return <NoteBlock noteText={element.props.noteText} key={index} />;
-				break;
 			case 'img':
 				return <ImageBlock id={element.props.imgId} width={element.props.imgWidth} key={index} />;
-				break;
 			}
 		});
 	}
 
 	render() {
+		const { openComments } = this.props
 		return (
 			<Paper className="text-container" style={styles.textContainer}>
 				{tooltipOpened}
@@ -521,7 +562,12 @@ class QuizText extends Component {
 				{tooltipLeftPlaced}
 				{tooltipBottomPlaced}
 				<div id="text-content">{this.renderComponentParts()}</div>
-				<FlatButton style={styles.commentButton} labelStyle={styles.commentButtonLabel} label={`${this.state.countLoaded ? this.commentsCount : ''} COMMENTS`} onClick={this.props.openComments} />
+				<FlatButton
+					onClick={openComments}
+					style={styles.commentButton}
+					labelStyle={styles.commentButtonLabel}
+					label={`${this.state.countLoaded ? this.commentsCount : ''} COMMENTS`}
+				/>
 			</Paper>
 		);
 	}

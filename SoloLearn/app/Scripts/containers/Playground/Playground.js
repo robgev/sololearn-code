@@ -90,7 +90,7 @@ class Playground extends Component {
 
 	componentDidMount() {
 		const customUserCodeHashLength = 12;
-		const { params } = this.props;
+		const { params, basePath } = this.props;
 		if (!params.primary && !params.secondary) {
 			this.setDefaultSettings();
 		} else if (params.primary.length !== customUserCodeHashLength) {
@@ -120,7 +120,7 @@ class Playground extends Component {
 						languageSelector: isWeb ? 'web' : foundEditorSettingKey,
 					});
 
-					browserHistory.replace(`/playground/${alias}`);
+					browserHistory.replace(`${basePath}/${alias}`);
 				} else {
 					this.setDefaultSettings();
 				}
@@ -134,6 +134,7 @@ class Playground extends Component {
 
 	// Default settings
 	setDefaultSettings = () => {
+		const { basePath } = this.props;
 		const codeData = {
 			sourceCode: '',
 			cssCode: '',
@@ -151,11 +152,11 @@ class Playground extends Component {
 			latestSavedCodeData: codeData,
 		});
 
-		browserHistory.replace('/playground/html');
+		browserHistory.replace(`${basePath}/html`);
 	}
 
 	getCodeTemplate = async () => {
-		const { params } = this.props;
+		const { params, basePath } = this.props;
 		this.setState({ isGettingCode: true });
 		try {
 			const codeSample = await Service.request('Playground/GetCodeSample', { id: parseInt(params.secondary, 10) });
@@ -187,9 +188,9 @@ class Playground extends Component {
 					languageSelector: isWeb ? 'web' : foundEditorSettingKey,
 				});
 
-				browserHistory.replace(`/playground/${alias}/${params.secondary}`);
+				browserHistory.replace(`${basePath}/${alias}/${params.secondary}`);
 			} else {
-				browserHistory.replace(`/playground/html/${params.secondary}`);
+				browserHistory.replace(`${basePath}/html/${params.secondary}`);
 			}
 			this.setState({ isGettingCode: false });
 		} catch (error) {
@@ -199,7 +200,7 @@ class Playground extends Component {
 
 	// Get user saved code
 	getUserCode = async () => {
-		const { params } = this.props;
+		const { params, basePath } = this.props;
 		this.setState({ isGettingCode: true });
 
 		// Link requires saved code
@@ -218,7 +219,7 @@ class Playground extends Component {
 			const foundEditorSettingKey = findKey(editorSettings, { language });
 			if (foundEditorSettingKey) {
 				const { alias, type } = editorSettings[foundEditorSettingKey];
-				browserHistory.replace(`/playground/${publicID}/${alias}`);
+				browserHistory.replace(`${basePath}/${publicID}/${alias}`);
 				const isWeb = checkWeb(alias);
 				const codeData = {
 					sourceCode,
@@ -267,12 +268,12 @@ class Playground extends Component {
 
 	// Change web tabs
 	handleTabChange = (mode) => {
-		const { params } = this.props;
+		const { params, basePath } = this.props;
 		const code = this.getTabCodeData(mode);
 		const { codeType, publicID } = this.state;
 		const { alias } = editorSettings[mode];
 		const isUserCode = codeType === 'userCode';
-		const link = isUserCode ? `/playground/${publicID}/` : '/playground/';
+		const link = isUserCode ? `${basePath}/${publicID}/` : `${basePath}/`;
 		this.setState({
 			code,
 			mode,
@@ -604,6 +605,7 @@ ${value}
 			commentsOpened,
 			languageSelector,
 			userCodeLanguage,
+			withCodeComments,
 			inputsPopupOpened,
 			latestSavedCodeData,
 		} = this.state;
@@ -665,10 +667,12 @@ ${value}
 							handleThemeChange={this.handleThemeChange}
 							handleLanguageChange={this.handleLanguageChange}
 						/>
-						<FlatButton
-							onClick={this.openComments}
-							label={`${comments} COMMENTS`}
-						/>
+						{ withCodeComments &&
+							<FlatButton
+								onClick={this.openComments}
+								label={`${comments} COMMENTS`}
+							/>
+						}
 						<Paper
 							className="default-output-container"
 							style={{

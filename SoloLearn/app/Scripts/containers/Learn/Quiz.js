@@ -302,7 +302,11 @@ class Quiz extends Component {
 
     render() {
     	const {
-    		activeModule, quizzes, activeQuiz, isLoaded,
+				params,
+				quizzes,
+				isLoaded,
+				activeQuiz,
+				 activeModule,
     	} = this.props;
 
     	if (!isLoaded && !this.props.isShortcut) {
@@ -319,7 +323,15 @@ class Quiz extends Component {
     	if (activeQuiz.isText) {
     		return (
     			<div className="quiz-text" style={styles.wrapper}>
-    				<QuizText key={quiz.id} quizId={quiz.id} type={1} textContent={quiz.textContent} glossary={this.props.glossary} openComments={this.props.openComments} />
+    				<QuizText
+							type={1}
+							key={quiz.id}
+							quizId={quiz.id}
+							params={params}
+							glossary={this.props.glossary}
+							textContent={quiz.textContent}
+							openComments={this.props.openComments}
+						/>
 		<RaisedButton label="Continue" style={styles.skipText} labelColor="#fff" backgroundColor="#8bc34a" onClick={e => this.props.loadLessonLink(activeQuiz.id, parseInt(activeQuiz.number) + 1, false, 2)} />
 	</div>
     		);
