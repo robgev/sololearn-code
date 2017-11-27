@@ -16,15 +16,15 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { grey500, blueGrey500 } from 'material-ui/styles/colors';
 
 // Redux modules
-import { questionFollowingInternal } from '../../actions/discuss';
-import getLikesInternal from '../../actions/likes';
+import { questionFollowingInternal } from 'actions/discuss';
+import getLikesInternal from 'actions/likes';
 
 import DiscussTag from './DiscussTag';
 import DiscussAuthor from 'components/Shared/ProfileAvatar';
 
 // Utils
-import Likes from '../../components/Shared/Likes';
-import removeDups from '../../utils/removeDups';
+import Likes from 'components/Shared/Likes';
+import removeDups from 'utils/removeDups';
 
 const styles = {
 	question: {

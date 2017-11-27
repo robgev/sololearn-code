@@ -37,10 +37,11 @@ class Likes extends PureComponent {
 				/>
 			</div>
 			<Divider />
-		</div >
+		</div>
 	);
 	render() {
 		const { votes, likes } = this.props;
+		console.log(likes);
 		return (
 			<div
 				onClick={this.openList}

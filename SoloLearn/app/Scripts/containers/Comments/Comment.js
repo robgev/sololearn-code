@@ -5,20 +5,24 @@ import { Link } from 'react-router';
 
 // Material UI components
 import Avatar from 'material-ui/Avatar';
-import IconButton from 'material-ui/IconButton';
-import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
-import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
+import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import { grey500, blueGrey500 } from 'material-ui/styles/colors';
+import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+
+// Redux modules
+import getLikesInternal from 'actions/likes';
 
 // Utils
-import updateDate from 'utils/dateFormatter';
-import updateMessage from 'utils/messageFormatter';
 import getStyles from 'utils/styleConverter';
+import updateDate from 'utils/dateFormatter';
+import Likes from '../../components/Shared/Likes';
+import updateMessage from 'utils/messageFormatter';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
 const styles = {
@@ -114,16 +118,20 @@ const styles = {
 
 	commentControls: {
 		base: {
+			display: 'flex',
+			justifyContent: 'space-between',
 			margin: '8px 0 0 0',
 			overflow: 'hidden',
 		},
 
 		left: {
-			float: 'left',
+			display: 'flex',
+			alignItems: 'center',
 		},
 
 		right: {
-			float: 'right',
+			display: 'flex',
+			alignItems: 'center',
 		},
 	},
 
@@ -275,8 +283,15 @@ class Comment extends Component {
 			voteComment={this.props.voteComment}
 			editComment={this.props.editComment}
 			deleteComment={this.props.deleteComment}
+			getLikes={this.props.getLikes}
 		/>
 	))
+
+	getLikes = () => {
+		const { getLikes, comment } = this.props;
+		console.log(this);
+		getLikes(comment.id);
+	}
 
 	getEditControls = () => {
 		const saveDisabled = this.state.errorText.length === 0;
@@ -310,7 +325,7 @@ class Comment extends Component {
 			<IconButton className="upvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => this.props.voteComment(comment, 1)}>
 				<ThumbUp color={comment.vote === 1 ? blueGrey500 : grey500} />
 			</IconButton>
-			<span style={styles.vote.text}>{comment.votes > 0 ? `+${comment.votes}` : comment.votes}</span>
+			<Likes votes={comment.votes} getLikes={this.getLikes} />
 			<IconButton className="downvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => this.props.voteComment(comment, -1)}>
 				<ThumbDown color={comment.vote === -1 ? blueGrey500 : grey500} />
 			</IconButton>
@@ -417,7 +432,6 @@ class Comment extends Component {
 				</div>
 			);
 		}
-
 		return (
 			<div className="secondary comment" style={styles.comment.base}>
 				<div className="content" style={styles.commentConent}>
@@ -462,4 +476,8 @@ class Comment extends Component {
 
 const mapStateToProps = state => ({ userId: state.userProfile.id });
 
-export default connect(mapStateToProps)(Comment);
+const mapDispatchToProps = {
+	getLikes: getLikesInternal(3),
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);
