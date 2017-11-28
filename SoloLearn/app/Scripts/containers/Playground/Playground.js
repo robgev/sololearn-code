@@ -465,8 +465,7 @@ ${value}
 			iDoc.write(output);
 			iDoc.close();
 		} else {
-			output = output.replace(/</g, '&lt;')
-				.replace(/>/g, '&gt;');
+			output = output.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 			const message = output != '' ? output : 'No output.';
 
 			document.querySelector('.default-output').innerHTML = message;

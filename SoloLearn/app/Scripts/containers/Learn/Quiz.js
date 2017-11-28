@@ -302,6 +302,7 @@ class Quiz extends Component {
 
     render() {
     	const {
+				course,
 				params,
 				quizzes,
 				isLoaded,
@@ -327,9 +328,9 @@ class Quiz extends Component {
 							type={1}
 							key={quiz.id}
 							quizId={quiz.id}
-							params={params}
 							glossary={this.props.glossary}
 							textContent={quiz.textContent}
+							courseLanguage={course.language}
 							openComments={this.props.openComments}
 						/>
 		<RaisedButton label="Continue" style={styles.skipText} labelColor="#fff" backgroundColor="#8bc34a" onClick={e => this.props.loadLessonLink(activeQuiz.id, parseInt(activeQuiz.number) + 1, false, 2)} />
@@ -418,27 +419,23 @@ class Quiz extends Component {
     }
 }
 
-function mapStateToProps(state) {
-	return {
-		isLoaded: isLoaded(state, 'quizzes'),
-		course: state.course,
-		activeModuleId: state.activeModuleId,
-		activeModule: state.modulesMapping[state.activeModuleId],
-		activeLessonId: state.activeLessonId,
-		activeLesson: state.lessonsMapping[state.activeLessonId],
-		glossary: state.course.glossary,
-		activeQuiz: state.activeQuiz,
-		quizzes: state.quizzesMapping,
-	};
-}
+const mapStateToProps = (state) => ({
+	isLoaded: isLoaded(state, 'quizzes'),
+	course: state.course,
+	activeModuleId: state.activeModuleId,
+	activeModule: state.modulesMapping[state.activeModuleId],
+	activeLessonId: state.activeLessonId,
+	activeLesson: state.lessonsMapping[state.activeLessonId],
+	glossary: state.course.glossary,
+	activeQuiz: state.activeQuiz,
+	quizzes: state.quizzesMapping,
+});
 
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({
-		selectModule,
-		selectLesson,
-		selectQuiz,
-	}, dispatch);
-}
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+	selectModule,
+	selectLesson,
+	selectQuiz,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Quiz);
 

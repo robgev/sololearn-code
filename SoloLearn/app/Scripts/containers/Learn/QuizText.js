@@ -239,10 +239,10 @@ class CodeBlock extends Component {
 			text,
 			codeId,
 			format,
-			params,
+			courseLanguage,
 		} = this.props;
 		const playgroundParams = {
-			primary: params.courseName.toLowerCase(),
+			primary: courseLanguage,
 			secondary: codeId,
 		}
 
@@ -527,7 +527,7 @@ class QuizText extends Component {
 	}
 
 	renderComponentParts() {
-		const { params } = this.props;
+		const { courseLanguage } = this.props;
 		const renderItems = this.formattingText();
 
 		return renderItems.map((element, index) => {
@@ -538,10 +538,10 @@ class QuizText extends Component {
 				return (
 					<CodeBlock
 						key={index}
-						params={params}
 						text={element.props.codeText}
 						codeId={element.props.codeId}
 						format={element.props.format}
+						courseLanguage={courseLanguage}
 					/>
 				)
 			case 'note':
