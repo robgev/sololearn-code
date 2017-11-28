@@ -1,9 +1,9 @@
 // React modules
 import React, { PureComponent } from 'react';
 import { Link, browserHistory } from 'react-router';
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
 // Material UI components
-import Avatar from 'material-ui/Avatar';
 import Paper from 'material-ui/Paper';
 import LinearProgress from 'material-ui/LinearProgress';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -84,30 +84,41 @@ class Header extends PureComponent {
     			}
     		}
     	}
+
     	return (
     		<Paper className="feed-header" style={styles.container} onClick={this.navigateToProfile}>
     			<div className="details-wrapper" style={styles.detailsWrapper}>
-		<Avatar size={50} style={styles.avatar}>{profile.name.charAt(0).toUpperCase()}</Avatar>
-		<div className="details" style={styles.details}>
+						<ProfileAvatar
+							size={50}
+							userID={profile.id}
+							style={styles.avatar}
+							avatarUrl={profile.avatarUrl}
+						/>
+						<div className="details" style={styles.details}>
     					<p style={styles.name}>{profile.name}</p>
-		<Link to="/leaderboard" style={styles.leaderboardLink}>Check out the leaderboard</Link>
-		<div style={styles.progressWrapper}>
-	<LinearProgress
-	style={styles.progress}
-    							mode="determinate"
-    							min={0}
-    							max={maxXp}
-    							value={currentXp}
-    							color="#8BC34A"
-    						/>
+							<Link to="/leaderboard" style={styles.leaderboardLink}>
+								Check out the leaderboard
+							</Link>
+							<div style={styles.progressWrapper}>
+								<LinearProgress
+									min={0}
+									max={maxXp}
+									color="#8BC34A"
+									value={currentXp}
+									mode="determinate"
+									style={styles.progress}
+								/>
     						<span style={styles.status}>{status}</span>
-    					</div>
-	</div>
- </div>
+							</div>
+						</div>
+					</div>
     			<div className="actions" style={styles.actions}>
-    				<RaisedButton label="Invite Friends" secondary />
- </div>
- </Paper>
+    				<RaisedButton
+							secondary
+							label="Invite Friends"
+						/>
+					</div>
+				</Paper>
     	);
     }
 }

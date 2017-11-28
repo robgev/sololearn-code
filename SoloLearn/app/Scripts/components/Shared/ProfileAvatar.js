@@ -35,6 +35,7 @@ const ProfileAvatar = ({
 	date,
 	style,
 	userID,
+	size=30,
 	userName,
 	avatarUrl,
 }) => (
@@ -42,19 +43,21 @@ const ProfileAvatar = ({
 		<div style={styles.authorDetails}>
 			{ avatarUrl ?
 				<Avatar
-					size={30}
+					size={size}
 					src={avatarUrl}
 					style={styles.avatar}
 				/>
 				:
 				<Avatar
-					size={30}
+					size={size}
 					style={styles.avatar}
 				>{userName.toUpperCase().charAt(0)}</Avatar>
 			}
-			<div style={styles.texts.base}>
-				<p style={styles.texts.name}>{userName}</p>
-			</div>
+			{ userName &&
+				<div style={styles.texts.base}>
+					<p style={styles.texts.name}>{userName}</p>
+				</div>
+			}
 		</div>
 	</Link>
 );
