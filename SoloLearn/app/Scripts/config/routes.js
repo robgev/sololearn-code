@@ -8,7 +8,6 @@ import MainLayout from 'components/Layouts/MainLayout';
 import Login from 'containers/Login';
 
 // Additional components
-// import App from 'containers/App';
 
 // Learn
 import Modules from 'containers/Learn/Modules';
