@@ -63,42 +63,61 @@ export const loadPostInternal = id => async (dispatch) => {
 	}
 };
 
-export const loadReplies = posts => ({
+const loadReplies = posts => ({
 	type: types.LOAD_DISCUSS_POST_REPLIES,
 	payload: posts,
 });
 
-const fetchReplies = async (postId, orderBy, index, findPostId) => {
+const loadPreviousReplies = posts => ({
+	type: types.LOAD_DISCUSS_POST_PREVIOUS_REPLIES,
+	payload: posts,
+});
+
+const fetchReplies = async ({
+	postId, orderBy, index, findPostId, count = 20,
+}) => {
 	try {
 		const settings = findPostId ?
 			{
-				postId, orderBy: 7, findPostId, count: 20,
+				postId, orderBy: 7, findPostId, count,
 			} :
 			{
-				postId, orderBy, index, count: 20,
+				postId, orderBy, index, count,
 			};
 		const { posts } = await Service.request('Discussion/GetReplies', settings);
 		return posts;
 	} catch (e) {
-		console.log(e);
+		return console.log(e);
 	}
+};
+
+export const loadPreviousRepliesInternal = orderBy => async (dispatch, getState) => {
+	const { discussPost: post } = getState();
+	const { index: first } = post.replies[0];
+	const index = first >= 20 ? first - 20 : 0;
+	const count = index === 0 ? first : 20;
+	const posts = await fetchReplies({
+		postId: post.id, orderBy, index, count,
+	});
+	dispatch(loadPreviousReplies(posts));
 };
 
 export const loadRepliesInternal = (orderBy, answerId) => async (dispatch, getState) => {
 	const { discussPost: post } = getState();
-	const posts = await fetchReplies(post.id, orderBy, post.replies.length, answerId || null);
+	const posts = await fetchReplies({
+		postId: post.id, orderBy, index: post.replies.length, findPostId: answerId || null,
+	});
 	dispatch(loadReplies(posts));
 };
 
 export const emptyReplies = () => dispatch => new Promise((resolve) => {
 	dispatch({
 		type: types.EMPTY_DISCUSS_POST_REPLIES,
-		payload: [],
 	});
 	resolve();
 });
 
-export const votePost = (id, isPrimary, vote, votes) => dispatch => new Promise((resolve) => {
+const votePost = (id, isPrimary, vote, votes) => dispatch => new Promise((resolve) => {
 	dispatch({
 		type: types.VOTE_POST,
 		payload: {

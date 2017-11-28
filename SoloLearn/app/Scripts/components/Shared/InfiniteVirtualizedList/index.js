@@ -37,6 +37,8 @@ class InfiniteVirtalizedList extends Component {
 		}
 	}
 
+	_forceUpdate = () => this._list.forceUpdateGrid()
+
 	scrollTo = (condition) => {
 		const index = findIndex(this.props.list, condition);
 		this._list.scrollToRow(index + 3);

@@ -192,10 +192,10 @@ class Reply extends Component {
 		};
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		return (JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
-			this.state !== nextState);
-	}
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	return (JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
+	// 		this.state !== nextState);
+	// }
 
 	getLikes = () => {
 		this.props.getLikes(this.props.reply.id);
