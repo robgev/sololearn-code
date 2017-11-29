@@ -9,6 +9,31 @@ import {
 	ACCEPT_ANSWER,
 } from '../constants/ActionTypes';
 
+const votePost = (state, {
+	vote, votes, isPrimary, id,
+}) => {
+	if (isPrimary) {
+		return { ...state, vote, votes };
+	}
+	const replies = state.replies.map(reply => (reply.id === id ?
+		{ ...reply, vote, votes } : reply));
+	return {
+		...state,
+		replies,
+	};
+};
+
+const editPost = (state, { message, isPrimary, id }) => {
+	if (isPrimary) {
+		return { ...state, message };
+	}
+	return {
+		...state,
+		replies: state.replies.map(reply => (reply.id === id ?
+			{ ...reply, message } : reply)),
+	};
+};
+
 export default (state = null, action) => {
 	if (state == null && action.type !== LOAD_DISCUSS_POST) return null;
 	switch (action.type) {
@@ -21,27 +46,9 @@ export default (state = null, action) => {
 	case EMPTY_DISCUSS_POST_REPLIES:
 		return { ...state, replies: [] };
 	case VOTE_POST:
-		const { vote, votes } = action.payload;
-		if (action.payload.isPrimary) {
-			return { ...state, vote, votes };
-		}
-		const replies = state.replies.map(reply => (reply.id === action.payload.id ?
-			{ ...reply, vote, votes } : reply));
-		console.warn(replies);
-		return {
-			...state,
-			replies,
-		};
+		return votePost(state, action.payload);
 	case EDIT_POST:
-		const { message } = action.payload;
-		if (action.payload.isPrimary) {
-			return { ...state, message };
-		}
-		return {
-			...state,
-			replies: state.replies.map(reply => (reply.id === action.payload.id ?
-				{ ...reply, message } : reply)),
-		};
+		return editPost(state, action.payload);
 	case DELETE_POST:
 		return { ...state, replies: state.replies.filter(reply => reply.id !== action.payload.id) };
 	case QUESTION_FOLLOWING:
