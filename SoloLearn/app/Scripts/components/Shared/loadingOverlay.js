@@ -52,7 +52,7 @@ const LoadingOverlay = (props) => {
 			style={{
 				...styles.overlay.base,
 				...props.style,
-				...(props.withBackground ? styles.overlay.background : {})
+				...(props.withBackground ? styles.overlay.background : {}),
 			}}
 		>
 			<CircularProgress

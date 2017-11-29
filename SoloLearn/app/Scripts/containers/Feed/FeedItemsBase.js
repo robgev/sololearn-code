@@ -27,6 +27,7 @@ import Service from 'api/service';
 // Utils and defaults
 import { getOffset, numberFormatter } from 'utils';
 import PopupTypes from 'defaults/feedPopupTypes';
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
 // Additional data and components
 import Header from './Header';
