@@ -1,6 +1,7 @@
 import {
 	LOAD_DISCUSS_POST,
 	LOAD_DISCUSS_POST_REPLIES,
+	LOAD_DISCUSS_POST_PREVIOUS_REPLIES,
 	EMPTY_DISCUSS_POST_REPLIES,
 	VOTE_POST, EDIT_POST,
 	DELETE_POST,
@@ -8,63 +9,58 @@ import {
 	ACCEPT_ANSWER,
 } from '../constants/ActionTypes';
 
-export default function (state = null, action) {
+const votePost = (state, {
+	vote, votes, isPrimary, id,
+}) => {
+	if (isPrimary) {
+		return { ...state, vote, votes };
+	}
+	const replies = state.replies.map(reply => (reply.id === id ?
+		{ ...reply, vote, votes } : reply));
+	return {
+		...state,
+		replies,
+	};
+};
+
+const editPost = (state, { message, isPrimary, id }) => {
+	if (isPrimary) {
+		return { ...state, message };
+	}
+	return {
+		...state,
+		replies: state.replies.map(reply => (reply.id === id ?
+			{ ...reply, message } : reply)),
+	};
+};
+
+export default (state = null, action) => {
 	if (state == null && action.type !== LOAD_DISCUSS_POST) return null;
 	switch (action.type) {
 	case LOAD_DISCUSS_POST:
 		return action.payload;
 	case LOAD_DISCUSS_POST_REPLIES:
-		return Object.assign({}, state, {
-			replies: state.replies.concat(action.payload),
-		});
+		return { ...state, replies: [ ...state.replies, ...action.payload ] };
+	case LOAD_DISCUSS_POST_PREVIOUS_REPLIES:
+		return { ...state, replies: [ ...action.payload, ...state.replies ] };
 	case EMPTY_DISCUSS_POST_REPLIES:
-		return Object.assign({}, state, {
-			replies: action.payload,
-		});
+		return { ...state, replies: [] };
 	case VOTE_POST:
-		if (action.payload.isPrimary) {
-			return Object.assign({}, state, {
-				vote: action.payload.vote,
-				votes: action.payload.votes,
-			});
-		}
-
-		return Object.assign({}, state, {
-			replies: state.replies.map(reply => (reply.id === action.payload.id ?
-				{ ...reply, vote: action.payload.vote, votes: action.payload.votes } : reply)),
-		});
-
+		return votePost(state, action.payload);
 	case EDIT_POST:
-		if (action.payload.isPrimary) {
-			return Object.assign({}, state, {
-				message: action.payload.message,
-			});
-		}
-
-		return Object.assign({}, state, {
-			replies: state.replies.map(reply => (reply.id === action.payload.id ?
-				{ ...reply, message: action.payload.message } : reply)),
-		});
-
+		return editPost(state, action.payload);
 	case DELETE_POST:
-		const index = state.replies.findIndex(reply => reply.id == action.payload.id);
-		return Object.assign({}, state, {
-			replies: [
-				...state.replies.slice(0, index),
-				...state.replies.slice(index + 1),
-			],
-		});
+		return { ...state, replies: state.replies.filter(reply => reply.id !== action.payload.id) };
 	case QUESTION_FOLLOWING:
-		return Object.assign({}, state, {
-			isFollowing: action.payload,
-		});
+		return { ...state, isFollowing: action.payload };
 	case ACCEPT_ANSWER:
-		return Object.assign({}, state, {
+		return {
+			...state,
 			replies: state.replies.map(reply => (reply.id === action.payload.id ?
 				{ ...reply, isAccepted: action.payload.isAccepted } :
 				{ ...reply, isAccepted: false })),
-		});
+		};
 	default:
 		return state;
 	}
-}
+};

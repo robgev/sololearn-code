@@ -4,7 +4,6 @@ import { browserHistory } from 'react-router';
 import Radium from 'radium';
 
 // Material UI components
-import Paper from 'material-ui/Paper';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
@@ -14,6 +13,7 @@ import { connect } from 'react-redux';
 import {
 	loadPostInternal,
 	loadRepliesInternal,
+	loadPreviousRepliesInternal,
 	emptyReplies,
 	votePostInternal,
 	deletePostInternal,
@@ -137,11 +137,14 @@ class Post extends Component {
 	// Get post answers
 	getReplies = async (replyId) => {
 		const { ordering } = this.state;
+		this.setState({ isLoading: true });
 		await this.props.loadRepliesInternal(ordering, replyId);
-		if (replyId) {
-			this.setState({ condition: { id: parseInt(replyId, 10) } });
-		}
 		this.setState({ isLoading: false });
+	}
+
+	getPreviousReplies = async () => {
+		const { ordering } = this.state;
+		await this.props.loadPreviousRepliesInternal(ordering);
 	}
 
 	addReply = (message) => {
@@ -152,7 +155,8 @@ class Post extends Component {
 	checkAlias = (alias) => {
 		const { post } = this.props;
 		if (alias !== post.alias) {
-			const answerId = `/${this.props.params.replyId}` || '';
+			const { replyId } = this.props.params;
+			const answerId = replyId ? `/${replyId}` : '';
 			browserHistory.replace(`/discuss/${post.id}/${post.alias}${answerId}`);
 		}
 	}
@@ -176,6 +180,7 @@ class Post extends Component {
 
 	votePost = (post, voteValue) => {
 		this.props.votePostInternal(post, voteValue);
+		this._replies._forceUpdate();
 	}
 
 	// Open deleting confimation dialog
@@ -249,8 +254,10 @@ class Post extends Component {
 						openDeletePopup={this.openDeletePopup}
 						isUsersQuestion={usersQuestion}
 						loadReplies={this.getReplies}
+						loadPreviousReplies={this.getPreviousReplies}
 						condition={this.state.condition}
 						orderBy={this.state.ordering}
+						ref={(replies) => { this._replies = replies; }}
 					/>
 					{
 						(post.replies.length > 0 && !this.state.fullyLoaded) &&
@@ -284,6 +291,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
 	loadPostInternal,
 	loadRepliesInternal,
+	loadPreviousRepliesInternal,
 	deletePostInternal,
 	emptyReplies,
 	votePostInternal,

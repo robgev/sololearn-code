@@ -1,17 +1,15 @@
 // React modules
 import React, { Component } from 'react';
 import Radium from 'radium';
+import { connect } from 'react-redux';
 
 // Redux modules
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { loadDefaults } from 'actions/defaultActions';
 import { getCodesInternal, emptyCodes } from 'actions/playground';
-import { defaultsLoaded } from 'reducers';
 
 // Additional components
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import CodeItem from './CodeItem';
+import InfiniteVirtualizedList from '../../components/Shared/InfiniteVirtualizedList';
 
 const styles = {
 	bottomLoading: {
@@ -44,23 +42,11 @@ const styles = {
 class Codes extends Component {
 	state = {
 		isLoading: true,
-		fullyLoaded: false,
 	}
 	componentWillMount() {
-		const { isLoaded } = this.props;
-		if (!isLoaded) {
+		if (!this.props.isLoaded) {
 			this.loadCodes();
 		}
-	}
-
-	// Add event listeners after component mounts
-	componentDidMount() {
-		window.addEventListener('scroll', this.handleScroll);
-	}
-
-	// Remove event listeners after component unmounts
-	componentWillUnmount() {
-		window.removeEventListener('scroll', () => console.log('removed'));
 	}
 
 	loadCodes = async () => {
@@ -68,10 +54,9 @@ class Codes extends Component {
 			const {
 				codes, ordering, language, query, userId,
 			} = this.props;
-			// this.setState({ isLoading: true }); //if (this.props.codes.length > 0)
 			const index = codes ? codes.length : 0;
-			const count = await this.props.getCodesInternal(index, ordering, language, query, userId);
-			if (count < 20) this.setState({ fullyLoaded: true });
+			this.setState({ isLoading: true });
+			await this.props.getCodesInternal(index, ordering, language, query, userId);
 			this.setState({ isLoading: false });
 		} catch (e) {
 			console.log(e);
@@ -81,34 +66,32 @@ class Codes extends Component {
 	// Load codes when condition changes
 	loadCodesByState = async () => {
 		await this.props.emptyCodes();
-		this.setState({ fullyLoaded: false });
 		this.loadCodes();
 	}
 
-	// Check scroll state
-	handleScroll = () => {
-		if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-			if (!this.state.isLoading && !this.state.fullyLoaded) {
-				this.loadCodes();
-			}
-		}
-	}
-
-	renderCodes = () => this.props.codes.map(code => (
-		<CodeItem code={code} key={code.id} />
-	))
+	renderCode = code => (
+		<CodeItem code={code} />
+	)
 
 	render() {
 		const { isLoaded, codes, isUserProfile } = this.props;
 		return (
-			<div className="codes">
-				{(isLoaded && codes.length > 0) && this.renderCodes()}
-				{((!isLoaded || codes.length === 0) && !this.state.fullyLoaded && !isUserProfile)
+			<div>
+				{(isLoaded && codes.length > 0) &&
+					<InfiniteVirtualizedList
+						item={this.renderCode}
+						list={this.props.codes}
+						loadMore={this.loadCodes}
+						width={1000}
+						rowHeight={100}
+						window
+					/>
+				}
+				{((!isLoaded || codes.length === 0) && !isUserProfile)
 					&& <LoadingOverlay />}
 				{
-					((isUserProfile || codes.length > 0) && !this.state.fullyLoaded) &&
+					((isUserProfile || codes.length > 0)) &&
 					<div
-						className="loading"
 						style={!this.state.isLoading ?
 							styles.bottomLoading.base :
 							[ styles.bottomLoading.base, styles.bottomLoading.active ]}
@@ -116,25 +99,14 @@ class Codes extends Component {
 						<LoadingOverlay size={30} />
 					</div>
 				}
-				{(this.state.fullyLoaded && codes.length === 0)
-					&& <div style={styles.noResults}>No Results Found</div>}
 			</div>
 		);
 	}
 }
 
-function mapStateToProps(state) {
-	return {
-		defaultsLoaded: defaultsLoaded(state),
-	};
-}
+const mapDispatchToProps = {
+	getCodesInternal,
+	emptyCodes,
+};
 
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({
-		loadDefaults,
-		getCodesInternal,
-		emptyCodes,
-	}, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(Radium(Codes));
+export default connect(null, mapDispatchToProps, null, { withRef: true })(Radium(Codes));

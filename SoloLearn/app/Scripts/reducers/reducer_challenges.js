@@ -1,8 +1,8 @@
+import { combineReducers } from 'redux';
 import {
 	GET_CONTESTS, CLEAR_CONTESTS, CHOOSE_CHALLENGE_COURSE, GET_ALL_PLAYERS,
 	EMPTY_ALL_PLAYERS, GET_CONTEST_FOLLOWERS, GET_CONTEST_FOLLOWING, GET_CONTEST,
 } from '../constants/ActionTypes';
-import { combineReducers } from 'redux';
 
 const contests = (state = null, action) => {
 	switch (action.type) {
