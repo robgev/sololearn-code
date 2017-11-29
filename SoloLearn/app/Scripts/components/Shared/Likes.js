@@ -41,7 +41,6 @@ class Likes extends PureComponent {
 	);
 	render() {
 		const { votes, likes } = this.props;
-		console.log(likes);
 		return (
 			<div
 				onClick={this.openList}

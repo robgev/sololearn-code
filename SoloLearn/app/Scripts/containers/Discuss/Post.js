@@ -155,7 +155,8 @@ class Post extends Component {
 	checkAlias = (alias) => {
 		const { post } = this.props;
 		if (alias !== post.alias) {
-			const answerId = `/${this.props.params.replyId}` || '';
+			const { replyId } = this.props.params;
+			const answerId = replyId ? `/${replyId}` : '';
 			browserHistory.replace(`/discuss/${post.id}/${post.alias}${answerId}`);
 		}
 	}

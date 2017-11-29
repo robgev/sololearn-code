@@ -24,11 +24,11 @@ class Replies extends Component {
 		};
 	}
 	componentWillReceiveProps(nextProps) {
-		if (this.props.orderBy !== nextProps.orderBy) {
+		if (this.props.orderBy !== nextProps.orderBy ||
+			(this.props.replies.length !== nextProps.replies.length)) {
 			const cache = getNewCache();
 			this.setState({ cache });
 		}
-		// console.warn(nextProps.replies);
 		if (nextProps.replies.length > 0 &&
 			nextProps.replies[0].index === 0 &&
 			this.state.canLoadAbove) {
