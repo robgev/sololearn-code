@@ -13,6 +13,11 @@ import routes from './config/routes';
 
 injectTapEventPlugin();
 
+const mapStateToProps = state => ({
+	defaultsLoaded: defaultsLoaded(state),
+});
+
+@connect(mapStateToProps, { loadDefaults })
 class App extends PureComponent {
 	componentWillMount() {
 		const { defaultsLoaded, loadDefaults } = this.props;
@@ -27,15 +32,9 @@ class App extends PureComponent {
 	}
 }
 
-const mapStateToProps = state => ({
-	defaultsLoaded: defaultsLoaded(state),
-});
-
-const AppWithProps = connect(mapStateToProps, { loadDefaults })(App);
-
 ReactDOM.render(
 	<Provider store={store}>
-		<AppWithProps />
+		<App />
 	</Provider>,
 	document.getElementById('app'),
 );

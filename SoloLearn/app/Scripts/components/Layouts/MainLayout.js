@@ -1,20 +1,9 @@
 // React modules
 import React, { Component } from 'react';
-import Radium, { Style } from 'radium';
-import { browserHistory } from 'react-router';
-import Login from '../../containers/Login';
-import Auth from '../../utils/protected';
-
-// Redux modules
+import Radium from 'radium';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { loadDefaults } from '../../actions/defaultActions';
-import { defaultsLoaded } from '../../reducers';
-import { changeLoginModal } from '../../actions/login.action';
-
-// Additional components
-import Header from '../../containers/Header/Header';
-import LoadingOverlay from '../Shared/LoadingOverlay';
+import { find } from 'lodash';
 
 // Material UI components
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -22,17 +11,23 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
+// Redux modules
+import { changeLoginModal } from 'actions/login.action';
+import { loadDefaults } from 'actions/defaultActions';
+import { defaultsLoaded } from 'reducers';
+import selectTab from 'actions/tabs';
+import { Auth } from 'utils';
+
+// Additional components
+import Header from 'containers/Header/Header';
+import Login from 'containers/Login';
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
+
 // Theme
-import Theme from '../../defaults/theme.js';
+import Theme from 'defaults/theme';
 
 // Utils
 import defaultSyles from '../../styles/defaults';
-
-// Tabs
-import selectTab from '../../actions/tabs';
-
-// Lodash for tab selection
-import { find } from 'lodash';
 
 const muiTheme = getMuiTheme(Theme);
 
@@ -58,10 +53,10 @@ class MainLayout extends Component {
 		}
 	}
 	selectTab = () => {
-		const { selectTab, tabs, location: { pathname } } = this.props;
+		const { selectTab: changeTab, tabs, location: { pathname } } = this.props;
 		const currTab = find(tabs, tab => pathname.includes(tab.url) || tab.url.includes(pathname));
 		if (currTab) {
-			this.props.selectTab(currTab);
+			changeTab(currTab);
 		}
 	}
 	changeModalState = () => {

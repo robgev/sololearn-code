@@ -1,22 +1,9 @@
-// React modules
+// General modules
 import React, { Component } from 'react';
-import { Link } from 'react-router';
-import Radium, { Style } from 'radium';
-import { browserHistory } from 'react-router';
-
-// Redux modules
+import { Link, browserHistory } from 'react-router';
+import Radium from 'radium';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { loadCourseInternal, toggleCourseInternal, toggleCourse, selectModule } from '../../actions/learn';
-import { isLoaded } from '../../reducers';
-
-// Service
-import Service from '../../api/service';
-import { AppDefaults } from '../../api/service';
-import Progress, { ProgressState } from '../../api/progress';
-
-// Popups
-import Popup from '../../api/popupService';
 
 // Material UI components
 import Dialog from 'material-ui/Dialog';
@@ -31,12 +18,20 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
+// Redux modules
+import { loadCourseInternal, toggleCourseInternal, toggleCourse, selectModule } from 'actions/learn';
+import { isLoaded } from 'reducers';
+
+// Service
+import Service, { AppDefaults } from 'api/service';
+import Progress, { ProgressState } from 'api/progress';
+
+// Popups
+import Popup from 'api/popupService';
+
 // Utils
-import toSeoFrendly from '../../utils/linkPrettify';
-import EnumNameMapper from '../../utils/enumNameMapper';
-import getSyles from '../../utils/styleConverter';
-import numberFormatter from '../../utils/numberFormatter';
-import texts from '../../defaults/texts';
+import { toSeoFrendly, EnumNameMapper, numberFormatter } from 'utils';
+import texts from 'defaults/texts';
 
 const styles = {
 	parent: {
@@ -249,38 +244,53 @@ class Modules extends Component {
 	}
 
 	renderModules() {
-		const that = this;
-		const modules = this.props.course.modules;
+		const { modules } = this.props.course;
 
-		return modules.map((module, index) => {
+		return modules.map((module) => {
 			const moduleState = Progress.getModuleState(module);
 			const alignmentClass = ModuleAlignment.getName(module.alignment);
-			const stateClass = moduleState.stateClass;
-			const iconSource = `${AppDefaults.downloadHost}Modules/${this.props.course.id}/${module.id}${moduleState.visualState == ProgressState.Disabled ? '_disabled' : ''}.png`;
+			const { stateClass } = moduleState;
+			const iconSource =
+				`${AppDefaults.downloadHost}Modules/${this.props.course.id}/${module.id}${moduleState.visualState === ProgressState.Disabled ? '_disabled' : ''}.png`;
 
 			return (
-				[ <div className="shortcut-content" style={styles.shortcutContent}>
-					{ (module.allowShortcut && moduleState.visualState == ProgressState.Disabled) &&
-					<Link to={`/learn/${this.props.params.courseName}/${module.id}/shortcut/1`}>
-						<RaisedButton className="shortcut-button" label={texts.shortcutButton} overlayStyle={getSyles(styles.shortcutButton)} />
-					</Link>
-					}
-				</div>,
-				<div className={`module ${alignmentClass}`} style={module.alignment == 1 ? styles.module.base : [ styles.module.base, styles.module[alignmentClass] ]} key={module.id}>
-						<Link style={getSyles(styles.moduleContent.base, styles.moduleContent[alignmentClass])} className="content" to={`/learn/${this.props.params.courseName}/${module.id}/${toSeoFrendly(module.name, 100)}`} onClick={e => this.handleClick(e, module.id, moduleState)}>
-						<Paper className={`module-circle ${stateClass}`} style={getSyles(styles.moduleCircle.base, styles.moduleCircle[stateClass])} zDepth={1} circle key={module.id}>
+				[
+					<div className="shortcut-content" style={styles.shortcutContent}>
+						{ (module.allowShortcut && moduleState.visualState === ProgressState.Disabled) &&
+						<Link to={`/learn/${this.props.params.courseName}/${module.id}/shortcut/1`}>
+							<RaisedButton className="shortcut-button" label={texts.shortcutButton} overlayStyle={styles.shortcutButton} />
+						</Link>
+						}
+					</div>,
+					<div
+						className={`module ${alignmentClass}`}
+						style={
+							module.alignment === 1 ?
+								styles.module.base :
+								[ styles.module.base, styles.module[alignmentClass] ]
+						}
+						key={module.id}
+					>
+						<Link
+							style={{ ...styles.moduleContent.base, ...styles.moduleContent[alignmentClass] }}
+							className="content"
+							to={`/learn/${this.props.params.courseName}/${module.id}/${toSeoFrendly(module.name, 100)}`}
+							onClick={e => this.handleClick(e, module.id, moduleState)}
+						>
+							<Paper className={`module-circle ${stateClass}`} style={{ ...styles.moduleCircle.base, ...styles.moduleCircle[stateClass] }} zDepth={1} circle key={module.id}>
 								<img style={styles.moduleImage} alt={module.name} src={iconSource} />
 							</Paper>
-						<span className="module-name" style={styles.moduleName}>{module.name}</span>
-					</Link>
-     </div> ]
+							<span className="module-name" style={styles.moduleName}>{module.name}</span>
+						</Link>
+					</div>,
+				]
 
 			);
 		});
 	}
 
 	handleClick(e, moduleId, moduleState) {
-		if (moduleState.visualState == ProgressState.Disabled) {
+		if (moduleState.visualState === ProgressState.Disabled) {
 			e.preventDefault();
 			return;
 		}
@@ -288,7 +298,7 @@ class Modules extends Component {
 	}
 
 	renderCourses() {
-		const courses = this.props.courses;
+		const { courses } = this.props;
 		const userCourses = this.props.userProfile.skills;
 
 		const courseIds = courses.map(item => item.id);
@@ -302,66 +312,80 @@ class Modules extends Component {
 			if (userCoursesIds.indexOf(id) < 0) {
 				return courses[index];
 			}
-		})).filter(item => item != undefined);
+		})).filter(item => item !== undefined);
 
 		return (
 			<div>
 				{ userCourses.length > 0 &&
-                    [ <div className="user-courses" key="user-courses">
-                    	<p style={styles.coursesSubTitle}>My Courses</p>
-                    	{
-                    		userCourses.map((course, index) => (
-                    			[ <div key={course.id} style={styles.course}>
-                    				<div className="details" style={styles.courseDetails} onClick={() => this.selectCourse(course.id, false)}>
-		<img src={`https://www.sololearn.com/Icons/Courses/${course.id}.png`} alt={course.name} style={styles.courseIcon} />
-                    					<div style={styles.courseInfo}>
-		<p style={styles.courseName}>{course.name}</p>
-		<LinearProgress style={styles.courseProgress} mode="determinate" value={course.progress * 100} color="#8BC34A" />
-	</div>
- </div>
-                    				<IconMenu
-		style={styles.courseActions}
-		iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-		anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-                    					targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-	>
-		<MenuItem primaryText="Remove" onClick={() => this.toggleCourse(course.id, false)} />
-		<MenuItem primaryText="Reset Progress" onClick={() => this.handleResetPopupOpen(course.id)} />
-                    					<MenuItem primaryText="Share" />
- </IconMenu>
-                         </div>,
-                    			<Divider key="user-course-item-divider" /> ]
-                    		))
-                    	}
-                      </div>,
-	<Divider key="user-courses-divider" /> ]
+					[
+						<div className="user-courses" key="user-courses">
+							<p style={styles.coursesSubTitle}>My Courses</p>
+							{
+								userCourses.map(course => (
+									[
+										<div key={course.id} style={styles.course}>
+											<div
+												className="details"
+												style={styles.courseDetails}
+												onClick={() => this.selectCourse(course.id, false)}
+											>
+												<img src={`https://www.sololearn.com/Icons/Courses/${course.id}.png`} alt={course.name} style={styles.courseIcon} />
+												<div style={styles.courseInfo}>
+													<p style={styles.courseName}>{course.name}</p>
+													<LinearProgress style={styles.courseProgress} mode="determinate" value={course.progress * 100} color="#8BC34A" />
+												</div>
+											</div>
+											<IconMenu
+												style={styles.courseActions}
+												iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+												anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+												targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+											>
+												<MenuItem primaryText="Remove" onClick={() => this.toggleCourse(course.id, false)} />
+												<MenuItem primaryText="Reset Progress" onClick={() => this.handleResetPopupOpen(course.id)} />
+												<MenuItem primaryText="Share" />
+											</IconMenu>
+										</div>,
+										<Divider key="user-course-item-divider" />,
+									]
+								))
+							}
+						</div>,
+						<Divider key="user-courses-divider" />,
+					]
 				}
 				{ difference.length > 0 &&
 				<div className="available-courses" style={styles.availableCourses}>
 					<p style={styles.coursesSubTitle}>Available Courses</p>
 					{
-                    		difference.map((course, index) => (
-                    			[ <div key={course.id} style={styles.course} key="available-courses">
-	<div className="details" style={styles.courseDetails} onClick={() => this.selectCourse(course.id, true)}>
-									<img src={`https://www.sololearn.com/Icons/Courses/${course.id}.png`} alt={course.name} style={styles.courseIcon} />
-									<div style={styles.courseInfo}>
-			<p style={styles.courseName}>{course.name}</p>
-			<p>{numberFormatter(course.learners, true)}</p>
-  </div>
-								</div>
-								<IconMenu
-		style={styles.courseActions}
-		iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-		anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-		targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-	>
-		<MenuItem primaryText="Add to My Courses" onClick={() => this.toggleCourse(course.id, true)} />
-		<MenuItem primaryText="Share" />
-	</IconMenu>
-</div>,
-	<Divider key="available-course-item-divider" /> ]
-                    		))
-                    	}
+						difference.map(course => (
+							[
+								<div key={course.id} style={styles.course}>
+									<div
+										className="details"
+										style={styles.courseDetails}
+										onClick={() => this.selectCourse(course.id, true)}
+									>
+										<img src={`https://www.sololearn.com/Icons/Courses/${course.id}.png`} alt={course.name} style={styles.courseIcon} />
+										<div style={styles.courseInfo}>
+											<p style={styles.courseName}>{course.name}</p>
+											<p>{numberFormatter(course.learners, true)}</p>
+										</div>
+									</div>
+									<IconMenu
+										style={styles.courseActions}
+										iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+										anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+										targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+									>
+										<MenuItem primaryText="Add to My Courses" onClick={() => this.toggleCourse(course.id, true)} />
+										<MenuItem primaryText="Share" />
+									</IconMenu>
+								</div>,
+								<Divider key="available-course-item-divider" />,
+							]
+						))
+					}
 				</div>
 				}
 			</div>
@@ -373,7 +397,7 @@ class Modules extends Component {
 	}
 
 	selectCourse(courseId, addToCourses) {
-		const alias = this.props.courses.find(item => item.id == courseId).alias;
+		const { alias } = this.props.courses.find(item => item.id === courseId);
 		browserHistory.push(`/learn/${alias}`);
 
 		this.closeCourseSelect();
@@ -392,8 +416,8 @@ class Modules extends Component {
 	resetProgress(courseId) {
 		this.handleResetPopupClose();
 
-		const skills = this.props.userProfile.skills;
-		const index = skills.findIndex(item => item.id == courseId);
+		const { skills } = this.props.userProfile;
+		const index = skills.findIndex(item => item.id === courseId);
 		skills[index].progress = 0;
 
 		this.props.toggleCourse(skills);
@@ -412,13 +436,13 @@ class Modules extends Component {
 
 	render() {
 		const that = this;
-		const { course, isLoaded } = this.props;
-		if (!isLoaded && this.props.userProfile.skills.length > 0) {
+		const { course, isLoaded: isModuleLoaded } = this.props;
+		if (!isModuleLoaded && this.props.userProfile.skills.length > 0) {
 			return <CircularProgress size={80} thickness={5} />;
 		}
 
 		const userCourses = this.props.userProfile.skills;
-		const activeCourse = userCourses.find(item => item.id == course.id);
+		const activeCourse = userCourses.find(item => item.id === course.id);
 		const activeCourseProgress = activeCourse ? activeCourse.progress : 0;
 
 		const resetProgressActions = [
@@ -440,19 +464,26 @@ class Modules extends Component {
 			<div style={styles.parent} key="course-selector-rappper">
 				{ userCourses.length > 0 ?
 
-					[ <div className="course-selector" style={styles.courseBar} onClick={() => this.openCourseSelect()} key="course-selector">
-						<div className="details" style={styles.courseDetails}>
-							<img src={`https://www.sololearn.com/Icons/Courses/${course.id}.png`} alt={course.name} style={styles.courseIcon} />
-							<div style={styles.courseInfo}>
-								<p style={styles.courseName}>{course.name}</p>
-								<LinearProgress style={styles.courseProgress} mode="determinate" value={activeCourseProgress * 100} color="#8BC34A" />
+					[
+						<div
+							className="course-selector"
+							style={styles.courseBar}
+							onClick={() => this.openCourseSelect()}
+							key="course-selector"
+						>
+							<div className="details" style={styles.courseDetails}>
+								<img src={`https://www.sololearn.com/Icons/Courses/${course.id}.png`} alt={course.name} style={styles.courseIcon} />
+								<div style={styles.courseInfo}>
+									<p style={styles.courseName}>{course.name}</p>
+									<LinearProgress style={styles.courseProgress} mode="determinate" value={activeCourseProgress * 100} color="#8BC34A" />
+								</div>
 							</div>
-						</div>
-						<FlatButton label="CHANGE" style={styles.courseActions} />
-       </div>,
+							<FlatButton label="CHANGE" style={styles.courseActions} />
+						</div>,
 						<div className="modules" key="modules">
-						{this.renderModules()}
-					</div> ]
+							{this.renderModules()}
+						</div>,
+					]
 					:
 					<div className="no-courses" style={styles.noCourses}>
 						<p style={styles.noCoursesTitle}>No Courses</p>
@@ -481,34 +512,39 @@ class Modules extends Component {
 	}
 
 	componentWillMount() {
-		if (!this.props.isLoaded) {
-			if (this.props.userProfile.skills.length > 0) {
-				const courseName = this.props.params.courseName;
-				const course = courseName ? this.props.courses.find(item => item.alias.toLowerCase() == courseName.toLowerCase()) : null;
+		const {
+			params,
+			courses,
+			isLoaded,
+			userProfile,
+			selectModule,
+			loadCourseInternal,
+		} = this.props;
+		if (!isLoaded) {
+			if (userProfile.skills.length > 0) {
+				const { courseName } = params;
+				const course = courseName ?
+					courses.find(item => item.alias.toLowerCase() === courseName.toLowerCase()) : null;
 				const courseId = course ? course.id : null;
-				this.props.loadCourseInternal(courseId);
+				loadCourseInternal(courseId);
 			}
 		}
-		this.props.selectModule(null);
+		selectModule(null);
 	}
 }
 
-function mapStateToProps(state) {
-	return {
-		isLoaded: isLoaded(state, 'modules'),
-		course: state.course,
-		courses: state.courses,
-		userProfile: state.userProfile,
-	};
-}
+const mapStateToProps = state => ({
+	isLoaded: isLoaded(state, 'modules'),
+	course: state.course,
+	courses: state.courses,
+	userProfile: state.userProfile,
+});
 
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({
-		loadCourseInternal,
-		toggleCourse,
-		toggleCourseInternal,
-		selectModule,
-	}, dispatch);
-}
+const mapDispatchToProps = dispatch => bindActionCreators({
+	loadCourseInternal,
+	toggleCourse,
+	toggleCourseInternal,
+	selectModule,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Radium(Modules));

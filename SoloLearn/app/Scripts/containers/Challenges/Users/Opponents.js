@@ -5,9 +5,6 @@ import React, { Component } from 'react';
 import Opponent from './Opponent';
 import LoadingOverlay from '../../../components/Shared/LoadingOverlay';
 
-// Utils
-import getSyles from '../../../utils/styleConverter';
-
 const styles = {
 	opponents: {
 		position: 'relative',
@@ -87,18 +84,25 @@ class Opponents extends Component {
 
 	render() {
 		const { isLoaded, opponents } = this.props;
+		const { isLoading, fullyLoaded } = this.state;
 
 		return (
 			<div id="opponents" style={styles.opponents}>
 				{(isLoaded && opponents.length > 0) && this.renderOpponents()}
-				{((!isLoaded || opponents.length == 0) && !this.state.fullyLoaded) && <LoadingOverlay />}
+				{((!isLoaded || opponents.length === 0) && !fullyLoaded) && <LoadingOverlay />}
 				{
-					(opponents.length > 0 && !this.state.fullyLoaded) &&
-					<div className="loading" style={!this.state.isLoading ? styles.bottomLoading.base : getSyles(styles.bottomLoading.base, styles.bottomLoading.active)}>
+					(opponents.length > 0 && !fullyLoaded) &&
+					<div
+						className="loading"
+						style={{
+							...styles.bottomLoading.base,
+							...(isLoading ? styles.bottomLoading.active : {}),
+						}}
+					>
 						<LoadingOverlay size={30} />
 					</div>
 				}
-				{(this.state.fullyLoaded && opponents.length == 0) && <div style={styles.noResults}>No Results Found</div>}
+				{(fullyLoaded && opponents.length === 0) && <div style={styles.noResults}>No Results Found</div>}
 			</div>
 		);
 	}

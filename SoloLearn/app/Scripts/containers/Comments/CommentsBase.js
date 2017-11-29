@@ -1,33 +1,31 @@
-// React modules
+// General modules
 import React, { Component } from 'react';
 import Radium, { Style } from 'radium';
-
-// Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addCommentInternal, deleteCommentInternal } from '../../actions/comments';
-import { isLoaded } from '../../reducers';
-
-// Popups
-import Popup from '../../api/popupService';
-
-// Additional components
-import Comments from './Comments';
-import ReplyBox from './ReplyBox';
-import LoadingOverlay from '../../components/Shared/LoadingOverlay';
 
 // Material UI components
 import Dialog from 'material-ui/Dialog';
-import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
-import Close from 'material-ui/svg-icons/content/clear';
 import { grey600 } from 'material-ui/styles/colors';
+import Close from 'material-ui/svg-icons/content/clear';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 
-// Utils
-import getStyles from '../../utils/styleConverter';
+// Redux modules
+import { isLoaded } from 'reducers';
+import { addCommentInternal, deleteCommentInternal } from 'actions/comments';
+
+// Popups
+import Popup from 'api/popupService';
+
+// Additional components
+import ReplyBox from './ReplyBox';
+import Comments from './Comments';
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
+
 
 const styles = {
 	dialogBody: {
@@ -239,7 +237,12 @@ class CommentsBase extends Component {
 							<MenuItem style={styles.filterDropDown.item} value={2} primaryText="Most Popular" />
 							<MenuItem style={styles.filterDropDown.item} value={1} primaryText="Most Recent" />
 						</DropDownMenu>
-						<IconButton className="close-comments" style={getStyles(styles.close.button.comments, styles.close.button.big)} iconStyle={styles.close.icon.big} onClick={this.props.closeComments}>
+						<IconButton
+							className="close-comments"
+							iconStyle={styles.close.icon.big}
+							onClick={this.props.closeComments}
+							style={{...styles.close.button.comments, ...styles.close.button.big}}
+						>
 							<Close color={grey600} />
 						</IconButton>
 					</ToolbarGroup>

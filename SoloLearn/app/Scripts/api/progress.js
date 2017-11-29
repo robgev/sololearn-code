@@ -1,6 +1,6 @@
 import Storage from './storage';
 import Service from './service';
-import EnumNameMapper from '../utils/enumNameMapper';
+import { EnumNameMapper } from 'utils';
 
 export const ProgressState = {
 	Disabled: 1,
@@ -89,7 +89,7 @@ class ModuleState {
 
 	set totalItems(items) {
 		this._totalItems = items;
-		this.progress = (this._totalItems == 0) ? 0 : 100.0 * this._passedItems / this._totalItems;
+		this.progress = (this._totalItems === 0) ? 0 : (100.0 * this._passedItems) / this._totalItems;
 	}
 
 	get passedItems() {
@@ -98,7 +98,7 @@ class ModuleState {
 
 	set passedItems(items) {
 		this._passedItems = items;
-		this.progress = (this._totalItems == 0) ? 0 : 100.0 * this._passedItems / this._totalItems;
+		this.progress = (this._totalItems === 0) ? 0 : (100.0 * this._passedItems) / this._totalItems;
 	}
 
 	get totalLessons() {
@@ -165,7 +165,7 @@ class ProgressManager {
 
 	getLesson(lessonID) {
 		for (let i = 0; i < this.lessons.length; i++) {
-			if (this.lessons[i].id == lessonID) return this.lessons[i];
+			if (this.lessons[i].id === lessonID) return this.lessons[i];
 		}
 		return null;
 	}
@@ -175,7 +175,7 @@ class ProgressManager {
 			const ml = this.modules[i];
 			for (let j = 0; j < ml.lessons.length; j++) {
 				const l = ml.lessons[j];
-				if (l.id == lessonId) return ml;
+				if (l.id === lessonId) return ml;
 			}
 		}
 		return null;
@@ -190,30 +190,36 @@ class ProgressManager {
 		const that = this;
 
 		state.totalItems = Object.keys(module.lessons).length;
-		state.totalLessons = Object.keys(module.lessons).filter(lessonId => module.lessons[lessonId].type == 0).length;
-		const passedItems = Object.keys(module.lessons).filter(lessonId => that.getLessonStateById(module.lessons[lessonId].id).visualState == ProgressState.Normal);
+		state.totalLessons =
+		Object.keys(module.lessons).filter(lessonId => module.lessons[lessonId].type === 0).length;
+		const passedItems =
+		Object.keys(module.lessons).filter(lessonId =>
+			that.getLessonStateById(module.lessons[lessonId].id).visualState === ProgressState.Normal);
 		state.passedItems = passedItems.length;
-		state.passedLessons = passedItems.filter(l => l.type == 0).length;
+		state.passedLessons = passedItems.filter(l => l.type === 0).length;
 
-		if (state.passedItems == 0) {
+		if (state.passedItems === 0) {
 			const moduleIndex = this.modules.indexOf(module);
-			if (moduleIndex == 0) {
+			if (moduleIndex === 0) {
 				state.visualState = ProgressState.Active;
 			} else if (moduleIndex > 0) {
 				const prevModule = this.modules[moduleIndex - 1];
-				if (Object.keys(prevModule.lessons).filter(lessonId => that.getLessonStateById(prevModule.lessons[lessonId].id).visualState == ProgressState.Normal).length == prevModule.lessons.length) {
+				const filteredItems =
+					Object.keys(prevModule.lessons).filter(lessonId =>
+						that.getLessonStateById(prevModule.lessons[lessonId].id).visualState === ProgressState.Normal);
+				if (filteredItems.length === prevModule.lessons.length) {
 					state.visualState = ProgressState.Active;
 				} else {
 					state.visualState = ProgressState.Disabled;
 				}
 			}
-		} else if (state.passedItems == state.totalItems) {
+		} else if (state.passedItems === state.totalItems) {
 			state.visualState = ProgressState.Normal;
 			const moduleIndex = this.modules.indexOf(module);
 			if (moduleIndex >= 0 && moduleIndex < this.modules.length - 1) {
 				const nextModule = this.modules[moduleIndex + 1];
 				const nextState = this.moduleStates[`m${nextModule.id}`];
-				if (nextState != null && nextState.visualState == ProgressState.Disabled) {
+				if (nextState != null && nextState.visualState === ProgressState.Disabled) {
 					nextState.visualState = ProgressState.Active;
 				}
 			}
@@ -240,7 +246,7 @@ class ProgressManager {
 		for (let i = 0; i < this.lessons.length; i++) {
 			const lessonState = this.getLessonState(this.lessons[i]);
 			let state = lessonState.visualState;
-			if (prevState == ProgressState.Normal && state == ProgressState.Disabled) {
+			if (prevState === ProgressState.Normal && state === ProgressState.Disabled) {
 				state = ProgressState.Active;
 				lessonState.visualState = state;
 				lessonState.isUnlocked = true;
@@ -252,12 +258,16 @@ class ProgressManager {
 	propagateLessonProgress(lessonProgress, state) {
 		// / <signature>
 		// / <summary>Propagate progress to specified state</summary>
-		// / <param name="lessonProgress" type="app.models.LessonProgress">LessonProgress to propagate</param>
+		// / <param name="lessonProgress" type="app.models.LessonProgress">
+		// 	LessonProgress to propagate
+		// </param>
 		// / <param name="state" type="app.models.LessonState">LessonState to update</param>
 		// / </signature>
 		// / <signature>
 		// / <summary>Propagate progress if state exists</summary>
-		// / <param name="lessonProgress" type="app.models.LessonProgress">LessonProgress to propagate</param>
+		// / <param name="lessonProgress" type="app.models.LessonProgress">
+		// 	LessonProgress to propagate
+		// </param>
 		// / </signature>
 
 		if (!state) state = this.getLessonStateById(lessonProgress.lessonID);
@@ -275,26 +285,26 @@ class ProgressManager {
 		let lesson = null;
 
 		for (let i = 0; i < this.lessons.length; i++) {
-			if (this.lessons[i].id == lessonProgress.lessonID) {
+			if (this.lessons[i].id === lessonProgress.lessonID) {
 				lesson = this.lessons[i];
 				break;
 			}
 		}
 
-		const quizzes = lesson.quizzes;
+		const { quizzes } = lesson;
 		let activeQuiz = null;
 		let activeQuizIndex = 0;
 		for (let i = 0; i < quizzes.length; i++) {
-			if (quizzes[i].id == lessonProgress.activeQuizID) {
+			if (quizzes[i].id === lessonProgress.activeQuizID) {
 				activeQuiz = quizzes[i];
 				activeQuizIndex = i;
-				state.activeQuizNumber = lesson.type == 0 ? (activeQuizIndex * 2) + 1 : activeQuizIndex + 1;
+				state.activeQuizNumber = lesson.type === 0 ? (activeQuizIndex * 2) + 1 : activeQuizIndex + 1;
 				break;
 			}
 		}
 
 		if (activeQuiz != null) {
-			state.progressPercent = Math.round(100.0 * activeQuizIndex / quizzes.length);
+			state.progressPercent = Math.round((100.0 * activeQuizIndex) / quizzes.length);
 		} else {
 			state.progressPercent = 0;
 		}
@@ -318,7 +328,7 @@ class ProgressManager {
 
 	getLessonProgress(lessonId) {
 		for (let i = 0; i < this.localProgress.length; i++) {
-			if (this.localProgress[i].lessonID == lessonId) return this.localProgress[i];
+			if (this.localProgress[i].lessonID === lessonId) return this.localProgress[i];
 		}
 		return null;
 	}
@@ -344,23 +354,23 @@ class ProgressManager {
 
 	getQuizProgress(lessonProgress, quizId) {
 		for (let i = 0; i < lessonProgress.quizzes.length; i++) {
-			if (lessonProgress.quizzes[i].quizID == quizId) return lessonProgress.quizzes[i];
+			if (lessonProgress.quizzes[i].quizID === quizId) return lessonProgress.quizzes[i];
 		}
 		return null;
 	}
 
-	calculateCompletionPercent(newLesson) {
+	calculateCompletionPercent() {
 		let completed = 0;
 		for (let i = 0; i < this.localProgress.length; i++) {
 			if (this.localProgress[i].isCompleted) completed++;
 		}
-		this.progress.percent = Math.round(100.0 * completed / this.lessons.length);
+		this.progress.percent = Math.round((100.0 * completed) / this.lessons.length);
 
-		this.progress.isCompleted = completed == this.lessons.length;
+		this.progress.isCompleted = completed === this.lessons.length;
 	}
 
-	incrementTotalCompletedLessons(newLesson) {
-		if (this.totalCompletedLessons == -1) {
+	incrementTotalCompletedLessons() {
+		if (this.totalCompletedLessons === -1) {
 			this.totalCompletedLessons = this.storage.load('totalCompletedLessons') || 0;
 		}
 		this.totalCompletedLessons++;
@@ -407,7 +417,7 @@ class ProgressManager {
 			for (let i = 0; i < newProgress.length; i++) {
 				const lp = new LessonProgress();
 				Object.assign(lp, newProgress[i]);
-				const quizzes = newProgress[i].quizzes;
+				const { quizzes } = newProgress[i];
 				for (let j = 0; j < quizzes.length; j++) {
 					lp.quizzes[j] = Object.assign(new QuizProgress(), quizzes[j]);
 				}
@@ -435,8 +445,7 @@ class ProgressManager {
 		return score;
 	}
 
-	addResult(lessonID, quizID, isSuccessful, time) {
-		time = time || 0;
+	addResult(lessonID, quizID, isSuccessful, time = 0) {
 		// Get lesson
 		const lesson = this.getLesson(lessonID);
 
@@ -456,7 +465,8 @@ class ProgressManager {
 			this.localProgress.push(lessonProgress);
 		}
 
-		// If lesson progress is not started, start it, reset points, quiz progresses and increase attempts
+		// If lesson progress is not started, start it, reset points,
+		// quiz progresses and increase attempts
 		if (!lessonProgress.isStarted) {
 			lessonProgress.isStarted = true;
 			lessonProgress.attempt++;
@@ -485,10 +495,8 @@ class ProgressManager {
 		// Calculate quiz points, if successful
 		if (isSuccessful) {
 			const weight = 5.0 / lesson.quizzes.length; // quizCount
-			quizProgress.score = weight / (quizProgress.attempt * 2 - 1);
-		}
-		// Increase attempts
-		else {
+			quizProgress.score = weight / ((quizProgress.attempt * 2) - 1);
+		} else {
 			quizProgress.attempt++;
 		}
 
@@ -496,12 +504,12 @@ class ProgressManager {
 		lessonProgress.score = Math.round(this.getLessonScore(lessonProgress));
 		lessonProgress.score = Math.min(lessonProgress.score, 6 - lessonProgress.attempt);
 
-		const quizzes = lesson.quizzes;
+		const { quizzes } = lesson;
 		// Set active quiz id in lesson progress
 		if (quizProgress.isCompleted) {
 			let index;
 			for (index = 0; index < quizzes.length; index++) {
-				if (quizzes[index].id == quizID) {
+				if (quizzes[index].id === quizID) {
 					break;
 				}
 			}
@@ -515,7 +523,7 @@ class ProgressManager {
 		}
 
 		// If result is successful, and quiz is last one in lesson - mark lesson as completed
-		if (quizProgress.isCompleted && quizzes[quizzes.length - 1].id == quizID) {
+		if (quizProgress.isCompleted && quizzes[quizzes.length - 1].id === quizID) {
 			const wasCompleted = lessonProgress.isCompleted;
 			lessonProgress.isCompleted = true;
 			lessonProgress.isStarted = false;
@@ -561,7 +569,7 @@ class ProgressManager {
 			courseId: this.courseId,
 		};
 
-		for (var i = 0; i < this.lessonChanges.length; i++) {
+		for (let i = 0; i < this.lessonChanges.length; i++) {
 			data.lessonProgress.push({
 				lessonID: this.lessonChanges[i].lessonID,
 				score: this.lessonChanges[i].score,
@@ -571,7 +579,7 @@ class ProgressManager {
 			});
 		}
 
-		for (var i = 0; i < this.quizChanges.length; i++) {
+		for (let i = 0; i < this.quizChanges.length; i++) {
 			data.quizProgress.push({
 				quizID: this.quizChanges[i].quizID,
 				score: this.quizChanges[i].score,
@@ -580,7 +588,7 @@ class ProgressManager {
 			});
 		}
 
-		for (var i = 0; i < this.pointChanges.length; i++) {
+		for (let i = 0; i < this.pointChanges.length; i++) {
 			data.pointExchanges.push(this.pointChanges[i]);
 		}
 
@@ -674,7 +682,7 @@ class ProgressManager {
 		for (let i = 0; i < lp.length; i++) {
 			let existed = false;
 			for (let j = 0; j < this.localProgress.length; j++) {
-				if (this.localProgress[j].lessonID == lp[i].lessonID) {
+				if (this.localProgress[j].lessonID === lp[i].lessonID) {
 					existed = true;
 					this.localProgress.splice(j, 1, lp[i]);
 					break;

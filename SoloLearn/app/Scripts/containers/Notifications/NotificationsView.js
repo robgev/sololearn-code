@@ -1,20 +1,13 @@
 // React modules
-import React, { Component } from 'react';
-import Radium, { Style } from 'radium';
-import { Link } from 'react-router';
-import { TransitionMotion, Motion, spring } from 'react-motion';
-
-const RadiumLink = Radium(Link);
-
-// Additional components
-import NotificationList from './NotificationList';
+import React from 'react';
+import Radium from 'radium';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 
-// Utils
-import getStyles from '../../utils/styleConverter';
+// Additional components
+import NotificationList from './NotificationList';
 
 const styles = {
 	container: {
@@ -36,18 +29,14 @@ const styles = {
 
 };
 
-class Notifications extends Component {
-	render() {
-		return (
-			<Paper style={styles.container}>
-				<div className="notification-header" style={styles.notificationsHeader}>
-					<p className="notifications-title" style={styles.notificationsTitle}>Your Notifications</p>
-				</div>
-				<Divider />
-				<NotificationList isPopup={false} />
-			</Paper>
-		);
-	}
-}
+const Notifications = () => (
+	<Paper style={styles.container}>
+		<div className="notification-header" style={styles.notificationsHeader}>
+			<p className="notifications-title" style={styles.notificationsTitle}>Your Notifications</p>
+		</div>
+		<Divider />
+		<NotificationList isPopup={false} />
+	</Paper>
+);
 
 export default Radium(Notifications);

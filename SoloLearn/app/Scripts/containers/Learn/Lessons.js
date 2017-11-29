@@ -1,22 +1,25 @@
 // React modules
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import Radium, { Style } from 'radium';
-import { browserHistory } from 'react-router';
-
-// Redux modules
+import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { loadCourseInternal, selectLesson, selectModule, selectQuiz } from '../../actions/learn';
-import { isLoaded } from '../../reducers';
 
 // Marterial UI components
 import Paper from 'material-ui/Paper';
-import Progress, { ProgressState } from '../../api/progress';
+import Progress, { ProgressState } from 'api/progress';
+
+// Redux modules
+import {
+	selectQuiz,
+	selectLesson,
+	selectModule,
+	loadCourseInternal,
+} from 'actions/learn';
+import { isLoaded } from 'reducers';
 
 // Utils
-import toSeoFrendly from '../../utils/linkPrettify';
-import getStyles from '../../utils/styleConverter';
+import { toSeoFrendly } from 'utils';
 
 import { LessonType } from './QuizManager';
 
@@ -132,20 +135,28 @@ class Lessons extends Component {
 
     	return lessons.map((lesson, index) => {
     		const lessonState = Progress.getLessonState(lesson);
+				const isDisabled = lessonState.visualState === ProgressState.Disabled;
 
     		return (
     			<div
     				key={lesson.id} className={`lesson-item ${lessonState.stateClass}`} style={styles.lessonWrapper}
     				onClick={() => this.handleClick(lesson.id, lessonState, `/learn/${this.props.params.courseName}/${this.props.params.moduleId}/${this.props.params.moduleName}/${lesson.id}/${toSeoFrendly(lesson.name, 100)}/${lessonState.activeQuizNumber}`)}
-	>
-		<Paper zDepth={lessonState.visualState == ProgressState.Disabled ? 0 : 1} key={lesson.id} style={lessonState.visualState == ProgressState.Disabled ? getStyles(styles.lesson.base, styles.lesson.disabled) : styles.lesson.base}>
+					>
+						<Paper
+							key={lesson.id}
+							zDepth={isDisabled ? 0 : 1}
+							style={{
+								...styles.lesson.base,
+								...(isDisabled ? styles.lesson.disabled : {})
+							}}
+						>
     					<div className="number" style={styles.lessonNumber}>{`${index + 1}/${lessons.length}`}</div>
     					<div className="name" style={styles.lessonName}>{lesson.name}</div>
     					<div className="info" style={[ styles.lessonInfo.base, styles.lessonInfo[lessonState.stateClass] ]}>
     						<span>{lesson.quizzes.length} questions</span>
-   </div>
-    				</Paper>
-	</div>
+							</div>
+						</Paper>
+					</div>
     		);
     	});
     }

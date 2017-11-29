@@ -10,9 +10,6 @@ import { createContestInternal } from '../../../actions/challenges';
 // Material UI components
 import Avatar from 'material-ui/Avatar';
 
-// Utils
-import getSyles from '../../../utils/styleConverter';
-
 const styles = {
 	opponent: {
 		display: 'flex',

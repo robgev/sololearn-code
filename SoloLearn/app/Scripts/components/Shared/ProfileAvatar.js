@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Avatar from 'material-ui/Avatar';
-import updateDate from 'utils/dateFormatter';
+import { updateDate } from 'utils';
 
 const styles = {
 	authorDetails: {
@@ -32,10 +32,9 @@ const styles = {
 };
 
 const ProfileAvatar = ({
-	date,
 	style,
 	userID,
-	size=30,
+	size = 30,
 	userName,
 	avatarUrl,
 }) => (
@@ -51,7 +50,8 @@ const ProfileAvatar = ({
 				<Avatar
 					size={size}
 					style={styles.avatar}
-				>{userName.toUpperCase().charAt(0)}</Avatar>
+				>{userName.toUpperCase().charAt(0)}
+				</Avatar>
 			}
 			{ userName &&
 				<div style={styles.texts.base}>

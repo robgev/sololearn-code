@@ -8,9 +8,7 @@ import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
 import { grey500 } from 'material-ui/styles/colors';
 
-// Utils
-import getSyles from '../../utils/styleConverter';
-import updateDate from '../../utils/dateFormatter';
+import { updateDate } from 'utils';
 
 const styles = {
 	content: {
@@ -85,7 +83,7 @@ const FeedItemBase = ({
 			<p style={styles.title}>
 				<Link
 					to={`/profile/${user.id}`}
-					style={getSyles(styles.userName, styles.linkStyle)}
+					style={{ ...styles.userName, ...styles.linkStyle }}
 				>
 					{user.name}
 				</Link>

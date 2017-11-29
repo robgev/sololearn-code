@@ -6,8 +6,6 @@ import { Link } from 'react-router';
 import Paper from 'material-ui/Paper';
 import LinearProgress from 'material-ui/LinearProgress';
 import ProgressBar from 'react-progressbar.js';
-// Utils and defaults
-import getStyles from '../../utils/styleConverter';
 
 const { Circle } = ProgressBar;
 
@@ -133,7 +131,7 @@ class Skills extends Component {
 	}
 
 	render() {
-		const { levels, profile } = this.props;
+		const { levels, profile, skills } = this.props;
 
 		const userLevel = profile.level;
 		const currentXp = profile.xp;
@@ -173,12 +171,13 @@ class Skills extends Component {
 				<Paper className="skills-languages" style={styles.container}>
 					<p style={styles.heading}>Languages</p>
 					<div
-						style={this.props.skills.length > 0 ?
-							styles.courses.base :
-							getStyles(styles.courses.base, styles.courses.centered)}
+						style={{
+							...styles.courses.base,
+							...(skills.length <= 0 ? styles.courses.centered : {}),
+						}}
 					>
 						{
-							this.props.skills.length > 0 ?
+							skills.length > 0 ?
 								this.renderCourses()
 								: <p style={styles.noSkills}>Nothing to show</p>
 						}

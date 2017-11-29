@@ -1,12 +1,9 @@
 // React modules
 import React, { Component } from 'react';
-import Radium, { Style } from 'radium';
+import Radium from 'radium';
 
 // Material UI Components
 import TextField from 'material-ui/TextField';
-
-// Utils
-import getStyles from '../../../utils/styleConverter';
 
 const styles = {
 	answerContainer: {
@@ -97,79 +94,76 @@ class TypeInControl extends Component {
 		return input;
 	}
 
-    onChange = (e) => {
-    	const targetValue = e.target.value;
-    	this.setState({
-    		text: targetValue,
-    	});
-    	const input = this.getInput(targetValue);
-    	const desiredText = this.desiredText;
-    	if (desiredText.indexOf(input) == 0) {
-    		this.setState({
-    			correctText: input,
-    			wrongText: '',
-    		});
-    	} else {
-    		for (let i = 0; i < input.length && i < desiredText.length; i++) {
-    			if (input[i] != desiredText[i]) {
-    				this.setState({
-    					correctText: this.realText.substr(0, i),
-    					wrongText: input.substr(i),
-    				});
-    				break;
-    			}
-    		}
-    	}
+onChange = (e) => {
+	const targetValue = e.target.value;
+	this.setState({
+		text: targetValue,
+	});
+	const input = this.getInput(targetValue);
+	const { desiredText } = this;
+	if (desiredText.indexOf(input) === 0) {
+		this.setState({
+			correctText: input,
+			wrongText: '',
+		});
+	} else {
+		for (let i = 0; i < input.length && i < desiredText.length; i++) {
+			if (input[i] !== desiredText[i]) {
+				this.setState({
+					correctText: this.realText.substr(0, i),
+					wrongText: input.substr(i),
+				});
+				break;
+			}
+		}
+	}
+	this.isCorrect = desiredText === input;
+}
 
-    	this.isCorrect = desiredText == input;
-    }
+render() {
+	const defaultFontSize = this.props.fontSize;
 
-    check() {
-    	return this.isCorrect;
-    }
+	const additionalStyles = {
+		fontSize: `${defaultFontSize}px`,
+	};
 
-    render() {
-    	const defaultFontSize = this.props.fontSize;
+	return (
+		<div className="typeIn-control" style={styles.answerContainer}>
+			<div className="prefix" style={styles.property}>{this.answer.properties.prefix}</div>
+			<div className="answer" style={styles.answerContainer}>
+				<span className="realText" style={styles.realText}>{this.realText}</span>
 
-    	const additionalStyles = {
-    		fontSize: `${defaultFontSize}px`,
-    	};
+				{ this.state.isChecked ?
+					<div className="resultText" style={styles.resultText}>
+						<span className="correct" style={styles.correctStyle}>{this.state.correctText}</span>
+						<span className="wrong" style={styles.wrongStyle}>{this.state.wrongText}</span>
+					</div> :
+					<TextField
+						name="type-in-control"
+						key={this.answer.id}
+						maxLength={this.state.maxLength}
+						value={this.state.text}
+						onChange={this.onChange}
+						style={{
+							...styles.inputRootStyle.base,
+							...(!this.props.singleTipeIn ? styles.inputRootStyle.placeholderTypeIn : {}),
+							...additionalStyles,
+						}}
+						inputStyle={styles.inputStyle}
+					/>
+				}
+			</div>
+			<div className="postfix" style={styles.property}>{this.answer.properties.postfix}</div>
+		</div>
+	);
+}
 
-    	return (
-    		<div className="typeIn-control" style={styles.answerContainer}>
-    			<div className="prefix" style={styles.property}>{this.answer.properties.prefix}</div>
-		<div className="answer" style={styles.answerContainer}>
-    				<span className="realText" style={styles.realText}>{this.realText}</span>
-
-		{ this.state.isChecked
-    					? <div className="resultText" style={styles.resultText}>
-    						<span className="correct" style={styles.correctStyle}>{this.state.correctText}</span>
-    						<span className="wrong" style={styles.wrongStyle}>{this.state.wrongText}</span>
-    					</div>
-    					:
-    					<TextField
-    						name="type-in-control"
-    						key={this.answer.id}
-    						ref="material-typeIn"
-    						maxLength={this.state.maxLength}
-    						value={this.state.text}
-    						onChange={this.onChange}
-    						style={this.props.singleTipeIn ? getStyles(styles.inputRootStyle.base, additionalStyles) : getStyles(styles.inputRootStyle.base, styles.inputRootStyle.placeholderTypeIn, additionalStyles)}
-    						inputStyle={styles.inputStyle}
-    					/>
-    				}
-    			</div>
-    			<div className="postfix" style={styles.property}>{this.answer.properties.postfix}</div>
-	</div>
-    	);
-    }
-
-    componentWillReceiveProps(nextProps) {
-    	// You don't have to do this check first, but it can help prevent an unneeded render
-    	if (nextProps.isChecked !== this.state.isChecked) {
-    		this.setState({ isChecked: nextProps.isChecked });
-    	}
-    }
+componentWillReceiveProps(nextProps) {
+// You don't have to do this check first, but it can help prevent an unneeded render
+	if (nextProps.isChecked !== this.state.isChecked) {
+		this.setState({ isChecked: nextProps.isChecked });
+	}
+}
 }
 
 export default Radium(TypeInControl);

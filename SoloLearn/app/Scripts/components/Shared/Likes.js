@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+
 import Popover from 'material-ui/Popover';
 import CircularProgress from 'material-ui/CircularProgress';
 import Divider from 'material-ui/Divider';
-import { connect } from 'react-redux';
+
+import { setLikesList } from 'actions/likes';
+import { numberFormatter } from 'utils';
 import ProfileAvatar from './ProfileAvatar';
-import { setLikesList } from '../../actions/likes';
-import numberFormatter from '../../utils/numberFormatter';
 import InfiniteVirtualizedList from './InfiniteVirtualizedList';
 
 class Likes extends PureComponent {

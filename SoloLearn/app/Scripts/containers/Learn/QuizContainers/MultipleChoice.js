@@ -2,14 +2,10 @@
 import React, { Component } from 'react';
 
 // Material UI components
-import { List, ListItem } from 'material-ui/List';
-import Divider from 'material-ui/Divider';
 import Paper from 'material-ui/Paper';
 import Checkbox from 'material-ui/Checkbox';
+import { List, ListItem } from 'material-ui/List';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
-
-// Utils
-import getStyles from '../../../utils/styleConverter';
 
 export const styles = {
 	wrapper: {
@@ -56,7 +52,7 @@ export default class MultipleChoice extends Component {
 
 		this.correctAnswersCount = this.props.quiz.answers.filter(item => item.isCorrect).length;
 
-		this.isSingleChoice = this.correctAnswersCount == 1;
+		this.isSingleChoice = this.correctAnswersCount === 1;
 	}
 
 	componentWillMount() {
@@ -64,128 +60,163 @@ export default class MultipleChoice extends Component {
 			answers: this.getModifiedAnswers(this.props.quiz),
 		});
 	}
-    getModifiedAnswers = (quiz) => {
-    	const { answers } = quiz;
+	getModifiedAnswers = (quiz) => {
+		const { answers } = quiz;
 
-    	for (let i = 0; i < answers.length; i++) {
-    		// const answer = answers[i];
-    		answers[i].isSelected = false;
-    	}
+		for (let i = 0; i < answers.length; i++) {
+			// const answer = answers[i];
+			answers[i].isSelected = false;
+		}
 
-    	return this.shuffle(answers); // this.props.quiz.answers
-    }
+		return this.shuffle(answers); // this.props.quiz.answers
+	}
 
-    shuffle = (array) => {
-    	for (let i = array.length; i; i--) {
-    		const j = Math.floor(Math.random() * i);
-    		[ array[i - 1], array[j] ] = [ array[j], array[i - 1] ];
-    	}
+	shuffle = (array) => {
+		for (let i = array.length; i; i--) {
+			const j = Math.floor(Math.random() * i);
+			[
+				array[i - 1],
+				array[j],
+			] = [
+				array[j],
+				array[i - 1],
+			];
+		}
 
-    	return array;
-    }
+		return array;
+	}
 
-    handleCheckBoxSelection = (event, isChecked, index) => {
-    	const updatedAnswers = this.state.answers;
-    	updatedAnswers[index].isSelected = isChecked;
+	handleCheckBoxSelection = (event, isChecked, index) => {
+		const updatedAnswers = this.state.answers;
+		updatedAnswers[index].isSelected = isChecked;
 
-    	this.setState({ answers: updatedAnswers });
-    }
+		this.setState({ answers: updatedAnswers });
+	}
 
-    handleRadioButtonSelection = (event, answerId) => {
-    	this.setState({ selectedAnswerId: answerId });
+	handleRadioButtonSelection = (event, answerId) => {
+		this.setState({ selectedAnswerId: answerId });
 
-    	const updatedAnswers = this.state.answers;
+		const updatedAnswers = this.state.answers;
 
-    	for (let i = 0; i < updatedAnswers.length; i++) {
-    		const answer = updatedAnswers[i];
-    		answer.isSelected = answer.id == answerId;
-    	}
+		for (let i = 0; i < updatedAnswers.length; i++) {
+			const answer = updatedAnswers[i];
+			answer.isSelected = answer.id === answerId;
+		}
 
-    	this.setState({ answers: updatedAnswers });
-    }
+		this.setState({ answers: updatedAnswers });
+	}
 
-    renderList = (isSingleChoice) => {
-    	if (isSingleChoice) {
-    		return (
-	<RadioButtonGroup style={styles.radioButtonGroup} name="singleChoice" onChange={(event, value) => this.handleRadioButtonSelection(event, value)} valueSelected={this.state.selectedAnswerId}>
-    				{this.state.answers.map((answer, index) => (
-			<RadioButton style={this.state.selectedAnswerId != answer.id ? styles.radioButton.base : getStyles(styles.radioButton.base, styles.radioButton.elevated)} key={index} value={answer.id} label={answer.text} />
-    				))}
-    			</RadioButtonGroup>
-    		);
-    	}
+	renderList = (isSingleChoice) => {
+		const { selectedAnswerId } = this.state;
+		if (isSingleChoice) {
+			return (
+				<RadioButtonGroup
+					name="singleChoice"
+					style={styles.radioButtonGroup}
+					valueSelected={this.state.selectedAnswerId}
+				>
+				onChange={(event, value) => this.handleRadioButtonSelection(event, value)}
+					{
+						this.state.answers.map(answer => (
+							<RadioButton
+								key={answer.id}
+								value={answer.id}
+								label={answer.text}
+								style={{
+									...styles.radioButton.base,
+									...(selectedAnswerId === answer.id ? styles.radioButton.elevated : {}),
+								}}
+							/>
+						))
+					}
+				</RadioButtonGroup>);
+		}
 
-    	return (
-    		<List style={styles.checkBoxGroup}>
-		{this.state.answers.map((answer, index) => (
-	<ListItem
-    					key={index} primaryText={answer.text} style={styles.checkBox}
-    					leftCheckbox={<Checkbox checked={answer.isSelected} onCheck={(event, isChecked) => this.handleCheckBoxSelection(event, isChecked, index)} />}
-    				/>
-    			))}
- </List>
-    	);
-    }
+		return (
+			<List style={styles.checkBoxGroup}>
+				{
+					this.state.answers.map((answer, index) => (
+						<ListItem
+							key={answer.id}
+							style={styles.checkBox}
+							primaryText={answer.text}
+							leftCheckbox={
+								<Checkbox
+									checked={answer.isSelected}
+									onCheck={
+										(event, isChecked) => this.handleCheckBoxSelection(event, isChecked, index)
+									}
+								/>
+							}
+						/>
+					))
+				}
+			</List>
+		);
+	}
 
-    unlock = () => {
-    	const { answers } = this.state;
+	unlock = () => {
+		const { answers } = this.state;
 
-    	for (let i = 0; i < answers.length; i++) {
-    		const answer = answers[i];
-    		answer.isSelected = answer.isCorrect;
+		for (let i = 0; i < answers.length; i++) {
+			const answer = answers[i];
+			answer.isSelected = answer.isCorrect;
 
-    		if (this.isSingleChoice && answer.isCorrect) this.setState({ selectedAnswerId: answer.id });
-    	}
+			if (this.isSingleChoice && answer.isCorrect) { this.setState({ selectedAnswerId: answer.id }); }
+		}
 
-    	this.setState({ answers });
-    }
+		this.setState({ answers });
+	}
 
-    check = () => {
-    	const answers = this.state.answers;
-    	const selectedAnswers = answers.filter(item => item.isSelected);
+	check = () => {
+		const answers = this.state.answers;
+		const selectedAnswers = answers.filter(item => item.isSelected);
 
-    	let isCorrect = false;
+		let isCorrect = false;
 
-    	if (selectedAnswers.length > 1) {
-    		let selectedAnswersCount = 0;
-    		let isWrong = false;
-    		for (let i = 0; i < selectedAnswers.length; i++) {
-    			if (selectedAnswers[i].isCorrect) {
-    				selectedAnswersCount++;
-    			} else {
-    				isWrong = true;
-    				break;
-    			}
-    		}
-    		if (!isWrong) {
-    			let correctAnswers = 0;
-    			for (let i = 0; i < answers.length; i++) {
-    				if (answers[i].isCorrect) correctAnswers++;
-    			}
-    			isCorrect = correctAnswers == selectedAnswersCount;
-    		}
-    	} else if (selectedAnswers.length == 1) {
-    		const answer = selectedAnswers[0];
-    		isCorrect = answer.isCorrect;
-    	}
+		if (selectedAnswers.length > 1) {
+			let selectedAnswersCount = 0;
+			let isWrong = false;
+			for (let i = 0; i < selectedAnswers.length; i++) {
+				if (selectedAnswers[i].isCorrect) {
+					selectedAnswersCount++;
+				} else {
+					isWrong = true;
+					break;
+				}
+			}
+			if (!isWrong) {
+				let correctAnswers = 0;
+				for (let i = 0; i < answers.length; i++) {
+					if (answers[i].isCorrect) { correctAnswers++; }
+				}
+				isCorrect = correctAnswers == selectedAnswersCount;
+			}
+		} else if (selectedAnswers.length == 1) {
+			const answer = selectedAnswers[0];
+			isCorrect = answer.isCorrect;
+		}
 
-    	return isCorrect;
-    }
+		return isCorrect;
+	}
 
-    render() {
-    	return (
-    		<Paper className={this.isSingleChoice ? 'singlechoice' : 'multiplechoice'} style={styles.wrapper}>
-    			{this.renderList(this.isSingleChoice)}
- </Paper>
-    	);
-    }
+	render() {
+		return (<Paper
+			className={this.isSingleChoice
+				? 'singlechoice'
+				: 'multiplechoice'}
+			style={styles.wrapper}
+		>
+			{this.renderList(this.isSingleChoice)}
+          </Paper>);
+	}
 
-    // componentWillReceiveProps(nextProps) {
-    //    if(this.props.quiz.id == nextProps.quiz.id) {
-    //        this.setState({
-    //            answers: this.getModifiedAnswers(nextProps.quiz),
-    //            selectedAnswerId: null
-    //        });
-    //    }
-    // }
+	// componentWillReceiveProps(nextProps) {
+	//    if(this.props.quiz.id == nextProps.quiz.id) {
+	//        this.setState({
+	//            answers: this.getModifiedAnswers(nextProps.quiz),
+	//            selectedAnswerId: null
+	//        });
+	//    }
+	// }
 }

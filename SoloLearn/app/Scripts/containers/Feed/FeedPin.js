@@ -1,22 +1,19 @@
 // React modules
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import Radium, { Style } from 'radium';
+import Radium from 'radium';
+
+// Material UI components
+import Paper from 'material-ui/Paper';
+import FlatButton from 'material-ui/FlatButton';
+
+// Utils
+import { getLanguageColor } from 'utils';
 
 // Additional data and components
 import Course from './FeedTemplates/Course';
 import Post from './FeedTemplates/Post';
 import User from './FeedTemplates/User';
-
-// Material UI components
-import Paper from 'material-ui/Paper';
-import Avatar from 'material-ui/Avatar';
-import FlatButton from 'material-ui/FlatButton';
-import QuoteIcon from 'material-ui/svg-icons/editor/format-quote';
-import { grey700 } from 'material-ui/styles/colors';
-
-// Utils
-import getLanguageColor from '../../utils/getLanguageColor';
 
 const styles = {
 	feedPinWrapper: {
@@ -118,33 +115,29 @@ const styles = {
 };
 
 class FeedPin extends Component {
-	constructor(props) {
-		super(props);
-	}
-
 	// Render pin courses
 	generateCourses() {
-		const pin = this.props.pin;
+		const { pin } = this.props;
 
-		return pin.courses.map((course, index) => (
+		return pin.courses.map(course => (
 			<Course key={`pinCourse ${course.id} ${pin.id}`} course={course} openPopup={this.props.openPopup} />
 		));
 	}
 
 	// Render pin users
 	generateUsers() {
-		const pin = this.props.pin;
+		const { pin } = this.props;
 
-		return pin.users.map((user, index) => (
+		return pin.users.map(user => (
 			<User key={`pinUser ${user.id} ${pin.id}`} user={user} />
 		));
 	}
 
 	// Render pin codes
 	generateCodes() {
-		const pin = this.props.pin;
+		const { pin } = this.props;
 
-		return pin.codes.map((code, index) => (
+		return pin.codes.map(code => (
 			<Link to={`/playground/${code.publicID}`} className="code" style={styles.code} key={`pinCode ${code.id} ${pin.id}`}>
 				<div className="language" style={[ styles.languageIcon, { backgroundColor: getLanguageColor(code.language) } ]}>{code.language}</div>
 				<p style={styles.codeName}>{code.name}</p>
@@ -154,18 +147,18 @@ class FeedPin extends Component {
 
 	// Render pin posts
 	generatePosts() {
-		const pin = this.props.pin;
+		const { pin } = this.props;
 
-		return pin.posts.map((post, index) => (
+		return pin.posts.map(post => (
 			<Post key={`pinPost ${post.id} ${pin.id}`} post={post} isQuestion />
 		));
 	}
 
 	getPinUrl() {
-		const pin = this.props.pin;
+		const { pin } = this.props;
 		let url = pin.action;
 
-		if (pin.action == null || pin.action == '') {
+		if (pin.action == null || pin.action === '') {
 			if (pin.courses) {
 				const firstCourse = pin.courses[0];
 				url = `/learn/${firstCourse.alias}`;
@@ -199,6 +192,8 @@ class FeedPin extends Component {
 				case 'discuss':
 					url = '/discuss';
 					break;
+				default:
+					break;
 				}
 				break;
 			case 'profile':
@@ -218,6 +213,8 @@ class FeedPin extends Component {
 					case 'badges':
 						url = '/profile/badges';
 						break;
+					default:
+						break;
 					}
 				}
 				break;
@@ -234,6 +231,8 @@ class FeedPin extends Component {
 			case 'quiz-factory':
 				url = '/quiz-factory';
 				break;
+			default:
+				break;
 			}
 		}
 
@@ -241,7 +240,7 @@ class FeedPin extends Component {
 	}
 
 	render() {
-		const pin = this.props.pin;
+		const { pin } = this.props;
 
 		return (
 			<div className="feed-pin-wrapper" style={styles.feedPinWrapper}>
@@ -250,7 +249,13 @@ class FeedPin extends Component {
 						<p className="title" style={styles.title}>{pin.title}</p>
 						<p className="sub-title" style={styles.subTitle}>{pin.message}</p>
 					</div>
-					{pin.imageUrl && <img src="../../../assets/kaleid.jpg" style={styles.pinImage} />}
+					{pin.imageUrl &&
+						<img
+							alt="Pinned item"
+							style={styles.pinImage}
+							src="../../../assets/kaleid.jpg"
+						/>
+					}
 					{pin.courses && <div className="courses" style={styles.courses}>{this.generateCourses()}</div>}
 					{pin.users && <div className="users" style={styles.users}>{this.generateUsers()}</div>}
 					{pin.codes && <div className="codes" style={styles.codes}>{this.generateCodes()}</div>}
@@ -267,7 +272,7 @@ class FeedPin extends Component {
 		);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps) {
 		return this.props.pin !== nextProps.pin;
 	}
 }

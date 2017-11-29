@@ -1,9 +1,6 @@
 // React modules
 import React, { Component } from 'react';
 
-// Utils
-import getStyles from '../../utils/styleConverter';
-
 const styles = {
 	achievement: {
 		display: 'inline-flex',
@@ -52,27 +49,40 @@ const styles = {
 };
 
 class Badge extends Component {
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
-		const achievement = this.props.achievement;
+		const { achievement } = this.props;
 
 		return (
 			<div className="achievement" style={styles.achievement}>
-				<div className="badge-icon" style={achievement.isUnlocked ? getStyles(styles.badge.base, { backgroundColor: achievement.color }) : styles.badge.base}>
-					<img src="../../../assets/achievement.png" style={styles.badge.icon} />
+				<div
+					className="badge-icon"
+					style={{
+						...styles.badge.base,
+						...(achievement.isUnlocked ? { backgroundColor: achievement.color } : {}),
+					}}
+				>
+					<img
+						alt="Achievement badge"
+						style={styles.badge.icon}
+						src="../../../assets/achievement.png"
+					/>
 				</div>
 				<div className="details" style={styles.details}>
-					<p className="title" style={achievement.isUnlocked ? getStyles(styles.title.base, styles.title.unlocked) : styles.title.base}>{achievement.title}</p>
+					<p
+						className="title"
+						style={{
+							...styles.title.base,
+							...(achievement.isUnlocked ? styles.title.unlocked : {}),
+						}}
+					>{achievement.title}
+					</p>
 					<p className="description" style={styles.description}>{achievement.description}</p>
 				</div>
 			</div>
 		);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps) {
 		return this.props.achievement !== nextProps.achievement;
 	}
 }

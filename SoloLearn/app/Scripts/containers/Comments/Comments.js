@@ -1,22 +1,20 @@
-// React modules
+// General modules
 import React, { Component } from 'react';
 import Radium, { Style } from 'radium';
-
-// Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
+// Redux modules
 import {
 	getCommentsInternal, emptyComments,
 	voteCommentInternal, emptyCommentReplies,
 	editCommentInternal,
-} from '../../actions/comments';
+} from 'actions/comments';
 
 // Additional components
 import Comment from './Comment';
-import LoadingOverlay from '../../components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
-// Utils
-import getStyles from '../../utils/styleConverter';
 
 const styles = {
 	bottomLoading: {

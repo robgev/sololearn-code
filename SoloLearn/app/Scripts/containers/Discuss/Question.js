@@ -24,7 +24,7 @@ import DiscussAuthor from 'components/Shared/ProfileAvatar';
 
 // Utils
 import Likes from 'components/Shared/Likes';
-import removeDups from 'utils/removeDups';
+import { removeDups } from 'utils';
 
 const styles = {
 	question: {

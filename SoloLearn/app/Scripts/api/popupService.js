@@ -1,5 +1,5 @@
 // React modules
-import React, { Component } from 'react';
+import React from 'react';
 
 // Material UI components
 import Dialog from 'material-ui/Dialog';
@@ -10,11 +10,8 @@ import CorrectIcon from 'material-ui/svg-icons/action/done';
 import WrongIcon from 'material-ui/svg-icons/content/clear';
 import { lightGreen500, red600 } from 'material-ui/styles/colors';
 
-// Utils
-import getStyles from '../utils/styleConverter';
-
 // App texts
-import texts from '../defaults/texts';
+import texts from 'defaults/texts';
 
 const styles = {
 	confirmPopup: {
@@ -113,30 +110,57 @@ class PopupService {
 		);
 	}
 
-	// openQuizComments(e, openComments) {
-	//    e.preventDefault();
-
-	//    openComments();
-	// }
-	// <FlatButton label="COMMENTS" onClick={(e) => {this.openQuizComments(e, openComments)}} />
-
 	popupClick(isCorrect, isCheckpoint, actionCallback) {
 		if (!isCorrect && !isCheckpoint) return;
-
 		actionCallback();
 	}
 
 	checkPopup(isCorrect, actionCallback, isCheckpoint) { // openComments
 		return (
 			<div className="check-popup-overlay" style={styles.checkPopupOverlay}>
-				<Paper zDepth={2} className="check-popup" style={!isCorrect ? styles.checkPopup.base : getStyles(styles.checkPopup.base, styles.checkPopup.clickable)} onClick={() => { this.popupClick(isCorrect, isCheckpoint, actionCallback); }}>
+				<Paper
+					zDepth={2}
+					className="check-popup"
+					style={{
+						...styles.checkPopup.base,
+						...(isCorrect ? styles.checkPopup.clickable : {}),
+					}}
+					onClick={() => { this.popupClick(isCorrect, isCheckpoint, actionCallback); }}
+				>
 					{ isCorrect ?
-						[ <CorrectIcon key="correctIcon" color={lightGreen500} style={styles.icon} />,
-							<p key="correctText" style={getStyles(styles.text.base, styles.text.correct)}>Correct!</p> ]
-						:
-						[ <WrongIcon key="wrongIcon" color={red600} style={styles.icon} />,
-							<p key="wrongText" style={getStyles(styles.text.base, styles.text.wrong)}>Wrong</p>,
-							isCheckpoint && <RaisedButton key="backToTextButton" label="Back" primary style={styles.backButton} labelStyle={styles.backButtonLabel} onClick={actionCallback} /> ]
+						[
+							<CorrectIcon
+								key="correctIcon"
+								style={styles.icon}
+								color={lightGreen500}
+							/>,
+							<p
+								key="correctText"
+								style={{ ...styles.text.base, ...styles.text.correct }}
+							>Correct!
+							</p>,
+						] :
+						[
+							<WrongIcon
+								color={red600}
+								key="wrongIcon"
+								style={styles.icon}
+							/>,
+							<p
+								key="wrongText"
+								style={{ ...styles.text.base, ...styles.text.wrong }}
+							> Wrong
+							</p>,
+							isCheckpoint &&
+							<RaisedButton
+								primary
+								label="Back"
+								key="backToTextButton"
+								onClick={actionCallback}
+								style={styles.backButton}
+								labelStyle={styles.backButtonLabel}
+							/>,
+						]
 					}
 				</Paper>
 			</div>

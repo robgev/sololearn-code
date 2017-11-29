@@ -1,7 +1,7 @@
 // React modules
 import React from 'react';
 import { Route, IndexRoute, browserHistory } from 'react-router';
-import redirector from 'utils/redirector';
+import { redirector } from 'utils';
 
 // Layouts
 import MainLayout from 'components/Layouts/MainLayout';

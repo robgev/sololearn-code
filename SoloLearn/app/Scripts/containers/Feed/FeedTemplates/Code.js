@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 
 // Utils
-import getStyles from '../../../utils/styleConverter';
-import getLanguageColor from '../../../utils/getLanguageColor';
-import truncate from '../../../utils/textTruncate';
+import { getLanguageColor, truncate } from 'utils';
 
 const styles = {
 	code: {
@@ -42,7 +40,14 @@ class Code extends Component {
 		return (
 			<Link to={`/playground/${code.publicID}`} className="code" style={styles.code}>
 				<p style={styles.codeSnippet}>{truncate(code.sourceCode, 500, 6, true)}</p>
-				<div className="language" style={getStyles(styles.languageIcon, { backgroundColor: getLanguageColor(code.language) })}>{code.language}</div>
+				<div
+					className="language"
+					style={{
+						...styles.languageIcon,
+						backgroundColor: getLanguageColor(code.language),
+					}}
+				>{code.language}
+				</div>
 			</Link>
 		);
 	}

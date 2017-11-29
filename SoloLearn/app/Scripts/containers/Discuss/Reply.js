@@ -1,37 +1,29 @@
-// React modules
+// General modules
 import React, { Component } from 'react';
 import Radium from 'radium';
 import {
-	AutoSizer,
-	CellMeasurer,
 	CellMeasurerCache,
 } from 'react-virtualized';
-
-// Redux modules
 import { connect } from 'react-redux';
-import { editPostInternal, toggleAcceptedAnswerInternal } from '../../actions/discuss';
-import getLikesInternal from '../../actions/likes';
 
 // Material UI components
-import Avatar from 'material-ui/Avatar';
-import IconButton from 'material-ui/IconButton';
-import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
-import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
+import TextField from 'material-ui/TextField';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
-import AcceptedIcon from 'material-ui/svg-icons/navigation/check';
-import { grey500, grey700, blueGrey500, lightGreen500 } from 'material-ui/styles/colors';
+import IconButton from 'material-ui/IconButton';
 import DiscussAuthor from 'components/Shared/ProfileAvatar';
+import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
+import AcceptedIcon from 'material-ui/svg-icons/navigation/check';
+import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import { grey500, blueGrey500, lightGreen500 } from 'material-ui/styles/colors';
 
-// Utils
-import numberFormatter from '../../utils/numberFormatter';
-import updateDate from '../../utils/dateFormatter';
-import getStyles from '../../utils/styleConverter';
+// Redux modules
+import { editPostInternal, toggleAcceptedAnswerInternal } from 'actions/discuss';
+import getLikesInternal from 'actions/likes';
 
-import Likes from '../../components/Shared/Likes';
+import Likes from 'components/Shared/Likes';
 
 const cache = new CellMeasurerCache({
 	defaultWidth: 100,
@@ -317,7 +309,7 @@ class Reply extends Component {
 								reply.isAccepted &&
 								<AcceptedIcon
 									color={lightGreen500}
-									style={getStyles(styles.bestAnswerButton.icon, styles.bestAnswerButton.margin)}
+									style={{ ...styles.bestAnswerButton.icon, ...styles.bestAnswerButton.margin }}
 								/>
 						}
 						<DiscussAuthor date={reply.date} userID={reply.userID} userName={reply.userName} />

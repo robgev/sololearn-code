@@ -1,26 +1,22 @@
 // React modules
 import React, { Component } from 'react';
-import Radium, { Style } from 'radium';
+import Radium from 'radium';
 import { Link } from 'react-router';
 import { Motion, spring } from 'react-motion';
-
-const RadiumLink = Radium(Link);
-
-// Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { markReadInternal } from '../../actions/profile';
-
-// Additional components
-import NotificationList from './NotificationList';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 
-// Utils
-import getStyles from '../../utils/styleConverter';
+// Redux modules
+import { markReadInternal } from 'actions/profile';
 
+// Additional components
+import NotificationList from './NotificationList';
+
+const RadiumLink = Radium(Link);
 const styles = {
 	wrapper: {
 		position: 'absolute',

@@ -5,9 +5,6 @@ import Radium from 'radium';
 // Material UI components
 import CircularProgress from 'material-ui/CircularProgress';
 
-// Utils
-import getStyles from '../../utils/styleConverter';
-
 const styles = {
 	overlay: {
 		base: {
@@ -61,7 +58,7 @@ const LoadingOverlay = (props) => {
 			<CircularProgress
 				size={size}
 				thickness={thickness}
-				style={getStyles(styles.circle.base, additionalStyle)}
+				style={{ ...styles.circle.base, ...additionalStyle }}
 			/>
 		</div>
 	);

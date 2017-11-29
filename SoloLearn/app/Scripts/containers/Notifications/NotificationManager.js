@@ -1,24 +1,19 @@
-// React modules
+// General modules
 import React, { PureComponent } from 'react';
-import ReactDOM from 'react-dom';
-import Radium, { Style } from 'radium';
-
-// Redux modules
+import Radium from 'radium';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getNotificationCountInternal } from '../../actions/profile';
-import { isLoaded, defaultsLoaded } from '../../reducers';
-
-// Additional components
-import NotificationsPopup from './NotificationsPopup';
 
 // Material UI components
 import IconButton from 'material-ui/IconButton';
 import Badge from 'material-ui/Badge';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
-// Utils
-import getStyles from '../../utils/styleConverter';
+// Redux modules
+import { getNotificationCountInternal } from 'actions/profile';
+
+// Additional components
+import NotificationsPopup from './NotificationsPopup';
 
 const styles = {
 	notifications: {
@@ -67,38 +62,38 @@ class NotificationManager extends PureComponent {
 		this.interval = null;
 	}
 
-    // Open or close notifications list
-    toggleNotificationsOpen = () => {
-    	this.setState({ isOpened: !this.state.isOpened });
-    }
+// Open or close notifications list
+toggleNotificationsOpen = () => {
+	this.setState({ isOpened: !this.state.isOpened });
+}
 
-    render() {
-    	return (
-    		<div id="notifications" ref="notifications" style={styles.notifications}>
-		<Badge
-		badgeContent={0 | this.props.notificationsCount}
-    				style={{ margin: '0 10px 0 0' }}
-    				badgeStyle={this.props.notificationsCount > 0 ? styles.zeroPlus : styles.zero}
-	>
-    				<IconButton className="notifications-button" style={styles.notificationsButton.base} iconStyle={styles.notificationsButton.icon} onClick={this.toggleNotificationsOpen}>
-    					<NotificationsIcon color="#fff" />
-			</IconButton>
- </Badge>
+render() {
+	return (
+		<div id="notifications" ref="notifications" style={styles.notifications}>
+			<Badge
+				badgeContent={0 | this.props.notificationsCount}
+				style={{ margin: '0 10px 0 0' }}
+				badgeStyle={this.props.notificationsCount > 0 ? styles.zeroPlus : styles.zero}
+			>
+				<IconButton className="notifications-button" style={styles.notificationsButton.base} iconStyle={styles.notificationsButton.icon} onClick={this.toggleNotificationsOpen}>
+					<NotificationsIcon color="#fff" />
+				</IconButton>
+			</Badge>
 
-    			{this.state.isOpened && <NotificationsPopup isOpened={this.state.isOpened} toggleNotificationsOpen={this.toggleNotificationsOpen} />}
-	</div>
-    	);
-    }
+			{this.state.isOpened && <NotificationsPopup isOpened={this.state.isOpened} toggleNotificationsOpen={this.toggleNotificationsOpen} />}
+		</div>
+	);
+}
 
-    componentWillMount() {
-    	// Get unseen notifications count
-    	this.props.getNotificationCount();
-    	// this.interval = setInterval(() => { this.props.getNotificationCount() }, 10000);
-    }
+componentWillMount() {
+// Get unseen notifications count
+	this.props.getNotificationCount();
+// this.interval = setInterval(() => { this.props.getNotificationCount() }, 10000);
+}
 
-    componentWillUnmount() {
-    	// clearInterval(this.interval);
-    }
+componentWillUnmount() {
+// clearInterval(this.interval);
+}
 }
 
 function mapStateToProps(state) {

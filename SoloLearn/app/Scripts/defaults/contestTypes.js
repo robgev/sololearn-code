@@ -1,4 +1,4 @@
-import EnumNameMapper from '../utils/enumNameMapper';
+import EnumNameMapper from 'utils/enumNameMapper';
 
 const contestTypes = {
 	Won: 1,

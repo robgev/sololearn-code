@@ -10,9 +10,7 @@ import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
 import { grey500, blueGrey500 } from 'material-ui/styles/colors';
 
 // Utils
-import numberFormatter from 'utils/numberFormatter';
-import getLanguageColor from 'utils/getLanguageColor';
-import updateDate from 'utils/dateFormatter';
+import { numberFormatter, updateDate, getLanguageColor } from 'utils';
 
 const styles = {
 	code: {

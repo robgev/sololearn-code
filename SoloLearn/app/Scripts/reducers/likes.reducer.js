@@ -1,5 +1,5 @@
-import { SET_LIKES_LIST } from '../constants/ActionTypes';
-import removeDups from '../utils/removeDups';
+import { SET_LIKES_LIST } from 'constants/ActionTypes';
+import { removeDups } from 'utils';
 
 const nextState = (oldLikes, newLikes) => {
 	if (newLikes == null) {

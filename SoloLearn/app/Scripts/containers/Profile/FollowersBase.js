@@ -1,10 +1,6 @@
 // React modules
 import React, { Component } from 'react';
 
-// Additional data and components
-import Followers from './Followers';
-import Following from './Following';
-
 // Material UI components
 import { Tabs, Tab } from 'material-ui/Tabs';
 import IconButton from 'material-ui/IconButton';
@@ -12,8 +8,11 @@ import Close from 'material-ui/svg-icons/content/clear';
 import { grey600 } from 'material-ui/styles/colors';
 
 // Utils
-import getStyles from '../../utils/styleConverter';
-import EnumNameMapper from '../../utils/enumNameMapper';
+import { EnumNameMapper } from 'utils';
+
+// Additional data and components
+import Followers from './Followers';
+import Following from './Following';
 
 const TabTypes = {
 	Followers: 1,
@@ -74,12 +73,17 @@ class FollowersBase extends Component {
 	}
 
 	render() {
-		const userId = this.props.userId;
+		const { userId } = this.props;
 
 		return (
 			<div id="followers-base" style={styles.container}>
 				<div style={styles.header}>
-					<Tabs value={this.state.activeTab} style={styles.tabsWrapper} tabItemContainerStyle={styles.tabs} inkBarStyle={styles.inkBarStyle}>
+					<Tabs
+						style={styles.tabsWrapper}
+						value={this.state.activeTab}
+						inkBarStyle={styles.inkBarStyle}
+						tabItemContainerStyle={styles.tabs}
+					>
 						<Tab
 							label="Followers"
 							value={TabTypes.Followers}
@@ -97,8 +101,8 @@ class FollowersBase extends Component {
 						<Close color={grey600} />
 					</IconButton>
 				</div>
-				{this.state.activeTab == TabTypes.Followers && <Followers userId={userId} />}
-				{this.state.activeTab == TabTypes.Following && <Following userId={userId} />}
+				{this.state.activeTab === TabTypes.Followers && <Followers userId={userId} />}
+				{this.state.activeTab === TabTypes.Following && <Following userId={userId} />}
 			</div>
 		);
 	}

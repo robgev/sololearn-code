@@ -18,7 +18,7 @@ const toSeoFrendly = (text, maxLength) => {
 
 	if (result.length > 0) {
 		// Remove trailing '-'
-		if (result[result.length - 1] == '-') result = result.substring(0, result.length - 1);
+		if (result[result.length - 1] === '-') result = result.substring(0, result.length - 1);
 	}
 
 	return result;

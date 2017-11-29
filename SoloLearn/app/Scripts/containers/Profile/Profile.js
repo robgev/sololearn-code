@@ -11,12 +11,12 @@ import { grey600 } from 'material-ui/styles/colors';
 
 // Redux modules
 import { connect } from 'react-redux';
-import { getFeedItemsInternal } from '../../actions/feed';
-import { getCodesInternal } from '../../actions/playground';
-import { getQuestionsInternal } from '../../actions/discuss';
-import { getProfileInternal, clearOpenedProfile } from '../../actions/defaultActions';
-import { emptyProfileFollowers } from '../../actions/profile';
-import { isLoaded } from '../../reducers';
+import { getFeedItemsInternal } from 'actions/feed';
+import { getCodesInternal } from 'actions/playground';
+import { getQuestionsInternal } from 'actions/discuss';
+import { getProfileInternal, clearOpenedProfile } from 'actions/defaultActions';
+import { emptyProfileFollowers } from 'actions/profile';
+import { isLoaded } from 'reducers';
 
 // Additional data and components
 import Header from './Header';
@@ -26,10 +26,10 @@ import Questions from '../Discuss/Questions';
 import Skills from './Skills';
 import Badges from './Badges';
 import FollowersBase from './FollowersBase';
-import LoadingOverlay from '../../components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
 // Utils
-import EnumNameMapper from '../../utils/enumNameMapper';
+import { EnumNameMapper } from 'utils';
 
 const TabTypes = {
 	Codes: 1,

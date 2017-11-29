@@ -6,13 +6,10 @@ import moment from 'moment';
 // Material UI components
 import Avatar from 'material-ui/Avatar';
 import { ListItem } from 'material-ui/List';
-import { blueGrey600 } from 'material-ui/styles/colors';
 
 // App defaults and utils
-import contestTypes from '../../../defaults/contestTypes';
-import getSyles from '../../../utils/styleConverter';
-import updateDate from '../../../utils/dateFormatter';
-import getChallengeStatus from '../../../utils/getChallengeStatus';
+import contestTypes from 'defaults/contestTypes';
+import { updateDate, getChallengeStatus } from 'utils';
 
 const styles = {
 	content: {

@@ -1,6 +1,7 @@
 // React modules
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
 
 // Material UI components
 import Dialog from 'material-ui/Dialog';
@@ -11,16 +12,17 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
 // Redux modules
-import { connect } from 'react-redux';
-import { getContestsInternal, clearContestsInternal, chooseContestCourse } from '../../../actions/challenges';
-import { isLoaded } from '../../../reducers';
+import {
+	getContestsInternal,
+	clearContestsInternal,
+	chooseContestCourse
+} from 'actions/challenges';
+import { isLoaded } from 'reducers';
 
 // Additional components
 import ContestItem from './ContestItem';
-import LoadingOverlay from '../../../components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
-// Utils
-import getStyles from '../../../utils/styleConverter';
 
 const styles = {
 	contestsWrapper: {
@@ -154,14 +156,14 @@ class Contests extends Component {
 				{
 					invited.length > 0 &&
 					<div>
-						<p style={getStyles(styles.header.base, styles.header.title)}>INVITED</p>
+						<p style={{ ...styles.header.base, ...styles.header.title }}>INVITED</p>
 						<List style={styles.contests}>{this.renderContests(invited)}</List>
 					</div>
 				}
 				{
 					ongoing.length > 0 &&
 					<div>
-						<p style={getStyles(styles.header.base, styles.header.title)}>ONGOING</p>
+						<p style={{ ...styles.header.base, ...styles.header.title }}>ONGOING</p>
 						<List style={styles.contests}>{this.renderContests(ongoing)}</List>
 					</div>
 				}

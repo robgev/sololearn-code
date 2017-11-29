@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import Radium, { StyleRoot } from 'radium';
 import { fadeInUp } from 'react-animations';
+
+import Service from 'api/service';
+import contestTypes from 'defaults/contestTypes';
+import { Optional } from 'utils';
+
+import SingleResult from './SingleResult';
+import TypeSelector from './TypeSelector';
 import Start from './Start';
 import Result from './Result';
-import TypeSelector from './TypeSelector';
-import Service from '../../../../api/service';
-import SingleResult from './SingleResult';
-import contestTypes from '../../../../defaults/contestTypes';
-import { Optional } from '../../../../utils/optional';
 
 const styles = {
 	animate: animation => ({

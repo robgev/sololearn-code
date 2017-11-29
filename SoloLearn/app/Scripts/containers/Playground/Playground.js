@@ -16,13 +16,13 @@ import Service from 'api/service';
 import texts from 'defaults/texts';
 import inputRegexes from 'defaults/inputRegexes';
 import editorSettings from 'defaults/playgroundEditorSettings';
-import checkWeb from 'utils/checkWeb';
+import { checkWeb } from 'utils';
 
 // Additional components
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import Editor from './Editor';
 import PlaygroundTabs from './PlaygroundTabs';
 import Toolbar from './Toolbar';
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import Comments from '../Comments/CommentsBase';
 import OutputWindow from './OutputWindow';
 
@@ -177,7 +177,7 @@ class Playground extends Component {
 					...codeSample.code,
 					codeType: 'templateCode',
 					userCodeLanguage: isWeb ? 'web' : foundEditorSettingKey,
-				}
+				};
 
 				this.setState({
 					type,
@@ -233,7 +233,7 @@ class Playground extends Component {
 					...codeSample.code,
 					codeType: 'userCode',
 					userCodeLanguage: isWeb ? 'web' : foundEditorSettingKey,
-				}
+				};
 
 				this.setState({
 					id,
@@ -254,7 +254,7 @@ class Playground extends Component {
 	}
 
 	getTabCodeData = (mode, defaultCodeData) => {
-		const { latestSavedCodeData = defaultCodeData } = this.state
+		const { latestSavedCodeData = defaultCodeData } = this.state;
 		switch (mode) {
 		case 'html':
 		case 'php':
@@ -297,7 +297,7 @@ class Playground extends Component {
 			this.setState({ code: editorValue, sourceCode: editorValue });
 			break;
 		}
-}
+	}
 
 	handleLanguageChange = (e, index, selectedLanguage) => {
 		const mode = selectedLanguage === 'web' ? 'html' : selectedLanguage;
@@ -358,15 +358,15 @@ class Playground extends Component {
 	setLatestSavedData = (latestSavedCodeData) => {
 		console.log(latestSavedCodeData);
 		this.setState({
-			latestSavedCodeData
-		})
+			latestSavedCodeData,
+		});
 	}
 
 	wrapByTag = (code, tag) => {
 		const hasTag = code.includes(tag);
 		if (!hasTag) {
 			return (
-`<${tag}>
+				`<${tag}>
 	${code}
 </${tag}>`
 			);
@@ -381,7 +381,7 @@ class Playground extends Component {
 		const precedingSubstr = code.slice(0, insertPosition);
 		const succeedingSubstr = code.slice(insertPosition);
 		return (
-`${precedingSubstr}
+			`${precedingSubstr}
 	${value}
 ${succeedingSubstr}
 `
@@ -393,14 +393,13 @@ ${succeedingSubstr}
 		const wrappedCode = this.wrapByTag(code, 'html');
 		const headWrappedValue =
 `<head>
-${value}
+	${value}
 </head>
-`
+`;
 		const codeToBeAdded = hasTag ? value : headWrappedValue;
-		const tagToBeAddedAfter = hasTag ? '<head' : '<html'
+		const tagToBeAddedAfter = hasTag ? '<head' : '<html';
 		return this.addResourceValueAfterTag(wrappedCode, codeToBeAdded, tagToBeAddedAfter);
 	}
-
 
 	insertToHead = (value) => {
 		const { sourceCode } = this.state;
@@ -422,9 +421,7 @@ ${value}
 		document.querySelector('#js-console .log-message').innerHTML = '';
 	}
 
-	compileCode = (sourceCode, language, input) => {
-		return Service.request('Playground/CompileCode', { code: sourceCode, language, input });
-	}
+	compileCode = (sourceCode, language, input) => Service.request('Playground/CompileCode', { code: sourceCode, language, input })
 
 	// Show output
 	showOutput = (language, output) => {
@@ -436,8 +433,7 @@ ${value}
 				let consoleOutput = '';
 				for (let i = 0; i < arguments.length; i++) {
 					const current = arguments[i];
-					if (typeof current === 'string' || typeof current === 'number' || typeof current === 'boolean')
-						consoleOutput += `${arguments[i]} `;
+					if (typeof current === 'string' || typeof current === 'number' || typeof current === 'boolean') { consoleOutput += `${arguments[i]} `; }
 				}
 
 				const outputHTML = consoleOutput.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>');
@@ -523,7 +519,7 @@ ${value}
 			});
 
 			// Save compiled data
-			const compiledCode = await this.compileCode(sourceCode, language, '')
+			const compiledCode = await this.compileCode(sourceCode, language, '');
 			// Show output
 			this.showOutput(language, compiledCode.output);
 		} else if (this.checkForInput(language)) {
@@ -535,7 +531,7 @@ ${value}
 			});
 
 			// Save compiled data
-			const compiledCode = await this.compileCode(sourceCode, language, '')
+			const compiledCode = await this.compileCode(sourceCode, language, '');
 			// Show output
 			this.showOutput(language, compiledCode.output);
 		}
@@ -644,7 +640,7 @@ ${value}
 							type={type}
 							showWebOutput={showWebOutput}
 							programRunning={programRunning}
-						 />
+						/>
 						<Toolbar
 							type={type}
 							mode={mode}
@@ -676,14 +672,14 @@ ${value}
 							className="default-output-container"
 							style={{
 								...styles.defaultOutputContainer.base,
-								...(showOutput && type === 'default' ? styles.defaultOutputContainer.show : {})
+								...(showOutput && type === 'default' ? styles.defaultOutputContainer.show : {}),
 							}}
 						>
-								{	!(isRunning && type === 'default') ? null :
-									<LoadingOverlay size={30} />
-								}
-								<div style={styles.outputHeader}>Output: </div>
-								<pre className="default-output" style={styles.defaultOutput}></pre>
+							{	!(isRunning && type === 'default') ? null :
+							<LoadingOverlay size={30} />
+							}
+							<div style={styles.outputHeader}>Output: </div>
+							<pre className="default-output" style={styles.defaultOutput} />
 						</Paper>
 						<Comments
 							id={id}

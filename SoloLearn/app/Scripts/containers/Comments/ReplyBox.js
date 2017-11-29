@@ -2,19 +2,16 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-// Additional components
-import LoadingOverlay from '../../components/Shared/LoadingOverlay';
-
 // Material UI components
 import Avatar from 'material-ui/Avatar';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
-import Close from 'material-ui/svg-icons/content/clear';
 import { grey600 } from 'material-ui/styles/colors';
+import Close from 'material-ui/svg-icons/content/clear';
 
-// Utils
-import getStyles from '../../utils/styleConverter';
+// Additional components
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
 const styles = {
 	replyBox: {
@@ -147,12 +144,15 @@ class ReplyBox extends Component {
 		const replyDisabled = this.state.errorText.length == 0;
 
 		return (
-			<div id="reply-box-wrapper" style={!isPrimary ? getStyles(styles.replyBox.base, styles.replyBox.elevated) : styles.replyBox.base}>
+			<div
+				id="reply-box-wrapper"
+				style={{ ...styles.replyBox.base, ...(!isPrimary ? styles.replyBox.elevated : {}) }}
+			>
 				{this.state.isLoading && <LoadingOverlay withBackground size={30} />}
 				{!isPrimary &&
 				<div className="toolbar" style={styles.replyBoxToolbar}>
 					<p style={styles.replyBoxToolbarText}>Repling to <span style={styles.replyBoxToolbarText.user}>{userName}</span></p>
-					<IconButton className="cancel-reply" style={getStyles(styles.close.button.reply, styles.close.button.small)} iconStyle={styles.close.icon.small} onClick={this.props.closeToolbar}>
+					<IconButton className="cancel-reply" style={{ ...styles.close.button.reply, ...styles.close.button.small }} iconStyle={styles.close.icon.small} onClick={this.props.closeToolbar}>
 						<Close color={grey600} />
 					</IconButton>
 				</div>

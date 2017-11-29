@@ -1,20 +1,19 @@
-// React modules
+// General modules
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
-
-// Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { markReadInternal } from 'actions/profile';
 
 // Material UI components
-import Avatar from 'material-ui/Avatar';
 import { ListItem } from 'material-ui/List';
+
+// Redux modules
+import { markReadInternal } from 'actions/profile';
 
 // Utils And Defaults
 import types from 'defaults/appTypes';
-import updateDate from 'utils/dateFormatter';
-import getStyles from 'utils/styleConverter';
+import { updateDate } from 'utils';
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
 const styles = {
 	notificationItem: {
@@ -96,32 +95,38 @@ class NotificationItem extends Component {
 	openNotificationLink = (notification) => {
 		switch (notification.type) {
 		case types.completedChallange:
-			return browserHistory.push(`/challenge/${notification.contest.id}`);
+			browserHistory.push(`/challenge/${notification.contest.id}`);
+			break;
 		case types.postedAnswer:
 		case types.postedQuestion:
 		case types.postedComment:
 		case types.postedCommentReply:
 		case types.upvotePost:
 		case types.upvoteComment:
-			return browserHistory.push(`/discuss/${notification.post.parentID || notification.post.id}`);
+			browserHistory.push(`/discuss/${notification.post.parentID || notification.post.id}`);
+			break;
 		case types.following:
 		case types.friendJoined:
-			return browserHistory.push(`/profile/${notification.actionUser.id}`);
+			browserHistory.push(`/profile/${notification.actionUser.id}`);
+			break;
 		case types.badgeUnlocked:
-			return browserHistory.push(`/profile/${notification.user.id}/badges`);
+			browserHistory.push(`/profile/${notification.user.id}/badges`);
+			break;
 		default:
+			break;
 		}
 	}
 
 	getTitleUser = (title, pattern) => {
-		const notification = this.props.notification;
+		const { notification } = this.props;
 		const href = `/profile/${notification.actionUser.id}`;
 		return title.replace(pattern, `<a href=${href} style="text-decoration:none;color:#8BC34A;font-weight:500;">${notification.actionUser.name}</a>`);
 	}
 
 	generateContent = () => {
-		const notification = this.props.notification;
-		let notificationTitle = notification.groupedItems.length > 1 ? notification.message : notification.title;
+		const { notification } = this.props;
+		let notificationTitle =
+			notification.groupedItems.length > 1 ? notification.message : notification.title;
 
 		if (notificationTitle.includes('{action_user}')) {
 			notificationTitle = this.getTitleUser(notificationTitle, '{action_user}');
@@ -139,15 +144,26 @@ class NotificationItem extends Component {
 		return (
 			<div className="notification-content" style={styles.notificationContent}>
 				{
-					notification.type == types.badgeUnlocked ?
-						<div style={getStyles(styles.badge.base, { backgroundColor: notification.achievement.color })}>
-							<img style={styles.badge.icon} src={notification.achievement.icon} />
-						</div>
-						:
-						<Avatar size={30} style={styles.avatar}>{notification.actionUser.name.charAt(0).toUpperCase()}</Avatar>
+					notification.type === types.badgeUnlocked ?
+						<div style={{ ...styles.badge.base, backgroundColor: notification.achievement.color }}>
+							<img
+								alt="Achievement icon"
+								style={styles.badge.icon}
+								src={notification.achievement.icon}
+							/>
+						</div> :
+						<ProfileAvatar
+							style={styles.avatar}
+							userID={notification.actionUser.id}
+							avatarUrl={notification.actionUser.avatarUrl}
+						/>
 				}
 				<div className="additional-details" style={styles.additionalDetails}>
-					<p className="title" style={styles.title} dangerouslySetInnerHTML={{ __html: notificationTitle }} />
+					<p
+						className="title"
+						style={styles.title}
+						dangerouslySetInnerHTML={{ __html: notificationTitle }}
+					/>
 					<div>
 						<span className="date" style={styles.date}>{updateDate(notification.date)}</span>
 						{!notification.isClicked && <span style={styles.notClickedIcon} />}
@@ -165,15 +181,13 @@ class NotificationItem extends Component {
 		);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps) {
 		return this.props.notification.isClicked !== nextProps.notification.isClicked;
 	}
 }
 
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({
-		markRead: markReadInternal,
-	}, dispatch);
-}
+const mapDispatchToProps = dispatch => bindActionCreators({
+	markRead: markReadInternal,
+}, dispatch);
 
 export default connect(null, mapDispatchToProps)(NotificationItem);

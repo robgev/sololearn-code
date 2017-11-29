@@ -8,13 +8,12 @@ import { connect } from 'react-redux';
 import ChatBubble from 'material-ui/svg-icons/communication/chat-bubble-outline';
 import { green500 } from 'material-ui/styles/colors';
 
-import DiscussTag from './DiscussTag';
-import Likes from '../../components/Shared/Likes';
-import getLikesInternal from '../../actions/likes';
-
 // Utils
-import removeDups from '../../utils/removeDups';
-import updateDate from '../../utils/dateFormatter';
+import { removeDups, updateDate } from 'utils';
+
+import Likes from 'components/Shared/Likes';
+import getLikesInternal from 'actions/likes';
+import DiscussTag from './DiscussTag';
 
 export const noStyleLink = { textDecoration: 'none' };
 

@@ -1,4 +1,4 @@
-import EnumNameMapper from '../utils/enumNameMapper';
+import { EnumNameMapper } from 'utils';
 
 const PopupTypes = {
 	course: 1,

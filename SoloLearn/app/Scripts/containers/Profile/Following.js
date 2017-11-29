@@ -1,18 +1,15 @@
-// React modules
+// General modules
 import React, { Component } from 'react';
-
-// Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getFollowingInternal } from '../../actions/profile';
-import { isLoaded } from '../../reducers';
+
+// Redux modules
+import { getFollowingInternal } from 'actions/profile';
+import { isLoaded } from 'reducers';
 
 // Additional data and components
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import Follower from './FollowerItem';
-import LoadingOverlay from '../../components/Shared/LoadingOverlay';
-
-// Utils
-import getStyles from '../../utils/styleConverter';
 
 const styles = {
 	container: {
@@ -81,39 +78,52 @@ class Following extends Component {
 	// Check scroll state
 	handleScroll() {
 		const scollingArea = document.getElementById('following');
-		if (scollingArea.scrollTop === (scollingArea.scrollHeight - scollingArea.offsetHeight) && !this.state.fullyLoaded) {
+		const neededScrollTop = scollingArea.scrollHeight - scollingArea.offsetHeight;
+		if (scollingArea.scrollTop === neededScrollTop && !this.state.fullyLoaded) {
 			if (!this.state.isLoading && !this.state.fullyLoaded) {
 				this.loadFollowing(this.props.following.length, this.props.userId);
 			}
 		}
 	}
 
-	renderFollowers() {
-		return this.props.following.map((follower, index) => (
-			<Follower key={follower.id} follower={follower} fromFollowers={false} />
-		));
-	}
+	renderFollowers = () => this.props.following.map(follower => (
+		<Follower key={follower.id} follower={follower} fromFollowers={false} />
+	))
 
 	render() {
-		const { isLoaded, following } = this.props;
+		const { isLoadedFollowing, following } = this.props;
+		const { fullyLoaded, isLoading } = this.state;
 
 		return (
 			<div id="following" style={styles.container}>
-				{(isLoaded && following.length > 0) && this.renderFollowers()}
-				{((!isLoaded || following.length == 0) && !this.state.fullyLoaded) && <LoadingOverlay />}
+				{(isLoadedFollowing && following.length > 0) && this.renderFollowers()}
+				{
+					((!isLoadedFollowing || following.length === 0) && !fullyLoaded) &&
+					<LoadingOverlay />
+				}
 				{
 					following.length > 0 &&
-					<div className="loading" style={!this.state.isLoading ? (!this.state.fullyLoaded ? styles.bottomLoading.base : styles.bottomLoading.fullyLoaded) : getStyles(styles.bottomLoading.base, styles.bottomLoading.active)}>
+					<div
+						className="loading"
+						style={{
+							...(isLoading ? {}
+								: { ...styles.bottomLoading.base, ...styles.bottomLoading.active }),
+							...(fullyLoaded ? styles.bottomLoading.fullyLoaded : styles.bottomLoading.base),
+						}}
+					>
 						<LoadingOverlay size={30} />
 					</div>
 				}
-				{(this.state.fullyLoaded && following.length == 0) && <div style={styles.noResults}>No Results Found</div>}
+				{
+					(fullyLoaded && following.length === 0) &&
+					<div style={styles.noResults}>No Results Found</div>
+				}
 			</div>
 		);
 	}
 
 	componentWillMount() {
-		if (!this.props.isLoaded) {
+		if (!this.props.isLoadedFollowing) {
 			this.loadFollowing(0, this.props.userId);
 		}
 	}
@@ -133,8 +143,8 @@ class Following extends Component {
 
 function mapStateToProps(state) {
 	return {
-		isLoaded: isLoaded(state, 'following'),
 		following: state.profile.following,
+		isLoadedFollowing: isLoaded(state, 'following'),
 	};
 }
 

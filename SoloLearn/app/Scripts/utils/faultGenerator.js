@@ -9,12 +9,4 @@ const Faults = {
 	SocialConflict: 128,
 };
 
-export default (num) => {
-	const errors = [];
-	Object.keys(Faults).forEach((key) => {
-		if ((num & Faults[key]) == Faults[key]) {
-			errors.push(key);
-		}
-	});
-	return errors;
-};
+export default num => Object.values(Faults).filter(value => (num & value) === value);

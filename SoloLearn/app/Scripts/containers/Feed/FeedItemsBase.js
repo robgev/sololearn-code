@@ -1,35 +1,37 @@
-// React modules
+// General modules
 import React, { Component } from 'react';
 import Radium from 'radium';
+import Scroll from 'react-scroll';
 import { Link } from 'react-router';
 import { Motion, spring } from 'react-motion';
-import Scroll from 'react-scroll';
+import { connect } from 'react-redux';
 
 // Material UI components
-import Arrow from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
+import Avatar from 'material-ui/Avatar';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import LinearProgress from 'material-ui/LinearProgress';
-import Avatar from 'material-ui/Avatar';
+import Arrow from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
 
 // Redux modules
-import { connect } from 'react-redux';
-import { getFeedItemsInternal, getPinnedFeedItemsInternal, getUserSuggestionsInternal, getNewFeedItemsInternal } from '../../actions/feed';
-import { defaultsLoaded } from '../../reducers';
+import {
+	getFeedItemsInternal,
+	getNewFeedItemsInternal,
+	getUserSuggestionsInternal,
+	getPinnedFeedItemsInternal,
+} from 'actions/feed';
 
 // Service
-import Service from '../../api/service';
+import Service from 'api/service';
+
+// Utils and defaults
+import { getOffset, numberFormatter } from 'utils';
+import PopupTypes from 'defaults/feedPopupTypes';
 
 // Additional data and components
 import Header from './Header';
 import FeedPins from './FeedPins';
 import FeedItems from './FeedItems';
-import LoadingOverlay from '../../components/Shared/LoadingOverlay';
-
-// Utils and defaults
-import PopupTypes from '../../defaults/feedPopupTypes';
-import numberFormatter from '../../utils/numberFormatter';
-import getOffset from '../../utils/getOffset';
 
 const scroll = Scroll.animateScroll;
 

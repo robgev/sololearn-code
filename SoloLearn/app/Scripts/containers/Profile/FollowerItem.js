@@ -1,17 +1,14 @@
-// React modules
+// General modules
 import React, { Component } from 'react';
-
-// Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { followUserInternal, unfollowUserInternal } from '../../actions/profile';
 
 // Material UI components
 import Avatar from 'material-ui/Avatar';
 import RaisedButton from 'material-ui/RaisedButton';
 
-// Utils
-import getStyles from '../../utils/styleConverter';
+// Redux modules
+import { followUserInternal, unfollowUserInternal } from 'actions/profile';
 
 const styles = {
 	follower: {
@@ -65,7 +62,7 @@ class FollowerItem extends Component {
 		super(props);
 
 		this.state = {
-			isFollowing: this.props.follower.isFollowing,
+			isFollowing: props.follower.isFollowing,
 		};
 
 		this.handleFollowing = this.handleFollowing.bind(this);
@@ -82,7 +79,7 @@ class FollowerItem extends Component {
 	}
 
 	render() {
-		const follower = this.props.follower;
+		const { follower, fromFollowers, isFollowing } = this.props;
 
 		return (
 			<div id="follower" style={styles.follower}>
@@ -101,14 +98,21 @@ class FollowerItem extends Component {
 					labelStyle={styles.followButton.label}
 					buttonStyle={styles.followButton.button}
 					overlayStyle={styles.followButton.overlay}
-					onClick={() => { this.handleFollowing(follower.id, !this.state.isFollowing, this.props.fromFollowers); }}
+					onClick={
+						() => {
+							this.handleFollowing(follower.id, !isFollowing, fromFollowers);
+						}}
 				/>
 			</div>
 		);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return (this.props.follower !== nextProps.follower || this.state.isFollowing !== nextState.isFollowing);
+		const { follower } = this.props;
+		const { isFollowing } = this.state;
+		const { follower: newFollowerValue } = nextProps;
+		const { isFollowing: newIsFollowingValue } = nextState;
+		return (follower !== newFollowerValue || isFollowing !== newIsFollowingValue);
 	}
 }
 

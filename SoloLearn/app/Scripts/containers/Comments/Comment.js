@@ -19,10 +19,8 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import getLikesInternal from 'actions/likes';
 
 // Utils
-import getStyles from 'utils/styleConverter';
-import updateDate from 'utils/dateFormatter';
-import Likes from '../../components/Shared/Likes';
-import updateMessage from 'utils/messageFormatter';
+import Likes from 'components/Shared/Likes';
+import { updateDate, updateMessage } from 'utils';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
 const styles = {
@@ -195,7 +193,7 @@ const styles = {
 
 	noStyle: {
 		textDecoration: 'none',
-	}
+	},
 };
 
 class Comment extends Component {
@@ -369,7 +367,7 @@ class Comment extends Component {
 			parentID,
 			avatarUrl,
 			userName,
-			repliesCount
+			repliesCount,
 		} = comment;
 		const isReply = parentID != null;
 		const isEditing = (this.props.isEditing && this.props.activeComment.id === id);
@@ -390,10 +388,17 @@ class Comment extends Component {
 									<Avatar
 										size={40}
 										style={styles.avatar}
-									>{userName.toUpperCase().charAt(0)}</Avatar>
+									>{userName.toUpperCase().charAt(0)}
+									</Avatar>
 								}
 							</Link>
-							<div className="comment-details-wrapper" style={isEditing ? getStyles(styles.commentDetailsWrapper.base, styles.commentDetailsWrapper.editing) : styles.commentDetailsWrapper.base}>
+							<div
+								className="comment-details-wrapper"
+								style={{
+									...styles.commentDetailsWrapper.base,
+									...(isEditing ? styles.commentDetailsWrapper.editing : {}),
+								}}
+							>
 								<div className="comment-details" style={styles.commentDetails}>
 									<div style={styles.heading}>
 										<Link to={`/profile/${userID}`} style={styles.noStyle}>
@@ -446,10 +451,17 @@ class Comment extends Component {
 							<Avatar
 								size={40}
 								style={styles.avatar}
-							>{userName.toUpperCase().charAt(0)}</Avatar>
+							>{userName.toUpperCase().charAt(0)}
+							</Avatar>
 						}
 					</Link>
-					<div className="comment-details-wrapper" style={isEditing ? getStyles(styles.commentDetailsWrapper.base, styles.commentDetailsWrapper.editing) : styles.commentDetailsWrapper.base}>
+					<div
+						className="comment-details-wrapper"
+						style={{
+							...styles.commentDetailsWrapper.base,
+							...(isEditing ? styles.commentDetailsWrapper.editing : {}),
+						}}
+					>
 						<div className="comment-details" style={styles.commentDetails}>
 							<div style={styles.heading}>
 								<Link to={`/profile/${userID}`} style={styles.noStyle}>

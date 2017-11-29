@@ -1,21 +1,19 @@
-// React modules
+// General modules
 import React, { Component } from 'react';
-
-// Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { followUserInternal, unfollowUserInternal } from '../../actions/profile';
 
 // Material UI components
-import Paper from 'material-ui/Paper';
 import LinearProgress from 'material-ui/LinearProgress';
 import Avatar from 'material-ui/Avatar';
 import RaisedButton from 'material-ui/RaisedButton';
 import Person from 'material-ui/svg-icons/social/person';
 
+// Redux modules
+import { followUserInternal, unfollowUserInternal } from 'actions/profile';
+
 // Utils and defaults
-import getStyles from '../../utils/styleConverter';
-import numberFormatter from '../../utils/numberFormatter';
+import { numberFormatter } from 'utils';
 
 const styles = {
 	detailsWrapper: {
@@ -180,8 +178,8 @@ class Header extends Component {
 							value={profile.xp}
 							color="#8BC34A"
 						/>
-						<span style={getStyles(styles.xp.base, styles.xp.left)}>{profile.xp} XP</span>
-						<span style={getStyles(styles.xp.base, styles.xp.right)}>{nextLevel.maxXp} XP</span>
+						<span style={{ ...styles.xp.base, ...styles.xp.left }}>{profile.xp} XP</span>
+						<span style={{ ...styles.xp.base, ...styles.xp.right }}>{nextLevel.maxXp} XP</span>
 					</div>
 				</div>
 			</div>
@@ -191,11 +189,9 @@ class Header extends Component {
 
 const mapStateToProps = state => ({ userId: state.userProfile.id });
 
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({
-		followUser: followUserInternal,
-		unfollowUser: unfollowUserInternal,
-	}, dispatch);
-}
+const mapDispatchToProps = dispatch => bindActionCreators({
+	followUser: followUserInternal,
+	unfollowUser: unfollowUserInternal,
+}, dispatch);
 
-export default connect(() => ({}), mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

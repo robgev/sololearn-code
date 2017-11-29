@@ -1,9 +1,6 @@
 // React modules
 import React, { Component } from 'react';
 
-// Utils
-import getStyles from '../../../utils/styleConverter';
-
 const styles = {
 	achievement: {
 		display: 'flex',
@@ -50,7 +47,10 @@ class Badge extends Component {
 
 		return (
 			<div className="achievement" style={styles.achievement}>
-				<div className="badge-icon" style={getStyles(styles.badge.base, { backgroundColor: achievement.color })}>
+				<div
+					className="badge-icon"
+					style={{ ...styles.badge.base, backgroundColor: achievement.color }}
+				>
 					<img src="../../../assets/achievement.png" style={styles.badge.icon} />
 				</div>
 				<div className="details" style={styles.details}>

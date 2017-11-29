@@ -5,15 +5,17 @@ const getLanguageColor = (language) => {
 	case 'cs':
 		return '#662E93';
 	case 'java':
-		return '#f99924';
+		return '#F99924';
 	case 'py':
-		return '#1e415e';
+		return '#1E415E';
 	case 'rb':
-		return '#e14e40';
+		return '#E14E40';
 	case 'php':
-		return '#5f83bb';
+		return '#5F83BB';
 	case 'web':
-		return '#e54d26';
+		return '#E54D26';
+	default:
+		return '';
 	}
 };
 

@@ -1,20 +1,17 @@
 // React modules
 import React, { Component } from 'react';
-import ReactDOM, { findDOMNode } from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 import Radium, { Style } from 'radium';
-import { Link, browserHistory } from 'react-router';
-import Playground from 'containers/Playground/Playground';
-
-// Service
-import Service from '../../api/service';
+import { browserHistory } from 'react-router';
 
 // Marterial UI components
 import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
 
-// Utils
-import getPosition from '../../utils/getPosition';
+// Service & others
+import Service from 'api/service';
+import { getPosition } from 'utils';
+import Playground from 'containers/Playground/Playground';
 
 const tooltipOpened = (<Style
 	scopeSelector=".tooltip-content.open"
@@ -215,7 +212,7 @@ class CodeBlock extends Component {
 		super();
 		this.state = {
 			playgroundOpened: false,
-		}
+		};
 	}
 
 	openPlayground = () => {
@@ -244,7 +241,7 @@ class CodeBlock extends Component {
 		const playgroundParams = {
 			primary: courseLanguage,
 			secondary: codeId,
-		}
+		};
 
 		const { playgroundOpened, basePath } = this.state;
 		if (codeId != undefined) {
@@ -257,13 +254,13 @@ class CodeBlock extends Component {
 								codeId={codeId}
 								basePath={basePath}
 								params={playgroundParams}
-							 />
+							/>
 							 <FlatButton
-		 						label="Close the sandbox"
-		 						style={styles.codeButton}
-		 						className="shortcut-button"
-		 						onClick={this.closePlayground}
-		 						labelStyle={styles.codeButtonLabel}
+								label="Close the sandbox"
+								style={styles.codeButton}
+								className="shortcut-button"
+								onClick={this.closePlayground}
+								labelStyle={styles.codeButtonLabel}
 		 					/>
 						</div> :
 						<div>
@@ -543,7 +540,7 @@ class QuizText extends Component {
 						format={element.props.format}
 						courseLanguage={courseLanguage}
 					/>
-				)
+				);
 			case 'note':
 				return <NoteBlock noteText={element.props.noteText} key={index} />;
 			case 'img':
@@ -553,7 +550,7 @@ class QuizText extends Component {
 	}
 
 	render() {
-		const { openComments } = this.props
+		const { openComments } = this.props;
 		return (
 			<Paper className="text-container" style={styles.textContainer}>
 				{tooltipOpened}

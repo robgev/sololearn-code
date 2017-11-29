@@ -1,27 +1,26 @@
-// React modules
+// General modules
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
-
-// Redux modules
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { chooseContestCourse } from '../../../actions/challenges';
-import { isLoaded } from '../../../reducers';
-
-// Additional data and components
-import Followers from './Followers';
-import Following from './Following';
-import AllPlayers from './AllPlayers';
-import LoadingOverlay from '../../../components/Shared/LoadingOverlay';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { grey600 } from 'material-ui/styles/colors';
 
+// Redux modules
+import { chooseContestCourse } from 'actions/challenges';
+import { isLoaded } from 'reducers';
+
+// Additional data and components
+import Followers from './Followers';
+import Following from './Following';
+import AllPlayers from './AllPlayers';
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
+
 // Utils
-import getStyles from '../../../utils/styleConverter';
-import EnumNameMapper from '../../../utils/enumNameMapper';
+import { EnumNameMapper } from 'utils';
 
 const TabTypes = {
 	AllPlayers: 0,

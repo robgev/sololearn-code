@@ -2,17 +2,22 @@
 import React, { Component } from 'react';
 import Radium from 'radium';
 import { connect } from 'react-redux';
-import optional from '../../../../utils/optional';
+import {
+	fadeIn,
+	fadeInUp,
+	fadeInLeft,
+	fadeInDown,
+	fadeInRight,
+} from 'react-animations';
+
+import RaisedButton from 'material-ui/RaisedButton';
+import CircularProgress from 'material-ui/CircularProgress';
+import { green500, red500, blue500 } from 'material-ui/styles/colors';
 
 // Material UI components
-import Avatar from 'material-ui/Avatar';
-import RaisedButton from 'material-ui/RaisedButton';
-import { fadeInRight, fadeInLeft, fadeIn, fadeInUp, fadeInDown } from 'react-animations';
-import getChallengeStatus from '../../../../utils/getChallengeStatus';
-import contestTypes from '../../../../defaults/contestTypes';
-import LoadingOverlay from '../../../../components/Shared/LoadingOverlay';
-import { green500, red500, blue500 } from 'material-ui/styles/colors';
-import CircularProgress from 'material-ui/CircularProgress';
+import { Optional, getChallengeStatus } from 'utils';
+import contestTypes from 'defaults/contestTypes';
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
 import Profile from './Profile';
 
@@ -118,7 +123,7 @@ const ResultBox = ({ aboveText, insideText, color }) => (
 	</div>
 );
 
-const Results = optional(({
+const Results = Optional(({
 	courseName, answersBonus, matchResult, totalXp, percUntilNext,
 }) => (
 	<div style={styles.appear(fadeIn)}>
