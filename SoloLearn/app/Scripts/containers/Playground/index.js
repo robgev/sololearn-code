@@ -4,9 +4,9 @@ import Playground from './Playground';
 
 const PlaygroundRoute = ({ params }) => (
 	<Playground
-		params={ params }
+		params={params}
 		withCodeComments
-		basePath='/playground'
+		basePath="/playground"
 	/>
 );
 

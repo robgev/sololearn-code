@@ -268,7 +268,7 @@ class Playground extends Component {
 
 	// Change web tabs
 	handleTabChange = (mode) => {
-		const { params, basePath } = this.props;
+		const { basePath } = this.props;
 		const code = this.getTabCodeData(mode);
 		const { codeType, publicID } = this.state;
 		const { alias } = editorSettings[mode];
@@ -302,7 +302,7 @@ class Playground extends Component {
 	handleLanguageChange = (e, index, selectedLanguage) => {
 		const mode = selectedLanguage === 'web' ? 'html' : selectedLanguage;
 		const { type, language } = editorSettings[mode];
-		const { latestSavedCodeData, languageSelector, userCodeLanguage } = this.state;
+		const { latestSavedCodeData, userCodeLanguage } = this.state;
 		const isUserWritten =
 			latestSavedCodeData.codeType === 'userCode' && language === userCodeLanguage;
 		const code = isUserWritten ? latestSavedCodeData.sourceCode : texts[mode];
@@ -407,7 +407,7 @@ ${succeedingSubstr}
 	}
 
 	getStructurizeWebCode() {
-		const { cssCode, jsCode, sourceCode } = this.state;
+		const { cssCode, jsCode } = this.state;
 		return this.insertToHead(`<style>${cssCode}</style><script>${jsCode}</script>`);
 	}
 
@@ -425,7 +425,7 @@ ${succeedingSubstr}
 
 	// Show output
 	showOutput = (language, output) => {
-		if (language == 'web') {
+		if (language === 'web') {
 			const frame = document.getElementById('output-frame');
 			const iWindow = frame.contentWindow;
 
@@ -442,11 +442,11 @@ ${succeedingSubstr}
 			};
 
 			const innerScript = 'window.onerror = function (msg, url, line, col, error) {' +
-																	 'var lineText = line == 0 ? "" : "<br /><span>Line: " + (line) + "</span>";' +
-																	 'var errorMessage = msg + lineText;' +
-																	 'window.parent.document.querySelector("#js-console .error-message").innerHTML = errorMessage;' +
-																	 'return false;' +
-															 '}';
+				'var lineText = line == 0 ? "" : "<br /><span>Line: " + (line) + "</span>";' +
+				'var errorMessage = msg + lineText;' +
+				'window.parent.document.querySelector("#js-console .error-message").innerHTML = errorMessage;' +
+				'return false;' +
+				'}';
 
 			const iDoc = frame.contentDocument;
 
@@ -454,15 +454,14 @@ ${succeedingSubstr}
 
 			iDoc.write(output);
 			iDoc.close();
-		} else if (language == 'php') {
+		} else if (language === 'php') {
 			const frame = document.getElementById('output-frame');
-			const iWindow = frame.contentWindow;
 			const iDoc = frame.contentDocument;
 			iDoc.write(output);
 			iDoc.close();
 		} else {
 			output = output.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-			const message = output != '' ? output : 'No output.';
+			const message = output !== '' ? output : 'No output.';
 
 			document.querySelector('.default-output').innerHTML = message;
 		}
@@ -473,12 +472,12 @@ ${succeedingSubstr}
 	checkForInput = (language) => {
 		const { sourceCode } = this.state;
 		// Doing some work with source code...
-		if (language == 'python') {
+		if (language === 'python') {
 			const codeBlock = sourceCode.replace(/(([^'"])(#)|(^#))((.*)$)/gm, ''); // $2
 			const inputRegex = inputRegexes[language];
 			return inputRegex.test(codeBlock);
-		} else if (language == 'ruby') {
-			const codeBlock = sourceCode.replace(/(\=begin(\n[\s\S]*?)\=end)|(([^'"])(#)|(^#))((.*)$)/gm, '');
+		} else if (language === 'ruby') {
+			const codeBlock = sourceCode.replace(/(=begin(\n[\s\S]*?)=end)|(([^'"])(#)|(^#))((.*)$)/gm, '');
 			const inputRegex = inputRegexes[language];
 			return inputRegex.test(codeBlock);
 		}
@@ -491,14 +490,13 @@ ${succeedingSubstr}
 	runCode = async () => {
 		const {
 			type,
-			mode,
 			sourceCode,
 			languageSelector: language,
 		} = this.state;
 
 		this.clearOutput();
 
-		if (type == 'web') {
+		if (type === 'web') {
 			this.setState({
 				showOutput: true,
 				isRunning: true,
@@ -511,7 +509,7 @@ ${succeedingSubstr}
 			this.compileCode(response, language, '');
 			// Show output
 			this.showOutput(language, response);
-		} else if (type == 'combined') {
+		} else if (type === 'combined') {
 			this.setState({
 				showOutput: true,
 				isRunning: true,
@@ -539,8 +537,6 @@ ${succeedingSubstr}
 
 	runCondeWithInputs = async () => {
 		const {
-			type,
-			mode,
 			inputs,
 			sourceCode,
 			languageSelector: language,
@@ -600,10 +596,10 @@ ${succeedingSubstr}
 			commentsOpened,
 			languageSelector,
 			userCodeLanguage,
-			withCodeComments,
 			inputsPopupOpened,
 			latestSavedCodeData,
 		} = this.state;
+		const { withCodeComments } = this.props;
 
 		const inputsPopupActions = [
 			<FlatButton
@@ -614,7 +610,7 @@ ${succeedingSubstr}
 		];
 
 		const showWebOutput = showOutput && (type === 'web' || type === 'combined');
-		const programRunning = isRunning && (type === 'web' || type == 'combined');
+		const programRunning = isRunning && (type === 'web' || type === 'combined');
 
 		return (
 			isGettingCode ?
@@ -675,8 +671,8 @@ ${succeedingSubstr}
 								...(showOutput && type === 'default' ? styles.defaultOutputContainer.show : {}),
 							}}
 						>
-							{	!(isRunning && type === 'default') ? null :
-							<LoadingOverlay size={30} />
+							{!(isRunning && type === 'default') ? null
+								: <LoadingOverlay size={30} />
 							}
 							<div style={styles.outputHeader}>Output: </div>
 							<pre className="default-output" style={styles.defaultOutput} />
