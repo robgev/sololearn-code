@@ -1,15 +1,15 @@
 // React modules
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { browserHistory } from 'react-router';
 import moment from 'moment';
 
 // Material UI components
-import Avatar from 'material-ui/Avatar';
 import { ListItem } from 'material-ui/List';
 
 // App defaults and utils
-import contestTypes from 'defaults/contestTypes';
 import { updateDate, getChallengeStatus } from 'utils';
+import contestTypes from 'defaults/contestTypes';
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
 const styles = {
 	content: {
@@ -65,51 +65,73 @@ const styles = {
 	},
 };
 
-class ContestItemBase extends Component {
-	getDateDifference(expireDate) {
-		const relativeDate = 'Expires in ';
-
-		const dateNow = moment(new Date());
-		const duration = moment.duration(moment.utc(expireDate).diff(moment(dateNow)));
-		const hours = Math.floor(duration.asHours());
-
-		if (hours < 1) {
-			return `${relativeDate + duration.asMinutes()} min`;
-		}
-
-		return `${relativeDate + hours} hr`;
+class ContestItemBase extends PureComponent {
+	setContest = () => {
+		const { contestId } = this.props;
+		browserHistory.push(`/challenge/${contestId}`);
 	}
 
-	getContest(contestId) {
-		browserHistory.push(`/challenge/${contestId}`);
+	getDateDifference = (expireDate) => {
+		const dateNow = moment();
+		const expiryDate = moment.utc(expireDate);
+		const duration = moment.duration(dateNow.diff(expiryDate));
+		const hours = Math.floor(duration.asHours());
+		const minutes = Math.floor(duration.asMinutes());
+		return hours < 1 ?
+			`Expires in ${minutes} min` :
+			`Expires in ${hours} hr`;
 	}
 
 	render() {
 		const { courseName, contest } = this.props;
-		const status = contest.player.status;
-		const isCompleted = status !== contestTypes.Started && status !== contestTypes.Challenged && status !== contestTypes.GotChallenged;
+		const {
+			date,
+			player,
+			opponent,
+			expireDate,
+		} = contest;
+		const { status } = player;
+		const isCompleted = status !== contestTypes.Started &&
+																				status !== contestTypes.Challenged &&
+																				status !== contestTypes.GotChallenged;
 
 		return (
-			<ListItem className="content" containerElement="div" innerDivStyle={styles.content} onClick={() => this.getContest(contest.id)}>
-				<Avatar size={30}>{contest.opponent.name.charAt(0).toUpperCase()}</Avatar>
+			<ListItem
+				className="content"
+				containerElement="div"
+				onClick={this.setContest}
+				innerDivStyle={styles.content}
+			>
+				<ProfileAvatar
+					userID={opponent.id}
+					userName={opponent.name}
+					avatarUrl={opponent.avatarUrl}
+				/>
 				<div className="wrapper" style={styles.wrapper}>
-					<p style={styles.userName}>{contest.opponent.name}</p>
-					<p style={styles.date}>{isCompleted ? updateDate(contest.date) : this.getDateDifference(contest.expireDate)}</p>
+					<p style={styles.userName}>{opponent.name}</p>
+					<p style={styles.date}>
+						{isCompleted ?
+							updateDate(date) :
+							this.getDateDifference(expireDate)
+						}
+					</p>
 				</div>
 				<div style={styles.statusesWrapper}>
 					<p style={styles.languageName}>{courseName.toUpperCase()}</p>
-					{status !== contestTypes.GotChallenged && getChallengeStatus(status)}
+					{status !== contestTypes.GotChallenged
+						&& getChallengeStatus(status)
+					}
 				</div>
 				<div style={styles.resultsWrapper}>
 					{
 						isCompleted ?
 							<p className="score" style={styles.score}>
-								<span>{contest.player.score}</span>
+								<span>{player.score}</span>
 								<span> : </span>
-								<span>{contest.opponent.score}</span>
+								<span>{opponent.score}</span>
 							</p>
 							:
-							<p style={styles.rewardXp}>{contest.player.rewardXp} XP</p>
+							<p style={styles.rewardXp}>{player.rewardXp} XP</p>
 					}
 				</div>
 			</ListItem>

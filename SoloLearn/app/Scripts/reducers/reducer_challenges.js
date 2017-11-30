@@ -1,12 +1,18 @@
 import { combineReducers } from 'redux';
 import {
-	GET_CONTESTS, CLEAR_CONTESTS, CHOOSE_CHALLENGE_COURSE, GET_ALL_PLAYERS,
-	EMPTY_ALL_PLAYERS, GET_CONTEST_FOLLOWERS, GET_CONTEST_FOLLOWING, GET_CONTEST,
+	SET_CONTEST,
+	SET_CONTESTS,
+	CLEAR_CONTESTS,
+	GET_ALL_PLAYERS,
+	EMPTY_ALL_PLAYERS,
+	GET_CONTEST_FOLLOWERS,
+	GET_CONTEST_FOLLOWING,
+	CHOOSE_CHALLENGE_COURSE,
 } from '../constants/ActionTypes';
 
 const contests = (state = null, action) => {
 	switch (action.type) {
-	case GET_CONTESTS:
+	case SET_CONTESTS:
 		return action.payload;
 	case CLEAR_CONTESTS:
 		return { ...state, completed: [] };
@@ -55,7 +61,7 @@ const following = (state = [], action) => {
 
 const activeContest = (state = null, action) => {
 	switch (action.type) {
-	case GET_CONTEST:
+	case SET_CONTEST:
 		return action.payload;
 	default:
 		return state;

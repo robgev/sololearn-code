@@ -15,14 +15,13 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import {
 	getContestsInternal,
 	clearContestsInternal,
-	chooseContestCourse
+	chooseContestCourse,
 } from 'actions/challenges';
 import { isLoaded } from 'reducers';
 
 // Additional components
 import ContestItem from './ContestItem';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
-
 
 const styles = {
 	contestsWrapper: {
@@ -96,7 +95,7 @@ class Contests extends Component {
 		selectCourse: false,
 	}
 	componentDidMount() {
-		this.props.getContests();
+		this.props.setContests();
 	}
 	handleCoursePopup = (selectCourse) => {
 		this.setState({ selectCourse });
@@ -116,6 +115,7 @@ class Contests extends Component {
 				<ContestItem
 					key={contest.id}
 					contest={contest}
+					contestId={contest.id}
 					courseName={courseName}
 				/>
 			);
@@ -212,7 +212,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-	getContests: getContestsInternal,
+	setContests: getContestsInternal,
 	clearContests: clearContestsInternal,
 	chooseContestCourse,
 };

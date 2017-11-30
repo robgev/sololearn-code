@@ -2,7 +2,7 @@ import moment from 'moment';
 
 const updateDate = (date) => {
 	const postDate = moment.utc(date);
-	const currentDate = moment.utc(new Date());
+	const currentDate = moment.utc();
 	const diffWeeks = currentDate.diff(postDate, 'weeks');
 
 	if (diffWeeks > 4) {

@@ -38,7 +38,7 @@ import Profile from 'containers/Profile/Profile';
 // Chalenges
 import Contests from 'containers/Challenges/Feed/Contests';
 import OpponentSelector from 'containers/Challenges/Users/OpponentSelector';
-import Challenge from 'containers/Challenges/Challenge/Challenge';
+import Challenge from 'containers/Challenges/Challenge';
 
 export default (
 	[

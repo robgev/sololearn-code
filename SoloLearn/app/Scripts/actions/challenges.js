@@ -4,8 +4,8 @@ import * as types from 'constants/ActionTypes';
 
 import contestTypes from 'defaults/contestTypes';
 
-export const getContests = contests => ({
-	type: types.GET_CONTESTS,
+export const setContests = contests => ({
+	type: types.SET_CONTESTS,
 	payload: contests,
 });
 
@@ -34,7 +34,7 @@ export const getContestsInternal = () => dispatch =>
 				completed: completedChallenges,
 			};
 
-			dispatch(getContests(structurizedContests));
+			dispatch(setContests(structurizedContests));
 		})
 		.catch((error) => {
 			console.log(error);
@@ -84,8 +84,8 @@ export const emptyAllPlayers = () => dispatch =>
 		resolve();
 	});
 
-export const getContest = contest => ({
-	type: types.GET_CONTEST,
+export const setContest = contest => ({
+	type: types.SET_CONTEST,
 	payload: contest,
 });
 
@@ -96,7 +96,7 @@ export const createContestInternal = opponentId => (dispatch, getState) => {
 	return Service.request('Challenge/CreateContest', { courseId, opponentId })
 		.then((response) => {
 			const { contest } = response;
-			dispatch(getContest(contest));
+			dispatch(setContest(contest));
 			browserHistory.push(`/challenge/${contest.id}`);
 		})
 		.catch((error) => {
@@ -104,10 +104,10 @@ export const createContestInternal = opponentId => (dispatch, getState) => {
 		});
 };
 
-export const getContestInternal = id => dispatch =>
+export const getContest = id => dispatch =>
 	Service.request('Challenge/GetContest', { id })
 		.then((response) => {
-			dispatch(getContest(response.contest));
+			dispatch(setContest(response.contest));
 		})
 		.catch((error) => {
 			console.log(error);
