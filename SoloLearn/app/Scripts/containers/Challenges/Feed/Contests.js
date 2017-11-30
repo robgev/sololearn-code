@@ -1,5 +1,5 @@
 // React modules
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 
@@ -13,15 +13,15 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 
 // Redux modules
 import {
-	getContestsInternal,
+	getContests,
 	clearContestsInternal,
 	chooseContestCourse,
 } from 'actions/challenges';
 import { isLoaded } from 'reducers';
 
 // Additional components
-import ContestItem from './ContestItem';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import ContestItem from './ContestItem';
 
 const styles = {
 	contestsWrapper: {
@@ -90,15 +90,17 @@ const styles = {
 	},
 };
 
-class Contests extends Component {
+class Contests extends PureComponent {
 	state = {
 		selectCourse: false,
 	}
+
 	componentDidMount() {
-		this.props.setContests();
+		this.props.getContests();
 	}
-	handleCoursePopup = (selectCourse) => {
-		this.setState({ selectCourse });
+
+	toggleCoursePopup = () => {
+		this.setState({ selectCourse: !this.state.selectCourse });
 	}
 
 	chooseContestCourse = (courseId) => {
@@ -123,15 +125,14 @@ class Contests extends Component {
 	}
 
 	renderCourses = () => this.props.courses
-		.filter(item => item.isPlayEnabled)
-		.map(course => (
+		.map(course => (!course.isPlayEnabled ? null : (
 			<div
-				key={course.id}
-				role="button"
-				onKeyDown={e => (e.key === 'Enter' ? this.chooseContestCourse(course.id) : null)}
 				tabIndex={0}
+				role="button"
+				key={course.id}
 				style={styles.course}
 				onClick={() => { this.chooseContestCourse(course.id); }}
+				onKeyDown={e => (e.key === 'Enter' ? this.chooseContestCourse(course.id) : null)}
 			>
 				<img
 					src={`https://www.sololearn.com/Icons/Courses/${course.id}.png`}
@@ -140,18 +141,13 @@ class Contests extends Component {
 				/>
 				<p style={styles.courseName}>{course.languageName}</p>
 			</div>
-		))
+		)))
 
 	render() {
-		const { isLoaded, contests } = this.props;
-
-		if (!isLoaded) {
-			return <LoadingOverlay />;
-		}
-
+		const { isContestsLoaded, contests, clearContests } = this.props;
 		const { invited, ongoing, completed } = contests;
 
-		return (
+		return !isContestsLoaded ? <LoadingOverlay /> : (
 			<Paper id="contests" style={styles.contestsWrapper}>
 				{
 					invited.length > 0 &&
@@ -172,7 +168,7 @@ class Contests extends Component {
 					<div>
 						<div style={styles.headerWithAction}>
 							<p style={styles.header.title}>COMPLETED</p>
-							<FlatButton label="Clear" style={styles.headerButton} onClick={this.props.clearContests} />
+							<FlatButton label="Clear" style={styles.headerButton} onClick={clearContests} />
 						</div>
 						<List style={styles.contests}>{this.renderContests(completed)}</List>
 					</div>
@@ -180,21 +176,20 @@ class Contests extends Component {
 				<Dialog
 					id="courses"
 					modal={false}
-					open={this.state.selectCourse}
-					title="Choose your weapon"
-					contentStyle={styles.coursesPopup}
-					titleStyle={styles.coursesTitle}
-					// bodyStyle={styles.courses}
 					autoScrollBodyContent
-					onRequestClose={() => this.handleCoursePopup(false)}
+					title="Choose your weapon"
+					open={this.state.selectCourse}
+					titleStyle={styles.coursesTitle}
+					contentStyle={styles.coursesPopup}
+					onRequestClose={this.toggleCoursePopup}
 				>
 					{this.renderCourses()}
 				</Dialog>
 				<FloatingActionButton
-					style={styles.newChallengeButton}
 					secondary
 					zDepth={3}
-					onClick={() => this.handleCoursePopup(true)}
+					onClick={this.toggleCoursePopup}
+					style={styles.newChallengeButton}
 				>
 					<ContentAdd />
 				</FloatingActionButton>
@@ -203,16 +198,14 @@ class Contests extends Component {
 	}
 }
 
-function mapStateToProps(state) {
-	return {
-		isLoaded: isLoaded(state, 'contests'),
-		contests: state.challenges.contests,
-		courses: state.courses,
-	};
-}
+const mapStateToProps = state => ({
+	isContestsLoaded: isLoaded(state, 'contests'),
+	contests: state.challenges.contests,
+	courses: state.courses,
+});
 
 const mapDispatchToProps = {
-	setContests: getContestsInternal,
+	getContests,
 	clearContests: clearContestsInternal,
 	chooseContestCourse,
 };

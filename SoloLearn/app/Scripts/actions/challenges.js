@@ -9,7 +9,7 @@ export const setContests = contests => ({
 	payload: contests,
 });
 
-export const getContestsInternal = () => dispatch =>
+export const getContests = () => dispatch =>
 	Service.request('Challenge/GetContestFeed')
 		.then((response) => {
 			const contestsFeed = response.feed;
