@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 // Material UI components
-import Avatar from 'material-ui/Avatar';
 import TextField from 'material-ui/TextField';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -21,6 +20,7 @@ import getLikesInternal from 'actions/likes';
 // Utils
 import Likes from 'components/Shared/Likes';
 import { updateDate, updateMessage } from 'utils';
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
 const styles = {
@@ -358,7 +358,7 @@ class Comment extends Component {
 	}
 
 	render() {
-		const { comment, isLoadingReplies, activeComment } = this.props;
+		const { comment, isLoadingReplies } = this.props;
 		const {
 			id,
 			date,
@@ -377,21 +377,12 @@ class Comment extends Component {
 				<div className="comment-container" style={styles.commentContainer.base}>
 					<div className="primary comment" style={styles.comment.base}>
 						<div className="content" style={styles.commentConent}>
-							<Link to={`/profile/${userID}`} style={styles.noStyle}>
-								{ avatarUrl ?
-									<Avatar
-										size={40}
-										style={styles.avatar}
-										src={avatarUrl}
-									/>
-									:
-									<Avatar
-										size={40}
-										style={styles.avatar}
-									>{userName.toUpperCase().charAt(0)}
-									</Avatar>
-								}
-							</Link>
+							<ProfileAvatar
+								size={40}
+								userID={userID}
+								userName={userName}
+								avatarUrl={avatarUrl}
+							/>
 							<div
 								className="comment-details-wrapper"
 								style={{
@@ -440,21 +431,12 @@ class Comment extends Component {
 		return (
 			<div className="secondary comment" style={styles.comment.base}>
 				<div className="content" style={styles.commentConent}>
-					<Link to={`/profile/${userID}`} style={styles.noStyle}>
-						{ avatarUrl ?
-							<Avatar
-								size={40}
-								style={styles.avatar}
-								src={avatarUrl}
-							/>
-							:
-							<Avatar
-								size={40}
-								style={styles.avatar}
-							>{userName.toUpperCase().charAt(0)}
-							</Avatar>
-						}
-					</Link>
+					<ProfileAvatar
+						size={40}
+						userID={userID}
+						userName={userName}
+						avatarUrl={avatarUrl}
+					/>
 					<div
 						className="comment-details-wrapper"
 						style={{

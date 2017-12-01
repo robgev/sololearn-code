@@ -1,9 +1,7 @@
 // React modules
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 
 // Material UI components
-import Avatar from 'material-ui/Avatar';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
@@ -11,6 +9,7 @@ import { grey600 } from 'material-ui/styles/colors';
 import Close from 'material-ui/svg-icons/content/clear';
 
 // Additional components
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
 const styles = {
@@ -112,7 +111,7 @@ class ReplyBox extends Component {
 	}
 
 	onChange(e) {
-		if (e.target.value.length == 0) {
+		if (e.target.value.length === 0) {
 			this.setState({
 				textFieldValue: e.target.value,
 				errorText: 'This field is required',
@@ -141,7 +140,7 @@ class ReplyBox extends Component {
 		const {
 			isPrimary, userName, defaultText, profile,
 		} = this.props;
-		const replyDisabled = this.state.errorText.length == 0;
+		const replyDisabled = this.state.errorText.length === 0;
 
 		return (
 			<div
@@ -151,7 +150,9 @@ class ReplyBox extends Component {
 				{this.state.isLoading && <LoadingOverlay withBackground size={30} />}
 				{!isPrimary &&
 				<div className="toolbar" style={styles.replyBoxToolbar}>
-					<p style={styles.replyBoxToolbarText}>Repling to <span style={styles.replyBoxToolbarText.user}>{userName}</span></p>
+					<p style={styles.replyBoxToolbarText}>
+						Replying to <span style={styles.replyBoxToolbarText.user}>{userName}</span>
+					</p>
 					<IconButton className="cancel-reply" style={{ ...styles.close.button.reply, ...styles.close.button.small }} iconStyle={styles.close.icon.small} onClick={this.props.closeToolbar}>
 						<Close color={grey600} />
 					</IconButton>
@@ -159,7 +160,11 @@ class ReplyBox extends Component {
 				}
 				<div className="reply-box">
 					<div className="content" style={styles.replyBoxConent}>
-						<Avatar size={50} style={styles.avatar}>{profile.name.charAt(0)}</Avatar>
+						<ProfileAvatar
+							size={40}
+							userID={profile.id}
+							avatarUrl={profile.avatarUrl}
+						/>
 						<div className="comment-details" style={styles.replyBoxDetails}>
 							<span className="name" style={styles.userName}>{profile.name}</span>
 							<TextField

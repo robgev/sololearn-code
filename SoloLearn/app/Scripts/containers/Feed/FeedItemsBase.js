@@ -7,7 +7,6 @@ import { Motion, spring } from 'react-motion';
 import { connect } from 'react-redux';
 
 // Material UI components
-import Avatar from 'material-ui/Avatar';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import LinearProgress from 'material-ui/LinearProgress';
@@ -27,6 +26,7 @@ import Service from 'api/service';
 // Utils and defaults
 import { getOffset, numberFormatter } from 'utils';
 import PopupTypes from 'defaults/feedPopupTypes';
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
 // Additional data and components
@@ -339,12 +339,12 @@ class FeedItemsBase extends Component {
 		return (
 			<div className="popup-data">
 				<div className="user-details" style={styles.userDetails}>
-					<Avatar
-						size={45}
-						style={styles.avatar}
-					>
-						{this.popupData.userName.charAt(0).toUpperCase()}
-					</Avatar>
+					<ProfileAvatar
+						size={40}
+						userID={this.popupData.userId}
+						userName={this.popupData.userName}
+						avatarUrl={this.popupData.avatarUrl}
+					/>
 					<div>
 						<p style={styles.userName}>{this.popupData.userName}</p>
 						<p style={styles.level}>LEVEL {this.popupData.level}</p>

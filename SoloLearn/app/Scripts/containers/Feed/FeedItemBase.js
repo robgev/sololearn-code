@@ -3,12 +3,12 @@ import React from 'react';
 import { Link } from 'react-router';
 
 // Material UI components
-import Avatar from 'material-ui/Avatar';
 import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
 import { grey500 } from 'material-ui/styles/colors';
 
 import { updateDate } from 'utils';
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
 const styles = {
 	content: {
@@ -71,14 +71,13 @@ const FeedItemBase = ({
 	title, user, date, votes, children,
 }) => (
 	<div className="content" style={styles.content}>
-		<Link to={`/profile/${user.id}`} style={styles.linkStyle}>
-			<Avatar
-				size={30}
-				style={styles.avatar}
-			>
-				{user.name.charAt(0).toUpperCase()}
-			</Avatar>
-		</Link>
+		<ProfileAvatar
+			size={40}
+			userID={user.id}
+			userName={user.name}
+			style={styles.linkStyle}
+			avatarUrl={user.avatarUrl}
+		/>
 		<div className="wrapper" style={styles.wrapper}>
 			<p style={styles.title}>
 				<Link

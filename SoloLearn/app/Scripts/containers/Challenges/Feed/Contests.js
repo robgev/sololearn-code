@@ -144,27 +144,35 @@ class Contests extends PureComponent {
 		)))
 
 	render() {
-		const { isContestsLoaded, contests, clearContests } = this.props;
-		const { invited, ongoing, completed } = contests;
+		const {
+			contests,
+			clearContests,
+			isContestsLoaded,
+		} = this.props;
+		const {
+			invited,
+			ongoing,
+			completed,
+		} = contests || {};
 
 		return !isContestsLoaded ? <LoadingOverlay /> : (
 			<Paper id="contests" style={styles.contestsWrapper}>
 				{
-					invited.length > 0 &&
+					invited && invited.length > 0 &&
 					<div>
 						<p style={{ ...styles.header.base, ...styles.header.title }}>INVITED</p>
 						<List style={styles.contests}>{this.renderContests(invited)}</List>
 					</div>
 				}
 				{
-					ongoing.length > 0 &&
+					invited && ongoing.length > 0 &&
 					<div>
 						<p style={{ ...styles.header.base, ...styles.header.title }}>ONGOING</p>
 						<List style={styles.contests}>{this.renderContests(ongoing)}</List>
 					</div>
 				}
 				{
-					completed.length > 0 &&
+					invited && completed.length > 0 &&
 					<div>
 						<div style={styles.headerWithAction}>
 							<p style={styles.header.title}>COMPLETED</p>

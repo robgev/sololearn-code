@@ -1,14 +1,10 @@
 // React modules
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
 
 // Redux modules
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { createContestInternal } from '../../../actions/challenges';
-
-// Material UI components
-import Avatar from 'material-ui/Avatar';
+import { createContestInternal } from 'actions/challenges';
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
 const styles = {
 	opponent: {
@@ -40,30 +36,28 @@ const styles = {
 	},
 };
 
-class Opponent extends Component {
-	constructor(props) {
-		super(props);
-	}
+const Opponent = ({ opponent, createContest }) => (
+	<div
+		tabIndex={0}
+		role="button"
+		style={styles.opponent}
+		onClick={() => createContest(opponent.id)}
+	>
+		<div style={styles.authorDetails}>
+			<ProfileAvatar
+				size={35}
+				userID={opponent.id}
+				userName={opponent.name}
+				avatarUrl={opponent.avatarUrl}
+			/>
+			<p style={styles.name}>{opponent.name}</p>
+		</div>
+		<p style={styles.level}>LEVEL {opponent.level}</p>
+	</div>
+);
 
-	render() {
-		const opponent = this.props.opponent;
+const mapDispatchToProps = {
+	createContest: createContestInternal,
+};
 
-		return (
-			<div className="opponent" style={styles.opponent} onClick={() => { this.props.createContest(opponent.id); }}>
-				<div style={styles.authorDetails}>
-					<Avatar size={35}>{opponent.name.charAt(0)}</Avatar>
-					<p style={styles.name}>{opponent.name}</p>
-				</div>
-				<p style={styles.level}>LEVEL {opponent.level}</p>
-			</div>
-		);
-	}
-}
-
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({
-		createContest: createContestInternal,
-	}, dispatch);
-}
-
-export default connect(() => ({}), mapDispatchToProps)(Opponent);
+export default connect(null, mapDispatchToProps)(Opponent);
