@@ -114,8 +114,8 @@ export default class MultipleChoice extends Component {
 					name="singleChoice"
 					style={styles.radioButtonGroup}
 					valueSelected={this.state.selectedAnswerId}
+					onChange={(event, value) => this.handleRadioButtonSelection(event, value)}
 				>
-				onChange={(event, value) => this.handleRadioButtonSelection(event, value)}
 					{
 						this.state.answers.map(answer => (
 							<RadioButton
@@ -129,7 +129,8 @@ export default class MultipleChoice extends Component {
 							/>
 						))
 					}
-				</RadioButtonGroup>);
+				</RadioButtonGroup>
+			);
 		}
 
 		return (
@@ -201,14 +202,16 @@ export default class MultipleChoice extends Component {
 	}
 
 	render() {
-		return (<Paper
-			className={this.isSingleChoice
-				? 'singlechoice'
-				: 'multiplechoice'}
-			style={styles.wrapper}
-		>
-			{this.renderList(this.isSingleChoice)}
-          </Paper>);
+		return (
+			<Paper
+				className={this.isSingleChoice
+					? 'singlechoice'
+					: 'multiplechoice'}
+				style={styles.wrapper}
+			>
+				{this.renderList(this.isSingleChoice)}
+			</Paper>
+		);
 	}
 
 	// componentWillReceiveProps(nextProps) {

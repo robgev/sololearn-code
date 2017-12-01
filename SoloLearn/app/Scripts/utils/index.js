@@ -1,18 +1,20 @@
 import hmacsha1 from 'hmacsha1';
-import updateDate from './dateFormatter';
-import EnumNameMapper from './enumNameMapper';
-import faultGenerator from './faultGenerator';
-import getChallengeStatus from './getChallengeStatus';
-import getLanguageColor from './getLanguageColor';
-import getOffset from './getOffset';
-import getPosition from './getPosition';
-import toSeoFrendly from './linkPrettify';
-import updateMessage from './messageFormatter';
-import numberFormatter from './numberFormatter';
-import Optional from './optional';
+
 import Auth from './protected';
+import Optional from './optional';
+import getOffset from './getOffset';
 import redirector from './redirector';
 import truncate from './textTruncate';
+import getPosition from './getPosition';
+import toSeoFrendly from './linkPrettify';
+import updateDate from './dateFormatter';
+import faultGenerator from './faultGenerator';
+import updateMessage from './messageFormatter';
+import numberFormatter from './numberFormatter';
+import getLanguageColor from './getLanguageColor';
+import EnumNameMapper from './enumNameMapper';
+import getChallengeStatus from './getChallengeStatus';
+import findCommonPrefix from './findCommonPrefix';
 
 const hash = pass => hmacsha1('password', pass).slice(0, -1);
 const checkWeb = alias => [ 'html', 'css', 'js' ].includes(alias);
@@ -35,5 +37,6 @@ export {
 	numberFormatter,
 	getLanguageColor,
 	EnumNameMapper,
+	findCommonPrefix,
 	getChallengeStatus,
 };

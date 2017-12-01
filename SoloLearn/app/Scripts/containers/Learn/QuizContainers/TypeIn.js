@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 
 // Material UI Components
 import TypeInControl from './TypeInControl';
-import TextField from 'material-ui/TextField';
 
 const styles = {
 	wrapper: {
@@ -46,7 +45,13 @@ export default class TypeIn extends Component {
 	render() {
 		return (
 			<div className="typeIn" style={styles.wrapper}>
-				<TypeInControl singleTipeIn fontSize={42} answer={this.answer} isChecked={this.state.isChecked} ref={(child) => { this._child = child; }} />
+				<TypeInControl
+					singleTipeIn
+					fontSize={42}
+					answer={this.answer}
+					isChecked={this.state.isChecked}
+					ref={(child) => { this._child = child; }}
+				/>
 			</div>
 		);
 	}

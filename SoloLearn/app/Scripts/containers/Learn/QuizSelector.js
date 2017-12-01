@@ -12,16 +12,16 @@ export const QuizType = {
 	MultipleChoice: 1,
 	TypeIn: 2,
 	PlaceholderTypeIn: 3,
-	MultipleChoice: 4, // StrikeOut
 	PlaceholderDragAndDrop: 6,
 	Reorder: 8,
 };
+
+// MultipleChoice: 4, // StrikeOut
 
 export const QuizComponents = {
 	1: MultipleChoice,
 	2: TypeIn,
 	3: PlaceholderTypeIn,
-	4: MultipleChoice, // StrikeOut
 	6: PlaceholderDragAndDrop,
 	8: Reorder,
 };
@@ -35,7 +35,7 @@ export default class QuizSelector extends Component {
 			<QuizComponent
 				key={key}
 				quiz={this.props.quiz}
-				ref={child => this._quizSelectorChild = child}
+				ref={(child) => { this._quizSelectorChild = child; }}
 			/>
 		);
 	}

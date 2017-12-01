@@ -5,6 +5,8 @@ import Radium from 'radium';
 // Material UI Components
 import TextField from 'material-ui/TextField';
 
+import { findCommonPrefix } from 'utils';
+
 const styles = {
 	answerContainer: {
 		display: 'inline-block',
@@ -99,7 +101,11 @@ onChange = (e) => {
 	this.setState({
 		text: targetValue,
 	});
-	const input = this.getInput(targetValue);
+}
+
+check = () => {
+	const { text } = this.state;
+	const input = this.getInput(text);
 	const { desiredText } = this;
 	if (desiredText.indexOf(input) === 0) {
 		this.setState({
@@ -117,7 +123,22 @@ onChange = (e) => {
 			}
 		}
 	}
-	this.isCorrect = desiredText === input;
+	return desiredText === input;
+}
+
+hint = () => {
+	const { text } = this.state;
+	const input = this.getInput(text);
+	const { desiredText } = this;
+	// First we find the index from where the answer and the input differ
+	const commonPrefixIndex = findCommonPrefix(desiredText, input);
+	// Now we take that common part which is substring(0, commonPrefixIndex)
+	// And also do +1 to have a hint concatinated
+	const correctPart = desiredText.substring(0, commonPrefixIndex + 1);
+	// We also take the wrong part for remaining text
+	const wrongPart = input.substring(commonPrefixIndex + 1);
+	const newInput = `${correctPart}${wrongPart}`;
+	this.setState({ text: newInput });
 }
 
 render() {
