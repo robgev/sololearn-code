@@ -2,11 +2,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
-// Material UI components
-import Avatar from 'material-ui/Avatar';
-
 // Utils and defaults
-import PopupTypes from '../../../defaults/feedPopupTypes';
+import PopupTypes from 'defaults/feedPopupTypes';
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
 const styles = {
 	user: {
@@ -35,18 +33,12 @@ const styles = {
 };
 
 class User extends Component {
-	constructor(props) {
-		super(props);
-	}
-
 	openCoursePopup(e) {
-		console.log(this.props);
-
 		if (this.props.openPopup) {
 			e.stopPropagation();
 			e.preventDefault();
 
-			const user = this.props.user;
+			const { user } = this.props;
 
 			const data = {
 				type: PopupTypes.profile,
@@ -61,12 +53,18 @@ class User extends Component {
 	}
 
 	render() {
-		const user = this.props.user;
+		const { user } = this.props;
 
 		return (
 			<Link to={`/profile/${user.id}`} className="user" style={styles.user} onClick={e => this.openCoursePopup(e)}>
-				<Avatar size={45} style={styles.avatar}>{user.name.charAt(0).toUpperCase()}</Avatar>
-				<p style={styles.userName}>{user.name}</p>
+				<ProfileAvatar
+					size={45}
+					withUserNameBox
+					style={styles.avatar}
+					userID={user.id}
+					userName={user.name}
+					avatarUrl={user.avatarUrl}
+				/>
 				<p style={styles.level}>Level {user.level}</p>
 			</Link>
 		);

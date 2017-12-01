@@ -155,6 +155,7 @@ class NotificationItem extends Component {
 						<ProfileAvatar
 							style={styles.avatar}
 							userID={notification.actionUser.id}
+							userName={notification.actionUser.name}
 							avatarUrl={notification.actionUser.avatarUrl}
 						/>
 				}

@@ -163,6 +163,7 @@ class ReplyBox extends Component {
 						<ProfileAvatar
 							size={40}
 							userID={profile.id}
+							userName={profile.name}
 							avatarUrl={profile.avatarUrl}
 						/>
 						<div className="comment-details" style={styles.replyBoxDetails}>

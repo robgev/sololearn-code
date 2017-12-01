@@ -2,13 +2,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
-// Material UI components
-import Avatar from 'material-ui/Avatar';
 import RaisedButton from 'material-ui/RaisedButton';
 
 // Redux modules
 import { followUserInternal, unfollowUserInternal } from 'actions/profile';
+
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
 const styles = {
 	follower: {
@@ -84,7 +83,13 @@ class FollowerItem extends Component {
 		return (
 			<div id="follower" style={styles.follower}>
 				<div className="details" style={styles.details}>
-					<Avatar size={35} style={styles.avatar}>{follower.name.charAt(0)}</Avatar>
+					<ProfileAvatar
+						size={50}
+						style={styles.avatar}
+						userID={follower.id}
+						userName={follower.name}
+						avatarUrl={follower.avatarUrl}
+					/>
 					<div style={styles.authorDetails}>
 						<p style={styles.name}>{follower.name}</p>
 						<p style={styles.info}>{follower.followers} Followers | Level {follower.level}</p>

@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 
 // Material UI components
 import LinearProgress from 'material-ui/LinearProgress';
-import Avatar from 'material-ui/Avatar';
 import RaisedButton from 'material-ui/RaisedButton';
 import Person from 'material-ui/svg-icons/social/person';
 
@@ -14,6 +13,7 @@ import { followUserInternal, unfollowUserInternal } from 'actions/profile';
 
 // Utils and defaults
 import { numberFormatter } from 'utils';
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
 const styles = {
 	detailsWrapper: {
@@ -155,7 +155,13 @@ class Header extends Component {
 					/>
 				}
 				<div className="details" style={styles.details}>
-					<Avatar size={70} style={styles.avatar}>R</Avatar>
+					<ProfileAvatar
+						size={70}
+						style={styles.avatar}
+						userID={profile.id}
+						userName={profile.name}
+						avatarUrl={profile.avatarUrl}
+					/>
 					<div style={styles.userNameWrapper}>
 						<span style={styles.userName}>{profile.name}</span>
 						<RaisedButton

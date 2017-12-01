@@ -46,11 +46,11 @@ const Opponent = ({ opponent, createContest }) => (
 		<div style={styles.authorDetails}>
 			<ProfileAvatar
 				size={35}
+				withUserNameBox
 				userID={opponent.id}
 				userName={opponent.name}
 				avatarUrl={opponent.avatarUrl}
 			/>
-			<p style={styles.name}>{opponent.name}</p>
 		</div>
 		<p style={styles.level}>LEVEL {opponent.level}</p>
 	</div>

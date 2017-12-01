@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
-import Avatar from 'material-ui/Avatar';
 import RaisedButton from 'material-ui/RaisedButton';
 import { blueGrey900 } from 'material-ui/styles/colors';
+
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
 const styles = {
 	user: {
@@ -61,14 +62,27 @@ class FeedSuggestion extends Component {
 	}
 
 	render() {
-		const suggestion = this.props.suggestion;
+		const { suggestion } = this.props;
 
 		return (
 			<Paper className="user" style={styles.user}>
-				<Avatar size={45} style={styles.avatar}>{suggestion.name.charAt(0).toUpperCase()}</Avatar>
-				<p style={styles.userName}>{suggestion.name}</p>
+				<ProfileAvatar
+					size={50}
+					withUserNameBox
+					style={styles.avatar}
+					userID={suggestion.id}
+					userName={suggestion.name}
+					avatarUrl={suggestion.avatarUrl}
+				/>
 				<p style={styles.followers}>Followers {suggestion.followers}</p>
-				<RaisedButton label="Follow" style={styles.followButton.base} buttonStyle={styles.followButton.button} labelStyle={styles.followButton.label} backgroundColor={blueGrey900} labelColor="#fff" />
+				<RaisedButton
+					label="Follow"
+					labelColor="#fff"
+					backgroundColor={blueGrey900}
+					style={styles.followButton.base}
+					labelStyle={styles.followButton.label}
+					buttonStyle={styles.followButton.button}
+				/>
 			</Paper>
 		);
 	}
