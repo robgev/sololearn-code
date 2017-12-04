@@ -31,6 +31,7 @@ module.exports = {
 			containers: path.resolve(__dirname, 'app/Scripts/containers'),
 			defaults: path.resolve(__dirname, 'app/Scripts/defaults'),
 			reducers: path.resolve(__dirname, 'app/Scripts/reducers'),
+			styles: path.resolve(__dirname, 'app/Scripts/styles'),
 			utils: path.resolve(__dirname, 'app/Scripts/utils'),
 		},
 	},

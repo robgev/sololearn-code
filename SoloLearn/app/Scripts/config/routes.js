@@ -10,6 +10,7 @@ import Login from 'containers/Login';
 // Additional components
 
 // Learn
+import SlayHome from 'containers/Learn/SlayHome';
 import Modules from 'containers/Learn/Modules';
 import Lessons from 'containers/Learn/Lessons';
 import QuizManager from 'containers/Learn/QuizManager';
@@ -44,6 +45,7 @@ export default (
 	[
 		<Route component={MainLayout} key="mainLayoutRoutes">
 			<Route path="/" onEnter={() => { browserHistory.replace('/feed'); }} />
+			<Route path="/learn" component={SlayHome} />
 			<Route path="/learn/:courseName/:id/shortcut(/:quizNumber)" component={Shortcut}>
 				<Route component={QuizManager}>
 					<IndexRoute component={Quiz} />
