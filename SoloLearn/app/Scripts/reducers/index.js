@@ -53,6 +53,9 @@ import loginModal from './loginModal.reducer';
 // Likes
 import likes from './likes.reducer';
 
+// Slay
+import slayCollections from './slay.reducer';
+
 const reducers = combineReducers({
 	// General
 	tabs,
@@ -93,6 +96,8 @@ const reducers = combineReducers({
 	loginModal,
 	// Likes
 	likes,
+	// Slay
+	slayCollections,
 });
 
 export const store = createStore(reducers, applyMiddleware(

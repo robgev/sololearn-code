@@ -1,6 +1,5 @@
-import Storage from './storage';
 import axios from 'axios';
-import { loadMinimalUser } from '../actions/defaultActions';
+import Storage from './storage';
 
 export const AppDefaults = {
 	host: 'http://api.sololearn.com/',
