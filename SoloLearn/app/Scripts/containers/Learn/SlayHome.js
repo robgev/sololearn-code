@@ -45,8 +45,8 @@ class SlayHome extends PureComponent {
 					<BusyWrapper isBusy={loading} style={{ minHeight: '60vh' }}>
 						{collections.map(collection => (
 							<CollectionCard
+								{...collection}
 								key={collection.name}
-								name={collection.name}
 							/>
 						))}
 					</BusyWrapper>

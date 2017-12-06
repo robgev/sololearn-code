@@ -135,28 +135,30 @@ class Lessons extends Component {
 
     	return lessons.map((lesson, index) => {
     		const lessonState = Progress.getLessonState(lesson);
-				const isDisabled = lessonState.visualState === ProgressState.Disabled;
+    		const isDisabled = lessonState.visualState === ProgressState.Disabled;
 
     		return (
-    			<div
-    				key={lesson.id} className={`lesson-item ${lessonState.stateClass}`} style={styles.lessonWrapper}
+	<div
+	key={lesson.id}
+	className={`lesson-item ${lessonState.stateClass}`}
+	style={styles.lessonWrapper}
     				onClick={() => this.handleClick(lesson.id, lessonState, `/learn/${this.props.params.courseName}/${this.props.params.moduleId}/${this.props.params.moduleName}/${lesson.id}/${toSeoFrendly(lesson.name, 100)}/${lessonState.activeQuizNumber}`)}
-					>
-						<Paper
-							key={lesson.id}
-							zDepth={isDisabled ? 0 : 1}
-							style={{
-								...styles.lesson.base,
-								...(isDisabled ? styles.lesson.disabled : {})
-							}}
-						>
-    					<div className="number" style={styles.lessonNumber}>{`${index + 1}/${lessons.length}`}</div>
-    					<div className="name" style={styles.lessonName}>{lesson.name}</div>
-    					<div className="info" style={[ styles.lessonInfo.base, styles.lessonInfo[lessonState.stateClass] ]}>
-    						<span>{lesson.quizzes.length} questions</span>
-							</div>
-						</Paper>
-					</div>
+    			>
+	<Paper
+			key={lesson.id}
+    					zDepth={isDisabled ? 0 : 1}
+    					style={{
+    						...styles.lesson.base,
+    						...(isDisabled ? styles.lesson.disabled : {}),
+    					}}
+		>
+			<div className="number" style={styles.lessonNumber}>{`${index + 1}/${lessons.length}`}</div>
+			<div className="name" style={styles.lessonName}>{lesson.name}</div>
+			<div className="info" style={[ styles.lessonInfo.base, styles.lessonInfo[lessonState.stateClass] ]}>
+	<span>{lesson.quizzes.length} questions</span>
+    					</div>
+    				</Paper>
+    			</div>
     		);
     	});
     }
@@ -171,9 +173,9 @@ class Lessons extends Component {
     	}
 
     	return (
-    		<div className="lessons" style={styles.lessons}>
-    			{this.renderLessons()}
-	</div>
+	<div className="lessons" style={styles.lessons}>
+	{this.renderLessons()}
+    		</div>
     	);
     }
 }
