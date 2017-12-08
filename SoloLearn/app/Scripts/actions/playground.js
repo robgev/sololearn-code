@@ -22,17 +22,14 @@ const getProfileCodes = codes => ({
 });
 
 export const getCodesInternal = (index, orderBy, language, query, profileId = null, count = 20) =>
-	dispatch =>
-		Service.request('Playground/GetPublicCodes', {
+	async (dispatch) => {
+		const { codes } = await Service.request('Playground/GetPublicCodes', {
 			index, count, orderBy, language, query, profileId,
-		})
-			.then((res) => {
-				const { codes } = res;
-				if (profileId != null) {
-					dispatch(getProfileCodes(codes));
-				} else {
-					dispatch(getCodes(codes));
-				}
-				return codes.length;
-			})
-			.catch(e => console.log(e));
+		});
+		if (profileId != null) {
+			dispatch(getProfileCodes(codes));
+		} else {
+			dispatch(getCodes(codes));
+		}
+		return codes.length;
+	};

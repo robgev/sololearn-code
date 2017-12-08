@@ -1,20 +1,23 @@
 // General modules
 import React, { Component } from 'react';
-import Radium, { Style } from 'radium';
+import Radium from 'radium';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import {
+	CellMeasurerCache,
+} from 'react-virtualized';
 
 // Redux modules
 import {
 	getCommentsInternal, emptyComments,
 	voteCommentInternal, emptyCommentReplies,
-	editCommentInternal,
+	editCommentInternal, setSelectedComment,
 } from 'actions/comments';
 
 // Additional components
 import Comment from './Comment';
+import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
-
+import { repliesOfId } from 'utils';
 
 const styles = {
 	bottomLoading: {
@@ -44,140 +47,155 @@ const styles = {
 	},
 };
 
+const getNewCache = () => new CellMeasurerCache({
+	defaultWidth: 1000,
+	minWidth: 75,
+	fixedWidth: true,
+	defaultHeight: 110,
+});
+
+const mapStateToProps = ({ selectedComment }) => ({
+	selectedComment,
+});
+
+const mapDispatchToProps = {
+	getComments: getCommentsInternal,
+	emptyComments,
+	emptyCommentReplies,
+	voteCommentInternal,
+	editCommentInternal,
+	setSelectedComment,
+};
+
+@connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })
+@Radium
 class Comments extends Component {
-        state = {
-        	isLoading: false,
-        	fullyLoaded: false,
-					latestLoadingComment: 0,
-        }
+	state = {
+		isLoading: false,
+		latestLoadingComment: 0,
+		cache: getNewCache(),
+	};
 
-    loadComments = (parentId) => {
-    	const {
-    		id, type, commentsType, ordering, comments,
-    	} = this.props;
-    	let count = 20;
-    	let index = comments ? comments.length - comments.filter(c => c.isForcedDown).length : 0;
+	componentWillMount() {
+		this.loadComments();
+	}
 
-    	this.setState({ isLoading: true });
+	componentWillUnmount() {
+		console.warn('Unmounted for no reason');
+		this.props.setSelectedComment(null);
+		this.props.emptyComments();
+	}
 
-    	if (parentId) {
-    		const commentIndex = comments.findIndex(c => c.id == parentId);
-    		const activeComment = comments[commentIndex];
+	loadComments = async (parentId = null) => {
+		const {
+			id, type, commentsType, ordering: orderby, comments, selectedComment: findPostId,
+		} = this.props;
+		const count = parentId ? 10 : 20;
+		console.warn(comments.length);
+		let index = comments.length ? comments[comments.length - 1].index + 1 : 0;
+		if (parentId) {
+			const replies = repliesOfId(comments, parentId);
+			index = replies.length ? replies[replies.length - 1].index + 1 : 0;
+		}
+		this.setState({ isLoading: true });
+		await this.props.getComments({
+			id, type, parentId, index, orderby, commentsType, count, findPostId,
+		});
+		this.setState({ isLoading: false });
+	}
 
-    		count = 10;
-    		index = activeComment.replies.length > 0 ? activeComment.replies.length - activeComment.replies.filter(c => c.isForcedDown).length : 0;
-    	}
+	// Load comment replies
+	loadReplies = async (commentId, type) => {
+		const { comments } = this.props;
+		this.setState({ latestLoadingComment: commentId });
+		if (type === 'openReplies' && repliesOfId(comments, commentId).length) {
+			await this.props.emptyCommentReplies(commentId);
+		} else {
+			await this.loadComments(commentId);
+		}
+		this.setState({ cache: getNewCache() });
+	}
 
-    	this.props.getComments(id, !type ? null : type, parentId, index, ordering, commentsType, count).then((count) => {
-    		if (!parentId && count < 20) this.setState({ fullyLoaded: true });
+	// Load comments when condition changes
+	loadCommentsByState = async () => {
+		this.props.emptyComments();
+		await this.loadComments();
+		this.setState({ cache: getNewCache() });
+	}
 
-    		this.setState({ isLoading: false });
-    	}).catch((error) => {
-    		console.log(error);
-    	});
-    }
+	voteComment = async (comment, voteValue) => {
+		await this.props.voteCommentInternal(comment, voteValue, this.props.commentsType);
+		this._list._forceUpdate();
+	}
 
-    // Load comment replies
-    loadReplies = (commentId, type) => {
-    	const comments = this.props.comments;
-    	const index = comments.findIndex(c => c.id == commentId);
-    	const activeComment = comments[index];
-    	const loadedReplies = activeComment.replies;
-			this.setState({ latestLoadingComment: commentId })
-    	if (type == 'openReplies' && activeComment.replies.length > 0) {
-    		this.props.emptyCommentReplies(commentId);
-    	} else {
-    		this.loadComments(commentId);
-    	}
-    }
+	editComment = async ({ id, parentId }, message) => {
+		await this.props.editCommentInternal(id, parentId, message, this.props.commentsType);
+		this.props.cancelAll();
+	}
 
-    // Load comments when condition changes
-    loadCommentsByState = () => {
-    	this.props.emptyComments().then(() => {
-    		this.loadComments();
-    	}).catch((error) => {
-    		console.log(error);
-    	});
-    }
+	renderComment = (comment) => {
+		const {
+			props: {
+				isEditing,
+				activeComment,
+				openEdit,
+				cancelAll,
+				openReplyBoxToolbar,
+				deleteComment,
+				commentsType,
+			},
+			state: { isReplying, isLoading, latestLoadingComment },
+			voteComment, editComment, loadReplies,
+		} = this;
+		return (
+			<Comment
+				key={comment.id}
+				comment={comment}
+				commentType={commentsType}
+				isEditing={isEditing}
+				isReplying={isReplying}
+				activeComment={activeComment}
+				openEdit={openEdit}
+				cancelAll={cancelAll}
+				openReplyBoxToolbar={openReplyBoxToolbar}
+				voteComment={voteComment}
+				editComment={editComment}
+				deleteComment={deleteComment}
+				loadReplies={loadReplies}
+				isLoadingReplies={isLoading && latestLoadingComment === comment.id}
+			/>
+		);
+	}
 
-    // Check scroll state
-    handleScroll = (scrollableArea) => {
-    	if ((scrollableArea.scrollTop === (scrollableArea.scrollHeight - scrollableArea.offsetHeight)) && !this.state.isLoading && !this.state.fullyLoaded) {
-    		this.loadComments();
-    	}
-    }
-
-    voteComment = (comment, voteValue) => {
-    	this.props.voteCommentInternal(comment, voteValue, this.props.commentsType);
-    }
-
-    editComment = (comment, message) => {
-    	this.props.editCommentInternal(comment.id, comment.parentID, message, this.props.commentsType).then(() => {
-    		this.props.cancelAll();
-    	});
-    }
-
-    render() {
-    	const { comments, isLoaded } = this.props;
-			const { isLoading, latestLoadingComment } = this.state;
-    	return (
-	<div id="comments">
-    			{(!isLoaded || comments.length == 0) && !this.state.fullyLoaded && <LoadingOverlay />}
-    			{(isLoaded && comments.length > 0) && this.props.comments.map((comment, index) => (
-							<Comment
-							key={comment.id}
-							comment={comment}
-							isEditing={this.props.isEditing}
-							isReplying={this.state.isReplying}
-							activeComment={this.props.activeComment}
-							openEdit={this.props.openEdit}
-							cancelAll={this.props.cancelAll}
-							openReplyBoxToolbar={this.props.openReplyBoxToolbar}
-							voteComment={this.voteComment}
-							editComment={this.editComment}
-							deleteComment={this.props.deleteComment}
-							loadReplies={this.loadReplies}
-							isLoadingReplies={isLoading && latestLoadingComment === comment.id}
-						/>
-		    	))}
-    			{
-    				(comments.length > 0 && !this.state.fullyLoaded) &&
-						<div className="loading" style={!this.state.isLoading ? styles.bottomLoading.base : [ styles.bottomLoading.base, styles.bottomLoading.active ]}>
+	render() {
+		const { comments, isLoaded, selectedComment } = this.props;
+		return (
+			<div id="comments" style={{ maxHeight: 660, height: '100%' }}>
+				{(!isLoaded || !comments.length) && <LoadingOverlay />}
+				<div style={{ height: '100%' }}>
+					<InfiniteVirtualizedList
+						item={this.renderComment}
+						list={comments}
+						loadMore={this.loadComments}
+						cache={this.state.cache}
+						condition={selectedComment}
+						ref={(list) => { this._list = list; }}
+					/>
+				</div>
+				{
+					!!comments.length && (
+						<div
+							style={!this.state.isLoading ?
+								styles.bottomLoading.base :
+								[ styles.bottomLoading.base, styles.bottomLoading.active ]}
+						>
 							<LoadingOverlay size={30} />
 						</div>
-    			}
-    			{(this.state.fullyLoaded && comments.length == 0) && <div style={styles.noResults}>No Results Found</div>}
-    		</div>
-    	);
-    }
-
-    componentWillMount() {
-    	this.loadComments();
-    }
-
-    componentDidMount() {
-    	const container = document.getElementById('comments');
-    	const scrollableArea = container.parentNode;
-    	scrollableArea.addEventListener('scroll', () => this.handleScroll(scrollableArea));
-    }
-
-    componentWillUnmount() {
-    	this.props.emptyComments();
-
-    	const container = document.getElementById('comments');
-    	const scrollableArea = container.parentNode;
-    	scrollableArea.removeEventListener('scroll', this.handleScroll);
-    }
+					)
+				}
+			</div>
+		);
+	}
 }
 
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({
-		getComments: getCommentsInternal,
-		emptyComments,
-		emptyCommentReplies,
-		voteCommentInternal,
-		editCommentInternal,
-	}, dispatch);
-}
-
-export default connect(() => ({}), mapDispatchToProps, null, { withRef: true })(Radium(Comments));
+export default Comments;

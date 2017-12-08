@@ -2,12 +2,12 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 // Material UI components
 import { ListItem } from 'material-ui/List';
 
 // Redux modules
+import { setSelectedComment } from 'actions/comments';
 import { markReadInternal } from 'actions/profile';
 
 // Utils And Defaults
@@ -77,6 +77,12 @@ const styles = {
 	},
 };
 
+const mapDispatchToProps = {
+	markRead: markReadInternal,
+	setSelectedComment,
+};
+
+@connect(null, mapDispatchToProps)
 class NotificationItem extends Component {
 	handleClick = () => {
 		const { notification } = this.props;
@@ -111,6 +117,10 @@ class NotificationItem extends Component {
 			break;
 		case types.badgeUnlocked:
 			browserHistory.push(`/profile/${notification.user.id}/badges`);
+			break;
+		case types.postedCodeComment:
+			this.props.setSelectedComment(notification.codeComment.id);
+			browserHistory.push(`/playground/${notification.code.publicID}`);
 			break;
 		default:
 			break;
@@ -187,8 +197,4 @@ class NotificationItem extends Component {
 	}
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-	markRead: markReadInternal,
-}, dispatch);
-
-export default connect(null, mapDispatchToProps)(NotificationItem);
+export default NotificationItem;

@@ -46,8 +46,7 @@ class MainLayout extends Component {
 		this.selectTab();
 		if (!this.props.defaultsLoaded || !this.props.loggedin) {
 			this.props.loadDefaults()
-				.then(() => this.setState({ loading: false }))
-				.catch(e => console.warn(e));
+				.then(() => this.setState({ loading: false }));
 		} else {
 			this.setState({ loading: false });
 		}

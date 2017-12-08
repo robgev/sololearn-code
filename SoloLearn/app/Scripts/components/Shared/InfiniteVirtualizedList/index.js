@@ -3,6 +3,7 @@ import {
 	List,
 	CellMeasurer,
 	WindowScroller,
+	AutoSizer,
 } from 'react-virtualized';
 import { findIndex } from 'lodash';
 import Radium from 'radium';
@@ -26,7 +27,7 @@ class InfiniteVirtalizedList extends Component {
 	componentDidUpdate(prevProps) {
 		const { condition, list } = this.props;
 		if (prevProps.list.length === 0 && list.length > 0 && condition) {
-			this.scrollTo(condition);
+			this._scrollTo(condition, true);
 		}
 	}
 	componentWillReceiveProps(nextProps) {
@@ -39,10 +40,12 @@ class InfiniteVirtalizedList extends Component {
 
 	_forceUpdate = () => this._list.forceUpdateGrid()
 
-	scrollTo = (condition) => {
-		const index = findIndex(this.props.list, condition);
-		this._list.scrollToRow(index + 3);
-		this.setState({ index });
+	_scrollTo = (condition, color) => {
+		console.log(condition, this.props.list);
+		const index = findIndex(this.props.list, el => el.id.toString() === condition.toString());
+		this._list.scrollToRow(index + 2);
+		console.log(index);
+		if (color) this.setState({ index });
 	}
 
 	handleNextFetch = async ({ stopIndex }) => {
@@ -125,6 +128,32 @@ class InfiniteVirtalizedList extends Component {
 						)
 					}
 				</WindowScroller>
+			);
+		} else if (this.props.cache) {
+			return (
+				// <WindowScroller>
+				// 	{
+				// 		({ height, scrollTop }) => (
+				<AutoSizer>
+					{
+						({ width, height }) => (
+							<List
+								// autoHeight
+								onRowsRendered={this.handleNextFetch}
+								width={width}
+								rowCount={this.props.list.length}
+								ref={(list) => { this._list = list; }}
+								height={height}
+								rowHeight={this.props.cache.rowHeight}
+								deferredMeasurementCache={this.props.cache}
+								rowRenderer={this.autoSizedRowRenderer}
+							/>
+						)
+					}
+				</AutoSizer>
+				// 		)
+				// 	}
+				// </WindowScroller>
 			);
 		}
 		return (

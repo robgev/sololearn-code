@@ -170,7 +170,7 @@ render() {
 				{this.generateTimeline(quizzes, activeQuiz)}
 			</Tabs>
 			{childrenWithProps}
-			{(!this.props.isShortcut && this.state.commentsOpened) && <Comments commentsOpened={this.state.commentsOpened} closeComments={this.closeComments} id={activeQuiz.id} type={activeQuiz.isText ? 1 : 3} commentsType="lesson" />}
+			{(!this.props.isShortcut && this.state.commentsOpened) && <Comments commentsOpened={this.state.commentsOpened} closeComments={this.closeComments} id={activeQuiz.id} type={activeQuiz.isText ? 0 : 3} commentsType="lesson" />}
 		</div>
 	);
 }

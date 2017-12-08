@@ -1,5 +1,6 @@
 import Service from 'api/service';
 import * as types from 'constants/ActionTypes';
+import { mandatory } from 'utils';
 
 export const getComments = comments => ({
 	type: types.GET_COMMENTS,
@@ -14,112 +15,111 @@ export const getReplies = (commentId, comments) => ({
 	},
 });
 
-export const getCommentsInternal =
-(id, type, parentId, index, oredring, commentsType, count = 20) => {
-	let path = '';
-	const params = {
-		parentId,
-		index,
-		count,
-		orderby: oredring,
+const getPathAndParams = ({
+	id, index, orderby, count, type, parentId, commentsType, findPostId,
+}) => {
+	const common = {
+		parentId, index, count, orderby, findPostId,
 	};
-
-	if (commentsType === 'lesson') {
-		path = 'Discussion/GetLessonComments';
-		params.quizId = id;
-		params.type = type;
-	} else if (commentsType === 'code') {
-		path = 'Discussion/GetCodeComments';
-		params.codeId = id;
+	switch (commentsType) {
+	case 'lesson':
+		return [ 'Discussion/GetLessonComments', {
+			...common, quizId: id, type,
+		} ];
+	case 'code':
+		return [ 'Discussion/GetCodeComments', {
+			...common, codeId: id,
+		} ];
+	default:
+		return null;
 	}
-
-	return (dispatch, getState) => {
-		const store = getState();
-		const loadedComments = store.comments;
-
-		return Service.request(path, params).then((response) => {
-			const responseComments = response.comments;
-
-			if (!parentId) {
-				const forcedReplies = loadedComments.filter((c, commentIndex) =>
-					(c.isForcedDown ? Object.assign(c, { commentIndex }) : null));
-
-				for (let i = 0; i < responseComments.length; i++) {
-					const comment = responseComments[i];
-					comment.repliesCount = comment.replies;
-					comment.replies = [];
-
-					for (let j = 0; j < forcedReplies.length; j++) {
-						if (forcedReplies[j].id === comment.id) {
-							loadedComments.splice(forcedReplies[j].index, 1);
-						}
-					}
-				}
-
-				dispatch(getComments(responseComments));
-			} else {
-				const parentComment = loadedComments[loadedComments.findIndex(c => c.id === parentId)];
-				const forcedReplies = parentComment.replies.filter((c, parentCommentIndex) =>
-					(c.isForcedDown ? Object.assign(c, { parentCommentIndex }) : null));
-
-				for (let i = 0; i < responseComments.length; i++) {
-					const comment = responseComments[i];
-
-					for (let j = 0; j < forcedReplies.length; j++) {
-						if (forcedReplies[j].id === comment.id) {
-							parentComment.replies.splice(forcedReplies[j].index, 1);
-						}
-					}
-				}
-
-				dispatch(getReplies(parentId, responseComments));
-			}
-
-			return responseComments.length;
-		}).catch((error) => {
-			console.log(error);
-		});
-	};
 };
 
-export const emptyComments = () => dispatch => new Promise((resolve) => {
-	dispatch({
-		type: types.EMPTY_COMMENTS,
-		payload: [],
+export const getCommentsInternal = ({
+	id, index, orderby, commentsType, count = 20, type = null, parentId = null, findPostId = null,
+}) => async (dispatch) => {
+	const [ url, params ] = getPathAndParams({
+		id, index, orderby, count, type, parentId, commentsType, findPostId,
 	});
-	resolve();
+	const { comments } = await Service.request(url, params);
+	if (!parentId) dispatch(getComments(comments));
+	else dispatch(getReplies(parentId, comments));
+};
+
+// export const getCommentsInternal =
+// 	({
+// 		id, type = null, parentId = null, index, orderby, commentsType, count = 20,
+// 	}) => async (dispatch, getState) => {
+// 		const { comments } = getState();
+// 		const sharedParams = {
+// 			parentId, index, count, orderby,
+// 		};
+// 		const isLesson = commentsType === 'lesson';
+// 		const params = isLesson ?
+// 			{ ...sharedParams, quizId: id, type } :
+// 			{ ...sharedParams, codeId: id };
+// 		const path = isLesson ?
+// 			'Discussion/GetLessonComments' :
+// 			'Discussion/GetCodeComments';
+
+// 		return Service.request(path, params).then((response) => {
+// 			const responseComments = response.comments;
+
+// 			if (!parentId) {
+// 				// const forcedReplies = comments.filter((c, commentIndex) =>
+// 				// 	(c.isForcedDown ? Object.assign(c, { commentIndex }) : null));
+
+// 				// for (let i = 0; i < responseComments.length; i++) {
+// 				// 	const comment = responseComments[i];
+// 				// 	// comment.repliesCount = comment.replies;
+// 				// 	// comment.replies = [];
+
+// 				// 	for (let j = 0; j < forcedReplies.length; j++) {
+// 				// 		if (forcedReplies[j].id === comment.id) {
+// 				// 			comments.splice(forcedReplies[j].index, 1);
+// 				// 		}
+// 				// 	}
+// 				// }
+
+// 				dispatch(getComments(responseComments));
+// 			} else {
+// 				// const parentComment = comments[comments.findIndex(c => c.id === parentId)];
+// 				// const forcedReplies = parentComment.replies.filter((c, parentCommentIndex) =>
+// 				// 	(c.isForcedDown ? Object.assign(c, { parentCommentIndex }) : null));
+// 				// for (let i = 0; i < responseComments.length; i++) {
+// 				// 	const comment = responseComments[i];
+
+// 				// 	for (let j = 0; j < forcedReplies.length; j++) {
+// 				// 		if (forcedReplies[j].id === comment.id) {
+// 				// 			parentComment.replies.splice(forcedReplies[j].index, 1);
+// 				// 		}
+// 				// 	}
+// 				// }
+// 				dispatch(getReplies(parentId, responseComments));
+// 			}
+
+// 			return responseComments.length;
+// 		});
+// 	};
+
+export const voteComment = ({
+	id, vote, votes,
+}) => ({
+	type: types.VOTE_COMMENT,
+	payload: {
+		id, vote, votes,
+	},
 });
 
-export const voteComment = (id, parentId, isPrimary, vote, votes) =>
-	dispatch => new Promise((resolve) => {
-		dispatch({
-			type: types.VOTE_COMMENT,
-			payload: {
-				id, parentId, isPrimary, vote, votes,
-			},
-		});
-		resolve();
-	});
-
-export const voteCommentInternal = (comment, vote, commentsType) => {
-	let path = '';
+export const voteCommentInternal = (comment, vote, commentsType) => (dispatch) => {
 	const userVote = comment.vote === vote ? 0 : vote;
 	const votes = (comment.votes + userVote) - comment.vote;
-	const isPrimary = comment.parentID === null;
 
-	if (commentsType === 'lesson') {
-		path = 'Discussion/VoteLessonComment';
-	} else if (commentsType === 'code') {
-		path = 'Discussion/VoteCodeComment';
-	}
+	const url = commentsType === 'lesson' ?
+		'Discussion/VoteLessonComment' : 'Discussion/VoteCodeComment';
 
-	return (dispatch) => {
-		dispatch(voteComment(comment.id, comment.parentID, isPrimary, userVote, votes)).then(() => {
-			Service.request(path, { id: comment.id, vote: userVote });
-		}).catch((error) => {
-			console.log(error);
-		});
-	};
+	dispatch(voteComment({ id: comment.id, vote: userVote, votes }));
+	Service.request(url, { id: comment.id, vote: userVote });
 };
 
 export const emptyCommentReplies = commentId => ({
@@ -216,3 +216,10 @@ export const addCommentInternal = (id, parentId, message, type, commentsType, or
 		}
 	});
 };
+
+export const setSelectedComment = (id = mandatory()) => ({
+	type: types.SET_SELECTED_COMMENT,
+	payload: id,
+});
+
+export const emptyComments = () => ({ type: types.EMPTY_COMMENTS });

@@ -9,12 +9,7 @@ import Paper from 'material-ui/Paper';
 const styles = {
 	container: {
 		zIndex: 5,
-		position: 'fixed',
 		width: 'inherit',
-		bottom: 0,
-		left: 'inherit',
-		right: 'inherit',
-		top: 'inherit',
 		padding: '10px 20px',
 		background: '#fff',
 		boxSizing: 'border-box',
