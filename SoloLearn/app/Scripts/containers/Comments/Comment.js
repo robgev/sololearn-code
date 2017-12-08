@@ -410,7 +410,7 @@ class Comment extends Component {
 							</div>
 						</div>
 					</div>
-					{ replies.length > 0 ?
+					{replies.length > 0 ?
 						<div className="replies" style={styles.replies.base}>
 							<div className="replies-content" style={styles.replies.content}>
 								{this.renderReplies()}
