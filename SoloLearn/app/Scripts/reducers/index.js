@@ -42,6 +42,7 @@ import profile from './reducer_profile';
 
 // Comments
 import comments from './reducer_comments';
+import selectedComment from './selectedComment.reducer';
 
 // Play
 import challenges from './reducer_challenges';
@@ -89,6 +90,7 @@ const reducers = combineReducers({
 	profile,
 	// Comments
 	comments,
+	selectedComment,
 	// Play
 	challenges,
 	// Login
@@ -152,6 +154,8 @@ export const isLoaded = (state, componentName) => {
 		return state.challenges.activeContest != null;
 	case 'initallyLoaded':
 		return state.courses != null && state.levels != null;
+	case 'commentSelected':
+		return state.selectedComment != null;
 	default:
 		return null;
 	}

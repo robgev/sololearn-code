@@ -91,3 +91,6 @@ export const SET_LIKES_LIST = 'SET_LIKES_LIST';
 
 // Slay
 export const SET_LESSON_COLLECTIONS = 'SET_LESSON_COLLECTIONS';
+
+// Comments
+export const SET_SELECTED_COMMENT = 'SET_SELECTED_COMMENT';

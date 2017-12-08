@@ -25,7 +25,7 @@ class Replies extends Component {
 	}
 	componentWillReceiveProps(nextProps) {
 		if (this.props.orderBy !== nextProps.orderBy ||
-			(this.props.replies.length !== nextProps.replies.length)) {
+			(this.props.replies.length && this.props.replies[0] !== nextProps.replies[0])) {
 			const cache = getNewCache();
 			this.setState({ cache });
 		}
@@ -47,7 +47,7 @@ class Replies extends Component {
 	_forceUpdate = () => this._list._forceUpdate();
 	render() {
 		return (
-			<div id="replies">
+			<div id="replies" style={{ overflowY: 'hidden' }}>
 				{this.state.canLoadAbove && this.props.replies.length > 0 &&
 					<RaisedButton
 						label="Load more"

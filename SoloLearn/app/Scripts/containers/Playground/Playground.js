@@ -1,6 +1,7 @@
 // React modules
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
 import { findKey } from 'lodash';
 
 // Material UI components
@@ -25,6 +26,9 @@ import PlaygroundTabs from './PlaygroundTabs';
 import Toolbar from './Toolbar';
 import Comments from '../Comments/CommentsBase';
 import OutputWindow from './OutputWindow';
+
+// Redux loaded
+import { isLoaded } from 'reducers';
 
 const styles = {
 	playground: {
@@ -61,6 +65,11 @@ const styles = {
 	},
 };
 
+const mapStateToProps = state => ({
+	commentSelected: isLoaded(state, 'commentSelected'),
+});
+
+@connect(mapStateToProps)
 class Playground extends Component {
 	constructor(props) {
 		super(props);
@@ -79,12 +88,12 @@ class Playground extends Component {
 			isRunning: false,
 			theme: 'monokai',
 			showOutput: false,
-			isGettingCode: false,
+			isGettingCode: true,
 			latestSavedCodeData: {},
-			commentsOpened: false,
 			languageSelector: 'web',
 			userCodeLanguage: 'web',
 			inputsPopupOpened: false,
+			commentsOpened: props.commentSelected,
 		};
 	}
 
@@ -367,7 +376,7 @@ class Playground extends Component {
 		if (!hasTag) {
 			return (
 				`<${tag}>
-	${code}
+						${code}
 </${tag}>`
 			);
 		}
@@ -384,7 +393,7 @@ class Playground extends Component {
 			`${precedingSubstr}
 	${value}
 ${succeedingSubstr}
-`
+							`
 		);
 	}
 
@@ -392,10 +401,10 @@ ${succeedingSubstr}
 		const hasTag = code.includes('head');
 		const wrappedCode = this.wrapByTag(code, 'html');
 		const headWrappedValue =
-`<head>
-	${value}
-</head>
-`;
+			`<head>
+						${value}
+</head >
+						`;
 		const codeToBeAdded = hasTag ? value : headWrappedValue;
 		const tagToBeAddedAfter = hasTag ? '<head' : '<html';
 		return this.addResourceValueAfterTag(wrappedCode, codeToBeAdded, tagToBeAddedAfter);
@@ -658,7 +667,7 @@ ${succeedingSubstr}
 							handleThemeChange={this.handleThemeChange}
 							handleLanguageChange={this.handleLanguageChange}
 						/>
-						{ withCodeComments &&
+						{withCodeComments &&
 							<FlatButton
 								onClick={this.openComments}
 								label={`${comments} COMMENTS`}

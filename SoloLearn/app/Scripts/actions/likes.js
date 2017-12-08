@@ -1,3 +1,4 @@
+import { curry } from 'lodash';
 import Service from '../api/service';
 import { SET_LIKES_LIST } from '../constants/ActionTypes';
 
@@ -29,7 +30,7 @@ const getParamsWithIdType = ({
 	}
 };
 
-const getLikesInternal = type => id => async (dispatch, getState) => {
+const getLikesInternal = (type, id) => async (dispatch, getState) => {
 	try {
 		const { likes } = getState();
 		const index = likes ? likes.length : 0;
@@ -42,4 +43,4 @@ const getLikesInternal = type => id => async (dispatch, getState) => {
 	}
 };
 
-export default getLikesInternal;
+export default curry(getLikesInternal);

@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { CellMeasurerCache } from 'react-virtualized';
 
 // Material UI components
 import TextField from 'material-ui/TextField';
@@ -15,13 +16,14 @@ import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 // Redux modules
-import getLikesInternal from 'actions/likes';
+import getLikes from 'actions/likes';
 
 // Utils
 import Likes from 'components/Shared/Likes';
 import { updateDate, updateMessage } from 'utils';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
 
 const styles = {
 	commentContainer: {
@@ -197,26 +199,9 @@ const styles = {
 };
 
 class Comment extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			errorText: '',
-			textFieldValue: this.props.comment.message,
-		};
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		return (((this.props.comment.id === nextProps.activeComment.id ||
-			this.props.comment.id === nextProps.activeComment.parentId) ||
-			(this.props.comment.id === nextProps.activeComment.previousId ||
-				this.props.comment.id === nextProps.activeComment.previousParentId) &&
-			(this.props.isEditing !== nextProps.isEditing ||
-				this.props.isReplying !== nextProps.isReplying)) ||
-			this.props.comment.vote !== nextProps.comment.vote ||
-			this.state.errorText !== nextState.errorText ||
-			this.state.textFieldValue !== nextState.textFieldValue ||
-			this.props.isLoadingReplies !== nextProps.isLoadingReplies ||
-			this.compareReplies(this.props.comment.replies, nextProps.comment.replies));
+	state = {
+		errorText: '',
+		textFieldValue: this.props.comment.message,
 	}
 
 	onChange = (e) => {
@@ -234,24 +219,20 @@ class Comment extends Component {
 	}
 	getPrimaryControls = (comment) => {
 		const isReply = comment.parentID != null;
-		const hasReplies = comment.repliesCount > 0;
+		const hasReplies = !!comment.replies;
 
 		return (
 			<div className="primary-controls" style={styles.commentControls.right}>
-				{!isReply && <FlatButton label={comment.repliesCount + (comment.repliesCount == 1 ? ' Reply' : ' Replies')} primary={hasReplies} disabled={!hasReplies} onClick={() => this.props.loadReplies(comment.id, 'openReplies')} />}
+				{!isReply &&
+					<FlatButton
+						label={comment.replies + (comment.replies === 1 ? ' Reply' : ' Replies')}
+						primary={hasReplies}
+						disabled={!hasReplies}
+						onClick={() => this.props.loadReplies(comment.id, 'openReplies')}
+					/>}
 				<FlatButton label="Reply" primary onClick={() => this.props.openReplyBoxToolbar(comment.id, comment.parentID, comment.userName, isReply)} />
 			</div>
 		);
-	}
-	compareReplies = (currentReplies, nextReplies) => {
-		if (currentReplies.length !== nextReplies.length) return true;
-
-		for (let i = 0; i < currentReplies.length; i++) {
-			if (currentReplies[i].id !== nextReplies[i].id) return true;
-			if (currentReplies[i].votes !== nextReplies[i].votes) return true;
-		}
-
-		return false;
 	}
 
 	openEdit = () => {
@@ -260,35 +241,16 @@ class Comment extends Component {
 	}
 
 	closeEdit = () => {
-		this.props.cancelAll().then(() => {
-			this.setState({
-				errorText: '',
-				textFieldValue: this.props.comment.message,
-			});
+		this.props.cancelAll();
+		this.setState({
+			errorText: '',
+			textFieldValue: this.props.comment.message,
 		});
 	}
 
-	renderReplies = () => this.props.comment.replies.map(reply => (
-		<Comment
-			key={reply.id}
-			comment={reply}
-			isEditing={this.props.isEditing}
-			isReplying={this.state.isReplying}
-			activeComment={this.props.activeComment}
-			openEdit={this.props.openEdit}
-			cancelAll={this.props.cancelAll}
-			openReplyBoxToolbar={this.props.openReplyBoxToolbar}
-			voteComment={this.props.voteComment}
-			editComment={this.props.editComment}
-			deleteComment={this.props.deleteComment}
-			getLikes={this.props.getLikes}
-		/>
-	))
-
 	getLikes = () => {
 		const { getLikes, comment } = this.props;
-		console.log(this);
-		getLikes(comment.id);
+		getLikes(this.props.commentType === 'lesson' ? 3 : 4, comment.id);
 	}
 
 	getEditControls = () => {
@@ -296,8 +258,16 @@ class Comment extends Component {
 
 		return (
 			<div className="edit-controls" style={styles.commentControls.right}>
-				<FlatButton label="Cancel" onClick={this.closeEdit} />
-				<FlatButton label="Save" primary={saveDisabled} disabled={!saveDisabled} onClick={() => { this.props.editComment(this.props.comment, this.state.textFieldValue); }} />
+				<FlatButton
+					label="Cancel"
+					onClick={this.closeEdit}
+				/>
+				<FlatButton
+					label="Save"
+					primary={saveDisabled}
+					disabled={!saveDisabled}
+					onClick={() => { this.props.editComment(this.props.comment, this.state.textFieldValue); }}
+				/>
 			</div>
 		);
 	}
@@ -310,21 +280,42 @@ class Comment extends Component {
 		>
 			{
 				comment.userID === this.props.userId ?
-					[ <MenuItem primaryText="Edit" key={`edit${comment.id}`} onClick={this.openEdit} />,
-						<MenuItem primaryText="Delete" key={`remove${comment.id}`} onClick={() => { this.props.deleteComment(comment); }} /> ]
+					[
+						<MenuItem
+							primaryText="Edit"
+							key={`edit${comment.id}`}
+							onClick={this.openEdit}
+						/>,
+						<MenuItem
+							primaryText="Delete"
+							key={`remove${comment.id}`}
+							onClick={() => { this.props.deleteComment(comment); }}
+						/>,
+					]
 					:
-					<MenuItem primaryText="Report" key={`report${comment.id}`} />
+					<MenuItem
+						primaryText="Report"
+						key={`report${comment.id}`}
+					/>
 			}
 		</IconMenu>
 	)
 
 	getVoteControls = comment => (
 		<div className="vote-controls" style={styles.commentControls.left}>
-			<IconButton className="upvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => this.props.voteComment(comment, 1)}>
+			<IconButton
+				style={styles.vote.button.base}
+				iconStyle={styles.vote.button.icon}
+				onClick={() => this.props.voteComment(comment, 1)}
+			>
 				<ThumbUp color={comment.vote === 1 ? blueGrey500 : grey500} />
 			</IconButton>
 			<Likes votes={comment.votes} getLikes={this.getLikes} />
-			<IconButton className="downvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => this.props.voteComment(comment, -1)}>
+			<IconButton
+				style={styles.vote.button.base}
+				iconStyle={styles.vote.button.icon}
+				onClick={() => this.props.voteComment(comment, -1)}
+			>
 				<ThumbDown color={comment.vote === -1 ? blueGrey500 : grey500} />
 			</IconButton>
 		</div>
@@ -335,7 +326,11 @@ class Comment extends Component {
 
 		return (
 			<div style={styles.commentContent}>
-				{!isEditing && <div className="original-message" dangerouslySetInnerHTML={{ __html: updateMessage(this.state.textFieldValue) }} style={styles.commentMessage} />}
+				{!isEditing &&
+					<div
+						dangerouslySetInnerHTML={{ __html: updateMessage(this.state.textFieldValue) }}
+						style={styles.commentMessage}
+					/>}
 				{isEditing &&
 					[
 						<TextField
@@ -358,108 +353,54 @@ class Comment extends Component {
 	}
 
 	render() {
-		const { comment, isLoadingReplies } = this.props;
 		const {
-			id,
-			date,
-			userID,
-			replies,
-			parentID,
-			avatarUrl,
-			userName,
-			repliesCount,
-		} = comment;
+			comment,
+			comment: {
+				id,
+				date,
+				userID,
+				parentID,
+				avatarUrl,
+				userName,
+			},
+			activeComment,
+		} = this.props;
 		const isReply = parentID != null;
-		const isEditing = (this.props.isEditing && this.props.activeComment.id === id);
+		const isEditing = (this.props.isEditing && activeComment.id === id);
 
-		if (!isReply) {
-			return (
-				<div className="comment-container" style={styles.commentContainer.base}>
-					<div className="primary comment" style={styles.comment.base}>
-						<div className="content" style={styles.commentConent}>
-							<ProfileAvatar
-								size={40}
-								userID={userID}
-								userName={userName}
-								avatarUrl={avatarUrl}
-							/>
-							<div
-								className="comment-details-wrapper"
-								style={{
-									...styles.commentDetailsWrapper.base,
-									...(isEditing ? styles.commentDetailsWrapper.editing : {}),
-								}}
-							>
-								<div className="comment-details" style={styles.commentDetails}>
-									<div style={styles.heading}>
-										<Link to={`/profile/${userID}`} style={styles.noStyle}>
-											<span className="name" style={styles.userName}>{userName}</span>
-										</Link>
-										<div style={styles.heading}>
-											<p className="date" style={styles.commentDate}>{updateDate(date)}</p>
-											{!isEditing && this.getMenuControls(comment)}
-										</div>
-									</div>
-									{this.getEditableArea(comment)}
-								</div>
-								<div className="controls" style={styles.commentControls.base}>
-									{!isEditing && this.getVoteControls(comment)}
-									{isEditing && this.getEditControls()}
-									{!isEditing && this.getPrimaryControls(comment)}
-								</div>
-							</div>
-						</div>
-					</div>
-					{replies.length > 0 ?
-						<div className="replies" style={styles.replies.base}>
-							<div className="replies-content" style={styles.replies.content}>
-								{this.renderReplies()}
-							</div>
-							<div className="gap" style={styles.commentsGap}>
-								{(replies.length !== repliesCount) &&
-									<FlatButton label="Load more" primary onClick={() => this.props.loadReplies(id, 'loadMore')} />}
-							</div>
-						</div> :
-						isLoadingReplies &&
-						<div style={{ height: 40 }}>
-							<LoadingOverlay style={{ top: 115 }} size={30} />
-						</div>
-					}
-				</div>
-			);
-		}
 		return (
-			<div className="secondary comment" style={styles.comment.base}>
-				<div className="content" style={styles.commentConent}>
-					<ProfileAvatar
-						size={40}
-						userID={userID}
-						userName={userName}
-						avatarUrl={avatarUrl}
-					/>
-					<div
-						className="comment-details-wrapper"
-						style={{
-							...styles.commentDetailsWrapper.base,
-							...(isEditing ? styles.commentDetailsWrapper.editing : {}),
-						}}
-					>
-						<div className="comment-details" style={styles.commentDetails}>
-							<div style={styles.heading}>
-								<Link to={`/profile/${userID}`} style={styles.noStyle}>
-									<span className="name" style={styles.userName}>{userName}</span>
-								</Link>
+			<div style={{ ...styles.commentContainer.base, marginLeft: isReply ? 20 : 0 }}>
+				<div style={styles.comment.base}>
+					<div style={styles.commentConent}>
+						<ProfileAvatar
+							size={40}
+							userID={userID}
+							userName={userName}
+							avatarUrl={avatarUrl}
+						/>
+						<div
+							style={{
+								...styles.commentDetailsWrapper.base,
+								...(isEditing ? styles.commentDetailsWrapper.editing : {}),
+							}}
+						>
+							<div style={styles.commentDetails}>
 								<div style={styles.heading}>
-									<p className="date" style={styles.commentDate}>{updateDate(date)}</p>
-									{!isEditing && this.getMenuControls(comment)}
+									<Link to={`/profile/${userID}`} style={styles.noStyle}>
+										<span style={styles.userName}>{userName}</span>
+									</Link>
+									<div style={styles.heading}>
+										<p style={styles.commentDate}>{updateDate(date)}</p>
+										{!isEditing && this.getMenuControls(comment)}
+									</div>
 								</div>
+								{this.getEditableArea(comment)}
 							</div>
-							{this.getEditableArea(comment)}
-						</div>
-						<div className="controls" style={styles.commentControls.base}>
-							{!isEditing && this.getVoteControls(comment)}
-							{isEditing && this.getEditControls()}
-							{!isEditing && this.getPrimaryControls(comment)}
+							<div style={styles.commentControls.base}>
+								{!isEditing && this.getVoteControls(comment)}
+								{isEditing && this.getEditControls()}
+								{!isEditing && this.getPrimaryControls(comment)}
+							</div>
 						</div>
 					</div>
 				</div>
@@ -471,7 +412,7 @@ class Comment extends Component {
 const mapStateToProps = state => ({ userId: state.userProfile.id });
 
 const mapDispatchToProps = {
-	getLikes: getLikesInternal(3),
+	getLikes,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Comment);

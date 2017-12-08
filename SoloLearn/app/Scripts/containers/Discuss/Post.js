@@ -33,6 +33,10 @@ import LoadingOverlay from '../../components/Shared/LoadingOverlay';
 
 const styles = {
 	postWrapper: {
+		minHeight: '80vh',
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'space-between',
 		width: '1000px',
 		margin: '20 auto',
 	},
@@ -85,7 +89,6 @@ const styles = {
 	repliesWrapper: {
 		position: 'relative',
 		width: 'inherit',
-		margin: '0 0 153px 0',
 		transition: 'margin 0.5s',
 	},
 
@@ -117,7 +120,7 @@ class Post extends Component {
 			fullyLoaded: false,
 			deletePopupOpened: false,
 			condition: props.params.replyId ?
-				{ id: parseInt(props.params.replyId, 10) } : null,
+				props.params.replyId : null,
 		};
 
 		this.deletingPost = null;
@@ -227,38 +230,43 @@ class Post extends Component {
 		const usersQuestion = post.userID === this.props.userId;
 		return (
 			<div style={styles.postWrapper}>
-				<Question question={post} votePost={this.votePost} remove={this.openDeletePopup} />
-				<div style={styles.repliesData}>
-					<p style={styles.answersCount}>{post.answers}{post.answers === 1 ? ' ANSWER' : ' ANSWERS'}</p>
-					<div style={styles.repliesFilterWrapper}>
-						<p style={styles.dropDownLabel}>Sort by:</p>
-						<DropDownMenu
-							style={styles.repliesFilter}
-							iconStyle={styles.filterIcon}
-							labelStyle={styles.filterLabel}
-							underlineStyle={{ display: 'none' }}
-							value={this.state.ordering}
-							onChange={this.handleFilterChange}
-							autoWidth={false}
-						>
-							<MenuItem value={1} primaryText="Votes" />
-							<MenuItem value={2} primaryText="Date" />
-						</DropDownMenu>
+				<div>
+					<Question question={post} votePost={this.votePost} remove={this.openDeletePopup} />
+					<div style={styles.repliesData}>
+						<p style={styles.answersCount}>{post.answers}{post.answers === 1 ? ' ANSWER' : ' ANSWERS'}</p>
+						<div style={styles.repliesFilterWrapper}>
+							<p style={styles.dropDownLabel}>Sort by:</p>
+							<DropDownMenu
+								style={styles.repliesFilter}
+								iconStyle={styles.filterIcon}
+								labelStyle={styles.filterLabel}
+								underlineStyle={{ display: 'none' }}
+								value={this.state.ordering}
+								onChange={this.handleFilterChange}
+								autoWidth={false}
+							>
+								<MenuItem value={1} primaryText="Votes" />
+								<MenuItem value={2} primaryText="Date" />
+							</DropDownMenu>
+						</div>
 					</div>
 				</div>
 				<div style={styles.repliesWrapper}>
 					{(this.state.isLoading && post.replies.length === 0) && <LoadingOverlay size={30} />}
-					<Replies
-						replies={post.replies}
-						votePost={this.votePost}
-						openDeletePopup={this.openDeletePopup}
-						isUsersQuestion={usersQuestion}
-						loadReplies={this.getReplies}
-						loadPreviousReplies={this.getPreviousReplies}
-						condition={this.state.condition}
-						orderBy={this.state.ordering}
-						ref={(replies) => { this._replies = replies; }}
-					/>
+					{
+						this.props.isLoaded &&
+						<Replies
+							replies={post.replies}
+							votePost={this.votePost}
+							openDeletePopup={this.openDeletePopup}
+							isUsersQuestion={usersQuestion}
+							loadReplies={this.getReplies}
+							loadPreviousReplies={this.getPreviousReplies}
+							condition={this.state.condition}
+							orderBy={this.state.ordering}
+							ref={(replies) => { this._replies = replies; }}
+						/>
+					}
 					{
 						(post.replies.length > 0 && !this.state.fullyLoaded) &&
 						<div
