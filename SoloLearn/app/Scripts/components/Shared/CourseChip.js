@@ -1,12 +1,6 @@
 import React from 'react';
 import Paper from 'material-ui/Paper';
 
-const collectionTypes = {
-	course: 1,
-	lesson: 2,
-	courseLesson: 3,
-};
-
 const CourseChip = ({
 	id,
 	type,

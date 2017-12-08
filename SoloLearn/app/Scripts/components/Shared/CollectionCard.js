@@ -1,10 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
-import CourseChip from './CourseChip';
-
 import 'styles/collectionCard.scss';
+import CourseChip from './CourseChip';
 
 const collectionTypes = {
 	course: 1,
@@ -26,17 +26,25 @@ const CollectionCard = ({
 		<Paper
 			style={{
 				padding: 10,
+				width: '100%',
 				marginBottom: 10,
 			}}
 		>
 			<div className="meta-info">
 				<p>{ name }</p>
-				<FlatButton label="Load more" />
+				<FlatButton
+					label="Load more"
+					containerElement={<Link to={`/learn/more/${id}`} />}
+				/>
 			</div>
 			<div className="courses-list">
 				{
 					collectionItems.map(lessonItem => (
-						<CourseChip round={isLessons} {...lessonItem} />
+						<CourseChip
+							{...lessonItem}
+							round={isLessons}
+							key={lessonItem.name}
+						/>
 					))
 				}
 			</div>

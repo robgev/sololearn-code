@@ -3,6 +3,14 @@
 	justify-content: center;
 	align-items: center;
 	position: relative;
+	.content-wrapper {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		background-color: 'white';
+	}
 	.progress-wrapper {
 		display: flex;
 		width: 100%;

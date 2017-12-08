@@ -10,11 +10,10 @@ const BusyWrapper = ({
 }) => (
 	<div className="busy-wrap-container">
 		<div
+			className="content-wrapper"
 			style={{
 				...style,
-				width: '100%',
 				opacity: isBusy ? 0.2 : 1,
-				backgroundColor: 'white',
 			}}
 		>
 			{children}

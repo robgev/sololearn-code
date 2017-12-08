@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
-import { getLessonCollections } from 'actions/slay';
+import { getBookmarkLessons } from 'actions/slay';
+import CourseCard from 'components/Shared/CourseCard';
 import SlayLayout from 'components/Layouts/SlayLayout';
-import CollectionCard from 'components/Shared/CollectionCard';
 
-const mapStateToProps = state => ({ collections: state.slay.slayCollections });
+const mapStateToProps = state => ({ lessons: state.slay.filteredCollectionItems });
 
-const mapDispatchToProps = { getLessonCollections };
+const mapDispatchToProps = { getBookmarkLessons };
 
 @connect(mapStateToProps, mapDispatchToProps)
 class SlayHome extends PureComponent {
@@ -19,19 +19,23 @@ class SlayHome extends PureComponent {
 	}
 
 	async componentWillMount() {
-		await this.props.getLessonCollections({ id: 0, count: 10 });
+		await this.props.getBookmarkLessons({ id: 0, count: 10 });
 		this.setState({ loading: false });
 	}
 
 	render() {
-		const { collections } = this.props;
 		const { loading } = this.state;
+		const { lessons } = this.props;
 		return (
 			<SlayLayout
+				items={lessons}
 				loading={loading}
-				items={collections}
-				cardComponent={CollectionCard}
-			/>
+				cardComponent={CourseCard}
+			>
+				{lessons.length ||
+					<p>There are no bookmarks yet</p>
+				}
+			</SlayLayout>
 		);
 	}
 }

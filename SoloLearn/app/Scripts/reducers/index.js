@@ -54,7 +54,7 @@ import loginModal from './loginModal.reducer';
 import likes from './likes.reducer';
 
 // Slay
-import slayCollections from './slay.reducer';
+import slay from './slay.reducer';
 
 const reducers = combineReducers({
 	// General
@@ -97,7 +97,7 @@ const reducers = combineReducers({
 	// Likes
 	likes,
 	// Slay
-	slayCollections,
+	slay,
 });
 
 export const store = createStore(reducers, applyMiddleware(
