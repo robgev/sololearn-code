@@ -243,6 +243,27 @@ class Modules extends Component {
 		this.resetProgress = this.resetProgress.bind(this);
 	}
 
+	componentWillMount() {
+		const {
+			course,
+			courses,
+			isLoaded,
+			userProfile,
+			selectModule,
+			loadCourseInternal,
+			params: { courseName },
+		} = this.props;
+		if (!isLoaded || courseName !== course.alias) {
+			const currentCourse = courses.find(item =>
+				item.alias.toLowerCase() === courseName.toLowerCase());
+			if (userProfile.skills.length > 0) {
+				const courseId = currentCourse ? currentCourse.id : null;
+				loadCourseInternal(courseId);
+			}
+		}
+		selectModule(null);
+	}
+
 	renderModules() {
 		const { modules } = this.props.course;
 
@@ -509,27 +530,6 @@ class Modules extends Component {
 				{ this.state.resetPopupOpened && Popup.getPopup(Popup.generatePopupActions(resetProgressActions), this.state.resetPopupOpened, this.handleResetPopupClose, [ { key: 'hintSkipConfirmText', replacemant: this.skipPrice } ]) }
 			</div>
 		);
-	}
-
-	componentWillMount() {
-		const {
-			params,
-			courses,
-			isLoaded,
-			userProfile,
-			selectModule,
-			loadCourseInternal,
-		} = this.props;
-		if (!isLoaded) {
-			if (userProfile.skills.length > 0) {
-				const { courseName } = params;
-				const course = courseName ?
-					courses.find(item => item.alias.toLowerCase() === courseName.toLowerCase()) : null;
-				const courseId = course ? course.id : null;
-				loadCourseInternal(courseId);
-			}
-		}
-		selectModule(null);
 	}
 }
 
