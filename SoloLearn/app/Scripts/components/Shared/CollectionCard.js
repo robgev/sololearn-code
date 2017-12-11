@@ -42,7 +42,7 @@ const CollectionCard = ({
 					collectionItems.map(lessonItem => (
 						<CourseChip
 							{...lessonItem}
-							round={isLessons}
+							isLesson={isLessons}
 							key={lessonItem.name}
 						/>
 					))

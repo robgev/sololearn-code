@@ -1,14 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router';
 import Paper from 'material-ui/Paper';
 
 const CourseChip = ({
 	id,
 	type,
+	alias,
 	name,
 	color,
-	round,
 	userID,
 	iconUrl,
+	isLesson,
 	itemType,
 	language,
 	userName,
@@ -16,23 +18,26 @@ const CourseChip = ({
 	comments,
 	avatarUrl,
 }) => (
-	<div className="chip-container">
+	<Link
+		className="chip-container"
+		to={isLesson ? `/learn/${alias}` : `/learn/${id}`}
+	>
 		<Paper
 			style={{
 				display: 'inline-block',
 				height: 100,
 				width: 100,
-				borderRadius: round ? '100%' : 0,
+				borderRadius: isLesson ? '100%' : 0,
 			}}
 		>
 			<img
 				src={iconUrl}
 				alt="Course Icon"
-				className={`chip-image ${round ? 'round' : ''}`}
+				className={`chip-image ${isLesson ? 'round' : ''}`}
 			/>
 		</Paper>
 		<p className="course-name">{name}</p>
-	</div>
+	</Link>
 );
 
 export default CourseChip;

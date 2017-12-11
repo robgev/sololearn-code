@@ -5,12 +5,15 @@
 }
 .courses-list {
 	display: flex;
-	height: 140px;
+	height: auto;
+	flex-wrap: wrap;
 	overflow-x: hidden;
 	white-space: nowrap;
 	.chip-container {
 		width: 100px;
 		margin: 10px 5px;
+		text-decoration: none;
+		color: rgba(0, 0, 0, 0.87);
 		.chip-image {
 			width: 100px;
 			height: 100px;
