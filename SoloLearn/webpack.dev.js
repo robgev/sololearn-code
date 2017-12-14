@@ -36,6 +36,7 @@ module.exports = {
 			reducers: path.resolve(__dirname, 'app/Scripts/reducers'),
 			styles: path.resolve(__dirname, 'app/Scripts/styles'),
 			utils: path.resolve(__dirname, 'app/Scripts/utils'),
+			selectors: path.resolve(__dirname, 'app/Scripts/selectors'),
 		},
 	},
 
@@ -57,7 +58,7 @@ module.exports = {
 							plugins: [
 								'transform-decorators-legacy',
 							],
-							presets: [ 'react', 'env', 'stage-0' ],
+							presets: [ 'flow', 'react', 'env', 'stage-0' ],
 						},
 					},
 				],

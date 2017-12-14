@@ -41,15 +41,13 @@ class InfiniteVirtalizedList extends Component {
 	_forceUpdate = () => this._list.forceUpdateGrid()
 
 	_scrollTo = (condition, color) => {
-		console.log(condition, this.props.list);
 		const index = findIndex(this.props.list, el => el.id.toString() === condition.toString());
 		this._list.scrollToRow(index + 2);
-		console.log(index);
 		if (color) this.setState({ index });
 	}
 
 	handleNextFetch = async ({ stopIndex }) => {
-		if (stopIndex > this.props.list.length - 15 && this.canLoadMore) {
+		if (stopIndex === this.props.list.length - 1 && this.canLoadMore) {
 			this.canLoadMore = false;
 			await this.props.loadMore();
 		}

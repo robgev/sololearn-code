@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {
 	CellMeasurerCache,
 } from 'react-virtualized';
+import { find } from 'lodash';
 
 // Redux modules
 import {
@@ -12,39 +13,20 @@ import {
 	voteCommentInternal, emptyCommentReplies,
 	editCommentInternal, setSelectedComment,
 } from 'actions/comments';
+import { getSelectedCommentId } from 'selectors';
+import { lastNonForcedDownIndex } from 'utils/comments.utils';
 
 // Additional components
-import Comment from './Comment';
 import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
-import { repliesOfId } from 'utils';
+import Comment from './Comment';
 
-const styles = {
-	bottomLoading: {
-		base: {
-			position: 'relative',
-			width: '100%',
-			height: '50px',
-			visibility: 'hidden',
-			opacity: 0,
-			transition: 'opacity ease 300ms, -webkit-transform ease 300ms',
-		},
+// Styles
+import { CommentsStyle as styles } from './styles';
 
-		active: {
-			visibility: 'visible',
-			opacity: 1,
-			transform: 'translateY(0)',
-		},
-	},
-
-	noResults: {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%,-50%)',
-		fontSize: '20px',
-		color: '#777',
-	},
+export const loadRepliesTypes = {
+	LOAD_REPLIES: 'LOAD_REPLIES',
+	CLOSE_REPLIES: 'CLOSE_REPLIES',
 };
 
 const getNewCache = () => new CellMeasurerCache({
@@ -54,8 +36,8 @@ const getNewCache = () => new CellMeasurerCache({
 	defaultHeight: 110,
 });
 
-const mapStateToProps = ({ selectedComment }) => ({
-	selectedComment,
+const mapStateToProps = state => ({
+	selectedComment: getSelectedCommentId(state),
 });
 
 const mapDispatchToProps = {
@@ -81,7 +63,6 @@ class Comments extends Component {
 	}
 
 	componentWillUnmount() {
-		console.warn('Unmounted for no reason');
 		this.props.setSelectedComment(null);
 		this.props.emptyComments();
 	}
@@ -90,12 +71,14 @@ class Comments extends Component {
 		const {
 			id, type, commentsType, ordering: orderby, comments, selectedComment: findPostId,
 		} = this.props;
+		// console.warn(orderby, comments);
 		const count = parentId ? 10 : 20;
-		console.warn(comments.length);
-		let index = comments.length ? comments[comments.length - 1].index + 1 : 0;
+		let index = 0;
 		if (parentId) {
-			const replies = repliesOfId(comments, parentId);
-			index = replies.length ? replies[replies.length - 1].index + 1 : 0;
+			const replies = comments.find(comment => comment.id === parentId).repliesArray;
+			index = lastNonForcedDownIndex(replies) + 1;
+		} else {
+			index = lastNonForcedDownIndex(comments) + 1;
 		}
 		this.setState({ isLoading: true });
 		await this.props.getComments({
@@ -106,11 +89,10 @@ class Comments extends Component {
 
 	// Load comment replies
 	loadReplies = async (commentId, type) => {
-		const { comments } = this.props;
 		this.setState({ latestLoadingComment: commentId });
-		if (type === 'openReplies' && repliesOfId(comments, commentId).length) {
+		if (type === loadRepliesTypes.CLOSE_REPLIES) {
 			await this.props.emptyCommentReplies(commentId);
-		} else {
+		} else if (type === loadRepliesTypes.LOAD_REPLIES) {
 			await this.loadComments(commentId);
 		}
 		this.setState({ cache: getNewCache() });
@@ -118,13 +100,14 @@ class Comments extends Component {
 
 	// Load comments when condition changes
 	loadCommentsByState = async () => {
-		this.props.emptyComments();
+		await this.props.emptyComments();
 		await this.loadComments();
 		this.setState({ cache: getNewCache() });
 	}
 
 	voteComment = async (comment, voteValue) => {
 		await this.props.voteCommentInternal(comment, voteValue, this.props.commentsType);
+		console.log(comment, voteComment);
 		this._list._forceUpdate();
 	}
 

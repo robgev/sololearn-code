@@ -2,17 +2,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { CellMeasurerCache } from 'react-virtualized';
 
 // Material UI components
-import TextField from 'material-ui/TextField';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
+import { TextField, IconMenu, MenuItem, FlatButton, IconButton } from 'material-ui';
 import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
-import { grey500, blueGrey500 } from 'material-ui/styles/colors';
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
+import { grey500, blueGrey500 } from 'material-ui/styles/colors';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 // Redux modules
@@ -22,182 +17,18 @@ import getLikes from 'actions/likes';
 import Likes from 'components/Shared/Likes';
 import { updateDate, updateMessage } from 'utils';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
-import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
+import { loadRepliesTypes } from './Comments';
 
-const styles = {
-	commentContainer: {
-		base: {
-			position: 'relative',
-		},
+// Style
+import { CommentStyle as styles } from './styles';
 
-		elevated: {
-			boxShadow: '0 5px 3px rgba(0,0,0,.12), 0 1px 10px rgba(0,0,0,.24)',
-			zIndex: 1000,
-		},
-	},
+const mapStateToProps = state => ({ userId: state.userProfile.id });
 
-	comment: {
-		base: {
-			position: 'relative',
-			backgroundColor: '#fff',
-			borderRadius: 0,
-			borderLeftStyle: 'solid',
-			borderLeftWidth: '3px',
-			borderLeftColor: '#fff',
-			borderBottomStyle: 'solid',
-			borderBottomWidth: '1px',
-			borderBottomColor: '#fafafa',
-			borderTopStyle: 'solid',
-			borderTopWidth: '1px',
-			borderTopColor: '#fafafa',
-			transition: 'opacity ease 400ms, transform ease 400ms, -webkit-transform ease 400ms',
-			boxShadow: 'rgba(0, 0, 0, 0.156863) 0px 3px 6px, rgba(0, 0, 0, 0.227451) 0px 3px 6px',
-		},
-
-		elevated: {
-			position: 'relative',
-			boxShadow: '0 5px 3px rgba(0,0,0,.12), 0 1px 10px rgba(0,0,0,.24)',
-			zIndex: 1000,
-		},
-	},
-
-	commentConent: {
-		display: 'flex',
-		padding: '10px',
-	},
-
-	commentDetailsWrapper: {
-		base: {
-			flex: 1,
-			position: 'relative',
-			overflow: 'hidden',
-			padding: '0 0 0 10px',
-		},
-
-		editing: {
-			padding: '0 0 10px 10px',
-		},
-	},
-
-	commentDetails: {
-		position: 'relative',
-	},
-
-	heading: {
-		display: 'flex',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-	},
-
-	iconMenu: {
-		icon: {
-			width: 'inherit',
-			height: 'inherit',
-			padding: 0,
-		},
-	},
-
-	userName: {
-		fontSize: '14px',
-		color: '#636060',
-		margin: '0px 0px 5px 0px',
-	},
-
-	commentDate: {
-		fontSize: '12px',
-		color: '#777',
-	},
-
-	commentMessage: {
-		fontSize: '13px',
-		color: '#827e7e',
-		margin: '3px 0px 5px',
-		whiteSpace: 'pre-line',
-	},
-
-	commentControls: {
-		base: {
-			display: 'flex',
-			justifyContent: 'space-between',
-			margin: '8px 0 0 0',
-			overflow: 'hidden',
-		},
-
-		left: {
-			display: 'flex',
-			alignItems: 'center',
-		},
-
-		right: {
-			display: 'flex',
-			alignItems: 'center',
-		},
-	},
-
-	replies: {
-		base: {
-			backgroundColor: '#dedede',
-			zIndex: 999,
-		},
-
-		content: {
-			margin: '0 0 0 15px',
-		},
-	},
-
-	commentsGap: {
-		minHeight: '20px',
-		textAlign: 'center',
-	},
-
-	vote: {
-		button: {
-			base: {
-				verticalAlign: 'middle',
-				width: '32px',
-				height: '32px',
-				padding: '8px',
-			},
-
-			icon: {
-				width: '16px',
-				height: '16px',
-			},
-		},
-
-		text: {
-			display: 'inline-block',
-			verticalAlign: 'middle',
-			minWidth: '23px',
-			textAlign: 'center',
-			fontWeight: '500',
-			fontSize: '15px',
-		},
-	},
-
-	textField: {
-		margin: '0 0 10px 0',
-		fontSize: '13px',
-	},
-
-	textFieldCoutner: {
-		position: 'absolute',
-		bottom: 0,
-		right: 0,
-		fontSize: '13px',
-		fontWeight: '500',
-	},
-
-	deleteButton: {
-		color: '#E53935',
-	},
-
-	noStyle: {
-		textDecoration: 'none',
-	},
+const mapDispatchToProps = {
+	getLikes,
 };
 
+@connect(mapStateToProps, mapDispatchToProps)
 class Comment extends Component {
 	state = {
 		errorText: '',
@@ -217,20 +48,37 @@ class Comment extends Component {
 			});
 		}
 	}
+
+	setReplies = ({ more = false }) => {
+		// don't remove the object, because then the funciton will get DOM values by default in 'more'
+		const { comment } = this.props;
+		const willLoadReplies = more || (comment.repliesArray && comment.repliesArray.length === 0);
+		const type = willLoadReplies ? loadRepliesTypes.LOAD_REPLIES : loadRepliesTypes.CLOSE_REPLIES;
+		this.props.loadReplies(comment.parentId || comment.id, type);
+		this.setState({ hasLoadedReplies: willLoadReplies });
+	}
+
+	loadMoreReplies = () => this.setReplies({ more: true });
+
 	getPrimaryControls = (comment) => {
 		const isReply = comment.parentID != null;
 		const hasReplies = !!comment.replies;
 
 		return (
-			<div className="primary-controls" style={styles.commentControls.right}>
+			<div style={styles.commentControls.right}>
 				{!isReply &&
 					<FlatButton
 						label={comment.replies + (comment.replies === 1 ? ' Reply' : ' Replies')}
 						primary={hasReplies}
 						disabled={!hasReplies}
-						onClick={() => this.props.loadReplies(comment.id, 'openReplies')}
+						onClick={this.setReplies}
 					/>}
-				<FlatButton label="Reply" primary onClick={() => this.props.openReplyBoxToolbar(comment.id, comment.parentID, comment.userName, isReply)} />
+				<FlatButton
+					label="Reply"
+					primary
+					onClick={() =>
+						this.props.openReplyBoxToolbar(comment.id, comment.parentID, comment.userName, isReply)}
+				/>
 			</div>
 		);
 	}
@@ -249,8 +97,8 @@ class Comment extends Component {
 	}
 
 	getLikes = () => {
-		const { getLikes, comment } = this.props;
-		getLikes(this.props.commentType === 'lesson' ? 3 : 4, comment.id);
+		const { getLikes, comment, commentType } = this.props;
+		getLikes(commentType === 'lesson' ? 3 : 4, comment.id);
 	}
 
 	getEditControls = () => {
@@ -353,6 +201,9 @@ class Comment extends Component {
 	}
 
 	render() {
+		if (this.props.comment.type === 'LOAD_MORE') {
+			return <FlatButton label="Load More" onClick={this.loadMoreReplies} />;
+		}
 		const {
 			comment,
 			comment: {
@@ -409,10 +260,4 @@ class Comment extends Component {
 	}
 }
 
-const mapStateToProps = state => ({ userId: state.userProfile.id });
-
-const mapDispatchToProps = {
-	getLikes,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Comment);
+export default Comment;

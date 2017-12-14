@@ -33,6 +33,7 @@ module.exports = {
 			reducers: path.resolve(__dirname, 'app/Scripts/reducers'),
 			styles: path.resolve(__dirname, 'app/Scripts/styles'),
 			utils: path.resolve(__dirname, 'app/Scripts/utils'),
+			selectors: path.resolve(__dirname, 'app/Scripts/selectors'),
 		},
 	},
 

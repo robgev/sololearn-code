@@ -15,6 +15,7 @@ import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 // Redux modules
 import { isLoaded } from 'reducers';
 import { addCommentInternal, deleteCommentInternal } from 'actions/comments';
+import { getComments } from 'selectors';
 
 // Popups
 import Popup from 'api/popupService';
@@ -23,96 +24,13 @@ import Popup from 'api/popupService';
 import ReplyBox from './ReplyBox';
 import Comments from './Comments';
 
-const styles = {
-	dialogBody: {
-		position: 'relative',
-		padding: 0,
-		height: '300px',
-		minHeight: '300px',
-		maxHeight: '500px',
-		zIndex: 10002,
-		overflowY: 'hidden',
-	},
-
-	replyBoxWrapper: {
-		position: 'relative',
-		padding: 0,
-		textAlign: 'left',
-		boxShadow: '0 0 10px rgba(0, 0, 0, 0.227451)',
-		zIndex: 10003,
-	},
-
-	comments: {
-		position: 'relative',
-	},
-
-	commentsOverlay: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		height: '100%',
-		width: '100%',
-		zIndex: 1000,
-		backgroundColor: 'rgba(248, 248, 248, .4)',
-	},
-
-	commentsFilterWrapper: {
-		position: 'relative',
-		padding: 0,
-		zIndex: 10003,
-	},
-
-	commentsFilter: {
-		base: {
-			position: 'relative',
-			backgroundColor: 'rgb(232, 232, 232)',
-			boxShadow: '0 3px 6px rgba(0,0,0,.16), 0 3px 6px rgba(0,0,0,.23)',
-			zIndex: 1005,
-		},
-
-		title: {
-			lineHeight: '61px',
-			fontSize: '15px',
-		},
-	},
-
-	filterDropDown: {
-		base: {
-			width: '170px',
-			padding: '0 10px',
-		},
-
-		item: {
-			padding: '0',
-		},
-	},
-
-	close: {
-		button: {
-			comments: {
-				margin: '0 10px',
-			},
-
-			big: {
-				width: '40px',
-				height: '40px',
-				padding: '10px',
-			},
-		},
-
-		icon: {
-			big: {
-				width: '20px',
-				height: '20px',
-			},
-		},
-	},
-};
+// Styles
+import { CommentsBaseStyle as styles } from './styles';
 
 const mapStateToProps = state => ({
-	isLoaded: isLoaded(state, 'comments'),
+	areCommentsLoaded: isLoaded(state, 'comments'),
 	profile: state.userProfile,
-	comments: state.comments,
+	comments: getComments(state),
 });
 
 const mapDispatchToProps = {
@@ -210,7 +128,9 @@ class CommentsBase extends Component {
 		const { activeComment, ordering } = this.state;
 		const { id, type, commentsType } = this.props;
 		const parentId = activeComment.parentId == null ? activeComment.id : activeComment.parentId;
-		await this.props.addCommentInternal(id, parentId, message, type, commentsType, ordering);
+		await this.props.addCommentInternal({
+			id, parentId, message, type, commentsType, ordering,
+		});
 		this.partialCancel();
 	}
 
@@ -243,7 +163,7 @@ class CommentsBase extends Component {
 
 	render() {
 		const {
-			id, type, commentsType, comments, profile, isLoaded,
+			id, type, commentsType, comments, profile, areCommentsLoaded,
 		} = this.props;
 
 		const deleteActions = [
@@ -268,7 +188,7 @@ class CommentsBase extends Component {
 					open={this.props.commentsOpened}
 					title={this.getPopupTitle()}
 					autoScrollBodyContent
-					actions={isLoaded &&
+					actions={
 						<ReplyBox
 							profile={profile}
 							isPrimary={!this.state.isReplying}
@@ -276,7 +196,8 @@ class CommentsBase extends Component {
 							userName={this.state.activeComment.userName}
 							closeToolbar={this.partialCancel}
 							reply={this.addComment}
-						/>}
+						/>
+					}
 					actionsContainerStyle={styles.replyBoxWrapper}
 					bodyStyle={styles.dialogBody}
 					onRequestClose={this.props.closeComments}
@@ -289,7 +210,7 @@ class CommentsBase extends Component {
 						isEditing={this.state.isEditing}
 						isReplying={this.state.isReplying}
 						activeComment={this.state.activeComment}
-						isLoaded={isLoaded}
+						isLoaded={areCommentsLoaded}
 						ordering={this.state.ordering}
 						openEdit={this.openEdit}
 						cancelAll={this.partialCancel}
