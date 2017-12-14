@@ -55,7 +55,7 @@ export default (
 			<Route path="/learn/search/:query" component={SlaySearch} />
 			<Route path="/learn/bookmarks" component={SlayBookmarks} />
 			<Route path="/learn/more/:collectionId" component={SlayDetailed} />
-			<Route path="/learn/slayLesson/:itemType/:lessonId(/:page)" component={SlayLesson} />
+			<Route path="/learn/slayLesson/:itemType/:lessonId/:pageNumber(/:language(/:codeID))" component={SlayLesson} />
 			<Route path="/learn/:courseName/:id/shortcut(/:quizNumber)" component={Shortcut}>
 				<Route component={QuizManager}>
 					<IndexRoute component={Quiz} />

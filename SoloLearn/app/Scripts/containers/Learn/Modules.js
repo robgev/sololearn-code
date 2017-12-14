@@ -258,7 +258,7 @@ class Modules extends Component {
 			// I've added this temporary code to reroute to the slay lessons
 			// The next if statement needs to be removed after reconstructing the routes
 			if (courseNameIsANumber) {
-				browserHistory.replace(`/learn/slayLesson/2/${courseName}`);
+				browserHistory.replace(`/learn/slayLesson/2/${courseName}/1`);
 			} else {
 				const currentCourse = courses.find(item =>
 					item.alias.toLowerCase() === courseName.toLowerCase());

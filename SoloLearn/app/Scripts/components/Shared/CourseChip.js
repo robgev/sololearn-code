@@ -20,7 +20,7 @@ const CourseChip = ({
 }) => (
 	<Link
 		className="chip-container"
-		to={isCourse ? `/learn/${alias}` : `/learn/slayLesson/${itemType}/${id}`}
+		to={isCourse ? `/learn/${alias}` : `/learn/slayLesson/${itemType}/${id}/1`}
 	>
 		<Paper
 			style={{

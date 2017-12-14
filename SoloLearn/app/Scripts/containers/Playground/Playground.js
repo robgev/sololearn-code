@@ -168,8 +168,9 @@ class Playground extends Component {
 		const { params, basePath } = this.props;
 		this.setState({ isGettingCode: true });
 		try {
-			const codeSample = await Service.request('Playground/GetCodeSample', { id: parseInt(params.secondary, 10) });
-			const { sourceCode, cssCode, jsCode } = codeSample.code;
+			const id = parseInt(params.secondary, 10);
+			const { code } = await Service.request('Playground/GetCodeSample', { id });
+			const { sourceCode, cssCode, jsCode } = code;
 			const foundEditorSettingKey = findKey(editorSettings, { alias: params.primary });
 			if (foundEditorSettingKey) {
 				const { alias, type } = editorSettings[foundEditorSettingKey];
@@ -183,7 +184,7 @@ class Playground extends Component {
 				};
 
 				const latestSavedCodeData = {
-					...codeSample.code,
+					...code,
 					codeType: 'templateCode',
 					userCodeLanguage: isWeb ? 'web' : foundEditorSettingKey,
 				};
@@ -214,7 +215,7 @@ class Playground extends Component {
 
 		// Link requires saved code
 		try {
-			const codeSample = await Service.request('Playground/GetCode', { publicId: params.primary });
+			const { code } = await Service.request('Playground/GetCode', { publicId: params.primary });
 			const {
 				id,
 				jsCode,
@@ -223,7 +224,7 @@ class Playground extends Component {
 				language,
 				comments,
 				sourceCode,
-			} = codeSample.code;
+			} = code;
 			// Check language of user code for setting up correct link
 			const foundEditorSettingKey = findKey(editorSettings, { language });
 			if (foundEditorSettingKey) {
@@ -239,7 +240,7 @@ class Playground extends Component {
 				};
 
 				const latestSavedCodeData = {
-					...codeSample.code,
+					...code,
 					codeType: 'userCode',
 					userCodeLanguage: isWeb ? 'web' : foundEditorSettingKey,
 				};
@@ -667,7 +668,7 @@ ${succeedingSubstr}
 							handleThemeChange={this.handleThemeChange}
 							handleLanguageChange={this.handleLanguageChange}
 						/>
-						{withCodeComments &&
+						{(withCodeComments && !!id) &&
 							<FlatButton
 								onClick={this.openComments}
 								label={`${comments} COMMENTS`}
