@@ -7,10 +7,11 @@ const BusyWrapper = ({
 	style,
 	isBusy,
 	children,
+	wrapperClassName = '',
 }) => (
 	<div className="busy-wrap-container">
 		<div
-			className="content-wrapper"
+			className={`content-wrapper ${wrapperClassName}`}
 			style={{
 				...style,
 				opacity: isBusy ? 0.2 : 1,

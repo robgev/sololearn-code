@@ -7,9 +7,8 @@ import 'styles/collectionCard.scss';
 import CourseChip from './CourseChip';
 
 const collectionTypes = {
-	course: 1,
-	lesson: 2,
-	courseLesson: 3,
+	slayLessons: 1,
+	courses: 2,
 };
 
 const CollectionCard = ({
@@ -20,8 +19,8 @@ const CollectionCard = ({
 	courses,
 }) => {
 	// lessons are the old Sololearn-created courses, like learn HTML, C# etc.
-	const isLessons = type === collectionTypes.lesson;
-	const collectionItems = isLessons ? courses.slice(0, 8) : items.slice(0, 8);
+	const isCourses = type === collectionTypes.courses;
+	const collectionItems = isCourses ? courses.slice(0, 8) : items.slice(0, 8);
 	return (
 		<Paper
 			style={{
@@ -42,7 +41,7 @@ const CollectionCard = ({
 					collectionItems.map(lessonItem => (
 						<CourseChip
 							{...lessonItem}
-							isLesson={isLessons}
+							isCourse={isCourses}
 							key={lessonItem.name}
 						/>
 					))

@@ -1,17 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
+import { getCourseAliasById } from 'utils';
+import { slayItemTypes } from 'constants/ItemTypes';
 
 import 'styles/courseCard.scss';
 import ViewStats from './ViewStats';
 
 const CourseCard = ({
 	id,
-	type,
 	name,
 	color,
-	round,
 	userID,
+	courses,
 	iconUrl,
 	itemType,
 	language,
@@ -20,28 +22,37 @@ const CourseCard = ({
 	comments,
 	avatarUrl,
 }) => (
-	<Paper
-		className="course-card-container"
+	<Link
+		to={
+			itemType === slayItemTypes.course ?
+				`/learn/${getCourseAliasById(courses, id)}` :
+				`/learn/slayLesson/${itemType}/${id}`
+		}
+		className="course-card-wrapper"
 	>
-		<img
-			src={iconUrl}
-			alt="Course Icon"
-			className="card-image"
-		/>
-		<div className="info-container">
-			<p>{name}</p>
-			<Link
-				className="user-link"
-				to={`/profile/${userID}`}
-			>
-				{userName}
-			</Link>
-			<ViewStats
-				views={viewCount}
-				comments={comments}
+		<Paper className="course-card-container">
+			<img
+				src={iconUrl}
+				alt="Course Icon"
+				className={`card-image ${itemType === slayItemTypes.course ? 'round' : ''}`}
 			/>
-		</div>
-	</Paper>
+			<div className="info-container">
+				<p>{name}</p>
+				<Link
+					className="user-link"
+					to={`/profile/${userID}`}
+				>
+					{userName}
+				</Link>
+				<ViewStats
+					views={viewCount}
+					comments={comments}
+				/>
+			</div>
+		</Paper>
+	</Link>
 );
 
-export default CourseCard;
+const mapStateToProps = state => ({ courses: state.courses });
+
+export default connect(mapStateToProps, null)(CourseCard);

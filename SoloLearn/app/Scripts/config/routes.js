@@ -11,8 +11,9 @@ import Login from 'containers/Login';
 
 // Slay
 import SlayHome from 'containers/Learn/SlayHome';
-import SlayDetailed from 'containers/Learn/SlayDetailed';
 import SlaySearch from 'containers/Learn/SlaySearch';
+import SlayLesson from 'containers/Learn/SlayLesson';
+import SlayDetailed from 'containers/Learn/SlayDetailed';
 import SlayBookmarks from 'containers/Learn/SlayBookmarks';
 
 // Learn
@@ -54,6 +55,7 @@ export default (
 			<Route path="/learn/search/:query" component={SlaySearch} />
 			<Route path="/learn/bookmarks" component={SlayBookmarks} />
 			<Route path="/learn/more/:collectionId" component={SlayDetailed} />
+			<Route path="/learn/slayLesson/:itemType/:lessonId(/:page)" component={SlayLesson} />
 			<Route path="/learn/:courseName/:id/shortcut(/:quizNumber)" component={Shortcut}>
 				<Route component={QuizManager}>
 					<IndexRoute component={Quiz} />

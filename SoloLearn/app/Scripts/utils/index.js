@@ -15,6 +15,7 @@ import numberFormatter from './numberFormatter';
 import getLanguageColor from './getLanguageColor';
 import EnumNameMapper from './enumNameMapper';
 import getChallengeStatus from './getChallengeStatus';
+import getCourseAliasById from './getCourseAliasById';
 
 const hash = pass => hmacsha1('password', pass).slice(0, -1);
 const checkWeb = alias => [ 'html', 'css', 'js' ].includes(alias);
@@ -41,4 +42,5 @@ export {
 	getLanguageColor,
 	EnumNameMapper,
 	getChallengeStatus,
+	getCourseAliasById,
 };

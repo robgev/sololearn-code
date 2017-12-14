@@ -1,31 +1,38 @@
-.course-card-container {
-	display: flex;
-	justify-content: flex-start;
+.course-card-wrapper {
 	width: 100%;
-	padding: 10px;
-	margin-bottom: 10px;
-	.card-image {
-		width: 100px;
-		height: 100px;
-	}
-	.info-container {
+	text-decoration: none;
+	.course-card-container {
 		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
+		justify-content: flex-start;
+		width: 100%;
 		padding: 10px;
-		.user-link {
-			text-decoration: none;
-			color: #2196F3;
-			font-size: 12px;
+		margin-bottom: 10px;
+		.card-image {
+			width: 100px;
+			height: 100px;
+			&.round {
+				border-radius: 100%;
+			}
 		}
-		.view-stats {
+		.info-container {
 			display: flex;
-			.stat-group {
+			flex-direction: column;
+			justify-content: space-between;
+			padding: 10px;
+			.user-link {
+				text-decoration: none;
+				color: #2196F3;
+				font-size: 12px;
+			}
+			.view-stats {
 				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				p {
-					padding: 5px;
+				.stat-group {
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					p {
+						padding: 5px;
+					}
 				}
 			}
 		}

@@ -51,3 +51,27 @@ export const getBookmarkLessons = pagingData => async (dispatch) => {
 		console.log(e);
 	}
 };
+
+export const getLesson = id => async (dispatch) => {
+	try {
+		const { lesson } = await Service.request('/GetLesson', { id });
+		dispatch({
+			type: types.SET_ACTIVE_LESSON,
+			payload: lesson,
+		});
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+export const getCourseLesson = id => async (dispatch) => {
+	try {
+		const { lesson } = await Service.request('/GetCourseLesson', { id });
+		dispatch({
+			type: types.SET_ACTIVE_LESSON,
+			payload: lesson,
+		});
+	} catch (e) {
+		console.log(e);
+	}
+};

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,8 +21,8 @@ namespace SoloLearn.Controllers
 
                 try
                 {
-                    //var auth = service.Authenticate(this, appVersion);
-                    var auth = service.Authenticate(appVersion);
+		  //var auth = service.Authenticate(this, appVersion);
+		  var auth = service.Authenticate("beta");// appVersion);
                     return Json(auth);
                 }
                 catch (Exception e)

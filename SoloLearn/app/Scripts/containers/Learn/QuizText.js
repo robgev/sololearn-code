@@ -503,6 +503,7 @@ class QuizText extends Component {
 
 	formattingText() {
 		const that = this;
+		const anchorRegex = /\[a((\s+[\w\d]+="?[-a-zA-Z0-9@:%_\\\\+.~#?&/=]*"?)*)\s*\](.*?)\[\/a\]/g;
 		let text = this.props.textContent;
 
 		const glossaryText = [];
@@ -518,7 +519,8 @@ class QuizText extends Component {
 			.replace(/\n/g, '<br/>')
 			.replace(/(\[)(\/?(b|i|u))(\])/g, '<' + '$2' + '>')
 			.replace(/(\[)(h1|h2|h3)(\])/g, '<' + '$2' + '>')
-			.replace(/(\[\/)(h1|h2|h3)(\])/g, '</' + '$2' + '>');
+			.replace(/(\[\/)(h1|h2|h3)(\])/g, '</' + '$2' + '>')
+			.replace(anchorRegex, '<a ' + '$2' + '>' + '$3' + '</a>');
 
 		return this.generateBlocks(text);
 	}

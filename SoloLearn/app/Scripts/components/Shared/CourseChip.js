@@ -10,7 +10,7 @@ const CourseChip = ({
 	color,
 	userID,
 	iconUrl,
-	isLesson,
+	isCourse,
 	itemType,
 	language,
 	userName,
@@ -20,20 +20,20 @@ const CourseChip = ({
 }) => (
 	<Link
 		className="chip-container"
-		to={isLesson ? `/learn/${alias}` : `/learn/${id}`}
+		to={isCourse ? `/learn/${alias}` : `/learn/slayLesson/${itemType}/${id}`}
 	>
 		<Paper
 			style={{
 				display: 'inline-block',
 				height: 100,
 				width: 100,
-				borderRadius: isLesson ? '100%' : 0,
+				borderRadius: isCourse ? '100%' : 0,
 			}}
 		>
 			<img
 				src={iconUrl}
 				alt="Course Icon"
-				className={`chip-image ${isLesson ? 'round' : ''}`}
+				className={`chip-image ${isCourse ? 'round' : ''}`}
 			/>
 		</Paper>
 		<p className="course-name">{name}</p>

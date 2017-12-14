@@ -1,4 +1,5 @@
 import {
+	SET_ACTIVE_LESSON,
 	SET_COLLECTION_ITEMS,
 	SET_LESSON_COLLECTIONS,
 } from 'constants/ActionTypes';
@@ -22,4 +23,17 @@ const filteredCollectionItems = (state = [], action) => {
 	}
 };
 
-export default combineReducers({ slayCollections, filteredCollectionItems });
+const activeLesson = (state = null, action) => {
+	switch (action.type) {
+	case SET_ACTIVE_LESSON:
+		return action.payload;
+	default:
+		return state;
+	}
+};
+
+export default combineReducers({
+	activeLesson,
+	slayCollections,
+	filteredCollectionItems,
+});

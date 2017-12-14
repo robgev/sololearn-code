@@ -72,9 +72,9 @@ class Shortcut extends PureComponent {
     	return (
     		!isLoaded ? <div>Loading...</div> :
     			<div>
-    				{childrenWithProps}
-    				{ this.state.shortcutLives == 0 && Popup.getPopup(Popup.generatePopupActions(failedActions), this.state.shortcutLives == 0, this.backToLearn, [ { key: 'shortcutFailed', replacemant: '' } ], true) }
-    				{ this.state.shortcutPassed && Popup.getPopup(Popup.generatePopupActions(successActions), this.state.shortcutPassed, this.backToLearn, [ { key: 'shortcutSucceed', replacemant: '' } ], true) }
+	{childrenWithProps}
+	{ this.state.shortcutLives == 0 && Popup.getPopup(Popup.generatePopupActions(failedActions), this.state.shortcutLives == 0, this.backToLearn, [ { key: 'shortcutFailed', replacemant: '' } ], true) }
+	{ this.state.shortcutPassed && Popup.getPopup(Popup.generatePopupActions(successActions), this.state.shortcutPassed, this.backToLearn, [ { key: 'shortcutSucceed', replacemant: '' } ], true) }
     			</div>
     	);
     }

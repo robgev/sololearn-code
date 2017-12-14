@@ -254,11 +254,18 @@ class Modules extends Component {
 			params: { courseName },
 		} = this.props;
 		if (!isLoaded || courseName !== course.alias) {
-			const currentCourse = courses.find(item =>
-				item.alias.toLowerCase() === courseName.toLowerCase());
-			if (userProfile.skills.length > 0) {
-				const courseId = currentCourse ? currentCourse.id : null;
-				loadCourseInternal(courseId);
+			const courseNameIsANumber = courseName.match(/\d+/);
+			// I've added this temporary code to reroute to the slay lessons
+			// The next if statement needs to be removed after reconstructing the routes
+			if (courseNameIsANumber) {
+				browserHistory.replace(`/learn/slayLesson/2/${courseName}`);
+			} else {
+				const currentCourse = courses.find(item =>
+					item.alias.toLowerCase() === courseName.toLowerCase());
+				if (userProfile.skills.length > 0) {
+					const courseId = currentCourse ? currentCourse.id : null;
+					loadCourseInternal(courseId);
+				}
 			}
 		}
 		selectModule(null);
