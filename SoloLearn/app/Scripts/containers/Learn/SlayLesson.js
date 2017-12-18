@@ -1,19 +1,29 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
-import { slayItemTypes } from 'constants/ItemTypes';
-import { getLesson, getCourseLesson } from 'actions/slay';
 import Comments from 'containers/Comments/CommentsBase';
 import LessonLayout from 'components/Layouts/LessonLayout';
+
+import { slayItemTypes } from 'constants/ItemTypes';
+import {
+	getLesson,
+	getCourseLesson,
+	getLessonsByAuthor,
+} from 'actions/slay';
 
 import QuizText from './QuizText';
 import RelatedLessons from './RelatedLessons';
 
 const mapStateToProps = state => ({
 	activeLesson: state.slay.activeLesson,
+	lessonsByUser: state.slay.lessonsByUser,
 });
 
-const mapDispatchToProps = { getLesson, getCourseLesson };
+const mapDispatchToProps = {
+	getLesson,
+	getCourseLesson,
+	getLessonsByAuthor,
+};
 
 @connect(mapStateToProps, mapDispatchToProps)
 class SlayLesson extends PureComponent {
@@ -32,15 +42,23 @@ class SlayLesson extends PureComponent {
 		switch (parsedItemType) {
 		case slayItemTypes.courseLesson:
 			await getCourseLesson(lessonId);
+			await this.getLessonsByAuthor();
 			this.setState({ loading: false });
 			break;
 		case slayItemTypes.slayLesson:
 			await getLesson(lessonId);
+			await this.getLessonsByAuthor();
 			this.setState({ loading: false });
 			break;
 		default:
 			break;
 		}
+	}
+
+	getLessonsByAuthor = async () => {
+		const { activeLesson, getLessonsByAuthor } = this.props;
+		const { id, userID } = activeLesson;
+		await getLessonsByAuthor(id, userID, { index: 0, count: 10 });
 	}
 
 	toggleComments = async () => {
@@ -49,6 +67,7 @@ class SlayLesson extends PureComponent {
 
 	render() {
 		const { loading, commentsOpened } = this.state;
+		const { lessonsByUser, activeLesson } = this.props;
 		const {
 			id,
 			type,
@@ -62,7 +81,7 @@ class SlayLesson extends PureComponent {
 			isBookmarked,
 			relevantLessons,
 			implementations,
-		} = this.props.activeLesson || {};
+		} = activeLesson || {};
 		const userData = {
 			userID,
 			avatarUrl,
@@ -91,6 +110,7 @@ class SlayLesson extends PureComponent {
 						<RelatedLessons
 							id={id}
 							nextLesson={nextLesson}
+							lessonsByUser={lessonsByUser}
 							relevantLessons={relevantLessons}
 							implementations={implementations}
 						/>

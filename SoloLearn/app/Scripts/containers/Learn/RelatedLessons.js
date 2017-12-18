@@ -7,6 +7,7 @@ import 'styles/relatedLessons.scss';
 const RelatedLessons = ({
 	id,
 	nextLesson,
+	lessonsByUser,
 	relevantLessons,
 	implementations,
 }) => (
@@ -39,7 +40,19 @@ const RelatedLessons = ({
 				/>
 			)
 		}
-		<div className="by-author" />
+		{	(lessonsByUser && !!lessonsByUser.length) &&
+			(lessonsByUser.length > 1 ?
+				<CollectionCard
+					id={id}
+					name="More by author"
+					items={lessonsByUser}
+				/> :
+				<CourseCard
+					title="More by author"
+					{...lessonsByUser[0]}
+				/>
+			)
+		}
 	</div>
 );
 

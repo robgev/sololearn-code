@@ -1,5 +1,6 @@
 import {
 	SET_ACTIVE_LESSON,
+	SET_LESSONS_BY_USER,
 	SET_COLLECTION_ITEMS,
 	SET_LESSON_COLLECTIONS,
 } from 'constants/ActionTypes';
@@ -32,8 +33,18 @@ const activeLesson = (state = null, action) => {
 	}
 };
 
+const lessonsByUser = (state = [], action) => {
+	switch (action.type) {
+	case SET_LESSONS_BY_USER:
+		return action.payload;
+	default:
+		return state;
+	}
+};
+
 export default combineReducers({
 	activeLesson,
+	lessonsByUser,
 	slayCollections,
 	filteredCollectionItems,
 });
