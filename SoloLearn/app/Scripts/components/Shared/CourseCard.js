@@ -10,6 +10,7 @@ import ViewStats from './ViewStats';
 
 const CourseCard = ({
 	id,
+	title,
 	name,
 	// color,
 	userID,
@@ -20,15 +21,20 @@ const CourseCard = ({
 	viewCount,
 	comments,
 }) => (
-	<Link
-		to={
-			itemType === slayItemTypes.course ?
-				`/learn/${getCourseAliasById(courses, id)}` :
-				`/learn/slayLesson/${itemType}/${id}/1`
+	<Paper className="course-card-container">
+		{title &&
+			<div className="meta-info">
+				<p>{ title }</p>
+			</div>
 		}
-		className="course-card-wrapper"
-	>
-		<Paper className="course-card-container">
+		<Link
+			to={
+				itemType === slayItemTypes.course ?
+					`/learn/${getCourseAliasById(courses, id)}` :
+					`/learn/slayLesson/${itemType}/${id}/1`
+			}
+			className="course-card-wrapper"
+		>
 			<img
 				src={iconUrl}
 				alt="Course Icon"
@@ -47,8 +53,8 @@ const CourseCard = ({
 					comments={comments}
 				/>
 			</div>
-		</Paper>
-	</Link>
+		</Link>
+	</Paper>
 );
 
 const mapStateToProps = state => ({ courses: state.courses });

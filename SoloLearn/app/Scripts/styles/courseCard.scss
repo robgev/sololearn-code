@@ -1,11 +1,14 @@
-.course-card-wrapper {
+.course-card-container {
 	width: 100%;
+	padding: 10px;
 	text-decoration: none;
-	.course-card-container {
+	.course-card-wrapper {
 		display: flex;
 		justify-content: flex-start;
 		width: 100%;
 		padding: 10px;
+		color: rgba(0, 0, 0, 0.87);
+		text-decoration: none;
 		margin-bottom: 10px;
 		.card-image {
 			width: 100px;

@@ -31,7 +31,7 @@ const RelatedLessons = ({
 					items={relevantLessons}
 				/> :
 				<CourseCard
-					name="See also"
+					title="See also"
 					{...relevantLessons[0]}
 				/>
 			)

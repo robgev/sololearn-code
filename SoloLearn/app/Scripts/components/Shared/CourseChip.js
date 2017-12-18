@@ -12,7 +12,6 @@ const CourseChip = ({
 	noName,
 	isCourse,
 	itemType,
-	language,
 }) => (
 	<Link
 		className="chip-container"
