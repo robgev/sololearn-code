@@ -3,6 +3,20 @@
 .slay-container {
 	.main-content {
 		.lesson-wrapper {
+			.lesson-toolbar {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				.lesson-data {
+					display: flex;
+					align-items: center;
+				}
+				.author-data {
+					a {
+						color: #5A5757;
+					}
+				}
+			}
 			a {
 				text-decoration: none;
 				color: #84BC4F;

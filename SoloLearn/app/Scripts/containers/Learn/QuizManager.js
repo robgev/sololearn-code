@@ -22,7 +22,7 @@ import { toSeoFrendly } from 'utils';
 import Progress, { ProgressState } from 'api/progress';
 
 // Additional data and components
-import Comments from '../Comments/CommentsBase';
+import Comments from 'containers/Comments/CommentsBase';
 
 export const LessonType = {
 	Checkpoint: 0,

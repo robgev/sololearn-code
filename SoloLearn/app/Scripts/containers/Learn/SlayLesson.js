@@ -3,12 +3,10 @@ import { connect } from 'react-redux';
 
 import { slayItemTypes } from 'constants/ItemTypes';
 import { getLesson, getCourseLesson } from 'actions/slay';
-import BusyWrapper from 'components/Shared/BusyWrapper';
+import Comments from 'containers/Comments/CommentsBase';
 import LessonLayout from 'components/Layouts/LessonLayout';
 
 import QuizText from './QuizText';
-
-// import 'styles/slayHome.scss';
 
 const mapStateToProps = state => ({
 	activeLesson: state.slay.activeLesson,
@@ -22,6 +20,7 @@ class SlayLesson extends PureComponent {
 		super();
 		this.state = {
 			loading: true,
+			commentsOpened: false,
 		};
 	}
 
@@ -43,18 +42,49 @@ class SlayLesson extends PureComponent {
 		}
 	}
 
+	toggleComments = async () => {
+		this.setState({ commentsOpened: !this.state.commentsOpened });
+	}
+
 	render() {
-		const { loading } = this.state;
-		const { id, content, language } = this.props.activeLesson || {};
+		const { loading, commentsOpened } = this.state;
+		const {
+			id,
+			type,
+			userID,
+			content,
+			language,
+			comments,
+			userName,
+			avatarUrl,
+			isBookmarked,
+		} = this.props.activeLesson || {};
+		const userData = {
+			userID,
+			avatarUrl,
+			userName,
+		};
 		return (
 			<LessonLayout loading={loading}>
 				{ !loading &&
-					<QuizText
-						type={1}
-						quizId={id}
-						textContent={content}
-						courseLanguage={language}
-					/>
+					<div>
+						<QuizText
+							quizId={id}
+							type={type}
+							withToolbar
+							userData={userData}
+							textContent={content}
+							courseLanguage={language}
+							commentsCount={comments}
+							isBookmarked={isBookmarked}
+							openComments={this.toggleComments}
+						/>
+						<Comments
+							id={id}
+							commentsOpened={commentsOpened}
+							closeComments={this.toggleComments}
+						/>
+					</div>
 				}
 			</LessonLayout>
 		);
