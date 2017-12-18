@@ -7,6 +7,7 @@ import Comments from 'containers/Comments/CommentsBase';
 import LessonLayout from 'components/Layouts/LessonLayout';
 
 import QuizText from './QuizText';
+import RelatedLessons from './RelatedLessons';
 
 const mapStateToProps = state => ({
 	activeLesson: state.slay.activeLesson,
@@ -57,8 +58,12 @@ class SlayLesson extends PureComponent {
 			comments,
 			userName,
 			avatarUrl,
+			nextLesson,
 			isBookmarked,
+			relevantLessons,
+			implementations,
 		} = this.props.activeLesson || {};
+		console.log(this.props.activeLesson);
 		const userData = {
 			userID,
 			avatarUrl,
@@ -83,6 +88,12 @@ class SlayLesson extends PureComponent {
 							id={id}
 							commentsOpened={commentsOpened}
 							closeComments={this.toggleComments}
+						/>
+						<RelatedLessons
+							id={id}
+							nextLesson={nextLesson}
+							relevantLessons={relevantLessons}
+							implementations={implementations}
 						/>
 					</div>
 				}

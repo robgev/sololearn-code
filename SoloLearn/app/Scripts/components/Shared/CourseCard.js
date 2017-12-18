@@ -11,16 +11,14 @@ import ViewStats from './ViewStats';
 const CourseCard = ({
 	id,
 	name,
-	color,
+	// color,
 	userID,
 	courses,
 	iconUrl,
 	itemType,
-	language,
 	userName,
 	viewCount,
 	comments,
-	avatarUrl,
 }) => (
 	<Link
 		to={

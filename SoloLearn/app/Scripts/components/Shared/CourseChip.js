@@ -4,19 +4,15 @@ import Paper from 'material-ui/Paper';
 
 const CourseChip = ({
 	id,
-	type,
 	alias,
 	name,
-	color,
-	userID,
+	round,
+	// color,
 	iconUrl,
+	noName,
 	isCourse,
 	itemType,
 	language,
-	userName,
-	viewCount,
-	comments,
-	avatarUrl,
 }) => (
 	<Link
 		className="chip-container"
@@ -27,16 +23,18 @@ const CourseChip = ({
 				display: 'inline-block',
 				height: 100,
 				width: 100,
-				borderRadius: isCourse ? '100%' : 0,
+				borderRadius: (isCourse || round) ? '100%' : 0,
 			}}
 		>
 			<img
 				src={iconUrl}
 				alt="Course Icon"
-				className={`chip-image ${isCourse ? 'round' : ''}`}
+				className={`chip-image ${(isCourse || round) ? 'round' : ''}`}
 			/>
 		</Paper>
-		<p className="course-name">{name}</p>
+		{!noName &&
+			<p className="course-name">{name}</p>
+		}
 	</Link>
 );
 

@@ -17,6 +17,8 @@ const CollectionCard = ({
 	name,
 	items,
 	courses,
+	round = false,
+	noName = false,
 }) => {
 	// lessons are the old Sololearn-created courses, like learn HTML, C# etc.
 	const isCourses = type === collectionTypes.courses;
@@ -41,8 +43,10 @@ const CollectionCard = ({
 					collectionItems.map(lessonItem => (
 						<CourseChip
 							{...lessonItem}
+							round={round}
+							noName={noName}
 							isCourse={isCourses}
-							key={lessonItem.name}
+							key={`${lessonItem.name}-${lessonItem.id}`}
 						/>
 					))
 				}

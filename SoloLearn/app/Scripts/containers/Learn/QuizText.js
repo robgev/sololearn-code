@@ -102,8 +102,8 @@ const tooltipLeftPlaced = (<Style
 
 const styles = {
 	textContainer: {
-		width: '90%',
-		margin: '20px auto 0',
+		width: '100%',
+		marginBottom: 10,
 		padding: '20px 20px 10px 20px',
 		overflow: 'hidden',
 	},
