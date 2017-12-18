@@ -44,7 +44,6 @@ class Challenge extends PureComponent {
 			courses,
 			isActiveContestLoaded,
 		} = this.props;
-		const courseName = courses.find(item => item.id === contest.courseID).languageName;
 
 		return (
 			<StyleRoot>
@@ -52,7 +51,7 @@ class Challenge extends PureComponent {
 					{isActiveContestLoaded ?
 						<Game
 							contest={contest}
-							courseName={courseName}
+							courseName={courses.find(item => item.id === contest.courseID).languageName}
 							updateContest={this.updateContest}
 						/> :
 						<LoadingOverlay />

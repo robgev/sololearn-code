@@ -15,7 +15,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import { green500, red500, blue500 } from 'material-ui/styles/colors';
 
 // Material UI components
-import { Optional, getChallengeStatus } from 'utils';
+import { getChallengeStatus } from 'utils';
 import contestTypes from 'defaults/contestTypes';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
@@ -123,7 +123,7 @@ const ResultBox = ({ aboveText, insideText, color }) => (
 	</div>
 );
 
-const Results = Optional(({
+const Results = ({
 	courseName, answersBonus, matchResult, totalXp, percUntilNext,
 }) => (
 	<div style={styles.appear(fadeIn)}>
@@ -150,7 +150,7 @@ const Results = Optional(({
 			value={percUntilNext}
 		/>
 	</div>
-));
+);
 
 class Result extends Component {
 	state = { updated: false }
@@ -166,13 +166,14 @@ class Result extends Component {
 		return result;
 	}
 	answerBonusCounter = results => results.reduce((xp, current) => xp + current.earnedXp, 0)
-	matchResultCounter = contest => (contest.player.status == 1 ? contest.player.rewardXp : -contest.opponent.rewardXp)
+	matchResultCounter = contest =>
+		(contest.player.status === 1 ? contest.player.rewardXp : -contest.opponent.rewardXp)
 	countUntilNextLevel = (totalXp) => {
 		const { player: { level, xp } } = this.props.contest;
 		const newXp = xp + totalXp;
 		const nextLevelXp = this.props.levels[level - 1].maxXp;
 		const untilNextLevelXp = nextLevelXp - newXp;
-		const percentage = 100 - 100 * (untilNextLevelXp / nextLevelXp);
+		const percentage = 100 - (100 * (untilNextLevelXp / nextLevelXp));
 		return [ untilNextLevelXp, percentage ];
 	}
 	render() {
@@ -200,12 +201,14 @@ class Result extends Component {
 						<Profile player={contest.opponent} />
 					</div>
 				</div>
-				<Results
-					idle={!(status === 1 || status === 2 || status === 8)}
-					{...{
-						courseName, answersBonus, matchResult, totalXp, percUntilNext,
-					}}
-				/>
+				{
+					(status === 1 || status === 2 || status === 8) &&
+					<Results
+						{...{
+							courseName, answersBonus, matchResult, totalXp, percUntilNext,
+						}}
+					/>
+				}
 				<div style={{ ...styles.result, ...styles.appear(fadeInUp) }}>
 					<RaisedButton
 						label="Leave"
