@@ -63,7 +63,6 @@ class SlayLesson extends PureComponent {
 			relevantLessons,
 			implementations,
 		} = this.props.activeLesson || {};
-		console.log(this.props.activeLesson);
 		const userData = {
 			userID,
 			avatarUrl,

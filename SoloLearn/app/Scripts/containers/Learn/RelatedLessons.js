@@ -21,7 +21,10 @@ const RelatedLessons = ({
 			/>
 		}
 		{ nextLesson &&
-			<CourseCard {...relevantLessons} />
+			<CourseCard
+				title="Up next"
+				{...nextLesson}
+			/>
 		}
 		{	(relevantLessons && !!relevantLessons.length) &&
 			(relevantLessons.length > 1 ?
