@@ -12,6 +12,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Service from 'api/service';
 import { getPosition } from 'utils';
 import Playground from 'containers/Playground/Playground';
+import SlayLessonToolbar from './SlayLessonToolbar';
 
 const tooltipOpened = (<Style
 	scopeSelector=".tooltip-content.open"
@@ -101,8 +102,8 @@ const tooltipLeftPlaced = (<Style
 
 const styles = {
 	textContainer: {
-		width: '90%',
-		margin: '20px auto 0',
+		width: '100%',
+		marginBottom: 10,
 		padding: '20px 20px 10px 20px',
 		overflow: 'hidden',
 	},
@@ -208,10 +209,11 @@ const ImageBlock = props => (
 );
 
 class CodeBlock extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			playgroundOpened: false,
+			isBookmarked: props.isBookmarked,
 		};
 	}
 
@@ -293,10 +295,10 @@ class QuizText extends Component {
 		super(props);
 
 		this.state = {
-			countLoaded: false,
+			countLoaded: !!props.commentsCount,
 		};
 
-		this.commentsCount = 0;
+		this.commentsCount = props.commentsCount || 0;
 		this.headersPositions = [];
 	}
 
@@ -551,8 +553,17 @@ class QuizText extends Component {
 		});
 	}
 
+	toggleBookmark = async () => {
+		const { quizId: id, type } = this.props;
+		const { isBookmarked: bookmark } = this.state;
+		const { isBookmarked } =
+			await Service.request('/BookmarkLesson', { id, type, bookmark: !bookmark });
+		this.setState({ isBookmarked });
+	}
+
 	render() {
-		const { openComments } = this.props;
+		const { isBookmarked, countLoaded } = this.state;
+		const { openComments, withToolbar, userData } = this.props;
 		return (
 			<Paper className="text-container" style={styles.textContainer}>
 				{tooltipOpened}
@@ -561,23 +572,35 @@ class QuizText extends Component {
 				{tooltipLeftPlaced}
 				{tooltipBottomPlaced}
 				<div id="text-content">{this.renderComponentParts()}</div>
-				<FlatButton
-					onClick={openComments}
-					style={styles.commentButton}
-					labelStyle={styles.commentButtonLabel}
-					label={`${this.state.countLoaded ? this.commentsCount : ''} COMMENTS`}
-				/>
+				{ withToolbar ?
+					<SlayLessonToolbar
+						userData={userData}
+						countLoaded={countLoaded}
+						isBookmarked={isBookmarked}
+						openComments={openComments}
+						commentsCount={this.commentsCount}
+						toggleBookmark={this.toggleBookmark}
+					/> :
+					<FlatButton
+						onClick={openComments}
+						style={styles.commentButton}
+						labelStyle={styles.commentButtonLabel}
+						label={`${countLoaded ? this.commentsCount : ''} COMMENTS`}
+					/>
+				}
 			</Paper>
 		);
 	}
 
 	componentWillMount() {
-		this.loadCommentsCount().then((response) => {
-			this.commentsCount = response.count;
-			this.setState({ countLoaded: true });
-		}).catch((error) => {
-			console.log(error);
-		});
+		if (!this.props.commentsCount) {
+			this.loadCommentsCount().then((response) => {
+				this.commentsCount = response.count;
+				this.setState({ countLoaded: true });
+			}).catch((error) => {
+				console.log(error);
+			});
+		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {

@@ -75,3 +75,16 @@ export const getCourseLesson = id => async (dispatch) => {
 		console.log(e);
 	}
 };
+
+export const getLessonsByAuthor = (excludeLessonId, userId, pagingData) => async (dispatch) => {
+	try {
+		const { lessons } =
+			await Service.request('/GetLessonsByAuthor', { excludeLessonId, userId, ...pagingData });
+		dispatch({
+			type: types.SET_LESSONS_BY_USER,
+			payload: lessons,
+		});
+	} catch (e) {
+		console.log(e);
+	}
+};
