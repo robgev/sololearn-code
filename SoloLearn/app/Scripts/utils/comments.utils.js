@@ -1,3 +1,11 @@
+const hasAbove = (comments, parentId = null) => {
+	const withoutLoadMores = comments.filter(comment => comment.type !== 'LOAD_MORE');
+	if (withoutLoadMores[0].index <= 0) {
+		return withoutLoadMores;
+	}
+	return [ { type: 'LOAD_MORE', parentId, loadAbove: true }, ...withoutLoadMores ];
+};
+
 export const getComments = (oldComments, newComments) => {
 	const similarIndices = [];
 	const forcedDowns = oldComments.filter(comment => comment.isForcedDown);
@@ -7,7 +15,7 @@ export const getComments = (oldComments, newComments) => {
 			if (oldCom.id === newCom.id) similarIndices.push(idx);
 		}));
 	const removedForcedDowns = forcedDowns.filter((comment, idx) => !similarIndices.includes(idx));
-	return [ ...notForcedDowns, ...removedForcedDowns, ...newComments ];
+	return hasAbove([ ...notForcedDowns, ...removedForcedDowns, ...newComments ]);
 };
 
 export const voteComment = (comments, {
@@ -97,7 +105,7 @@ export const editComment = (comments, { id, parentId, message }) => {
 export const getCommentReplies = (comments, { parentId, replies, fullyLoaded }) => {
 	const parentIndex = comments.findIndex(comment => comment.id === parentId);
 	const parent = comments[parentIndex];
-	const repliesArray = [ ...getComments(parent.repliesArray.slice(0, -1), replies) ];
+	const repliesArray = getComments(parent.repliesArray.slice(0, -1), replies);
 	if (!fullyLoaded) {
 		repliesArray.push({
 			type: 'LOAD_MORE',
@@ -113,8 +121,20 @@ export const getCommentReplies = (comments, { parentId, replies, fullyLoaded }) 
 		...comments.slice(parentIndex + 1) ];
 };
 
+export const getCommentsAbove = (comments, { aboveComments }) =>
+	hasAbove([ ...aboveComments, ...comments ]);
+
+export const getRepliesAbove = (parent, { aboveComments }) => {
+	const repliesArray = hasAbove([ ...aboveComments, ...parent.repliesArray ], parent.id);
+	return [ {
+		...parent,
+		repliesArray,
+	} ];
+};
+
 export const lastNonForcedDownIndex = (comments) => {
 	if (comments.length === 0) return -1;
 	const notForcedDowns = comments.filter(comment => !comment.isForcedDown && comment.type !== 'LOAD_MORE');
-	return notForcedDowns[notForcedDowns.length - 1].index;
+	const { index } = notForcedDowns[notForcedDowns.length - 1];
+	return index === -1 ? -2 : index;
 };

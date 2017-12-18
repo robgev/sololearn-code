@@ -38,12 +38,16 @@ class InfiniteVirtalizedList extends Component {
 		}
 	}
 
+	_markFull = () => {
+		this.canLoadMore = false;
+	}
+
 	_forceUpdate = () => this._list.forceUpdateGrid()
 
-	_scrollTo = (condition, color) => {
-		const index = findIndex(this.props.list, el => el.id.toString() === condition.toString());
+	_scrollTo = (id) => {
+		const index = findIndex(this.props.list, el => el.id && el.id.toString() === id.toString());
 		this._list.scrollToRow(index + 2);
-		if (color) this.setState({ index });
+		this.setState({ index }, () => this._forceUpdate());
 	}
 
 	handleNextFetch = async ({ stopIndex }) => {

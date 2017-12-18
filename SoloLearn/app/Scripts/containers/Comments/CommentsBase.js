@@ -116,12 +116,19 @@ class CommentsBase extends Component {
 		});
 	}
 
+	updateComments = () => this._comments.getWrappedInstance().loadCommentsByState();
+
+	closeReplies = () => {
+		const { index } = this.props.comments[0];
+		if (index === -1) this.updateComments();
+	}
+
 	// Change ordering state
 	handleFilterChange = (event, index, value) => {
 		if (value === this.state.ordering) return;
 		this.partialCancel();
 		this.setState({ ordering: value });
-		this._comments.getWrappedInstance().loadCommentsByState();
+		this.updateComments();
 	}
 
 	addComment = async (message) => {
@@ -138,7 +145,7 @@ class CommentsBase extends Component {
 	getPopupTitle = () => (
 		<div style={styles.commentsFilterWrapper}>
 			<Toolbar style={styles.commentsFilter.base}>
-				<ToolbarTitle text="COMMENTS" style={styles.commentsFilter.title} />
+				<ToolbarTitle onClick={this.closeReplies} text="COMMENTS" style={styles.commentsFilter.title} />
 				<ToolbarGroup lastChild>
 					<DropDownMenu
 						style={styles.filterDropDown.base}

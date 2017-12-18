@@ -45,6 +45,7 @@ export const CommentsBaseStyle = {
 		title: {
 			lineHeight: '61px',
 			fontSize: '15px',
+			cursor: 'pointer',
 		},
 	},
 
@@ -124,7 +125,6 @@ export const CommentStyle = {
 	comment: {
 		base: {
 			position: 'relative',
-			backgroundColor: '#fff',
 			borderRadius: 0,
 			borderLeftStyle: 'solid',
 			borderLeftWidth: '3px',

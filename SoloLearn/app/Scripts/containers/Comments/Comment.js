@@ -30,9 +30,12 @@ const mapDispatchToProps = {
 
 @connect(mapStateToProps, mapDispatchToProps)
 class Comment extends Component {
-	state = {
-		errorText: '',
-		textFieldValue: this.props.comment.message,
+	constructor(props) {
+		super(props);
+		this.state = {
+			errorText: '',
+			textFieldValue: this.props.comment.message,
+		};
 	}
 
 	onChange = (e) => {
@@ -49,16 +52,21 @@ class Comment extends Component {
 		}
 	}
 
-	setReplies = ({ more = false }) => {
-		// don't remove the object, because then the funciton will get DOM values by default in 'more'
+	openCloseReplies = () => {
 		const { comment } = this.props;
-		const willLoadReplies = more || (comment.repliesArray && comment.repliesArray.length === 0);
+		const willLoadReplies = comment.repliesArray && comment.repliesArray.length === 0;
 		const type = willLoadReplies ? loadRepliesTypes.LOAD_REPLIES : loadRepliesTypes.CLOSE_REPLIES;
-		this.props.loadReplies(comment.parentId || comment.id, type);
-		this.setState({ hasLoadedReplies: willLoadReplies });
+		this.props.loadReplies(comment.parentID || comment.id, type);
 	}
 
-	loadMoreReplies = () => this.setReplies({ more: true });
+	loadMore = () => {
+		const { comment } = this.props;
+		if (comment.loadAbove) {
+			this.props.loadCommentsAbove(comment.parentId);
+		} else {
+			this.props.loadReplies(comment.parentId || comment.id, loadRepliesTypes.LOAD_REPLIES);
+		}
+	}
 
 	getPrimaryControls = (comment) => {
 		const isReply = comment.parentID != null;
@@ -70,8 +78,8 @@ class Comment extends Component {
 					<FlatButton
 						label={comment.replies + (comment.replies === 1 ? ' Reply' : ' Replies')}
 						primary={hasReplies}
-						disabled={!hasReplies}
-						onClick={this.setReplies}
+						disabled={!hasReplies || comment.index === -1}
+						onClick={this.openCloseReplies}
 					/>}
 				<FlatButton
 					label="Reply"
@@ -202,7 +210,11 @@ class Comment extends Component {
 
 	render() {
 		if (this.props.comment.type === 'LOAD_MORE') {
-			return <FlatButton label="Load More" onClick={this.loadMoreReplies} />;
+			return (
+				<FlatButton
+					label="Load More"
+					onClick={this.loadMore}
+				/>);
 		}
 		const {
 			comment,

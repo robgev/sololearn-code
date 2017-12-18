@@ -5,13 +5,13 @@ import { connect } from 'react-redux';
 import {
 	CellMeasurerCache,
 } from 'react-virtualized';
-import { find } from 'lodash';
 
 // Redux modules
 import {
 	getCommentsInternal, emptyComments,
 	voteCommentInternal, emptyCommentReplies,
 	editCommentInternal, setSelectedComment,
+	getCommentsAboveInternal,
 } from 'actions/comments';
 import { getSelectedCommentId } from 'selectors';
 import { lastNonForcedDownIndex } from 'utils/comments.utils';
@@ -47,6 +47,7 @@ const mapDispatchToProps = {
 	voteCommentInternal,
 	editCommentInternal,
 	setSelectedComment,
+	getCommentsAbove: getCommentsAboveInternal,
 };
 
 @connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })
@@ -58,20 +59,43 @@ class Comments extends Component {
 		cache: getNewCache(),
 	};
 
-	componentWillMount() {
+	componentDidMount() {
 		this.loadComments();
 	}
 
 	componentWillUnmount() {
-		this.props.setSelectedComment(null);
 		this.props.emptyComments();
+	}
+
+	resetList = () => this.setState({ cache: getNewCache() })
+
+	loadCommentsAbove = async (parentId = null) => {
+		const {
+			id, type, commentsType, ordering: orderby, comments,
+		} = this.props;
+		let index = 0;
+		let count = 0;
+		if (parentId) {
+			index = comments.find(c => !!c.index && c.index > 0).index - 10;
+			count = index < 0 ? -index : 10;
+		} else {
+			index = comments.find(c => !!c.index).index - 20;
+			count = index < 0 ? -index : 20;
+		}
+		index = index < 0 ? 0 : index;
+		this.setState({ isLoading: true });
+		await this.props.getCommentsAbove({
+			id, type, commentsType, orderby, parentId, index, count,
+		});
+		this.setState({ isLoading: false });
+		this.resetList();
 	}
 
 	loadComments = async (parentId = null) => {
 		const {
 			id, type, commentsType, ordering: orderby, comments, selectedComment: findPostId,
 		} = this.props;
-		// console.warn(orderby, comments);
+		if (findPostId != null) this.props.setSelectedComment(null);
 		const count = parentId ? 10 : 20;
 		let index = 0;
 		if (parentId) {
@@ -80,11 +104,16 @@ class Comments extends Component {
 		} else {
 			index = lastNonForcedDownIndex(comments) + 1;
 		}
+		if (index === -1 || (comments.length > 0 && comments[0].index === -1)) {
+			this._list._markFull();
+			return;
+		}
 		this.setState({ isLoading: true });
 		await this.props.getComments({
 			id, type, parentId, index, orderby, commentsType, count, findPostId,
 		});
 		this.setState({ isLoading: false });
+		if (findPostId != null) this._list._scrollTo(findPostId);
 	}
 
 	// Load comment replies
@@ -95,19 +124,18 @@ class Comments extends Component {
 		} else if (type === loadRepliesTypes.LOAD_REPLIES) {
 			await this.loadComments(commentId);
 		}
-		this.setState({ cache: getNewCache() });
+		this.resetList();
 	}
 
 	// Load comments when condition changes
 	loadCommentsByState = async () => {
 		await this.props.emptyComments();
 		await this.loadComments();
-		this.setState({ cache: getNewCache() });
+		this.resetList();
 	}
 
 	voteComment = async (comment, voteValue) => {
 		await this.props.voteCommentInternal(comment, voteValue, this.props.commentsType);
-		console.log(comment, voteComment);
 		this._list._forceUpdate();
 	}
 
@@ -128,7 +156,7 @@ class Comments extends Component {
 				commentsType,
 			},
 			state: { isReplying, isLoading, latestLoadingComment },
-			voteComment, editComment, loadReplies,
+			voteComment, editComment, loadReplies, loadCommentsAbove,
 		} = this;
 		return (
 			<Comment
@@ -145,6 +173,7 @@ class Comments extends Component {
 				editComment={editComment}
 				deleteComment={deleteComment}
 				loadReplies={loadReplies}
+				loadCommentsAbove={loadCommentsAbove}
 				isLoadingReplies={isLoading && latestLoadingComment === comment.id}
 			/>
 		);

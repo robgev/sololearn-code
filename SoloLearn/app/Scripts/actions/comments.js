@@ -50,7 +50,7 @@ export const setSelectedComment = id => ({
 });
 
 const getPathAndParams = ({
-	id, index, orderby, count, type, parentId, commentsType, findPostId,
+	id, index, orderby, count, type, parentId, commentsType, findPostId = null,
 }) => {
 	const common = {
 		parentId, index, count, orderby, findPostId,
@@ -71,6 +71,28 @@ const getPathAndParams = ({
 	}
 };
 
+const getCommentsAbove = aboveComments => ({
+	type: types.ADD_COMMENTS_ABOVE,
+	payload: { aboveComments },
+});
+
+const getRepliesAbove = aboveComments => ({
+	type: types.ADD_REPLIES_ABOVE,
+	payload: { aboveComments },
+});
+
+export const getCommentsAboveInternal = options => async (dispatch) => {
+	const { parentId } = options;
+	const [ url, params ] = getPathAndParams(options);
+	const { comments } = await Service.request(url, params);
+	if (!parentId) {
+		const withReplies = comments.map(comment => ({ ...comment, repliesArray: [] }));
+		dispatch(getCommentsAbove(withReplies));
+	} else {
+		dispatch(getRepliesAbove(comments));
+	}
+};
+
 export const getCommentsInternal = ({
 	id, index, orderby, commentsType, count = 20, type = null, parentId = null, findPostId = null,
 }) => async (dispatch) => {
@@ -79,6 +101,11 @@ export const getCommentsInternal = ({
 	});
 	const { comments } = await Service.request(url, params);
 	if (!parentId) {
+		if (comments.length > 0 && comments[0].index === -1) {
+			const withReplies = [ { ...comments[0], repliesArray: comments.slice(1) } ];
+			dispatch(getComments(withReplies));
+			return;
+		}
 		const withReplies = comments.map(comment => ({ ...comment, repliesArray: [] }));
 		dispatch(getComments(withReplies));
 	} else dispatch(getReplies(parentId, comments, comments.length !== 10));

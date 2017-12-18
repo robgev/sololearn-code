@@ -141,6 +141,10 @@ class Playground extends Component {
 		}
 	}
 
+	componentWillReceiveProps(newProps) {
+		if (newProps.commentSelected) this.openComments();
+	}
+
 	// Default settings
 	setDefaultSettings = () => {
 		const { basePath } = this.props;

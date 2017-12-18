@@ -2,9 +2,21 @@ import { combineReducers } from 'redux';
 import {
 	GET_COMMENTS, EMPTY_COMMENTS, VOTE_COMMENT,
 	GET_COMMENT_REPLIES, EMPTY_COMMENT_REPLIES, EDIT_COMMENT,
-	DELETE_COMMENT, ADD_COMMENT, SET_SELECTED_COMMENT,
+	DELETE_COMMENT, ADD_COMMENT, SET_SELECTED_COMMENT, ADD_COMMENTS_ABOVE,
+	ADD_REPLIES_ABOVE,
 } from 'constants/ActionTypes';
-import { getComments, addComment, voteComment, deleteComment, editComment, getCommentReplies } from 'utils/comments.utils';
+import {
+	getComments, addComment, voteComment,
+	deleteComment, editComment, getCommentReplies,
+	getCommentsAbove, getRepliesAbove,
+} from 'utils/comments.utils';
+
+const _getComments = (comments, newComments) => {
+	if (newComments.length > 0 && newComments[0].index === -1) {
+		return getRepliesAbove(newComments[0], { aboveComments: newComments.slice(1) });
+	}
+	return getComments(comments, newComments);
+};
 
 const selected = (state = null, action) => {
 	switch (action.type) {
@@ -18,7 +30,11 @@ const selected = (state = null, action) => {
 const data = (state = [], action) => {
 	switch (action.type) {
 	case GET_COMMENTS:
-		return getComments(state, action.payload.comments);
+		return _getComments(state, action.payload.comments);
+	case ADD_COMMENTS_ABOVE:
+		return getCommentsAbove(state, action.payload);
+	case ADD_REPLIES_ABOVE:
+		return getRepliesAbove(state[0], action.payload);
 	case EMPTY_COMMENTS:
 		return [];
 	case VOTE_COMMENT:
