@@ -157,9 +157,10 @@ class WS {
     		data: JSON.stringify(data || emptyObject),
     		headers: {
     			'Content-type': 'application/json',
-    			clientID: AppDefaults.clientID,
-    			deviceID: this.deviceUniqueID,
-    			sessionID: this.appSessionID,
+    			ClientID: AppDefaults.clientID,
+    			DeviceID: this.deviceUniqueID,
+    			SessionID: this.appSessionID,
+    			Version: '8',
     		},
     	})
     		.then((response) => {
