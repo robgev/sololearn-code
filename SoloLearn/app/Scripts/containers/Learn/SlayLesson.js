@@ -35,10 +35,24 @@ class SlayLesson extends PureComponent {
 		};
 	}
 
-	async componentWillMount() {
+	componentWillMount() {
+		const { lessonId } = this.props.params;
+		this.loadLesson(lessonId);
+	}
+
+	componentWillReceiveProps(newProps) {
+		const { params: newParams } = newProps;
+		const { params } = this.props;
+		if (newParams.lessonId !== params.lessonId) {
+			this.loadLesson(newParams.lessonId);
+		}
+	}
+
+	loadLesson = async (lessonId) => {
 		const { params, getCourseLesson, getLesson } = this.props;
-		const { itemType, lessonId } = params;
+		const { itemType } = params;
 		const parsedItemType = parseInt(itemType, 10);
+		this.setState({ loading: true });
 		switch (parsedItemType) {
 		case slayItemTypes.courseLesson:
 			await getCourseLesson(lessonId);
