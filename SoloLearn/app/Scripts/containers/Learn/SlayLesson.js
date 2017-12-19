@@ -123,6 +123,7 @@ class SlayLesson extends PureComponent {
 						/>
 						<RelatedLessons
 							id={id}
+							userName={userName}
 							nextLesson={nextLesson}
 							lessonsByUser={lessonsByUser}
 							relevantLessons={relevantLessons}

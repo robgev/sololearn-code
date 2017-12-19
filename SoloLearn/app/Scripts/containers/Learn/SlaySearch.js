@@ -29,8 +29,11 @@ class SlayDetailed extends PureComponent {
 
 	async componentWillReceiveProps(newProps) {
 		this.setState({ loading: true });
+		const { params } = this.props;
 		const { params: { query } } = newProps;
-		await this.props.searchLessons(query, { index: 0, count: 10 });
+		if (params.query !== query) {
+			await this.props.searchLessons(query, { index: 0, count: 10 });
+		}
 		this.setState({ loading: false });
 	}
 
