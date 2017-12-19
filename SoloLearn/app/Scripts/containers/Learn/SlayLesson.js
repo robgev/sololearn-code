@@ -11,8 +11,8 @@ import {
 	getLessonsByAuthor,
 } from 'actions/slay';
 
-import QuizText from './QuizText';
 import RelatedLessons from './RelatedLessons';
+import SlayLessonContent from './SlayLessonContent';
 
 const mapStateToProps = state => ({
 	activeLesson: state.slay.activeLesson,
@@ -81,10 +81,12 @@ class SlayLesson extends PureComponent {
 
 	render() {
 		const { loading, commentsOpened } = this.state;
-		const { lessonsByUser, activeLesson } = this.props;
+		const { lessonsByUser, activeLesson, params } = this.props;
+		const { pageNumber } = params;
 		const {
 			id,
 			type,
+			parts,
 			userID,
 			content,
 			language,
@@ -105,12 +107,14 @@ class SlayLesson extends PureComponent {
 			<LessonLayout loading={loading}>
 				{ !loading &&
 					<div>
-						<QuizText
+						<SlayLessonContent
 							quizId={id}
 							type={type}
 							withToolbar
+							parts={parts}
 							userData={userData}
 							textContent={content}
+							pageNumber={pageNumber}
 							courseLanguage={language}
 							commentsCount={comments}
 							isBookmarked={isBookmarked}
