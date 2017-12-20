@@ -41,6 +41,7 @@ const CollectionCard = ({
 			<div className="courses-list">
 				{
 					collectionItems.map(lessonItem => (
+						lessonItem.itemType !== 4 &&
 						<CourseChip
 							{...lessonItem}
 							round={round}
