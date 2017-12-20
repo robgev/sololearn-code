@@ -4,74 +4,36 @@ import { Link, browserHistory } from 'react-router';
 import Radium from 'radium';
 
 // Material UI components
-import AutoComplete from 'material-ui/AutoComplete';
+import { AutoComplete, DropDownMenu, MenuItem, FloatingActionButton } from 'material-ui';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import Clear from 'material-ui/svg-icons/content/clear';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
 import { grey700 } from 'material-ui/styles/colors';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
 // Redux modules
 import { connect } from 'react-redux';
-import { isLoaded } from '../../reducers';
-import { changeDiscussQuery, changeDiscussOrdering } from '../../actions/discuss';
+import { isLoaded } from 'reducers';
+import { changeDiscussQuery, changeDiscussOrdering } from 'actions/discuss';
 
 // Service
-import Service from '../../api/service';
+import Service from 'api/service';
 
 // Additional components
 import Questions from './Questions';
 
-const styles = {
-	container: {
-		position: 'relative',
-		flex: '1 1 auto',
-	},
+import { QuestionsBaseStyles as styles } from './styles';
 
-	toolbar: {
-		overflow: 'hidden',
-		padding: '5px',
-		boxShadow: '0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2)',
-	},
+const mapStateToProps = state => ({
+	isLoaded: isLoaded(state, 'discuss'),
+	questions: state.questions,
+	query: state.discussFilters.discussQuery,
+	ordering: state.discussFilters.discussOrdering,
+});
 
-	search: {
-		float: 'left',
-		margin: '0 0 0 15px',
-	},
+const mapDispatchToProps = { changeDiscussOrdering, changeDiscussQuery };
 
-	searchIcon: {
-		display: 'inline-block',
-		verticalAlign: 'middle',
-	},
-
-	searchInput: {
-		display: 'inline-block',
-		verticalAlign: 'middle',
-		margin: '0 5px',
-	},
-
-	searchSuggestionsList: {
-		height: '200px',
-	},
-
-	clearIcon: {
-		display: 'inline-block',
-		verticalAlign: 'middle',
-		cursor: 'pointer',
-	},
-
-	discussFilter: {
-		float: 'right',
-	},
-	addButton: {
-		position: 'fixed',
-		bottom: 20,
-		right: 20,
-	},
-};
-
+@connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })
+@Radium
 class QuestionsBase extends Component {
 	state = {
 		suggestions: [],
@@ -164,21 +126,4 @@ class QuestionsBase extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	isLoaded: isLoaded(state, 'discuss'),
-	questions: state.questions,
-	query: state.discussFilters.discussQuery,
-	ordering: state.discussFilters.discussOrdering,
-});
-
-const mapDispatchToProps = {
-	changeDiscussOrdering,
-	changeDiscussQuery,
-};
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-	null,
-	{ withRef: true },
-)(Radium(QuestionsBase));
+export default QuestionsBase;

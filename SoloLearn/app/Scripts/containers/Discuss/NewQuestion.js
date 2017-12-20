@@ -4,75 +4,35 @@ import { browserHistory } from 'react-router';
 import Radium from 'radium';
 
 // Material UI components
-import Paper from 'material-ui/Paper';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import { Paper, TextField, FlatButton } from 'material-ui';
 import ChipInput from 'material-ui-chip-input';
 
 // Redux modules
 import { connect } from 'react-redux';
-import { addQuestion } from '../../actions/discuss';
+import { addQuestion } from 'actions/discuss';
 
 // Service
-import Service from '../../api/service';
+import Service from 'api/service';
 
 // Additional components
-import LoadingOverlay from '../../components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
-const styles = {
-	container: {
-		width: '1000px',
-		position: 'relative',
-		margin: '20px auto',
-		padding: '10px 20px',
-	},
-	heading: {
-		fontWeight: 'normal',
-	},
-	questionData: {
-		position: 'relative',
-		padding: '0 0 10px 0',
-	},
-	textField: {
-		margin: 0,
-		fontSize: '13px',
-	},
-	textFieldCoutner: {
-		position: 'absolute',
-		bottom: 0,
-		right: 0,
-		fontSize: '13px',
-		fontWeight: '500',
-	},
-	editorActions: {
-		textAlign: 'right',
-		margin: '15px 0 0 0',
-	},
-	tag: {
-		display: 'inline-block',
-		verticalAlign: 'middle',
-		backgroundColor: '#9CCC65',
-		color: '#fff',
-		fontSize: '12px',
-		padding: '3px 5px',
-		borderRadius: '3px',
-		margin: '8px 8px 0 0',
-	},
-};
+import { NewQuestionStyles as styles } from './styles';
 
+const mapDispatchToProps = { addQuestion };
+
+@connect(null, mapDispatchToProps)
+@Radium
 class NewQuestion extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			title: '',
-			titleErrorText: '',
-			message: '',
-			tags: [],
-			tagsErrorText: '',
-			suggestions: [],
-			isLoading: false,
-		};
-	}
+	state = {
+		title: '',
+		titleErrorText: '',
+		message: '',
+		tags: [],
+		tagsErrorText: '',
+		suggestions: [],
+		isLoading: false,
+	};
 
 	// Detect title change
 	onTitleChange = (e) => {
@@ -187,8 +147,4 @@ class NewQuestion extends Component {
 	}
 }
 
-const mapDispatchToProps = {
-	addQuestion,
-};
-
-export default connect(null, mapDispatchToProps)(Radium(NewQuestion));
+export default NewQuestion;

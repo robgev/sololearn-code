@@ -47,6 +47,7 @@ class CommentsBase extends Component {
 			isEditing: false,
 			isReplying: false,
 			isDeleting: false,
+			replyText: '',
 			activeComment: {
 				id: null,
 				parentId: null,
@@ -63,6 +64,7 @@ class CommentsBase extends Component {
 			isEditing: false,
 			isReplying: false,
 			isDeleting: false,
+			replyText: '',
 			activeComment: {
 				id: null,
 				parentId: null,
@@ -88,8 +90,10 @@ class CommentsBase extends Component {
 	// Open reply box toolbar (ex: replies to James Flanders)
 	openReplyBoxToolbar = async (id, parentId, userName) => {
 		if (this.state.activeComment.id === id && this.state.isReplying) return;
+		this.focusOnReply();
 		this.partialCancel({
 			isReplying: true,
+			replyText: `@${userName}`,
 			activeComment: {
 				id,
 				parentId,
@@ -97,6 +101,8 @@ class CommentsBase extends Component {
 			},
 		});
 	}
+
+	setReplyText = replyText => this.setState({ replyText })
 
 	// Render popup heading
 	deleteComment = async () => {
@@ -116,6 +122,11 @@ class CommentsBase extends Component {
 		});
 	}
 
+	focusOnReply = () => { this._input.focus(); }
+
+	isReplyDisabled = () =>
+		this.state.replyText === '' || this.state.replyText === `@${this.state.userName}`
+
 	updateComments = () => this._comments.getWrappedInstance().loadCommentsByState();
 
 	closeReplies = () => {
@@ -131,7 +142,9 @@ class CommentsBase extends Component {
 		this.updateComments();
 	}
 
-	addComment = async (message) => {
+	addComment = async () => {
+		const { replyText: message } = this.state;
+		this.setReplyText('');
 		const { activeComment, ordering } = this.state;
 		const { id, type, commentsType } = this.props;
 		const parentId = activeComment.parentId == null ? activeComment.id : activeComment.parentId;
@@ -197,12 +210,15 @@ class CommentsBase extends Component {
 					autoScrollBodyContent
 					actions={
 						<ReplyBox
+							inputRef={(input) => { this._input = input; }}
 							profile={profile}
 							isPrimary={!this.state.isReplying}
-							defaultText={this.state.isReplying ? `@${this.state.activeComment.userName} ` : ''}
+							replyText={this.state.replyText}
+							setReplyText={this.setReplyText}
 							userName={this.state.activeComment.userName}
 							closeToolbar={this.partialCancel}
 							reply={this.addComment}
+							disabled={this.isReplyDisabled()}
 						/>
 					}
 					actionsContainerStyle={styles.replyBoxWrapper}

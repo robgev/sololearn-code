@@ -26,25 +26,21 @@ export const getProfileQuestions = questions => ({
 export const getQuestionsInternal = ({
 	index, profileId = null, count = 20, query = '', ordering,
 }) => async (dispatch) => {
-	try {
-		const orderBy = profileId != null ? 7 : ordering;
-		const settings = {
-			index,
-			count,
-			orderBy,
-			profileId,
-			query,
-		};
-		const { posts: questions } = await Service.request('Discussion/Search', settings);
-		if (profileId != null) {
-			dispatch(getProfileQuestions(questions));
-		} else {
-			dispatch(getQuestions(questions));
-		}
-		return questions.length;
-	} catch (e) {
-		return console.log(e);
+	const orderBy = profileId != null ? 7 : ordering;
+	const settings = {
+		index,
+		count,
+		orderBy,
+		profileId,
+		query,
+	};
+	const { posts: questions } = await Service.request('Discussion/Search', settings);
+	if (profileId != null) {
+		dispatch(getProfileQuestions(questions));
+	} else {
+		dispatch(getQuestions(questions));
 	}
+	return questions.length;
 };
 
 export const loadPost = post => ({

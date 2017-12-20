@@ -1,17 +1,10 @@
 // General modules
 import React, { Component } from 'react';
 import Radium from 'radium';
-import {
-	CellMeasurerCache,
-} from 'react-virtualized';
 import { connect } from 'react-redux';
 
 // Material UI components
-import TextField from 'material-ui/TextField';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
+import { TextField, IconMenu, MenuItem, FlatButton, IconButton } from 'material-ui';
 import DiscussAuthor from 'components/Shared/ProfileAvatar';
 import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import AcceptedIcon from 'material-ui/svg-icons/navigation/check';
@@ -25,169 +18,24 @@ import getLikesInternal from 'actions/likes';
 
 import Likes from 'components/Shared/Likes';
 
-const cache = new CellMeasurerCache({
-	defaultWidth: 100,
-	minWidth: 75,
-	fixedWidth: true,
-});
+import { ReplyStyles as styles } from './styles';
 
-export const styles = {
-	reply: {
-		base: {
-			padding: '10px',
-			borderBottom: '1px solid #f3f3f3',
-			overflow: 'hidden',
-		},
+const mapStateToProps = state => ({ userId: state.userProfile.id });
 
-		accepted: {
-			borderLeft: '4px solid #9ccc65',
-		},
-	},
-
-	stats: {
-		textAlign: 'center',
-		width: '45px',
-		fontSize: '14px',
-	},
-
-	vote: {
-		button: {
-			base: {
-				width: '32px',
-				height: '32px',
-				padding: '8px',
-			},
-
-			icon: {
-				width: '16px',
-				height: '16px',
-			},
-		},
-
-		text: {
-			minWidth: '23px',
-			textAlign: 'center',
-			fontWeight: '500',
-			fontSize: '14px',
-		},
-	},
-
-	detailsWrapper: {
-		overflow: 'hidden',
-		display: 'flex',
-	},
-
-	details: {
-		base: {
-			overflow: 'hidden',
-			margin: '7px 0 0 10px',
-			width: '90%',
-		},
-
-		editing: {
-			width: '95%',
-		},
-	},
-
-	title: {
-		fontSize: '15px',
-		color: '#636060',
-		margin: '0 0 5px 0',
-	},
-
-	message: {
-		fontSize: '14px',
-		color: '#827e7e',
-		margin: '5px 0 10px 0',
-		whiteSpace: 'pre-line',
-	},
-
-	additionalDetails: {
-		overflow: 'hidden',
-	},
-
-	bestAnswerButton: {
-		base: {
-			width: '40px',
-			height: '40px',
-			padding: '10px',
-		},
-
-		icon: {
-			width: '20px',
-			height: '20px',
-		},
-
-		margin: {
-			margin: '0 0 0 10px',
-		},
-	},
-
-	authorDetails: {
-		float: 'right',
-		fontSize: '12px',
-	},
-
-	texts: {
-		base: {
-			display: 'inline-block',
-			verticalAlign: 'middle',
-			textAlign: 'right',
-		},
-
-		userName: {
-			color: '#607D8B',
-			margin: '0 0 2px 0',
-		},
-
-		date: {
-			color: '#777',
-		},
-	},
-
-	avatar: {
-		margin: '0 0 0 5px',
-	},
-
-	editor: {
-		position: 'relative',
-		padding: '0 0 10px 0',
-	},
-
-	textField: {
-		margin: 0,
-		fontSize: '13px',
-	},
-
-	textFieldCoutner: {
-		position: 'absolute',
-		bottom: 0,
-		right: 0,
-		fontSize: '13px',
-		fontWeight: '500',
-	},
-
-	editorActions: {
-		textAlign: 'right',
-		margin: '5px 0 0 0',
-	},
+const mapDispatchToProps = {
+	editPostInternal,
+	toggleAcceptedAnswerInternal,
+	getLikes: getLikesInternal(2),
 };
 
+@connect(mapStateToProps, mapDispatchToProps)
+@Radium
 class Reply extends Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			isEditing: false,
-			textFieldValue: this.props.reply.message,
-			errorText: '',
-		};
-	}
-
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	return (JSON.stringify(this.props) !== JSON.stringify(nextProps) ||
-	// 		this.state !== nextState);
-	// }
+	state = {
+		isEditing: false,
+		textFieldValue: this.props.reply.message,
+		errorText: '',
+	};
 
 	getLikes = () => {
 		this.props.getLikes(this.props.reply.id);
@@ -245,7 +93,7 @@ class Reply extends Component {
 
 	// Controll answer text change
 	onChange = (e) => {
-		if (e.target.value.length == 0) {
+		if (e.target.value.length === 0) {
 			this.setState({
 				textFieldValue: e.target.value,
 				errorText: 'This field is required',
@@ -320,12 +168,4 @@ class Reply extends Component {
 	}
 }
 
-const mapStateToProps = state => ({ userId: state.userProfile.id });
-
-const mapDispatchToProps = {
-	editPostInternal,
-	toggleAcceptedAnswerInternal,
-	getLikes: getLikesInternal(2),
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Radium(Reply));
+export default Reply;

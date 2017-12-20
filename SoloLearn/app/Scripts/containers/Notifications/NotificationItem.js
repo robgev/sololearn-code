@@ -15,67 +15,7 @@ import types from 'defaults/appTypes';
 import { updateDate } from 'utils';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
-const styles = {
-	notificationItem: {
-	},
-
-	notificationItemInner: {
-		padding: '10px',
-	},
-
-	notificationContent: {
-		display: 'flex',
-	},
-
-	additionalDetails: {
-		width: '90%',
-		margin: '0 0 0 5px',
-		color: '#777',
-	},
-
-	avatar: {
-
-	},
-
-	badge: {
-		base: {
-			height: '30px',
-			width: '30px',
-			borderRadius: '50%',
-			display: 'inline-flex',
-			alignItems: 'center',
-			justifyContent: 'center',
-		},
-
-		icon: {
-			height: '15px',
-			width: '15px',
-		},
-	},
-
-	date: {
-		fontSize: '11px',
-	},
-
-	title: {
-		fontSize: '13px',
-		zIndex: 1000000,
-	},
-
-	userName: {
-		textDecoration: 'none',
-	},
-
-	notClickedIcon: {
-		width: '6px',
-		height: '6px',
-		backgroundColor: '#607d8b',
-		verticalAlign: 'middle',
-		display: 'inline-block',
-		borderRadius: '50%',
-		margin: '0 0 0 5px',
-	},
-};
+import { NotificationItemStyles as styles } from './styles';
 
 const mapDispatchToProps = {
 	markRead: markReadInternal,

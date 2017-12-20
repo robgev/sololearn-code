@@ -9,4 +9,4 @@ const Faults = {
 	SocialConflict: 128,
 };
 
-export default num => Object.values(Faults).filter(value => (num & value) === value);
+export default num => Object.keys(Faults).filter(key => (num & Faults[key]) === Faults[key]);

@@ -7,23 +7,19 @@ export const getNotificationCount = count => ({
 	payload: count,
 });
 
-export const getNotificationCountInternal = () => (dispatch, getState) => {
+export const getNotificationCountInternal = () => async (dispatch, getState) => {
 	if (!getState().imitLoggedin) return;
-	Service.request('Profile/GetUnseenNotificationCount')
-		.then((response) => {
-			dispatch(getNotificationCount(response.count));
-		})
-		.catch((error) => {
-			console.log(error);
-		});
+	try {
+		const { count } = await Service.request('Profile/GetUnseenNotificationCount');
+		dispatch(getNotificationCount(count));
+	} catch (e) {
+		console.log(e);
+	}
 };
 
 export const emptyNotifications = () => dispatch =>
 	new Promise((resolve) => {
-		dispatch({
-			type: types.EMPTY_NOTIFICATIONS,
-			payload: [],
-		});
+		dispatch({ type: types.EMPTY_NOTIFICATIONS });
 		resolve();
 	});
 
@@ -66,27 +62,17 @@ export const getNotificationsInternal = (fromId, toId) =>
 		}
 	};
 
-export const markAllRead = () => dispatch =>
-	new Promise((resolve) => {
-		dispatch({
-			type: types.MARK_ALL_READ,
-		});
-		resolve();
-	});
+export const markAllRead = () => ({ type: types.MARK_ALL_READ });
 
-export const markRead = ids => dispatch =>
-	new Promise((resolve) => {
-		dispatch({
-			type: types.MARK_READ,
-			payload: ids,
-		});
-		resolve();
-	});
+export const markRead = ids => ({
+	type: types.MARK_READ,
+	payload: ids,
+});
 
-export const markReadInternal = ids => async (dispatch) => {
-	const dispatchPromise = ids != null ? dispatch(markRead(ids)) : dispatch(markAllRead());
+export const markReadInternal = ids => (dispatch) => {
 	try {
-		await dispatchPromise;
+		if (ids != null) dispatch(markRead(ids));
+		else dispatch(markAllRead());
 		Service.request('Profile/MarkNotificationsClicked', { ids });
 	} catch (e) {
 		console.log(e);

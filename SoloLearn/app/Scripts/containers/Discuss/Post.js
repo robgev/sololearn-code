@@ -4,112 +4,47 @@ import { browserHistory } from 'react-router';
 import Radium from 'radium';
 
 // Material UI components
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
+import { DropDownMenu, MenuItem, FlatButton } from 'material-ui';
 
 // Redux modules
 import { connect } from 'react-redux';
 import {
-	loadPostInternal,
-	loadRepliesInternal,
-	loadPreviousRepliesInternal,
-	emptyReplies,
-	votePostInternal,
-	deletePostInternal,
-	loadPost,
+	loadPostInternal, loadRepliesInternal, loadPreviousRepliesInternal,
+	emptyReplies, votePostInternal, deletePostInternal, loadPost,
 	addReply,
-} from '../../actions/discuss';
-import { isLoaded } from '../../reducers';
+} from 'actions/discuss';
+import { isLoaded } from 'reducers';
 
 // Popups
-import Popup from '../../api/popupService';
+import Popup from 'api/popupService';
 
 // Additional components
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import Question from './Question';
 import Replies from './Replies';
 import AddReply from './AddReply';
-import LoadingOverlay from '../../components/Shared/LoadingOverlay';
 
-const styles = {
-	postWrapper: {
-		minHeight: '80vh',
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'space-between',
-		width: '1000px',
-		margin: '20 auto',
-	},
+import { PostStyles as styles } from './styles';
 
-	repliesData: {
-		padding: '5px 25px',
-		overflow: 'hidden',
-	},
+const mapStateToProps = state => ({
+	isLoaded: isLoaded(state, 'discussPost'),
+	post: state.discussPost,
+	userId: state.userProfile.id,
+});
 
-	answersCount: {
-		color: '#777',
-		float: 'left',
-		fontSize: '14px',
-		lineHeight: '25px',
-	},
-
-	repliesFilterWrapper: {
-		float: 'right',
-	},
-
-	filterLabel: {
-		display: 'inline-block',
-		verticalAlign: 'middle',
-		padding: '0 0 0 15px',
-		lineHeight: 'initial',
-	},
-
-	filterIcon: {
-		position: 'initial',
-		display: 'inline-block',
-		verticalAlign: 'middle',
-		padding: 0,
-		width: 'auto',
-		height: 'auto',
-	},
-
-	dropDownLabel: {
-		display: 'inline-block',
-		verticalAlign: 'middle',
-		color: '#636262',
-		fontSize: '14px',
-	},
-
-	repliesFilter: {
-		display: 'inline-block',
-		verticalAlign: 'middle',
-		height: '25px',
-	},
-
-	repliesWrapper: {
-		position: 'relative',
-		width: 'inherit',
-		transition: 'margin 0.5s',
-	},
-
-	bottomLoading: {
-		base: {
-			position: 'relative',
-			width: '100%',
-			height: '50px',
-			visibility: 'hidden',
-			opacity: 0,
-			transition: 'opacity ease 300ms, -webkit-transform ease 300ms',
-		},
-
-		active: {
-			visibility: 'visible',
-			opacity: 1,
-			transform: 'translateY(0)',
-		},
-	},
+const mapDispatchToProps = {
+	loadPostInternal,
+	loadRepliesInternal,
+	loadPreviousRepliesInternal,
+	deletePostInternal,
+	emptyReplies,
+	votePostInternal,
+	loadPost,
+	addReply,
 };
 
+@connect(mapStateToProps, mapDispatchToProps)
+@Radium
 class Post extends Component {
 	constructor(props) {
 		super(props);
@@ -280,31 +215,16 @@ class Post extends Component {
 				</div>
 				<AddReply save={this.addReply} />
 
-				{this.state.deletePopupOpened &&
+				{
+					this.state.deletePopupOpened &&
 					Popup.getPopup(
 						Popup.generatePopupActions(this.deleteActions),
 						this.state.deletePopupOpened, this.closeDeletePopup, [ { key: 'postDeleteConfirmText', replacemant: '' } ],
-					)}
+					)
+				}
 			</div>
 		);
 	}
 }
 
-const mapStateToProps = state => ({
-	isLoaded: isLoaded(state, 'discussPost'),
-	post: state.discussPost,
-	userId: state.userProfile.id,
-});
-
-const mapDispatchToProps = {
-	loadPostInternal,
-	loadRepliesInternal,
-	loadPreviousRepliesInternal,
-	deletePostInternal,
-	emptyReplies,
-	votePostInternal,
-	loadPost,
-	addReply,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Radium(Post));
+export default Post;

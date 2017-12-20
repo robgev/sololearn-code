@@ -30,13 +30,10 @@ const mapDispatchToProps = {
 
 @connect(mapStateToProps, mapDispatchToProps)
 class Comment extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			errorText: '',
-			textFieldValue: this.props.comment.message,
-		};
-	}
+	state = {
+		errorText: '',
+		textFieldValue: this.props.comment.message,
+	};
 
 	onChange = (e) => {
 		if (e.target.value.length === 0) {

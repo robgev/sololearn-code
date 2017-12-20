@@ -9,25 +9,7 @@ import Divider from 'material-ui/Divider';
 // Additional components
 import NotificationList from './NotificationList';
 
-const styles = {
-	container: {
-		width: '1000px',
-		margin: '20px auto',
-	},
-
-	notificationsHeader: {
-		display: 'flex',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		padding: '11px 14px',
-	},
-
-	notificationsTitle: {
-		fontSize: '13px',
-		fontWeight: 500,
-	},
-
-};
+import { NotificationsViewStyles as styles } from './styles';
 
 const Notifications = () => (
 	<Paper style={styles.container}>

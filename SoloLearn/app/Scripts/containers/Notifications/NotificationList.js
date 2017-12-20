@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import Radium from 'radium';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 // Material UI components
 import Divider from 'material-ui/Divider';
@@ -19,74 +18,16 @@ import { getNotificationsInternal, emptyNotifications } from 'actions/profile';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import NotificationItem from './NotificationItem';
 
-const styles = {
-	notificationsContainer: {
-		position: 'absolute',
-		backgroundColor: '#fff',
-		width: '400px',
-		top: '20px',
-		right: 0,
-	},
+import { NotificationListStyles as styles } from './styles';
 
-	notificationsTitle: {
-		padding: '11px 14px',
-		fontSize: '13px',
-		fontWeight: 500,
-	},
+const mapStateToProps = state => ({
+	notifications: state.notifications,
+	isNotificationLoaded: isLoaded(state, 'notifications'),
+});
 
-	notificationsBody: {
-		base: {
-			position: 'relative',
-			padding: 0,
-			minHeight: '50px',
-		},
-
-		fixedHeight: {
-			height: '400px',
-			overflowY: 'scroll',
-		},
-	},
-
-	bottomLoading: {
-		base: {
-			position: 'relative',
-			width: '100%',
-			visibility: 'hidden',
-			opacity: 0,
-			transition: 'opacity ease 300ms, -webkit-transform ease 300ms',
-		},
-
-		small: {
-			height: '30px',
-		},
-
-		big: {
-			height: '50px',
-		},
-
-		active: {
-			visibility: 'visible',
-			opacity: 1,
-			transform: 'translateY(0)',
-		},
-	},
-
-	notificationsFooter: {
-		padding: '8px 12px',
-		textAlign: 'center',
-	},
-
-	notificationsFooterButton: {
-		fontSize: '13px',
-		fontWeight: 500,
-		textDecoration: 'none',
-		color: '#607d8b',
-
-		':hover': {
-			textDecoration: 'underline',
-		},
-	},
-
+const mapDispatchToProps = {
+	getNotifications: getNotificationsInternal,
+	emptyNotifications,
 };
 
 class NotificationList extends Component {
@@ -234,15 +175,5 @@ class NotificationList extends Component {
 		this.isUnmounted = true;
 	}
 }
-
-const mapStateToProps = state => ({
-	notifications: state.notifications,
-	isNotificationLoaded: isLoaded(state, 'notifications'),
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-	getNotifications: getNotificationsInternal,
-	emptyNotifications,
-}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Radium(NotificationList));

@@ -4,39 +4,19 @@ import Radium from 'radium';
 
 // Redux modules
 import { connect } from 'react-redux';
-import { getQuestionsInternal, emptyQuestions } from '../../actions/discuss';
+import { getQuestionsInternal, emptyQuestions } from 'actions/discuss';
 
 // Additional components
-import LoadingOverlay from '../../components/Shared/LoadingOverlay';
-import InfiniteVirtualizedList from '../../components/Shared/InfiniteVirtualizedList';
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
 import QuestionItem from './QuestionItem';
 
-const styles = {
-	bottomLoading: {
-		base: {
-			position: 'relative',
-			width: '100%',
-			height: '50px',
-			visibility: 'hidden',
-			opacity: 0,
-			transition: 'opacity ease 300ms, -webkit-transform ease 300ms',
-		},
-		active: {
-			visibility: 'visible',
-			opacity: 1,
-			transform: 'translateY(0)',
-		},
-	},
-	noResults: {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%,-50%)',
-		fontSize: '20px',
-		color: '#777',
-	},
-};
+import { QuestionsStyles as styles } from './styles';
 
+const mapDispatchToProps = { getQuestionsInternal, emptyQuestions };
+
+@connect(null, mapDispatchToProps, null, { withRef: true })
+@Radium
 class Questions extends Component {
 	state = { isLoading: false }
 	componentWillMount() {
@@ -58,14 +38,10 @@ class Questions extends Component {
 		} = this.props;
 		this.setState({ isLoading: true }); // if (this.props.questions.length > 0)
 		const index = questions ? questions.length : 0;
-		try {
-			await this.props.getQuestionsInternal({
-				index, userId, query, ordering,
-			});
-			this.setState({ isLoading: false });
-		} catch (e) {
-			console.log(e);
-		}
+		await this.props.getQuestionsInternal({
+			index, userId, query, ordering,
+		});
+		this.setState({ isLoading: false });
 	}
 	// Load questions when condition changes
 	loadQuestionByState = async () => {
@@ -109,9 +85,4 @@ class Questions extends Component {
 	}
 }
 
-const mapDispatchToProps = {
-	getQuestionsInternal,
-	emptyQuestions,
-};
-
-export default connect(null, mapDispatchToProps, null, { withRef: true })(Radium(Questions));
+export default Questions;

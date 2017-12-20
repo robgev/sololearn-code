@@ -16,20 +16,19 @@ import { ReplyBoxStyle as styles } from './styles';
 class ReplyBox extends Component {
 	state = {
 		isLoading: false,
-		replyText: '',
 	};
 
-	onChange = e => this.setState({ [e.target.name]: e.target.value })
+	onReplyChange = e => this.props.setReplyText(e.target.value)
 
 	submitReply = async () => {
-		this.setState({ isLoading: true, replyText: '' });
-		await this.props.reply(this.state.replyText);
+		this.setState({ isLoading: true });
+		await this.props.reply();
 		this.setState({ isLoading: false });
 	}
 
 	render() {
 		const {
-			isPrimary, userName, defaultText, profile,
+			isPrimary, userName, profile,
 		} = this.props;
 		return (
 			<div
@@ -68,15 +67,16 @@ class ReplyBox extends Component {
 								rowsMax={4}
 								fullWidth
 								style={styles.textField}
-								value={defaultText + this.state.replyText}
-								onChange={this.onChange}
+								value={this.props.replyText}
+								onChange={this.onReplyChange}
+								ref={this.props.inputRef}
 							/>
 						</div>
 					</div>
 					<div style={styles.replyBoxControls}>
 						<FlatButton
 							label="Reply"
-							disabled={this.state.replyText.length === 0}
+							disabled={this.props.disabled}
 							primary
 							onClick={this.submitReply}
 						/>

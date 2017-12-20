@@ -16,79 +16,9 @@ import { markReadInternal } from 'actions/profile';
 // Additional components
 import NotificationList from './NotificationList';
 
+import { NotificationsPopupStyles as styles } from './styles';
+
 const RadiumLink = Radium(Link);
-const styles = {
-	wrapper: {
-		position: 'absolute',
-		right: '15px',
-		opacity: 0,
-		zIndex: 10001,
-	},
-
-	arrow: {
-		position: 'absolute',
-		pointerEvents: 'none',
-		borderTop: '10px solid transparent',
-		borderLeft: '10px solid transparent',
-		borderRight: '10px solid transparent',
-		borderBottom: '10px solid #fff',
-		height: 0,
-		width: 0,
-		bottom: '100%',
-		right: '29px',
-		top: 0,
-		zIndex: 10001,
-	},
-
-	notificationsHeader: {
-		display: 'flex',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		padding: '11px 14px',
-	},
-
-	notificationsHeaderButton: {
-		border: 'none',
-		backgroundColor: '#fff',
-		outline: 'none',
-		color: '#607d8b',
-		cursor: 'pointer',
-
-		// ':hover': {
-		//    textDecoration: 'underline'
-		// }
-	},
-
-	notificationsTitle: {
-		fontSize: '13px',
-		fontWeight: 500,
-	},
-
-	notificationsContainer: {
-		position: 'absolute',
-		backgroundColor: '#fff',
-		width: '400px',
-		top: '20px',
-		right: 0,
-	},
-
-	notificationsFooter: {
-		padding: '8px 12px',
-		textAlign: 'center',
-	},
-
-	notificationsFooterButton: {
-		fontSize: '13px',
-		fontWeight: 500,
-		textDecoration: 'none',
-		color: '#607d8b',
-
-		// ':hover': {
-		//    textDecoration: 'underline'
-		// }
-	},
-
-};
 
 class NotificationPopup extends Component {
 	// Add event listeners after component mounts

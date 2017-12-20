@@ -2,43 +2,9 @@
 import React, { Component } from 'react';
 
 // Material UI components
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import Paper from 'material-ui/Paper';
+import { TextField, RaisedButton, Paper } from 'material-ui';
 
-const styles = {
-	container: {
-		zIndex: 5,
-		width: 'inherit',
-		padding: '10px 20px',
-		background: '#fff',
-		boxSizing: 'border-box',
-		boxShadow: 'rgba(0, 0, 0, 0.156863) 0px 3px 10px, rgba(0, 0, 0, 0.227451) 0px 3px 10px',
-	},
-
-	editor: {
-		position: 'relative',
-		padding: '0 0 10px 0',
-	},
-
-	textField: {
-		margin: 0,
-		fontSize: '13px',
-	},
-
-	textFieldCoutner: {
-		position: 'absolute',
-		bottom: 0,
-		right: 0,
-		fontSize: '13px',
-		fontWeight: '500',
-	},
-
-	editorActions: {
-		textAlign: 'right',
-		margin: '10px 0 0 0',
-	},
-};
+import { AddReplyStyles as styles } from './styles';
 
 class AddReply extends Component {
 	state = {
