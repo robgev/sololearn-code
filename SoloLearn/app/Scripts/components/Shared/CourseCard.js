@@ -12,7 +12,7 @@ const CourseCard = ({
 	id,
 	title,
 	name,
-	// color,
+	color,
 	userID,
 	courses,
 	iconUrl,
@@ -35,11 +35,13 @@ const CourseCard = ({
 			}
 			className="course-card-wrapper"
 		>
-			<img
-				src={iconUrl}
-				alt="Course Icon"
-				className={`card-image ${itemType === slayItemTypes.course ? 'round' : ''}`}
-			/>
+			<div style={{ backgroundColor: color }}>
+				<img
+					src={iconUrl}
+					alt="Course Icon"
+					className={`card-image ${itemType === slayItemTypes.course ? 'round' : ''}`}
+				/>
+			</div>
 			<div className="info-container">
 				<p>{name}</p>
 				<Link

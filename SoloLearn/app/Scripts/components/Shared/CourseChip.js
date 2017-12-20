@@ -7,11 +7,11 @@ const CourseChip = ({
 	alias,
 	name,
 	round,
-	// color,
 	iconUrl,
 	noName,
 	isCourse,
 	itemType,
+	color = 'white',
 }) => (
 	<Link
 		className="chip-container"
@@ -22,6 +22,7 @@ const CourseChip = ({
 				display: 'inline-block',
 				height: 100,
 				width: 100,
+				backgroundColor: color,
 				borderRadius: (isCourse || round) ? '100%' : 0,
 			}}
 		>

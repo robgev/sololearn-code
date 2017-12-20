@@ -1,10 +1,15 @@
 import { LOAD_COURSES } from '../constants/ActionTypes';
 
-export default function (state = null, action) {
+const addIconLinks = courses => courses.map(singleCourse => ({
+	...singleCourse,
+	iconUrl: `https://api.sololearn.com/uploads/Courses/${singleCourse.id}.png`,
+}));
+
+export default (state = null, action) => {
 	switch (action.type) {
 	case LOAD_COURSES:
-		return action.payload;
+		return addIconLinks(action.payload);
 	default:
 		return state;
 	}
-}
+};
