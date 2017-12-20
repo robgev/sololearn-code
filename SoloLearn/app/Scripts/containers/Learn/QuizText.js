@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import Radium, { Style } from 'radium';
-import { browserHistory } from 'react-router';
 
 // Marterial UI components
 import Paper from 'material-ui/Paper';
@@ -11,8 +10,8 @@ import FlatButton from 'material-ui/FlatButton';
 // Service & others
 import Service from 'api/service';
 import { getPosition } from 'utils';
-import Playground from 'containers/Playground/Playground';
 import SlayLessonToolbar from './SlayLessonToolbar';
+import CodeBlock from './CodeBlock';
 
 const tooltipOpened = (<Style
 	scopeSelector=".tooltip-content.open"
@@ -149,35 +148,6 @@ const styles = {
 		position: 'absolute',
 	},
 
-	codeContainer: {
-		overflow: 'hidden',
-		margin: '10px 0',
-		padding: '5px 0 15px',
-	},
-
-	codeBlock: {
-		border: 'solid 1px #ddd',
-		margin: '10px 20px',
-		background: '#ecf0f1',
-		display: 'block',
-	},
-
-	code: {
-		borderLeft: '5px solid #589d32',
-		padding: '10px',
-		display: 'block',
-		whiteSpace: 'pre-wrap',
-	},
-
-	codeButton: {
-		float: 'right',
-		margin: '0 20px 0 0',
-	},
-
-	codeButtonLabel: {
-		fontSize: '13px',
-	},
-
 	noteBlock: {
 		border: 'solid 1px #ddd',
 		margin: '10px 20px',
@@ -208,93 +178,11 @@ const ImageBlock = props => (
 	</div>
 );
 
-class CodeBlock extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			playgroundOpened: false,
-			isBookmarked: props.isBookmarked,
-		};
-	}
-
-	openPlayground = () => {
-		const { pathname } = browserHistory.getCurrentLocation();
-		this.setState({
-			basePath: pathname,
-			playgroundOpened: true,
-		});
-	}
-
-	closePlayground = () => {
-		const { basePath } = this.state;
-		this.setState({
-			playgroundOpened: false,
-		});
-		browserHistory.replace(basePath);
-	}
-
-	render() {
-		const {
-			text,
-			codeId,
-			format,
-			courseLanguage,
-		} = this.props;
-		const playgroundParams = {
-			primary: courseLanguage,
-			secondary: codeId,
-		};
-
-		const { playgroundOpened, basePath } = this.state;
-		if (codeId != undefined) {
-			const href = `https://code.sololearn.com/${codeId}`; // + "/#" + app.aliases[app.alias.toLowerCase()] + "";
-			return (
-				<div className="code-container" style={styles.codeContainer}>
-					{ playgroundOpened ?
-						<div>
-							<Playground
-								codeId={codeId}
-								basePath={basePath}
-								params={playgroundParams}
-							/>
-							 <FlatButton
-								label="Close the sandbox"
-								style={styles.codeButton}
-								className="shortcut-button"
-								onClick={this.closePlayground}
-								labelStyle={styles.codeButtonLabel}
-		 					/>
-						</div> :
-						<div>
-							<span className="code-block" data-codeid={codeId} style={styles.codeBlock}>
-								<span className={`code ${format}`} style={styles.code} dangerouslySetInnerHTML={{ __html: text }} />
-							</span>
-							<FlatButton
-								label="Try It Yourself"
-								style={styles.codeButton}
-								className="shortcut-button"
-								onClick={this.openPlayground}
-								labelStyle={styles.codeButtonLabel}
-							/>
-						</div>
-					}
-				</div>
-			);
-		}
-
-		return (
-			<div className="code-block" style={styles.codeBlock}>
-				<span className={`code${format}`} style={styles.code} dangerouslySetInnerHTML={{ __html: text }} />
-			</div>
-		);
-	}
-}
-
 class QuizText extends Component {
 	constructor(props) {
 		super(props);
-
 		this.state = {
+			isBookmarked: props.isBookmarked,
 			countLoaded: !!props.commentsCount,
 		};
 

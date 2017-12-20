@@ -1,0 +1,117 @@
+import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
+import FlatButton from 'material-ui/FlatButton';
+import Playground from 'containers/Playground/Playground';
+
+const styles = {
+	codeContainer: {
+		overflow: 'hidden',
+		margin: '10px 0',
+		padding: '5px 0 15px',
+	},
+
+	codeBlock: {
+		border: 'solid 1px #ddd',
+		margin: '10px 20px',
+		background: '#ecf0f1',
+		display: 'block',
+	},
+
+	code: {
+		borderLeft: '5px solid #589d32',
+		padding: '10px',
+		display: 'block',
+		whiteSpace: 'pre-wrap',
+	},
+
+	codeButton: {
+		float: 'right',
+		margin: '0 20px 0 0',
+	},
+
+	codeButtonLabel: {
+		fontSize: '13px',
+	},
+};
+
+class CodeBlock extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			playgroundOpened: false,
+		};
+	}
+
+openPlayground = () => {
+	const { pathname } = browserHistory.getCurrentLocation();
+	this.setState({
+		basePath: pathname,
+		playgroundOpened: true,
+	});
+}
+
+closePlayground = () => {
+	const { basePath } = this.state;
+	this.setState({
+		playgroundOpened: false,
+	});
+	browserHistory.replace(basePath);
+}
+
+render() {
+	const {
+		text,
+		codeId,
+		format,
+		courseLanguage,
+	} = this.props;
+	const playgroundParams = {
+		primary: courseLanguage,
+		secondary: codeId,
+	};
+
+	const { playgroundOpened, basePath } = this.state;
+	if (codeId !== undefined) {
+		return (
+			<div className="code-container" style={styles.codeContainer}>
+				{ playgroundOpened ?
+					<div>
+						<Playground
+							codeId={codeId}
+							basePath={basePath}
+							params={playgroundParams}
+						/>
+						<FlatButton
+							label="Close the sandbox"
+							style={styles.codeButton}
+							className="shortcut-button"
+							onClick={this.closePlayground}
+							labelStyle={styles.codeButtonLabel}
+						/>
+					</div> :
+					<div>
+						<span className="code-block" data-codeid={codeId} style={styles.codeBlock}>
+							<span className={`code ${format}`} style={styles.code} dangerouslySetInnerHTML={{ __html: text }} />
+						</span>
+						<FlatButton
+							label="Try It Yourself"
+							style={styles.codeButton}
+							className="shortcut-button"
+							onClick={this.openPlayground}
+							labelStyle={styles.codeButtonLabel}
+						/>
+					</div>
+				}
+			</div>
+		);
+	}
+
+	return (
+		<div className="code-block" style={styles.codeBlock}>
+			<span className={`code${format}`} style={styles.code} dangerouslySetInnerHTML={{ __html: text }} />
+		</div>
+	);
+}
+}
+
+export default CodeBlock;
