@@ -61,8 +61,6 @@ class CodeBlock extends Component {
 			format,
 			basePath,
 			courseLanguage,
-			openPlayground,
-			closePlayground,
 		} = this.props;
 		const playgroundParams = {
 			primary: courseLanguage,

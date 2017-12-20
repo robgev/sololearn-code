@@ -14,7 +14,11 @@ class Layout extends PureComponent {
 	}
 
 	onChange = (searchText) => {
-		this.setState({ searchText });
+		if (searchText) {
+			this.setState({ searchText });
+		} else {
+			browserHistory.replace('/learn');
+		}
 	}
 
 	onRequestSearch = () => {
