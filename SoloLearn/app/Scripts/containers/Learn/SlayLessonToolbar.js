@@ -9,6 +9,7 @@ import BookmarkBorderIcon from 'material-ui/svg-icons/action/bookmark-border';
 
 const SlayLessonToolbar = ({
 	userData, // User data contains avatarURL, userName and userID
+	timePassed,
 	countLoaded,
 	isBookmarked,
 	openComments,
@@ -35,6 +36,7 @@ const SlayLessonToolbar = ({
 			<ProfileAvatar
 				{...userData}
 				withUserNameBox
+				timePassed={timePassed}
 			/>
 		</div>
 	</div>

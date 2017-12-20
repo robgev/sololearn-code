@@ -9,11 +9,6 @@ const styles = {
 		fontSize: '12px',
 	},
 	texts: {
-		base: {
-			display: 'inline-block',
-			verticalAlign: 'middle',
-			textAlign: 'right',
-		},
 		userName: {
 			color: '#607D8B',
 			margin: '0 0 2px 0',
@@ -28,6 +23,11 @@ const styles = {
 	noStyle: {
 		textDecoration: 'none',
 	},
+	metaInfoContainer: {
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+	},
 };
 
 const ProfileAvatar = ({
@@ -36,6 +36,7 @@ const ProfileAvatar = ({
 	size = 30,
 	userName,
 	avatarUrl,
+	timePassed,
 	withUserNameBox,
 }) => (
 	<Link to={`/profile/${userID}`} style={{ ...style, ...styles.noStyle }}>
@@ -53,11 +54,18 @@ const ProfileAvatar = ({
 				>{userName.toUpperCase().charAt(0)}
 				</Avatar>
 			}
-			{ withUserNameBox &&
-				<div style={styles.texts.base}>
-					<p style={styles.texts.name}>{userName}</p>
-				</div>
-			}
+			<div style={styles.metaInfoContainer}>
+				{ withUserNameBox &&
+					<div>
+						<p style={styles.texts.name}>{userName}</p>
+					</div>
+				}
+				{ timePassed &&
+					<div>
+						<p style={styles.texts.name}>{timePassed}</p>
+					</div>
+				}
+			</div>
 		</div>
 	</Link>
 );

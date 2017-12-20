@@ -10,7 +10,7 @@ import FlatButton from 'material-ui/FlatButton';
 
 // Service & others
 import Service from 'api/service';
-import { getPosition } from 'utils';
+import { getPosition, updateDate } from 'utils';
 import SlayLessonToolbar from './SlayLessonToolbar';
 import CodeBlock from './CodeBlock';
 
@@ -456,7 +456,9 @@ class QuizText extends Component {
 
 	render() {
 		const { isBookmarked, countLoaded } = this.state;
-		const { openComments, withToolbar, userData } = this.props;
+		const {
+			openComments, withToolbar, userData, date,
+		} = this.props;
 		return (
 			<Paper className="text-container" style={styles.textContainer}>
 				{tooltipOpened}
@@ -470,6 +472,7 @@ class QuizText extends Component {
 						userData={userData}
 						countLoaded={countLoaded}
 						isBookmarked={isBookmarked}
+						timePassed={updateDate(date)}
 						openComments={openComments}
 						commentsCount={this.commentsCount}
 						toggleBookmark={this.toggleBookmark}

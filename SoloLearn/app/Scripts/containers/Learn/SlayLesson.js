@@ -85,6 +85,7 @@ class SlayLesson extends PureComponent {
 		const { pageNumber } = params;
 		const {
 			id,
+			date,
 			type,
 			parts,
 			userID,
@@ -108,6 +109,7 @@ class SlayLesson extends PureComponent {
 				{ !loading &&
 					<div>
 						<SlayLessonContent
+							date={date}
 							quizId={id}
 							type={type}
 							withToolbar
