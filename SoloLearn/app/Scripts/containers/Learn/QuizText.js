@@ -1,6 +1,7 @@
 // React modules
 import React, { Component } from 'react';
 import ReactDOMServer from 'react-dom/server';
+import { browserHistory } from 'react-router';
 import Radium, { Style } from 'radium';
 
 // Marterial UI components
@@ -181,7 +182,9 @@ const ImageBlock = props => (
 class QuizText extends Component {
 	constructor(props) {
 		super(props);
+		const { pathname } = browserHistory.getCurrentLocation();
 		this.state = {
+			pathname,
 			isBookmarked: props.isBookmarked,
 			countLoaded: !!props.commentsCount,
 		};
@@ -417,6 +420,7 @@ class QuizText extends Component {
 
 	renderComponentParts() {
 		const { courseLanguage } = this.props;
+		const { pathname } = this.state;
 		const renderItems = this.formattingText();
 
 		return renderItems.map((element, index) => {
@@ -427,6 +431,7 @@ class QuizText extends Component {
 				return (
 					<CodeBlock
 						key={index}
+						basePath={pathname}
 						text={element.props.codeText}
 						codeId={element.props.codeId}
 						format={element.props.format}
