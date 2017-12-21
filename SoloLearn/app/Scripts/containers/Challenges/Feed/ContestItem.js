@@ -74,7 +74,7 @@ class ContestItemBase extends PureComponent {
 	getDateDifference = (expireDate) => {
 		const dateNow = moment();
 		const expiryDate = moment.utc(expireDate);
-		const duration = moment.duration(dateNow.diff(expiryDate));
+		const duration = moment.duration(expiryDate.diff(dateNow));
 		const hours = Math.floor(duration.asHours());
 		const minutes = Math.floor(duration.asMinutes());
 		return hours < 1 ?
