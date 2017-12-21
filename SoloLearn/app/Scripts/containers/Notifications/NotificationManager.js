@@ -9,7 +9,10 @@ import Badge from 'material-ui/Badge';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
 // Redux modules
-import { getNotificationCountInternal as getNotificationCount } from 'actions/profile';
+import {
+	setNotificationCount,
+	getNotificationCountInternal as getNotificationCount,
+} from 'actions/profile';
 
 // Additional components
 import NotificationsPopup from './NotificationsPopup';
@@ -18,7 +21,7 @@ import { NotificationManagerStyles as styles } from './styles';
 
 const mapStateToProps = ({ notificationsCount }) => ({ notificationsCount });
 
-const mapDispatchToProps = { getNotificationCount };
+const mapDispatchToProps = { getNotificationCount, setNotificationCount };
 
 @connect(mapStateToProps, mapDispatchToProps)
 @Radium
@@ -31,8 +34,13 @@ class NotificationManager extends PureComponent {
 	}
 
 	toggleNotificationsOpen = () => {
-		this.setState({ isOpened: !this.state.isOpened });
+		const { isOpened } = this.state;
+		this.setState({ isOpened: !isOpened });
+		if (!isOpened) {
+			this.props.setNotificationCount(0);
+		}
 	}
+
 	render() {
 		return (
 			<div style={styles.notifications}>

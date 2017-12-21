@@ -2,8 +2,8 @@ import Service from 'api/service';
 import * as types from 'constants/ActionTypes';
 import { changeLoginModal } from './login.action';
 
-export const getNotificationCount = count => ({
-	type: types.GET_NOTIFICATIONS_COUNT,
+export const setNotificationCount = count => ({
+	type: types.SET_NOTIFICATION_COUNT,
 	payload: count,
 });
 
@@ -11,7 +11,7 @@ export const getNotificationCountInternal = () => async (dispatch, getState) => 
 	if (!getState().imitLoggedin) return;
 	try {
 		const { count } = await Service.request('Profile/GetUnseenNotificationCount');
-		dispatch(getNotificationCount(count));
+		dispatch(setNotificationCount(count));
 	} catch (e) {
 		console.log(e);
 	}
