@@ -11,6 +11,7 @@ import { grey500, blueGrey500 } from 'material-ui/styles/colors';
 
 // Utils
 import { numberFormatter, updateDate, getLanguageColor } from 'utils';
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
 const styles = {
 	code: {
@@ -107,13 +108,14 @@ class CodeItem extends Component {
 	}
 	render() {
 		const { code } = this.props;
+		const dateModified = updateDate(code.modifiedDate);
 		return (
 			<Link className="code" style={styles.code} to={`/playground/${code.publicID}`}>
 				<div className="language" style={[ styles.languageIcon, { backgroundColor: getLanguageColor(code.language) } ]}>{code.language}</div>
 				<div className="details-wrapper" style={styles.detailsWrapper}>
 					<div className="details">
 						<p className="title" style={styles.title}>{code.name}</p>
-						<p className="date" style={styles.date}>Last modified: {updateDate(code.modifiedDate)}</p>
+						<p className="date" style={styles.date}>Last modified: {dateModified}</p>
 						<div className="stats" style={styles.stats}>
 							<div style={styles.mainStats}>
 								<div className="votes">
@@ -127,7 +129,14 @@ class CodeItem extends Component {
 								</div>
 							</div>
 							<div className="author-details" style={styles.authorDetails}>
-								<span>{code.userName}</span>
+								<ProfileAvatar
+									reversedOrder
+									withUserNameBox
+									userID={code.userId}
+									timePassed={dateModified}
+									userName={code.userName}
+									avatarUrl={code.avatarUrl}
+								/>
 							</div>
 						</div>
 					</div>

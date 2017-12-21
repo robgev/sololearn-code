@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 // Material UI components
 import { TextField, IconMenu, MenuItem, FlatButton, IconButton } from 'material-ui';
-import DiscussAuthor from 'components/Shared/ProfileAvatar';
 import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import AcceptedIcon from 'material-ui/svg-icons/navigation/check';
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
@@ -17,6 +16,8 @@ import { editPostInternal, toggleAcceptedAnswerInternal } from 'actions/discuss'
 import getLikesInternal from 'actions/likes';
 
 import Likes from 'components/Shared/Likes';
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import { updateDate } from 'utils';
 
 import { ReplyStyles as styles } from './styles';
 
@@ -160,7 +161,13 @@ class Reply extends Component {
 									style={{ ...styles.bestAnswerButton.icon, ...styles.bestAnswerButton.margin }}
 								/>
 						}
-						<DiscussAuthor date={reply.date} userID={reply.userID} userName={reply.userName} />
+						<ProfileAvatar
+							withUserNameBox
+							userID={reply.userID}
+							avatarUrl={reply.avatarUrl}
+							userName={reply.userName}
+							date={updateDate(reply.date)}
+						/>
 					</div>
 				}
 			</div>

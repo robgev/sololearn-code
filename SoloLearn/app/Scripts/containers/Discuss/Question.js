@@ -108,8 +108,10 @@ class Question extends Component {
 						<FollowIcon color={question.isFollowing ? blueGrey500 : grey500} />
 					</IconButton>
 					<DiscussAuthor
+						withUserNameBox
 						date={question.date}
 						userID={question.userID}
+						avatarUrl={question.avatarUrl}
 						userName={question.userName}
 					/>
 				</div>

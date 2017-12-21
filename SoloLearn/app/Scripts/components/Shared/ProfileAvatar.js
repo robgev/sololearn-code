@@ -28,6 +28,10 @@ const styles = {
 		flexDirection: 'column',
 		justifyContent: 'space-between',
 	},
+	reversed: {
+		order: -1,
+		textAlign: 'right',
+	},
 };
 
 const ProfileAvatar = ({
@@ -37,6 +41,7 @@ const ProfileAvatar = ({
 	userName,
 	avatarUrl,
 	timePassed,
+	reversedOrder,
 	withUserNameBox,
 }) => (
 	<Link to={`/profile/${userID}`} style={{ ...style, ...styles.noStyle }}>
@@ -54,7 +59,7 @@ const ProfileAvatar = ({
 				>{userName.toUpperCase().charAt(0)}
 				</Avatar>
 			}
-			<div style={styles.metaInfoContainer}>
+			<div style={{ ...styles.metaInfoContainer, ...(reversedOrder ? styles.reversed : {}) }}>
 				{ withUserNameBox &&
 					<div>
 						<p style={styles.texts.name}>{userName}</p>
