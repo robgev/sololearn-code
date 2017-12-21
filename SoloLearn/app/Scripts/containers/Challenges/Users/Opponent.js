@@ -1,5 +1,5 @@
 // React modules
-import React, { Component } from 'react';
+import React from 'react';
 
 // Redux modules
 import { connect } from 'react-redux';
