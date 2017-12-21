@@ -96,6 +96,7 @@ export const getCommentsAboveInternal = options => async (dispatch) => {
 export const getCommentsInternal = ({
 	id, index, orderby, commentsType, count = 20, type = null, parentId = null, findPostId = null,
 }) => async (dispatch) => {
+	console.warn('blablabla');
 	const [ url, params ] = getPathAndParams({
 		id, index, orderby, count, type, parentId, commentsType, findPostId,
 	});
@@ -176,6 +177,12 @@ export const addCommentInternal =
 			comment.repliesArray = [];
 		}
 		comment.userName = userProfile.name;
-		comment.userId = userProfile.id;
+		comment.userID = userProfile.id;
+		comment.replies = 0;
+		comment.avatarUrl = userProfile.avatarUrl;
+		comment.parentID = parentId;
+		comment.vote = 0;
+		comment.votes = 0;
+		comment.index = -2;
 		dispatch(addComment({ comment, parentId, ordering }));
 	};

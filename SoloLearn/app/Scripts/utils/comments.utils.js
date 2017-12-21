@@ -1,21 +1,31 @@
+const LOAD_MORE = 'LOAD_MORE';
+
+const removeLoadMores = (comments, { above }) =>
+	comments.filter(c => !(c.type === LOAD_MORE && c.loadAbove === above));
+
 const hasAbove = (comments, parentId = null) => {
-	const withoutLoadMores = comments.filter(comment => comment.type !== 'LOAD_MORE');
-	if (withoutLoadMores[0].index <= 0) {
-		return withoutLoadMores;
-	}
-	return [ { type: 'LOAD_MORE', parentId, loadAbove: true }, ...withoutLoadMores ];
+	if (comments[0].index <= 0) return comments;
+	return [ { type: LOAD_MORE, parentId, loadAbove: true }, ...comments ];
+};
+
+const hasRepliesBelow = (comments, parentId, fullyLoaded) => {
+	if (fullyLoaded) return comments;
+	return [ ...comments, { type: LOAD_MORE, loadAbove: false, parentId } ];
 };
 
 export const getComments = (oldComments, newComments) => {
 	const similarIndices = [];
 	const forcedDowns = oldComments.filter(comment => comment.isForcedDown);
-	const notForcedDowns = oldComments.filter(comment => !comment.isForcedDown);
+	const notForcedDowns = removeLoadMores(oldComments.filter(comment => !comment.isForcedDown), { above: false });
 	forcedDowns.forEach((oldCom, idx) =>
 		newComments.forEach((newCom) => {
 			if (oldCom.id === newCom.id) similarIndices.push(idx);
 		}));
 	const removedForcedDowns = forcedDowns.filter((comment, idx) => !similarIndices.includes(idx));
-	return hasAbove([ ...notForcedDowns, ...removedForcedDowns, ...newComments ]);
+	return hasAbove(removeLoadMores(
+		[ ...notForcedDowns, ...newComments, ...removedForcedDowns ],
+		{ above: true },
+	));
 };
 
 export const voteComment = (comments, {
@@ -47,29 +57,25 @@ export const addComment = (comments, { comment, ordering, parentId }) => {
 		if (ordering === 2 && comments.length > 0) {
 			const index = comments.findIndex(c => c.votes === 0);
 			if (index !== -1) {
-				return [ ...comments.slice(0, index), ...comments.slice(index) ];
+				return [ ...comments.slice(0, index), comment, ...comments.slice(index) ];
 			}
 			return [ ...comments, { ...comment, isForcedDown: true } ];
 		}
-		return [ comment, ...comments ];
+		return hasAbove(removeLoadMores([ comment, ...comments ], { above: true }));
 	}
 
 	const parentIndex = comments.findIndex(c => c.id === parentId);
 	const parent = { ...comments[parentIndex] };
-	if (ordering === 2 && parent.repliesArray.length > 0) {
-		const replyIndex = parent.repliesArray.findIndex(r => r.votes === 0);
-		if (replyIndex !== -1) {
-			parent.repliesArray = [
-				...parent.repliesArray.slice(0, replyIndex),
-				comment,
-				...parent.repliesArray.slice(replyIndex),
-			];
-		}
-		parent.repliesArray = [ ...parent.repliesArray, comment ];
-	} else {
-		parent.repliesArray = [ comment, ...comments ];
-	}
-	return [ ...comments.slice(0, parentIndex), parent, ...comments.slice(parentIndex) ];
+	parent.replies += 1;
+	parent.repliesArray = hasRepliesBelow(
+		removeLoadMores(
+			[ ...parent.repliesArray, { ...comment, isForcedDown: true } ],
+			{ above: false },
+		),
+		parent.id,
+		parent.repliesArray.length > 0 && !parent.repliesArray[parent.repliesArray.length - 1].type === LOAD_MORE,
+	);
+	return [ ...comments.slice(0, parentIndex), parent, ...comments.slice(parentIndex + 1) ];
 };
 
 export const deleteComment = (comments, { id, parentId }) => {
@@ -105,13 +111,11 @@ export const editComment = (comments, { id, parentId, message }) => {
 export const getCommentReplies = (comments, { parentId, replies, fullyLoaded }) => {
 	const parentIndex = comments.findIndex(comment => comment.id === parentId);
 	const parent = comments[parentIndex];
-	const repliesArray = getComments(parent.repliesArray.slice(0, -1), replies);
-	if (!fullyLoaded) {
-		repliesArray.push({
-			type: 'LOAD_MORE',
-			parentId,
-		});
-	}
+	const repliesArray = hasRepliesBelow(
+		removeLoadMores(getComments(parent.repliesArray, replies), { above: false }),
+		parentId,
+		fullyLoaded,
+	);
 	return [
 		...comments.slice(0, parentIndex),
 		{
@@ -122,10 +126,16 @@ export const getCommentReplies = (comments, { parentId, replies, fullyLoaded }) 
 };
 
 export const getCommentsAbove = (comments, { aboveComments }) =>
-	hasAbove([ ...aboveComments, ...comments ]);
+	hasAbove(removeLoadMores([ ...aboveComments, ...comments ], { above: true }));
 
 export const getRepliesAbove = (parent, { aboveComments }) => {
-	const repliesArray = hasAbove([ ...aboveComments, ...parent.repliesArray ], parent.id);
+	const repliesArray = hasAbove(
+		removeLoadMores(
+			[ ...aboveComments, ...parent.repliesArray ],
+			{ above: true },
+		),
+		parent.id,
+	);
 	return [ {
 		...parent,
 		repliesArray,
@@ -133,8 +143,11 @@ export const getRepliesAbove = (parent, { aboveComments }) => {
 };
 
 export const lastNonForcedDownIndex = (comments) => {
-	if (comments.length === 0) return -1;
-	const notForcedDowns = comments.filter(comment => !comment.isForcedDown && comment.type !== 'LOAD_MORE');
+	const notForcedDowns = comments.filter(comment =>
+		!comment.isForcedDown && comment.type !== LOAD_MORE);
+	if (!notForcedDowns.length) return -1;
 	const { index } = notForcedDowns[notForcedDowns.length - 1];
 	return index === -1 ? -2 : index;
 };
+
+export const notForcedDownCount = comments => comments.filter(c => !c.isForcedDown).length;

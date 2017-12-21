@@ -14,7 +14,7 @@ import {
 	getCommentsAboveInternal,
 } from 'actions/comments';
 import { getSelectedCommentId } from 'selectors';
-import { lastNonForcedDownIndex } from 'utils/comments.utils';
+import { lastNonForcedDownIndex, notForcedDownCount } from 'utils/comments.utils';
 
 // Additional components
 import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
@@ -29,7 +29,7 @@ export const loadRepliesTypes = {
 	CLOSE_REPLIES: 'CLOSE_REPLIES',
 };
 
-const getNewCache = () => new CellMeasurerCache({
+const cache = () => new CellMeasurerCache({
 	defaultWidth: 1000,
 	minWidth: 75,
 	fixedWidth: true,
@@ -56,7 +56,7 @@ class Comments extends Component {
 	state = {
 		isLoading: false,
 		latestLoadingComment: 0,
-		cache: getNewCache(),
+		cache: cache(),
 	};
 
 	componentDidMount() {
@@ -67,7 +67,8 @@ class Comments extends Component {
 		this.props.emptyComments();
 	}
 
-	resetList = () => this.setState({ cache: getNewCache() })
+	recompute = (index) => { this._list.recomputeRowHeights(index); }
+	_forceUpdate = () => { this._list._forceUpdate(); }
 
 	loadCommentsAbove = async (parentId = null) => {
 		const {
@@ -88,7 +89,7 @@ class Comments extends Component {
 			id, type, commentsType, orderby, parentId, index, count,
 		});
 		this.setState({ isLoading: false });
-		this.resetList();
+		this.recompute();
 	}
 
 	loadComments = async (parentId = null) => {
@@ -104,6 +105,7 @@ class Comments extends Component {
 		} else {
 			index = lastNonForcedDownIndex(comments) + 1;
 		}
+		console.log(index);
 		if (index === -1 || (comments.length > 0 && comments[0].index === -1)) {
 			this._list._markFull();
 			return;
@@ -113,35 +115,48 @@ class Comments extends Component {
 			id, type, parentId, index, orderby, commentsType, count, findPostId,
 		});
 		this.setState({ isLoading: false });
+		if (!parentId) {
+			this.recompute(notForcedDownCount(comments));
+		}
 		if (findPostId != null) this._list._scrollTo(findPostId);
 	}
 
 	// Load comment replies
 	loadReplies = async (commentId, type) => {
+		const index = this.props.comments.findIndex(c => c.id === commentId);
 		this.setState({ latestLoadingComment: commentId });
 		if (type === loadRepliesTypes.CLOSE_REPLIES) {
 			await this.props.emptyCommentReplies(commentId);
 		} else if (type === loadRepliesTypes.LOAD_REPLIES) {
 			await this.loadComments(commentId);
 		}
-		this.resetList();
+		this.recompute(index);
 	}
 
 	// Load comments when condition changes
 	loadCommentsByState = async () => {
 		await this.props.emptyComments();
 		await this.loadComments();
-		this.resetList();
+		this.recompute();
 	}
 
 	voteComment = async (comment, voteValue) => {
 		await this.props.voteCommentInternal(comment, voteValue, this.props.commentsType);
-		this._list._forceUpdate();
+		this._forceUpdate();
+	}
+
+	deleteComment = async (comment) => {
+		// const index = this.props.comments.findIndex(c => c.id === comment.id);
+		await this.props.deleteComment(comment);
+		this.recompute();
+		this._forceUpdate();
 	}
 
 	editComment = async ({ id, parentId }, message) => {
+		const index = this.props.comments.findIndex(c => c.id === id);
 		await this.props.editCommentInternal(id, parentId, message, this.props.commentsType);
 		this.props.cancelAll();
+		this.recompute(index);
 	}
 
 	renderComment = (comment) => {
@@ -152,11 +167,10 @@ class Comments extends Component {
 				openEdit,
 				cancelAll,
 				openReplyBoxToolbar,
-				deleteComment,
 				commentsType,
 			},
 			state: { isReplying, isLoading, latestLoadingComment },
-			voteComment, editComment, loadReplies, loadCommentsAbove,
+			voteComment, editComment, loadReplies, loadCommentsAbove, deleteComment,
 		} = this;
 		return (
 			<Comment

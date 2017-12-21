@@ -104,9 +104,8 @@ class Contests extends PureComponent {
 	}
 
 	chooseContestCourse = (courseId) => {
-		this.props.chooseContestCourse(courseId).then(() => {
-			browserHistory.push('/choose-opponent');
-		});
+		this.props.chooseContestCourse(courseId);
+		browserHistory.push('/choose-opponent');
 	}
 
 	renderContests = (contests) => {

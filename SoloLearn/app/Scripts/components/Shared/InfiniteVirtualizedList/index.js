@@ -42,6 +42,16 @@ class InfiniteVirtalizedList extends Component {
 		this.canLoadMore = false;
 	}
 
+	recomputeRowHeights = (index = null) => {
+		if (index == null) {
+			this.props.cache.clearAll();
+			this._list.recomputeRowHeights();
+		} else if (index >= 0) {
+			for (let i = index; i < this.props.list.length; i += 1) { this.props.cache.clear(i); }
+			this._list.recomputeRowHeights(index);
+		}
+	}
+
 	_forceUpdate = () => this._list.forceUpdateGrid()
 
 	_scrollTo = (id) => {

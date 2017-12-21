@@ -16,14 +16,14 @@ export const getContests = () => dispatch =>
 
 			const completedChallenges = contestsFeed.filter(item =>
 				item.player.status === contestTypes.Won ||
-					item.player.status === contestTypes.Lost ||
-					item.player.status === contestTypes.Draw ||
-					item.player.status === contestTypes.Expired ||
-					item.player.status === contestTypes.GotDeclined);
+				item.player.status === contestTypes.Lost ||
+				item.player.status === contestTypes.Draw ||
+				item.player.status === contestTypes.Expired ||
+				item.player.status === contestTypes.GotDeclined);
 
 			const ongoingChallenges = contestsFeed.filter(item =>
 				item.player.status === contestTypes.Started ||
-					item.player.status === contestTypes.Challenged);
+				item.player.status === contestTypes.Challenged);
 
 			const invitedChallenges = contestsFeed.filter(item =>
 				item.player.status === contestTypes.GotChallenged);
@@ -53,14 +53,10 @@ export const clearContestsInternal = () => dispatch =>
 			console.log(error);
 		});
 
-export const chooseContestCourse = courseId => dispatch =>
-	new Promise((resolve) => {
-		dispatch({
-			type: types.CHOOSE_CHALLENGE_COURSE,
-			payload: courseId,
-		});
-		resolve();
-	});
+export const chooseContestCourse = courseId => ({
+	type: types.CHOOSE_CHALLENGE_COURSE,
+	payload: courseId,
+});
 
 export const getAllPlayers = players => ({
 	type: types.GET_ALL_PLAYERS,

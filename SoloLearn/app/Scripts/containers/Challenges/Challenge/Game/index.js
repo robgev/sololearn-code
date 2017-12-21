@@ -71,10 +71,8 @@ class Game extends Component {
 
 	declineContest = () => {
 		const { id } = this.props.contest;
-		return Service
-			.request('Challenge/DeclineContest', { id })
-			.then(() => browserHistory.push('/contests/'))
-			.catch(e => console.log(e));
+		browserHistory.push('/contests/');
+		Service.request('Challenge/DeclineContest', { id });
 	}
 	pushContest = (isCompleted) => {
 		const { id: contestId } = this.props.contest;
@@ -134,7 +132,7 @@ class Game extends Component {
 				{
 					this.state.end ? this.renderEnd() :
 						this.state.start ? this.renderStart() :
-							<CurrentChallenge />
+						<CurrentChallenge />
 				}
 			</Optional>
 		);

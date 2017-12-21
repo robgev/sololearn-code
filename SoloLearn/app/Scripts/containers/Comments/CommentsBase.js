@@ -152,6 +152,8 @@ class CommentsBase extends Component {
 			id, parentId, message, type, commentsType, ordering,
 		});
 		this.partialCancel();
+		this._comments.getWrappedInstance().recompute();
+		this._comments.getWrappedInstance()._forceUpdate();
 	}
 
 	// Render popup heading
