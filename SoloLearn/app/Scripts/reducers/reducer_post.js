@@ -1,12 +1,9 @@
+import { find } from 'lodash';
 import {
-	LOAD_DISCUSS_POST,
-	LOAD_DISCUSS_POST_REPLIES,
-	LOAD_DISCUSS_POST_PREVIOUS_REPLIES,
-	EMPTY_DISCUSS_POST_REPLIES,
-	VOTE_POST, EDIT_POST,
-	DELETE_POST,
-	QUESTION_FOLLOWING,
-	ACCEPT_ANSWER,
+	LOAD_DISCUSS_POST, LOAD_DISCUSS_POST_REPLIES,
+	LOAD_DISCUSS_POST_PREVIOUS_REPLIES, EMPTY_DISCUSS_POST_REPLIES,
+	VOTE_POST, EDIT_POST, DELETE_POST, QUESTION_FOLLOWING, ACCEPT_ANSWER,
+	ADD_NEW_REPLY,
 } from '../constants/ActionTypes';
 
 const votePost = (state, {
@@ -34,13 +31,30 @@ const editPost = (state, { message, isPrimary, id }) => {
 	};
 };
 
+const addNewReply = (replies, { reply, byVotes }) => {
+	if (byVotes) {
+		const index = replies.findIndex(r => r.votes === 0);
+		if (!index === -1) return [ ...replies.slice(0, index), reply, ...replies.slice(index) ];
+	}
+	return [ ...replies, { ...reply, isForcedDown: true } ];
+};
+
+const loadReplies = (oldReplies, newReplies) => {
+	const forcedDowns = oldReplies.filter(r => r.isForcedDown);
+	const notForcedDowns = oldReplies.filter(r => !r.isForcedDown);
+	const updatedForcedDowns = forcedDowns.filter(fd => !find(newReplies, nr => nr.id === fd.id));
+	return [ ...notForcedDowns, ...newReplies, ...updatedForcedDowns ];
+};
+
 export default (state = null, action) => {
 	if (state == null && action.type !== LOAD_DISCUSS_POST) return null;
 	switch (action.type) {
 	case LOAD_DISCUSS_POST:
 		return action.payload;
 	case LOAD_DISCUSS_POST_REPLIES:
-		return { ...state, replies: [ ...state.replies, ...action.payload ] };
+		return { ...state, replies: loadReplies(state.replies, action.payload) };
+	case ADD_NEW_REPLY:
+		return { ...state, replies: addNewReply(state.replies, action.payload) };
 	case LOAD_DISCUSS_POST_PREVIOUS_REPLIES:
 		return { ...state, replies: [ ...action.payload, ...state.replies ] };
 	case EMPTY_DISCUSS_POST_REPLIES:

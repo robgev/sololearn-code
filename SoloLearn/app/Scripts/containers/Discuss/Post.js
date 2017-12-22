@@ -85,8 +85,10 @@ class Post extends Component {
 		await this.props.loadPreviousRepliesInternal(ordering);
 	}
 
-	addReply = (message) => {
-		this.props.addReply(this.props.post.id, message);
+	addReply = async (message) => {
+		const id = await this.props.addReply(this.props.post.id, message, this.state.ordering === 1);
+		this._replies.recompute(this.props.post.replies.findIndex(r => r.id === id));
+		this._replies.scrollTo(id);
 	}
 
 	// Check alias of post
@@ -130,8 +132,10 @@ class Post extends Component {
 
 	// Close deleting confimation dialog
 	closeDeletePopup = () => {
+		const index = this.props.post.replies.findIndex(r => r.id === this.deletingPost.id) - 1;
 		this.setState({ deletePopupOpened: false });
 		this.deletingPost = null;
+		this._replies.recompute(index);
 	}
 
 	remove = () => {

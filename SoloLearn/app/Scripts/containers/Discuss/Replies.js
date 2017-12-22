@@ -38,7 +38,8 @@ class Replies extends Component {
 	componentWillUnmount() {
 		cache.clearAll();
 	}
-	recompute = (index) => { this._list.recomputeRowHeights(index); };
+	recompute = (index) => { this._list.recomputeRowHeights(index); }
+	scrollTo = (id) => { this._list._scrollTo(id); }
 	renderReply = reply => (
 		<Reply
 			key={reply.id}

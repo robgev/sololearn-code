@@ -1,3 +1,4 @@
+import { last } from 'lodash';
 import Service from 'api/service';
 import * as types from 'constants/ActionTypes';
 import { changeLoginModal } from './login.action';
@@ -64,6 +65,11 @@ const loadReplies = posts => ({
 	payload: posts,
 });
 
+const addNewReply = (reply, byVotes) => ({
+	type: types.ADD_NEW_REPLY,
+	payload: { reply, byVotes },
+});
+
 const loadPreviousReplies = posts => ({
 	type: types.LOAD_DISCUSS_POST_PREVIOUS_REPLIES,
 	payload: posts,
@@ -98,10 +104,17 @@ export const loadPreviousRepliesInternal = orderBy => async (dispatch, getState)
 	dispatch(loadPreviousReplies(posts));
 };
 
-export const loadRepliesInternal = (orderBy, answerId) => async (dispatch, getState) => {
+const lastNotForcedDown = (arr) => {
+	const notForcedDowns = arr.filter(r => !r.isForcedDown);
+	if (!notForcedDowns.length) return -1;
+	return last(notForcedDowns).index;
+};
+
+export const loadRepliesInternal = (orderBy, findPostId = null) => async (dispatch, getState) => {
 	const { discussPost: post } = getState();
+	const index = lastNotForcedDown(post.replies) + 1;
 	const posts = await fetchReplies({
-		postId: post.id, orderBy, index: post.replies.length, findPostId: answerId || null,
+		postId: post.id, orderBy, index, findPostId,
 	});
 	dispatch(loadReplies(posts));
 };
@@ -225,51 +238,39 @@ export const editQuestion = (id, title, message, tags) => (dispatch, getState) =
 	});
 };
 
-export const questionFollowing = isFollowing => dispatch => new Promise((resolve) => {
-	dispatch({
-		type: types.QUESTION_FOLLOWING,
-		payload: isFollowing,
-	});
-	resolve();
+export const questionFollowing = isFollowing => ({
+	type: types.QUESTION_FOLLOWING,
+	payload: isFollowing,
 });
 
 export const questionFollowingInternal = (id, isFollowing) => (dispatch, getState) => {
 	if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
-	dispatch(questionFollowing(isFollowing)).then(() => {
-		if (isFollowing) {
-			Service.request('Discussion/FollowPost', { id });
-		} else {
-			Service.request('Discussion/UnfollowPost', { id });
-		}
-	}).catch((error) => {
-		console.log(error);
-	});
+	dispatch(questionFollowing(isFollowing));
+	if (isFollowing) {
+		Service.request('Discussion/FollowPost', { id });
+	} else {
+		Service.request('Discussion/UnfollowPost', { id });
+	}
 };
 
-export const toggleAcceptedAnswer = (id, isAccepted) => dispatch =>
-	new Promise((resolve) => {
-		dispatch({
-			type: types.ACCEPT_ANSWER,
-			payload: { id, isAccepted: !isAccepted },
-		});
-		resolve();
-	});
+export const toggleAcceptedAnswer = (id, isAccepted) => ({
+	type: types.ACCEPT_ANSWER,
+	payload: { id, isAccepted: !isAccepted },
+});
 
 export const toggleAcceptedAnswerInternal = (id, isAccepted) => (dispatch, getState) => {
 	if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
-	dispatch(toggleAcceptedAnswer(id, isAccepted)).then(() => {
-		Service.request('Discussion/ToggleAcceptedAnswer', { id, accepted: !isAccepted });
-	}).catch((error) => {
-		console.log(error);
-	});
+	dispatch(toggleAcceptedAnswer(id, isAccepted));
+	Service.request('Discussion/ToggleAcceptedAnswer', { id, accepted: !isAccepted });
 };
 
-export const addReply = (postId, message) => async (dispatch, getState) => {
+export const addReply = (postId, message, byVotes) => async (dispatch, getState) => {
 	const { userProfile: { name } } = getState();
 	const { post } = await Service.request('Discussion/CreateReply', { postId, message });
 	post.userName = name;
-	// const response = await Service.request('Discussion/GetReply', { id });
-	dispatch(loadReplies([ post ]));
+	post.vote = 0;
+	dispatch(addNewReply(post, byVotes));
+	return post.id;
 };
 
 export const changeDiscussQuery = (query = '') => ({ type: types.CHANGE_DISCUSS_QUERY, payload: query });
