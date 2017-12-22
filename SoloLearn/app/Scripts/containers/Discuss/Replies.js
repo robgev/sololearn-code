@@ -9,7 +9,9 @@ import InfiniteVirtualizedList from '../../components/Shared/InfiniteVirtualized
 // Additional components
 import Reply from './Reply';
 
-const getNewCache = () => new CellMeasurerCache({
+import { RepliesStyles as styles } from './styles';
+
+const cache = new CellMeasurerCache({
 	defaultWidth: 1000,
 	minWidth: 75,
 	fixedWidth: true,
@@ -19,21 +21,22 @@ class Replies extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			cache: getNewCache(),
 			canLoadAbove: !!props.condition,
 		};
 	}
 	componentWillReceiveProps(nextProps) {
 		if (this.props.orderBy !== nextProps.orderBy ||
 			(this.props.replies.length && this.props.replies[0] !== nextProps.replies[0])) {
-			const cache = getNewCache();
-			this.setState({ cache });
+			cache.clearAll();
 		}
 		if (nextProps.replies.length > 0 &&
 			nextProps.replies[0].index === 0 &&
 			this.state.canLoadAbove) {
 			this.setState({ canLoadAbove: false });
 		}
+	}
+	componentWillUnmount() {
+		cache.clearAll();
 	}
 	renderReply = reply => (
 		<Reply
@@ -47,7 +50,7 @@ class Replies extends Component {
 	_forceUpdate = () => this._list._forceUpdate();
 	render() {
 		return (
-			<div id="replies" style={{ overflowY: 'hidden' }}>
+			<div style={styles.container}>
 				{this.state.canLoadAbove && this.props.replies.length > 0 &&
 					<RaisedButton
 						label="Load more"
@@ -59,7 +62,7 @@ class Replies extends Component {
 					list={this.props.replies}
 					loadMore={this.props.loadReplies}
 					width={1000}
-					cache={this.state.cache}
+					cache={cache}
 					condition={this.props.condition}
 					window
 					ref={(list) => { this._list = list; }}

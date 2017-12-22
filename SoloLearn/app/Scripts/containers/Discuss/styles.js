@@ -6,6 +6,8 @@ export const AddReplyStyles = {
 		background: '#fff',
 		boxSizing: 'border-box',
 		boxShadow: 'rgba(0, 0, 0, 0.156863) 0px 3px 10px, rgba(0, 0, 0, 0.227451) 0px 3px 10px',
+		position: 'fixed',
+		bottom: 0,
 	},
 	editor: {
 		position: 'relative',
@@ -542,5 +544,12 @@ export const ReplyStyles = {
 	editorActions: {
 		textAlign: 'right',
 		margin: '5px 0 0 0',
+	},
+};
+
+export const RepliesStyles = {
+	container: {
+		overflowY: 'hidden',
+		paddingBottom: 150,
 	},
 };
