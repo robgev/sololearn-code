@@ -27,7 +27,7 @@ class Replies extends Component {
 	componentWillReceiveProps(nextProps) {
 		if (this.props.orderBy !== nextProps.orderBy ||
 			(this.props.replies.length && this.props.replies[0] !== nextProps.replies[0])) {
-			cache.clearAll();
+			this.recompute();
 		}
 		if (nextProps.replies.length > 0 &&
 			nextProps.replies[0].index === 0 &&
@@ -38,6 +38,7 @@ class Replies extends Component {
 	componentWillUnmount() {
 		cache.clearAll();
 	}
+	recompute = (index) => { this._list.recomputeRowHeights(index); };
 	renderReply = reply => (
 		<Reply
 			key={reply.id}

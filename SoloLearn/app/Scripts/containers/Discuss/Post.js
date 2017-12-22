@@ -101,6 +101,8 @@ class Post extends Component {
 
 	// Change ordering of replies
 	handleFilterChange = (e, index, value) => {
+		const { post } = this.props;
+		browserHistory.replace(`/discuss/${post.id}/${post.alias}`);
 		this.setState({ ordering: value });
 		this.loadRepliesByState();
 	}
@@ -109,7 +111,6 @@ class Post extends Component {
 	loadRepliesByState = async () => {
 		try {
 			await this.props.emptyReplies();
-			this.setState({ isLoading: true });
 			await this.getReplies();
 		} catch (e) {
 			console.log(e);

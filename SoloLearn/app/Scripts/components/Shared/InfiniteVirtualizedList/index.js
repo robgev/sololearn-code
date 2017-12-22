@@ -27,7 +27,7 @@ class InfiniteVirtalizedList extends Component {
 	componentDidUpdate(prevProps) {
 		const { condition, list } = this.props;
 		if (prevProps.list.length === 0 && list.length > 0 && condition) {
-			this._scrollTo(condition, true);
+			this._scrollTo(condition);
 		}
 	}
 	componentWillReceiveProps(nextProps) {
@@ -61,7 +61,7 @@ class InfiniteVirtalizedList extends Component {
 	}
 
 	handleNextFetch = async ({ stopIndex }) => {
-		if (stopIndex === this.props.list.length - 1 && this.canLoadMore) {
+		if (stopIndex === this.props.list.length - 5 && this.canLoadMore) {
 			this.canLoadMore = false;
 			await this.props.loadMore();
 		}
