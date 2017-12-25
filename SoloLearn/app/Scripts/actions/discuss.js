@@ -119,11 +119,8 @@ export const loadRepliesInternal = (orderBy, findPostId = null) => async (dispat
 	dispatch(loadReplies(posts));
 };
 
-export const emptyReplies = () => dispatch => new Promise((resolve) => {
-	dispatch({
-		type: types.EMPTY_DISCUSS_POST_REPLIES,
-	});
-	resolve();
+export const emptyReplies = () => ({
+	type: types.EMPTY_DISCUSS_POST_REPLIES,
 });
 
 const votePost = (id, isPrimary, vote, votes) => dispatch => new Promise((resolve) => {

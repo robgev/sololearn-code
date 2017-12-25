@@ -14,8 +14,8 @@ const types = {
 
 	postedQuestion: 201,
 	postedAnswer: 202,
-	postedComment: 203,
-	postedCommentReply: 204,
+	postedLessonComment: 203,
+	postedLessonCommentReply: 204,
 	upvotePost: 205,
 	upvoteComment: 206,
 

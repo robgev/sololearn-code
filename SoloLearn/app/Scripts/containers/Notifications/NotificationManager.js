@@ -26,21 +26,14 @@ const mapDispatchToProps = { getNotificationCount, setNotificationCount };
 @connect(mapStateToProps, mapDispatchToProps)
 @Radium
 class NotificationManager extends PureComponent {
-	state = {
-		isOpened: false,
-	};
+	state = { isOpened: false };
 	componentWillMount() {
 		this.props.getNotificationCount();
 	}
-
 	toggleNotificationsOpen = () => {
-		const { isOpened } = this.state;
-		this.setState({ isOpened: !isOpened });
-		if (!isOpened) {
-			this.props.setNotificationCount(0);
-		}
+		this.setState({ isOpened: !this.state.isOpened });
+		this.props.setNotificationCount(0);
 	}
-
 	render() {
 		return (
 			<div style={styles.notifications}>

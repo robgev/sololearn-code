@@ -41,15 +41,17 @@ class NotificationItem extends Component {
 	openNotificationLink = (notification) => {
 		switch (notification.type) {
 		case types.completedChallange:
+		case types.startedChallange:
+		case types.challangeReviewRejected:
 			browserHistory.push(`/challenge/${notification.contest.id}`);
 			break;
-		case types.postedAnswer:
 		case types.postedQuestion:
-		case types.postedComment:
-		case types.postedCommentReply:
+			browserHistory.push(`/discuss/${notification.post.id}`);
+			break;
 		case types.upvotePost:
 		case types.upvoteComment:
-			browserHistory.push(`/discuss/${notification.post.parentID || notification.post.id}`);
+		case types.postedAnswer:
+			browserHistory.push(`/discuss/${notification.post.parentID}/answer/${notification.post.id}`);
 			break;
 		case types.following:
 		case types.friendJoined:
@@ -59,8 +61,14 @@ class NotificationItem extends Component {
 			browserHistory.push(`/profile/${notification.user.id}/badges`);
 			break;
 		case types.postedCodeComment:
+		case types.postedCodeCommentReply:
+		case types.upvoteCodeComment:
 			this.props.setSelectedComment(notification.codeComment.id);
 			browserHistory.push(`/playground/${notification.code.publicID}`);
+			break;
+		case types.postedLessonComment:
+		case types.postedLessonCommentReply:
+			this.props.setSelectedComment(notification.codeComment.id);
 			break;
 		default:
 			break;

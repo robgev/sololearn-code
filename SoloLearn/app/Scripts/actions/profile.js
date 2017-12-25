@@ -42,10 +42,7 @@ const groupNotificationItems = (notifications) => {
 
 		groupedNotifications.push(firstItem);
 	}
-
-	return new Promise((resolve) => {
-		resolve(groupedNotifications);
-	});
+	return groupedNotifications;
 };
 
 export const getNotificationsInternal = (fromId, toId) =>
@@ -54,7 +51,7 @@ export const getNotificationsInternal = (fromId, toId) =>
 		try {
 			const { notifications } = await Service.request('Profile/GetNotifications', { fromId, toId, count: 20 });
 			const { length } = notifications;
-			const notificationItemsResponse = await groupNotificationItems(notifications);
+			const notificationItemsResponse = groupNotificationItems(notifications);
 			dispatch(getNotifications(notificationItemsResponse));
 			return length;
 		} catch (e) {

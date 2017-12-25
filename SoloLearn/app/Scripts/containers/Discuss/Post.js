@@ -54,24 +54,40 @@ class Post extends Component {
 			isLoading: true,
 			fullyLoaded: false,
 			deletePopupOpened: false,
-			condition: props.params.replyId ?
-				props.params.replyId : null,
 		};
 
 		this.deletingPost = null;
 	}
 
 	async componentWillMount() {
-		const { params } = this.props;
-		this.props.loadPost(null);
-		await this.props.loadPostInternal(params.id);
-		await this.getReplies(params.replyId);
-		this.checkAlias(params.questionName);
+		this.initialize();
+	}
+
+	async componentDidUpdate(prevProps) {
+		const { params: newParams } = this.props;
+		const { params: oldParams } = prevProps;
+		if (newParams.id !== oldParams.id) {
+			this.initialize();
+		} else if (newParams.replyId != null && newParams.replyId !== oldParams.replyId) {
+			this.props.emptyReplies();
+			await this.getReplies(newParams.replyId);
+			this._replies.scrollTo(newParams.replyId);
+		}
 	}
 
 	componentWillUnmount() {
 		this.props.loadPost(null);
 	}
+
+	initialize = async () => {
+		const { params } = this.props;
+		this.props.loadPost(null);
+		await this.props.loadPostInternal(params.id);
+		await this.getReplies(params.replyId);
+		this._replies.scrollTo(params.replyId);
+		this.checkAlias(params.questionName);
+	}
+
 	// Get post answers
 	getReplies = async (replyId) => {
 		const { ordering } = this.state;
@@ -112,7 +128,7 @@ class Post extends Component {
 	// Load questions when condition changes
 	loadRepliesByState = async () => {
 		try {
-			await this.props.emptyReplies();
+			this.props.emptyReplies();
 			await this.getReplies();
 		} catch (e) {
 			console.log(e);
@@ -202,7 +218,6 @@ class Post extends Component {
 							isUsersQuestion={usersQuestion}
 							loadReplies={this.getReplies}
 							loadPreviousReplies={this.getPreviousReplies}
-							condition={this.state.condition}
 							orderBy={this.state.ordering}
 							ref={(replies) => { this._replies = replies; }}
 						/>

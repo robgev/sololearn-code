@@ -96,7 +96,6 @@ export const getCommentsAboveInternal = options => async (dispatch) => {
 export const getCommentsInternal = ({
 	id, index, orderby, commentsType, count = 20, type = null, parentId = null, findPostId = null,
 }) => async (dispatch) => {
-	console.warn('blablabla');
 	const [ url, params ] = getPathAndParams({
 		id, index, orderby, count, type, parentId, commentsType, findPostId,
 	});

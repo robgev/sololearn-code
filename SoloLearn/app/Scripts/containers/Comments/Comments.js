@@ -105,7 +105,6 @@ class Comments extends Component {
 		} else {
 			index = lastNonForcedDownIndex(comments) + 1;
 		}
-		console.log(index);
 		if (index === -1 || (comments.length > 0 && comments[0].index === -1)) {
 			this._list._markFull();
 			return;
