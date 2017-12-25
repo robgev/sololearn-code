@@ -40,26 +40,49 @@ class NotificationList extends Component {
 		this.isUnmounted = false;
 	}
 
+	async componentWillMount() {
+		if (!this.props.isNotificationLoaded) {
+			await this.getNotifications(null, null);
+			this.markAsSeen();
+		}
+	}
+
+	// Add event listeners after component mounts
+	componentDidMount() {
+		const { isPopup } = this.props;
+		if (isPopup) {
+			const scollingArea = document.getElementById('notifications-body');
+			scollingArea.addEventListener('scroll', this.handleScroll);
+		} else {
+			window.addEventListener('scroll', this.handleWindowScroll);
+		}
+	}
+
+	// Remove event listeners after component unmounts
+	componentWillUnmount() {
+		const { isPopup } = this.props;
+		if (isPopup) {
+			const scollingArea = document.getElementById('notifications-body');
+			scollingArea.removeEventListener('scroll', this.handleScroll);
+		} else {
+			window.removeEventListener('scroll', this.handleWindowScroll);
+		}
+		this.isUnmounted = true;
+	}
+
 	handleOpenIfPopup = () => {
 		if (this.props.isPopup) { this.props.toggleNotificationsOpen(); }
 	}
 
-	// Get post answers
 	getNotifications = async (fromId, toId) => {
 		const { getNotifications } = this.props;
+		this.setState({ isLoading: true });
+		const count = await getNotifications(fromId, toId);
 		if (!this.isUnmounted) {
-			this.setState({ isLoading: true });
-			try {
-				const count = await getNotifications(fromId, toId);
-				if (!this.isUnmounted) {
-					if (count < 20) {
-						this.setState({ fullyLoaded: true });
-					} else {
-						this.setState({ isLoading: false });
-					}
-				}
-			} catch (error) {
-				console.log(error);
+			if (count < 20) {
+				this.setState({ fullyLoaded: true });
+			} else {
+				this.setState({ isLoading: false });
 			}
 		}
 	}
@@ -99,11 +122,8 @@ class NotificationList extends Component {
 
 	// Mark notifications as seen
 	markAsSeen = () => {
-		if (!this.isUnmounted) {
-			const { notifications } = this.props;
-
-			Service.request('Profile/MarkNotificationsSeen', { fromId: notifications[0].id });
-		}
+		const { notifications } = this.props;
+		Service.request('Profile/MarkNotificationsSeen', { fromId: notifications[0].id });
 	}
 
 	render() {
@@ -130,49 +150,19 @@ class NotificationList extends Component {
 				{isNotificationLoaded && this.rednerNotifications()}
 				{
 					(isNotificationLoaded && !this.state.fullyLoaded) &&
-					<div className="loading" style={!this.state.isLoading ? bottomLoadingStyle : [ bottomLoadingStyle, styles.bottomLoading.active ]}>
+					<div
+						className="loading"
+						style={
+							!this.state.isLoading
+								? bottomLoadingStyle
+								: [ bottomLoadingStyle, styles.bottomLoading.active ]
+						}
+					>
 						<LoadingOverlay size={isPopup ? 17 : 30} thickness={isPopup ? 2 : 3.5} />
 					</div>
 				}
 			</List>
 		);
-	}
-
-	componentWillMount() {
-		const { isPopup, isNotificationLoaded } = this.props;
-		if (isPopup) {
-			this.getNotifications(null, null).then(() => {
-				this.markAsSeen();
-			});
-		} else if (!isNotificationLoaded) {
-			this.getNotifications(null, null).then(() => {
-				this.markAsSeen();
-			});
-		}
-	}
-
-	// Add event listeners after component mounts
-	componentDidMount() {
-		const { isPopup } = this.props;
-		if (isPopup) {
-			const scollingArea = document.getElementById('notifications-body');
-			scollingArea.addEventListener('scroll', this.handleScroll);
-		} else {
-			window.addEventListener('scroll', this.handleWindowScroll);
-		}
-	}
-
-	// Remove event listeners after component unmounts
-	componentWillUnmount() {
-		const { isPopup } = this.props;
-		if (isPopup) {
-			const scollingArea = document.getElementById('notifications-body');
-			scollingArea.removeEventListener('scroll', this.handleScroll);
-		} else {
-			window.removeEventListener('scroll', this.handleWindowScroll);
-		}
-
-		this.isUnmounted = true;
 	}
 }
 
