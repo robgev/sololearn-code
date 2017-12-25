@@ -23,6 +23,23 @@ const mapDispatchToProps = { markAllRead: markReadInternal };
 @connect(null, mapDispatchToProps)
 @Radium
 class NotificationPopup extends Component {
+	componentDidMount() {
+		document.addEventListener('click', this.handleDocumentClick);
+	}
+
+	// Remove event listeners after component unmounts
+	componentWillUnmount() {
+		document.removeEventListener('click', this.handleDocumentClick);
+	}
+
+	// Using fat arrow to bind to instance
+	handleDocumentClick = (e) => {
+		const notificationsArea = document.getElementById('notifications');
+		if (!notificationsArea.contains(e.target) && this.props.isOpened) {
+			this.props.toggleNotificationsOpen();
+		}
+	}
+
 	render() {
 		return (
 			<Motion
@@ -35,7 +52,7 @@ class NotificationPopup extends Component {
 				{
 					interpolatingStyle =>
 						(
-							<div style={[ styles.wrapper, interpolatingStyle ]}>
+							<div id="notifications" style={[ styles.wrapper, interpolatingStyle ]}>
 								<div className="arrow" style={styles.arrow} />
 								<Paper className="notifications-container" style={styles.notificationsContainer}>
 									<div className="notification-header" style={styles.notificationsHeader}>
