@@ -59,7 +59,7 @@ class CommentsBase extends Component {
 	}
 
 	// Cancel all active actions
-	partialCancel = partialState =>
+	partialCancel = (partialState, callback) =>
 		this.setState({
 			isEditing: false,
 			isReplying: false,
@@ -73,10 +73,10 @@ class CommentsBase extends Component {
 				previousParentId: this.state.activeComment.parentId,
 			},
 			...partialState,
-		})
+		}, callback);
 
 	// Open comment editing area
-	openEdit = async (id, parentId, userName) => {
+	openEdit = (id, parentId, userName) => {
 		this.partialCancel({
 			isEditing: true,
 			activeComment: {
@@ -84,6 +84,16 @@ class CommentsBase extends Component {
 				parentId,
 				userName,
 			},
+		}, () => {
+			this._comments.getWrappedInstance().recompute();
+			this._comments.getWrappedInstance()._forceUpdate();
+		});
+	}
+
+	cancelAll = () => {
+		this.partialCancel(null, () => {
+			this._comments.getWrappedInstance().recompute();
+			this._comments.getWrappedInstance()._forceUpdate();
 		});
 	}
 
@@ -238,7 +248,7 @@ class CommentsBase extends Component {
 						isLoaded={areCommentsLoaded}
 						ordering={this.state.ordering}
 						openEdit={this.openEdit}
-						cancelAll={this.partialCancel}
+						cancelAll={this.cancelAll}
 						openReplyBoxToolbar={this.openReplyBoxToolbar}
 						deleteComment={this.handleDeleteDialogOpen}
 						selectedComment={this.state.selectedComment}

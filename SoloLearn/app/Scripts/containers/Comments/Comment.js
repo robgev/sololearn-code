@@ -227,6 +227,7 @@ class Comment extends Component {
 		} = this.props;
 		const isReply = parentID != null;
 		const isEditing = (this.props.isEditing && activeComment.id === id);
+		console.log(isEditing);
 
 		return (
 			<div style={{ ...styles.commentContainer.base, marginLeft: isReply ? 20 : 0 }}>
