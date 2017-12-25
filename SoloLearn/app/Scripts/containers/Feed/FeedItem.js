@@ -1,5 +1,6 @@
 // React modules
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Radium from 'radium';
 
@@ -7,6 +8,7 @@ import Radium from 'radium';
 import Paper from 'material-ui/Paper';
 
 // Additional data and components
+import { setSelectedComment } from 'actions/comments';
 import FeedItems from './FeedItems';
 import FeedItemBase from './FeedItemBase';
 import Badge from './FeedTemplates/Badge';
@@ -41,6 +43,10 @@ const styles = {
 	},
 };
 
+const mapDispatchToProps = { setSelectedComment };
+
+@connect(null, mapDispatchToProps)
+@Radium
 class FeedItem extends Component {
 	constructor(props) {
 		super(props);
@@ -81,6 +87,7 @@ class FeedItem extends Component {
 			this.votes = feedItem.post.votes;
 			return <Post post={feedItem.post} isQuestion={false} url={this.url} />;
 		case types.postedCode:
+		case types.upvoteCode:
 			this.url = `/playground/${feedItem.code.publicID}`;
 			this.votes = feedItem.code.votes;
 			return <Code code={feedItem.code} />;
@@ -89,6 +96,19 @@ class FeedItem extends Component {
 			return <Challenge contest={feedItem.contest} openPopup={this.props.openPopup} />;
 		case types.suggestions:
 			return <FeedSuggestions suggestions={feedItem.suggestions} />;
+			// case types.postedLessonComment:
+			// case types.postedLessonCommentReply:
+			// 	this.url = `/learn/${feedItem.course.alias}/${feedItem.course.id}/lesson`;
+			// break;
+		case types.postedCodeComment:
+		case types.postedCodeCommentReply:
+		case types.upvoteCodeComment:
+			this.url = `/playground/${feedItem.code.publicID}`;
+			return (
+				<div onClick={() => this.props.setSelectedComment(feedItem.comment.id)}>
+					<Code code={feedItem.code} />
+				</div>
+			);
 		default:
 			return null;
 		}
@@ -147,4 +167,4 @@ class FeedItem extends Component {
 	}
 }
 
-export default Radium(FeedItem);
+export default FeedItem;
