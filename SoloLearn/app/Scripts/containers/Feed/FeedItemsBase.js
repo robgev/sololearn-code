@@ -18,6 +18,7 @@ import {
 	getNewFeedItemsInternal,
 	getUserSuggestionsInternal,
 	getPinnedFeedItemsInternal,
+	clearProfileFeedItems,
 } from 'actions/feed';
 
 // Service
@@ -211,20 +212,18 @@ class FeedItemsBase extends Component {
 			|| this.state.totalLoses !== nextState.totalLoses);
 	}
 
-	// Remove event listeners after component unmounts
 	componentWillUnmount() {
+		if (this.props.isUserProfile) {
+			this.props.clearProfileFeedItems([]);
+		}
 		window.removeEventListener('scroll', this.handleScroll);
 	}
 
 	loadFeedItems = async (fromId) => {
 		this.setState({ isLoading: true });
-		// try {
 		const count = await this.props.getFeedItems(fromId, this.props.userId);
 		if (count === 0) this.setState({ fullyLoaded: true });
 		this.setState({ isLoading: false });
-		// } catch (e) {
-		// 	console.log(e);
-		// }
 	}
 
 	// Check availability of new items above
@@ -489,6 +488,7 @@ const mapDispatchToProps = {
 	getPinnedFeedItems: getPinnedFeedItemsInternal,
 	getUserSuggestions: getUserSuggestionsInternal,
 	getNewFeedItems: getNewFeedItemsInternal,
+	clearProfileFeedItems,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Radium(FeedItemsBase));

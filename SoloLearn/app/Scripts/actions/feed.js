@@ -59,6 +59,8 @@ export const getProfileFeedItems = feedItems => ({
 	payload: feedItems,
 });
 
+export const clearProfileFeedItems = () => ({ type: types.CLEAR_PROFILE_FEED_ITEMS });
+
 export const getFeedItemsInternal = (fromId, profileId) => async (dispatch, getState) => {
 	try {
 		const response = await Service.request('Profile/GetFeed', { fromId, profileId, count: 20 });
