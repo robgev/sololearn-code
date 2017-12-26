@@ -59,69 +59,67 @@ const styles = {
 };
 
 class Header extends PureComponent {
-navigateToProfile = () => {
-	const profile = this.props.userProfile;
-	browserHistory.push(`/profile/${profile.id}`);
-}
-render() {
-	const { levels, profile } = this.props;
-	const { level: userLevel, xp: currentXp } = profile;
-	let maxXp = null;
-	let status = '';
-	const levelsWithStatus = levels.filter(item => item.status != null);
-	// TODO Write a comment
-	if (userLevel >= levelsWithStatus[levelsWithStatus.length - 1].number) {
-		maxXp = currentXp;
-		status = levelsWithStatus[levelsWithStatus.length - 1].status;
-	} else {
-		for (let i = userLevel; i < levels.length - 1; i++) {
-			const currentLevel = levels[i];
+	render() {
+		const { levels, profile } = this.props;
+		const { level: userLevel, xp: currentXp } = profile;
+		let maxXp = null;
+		let status = '';
+		const levelsWithStatus = levels.filter(item => item.status != null);
+		// TODO Write a comment
+		if (userLevel >= levelsWithStatus[levelsWithStatus.length - 1].number) {
+			maxXp = currentXp;
+			status = levelsWithStatus[levelsWithStatus.length - 1].status;
+		} else {
+			for (let i = userLevel; i < levels.length - 1; i++) {
+				const currentLevel = levels[i];
 
-			if (currentLevel.status != null) {
-				maxXp = levels[i - 1].maxXp;
-				status = currentLevel.status;
-				break;
+				if (currentLevel.status != null) {
+					maxXp = levels[i - 1].maxXp;
+					status = currentLevel.status;
+					break;
+				}
 			}
 		}
-	}
 
-	return (
-		<Paper className="feed-header" style={styles.container} onClick={this.navigateToProfile}>
-			<div className="details-wrapper" style={styles.detailsWrapper}>
-				<ProfileAvatar
-					size={50}
-					userID={profile.id}
-					style={styles.avatar}
-					userName={profile.name}
-					avatarUrl={profile.avatarUrl}
-				/>
-				<div className="details" style={styles.details}>
-					<p style={styles.name}>{profile.name}</p>
-					<Link to="/leaderboard" style={styles.leaderboardLink}>
-Check out the leaderboard
-					</Link>
-					<div style={styles.progressWrapper}>
-						<LinearProgress
-							min={0}
-							max={maxXp}
-							color="#8BC34A"
-							value={currentXp}
-							mode="determinate"
-							style={styles.progress}
+		return (
+			<Link to={`/profile/${this.props.profile.id}`}>
+				<Paper className="feed-header" style={styles.container}>
+					<div className="details-wrapper" style={styles.detailsWrapper}>
+						<ProfileAvatar
+							size={50}
+							userID={profile.id}
+							style={styles.avatar}
+							userName={profile.name}
+							avatarUrl={profile.avatarUrl}
 						/>
-						<span style={styles.status}>{status}</span>
+						<div className="details" style={styles.details}>
+							<p style={styles.name}>{profile.name}</p>
+							<Link to="/leaderboard" style={styles.leaderboardLink}>
+								Check out the leaderboard
+							</Link>
+							<div style={styles.progressWrapper}>
+								<LinearProgress
+									min={0}
+									max={maxXp}
+									color="#8BC34A"
+									value={currentXp}
+									mode="determinate"
+									style={styles.progress}
+								/>
+								<span style={styles.status}>{status}</span>
+							</div>
+						</div>
 					</div>
-				</div>
-			</div>
-			<div className="actions" style={styles.actions}>
-				<RaisedButton
-					secondary
-					label="Invite Friends"
-				/>
-			</div>
-		</Paper>
-	);
-}
+					<div className="actions" style={styles.actions}>
+						<RaisedButton
+							secondary
+							label="Invite Friends"
+						/>
+					</div>
+				</Paper>
+			</Link>
+		);
+	}
 }
 
 export default Header;
