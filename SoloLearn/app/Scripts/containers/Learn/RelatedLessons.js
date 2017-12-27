@@ -19,6 +19,7 @@ const RelatedLessons = ({
 				round
 				id={id}
 				noName
+				noViewMore
 				name="Implementations"
 				items={implementations}
 			/>
@@ -33,6 +34,7 @@ const RelatedLessons = ({
 			(relevantLessons.length > 1 ?
 				<CollectionCard
 					id={id}
+					noViewMore
 					name="See also"
 					items={relevantLessons}
 				/> :

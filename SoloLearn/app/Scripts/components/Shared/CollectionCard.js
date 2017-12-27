@@ -20,6 +20,7 @@ const CollectionCard = ({
 	courses,
 	round = false,
 	noName = false,
+	noViewMore = false,
 }) => {
 	// lessons are the old Sololearn-created courses, like learn HTML, C# etc.
 	const isCourses = type === collectionTypes.courses;
@@ -34,12 +35,14 @@ const CollectionCard = ({
 		>
 			<div className="meta-info">
 				<p>{ name }</p>
-				<FlatButton
-					label="Load more"
-					containerElement={
-						<Link to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} />
-					}
-				/>
+				{ !noViewMore &&
+					<FlatButton
+						label="Load more"
+						containerElement={
+							<Link to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} />
+						}
+					/>
+				}
 			</div>
 			<div className="courses-list">
 				{
