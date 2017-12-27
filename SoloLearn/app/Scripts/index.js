@@ -6,6 +6,7 @@ import { Provider, connect } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
+import 'styles/root.scss';
 import Service from 'api/service';
 import { loadDefaults } from 'actions/defaultActions';
 import { store, defaultsLoaded } from 'reducers';

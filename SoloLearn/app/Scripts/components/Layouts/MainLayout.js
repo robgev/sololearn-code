@@ -26,9 +26,6 @@ import LoadingOverlay from 'components/Shared/LoadingOverlay';
 // Theme
 import Theme from 'defaults/theme';
 
-// Utils
-import defaultSyles from '../../styles/defaults';
-
 const muiTheme = getMuiTheme(Theme);
 
 const styles = {
@@ -82,7 +79,6 @@ class MainLayout extends Component {
 							>
 								<Login />
 							</Dialog>
-							{defaultSyles}
 							<Header />
 							{this.props.children}
 						</div>
