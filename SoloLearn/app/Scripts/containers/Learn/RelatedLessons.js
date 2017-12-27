@@ -6,6 +6,7 @@ import 'styles/relatedLessons.scss';
 
 const RelatedLessons = ({
 	id,
+	userID,
 	userName,
 	nextLesson,
 	lessonsByUser,
@@ -44,7 +45,7 @@ const RelatedLessons = ({
 		{	(lessonsByUser && !!lessonsByUser.length) &&
 			(lessonsByUser.length > 1 ?
 				<CollectionCard
-					id={id}
+					userID={userID}
 					name={`More by ${userName}`}
 					items={lessonsByUser}
 				/> :

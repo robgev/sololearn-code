@@ -16,6 +16,7 @@ const CollectionCard = ({
 	type,
 	name,
 	items,
+	userID,
 	courses,
 	round = false,
 	noName = false,
@@ -35,7 +36,9 @@ const CollectionCard = ({
 				<p>{ name }</p>
 				<FlatButton
 					label="Load more"
-					containerElement={<Link to={`/learn/more/${id}`} />}
+					containerElement={
+						<Link to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} />
+					}
 				/>
 			</div>
 			<div className="courses-list">

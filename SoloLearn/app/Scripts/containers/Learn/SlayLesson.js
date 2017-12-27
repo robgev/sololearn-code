@@ -129,6 +129,7 @@ class SlayLesson extends PureComponent {
 						/>
 						<RelatedLessons
 							id={id}
+							userID={userID}
 							userName={userName}
 							nextLesson={nextLesson}
 							lessonsByUser={lessonsByUser}

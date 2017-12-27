@@ -5,12 +5,18 @@ import {
 	SET_LESSON_COLLECTIONS,
 	APPEND_COLLECTION_ITEMS,
 } from 'constants/ActionTypes';
+import { differenceBy } from 'lodash';
 import { combineReducers } from 'redux';
+
+const safeAdd = (oldList, newList) => {
+	const appendedArticles = differenceBy(newList, oldList, 'id');
+	return [ ...oldList, ...appendedArticles ];
+};
 
 const slayCollections = (state = [], action) => {
 	switch (action.type) {
 	case SET_LESSON_COLLECTIONS:
-		return [ ...state, ...action.payload ];
+		return safeAdd(state, action.payload);
 	default:
 		return state;
 	}
@@ -21,7 +27,7 @@ const filteredCollectionItems = (state = [], action) => {
 	case SET_COLLECTION_ITEMS:
 		return action.payload;
 	case APPEND_COLLECTION_ITEMS:
-		return [ ...state, ...action.payload ];
+		return safeAdd(state, action.payload);
 	default:
 		return state;
 	}
