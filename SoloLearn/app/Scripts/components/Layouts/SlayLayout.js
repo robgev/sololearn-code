@@ -56,7 +56,9 @@ class Layout extends PureComponent {
 							hasMore={hasMore}
 							loadMore={loadMore}
 							style={{ width: '100%' }}
-							loader={<div>Loading...</div>}
+							loader={loading ? null : <div>Loading...</div>}
+							// Loading specifies initial load.
+							// We don't want infinite scroll loading thing on inital load
 						>
 							{items.map(collection => (
 								<CardComponent
