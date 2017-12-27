@@ -3,13 +3,14 @@ import {
 	SET_LESSONS_BY_USER,
 	SET_COLLECTION_ITEMS,
 	SET_LESSON_COLLECTIONS,
+	APPEND_COLLECTION_ITEMS,
 } from 'constants/ActionTypes';
 import { combineReducers } from 'redux';
 
 const slayCollections = (state = [], action) => {
 	switch (action.type) {
 	case SET_LESSON_COLLECTIONS:
-		return action.payload;
+		return [ ...state, ...action.payload ];
 	default:
 		return state;
 	}
@@ -19,6 +20,8 @@ const filteredCollectionItems = (state = [], action) => {
 	switch (action.type) {
 	case SET_COLLECTION_ITEMS:
 		return action.payload;
+	case APPEND_COLLECTION_ITEMS:
+		return [ ...state, ...action.payload ];
 	default:
 		return state;
 	}

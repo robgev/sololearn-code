@@ -19,7 +19,10 @@ class SlayDetailed extends PureComponent {
 	constructor() {
 		super();
 		this.state = {
+			startIndex: 0,
+			loadCount: 10,
 			loading: true,
+			hasMore: true,
 		};
 	}
 
@@ -28,22 +31,39 @@ class SlayDetailed extends PureComponent {
 		// We don't need to have this much of difference between
 		// initial SL lessons and slay lessons
 		const { params } = this.props;
+		const { startIndex, loadCount } = this.state;
 		const collectionId = parseInt(params.collectionId, 10);
-		if (collectionId !== 1) {
-			await this.props.getCollectionItems(collectionId, { index: 0, count: 10 });
+		if (collectionId !== 1) { // Default SoloLearn lessons
+			const length =
+				await this.props.getCollectionItems(collectionId, { index: startIndex, count: loadCount });
+			this.setState({ loading: false, hasMore: length === loadCount });
 		}
 		this.setState({ loading: false });
 	}
 
+	loadMore = async () => {
+		const { startIndex, loadCount } = this.state;
+		const { params } = this.props;
+		const collectionId = parseInt(params.collectionId, 10);
+		const length =
+			await this.props.getCollectionItems(collectionId, { index: startIndex, count: loadCount });
+		this.setState({
+			hasMore: length === loadCount,
+			startIndex: startIndex + loadCount,
+		});
+	}
+
 	render() {
-		const { loading } = this.state;
+		const { loading, hasMore } = this.state;
 		const { params, collectionCourses, courses } = this.props;
 		const collectionId = parseInt(params.collectionId, 10);
 		const courseItems = collectionId !== 1 ? collectionCourses : courses;
 		return (
 			<SlayLayout
 				loading={loading}
+				hasMore={hasMore}
 				items={courseItems}
+				loadMore={this.loadMore}
 				cardComponent={CourseCard}
 			/>
 		);

@@ -14,7 +14,10 @@ class SlayDetailed extends PureComponent {
 	constructor() {
 		super();
 		this.state = {
+			startIndex: 0,
+			loadCount: 20,
 			loading: true,
+			hasMore: true,
 		};
 	}
 
@@ -22,29 +25,55 @@ class SlayDetailed extends PureComponent {
 		// Need to rewrite this part after architecture change.
 		// We don't need to have this much of difference between
 		// initial SL lessons and slay lessons
+		const { startIndex, loadCount } = this.state;
 		const { params: { query } } = this.props;
-		await this.props.searchLessons(query, { index: 0, count: 10 });
-		this.setState({ loading: false });
+		const length =
+			await this.props.searchLessons(query, { index: startIndex, count: loadCount });
+		this.setState({
+			loading: false,
+			hasMore: length === loadCount,
+			startIndex: startIndex + loadCount,
+		});
 	}
 
 	async componentWillReceiveProps(newProps) {
-		this.setState({ loading: true });
+		const { startIndex, loadCount } = this.state;
 		const { params } = this.props;
 		const { params: { query } } = newProps;
 		if (params.query !== query) {
-			await this.props.searchLessons(query, { index: 0, count: 10 });
+			this.setState({ loading: true });
+			const length =
+				await this.props.searchLessons(query, { index: startIndex, count: loadCount });
+			this.setState({
+				loading: false,
+				hasMore: length === loadCount,
+				startIndex: startIndex + loadCount,
+			});
 		}
-		this.setState({ loading: false });
+	}
+
+	loadMore = async () => {
+		console.log('Here');
+		const { startIndex, loadCount } = this.state;
+		const { params: { query } } = this.props;
+		const length =
+			await this.props.searchLessons(query, { index: startIndex, count: loadCount });
+		this.setState({
+			hasMore: length === loadCount,
+			startIndex: startIndex + loadCount,
+		});
 	}
 
 	render() {
-		const { loading } = this.state;
+		const { loading, hasMore } = this.state;
 		const { lessons, params: { query } } = this.props;
 		return (
 			<SlayLayout
 				items={lessons}
 				loading={loading}
+				hasMore={hasMore}
 				searchValue={query}
+				loadMore={this.loadMore}
 				cardComponent={CourseCard}
 			/>
 		);

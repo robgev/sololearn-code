@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Link, browserHistory } from 'react-router';
+import InfiniteScroll from 'react-infinite-scroller';
 import SearchBar from 'components/Shared/SearchBar';
 import BusyWrapper from 'components/Shared/BusyWrapper';
 
@@ -31,6 +32,8 @@ class Layout extends PureComponent {
 			items,
 			loading,
 			children,
+			hasMore,
+			loadMore,
 			cardComponent: CardComponent,
 		} = this.props;
 		const { searchText } = this.state;
@@ -48,12 +51,20 @@ class Layout extends PureComponent {
 						isBusy={loading}
 						style={{ minHeight: '60vh' }}
 					>
-						{items.map(collection => (
-							<CardComponent
-								{...collection}
-								key={collection.name}
-							/>
-						))}
+						<InfiniteScroll
+							pageStart={0}
+							hasMore={hasMore}
+							loadMore={loadMore}
+							style={{ width: '100%' }}
+							loader={<div>Loading...</div>}
+						>
+							{items.map(collection => (
+								<CardComponent
+									{...collection}
+									key={collection.name}
+								/>
+							))}
+						</InfiniteScroll>
 						{children}
 					</BusyWrapper>
 				</div>

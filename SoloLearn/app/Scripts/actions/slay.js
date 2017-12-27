@@ -8,8 +8,10 @@ export const getLessonCollections = pagingData => async (dispatch) => {
 			type: types.SET_LESSON_COLLECTIONS,
 			payload: collections,
 		});
+		return collections.length;
 	} catch (e) {
 		console.log(e);
+		return 0;
 	}
 };
 
@@ -18,11 +20,15 @@ export const getCollectionItems = (collectionId, pagingData) => async (dispatch)
 		const { lessons } =
 			await Service.request('/GetCollectionItems', { collectionId, ...pagingData });
 		dispatch({
-			type: types.SET_COLLECTION_ITEMS,
+			type: pagingData.index ?
+				types.APPEND_COLLECTION_ITEMS :
+				types.SET_COLLECTION_ITEMS,
 			payload: lessons,
 		});
+		return lessons.length;
 	} catch (e) {
 		console.log(e);
+		return 0;
 	}
 };
 
@@ -31,11 +37,18 @@ export const searchLessons = (query, pagingData) => async (dispatch) => {
 		const { lessons } =
 			await Service.request('/SearchLessons', { query, ...pagingData });
 		dispatch({
-			type: types.SET_COLLECTION_ITEMS,
+			type: pagingData.index ?
+				types.APPEND_COLLECTION_ITEMS :
+				types.SET_COLLECTION_ITEMS,
 			payload: lessons,
 		});
+		// We return this to know if there are more items
+		// That can be loaded later.
+		// Check out Learn/SlaySearch or SlayDetailed
+		return lessons.length;
 	} catch (e) {
 		console.log(e);
+		return 0;
 	}
 };
 
@@ -44,11 +57,15 @@ export const getBookmarkLessons = pagingData => async (dispatch) => {
 		const { lessons } =
 			await Service.request('/GetBookmarkedItems', pagingData);
 		dispatch({
-			type: types.SET_COLLECTION_ITEMS,
+			type: pagingData.index ?
+				types.APPEND_COLLECTION_ITEMS :
+				types.SET_COLLECTION_ITEMS,
 			payload: lessons,
 		});
+		return lessons.length;
 	} catch (e) {
 		console.log(e);
+		return 0;
 	}
 };
 

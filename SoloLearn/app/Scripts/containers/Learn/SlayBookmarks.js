@@ -14,22 +14,42 @@ class SlayHome extends PureComponent {
 	constructor() {
 		super();
 		this.state = {
+			startIndex: 0,
+			loadCount: 10,
 			loading: true,
+			hasMore: true,
 		};
 	}
 
 	async componentWillMount() {
-		await this.props.getBookmarkLessons({ id: 0, count: 10 });
-		this.setState({ loading: false });
+		const { startIndex, loadCount } = this.state;
+		const length =
+			await this.props.getBookmarkLessons({ index: startIndex, count: loadCount });
+		this.setState({
+			loading: false,
+			hasMore: length === loadCount,
+			startIndex: startIndex + loadCount,
+		});
+	}
+
+	loadMore = async () => {
+		const { startIndex, loadCount } = this.state;
+		const length =
+			await this.props.getBookmarkLessons({ index: startIndex, count: loadCount });
+		this.setState({
+			hasMore: length === loadCount,
+			startIndex: startIndex + loadCount,
+		});
 	}
 
 	render() {
-		const { loading } = this.state;
+		const { loading, hasMore } = this.state;
 		const { lessons } = this.props;
 		return (
 			<SlayLayout
 				items={lessons}
 				loading={loading}
+				hasMore={hasMore}
 				cardComponent={CourseCard}
 			>
 				{lessons.length ||
