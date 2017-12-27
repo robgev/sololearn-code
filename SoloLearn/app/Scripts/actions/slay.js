@@ -98,10 +98,14 @@ export const getLessonsByAuthor = (excludeLessonId, userId, pagingData) => async
 		const { lessons } =
 			await Service.request('/GetLessonsByAuthor', { excludeLessonId, userId, ...pagingData });
 		dispatch({
-			type: types.SET_LESSONS_BY_USER,
+			type: pagingData.index ?
+				types.APPEND_LESSONS_BY_USER :
+				types.SET_LESSONS_BY_USER,
 			payload: lessons,
 		});
+		return lessons.length;
 	} catch (e) {
 		console.log(e);
+		return 0;
 	}
 };

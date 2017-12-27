@@ -3,6 +3,7 @@ import {
 	SET_LESSONS_BY_USER,
 	SET_COLLECTION_ITEMS,
 	SET_LESSON_COLLECTIONS,
+	APPEND_LESSONS_BY_USER,
 	APPEND_COLLECTION_ITEMS,
 } from 'constants/ActionTypes';
 import { differenceBy } from 'lodash';
@@ -46,6 +47,8 @@ const lessonsByUser = (state = [], action) => {
 	switch (action.type) {
 	case SET_LESSONS_BY_USER:
 		return action.payload;
+	case APPEND_LESSONS_BY_USER:
+		return safeAdd(state, action.payload);
 	default:
 		return state;
 	}
