@@ -70,7 +70,7 @@ class FeedItem extends Component {
 		const { feedItem } = this.props;
 		switch (feedItem.type) {
 		case types.badgeUnlocked:
-			this.url = '/profile/badges';
+			this.url = `/profile/${feedItem.user.id}/badges`;
 			return <Badge achievement={feedItem.achievement} />;
 		case types.courseStarted:
 			this.url = `/learn/${feedItem.course.alias}`;
