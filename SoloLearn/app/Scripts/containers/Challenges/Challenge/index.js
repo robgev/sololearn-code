@@ -15,7 +15,7 @@ const styles = {
 	challengeWrapper: {
 		position: 'relative',
 		width: '1000px',
-		height: '500px',
+		height: '80vh',
 		margin: '15px auto',
 		overflow: 'hidden',
 	},
