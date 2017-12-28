@@ -5,12 +5,13 @@ import { fadeInUp } from 'react-animations';
 
 import Service from 'api/service';
 import contestTypes from 'defaults/contestTypes';
-import { Optional } from 'utils';
 
 import SingleResult from './SingleResult';
 import TypeSelector from './TypeSelector';
 import Start from './Start';
 import Result from './Result';
+import Timer from './Timer';
+import { getTime } from './challenge.utils';
 
 const styles = {
 	animate: animation => ({
@@ -36,7 +37,6 @@ class Game extends Component {
 			eventActive: false,
 		};
 	}
-
 	componentWillUnmount() {
 		if (!this.state.start && !this.state.end) {
 			this.leave();
@@ -112,29 +112,25 @@ class Game extends Component {
 		/>)
 	render() {
 		const message = this.state.result === 1 ? `Round ${this.state.step + 1}` :
-			(this.state.result == 2 ? 'Correct' : 'Wrong');
+			(this.state.result === 2 ? 'Correct' : 'Wrong');
 		const { contest } = this.props;
 		const { step } = this.state;
-		const CurrentChallenge = () => (
+		console.warn(getTime(contest, step));
+		if (this.state.result !== 0) {
+			return <SingleResult message={message} status={this.state.result} />;
+		}
+		if (this.state.end) return this.renderEnd();
+		else if (this.state.sart) return this.renderStart();
+		return (
 			<StyleRoot>
+				<Timer onTimerEnd={this.showResult} time={getTime(contest, step)} period={0.01} />
 				<div style={styles.animate(fadeInUp)}>
 					<TypeSelector
 						showResult={this.showResult}
 						quiz={contest.challenges[step]}
 					/>
 				</div>
-			</StyleRoot>);
-		return (
-			<Optional
-				idle={this.state.result !== 0}
-				IdleComponent={<SingleResult message={message} status={this.state.result} />}
-			>
-				{
-					this.state.end ? this.renderEnd() :
-						this.state.start ? this.renderStart() :
-						<CurrentChallenge />
-				}
-			</Optional>
+			</StyleRoot>
 		);
 	}
 }

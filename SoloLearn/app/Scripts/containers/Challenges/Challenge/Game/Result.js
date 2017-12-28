@@ -158,13 +158,8 @@ class Result extends Component {
 		this.props.update()
 			.then(() => this.setState({ updated: true }));
 	}
-	counter(arr) {
-		let result = 0;
-		arr.forEach((curr) => {
-			if (curr.isCompleted) { result++; }
-		});
-		return result;
-	}
+	counter = arr => arr.reduce((res, curr) => (curr.isCompleted ? res + 1 : res), 0)
+
 	answerBonusCounter = results => results.reduce((xp, current) => xp + current.earnedXp, 0)
 	matchResultCounter = contest =>
 		(contest.player.status === 1 ? contest.player.rewardXp : -contest.opponent.rewardXp)

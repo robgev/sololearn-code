@@ -30,35 +30,33 @@ const styles = {
 };
 
 class SingleResult extends PureComponent {
-    state = {
-    	in: true,
-    }
-    componentDidMount() {
-    	this.changeStyle();
-    }
-    componentWillReceiveProps(_) {
-    	this.setState({ in: true });
-    	this.changeStyle();
-    }
-    changeStyle = () => {
-    	setTimeout(() => {
-    		this.setState({ in: false });
-    	}, 750);
-    }
-    render() {
-    	const messageStyle = this.props.status == 1 ?
-    		styles.neutral :
-    		(this.props.status == 2 ? styles.right : styles.wrong);
-    	const isAppear = this.state.in ? styles.appear : styles.disappear;
-    	const fullStyle = { ...isAppear, ...messageStyle };
-    	return (
-    		<StyleRoot style={styles.center}>
-    			<h1 style={fullStyle}>
-    				{this.props.message}
- </h1>
- </StyleRoot>
-    	);
-    }
+	state = { in: true }
+	componentDidMount() {
+		this.changeStyle();
+	}
+	componentWillReceiveProps() {
+		this.setState({ in: true });
+		this.changeStyle();
+	}
+	changeStyle = () => {
+		setTimeout(() => {
+			this.setState({ in: false });
+		}, 750);
+	}
+	render() {
+		const messageStyle = this.props.status === 1 ?
+			styles.neutral :
+			(this.props.status === 2 ? styles.right : styles.wrong);
+		const isAppear = this.state.in ? styles.appear : styles.disappear;
+		const fullStyle = { ...isAppear, ...messageStyle };
+		return (
+			<StyleRoot style={styles.center}>
+				<h1 style={fullStyle}>
+					{this.props.message}
+				</h1>
+			</StyleRoot>
+		);
+	}
 }
 
 export default Radium(SingleResult);
