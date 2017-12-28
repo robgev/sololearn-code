@@ -63,7 +63,7 @@ class Layout extends PureComponent {
 								justifyContent: 'center',
 								alignItems: 'center',
 							}}
-							loader={!loading && <CircularProgress />}
+							loader={loading ? null : <CircularProgress />}
 							// Loading specifies initial load.
 							// We don't want infinite scroll loading thing on inital load
 						>
