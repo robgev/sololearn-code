@@ -89,7 +89,7 @@ class Toolbar extends PureComponent {
 			snackBarOpened: false,
 			savePopupOpened: false,
 			externalSourcesPopupOpened: false,
-		}
+		};
 	}
 
 	openSavePopup = () => {
@@ -98,23 +98,23 @@ class Toolbar extends PureComponent {
 
 	handleSavePopupClose = () => {
 		this.setState({
-				savePopupOpened: false,
-				codeName: '',
-				errorText: '',
-				isPublic: false
+			savePopupOpened: false,
+			codeName: '',
+			errorText: '',
+			isPublic: false,
 		});
 	}
 
-	saveCodeInternal =  id => {
+	saveCodeInternal = (id) => {
 		const { isPublic, codeName: name } = this.state;
-		const cleanedProps = omit(this.props, [ 'id', 'isUserCode' ])
+		const cleanedProps = omit(this.props, [ 'id', 'isUserCode' ]);
 		const sendData = {
 			id,
 			name,
 			isPublic,
 			...cleanedProps,
-		}
-		return Service.request("Playground/SaveCode", sendData);
+		};
+		return Service.request('Playground/SaveCode', sendData);
 	}
 
 	save = async () => {
@@ -127,7 +127,7 @@ class Toolbar extends PureComponent {
 		if (isUserCode && userCodeData.userID === userId) {
 			this.setState({
 				isSaving: true,
-				snackBarOpened: true
+				snackBarOpened: true,
 			});
 			try {
 				const { code } = await this.saveCodeInternal(userCodeData.id);
@@ -140,9 +140,9 @@ class Toolbar extends PureComponent {
 				});
 			} catch (error) {
 				console.log(error);
-			};
+			}
 		} else {
-				this.openSavePopup();
+			this.openSavePopup();
 		}
 	}
 
@@ -194,15 +194,15 @@ class Toolbar extends PureComponent {
 	}
 
 	addExternalSource = () => {
-		const { mode, jsCode, handleEditorChange, insertToHead } = this.props;
+		const {
+			mode, jsCode, handleEditorChange, insertToHead,
+		} = this.props;
 		const newSourceCode =
-			insertToHead(
-`<script src="${this.state.sourceUrl}">
+			insertToHead(`<script src="${this.state.sourceUrl}">
 	${jsCode}
-</script>\n`
-			);
+</script>\n`);
 		if (mode === 'html') {
-			handleEditorChange(newSourceCode)
+			handleEditorChange(newSourceCode);
 		}
 		this.handleExternalSourcesPopupClose();
 	}
@@ -211,7 +211,7 @@ class Toolbar extends PureComponent {
 		this.setState({ sourceUrl: e.target.value });
 	}
 
-	handleExternalResourceChange = (e, index, selectedSource)  => {
+	handleExternalResourceChange = (e, index, selectedSource) => {
 		const sourceUrl = selectedSource === 'none' ? '' : externalResources[selectedSource];
 		this.setState({
 			selectedSource,
@@ -221,22 +221,17 @@ class Toolbar extends PureComponent {
 
 	render() {
 		const {
-			id,
-			save,
 			type,
-			code,
 			theme,
-			jsCode,
-			cssCode,
+			userId,
 			runCode,
-			language,
 			isRunning,
 			isUserCode,
+			userCodeData,
 			showWebOutput,
 			languageSelector,
 			resetEditorValue,
 			handleThemeChange,
-			handleSavePopupOpen,
 			handleLanguageChange,
 		} = this.props;
 		const {
@@ -252,6 +247,7 @@ class Toolbar extends PureComponent {
 						value={languageSelector}
 						onChange={handleLanguageChange}
 						style={styles.languageFilter}
+						disabled={isUserCode && userCodeData.userID !== userId}
 					>
 						<MenuItem value="web" primaryText="HTML/CSS/JS" />
 						<MenuItem value="c_cpp" primaryText="C++" />
