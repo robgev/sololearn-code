@@ -115,7 +115,6 @@ class Game extends Component {
 			(this.state.result === 2 ? 'Correct' : 'Wrong');
 		const { contest } = this.props;
 		const { step } = this.state;
-		console.warn(getTime(contest, step));
 		if (this.state.result !== 0) {
 			return <SingleResult message={message} status={this.state.result} />;
 		}
@@ -123,7 +122,7 @@ class Game extends Component {
 		else if (this.state.sart) return this.renderStart();
 		return (
 			<StyleRoot>
-				<Timer onTimerEnd={this.showResult} time={getTime(contest, step)} period={0.01} />
+				<Timer onTimerEnd={this.showResult} time={getTime(contest, step)} />
 				<div style={styles.animate(fadeInUp)}>
 					<TypeSelector
 						showResult={this.showResult}
