@@ -106,6 +106,17 @@ class Profile extends Component {
 		this.selectTab(tab);
 	}
 
+	async componentWillReceiveProps(newProps) {
+		const { getProfile, params } = this.props;
+		const { params: { id } } = newProps;
+		if (params.id !== id) {
+			this.props.emptyProfileFollowers();
+			this.setState({ popupOpened: false });
+			this.props.clearOpenedProfile();
+			await getProfile(id);
+		}
+	}
+
 	componentWillUnmount() {
 		this.props.clearOpenedProfile();
 	}
