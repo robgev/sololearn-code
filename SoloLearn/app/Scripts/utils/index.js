@@ -14,6 +14,7 @@ import updateMessage from './messageFormatter';
 import numberFormatter from './numberFormatter';
 import getLanguageColor from './getLanguageColor';
 import EnumNameMapper from './enumNameMapper';
+import findCommonPrefix from './findCommonPrefix';
 import getChallengeStatus from './getChallengeStatus';
 import getCourseAliasById from './getCourseAliasById';
 
@@ -41,6 +42,7 @@ export {
 	numberFormatter,
 	getLanguageColor,
 	EnumNameMapper,
+	findCommonPrefix,
 	getChallengeStatus,
 	getCourseAliasById,
 };

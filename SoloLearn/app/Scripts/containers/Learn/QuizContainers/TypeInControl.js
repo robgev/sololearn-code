@@ -84,7 +84,10 @@ class TypeInControl extends Component {
 	}
 
 	unlock() {
-		this.setState({ correctText: this.desiredText });
+		this.setState({
+			text: this.desiredText,
+			correctText: this.desiredText,
+		});
 		this.isCorrect = true;
 	}
 

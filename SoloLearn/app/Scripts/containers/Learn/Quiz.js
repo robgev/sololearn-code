@@ -124,7 +124,7 @@ handleUnlock = () => {
 	if (Progress.consumePoints(this.skipPrice)) {
 		Progress.applyHint(this.props.activeQuiz.id, PointExchangeTypes.Skip, this.skipPrice);
 		this._child._quizSelectorChild.unlock();
-		this.handleCheck();
+		this.handleCheck(true);
 		this.handleUnlockDialogClose();
 	} else {
 		this.setState({ notAvailable: true });
@@ -143,8 +143,8 @@ handleMessageDialogClose = () => {
 	this.setState({ notAvailable: false });
 }
 
-handleCheck = () => {
-	const isCorrect = this._child._quizSelectorChild.check();
+handleCheck = (forceTrue) => {
+	const isCorrect = forceTrue || this._child._quizSelectorChild.check();
 
 	if (this.props.isShortcut) {
 		const shortcutLives = this.props.shortcutLives;
