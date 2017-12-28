@@ -35,7 +35,6 @@ class SlayHome extends PureComponent {
 		const { startIndex, loadCount } = this.state;
 		const length =
 			await this.props.getLessonCollections({ index: startIndex, count: loadCount });
-		console.log(length);
 		this.setState({
 			hasMore: length === loadCount,
 			startIndex: startIndex + loadCount,

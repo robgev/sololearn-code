@@ -3,6 +3,7 @@ import { Link, browserHistory } from 'react-router';
 import InfiniteScroll from 'react-infinite-scroller';
 import SearchBar from 'components/Shared/SearchBar';
 import BusyWrapper from 'components/Shared/BusyWrapper';
+import CircularProgress from 'material-ui/CircularProgress';
 
 import 'styles/slayBase.scss';
 
@@ -55,8 +56,14 @@ class Layout extends PureComponent {
 							pageStart={0}
 							hasMore={hasMore}
 							loadMore={loadMore}
-							style={{ width: '100%' }}
-							loader={loading ? null : <div>Loading...</div>}
+							style={{
+								width: '100%',
+								display: 'flex',
+								flexDirection: 'column',
+								justifyContent: 'center',
+								alignItems: 'center',
+							}}
+							loader={!loading && <CircularProgress />}
 							// Loading specifies initial load.
 							// We don't want infinite scroll loading thing on inital load
 						>
