@@ -1,5 +1,5 @@
 // React modules
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 const styles = {
 	achievement: {
@@ -48,12 +48,15 @@ const styles = {
 	},
 };
 
-class Badge extends Component {
+class Badge extends PureComponent {
 	render() {
-		const { achievement } = this.props;
-
+		const { achievement, isSelected, selectedRef } = this.props;
 		return (
-			<div className="achievement" style={styles.achievement}>
+			<div
+				className={isSelected && 'fadeOut'}
+				style={styles.achievement}
+				ref={isSelected && selectedRef}
+			>
 				<div
 					className="badge-icon"
 					style={{
@@ -80,10 +83,6 @@ class Badge extends Component {
 				</div>
 			</div>
 		);
-	}
-
-	shouldComponentUpdate(nextProps) {
-		return this.props.achievement !== nextProps.achievement;
 	}
 }
 

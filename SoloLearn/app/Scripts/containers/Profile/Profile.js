@@ -180,7 +180,7 @@ class Profile extends Component {
 			browserHistory.replace(`/profile/${this.props.params.id}/skills`);
 			break;
 		case TabTypes.Badges:
-			browserHistory.replace(`/profile/${this.props.params.id}/badges`);
+			browserHistory.replace(`/profile/${this.props.params.id}/badges/${this.props.params.selected || ''}`);
 			break;
 		default:
 			break;
@@ -326,7 +326,7 @@ class Profile extends Component {
 					{this.state.activeTab === TabTypes.Skills &&
 						<Skills profile={profile.data} levels={levels} skills={profile.data.skills} />}
 					{this.state.activeTab === TabTypes.Badges &&
-						<Badges badges={profile.data.badges} />}
+						<Badges badges={profile.data.badges} selectedId={this.props.params.selected || null} />}
 					<Dialog
 						modal={false}
 						open={this.state.popupOpened}
