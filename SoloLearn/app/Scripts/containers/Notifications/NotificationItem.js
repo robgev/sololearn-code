@@ -58,7 +58,7 @@ class NotificationItem extends Component {
 			browserHistory.push(`/profile/${notification.actionUser.id}`);
 			break;
 		case types.badgeUnlocked:
-			browserHistory.push(`/profile/${notification.user.id}/badges`);
+			browserHistory.push(`/profile/${notification.user.id}/badges/${notification.achievement.id}`);
 			break;
 		case types.postedCodeComment:
 		case types.postedCodeCommentReply:
