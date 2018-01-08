@@ -1,8 +1,12 @@
 // React modules
 import React, { Component } from 'react';
 import Radium from 'radium';
+import { map, uniqBy } from 'lodash';
 
 // Material UI components
+import Dialog from 'material-ui/Dialog';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import TextField from 'material-ui/TextField';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import Clear from 'material-ui/svg-icons/content/clear';
@@ -13,6 +17,8 @@ import { grey700 } from 'material-ui/styles/colors';
 // Redux modules
 import { connect } from 'react-redux';
 import { isLoaded } from 'reducers';
+import LanguageCard from 'components/Shared/languageCard';
+import editorSettings from 'defaults/playgroundEditorSettings';
 
 // Additional components
 import Codes from './Codes';
@@ -57,14 +63,27 @@ const styles = {
 	languageFilter: {
 		float: 'right',
 	},
+
+	newCodeButton: {
+		position: 'fixed',
+		bottom: 20,
+		right: 20,
+	},
 };
 
 class CodesBase extends Component {
-	state = {
-		query: '',
-		ordering: 4,
-		language: '',
-	};
+	constructor() {
+		super();
+		const languagesArray = map(editorSettings, item => item);
+		const languages = uniqBy(languagesArray, 'language');
+		this.state = {
+			query: '',
+			ordering: 4,
+			language: '',
+			languages,
+			isLanguagePopupOpen: false,
+		};
+	}
 
 	// Handle search
 	handleInputChange = (e) => {
@@ -99,7 +118,13 @@ class CodesBase extends Component {
 		this.codes.getWrappedInstance().loadCodesByState();
 	}
 
+	toggleLanguagePopup = () => {
+		const { isLanguagePopupOpen } = this.state;
+		this.setState({ isLanguagePopupOpen: !isLanguagePopupOpen });
+	}
+
 	render() {
+		const { isLanguagePopupOpen, languages } = this.state;
 		return (
 			<div className="codes" style={styles.container}>
 				<div className="toolbar" style={styles.toolbar}>
@@ -152,6 +177,28 @@ class CodesBase extends Component {
 					isUserProfile={false}
 					ref={(codes) => { this.codes = codes; }}
 				/>
+				<FloatingActionButton
+					secondary
+					zDepth={3}
+					style={styles.newCodeButton}
+					onClick={this.toggleLanguagePopup}
+				>
+					<ContentAdd />
+				</FloatingActionButton>
+				<Dialog
+					title="Select a Language"
+					open={isLanguagePopupOpen}
+					onRequestClose={this.toggleLanguagePopup}
+				>
+					{
+						languages.map(currentElement => (
+							<LanguageCard
+								{...currentElement}
+								linkPrefix="/playground"
+							/>
+						))
+					}
+				</Dialog>
 			</div>
 		);
 	}
