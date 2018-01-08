@@ -85,9 +85,10 @@ export const setContest = contest => ({
 	payload: contest,
 });
 
-export const createContestInternal = opponentId => (dispatch, getState) => {
+export const createContestInternal = (opponentId, overridenCourseId) => (dispatch, getState) => {
 	const store = getState();
-	const { courseId } = store.challenges;
+	const { courseId: stateCourseId } = store.challenges;
+	const courseId = stateCourseId || overridenCourseId;
 
 	return Service.request('Challenge/CreateContest', { courseId, opponentId })
 		.then((response) => {

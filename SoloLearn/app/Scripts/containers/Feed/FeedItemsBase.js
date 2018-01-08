@@ -20,6 +20,7 @@ import {
 	getPinnedFeedItemsInternal,
 	clearProfileFeedItems,
 } from 'actions/feed';
+import { createContestInternal } from 'actions/challenges';
 
 // Service
 import Service from 'api/service';
@@ -291,7 +292,7 @@ class FeedItemsBase extends Component {
 	}
 
 	renderPopup = () => {
-		const { courses } = this.props;
+		const { courses, createContest } = this.props;
 		const courseIndex = courses.findIndex(course => course.id === this.popupData.courseId);
 		let course = courses[courseIndex];
 
@@ -372,9 +373,12 @@ class FeedItemsBase extends Component {
 					<Link to={`/profile/${this.popupData.userId}`}>
 						<FlatButton label="Show profile" primary />
 					</Link>
-					<Link to="/play/">
-						<FlatButton label="Challenge" primary />
-					</Link>
+					<FlatButton
+						primary
+						label="Challenge"
+						style={{ display: 'inline-block' }}
+						onClick={() => createContest(this.popupData.userId, this.popupData.courseId)}
+					/>
 				</div>
 			</div>
 		);
@@ -489,6 +493,7 @@ const mapDispatchToProps = {
 	getUserSuggestions: getUserSuggestionsInternal,
 	getNewFeedItems: getNewFeedItemsInternal,
 	clearProfileFeedItems,
+	createContest: createContestInternal,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Radium(FeedItemsBase));

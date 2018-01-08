@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 
 // Redux modules
@@ -90,10 +91,10 @@ class FollowerItem extends Component {
 						userName={follower.name}
 						avatarUrl={follower.avatarUrl}
 					/>
-					<div style={styles.authorDetails}>
+					<Link to={`/profile/${follower.id}`} style={styles.authorDetails}>
 						<p style={styles.name}>{follower.name}</p>
 						<p style={styles.info}>{follower.followers} Followers | Level {follower.level}</p>
-					</div>
+					</Link>
 				</div>
 				<RaisedButton
 					label={this.state.isFollowing ? 'Following' : 'Follow'}
