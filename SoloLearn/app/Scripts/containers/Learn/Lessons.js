@@ -141,7 +141,7 @@ class Lessons extends Component {
 	<div
 	key={lesson.id}
 	className={`lesson-item ${lessonState.stateClass}`}
-	style={styles.lessonWrapper}
+    				style={styles.lessonWrapper}
     				onClick={() => this.handleClick(lesson.id, lessonState, `/learn/${this.props.params.courseName}/${this.props.params.moduleId}/${this.props.params.moduleName}/${lesson.id}/${toSeoFrendly(lesson.name, 100)}/${lessonState.activeQuizNumber}`)}
     			>
 	<Paper

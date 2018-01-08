@@ -1,29 +1,25 @@
 // React modules
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 
 // Redux modules
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { selectModule, selectLesson, selectQuiz } from '../../actions/learn';
-import { isLoaded } from '../../reducers';
+import Service from 'api/service';
+import { isLoaded } from 'reducers';
+import { selectModule, selectLesson, selectQuiz } from 'actions/learn';
+import Progress, { PointExchangeTypes, ProgressState } from 'api/progress';
+import Popup from 'api/popupService';
 
-// Service
-import Progress, { PointExchangeTypes, ProgressState } from '../../api/progress';
-
-// Popups
-import Popup from '../../api/popupService';
+// Marterial UI components
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
 // Additional data and components
 import QuizSelector from '../Learn/QuizSelector';
 import QuizText from '../Learn/QuizText';
 import { QuizType } from '../Learn/QuizSelector';
-import Comments from '../Comments/CommentsBase';
 import { LessonType } from './QuizManager';
-
-// Marterial UI components
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
 
 const styles = {
 	wrapper: {
@@ -61,7 +57,6 @@ const styles = {
 	resultButton: {
 		float: 'right',
 		margin: '60px 0 0 0',
-		zIndex: 10001,
 		position: 'relative',
 	},
 };
@@ -75,6 +70,7 @@ class Quiz extends Component {
 			checkOpened: false,
 			notAvailable: false,
 			isCorrect: false,
+			commentCount: 0,
 		};
 		this.hintPrice = 0;
 		this.skipPrice = 0;
@@ -124,7 +120,7 @@ handleUnlock = () => {
 	if (Progress.consumePoints(this.skipPrice)) {
 		Progress.applyHint(this.props.activeQuiz.id, PointExchangeTypes.Skip, this.skipPrice);
 		this._child._quizSelectorChild.unlock();
-		this.handleCheck(true);
+		this.handleCheck(null, true); // THIS SMELLS!
 		this.handleUnlockDialogClose();
 	} else {
 		this.setState({ notAvailable: true });
@@ -143,7 +139,7 @@ handleMessageDialogClose = () => {
 	this.setState({ notAvailable: false });
 }
 
-handleCheck = (forceTrue) => {
+handleCheck = (e, forceTrue = false) => {
 	const isCorrect = forceTrue || this._child._quizSelectorChild.check();
 
 	if (this.props.isShortcut) {
@@ -166,8 +162,17 @@ handleCheck = (forceTrue) => {
 	this.handleCheckDialogOpen();
 }
 
-handleCheckDialogOpen = () => {
+loadCommentsCount = async () => {
+	const { activeQuiz: { id } } = this.props;
+	const { count } =
+		await Service.request('Discussion/GetLessonCommentCount', { quizId: id, type: 3 });
+	return count;
+}
+
+handleCheckDialogOpen = async () => {
 	this.setState({ checkOpened: true });
+	const commentCount = await this.loadCommentsCount();
+	this.setState({ commentCount });
 }
 
 handleCheckDialogClose = () => {
@@ -310,6 +315,10 @@ render() {
 		activeModule,
 	} = this.props;
 
+	const {
+		commentCount,
+	} = this.state;
+
 	if (!isLoaded && !this.props.isShortcut) {
 		return <div>Loading...</div>;
 	}
@@ -409,8 +418,21 @@ render() {
 
 			{ !this.state.checkOpened && <RaisedButton labelColor="#fff" backgroundColor="#8bc34a" label="Check" style={styles.checkButton} onTouchTap={this.handleCheck} />}
 			{ this.state.checkOpened &&
-			<RaisedButton labelColor="#fff" backgroundColor="#8bc34a" label={resultButtonLabel} style={styles.resultButton} onTouchTap={resultButtonAction} />}
-			{ this.state.checkOpened && Popup.checkPopup(this.state.isCorrect, this.continueQuiz, isCheckpoint) }
+				<RaisedButton
+					labelColor="#fff"
+					label={resultButtonLabel}
+					style={styles.resultButton}
+					backgroundColor="#8bc34a"
+					onTouchTap={resultButtonAction}
+				/>
+			}
+			{ this.state.checkOpened && Popup.checkPopup({
+				isCheckpoint,
+				commentCount,
+				isCorrect: this.state.isCorrect,
+				actionCallback: this.continueQuiz,
+				openComments: this.props.openComments,
+			})}
 		</div>
 	);
 }

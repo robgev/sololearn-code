@@ -95,7 +95,7 @@ class QuizManager extends Component {
 			this.setState(this.state);
 			return;
 		}
-
+		console.log('HERE');
 		this.props.selectQuiz(Object.assign({}, { id: quizId }, { number }, { isText }));
 
 		if (this.props.isShortcut) {
@@ -164,13 +164,23 @@ class QuizManager extends Component {
 			}),
 		);
 
+		console.log(activeQuiz.number);
+
 		return (
 			<div className="quizOverlay">
-				<Tabs className="quizTimeline" initialSelectedIndex={parseInt(this.props.activeQuiz.number, 10) - 1} value={this.props.activeQuiz.number - 1}>
+				<Tabs className="quizTimeline" value={parseInt(this.props.activeQuiz.number, 10) - 1}>
 					{this.generateTimeline(quizzes, activeQuiz)}
 				</Tabs>
 				{childrenWithProps}
-				{(!this.props.isShortcut && this.state.commentsOpened) && <Comments commentsOpened={this.state.commentsOpened} closeComments={this.closeComments} id={activeQuiz.id} type={activeQuiz.isText ? 1 : 3} commentsType="lesson" />}
+				{(!this.props.isShortcut && this.state.commentsOpened) &&
+					<Comments
+						id={activeQuiz.id}
+						commentsType="lesson"
+						type={activeQuiz.isText ? 1 : 3}
+						closeComments={this.closeComments}
+						commentsOpened={this.state.commentsOpened}
+					/>
+				}
 			</div>
 		);
 	}

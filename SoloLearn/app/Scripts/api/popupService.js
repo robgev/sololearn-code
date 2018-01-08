@@ -25,7 +25,6 @@ const styles = {
 		height: '100%',
 		width: '100%',
 		backgroundColor: 'rgba(255, 255, 255, 0.4)',
-		zIndex: 10000,
 	},
 
 	checkPopup: {
@@ -115,7 +114,13 @@ class PopupService {
 		actionCallback();
 	}
 
-	checkPopup(isCorrect, actionCallback, isCheckpoint) { // openComments
+	checkPopup({
+		isCorrect,
+		isCheckpoint,
+		commentCount,
+		actionCallback,
+		openComments,
+	}) { // openComments
 		return (
 			<div className="check-popup-overlay" style={styles.checkPopupOverlay}>
 				<Paper
@@ -125,7 +130,6 @@ class PopupService {
 						...styles.checkPopup.base,
 						...(isCorrect ? styles.checkPopup.clickable : {}),
 					}}
-					onClick={() => { this.popupClick(isCorrect, isCheckpoint, actionCallback); }}
 				>
 					{ isCorrect ?
 						[
@@ -139,6 +143,11 @@ class PopupService {
 								style={{ ...styles.text.base, ...styles.text.correct }}
 							>Correct!
 							</p>,
+							<FlatButton
+								key="comments-button"
+								onClick={openComments}
+								label={`${commentCount || ''} COMMENTS`}
+							/>,
 						] :
 						[
 							<WrongIcon
@@ -159,6 +168,11 @@ class PopupService {
 								onClick={actionCallback}
 								style={styles.backButton}
 								labelStyle={styles.backButtonLabel}
+							/>,
+							<FlatButton
+								key="comments-button"
+								onClick={openComments}
+								label={`${commentCount || ''} COMMENTS`}
 							/>,
 						]
 					}
