@@ -14,7 +14,8 @@ import { grey500, blueGrey500 } from 'material-ui/styles/colors';
 
 // Utils
 import Likes from 'components/Shared/Likes';
-import { removeDups } from 'utils';
+import PostedDate from 'components/Shared/PostedDate';
+import { removeDups, updateDate } from 'utils';
 
 // Redux modules
 import { questionFollowingInternal } from 'actions/discuss';
@@ -114,6 +115,7 @@ class Question extends Component {
 						avatarUrl={question.avatarUrl}
 						userName={question.userName}
 					/>
+					<PostedDate date={question.date} style={{ float: 'right' }} />
 				</div>
 			</Paper>
 		);

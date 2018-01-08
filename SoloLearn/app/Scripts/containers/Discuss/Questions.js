@@ -20,8 +20,7 @@ const mapDispatchToProps = { getQuestionsInternal, emptyQuestions };
 class Questions extends Component {
 	state = { isLoading: false }
 	componentWillMount() {
-		const { query, ordering } = this.props;
-		this.loadQuestions({ query, ordering });
+		this.loadQuestions();
 	}
 	componentDidUpdate(prevProps) {
 		if (prevProps.query !== this.props.query ||
@@ -34,12 +33,12 @@ class Questions extends Component {
 	}
 	loadQuestions = async () => {
 		const {
-			questions, userId, query, ordering,
+			questions, userId: profileId, query, ordering,
 		} = this.props;
 		this.setState({ isLoading: true }); // if (this.props.questions.length > 0)
 		const index = questions ? questions.length : 0;
 		await this.props.getQuestionsInternal({
-			index, userId, query, ordering,
+			index, profileId, query, ordering,
 		});
 		this.setState({ isLoading: false });
 	}

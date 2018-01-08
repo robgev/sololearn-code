@@ -17,6 +17,7 @@ import getLikesInternal from 'actions/likes';
 
 import Likes from 'components/Shared/Likes';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import PostedDate from 'components/Shared/PostedDate';
 import { updateDate } from 'utils';
 
 import { ReplyStyles as styles } from './styles';
@@ -168,6 +169,7 @@ class Reply extends Component {
 							userName={reply.userName}
 							date={updateDate(reply.date)}
 						/>
+						<PostedDate date={reply.date} style={{ float: 'right' }} />
 					</div>
 				}
 			</div>

@@ -1,5 +1,6 @@
 // React modules
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import scrollToElement from 'scroll-to-element';
 
 // Additional data and components
 import Badge from './Badge';
@@ -21,24 +22,32 @@ const styles = {
 	},
 };
 
-class Badges extends Component {
-	constructor(props) {
-		super(props);
+class Badges extends PureComponent {
+	componentDidMount() {
+		scrollToElement(this._selected);
 	}
-
-	renderBadges() {
-		const badges = this.props.badges;
-
-		return badges.map((badge, index) => (
-			<Badge key={badge.id} achievement={badge} />
-		));
-	}
-
 	render() {
+		const { badges, selectedId } = this.props;
 		return (
 			<div id="Badges" style={styles.container}>
 				<p style={styles.title}>Badges</p>
-				<div className="content" style={styles.content}>{this.renderBadges()}</div>
+				<div className="content" style={styles.content}>
+					{
+						badges.map((badge) => {
+							const isSelected = !!selectedId && badge.id.toString() === selectedId.toString();
+							return (
+								<Badge
+									{...{
+										key: badge.id,
+										achievement: badge,
+										isSelected,
+										selectedRef: isSelected && ((ref) => { this._selected = ref; }),
+									}}
+								/>
+							);
+						})
+					}
+				</div>
 			</div>
 		);
 	}

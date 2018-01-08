@@ -63,9 +63,9 @@ class Post extends Component {
 		this.initialize();
 	}
 
-	async componentDidUpdate(prevProps) {
-		const { params: newParams } = this.props;
-		const { params: oldParams } = prevProps;
+	async componentWillReceiveProps(newProps) {
+		const { params: newParams } = newProps;
+		const { params: oldParams } = this.props;
 		if (newParams.id !== oldParams.id) {
 			this.initialize();
 		} else if (newParams.replyId != null && newParams.replyId !== oldParams.replyId) {
@@ -84,7 +84,9 @@ class Post extends Component {
 		this.props.loadPost(null);
 		await this.props.loadPostInternal(params.id);
 		await this.getReplies(params.replyId);
-		this._replies.scrollTo(params.replyId);
+		if (params.replyId) {
+			this._replies.scrollTo(params.replyId);
+		}
 		this.checkAlias(params.questionName);
 	}
 

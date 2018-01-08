@@ -76,7 +76,7 @@ export default (
 			<Route path="/discuss/filter/:query" component={Questions} />
 			<Route path="/discuss/:id(/:questionName)(/:replyId)" component={Post} />
 			<Route path="/feed" component={Feed} />
-			<Route path="/profile/:id(/:tab)" component={Profile} />
+			<Route path="/profile/:id(/:tab)(/:selected)" component={Profile} />
 			<Route path="/contests" component={redirector(Contests)} />
 			<Route path="/choose-opponent" component={redirector(OpponentSelector)} />
 			<Route path="/challenge/:id" component={redirector(Challenge)} />

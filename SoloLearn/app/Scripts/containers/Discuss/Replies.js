@@ -21,7 +21,7 @@ class Replies extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			canLoadAbove: !!props.condition,
+			canLoadAbove: !!props.replies[0] && props.replies[0].index === 0,
 		};
 	}
 	componentWillReceiveProps(nextProps) {
@@ -65,7 +65,6 @@ class Replies extends Component {
 					loadMore={this.props.loadReplies}
 					width={1000}
 					cache={cache}
-					condition={this.props.condition}
 					window
 					ref={(list) => { this._list = list; }}
 				/>

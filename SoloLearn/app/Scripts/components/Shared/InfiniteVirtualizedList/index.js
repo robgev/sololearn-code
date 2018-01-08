@@ -24,12 +24,12 @@ class InfiniteVirtalizedList extends Component {
 	componentWillMount() {
 		this.loadMoreInterval = setInterval(() => { this.canLoadMore = true; }, 10 * 1000);
 	}
-	componentDidUpdate(prevProps) {
-		const { condition, list } = this.props;
-		if (prevProps.list.length === 0 && list.length > 0 && condition) {
-			this._scrollTo(condition);
-		}
-	}
+	// componentDidUpdate(prevProps) {
+	// 	const { condition, list } = this.props;
+	// 	if (prevProps.list.length === 0 && list.length > 0 && condition) {
+	// 		this._scrollTo(condition);
+	// 	}
+	// }
 	componentWillReceiveProps(nextProps) {
 		const { length: nextLength } = nextProps.list;
 		const { length: currLengh } = this.props.list;
