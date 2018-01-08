@@ -27,8 +27,8 @@ const styles = {
 		hide: {
 			display: 'none',
 		},
-	}
-}
+	},
+};
 
 const defaultFontRule =
 	'12px/normal \'Monaco\', \'Menlo\', \'Ubuntu Mono\', \'Consolas\', \'source-code-pro\', monospace';
@@ -76,7 +76,13 @@ const Editor = ({
 			height="60vh"
 			theme={theme}
 			showPrintMargin={false}
-			enableBasicAutocompletion
+			setOptions={{
+				enableBasicAutocompletion: true,
+				enableLiveAutocompletion: true,
+				enableSnippets: false,
+				showLineNumbers: true,
+				tabSize: 2,
+			}}
 			name={publicID}
 			onChange={handleEditorChange}
 			editorProps={{ $blockScrolling: Infinity }}
@@ -87,7 +93,7 @@ const Editor = ({
 			}}
 			style={{
 				...styles.editor.base,
-				...(showWebOutput ? styles.editor.hide : {})
+				...(showWebOutput ? styles.editor.hide : {}),
 			}}
 		/>
 	</div>
