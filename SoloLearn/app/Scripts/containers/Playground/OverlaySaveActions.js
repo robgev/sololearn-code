@@ -6,9 +6,7 @@ import Dialog from 'material-ui/Dialog';
 import Toggle from 'material-ui/Toggle';
 import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';
-import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
-import DropDownMenu from 'material-ui/DropDownMenu';
 
 import texts from 'defaults/texts';
 
@@ -63,7 +61,7 @@ const styles = {
 	snackbar: {
 		textAlign: 'center',
 	},
-}
+};
 
 const OverlaySaveActions = ({
 	isPublic,
@@ -71,7 +69,6 @@ const OverlaySaveActions = ({
 	errorText,
 	codeName,
 	submitSave,
-	openSavePopup,
 	snackBarOpened,
 	savePopupOpened,
 	handleSnackBarClose,
@@ -100,38 +97,38 @@ const OverlaySaveActions = ({
 				contentStyle={styles.popupContent}
 				onRequestClose={handleSavePopupClose}
 			>
-					<p style={styles.popupSubTitle}>{texts.savePopupSubTitle}</p>
-					<TextField
-						id="codeName"
-						fullWidth={true}
-						maxLength={100}
-						hintText={"Code Name:"}
-						style={styles.inputStyle}
-						value={codeName}
-						errorText={errorText}
-						onChange={handleCodeNameChange}
-					/>
-					<p style={styles.charactersRemaining}>{codeName.length}/100</p>
-					<Toggle
-							label="Public:"
-							defaultToggled={isPublic}
-							style={styles.codeStateToggle}
-							thumbStyle={styles.thumbOff}
-							trackStyle={styles.trackOff}
-							thumbSwitchedStyle={styles.thumbSwitched}
-							trackSwitchedStyle={styles.trackSwitched}
-							onToggle={handleCodeStateChange}
-					/>
-			</Dialog>,
+				<p style={styles.popupSubTitle}>{texts.savePopupSubTitle}</p>
+				<TextField
+					id="codeName"
+					fullWidth
+					maxLength={100}
+					hintText="Code Name:"
+					style={styles.inputStyle}
+					value={codeName}
+					errorText={errorText}
+					onChange={handleCodeNameChange}
+				/>
+				<p style={styles.charactersRemaining}>{codeName.length}/100</p>
+				<Toggle
+					label="Public:"
+					defaultToggled={isPublic}
+					style={styles.codeStateToggle}
+					thumbStyle={styles.thumbOff}
+					trackStyle={styles.trackOff}
+					thumbSwitchedStyle={styles.thumbSwitched}
+					trackSwitchedStyle={styles.trackSwitched}
+					onToggle={handleCodeStateChange}
+				/>
+			</Dialog>
 			<Snackbar
-					open={snackBarOpened}
-					message={isSaving ? "Saving..." : "Saved"}
-					style={styles.snackbar}
-					autoHideDuration={3000}
-					onRequestClose={handleSnackBarClose}
+				open={snackBarOpened}
+				message={isSaving ? 'Saving...' : 'Saved'}
+				style={styles.snackbar}
+				autoHideDuration={3000}
+				onRequestClose={handleSnackBarClose}
 			/>
 		</div>
 	);
-}
+};
 
 export default OverlaySaveActions;

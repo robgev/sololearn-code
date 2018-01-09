@@ -5,7 +5,7 @@ import Playground from './Playground';
 const PlaygroundRoute = ({ params }) => (
 	<Playground
 		params={params}
-		withCodeComments
+		withBottomToolbar
 		basePath="/playground"
 	/>
 );

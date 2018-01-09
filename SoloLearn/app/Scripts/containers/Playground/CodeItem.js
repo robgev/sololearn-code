@@ -7,6 +7,7 @@ import Radium from 'radium';
 import CommentsIcon from 'material-ui/svg-icons/communication/comment';
 import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
+import LockIcon from 'material-ui/svg-icons/action/lock';
 import { grey500, blueGrey500 } from 'material-ui/styles/colors';
 
 // Utils
@@ -80,6 +81,13 @@ const styles = {
 		},
 	},
 
+	lock: {
+		verticalAlign: 'middle',
+		width: '16px',
+		height: '16px',
+		marginLeft: 7,
+	},
+
 	vote: {
 		button: {
 			verticalAlign: 'middle',
@@ -126,6 +134,11 @@ class CodeItem extends Component {
 								<div className="comments" style={styles.comments.base}>
 									<span style={styles.comments.text}>{code.comments}</span>
 									<CommentsIcon style={styles.comments.icon} color={grey500} />
+								</div>
+								<div>
+									{ !code.isPublic &&
+										<LockIcon style={styles.lock} color={grey500} />
+									}
 								</div>
 							</div>
 							<div className="author-details" style={styles.authorDetails}>

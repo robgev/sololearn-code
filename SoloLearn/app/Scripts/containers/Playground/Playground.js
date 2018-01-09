@@ -10,6 +10,9 @@ import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 
+// Redux loaded
+import { isLoaded } from 'reducers';
+
 // Service
 import Service from 'api/service';
 
@@ -26,9 +29,7 @@ import PlaygroundTabs from './PlaygroundTabs';
 import Toolbar from './Toolbar';
 import Comments from '../Comments/CommentsBase';
 import OutputWindow from './OutputWindow';
-
-// Redux loaded
-import { isLoaded } from 'reducers';
+import BottomToolbar from './BottomToolbar';
 
 const styles = {
 	playground: {
@@ -82,7 +83,6 @@ class Playground extends Component {
 			type: 'web',
 			codeType: '',
 			publicID: '',
-			comments: 0,
 			mode: 'html',
 			sourceCode: '',
 			isRunning: false,
@@ -228,7 +228,6 @@ class Playground extends Component {
 				cssCode,
 				publicID,
 				language,
-				comments,
 				sourceCode,
 			} = code;
 			// Check language of user code for setting up correct link
@@ -255,7 +254,6 @@ class Playground extends Component {
 					id,
 					type,
 					publicID,
-					comments,
 					...codeData,
 					code: sourceCode,
 					latestSavedCodeData,
@@ -604,7 +602,6 @@ ${succeedingSubstr}
 			cssCode,
 			publicID,
 			codeType,
-			comments,
 			isRunning,
 			sourceCode,
 			showOutput,
@@ -615,7 +612,7 @@ ${succeedingSubstr}
 			inputsPopupOpened,
 			latestSavedCodeData,
 		} = this.state;
-		const { withCodeComments } = this.props;
+		const { withBottomToolbar } = this.props;
 
 		const inputsPopupActions = [
 			<FlatButton
@@ -674,11 +671,8 @@ ${succeedingSubstr}
 							handleThemeChange={this.handleThemeChange}
 							handleLanguageChange={this.handleLanguageChange}
 						/>
-						{(withCodeComments && !!id) &&
-							<FlatButton
-								onClick={this.openComments}
-								label={`${comments} COMMENTS`}
-							/>
+						{ withBottomToolbar &&
+							<BottomToolbar codeData={latestSavedCodeData} />
 						}
 						<Paper
 							className="default-output-container"

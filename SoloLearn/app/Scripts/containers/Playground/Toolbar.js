@@ -8,11 +8,11 @@ import { omit } from 'lodash';
 import Service from 'api/service';
 
 // Material UI components
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
 import Checkbox from 'material-ui/Checkbox';
+import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import DropDownMenu from 'material-ui/DropDownMenu';
 import RunIcon from 'material-ui/svg-icons/av/play-arrow';
 import InsertLink from 'material-ui/svg-icons/editor/insert-link';
 
@@ -27,7 +27,9 @@ import OverlayExecutionActions from './OverlayExecutionActions';
 const styles = {
 	toolbar: {
 		base: {
-			display: 'block',
+			display: 'flex',
+			justifyContent: 'space-between',
+			alignItems: 'center',
 			overflow: 'hidden',
 		},
 
@@ -36,12 +38,16 @@ const styles = {
 		},
 
 		left: {
-			float: 'left',
+			display: 'flex',
+			justifyContent: 'center',
+			alignItems: 'center',
 			overflow: 'hidden',
 		},
 
 		right: {
-			float: 'right',
+			display: 'flex',
+			justifyContent: 'center',
+			alignItems: 'center',
 		},
 	},
 
@@ -54,7 +60,6 @@ const styles = {
 	themeToggle: {
 		float: 'left',
 		width: '150px',
-		margin: '20px 0 0 0',
 	},
 
 	themeToggleIcon: {

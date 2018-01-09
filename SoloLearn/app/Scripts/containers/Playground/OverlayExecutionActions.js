@@ -3,8 +3,6 @@ import React from 'react';
 
 // Material UI components
 import Dialog from 'material-ui/Dialog';
-import Toggle from 'material-ui/Toggle';
-import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
@@ -38,7 +36,7 @@ const styles = {
 		width: '150px',
 		margin: '0 auto',
 	},
-}
+};
 
 const OverlayExecutionActions = ({
 	sourceUrl,
@@ -90,6 +88,6 @@ const OverlayExecutionActions = ({
 			/>
 		</Dialog>
 	);
-}
+};
 
 export default OverlayExecutionActions;
