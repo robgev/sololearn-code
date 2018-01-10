@@ -15,6 +15,7 @@ import getLikes from 'actions/likes';
 
 // Utils
 import Likes from 'components/Shared/Likes';
+import VoteControls from 'components/Shared/VoteControls';
 import { updateDate, updateMessage } from 'utils';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import { loadRepliesTypes } from './Comments';
@@ -154,26 +155,6 @@ class Comment extends Component {
 		</IconMenu>
 	)
 
-	getVoteControls = comment => (
-		<div className="vote-controls" style={styles.commentControls.left}>
-			<IconButton
-				style={styles.vote.button.base}
-				iconStyle={styles.vote.button.icon}
-				onClick={() => this.props.voteComment(comment, 1)}
-			>
-				<ThumbUp color={comment.vote === 1 ? blueGrey500 : grey500} />
-			</IconButton>
-			<Likes votes={comment.votes} getLikes={this.getLikes} />
-			<IconButton
-				style={styles.vote.button.base}
-				iconStyle={styles.vote.button.icon}
-				onClick={() => this.props.voteComment(comment, -1)}
-			>
-				<ThumbDown color={comment.vote === -1 ? blueGrey500 : grey500} />
-			</IconButton>
-		</div>
-	)
-
 	getEditableArea = (comment) => {
 		const isEditing = (this.props.isEditing && this.props.activeComment.id === comment.id);
 
@@ -258,7 +239,15 @@ class Comment extends Component {
 								{this.getEditableArea(comment)}
 							</div>
 							<div style={styles.commentControls.base}>
-								{!isEditing && this.getVoteControls(comment)}
+								{!isEditing &&
+									<VoteControls
+										getVotes={this.getLikes}
+										userVote={comment.vote}
+										totalVotes={comment.votes}
+										onUpvote={() => this.props.voteComment(comment, 1)}
+										onDownvote={() => this.props.voteComment(comment, -1)}
+									/>
+								}
 								{isEditing && this.getEditControls()}
 								{!isEditing && this.getPrimaryControls(comment)}
 							</div>
