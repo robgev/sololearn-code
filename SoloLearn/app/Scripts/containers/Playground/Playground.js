@@ -267,16 +267,16 @@ class Playground extends Component {
 		}
 	}
 
-	getTabCodeData = (mode, defaultCodeData) => {
-		const { latestSavedCodeData = defaultCodeData } = this.state;
+	getTabCodeData = (mode) => {
+		const { sourceCode, cssCode, jsCode } = this.state;
 		switch (mode) {
 		case 'html':
 		case 'php':
-			return latestSavedCodeData.sourceCode;
+			return sourceCode;
 		case 'css':
-			return latestSavedCodeData.cssCode;
+			return cssCode;
 		default:
-			return latestSavedCodeData.jsCode;
+			return jsCode;
 		}
 	}
 

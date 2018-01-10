@@ -145,7 +145,7 @@ class CodeItem extends Component {
 								<ProfileAvatar
 									reversedOrder
 									withUserNameBox
-									userID={code.userId}
+									userID={code.userID}
 									timePassed={dateModified}
 									userName={code.userName}
 									avatarUrl={code.avatarUrl}

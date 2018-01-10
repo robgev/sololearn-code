@@ -136,12 +136,13 @@ class Toolbar extends PureComponent {
 			});
 			try {
 				const { code } = await this.saveCodeInternal(userCodeData.id);
-				setLatestSavedData({
-					...code,
-					codeType: 'userCode',
-				});
 				this.setState({
 					isSaving: false,
+				}, () => {
+					setLatestSavedData({
+						...code,
+						codeType: 'userCode',
+					});
 				});
 			} catch (error) {
 				console.log(error);
