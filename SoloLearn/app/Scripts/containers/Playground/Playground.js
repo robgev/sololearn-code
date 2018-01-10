@@ -672,7 +672,10 @@ ${succeedingSubstr}
 							handleLanguageChange={this.handleLanguageChange}
 						/>
 						{ withBottomToolbar &&
-							<BottomToolbar codeData={latestSavedCodeData} />
+							<BottomToolbar
+								codeData={latestSavedCodeData}
+								openComments={this.openComments}
+							/>
 						}
 						<Paper
 							className="default-output-container"

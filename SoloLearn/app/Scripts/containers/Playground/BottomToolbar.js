@@ -39,7 +39,11 @@ class BottomToolbar extends PureComponent {
 
 	render() {
 		const { isPublic } = this.state;
-		const { userId, codeData } = this.props;
+		const {
+			userId,
+			codeData,
+			openComments,
+		} = this.props;
 		const {
 			id,
 			name,
@@ -95,7 +99,7 @@ class BottomToolbar extends PureComponent {
 					</div>
 					{ !!id &&
 					<FlatButton
-						onClick={this.openComments}
+						onClick={openComments}
 						label={`${comments} COMMENTS`}
 					/>
 					}
