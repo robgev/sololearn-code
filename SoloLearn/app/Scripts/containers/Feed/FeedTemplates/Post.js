@@ -32,7 +32,7 @@ const styles = {
 };
 
 const Post = ({
-	post, isQuestion, url, onUpvote, onDownvote,
+	post, isQuestion, url, onUpvote, onDownvote, vote, votes,
 }) => (
 	<div>
 		<Link
@@ -55,9 +55,9 @@ const Post = ({
 		</Link>
 		<VoteControls
 			absolute
-			userVote={post.vote}
+			userVote={vote}
+			totalVotes={votes}
 			onUpvote={onUpvote}
-			totalVotes={post.votes}
 			onDownvote={onDownvote}
 		/>
 	</div>

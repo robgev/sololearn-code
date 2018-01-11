@@ -89,14 +89,6 @@ const FeedItemBase = ({
 				{title}
 			</p>
 			{children}
-			{
-				votes &&
-					<div className="votes" style={styles.votes}>
-						<ThumbUp color={grey500} style={styles.voteIcon} />
-						<span style={styles.voteText}>{votes > 0 ? `+${votes}` : votes}</span>
-						<ThumbDown color={grey500} style={styles.voteIcon} />
-					</div>
-			}
 		</div>
 		<p className="date" style={styles.date}>{updateDate(date)}</p>
 	</div>

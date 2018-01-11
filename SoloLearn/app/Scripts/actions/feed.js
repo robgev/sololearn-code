@@ -1,6 +1,7 @@
 import Service from 'api/service';
 import * as types from 'constants/ActionTypes';
 import feedTypes from 'defaults/appTypes';
+import { changeLoginModal } from './login.action';
 
 export const getFeedItems = feedItems => ({
 	type: types.GET_FEED_ITEMS,
@@ -136,3 +137,65 @@ export const getUserSuggestionsInternal = () => dispatch => Service.request('Pro
 }).catch((error) => {
 	console.log(error);
 });
+
+export const voteFeedPostItem = ({
+	vote,
+	id: feedItemId,
+	votes: totalVotes,
+	post: { id: postId },
+}, newVote) => async (dispatch) => {
+	const userVote = vote === newVote ? 0 : newVote;
+	const votes = (totalVotes + userVote) - vote;
+	console.log(newVote, vote, totalVotes, userVote);
+	dispatch({
+		type: types.SET_FEED_ITEM_VOTE_DATA,
+		payload: {
+			votes,
+			vote: userVote,
+			id: feedItemId,
+		},
+	});
+	await Service.request('Discussion/VotePost', { id: postId, vote: userVote });
+};
+
+export const voteFeedCommentItem = ({
+	vote,
+	id: feedItemId,
+	votes: totalVotes,
+	comment: { id: commentId },
+}, newVote, commentsType) => async (dispatch) => {
+	const userVote = vote === newVote ? 0 : newVote;
+	const votes = (totalVotes + userVote) - vote;
+	const url =
+		commentsType === 'lesson'
+			? 'Discussion/VoteLessonComment'
+			: 'Discussion/VoteCodeComment';
+	dispatch({
+		type: types.SET_FEED_ITEM_VOTE_DATA,
+		payload: {
+			votes,
+			vote: userVote,
+			id: feedItemId,
+		},
+	});
+	await Service.request(url, { id: commentId, vote: userVote });
+};
+
+export const voteFeedCodeItem = ({
+	vote,
+	id: feedItemId,
+	votes: totalVotes,
+	code: { id: codeId },
+}, newVote) => async (dispatch) => {
+	const userVote = vote === newVote ? 0 : newVote;
+	const votes = (totalVotes + userVote) - vote;
+	dispatch({
+		type: types.SET_FEED_ITEM_VOTE_DATA,
+		payload: {
+			votes,
+			vote: userVote,
+			id: feedItemId,
+		},
+	});
+	await Service.request('Playground/VoteCode', { id: codeId, vote: userVote });
+};

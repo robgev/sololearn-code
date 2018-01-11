@@ -8,8 +8,8 @@ import Radium from 'radium';
 import Paper from 'material-ui/Paper';
 
 // Additional data and components
-import { setSelectedComment, voteCommentInternal } from 'actions/comments';
-import { votePostInternal } from 'actions/discuss';
+import { setSelectedComment } from 'actions/comments';
+import { voteFeedPostItem, voteFeedCommentItem, voteFeedCodeItem } from 'actions/feed';
 import VoteControls from 'components/Shared/VoteControls';
 import CourseCard from 'components/Shared/CourseCard';
 import FeedItems from './FeedItems';
@@ -47,9 +47,10 @@ const styles = {
 };
 
 const mapDispatchToProps = {
+	voteFeedCommentItem,
 	setSelectedComment,
-	voteCommentInternal,
-	votePostInternal,
+	voteFeedPostItem,
+	voteFeedCodeItem,
 };
 
 @connect(null, mapDispatchToProps)
@@ -74,7 +75,12 @@ class FeedItem extends Component {
 	}
 
 	renderFeedItem = () => {
-		const { feedItem, voteCommentInternal, votePostInternal } = this.props;
+		const {
+			feedItem,
+			voteFeedPostItem,
+			voteFeedCodeItem,
+			voteFeedCommentItem,
+		} = this.props;
 		switch (feedItem.type) {
 		case types.badgeUnlocked:
 			this.url = `/profile/${feedItem.user.id}/badges/${feedItem.achievement.id}`;
@@ -93,8 +99,10 @@ class FeedItem extends Component {
 					isQuestion
 					url={this.url}
 					post={feedItem.post}
-					onUpvote={() => votePostInternal(feedItem.post, 1)}
-					onDownvote={() => votePostInternal(feedItem.post, -1)}
+					vote={feedItem.vote}
+					votes={feedItem.votes}
+					onUpvote={() => voteFeedPostItem(feedItem, 1)}
+					onDownvote={() => voteFeedPostItem(feedItem, -1)}
 				/>
 			);
 		case types.postedAnswer:
@@ -105,8 +113,10 @@ class FeedItem extends Component {
 					url={this.url}
 					isQuestion={false}
 					post={feedItem.post}
-					onUpvote={() => votePostInternal(feedItem.post, 1)}
-					onDownvote={() => votePostInternal(feedItem.post, -1)}
+					vote={feedItem.vote}
+					votes={feedItem.votes}
+					onUpvote={() => voteFeedPostItem(feedItem, 1)}
+					onDownvote={() => voteFeedPostItem(feedItem, -1)}
 				/>
 			);
 		case types.postedCode:
@@ -118,10 +128,10 @@ class FeedItem extends Component {
 					<Code code={feedItem.code} />
 					<VoteControls
 						absolute
-						userVote={feedItem.code.vote}
-						totalVotes={feedItem.code.votes}
-						onUpvote={() => {}} // TODO: Add requests
-						onDownvote={() => {}}
+						userVote={feedItem.vote}
+						totalVotes={feedItem.votes}
+						onUpvote={() => voteFeedCodeItem(feedItem, 1)}
+						onDownvote={() => voteFeedCodeItem(feedItem, -1)}
 					/>
 				</div>
 			);
@@ -143,10 +153,10 @@ class FeedItem extends Component {
 					<Code code={feedItem.code} />
 					<VoteControls
 						absolute
-						userVote={feedItem.comment.vote}
-						totalVotes={feedItem.comment.votes}
-						onUpvote={() => voteCommentInternal(feedItem.comment, 1)}
-						onDownvote={() => voteCommentInternal(feedItem.comment, -1)}
+						userVote={feedItem.vote}
+						totalVotes={feedItem.votes}
+						onUpvote={() => voteFeedCommentItem(feedItem, 1)}
+						onDownvote={() => voteFeedCommentItem(feedItem, -1)}
 					/>
 				</div>
 			);
