@@ -1,0 +1,25 @@
+.code-item-container {
+	.code-feed-item-wrapper {
+		display: flex;
+		position: relative;
+		padding: 7px;
+		z-index: 2;
+		text-decoration: none;
+		background-color: #eee;
+		.code-snippet {
+			flex: 2;
+			color: #777;
+			fontSize: 13px;
+			whiteSpace: pre;
+		}
+		.language-tag {
+			display: inline-flex;
+			alignItems: center;
+			justifyContent: center;
+			width: 30px;
+			height: 30px;
+			fontSize: 12px;
+			color: #fff;
+		}
+	}
+}

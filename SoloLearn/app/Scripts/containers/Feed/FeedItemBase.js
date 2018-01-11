@@ -90,7 +90,7 @@ const FeedItemBase = ({
 			</p>
 			{children}
 			{
-				votes !== null &&
+				votes &&
 					<div className="votes" style={styles.votes}>
 						<ThumbUp color={grey500} style={styles.voteIcon} />
 						<span style={styles.voteText}>{votes > 0 ? `+${votes}` : votes}</span>

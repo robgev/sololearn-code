@@ -11,6 +11,7 @@ const types = {
 	courseStarted: 101,
 	moduleCompleted: 102,
 	courseCompleted: 103,
+	lessonCreated: 111,
 
 	postedQuestion: 201,
 	postedAnswer: 202,

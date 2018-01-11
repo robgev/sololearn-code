@@ -1,56 +1,24 @@
 // React modules
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
-
-// Utils
 import { getLanguageColor, truncate } from 'utils';
 
-const styles = {
-	code: {
-		display: 'flex',
-		padding: '7px',
-		backgroundColor: '#eee',
-		position: 'relative',
-		zIndex: 2,
-		textDecoration: 'none',
-	},
+import 'styles/Feed/codeFeedItem.scss';
 
-	languageIcon: {
-		display: 'inline-flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-		width: '30px',
-		height: '30px',
-		fontSize: '12px',
-		color: '#fff',
-	},
-
-	codeSnippet: {
-		fontSize: '13px',
-		color: '#777',
-		whiteSpace: 'pre',
-		flex: 2,
-	},
-
-};
-
-class Code extends Component {
-	render() {
-		const { code } = this.props;
-		return (
-			<Link to={`/playground/${code.publicID}`} className="code" style={styles.code}>
-				<p style={styles.codeSnippet}>{truncate(code.sourceCode, 500, 6, true)}</p>
-				<div
-					className="language"
-					style={{
-						...styles.languageIcon,
-						backgroundColor: getLanguageColor(code.language),
-					}}
-				>{code.language}
-				</div>
-			</Link>
-		);
-	}
-}
+const Code = ({ code }) => (
+	<div className="code-item-container">
+		<Link to={`/playground/${code.publicID}`} className="code-feed-item-wrapper">
+			<p className="code-snippet">
+				{truncate(code.sourceCode, 500, 6, true)}
+			</p>
+			<span
+				className="language-tag"
+				style={{ backgroundColor: getLanguageColor(code.language) }}
+			>
+				{code.language}
+			</span>
+		</Link>
+	</div>
+);
 
 export default Code;

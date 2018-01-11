@@ -1,10 +1,8 @@
-// React modules
 import React from 'react';
 import { Link } from 'react-router';
-
-// Material UI components
 import QuoteIcon from 'material-ui/svg-icons/editor/format-quote';
 import { grey700 } from 'material-ui/styles/colors';
+import VoteControls from 'components/Shared/VoteControls';
 
 const styles = {
 	post: {
@@ -33,25 +31,36 @@ const styles = {
 	},
 };
 
-const Post = ({ post, isQuestion, url }) => (
-	<Link
-		to={url}
-		style={styles.post}
-	>
-		<QuoteIcon
-			color={grey700}
-			style={{ ...styles.quoteIcon.base, ...styles.quoteIcon.bottom }}
-		/>
-		<p
-			style={styles.postName}
+const Post = ({
+	post, isQuestion, url, onUpvote, onDownvote,
+}) => (
+	<div>
+		<Link
+			to={url}
+			style={styles.post}
 		>
-			{isQuestion ? post.title : post.message}
-		</p>
-		<QuoteIcon
-			color={grey700}
-			style={styles.quoteIcon.base}
+			<QuoteIcon
+				color={grey700}
+				style={{ ...styles.quoteIcon.base, ...styles.quoteIcon.bottom }}
+			/>
+			<p
+				style={styles.postName}
+			>
+				{isQuestion ? post.title : post.message}
+			</p>
+			<QuoteIcon
+				color={grey700}
+				style={styles.quoteIcon.base}
+			/>
+		</Link>
+		<VoteControls
+			absolute
+			userVote={post.vote}
+			onUpvote={onUpvote}
+			totalVotes={post.votes}
+			onDownvote={onDownvote}
 		/>
-	</Link>
+	</div>
 );
 
 export default Post;

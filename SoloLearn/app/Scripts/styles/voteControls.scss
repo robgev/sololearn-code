@@ -7,4 +7,20 @@
 		padding: 8px;
 		vertical-align: middle;
 	}
+	&.absolute-controls {
+		position: relative;
+		width: 120px;
+		padding: 10px 0;
+		justify-content: center;
+		.icon-button {
+			position: absolute !important;
+			z-index: 2 !important;
+			&.up {
+				left: 0
+			}
+			&.down {
+				right: 0;
+			}
+		}
+	}
 }

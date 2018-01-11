@@ -8,15 +8,17 @@ import 'styles/voteControls.scss';
 import Likes from './Likes';
 
 const VoteControls = ({
+	absolute,
 	userVote,
 	getVotes,
 	onUpvote,
+	className,
 	totalVotes,
 	onDownvote,
 }) => (
-	<div className="vote-controls">
+	<div className={`vote-controls ${absolute ? 'absolute-controls' : ''} ${className}`}>
 		<IconButton
-			className="icon-button"
+			className="icon-button up"
 			iconStyle={{
 				width: 16,
 				height: 16,
@@ -27,7 +29,7 @@ const VoteControls = ({
 		</IconButton>
 		<Likes votes={totalVotes} getLikes={getVotes} />
 		<IconButton
-			className="icon-button"
+			className="icon-button down"
 			iconStyle={{
 				width: 16,
 				height: 16,

@@ -8,7 +8,10 @@ import Radium from 'radium';
 import Paper from 'material-ui/Paper';
 
 // Additional data and components
-import { setSelectedComment } from 'actions/comments';
+import { setSelectedComment, voteCommentInternal } from 'actions/comments';
+import { votePostInternal } from 'actions/discuss';
+import VoteControls from 'components/Shared/VoteControls';
+import CourseCard from 'components/Shared/CourseCard';
 import FeedItems from './FeedItems';
 import FeedItemBase from './FeedItemBase';
 import Badge from './FeedTemplates/Badge';
@@ -43,7 +46,11 @@ const styles = {
 	},
 };
 
-const mapDispatchToProps = { setSelectedComment };
+const mapDispatchToProps = {
+	setSelectedComment,
+	voteCommentInternal,
+	votePostInternal,
+};
 
 @connect(null, mapDispatchToProps)
 @Radium
@@ -67,7 +74,7 @@ class FeedItem extends Component {
 	}
 
 	renderFeedItem = () => {
-		const { feedItem } = this.props;
+		const { feedItem, voteCommentInternal, votePostInternal } = this.props;
 		switch (feedItem.type) {
 		case types.badgeUnlocked:
 			this.url = `/profile/${feedItem.user.id}/badges/${feedItem.achievement.id}`;
@@ -81,16 +88,43 @@ class FeedItem extends Component {
 		case types.postedQuestion:
 			this.url = `/discuss/${feedItem.post.id}`;
 			this.votes = feedItem.post.votes;
-			return <Post post={feedItem.post} isQuestion url={this.url} />;
+			return (
+				<Post
+					isQuestion
+					url={this.url}
+					post={feedItem.post}
+					onUpvote={() => votePostInternal(feedItem.post, 1)}
+					onDownvote={() => votePostInternal(feedItem.post, -1)}
+				/>
+			);
 		case types.postedAnswer:
 			this.url = `/discuss/${feedItem.post.parentID}/answer/${feedItem.post.id}`;
 			this.votes = feedItem.post.votes;
-			return <Post post={feedItem.post} isQuestion={false} url={this.url} />;
+			return (
+				<Post
+					url={this.url}
+					isQuestion={false}
+					post={feedItem.post}
+					onUpvote={() => votePostInternal(feedItem.post, 1)}
+					onDownvote={() => votePostInternal(feedItem.post, -1)}
+				/>
+			);
 		case types.postedCode:
 		case types.upvoteCode:
 			this.url = `/playground/${feedItem.code.publicID}`;
 			this.votes = feedItem.code.votes;
-			return <Code code={feedItem.code} />;
+			return (
+				<div>
+					<Code code={feedItem.code} />
+					<VoteControls
+						absolute
+						userVote={feedItem.code.vote}
+						totalVotes={feedItem.code.votes}
+						onUpvote={() => {}} // TODO: Add requests
+						onDownvote={() => {}}
+					/>
+				</div>
+			);
 		case types.completedChallange:
 			this.url = `/profile/${feedItem.contest.player.id}`;
 			return <Challenge contest={feedItem.contest} openPopup={this.props.openPopup} />;
@@ -107,7 +141,28 @@ class FeedItem extends Component {
 			return (
 				<div onClick={() => this.props.setSelectedComment(feedItem.comment.id)}>
 					<Code code={feedItem.code} />
+					<VoteControls
+						absolute
+						userVote={feedItem.comment.vote}
+						totalVotes={feedItem.comment.votes}
+						onUpvote={() => voteCommentInternal(feedItem.comment, 1)}
+						onDownvote={() => voteCommentInternal(feedItem.comment, -1)}
+					/>
 				</div>
+			);
+		case types.lessonCreated:
+			this.url = `/learn/slayLesson/2/${feedItem.userLesson.id}/1`;
+			return (
+				<CourseCard
+					itemType={2}
+					id={feedItem.userLesson.id}
+					name={feedItem.userLesson.name}
+					color={feedItem.userLesson.color}
+					userID={feedItem.userLesson.userID}
+					iconUrl={feedItem.userLesson.iconUrl}
+					viewCount={feedItem.userLesson.viewCount}
+					comments={feedItem.userLesson.comments}
+				/>
 			);
 		default:
 			return null;

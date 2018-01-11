@@ -114,6 +114,7 @@ export const getCommentsInternal = ({
 export const voteCommentInternal = (comment, vote, commentsType) => (dispatch) => {
 	const userVote = comment.vote === vote ? 0 : vote;
 	const votes = (comment.votes + userVote) - comment.vote;
+	console.log(comment.votes, vote, comment.vote);
 	const url =
 		commentsType === 'lesson'
 			? 'Discussion/VoteLessonComment'
