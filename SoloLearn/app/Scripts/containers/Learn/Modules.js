@@ -25,6 +25,7 @@ import { isLoaded } from 'reducers';
 // Service
 import Service, { AppDefaults } from 'api/service';
 import Progress, { ProgressState } from 'api/progress';
+import CourseChip from 'components/Shared/CourseChip';
 
 // Popups
 import Popup from 'api/popupService';
@@ -224,14 +225,30 @@ const ModuleAlignment = {
 };
 EnumNameMapper.apply(ModuleAlignment);
 
+const mapStateToProps = state => ({
+	isLoaded: isLoaded(state, 'modules'),
+	course: state.course,
+	courses: state.courses,
+	userProfile: state.userProfile,
+});
+
+const mapDispatchToProps = {
+	loadCourseInternal,
+	toggleCourse,
+	toggleCourseInternal,
+	selectModule,
+};
+
+@connect(mapStateToProps, mapDispatchToProps)
+@Radium
 class Modules extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			lockedPopupOpened: false,
-			resetPopupOpened: false,
 			selectCourse: false,
+			resetPopupOpened: false,
+			lockedPopupOpened: false,
 		};
 
 		// Keeping for progress resetting
@@ -462,6 +479,23 @@ class Modules extends Component {
 		this.setState({ resetPopupOpened: false });
 	}
 
+	showCertificate = () => {
+		const { modules } = this.props.course;
+		const lastModule = modules[modules.length - 1];
+		const { progress } = Progress.getModuleState(lastModule);
+		const isCourseFinished = progress === 100;
+		return isCourseFinished &&
+		<div style={styles.module.base}>
+			<CourseChip
+				noBoxShadow
+				name="Certificate"
+				color="transparent"
+				customLink="/somewhere"
+				iconUrl="https://api.sololearn.com/uploads/Modules/certificate.png"
+			/>
+		</div>;
+	}
+
 	render() {
 		const that = this;
 		const { course, isLoaded: isModuleLoaded } = this.props;
@@ -510,6 +544,7 @@ class Modules extends Component {
 						</div>,
 						<div className="modules" key="modules">
 							{this.renderModules()}
+							{this.showCertificate()}
 						</div>,
 					]
 					:
@@ -540,18 +575,4 @@ class Modules extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	isLoaded: isLoaded(state, 'modules'),
-	course: state.course,
-	courses: state.courses,
-	userProfile: state.userProfile,
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-	loadCourseInternal,
-	toggleCourse,
-	toggleCourseInternal,
-	selectModule,
-}, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Radium(Modules));
+export default Modules;

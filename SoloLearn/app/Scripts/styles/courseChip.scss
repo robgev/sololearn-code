@@ -1,0 +1,23 @@
+.chip-container {
+	width: 100px;
+	margin: 10px 5px;
+	text-decoration: none;
+	color: rgba(0, 0, 0, 0.87);
+	.chip-image {
+		width: 100px;
+		height: 100px;
+	}
+	.round {
+		border-radius: 100%;
+	}
+	.course-name {
+		width: 100%;
+		line-height: 12px;
+		font-size: 12px;
+		padding-top: 5px;
+		height: 24px;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: normal;
+	}
+}

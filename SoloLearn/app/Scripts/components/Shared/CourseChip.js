@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import Paper from 'material-ui/Paper';
+import 'styles/courseChip.scss';
 
 const CourseChip = ({
 	id,
@@ -11,11 +12,13 @@ const CourseChip = ({
 	noName,
 	isCourse,
 	itemType,
+	customLink,
+	noBoxShadow,
 	color = 'white',
 }) => (
 	<Link
 		className="chip-container"
-		to={isCourse ? `/learn/${alias}` : `/learn/slayLesson/${itemType}/${id}/1`}
+		to={customLink || (isCourse ? `/learn/${alias}` : `/learn/slayLesson/${itemType}/${id}/1`)}
 	>
 		<Paper
 			style={{
@@ -24,6 +27,7 @@ const CourseChip = ({
 				width: 100,
 				backgroundColor: color,
 				borderRadius: (isCourse || round) ? '100%' : 0,
+				...(noBoxShadow ? { boxShadow: 'none' } : {}),
 			}}
 		>
 			<img

@@ -146,7 +146,6 @@ export const voteFeedPostItem = ({
 }, newVote) => async (dispatch) => {
 	const userVote = vote === newVote ? 0 : newVote;
 	const votes = (totalVotes + userVote) - vote;
-	console.log(newVote, vote, totalVotes, userVote);
 	dispatch({
 		type: types.SET_FEED_ITEM_VOTE_DATA,
 		payload: {

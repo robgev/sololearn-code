@@ -68,7 +68,7 @@ const styles = {
 };
 
 const FeedItemBase = ({
-	title, user, date, votes, children,
+	title, user, date, children,
 }) => (
 	<div className="content" style={styles.content}>
 		<ProfileAvatar
