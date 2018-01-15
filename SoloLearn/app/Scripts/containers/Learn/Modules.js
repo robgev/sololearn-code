@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Link, browserHistory } from 'react-router';
 import Radium from 'radium';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 // Material UI components
 import Dialog from 'material-ui/Dialog';
@@ -480,7 +479,7 @@ class Modules extends Component {
 	}
 
 	showCertificate = () => {
-		const { modules } = this.props.course;
+		const { modules, id } = this.props.course;
 		const lastModule = modules[modules.length - 1];
 		const { progress } = Progress.getModuleState(lastModule);
 		const isCourseFinished = progress === 100;
@@ -490,7 +489,7 @@ class Modules extends Component {
 				noBoxShadow
 				name="Certificate"
 				color="transparent"
-				customLink="/somewhere"
+				customLink={`/certificate/${id}`}
 				iconUrl="https://api.sololearn.com/uploads/Modules/certificate.png"
 			/>
 		</div>;

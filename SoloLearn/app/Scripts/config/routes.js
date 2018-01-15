@@ -40,6 +40,9 @@ import Notifications from 'containers/Notifications/NotificationsView';
 // Feed
 import Feed from 'containers/Feed/Feed';
 
+// Certificate
+import Certificate from 'containers/Certificate';
+
 // Profile
 import Profile from 'containers/Profile/Profile';
 
@@ -77,6 +80,7 @@ export default (
 			<Route path="/discuss/:id(/:questionName)(/:replyId)" component={Post} />
 			<Route path="/feed" component={Feed} />
 			<Route path="/profile/:id(/:tab)(/:selected)" component={Profile} />
+			<Route path="/certificate/:id" component={Certificate} />
 			<Route path="/contests" component={redirector(Contests)} />
 			<Route path="/choose-opponent" component={redirector(OpponentSelector)} />
 			<Route path="/challenge/:id" component={redirector(Challenge)} />

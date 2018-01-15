@@ -1,6 +1,6 @@
+import { EnumNameMapper } from 'utils';
 import Storage from './storage';
 import Service from './service';
-import { EnumNameMapper } from 'utils';
 
 export const ProgressState = {
 	Disabled: 1,

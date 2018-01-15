@@ -188,6 +188,37 @@ class WS {
     		});
     }
 
+		fetchRequest = async (action, data = {}) => {
+			const response = await document.getElementById('service-frame').contentWindow.window.axios({
+				url: `${this.App.host}${action}`,
+				method: 'POST',
+				headers: {
+					'Content-type': 'application/json',
+					ClientID: AppDefaults.clientID,
+					DeviceID: this.deviceUniqueID,
+					SessionID: this.appSessionID,
+					Version: '8',
+				},
+				data: JSON.stringify(data),
+			});
+			// I am leaving fetch version here fot the future
+			// const request = await fetch(`${this.App.host}${action}`, {
+			// 	method: 'POST',
+			// 	headers: {
+			// 		'Content-type': 'application/json',
+			// 		ClientID: AppDefaults.clientID,
+			// 		DeviceID: this.deviceUniqueID,
+			// 		SessionID: this.appSessionID,
+			// 		Version: '8',
+			// 		'Access-Control-Allow-Origin': '*',
+			// 	},
+			// 	body: JSON.stringify(data),
+			// });
+			// console.log(request);
+			// const response = await request.json();
+			return response.data;
+		}
+
     request = (action, data) => {
     	const that = this;
 
