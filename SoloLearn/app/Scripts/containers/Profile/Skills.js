@@ -1,191 +1,64 @@
-// React modules
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
 
-// Material UI components
 import Paper from 'material-ui/Paper';
 import LinearProgress from 'material-ui/LinearProgress';
-import ProgressBar from 'react-progressbar.js';
+import PolarChart from 'components/Shared/PolarChart';
 
-const { Circle } = ProgressBar;
+import { calculateProgress } from 'utils';
+import chartColors from 'constants/ChartColors';
+import 'styles/Profile/skills.scss';
+import SkillChip from './SkillChip';
 
-const styles = {
-	container: {
-		margin: '5px 0 0 0',
-		padding: '10px',
-	},
+const createChartData = ranks => Object.keys(ranks)
+	.sort((currentItem, comparedItem) => ranks[comparedItem] - ranks[currentItem])
+	.map((key, index) => ({
+		x: index,
+		label: key,
+		percentage: ranks[key],
+		fill: chartColors[index],
+		y: (Math.sqrt(ranks[key]) * 50) + 50,
+	}));
 
-	heading: {
-		textTransform: 'uppercase',
-	},
-
-	leaderboardLink: {
-		fontSize: '12px',
-		fontWeight: 500,
-		textDecoration: 'none',
-		color: '#607d8b',
-		margin: '5px 0',
-		display: 'block',
-	},
-
-	progressWrapper: {
-		textAlign: 'right',
-	},
-
-	status: {
-		fontSize: '11px',
-		color: '#777',
-	},
-
-	progress: {
-		backgroundColor: '#dedede',
-	},
-
-	circleProgress: {
-		width: '75px',
-		height: '75px',
-	},
-
-	courses: {
-		base: {
-			display: 'flex',
-			margin: '10px 0 0 0',
-			flexWrap: 'wrap',
-			minHeight: '100px',
-		},
-
-		centered: {
-			justifyContent: 'center',
-			alignItems: 'center',
-		},
-	},
-
-	course: {
-		flexGrow: '1 1 auto',
-		width: '33%',
-		display: 'inline-flex',
-		alignItems: 'center',
-		margin: '0 0 10px 0',
-	},
-
-	courseProgress: {
-		position: 'relative',
-	},
-
-	courseIcon: {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		width: '60px',
-		height: '60px',
-		margin: '-30px 0 0 -30px',
-		borderRadius: '50%',
-	},
-
-	courseDetails: {
-		margin: '0 0 0 10px',
-		fontWeight: 500,
-	},
-
-	courseName: {
-		fontSize: '14px',
-	},
-
-	xp: {
-		fontSize: '13px',
-		color: '#777',
-	},
-
-	noSkills: {
-
-	},
-};
-
-const progressBarOptions = {
-	color: '#37474F',
-	strokeWidth: 5,
-	trailColor: '#E0E0E0',
-	trailWidth: 5,
-};
-
-class Skills extends Component {
-	renderCourses() {
-		const { skills } = this.props;
-
-		return skills.map(course => (
-			<div className="course" key={course.id} style={styles.course}>
-				<div className="course-progress" style={styles.courseProgress}>
-					<Circle
-						progress={course.progress}
-						options={progressBarOptions}
-						containerStyle={styles.circleProgress}
-					/>
-					<img src="../../../assets/1051.png" alt={course.name} style={styles.courseIcon} />
-				</div>
-				<div className="course-details" style={styles.courseDetails}>
-					<p style={styles.courseName}>{course.languageName}</p>
-					<p style={styles.xp}>{course.xp} XP</p>
-				</div>
-			</div>
-		));
-	}
-
-	render() {
-		const { levels, profile, skills } = this.props;
-
-		const userLevel = profile.level;
-		const currentXp = profile.xp;
-		let maxXp = null;
-		let status = '';
-		const levelsWithStatus = levels.filter(item => item.status != null);
-		const levelsWithStatusLength = levelsWithStatus.length;
-
-		// TODO Write a comment
-		if (userLevel >= levelsWithStatus[levelsWithStatusLength - 1].number) {
-			maxXp = currentXp;
-			status = levelsWithStatus[levelsWithStatusLength - 1].status;
-		} else {
-			for (let i = userLevel; i < levels.length - 1; i++) {
-				const currentLevel = levels[i];
-
-				if (currentLevel.status != null) {
-					maxXp = levels[i - 1].maxXp;
-					status = currentLevel.status;
-					break;
-				}
-			}
-		}
-
-		return (
-			<div id="skills">
-				<Paper className="skills-header" style={styles.container}>
-					<p style={styles.heading}>Status + Rank</p>
-					<div className="details" style={styles.details}>
-						<Link to="/leaderboard" style={styles.leaderboardLink}>Check out the leaderboard</Link>
-						<div style={styles.progressWrapper}>
-							<LinearProgress style={styles.progress} mode="determinate" min={0} max={maxXp} value={currentXp} color="#8BC34A" />
-							<span style={styles.status}>{status}</span>
-						</div>
+const Skills = ({ levels, profile, skills }) => {
+	const { maxXp, status } = calculateProgress(levels, profile.level, profile.xp);
+	return (
+		<div className="skills-container">
+			<Paper className="skills-group">
+				<p className="skills-header">Status + Rank</p>
+				<div className="skills-details">
+					<Link to="/leaderboard" className="leaderboard-link">
+							Check out the leaderboard
+					</Link>
+					<div className="progress-wrapper">
+						<LinearProgress
+							min={0}
+							max={maxXp}
+							color="#8BC34A"
+							value={profile.xp}
+							mode="determinate"
+							className="progress"
+						/>
+						<span className="status">{status}</span>
 					</div>
-				</Paper>
-				<Paper className="skills-languages" style={styles.container}>
-					<p style={styles.heading}>Languages</p>
-					<div
-						style={{
-							...styles.courses.base,
-							...(skills.length <= 0 ? styles.courses.centered : {}),
-						}}
-					>
-						{
-							skills.length > 0 ?
-								this.renderCourses()
-								: <p style={styles.noSkills}>Nothing to show</p>
-						}
-					</div>
-				</Paper>
-			</div>
-		);
-	}
-}
+				</div>
+			</Paper>
+			<Paper className="skills-group">
+				<p className="skills-header">Languages</p>
+				<div className={`courses ${skills.length <= 0 ? 'centered' : ''}`}>
+					{skills.length > 0 ?
+						skills.map(course =>
+							<SkillChip key={course.id} course={course} />) :
+						<p>Nothing to show</p>
+					}
+				</div>
+			</Paper>
+			<Paper className="skills-group">
+				<p className="skills-header">Skills</p>
+				<PolarChart chartData={createChartData(profile.skillRanks)} />
+			</Paper>
+		</div>
+	);
+};
 
 export default Skills;

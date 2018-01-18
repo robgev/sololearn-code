@@ -13,6 +13,7 @@ import faultGenerator from './faultGenerator';
 import updateMessage from './messageFormatter';
 import numberFormatter from './numberFormatter';
 import getLanguageColor from './getLanguageColor';
+import calculateProgress from './calculateProgress';
 import EnumNameMapper from './enumNameMapper';
 import findCommonPrefix from './findCommonPrefix';
 import getChallengeStatus from './getChallengeStatus';
@@ -40,6 +41,7 @@ export {
 	updateMessage,
 	faultGenerator,
 	numberFormatter,
+	calculateProgress,
 	getLanguageColor,
 	EnumNameMapper,
 	findCommonPrefix,

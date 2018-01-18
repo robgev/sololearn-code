@@ -60,7 +60,8 @@
 		"redux-thunk": "^2.2.0",
 		"reselect": "^3.0.1",
 		"scroll-to-element": "^2.0.0",
-		"shelljs": "^0.7.8"
+		"shelljs": "^0.7.8",
+		"victory": "^0.24.5"
 	},
 	"devDependencies": {
 		"babel-cli": "^6.26.0",
