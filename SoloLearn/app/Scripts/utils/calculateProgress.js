@@ -2,7 +2,6 @@ export default (levels, userLevel, currentXp) => {
 	const milestones = levels.filter(item => item.status != null);
 	const highestMilestone = milestones[milestones.length - 1];
 
-	// TODO Rewrite
 	if (userLevel >= highestMilestone.number) {
 		const maxXp = currentXp;
 		const { status } = highestMilestone;

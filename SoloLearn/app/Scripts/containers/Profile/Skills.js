@@ -4,9 +4,10 @@ import { Link } from 'react-router';
 import Paper from 'material-ui/Paper';
 import LinearProgress from 'material-ui/LinearProgress';
 import PolarChart from 'components/Shared/PolarChart';
+import ChallengeGraphs from 'components/Shared/ChallengeGraphs';
 
 import { calculateProgress } from 'utils';
-import chartColors from 'constants/ChartColors';
+import { PolarChartColors } from 'constants/ChartColors';
 import 'styles/Profile/skills.scss';
 import SkillChip from './SkillChip';
 
@@ -16,7 +17,7 @@ const createChartData = ranks => Object.keys(ranks)
 		x: index,
 		label: key,
 		percentage: ranks[key],
-		fill: chartColors[index],
+		fill: PolarChartColors[key],
 		y: (Math.sqrt(ranks[key]) * 50) + 50,
 	}));
 
@@ -56,6 +57,14 @@ const Skills = ({ levels, profile, skills }) => {
 			<Paper className="skills-group">
 				<p className="skills-header">Skills</p>
 				<PolarChart chartData={createChartData(profile.skillRanks)} />
+			</Paper>
+			<Paper className="skills-group">
+				<p className="skills-header">Challenges</p>
+				<ChallengeGraphs
+					courseID={null}
+					contestStats={profile.contestStats}
+					contestHistory={profile.contestHistory}
+				/>
 			</Paper>
 		</div>
 	);
