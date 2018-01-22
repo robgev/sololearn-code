@@ -12,9 +12,9 @@ const createChartData = (stats, courseID) => {
 		const { wins, loses, draws } =
 			stats.find(currentStat => currentStat.courseID === courseID);
 		return [
-			{ x: 1, y: loses },
-			{ x: 2, y: wins },
-			{ x: 3, y: draws },
+			{ x: 1, y: loses, fill: ChallengeColors.lost },
+			{ x: 2, y: wins, fill: ChallengeColors.wins },
+			{ x: 3, y: draws, fill: ChallengeColors.draws },
 		];
 	}
 	return stats.reduce((accumulator, currentStat) => ([

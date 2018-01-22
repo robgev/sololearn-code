@@ -2,6 +2,11 @@
 	.skills-group {
 		margin-top: 5px;
 		padding: 10px;
+		.skills-row {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
 		.skills-header {
 			text-transform: uppercase;
 		}

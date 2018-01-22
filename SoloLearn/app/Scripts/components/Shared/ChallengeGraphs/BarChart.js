@@ -11,7 +11,9 @@ import { ChallengeColors } from 'constants/ChartColors';
 const createChartData = (contests, courseID, dataKey) => {
 	const filteredContests =
 	courseID ? contests.filter(currentContest => currentContest.courseID === courseID) : contests;
-	const relevantContests = filteredContests.slice(filteredContests.length - 15);
+	console.log(filteredContests);
+	const relevantContests = filteredContests.length > 15 ?
+		filteredContests.slice(filteredContests.length - 15) : filteredContests;
 	// We will show only 15 of contests and we get like > 60
 	return relevantContests.map((currentContest, index) => ({
 		x: index + 1,

@@ -1,11 +1,4 @@
 import React from 'react';
-import {
-	VictoryPie,
-	VictoryContainer,
-	VictoryChart,
-	VictoryTheme,
-	VictoryLegend,
-} from 'victory';
 import 'styles/challengeGraphs.scss';
 import PieChart from './PieChart';
 import BarChart from './BarChart';
