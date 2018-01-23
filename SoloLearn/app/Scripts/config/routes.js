@@ -37,6 +37,9 @@ import Playground from 'containers/Playground';
 // Notifications
 import Notifications from 'containers/Notifications/NotificationsView';
 
+// Settings
+import Settings from 'containers/Settings';
+
 // Feed
 import Feed from 'containers/Feed/Feed';
 
@@ -72,6 +75,7 @@ export default (
 				<Route path=":quizNumber(/:primary)(/:secondary)" component={Quiz} />
 			</Route>
 			<Route path="/codes" component={Codes} />
+			<Route path="/settings(/:settingID)" component={Settings} />
 			<Route path="/playground(/:primary)(/:secondary)" component={Playground} />
 			<Route path="/discuss" component={Questions} />
 			<Route path="/discuss/new" component={NewQuestion} />

@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 // import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import NotificationManager from '../Notifications/NotificationManager';
-import SettingsMenu from '../Settings/SettingsMenu';
+import SettingsMenu from './HeaderSettingsMenu';
 
 // Material UI components
 // import IconButton from 'material-ui/IconButton';

@@ -1,0 +1,43 @@
+.settings-container {
+	display: flex;
+	.settings-sections {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		width: 200px;
+		a {
+			padding: 30px 10px;
+			border-top: 1px solid #F3F3F3;
+			&:first-child {
+				border-top: none
+			}
+		}
+	}
+	.settings-main {
+		width: 100%;
+		border: 1px solid #F3F3F3;
+		padding: 30px;
+		.profile-settings-container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			width: 100%;
+			.settings-group {
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+			}
+			.image-group {
+				.profile-image-container {
+					position: relative;
+					margin-bottom: 20px;
+					.profile-edit-button {
+						position: absolute;
+						bottom: 30;
+						right: 20;
+					}
+				}
+			}
+		}
+	}
+}
