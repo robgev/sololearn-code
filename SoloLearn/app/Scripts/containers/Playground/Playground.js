@@ -194,11 +194,11 @@ class Playground extends Component {
 					codeType: 'templateCode',
 					userCodeLanguage: isWeb ? 'web' : foundEditorSettingKey,
 				};
-
+				const editorCode = this.getTabCodeData(alias, code);
 				this.setState({
 					type,
 					...codeData,
-					code: sourceCode,
+					code: editorCode,
 					latestSavedCodeData,
 					mode: foundEditorSettingKey,
 					languageSelector: isWeb ? 'web' : foundEditorSettingKey,
@@ -267,8 +267,8 @@ class Playground extends Component {
 		}
 	}
 
-	getTabCodeData = (mode) => {
-		const { sourceCode, cssCode, jsCode } = this.state;
+	getTabCodeData = (mode, codes) => {
+		const { sourceCode, cssCode, jsCode } = codes || this.state;
 		switch (mode) {
 		case 'html':
 		case 'php':
