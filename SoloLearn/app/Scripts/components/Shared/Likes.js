@@ -34,6 +34,7 @@ class Likes extends PureComponent {
 			<div key={user.id} style={{ padding: 5 }}>
 				<ProfileAvatar
 					userID={user.id}
+					withUserNameBox
 					userName={user.name}
 					avatarUrl={user.avatarUrl}
 				/>
