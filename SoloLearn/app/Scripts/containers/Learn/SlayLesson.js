@@ -124,6 +124,8 @@ class SlayLesson extends PureComponent {
 						/>
 						<Comments
 							id={id}
+							type={1}
+							commentsType="userLesson"
 							commentsOpened={commentsOpened}
 							closeComments={this.toggleComments}
 						/>

@@ -4,7 +4,7 @@ const removeLoadMores = (comments, { above }) =>
 	comments.filter(c => !(c.type === LOAD_MORE && c.loadAbove === above));
 
 const hasAbove = (comments, parentId = null) => {
-	if (comments[0].index <= 0) return comments;
+	if (comments.length && comments[0].index <= 0) return comments;
 	return [ { type: LOAD_MORE, parentId, loadAbove: true }, ...comments ];
 };
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import { Circle } from 'react-progressbar.js';
 
 const SkillChips = ({ course }) => (
@@ -26,6 +27,11 @@ const SkillChips = ({ course }) => (
 		<div className="course-details">
 			<p className="course-name">{course.languageName}</p>
 			<p className="course-xp">{course.xp} XP</p>
+			{ course.progress >= 1 &&
+				<Link to={`/certificate/${course.id}`}>
+					View Certificate
+				</Link>
+			}
 		</div>
 	</div>
 );

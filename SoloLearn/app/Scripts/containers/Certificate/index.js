@@ -18,7 +18,7 @@ class Certificate extends PureComponent {
 	}
 
 	async componentWillMount() {
-		const { params: { id }, course, getCertificate } = this.props;
+		const { params: { id }, course } = this.props;
 		const courseId = parseInt(id, 10);
 		if (!course) {
 			this.redirect();

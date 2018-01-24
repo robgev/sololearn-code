@@ -483,16 +483,21 @@ class Modules extends Component {
 		const lastModule = modules[modules.length - 1];
 		const { progress } = Progress.getModuleState(lastModule);
 		const isCourseFinished = progress === 100;
-		return isCourseFinished &&
-		<div style={styles.module.base}>
-			<CourseChip
-				noBoxShadow
-				name="Certificate"
-				color="transparent"
-				customLink={`/certificate/${id}`}
-				iconUrl="https://api.sololearn.com/uploads/Modules/certificate.png"
-			/>
-		</div>;
+		return (
+			<div style={styles.module.base}>
+				<CourseChip
+					noBoxShadow
+					name="Certificate"
+					color="transparent"
+					disabled={isCourseFinished}
+					customLink={`/certificate/${id}`}
+					iconUrl={isCourseFinished ?
+						'https://api.sololearn.com/uploads/Modules/certificate.png' :
+						'https://api.sololearn.com/uploads/Modules/certificate_disabled.png'
+					}
+				/>
+			</div>
+		);
 	}
 
 	render() {

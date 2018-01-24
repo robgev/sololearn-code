@@ -7,7 +7,6 @@ import {
 
 const changeFeedItemVote = (feedItems, { votes, vote, id }) => {
 	const targetItemIndex = feedItems.findIndex(currentItem => currentItem.id === id);
-	console.log(votes, vote, id);
 	const targetItem = feedItems[targetItemIndex];
 	return [
 		...feedItems.slice(0, targetItemIndex),

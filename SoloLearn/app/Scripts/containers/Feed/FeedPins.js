@@ -1,30 +1,10 @@
-// React modules
-import React, { Component } from 'react';
-
-// Additional data and components
+import React from 'react';
 import FeedPin from './FeedPin';
 
-const styles = {
-};
-
-class FeedPins extends Component {
-	constructor(props) {
-		super(props);
-	}
-
-	renderPins() {
-		return this.props.pins.map((pin, index) => (
-			<FeedPin key={`pin${pin.id}`} pin={pin} openPopup={this.props.openPopup} />
-		));
-	}
-
-	render() {
-		return (
-			<div className="feed-pins">
-				{this.renderPins()}
-			</div>
-		);
-	}
-}
+const FeedPins = ({ pins, openPopup }) => (
+	<div className="feed-pins">
+		{	pins.map(pin => <FeedPin key={`pin${pin.id}`} pin={pin} openPopup={openPopup} />)}
+	</div>
+);
 
 export default FeedPins;

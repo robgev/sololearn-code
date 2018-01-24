@@ -50,10 +50,12 @@ const CourseCard = ({
 				>
 					{userName}
 				</Link>
-				<ViewStats
-					views={viewCount}
-					comments={comments}
-				/>
+				{ (Number.isInteger(viewCount) && Number.isInteger(comments)) &&
+					<ViewStats
+						views={viewCount}
+						comments={comments}
+					/>
+				}
 			</div>
 		</Link>
 	</Paper>

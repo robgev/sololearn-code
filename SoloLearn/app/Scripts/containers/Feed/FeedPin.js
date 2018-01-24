@@ -150,7 +150,7 @@ class FeedPin extends Component {
 		const { pin } = this.props;
 
 		return pin.posts.map(post => (
-			<Post key={`pinPost ${post.id} ${pin.id}`} post={post} isQuestion />
+			<Post noVotes key={`pinPost ${post.id} ${pin.id}`} post={post} isQuestion />
 		));
 	}
 

@@ -32,7 +32,7 @@ const styles = {
 };
 
 const Post = ({
-	post, isQuestion, url, onUpvote, onDownvote, vote, votes,
+	post, isQuestion, url, onUpvote, onDownvote, vote, votes, noVotes,
 }) => (
 	<div>
 		<Link
@@ -53,13 +53,15 @@ const Post = ({
 				style={styles.quoteIcon.base}
 			/>
 		</Link>
-		<VoteControls
-			absolute
-			userVote={vote}
-			totalVotes={votes}
-			onUpvote={onUpvote}
-			onDownvote={onDownvote}
-		/>
+		{ !noVotes &&
+			<VoteControls
+				absolute
+				userVote={vote}
+				totalVotes={votes}
+				onUpvote={onUpvote}
+				onDownvote={onDownvote}
+			/>
+		}
 	</div>
 );
 

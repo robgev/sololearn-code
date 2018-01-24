@@ -66,6 +66,11 @@ const getPathAndParams = ({
 			'Discussion/GetCodeComments',
 			{ ...common, codeId: id },
 		];
+	case 'userLesson':
+		return [
+			'Discussion/GetUserLessonComments',
+			{ ...common, lessonId: id },
+		];
 	default:
 		return null;
 	}
