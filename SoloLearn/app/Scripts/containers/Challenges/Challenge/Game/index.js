@@ -54,11 +54,11 @@ class Game extends Component {
 
 	nextStep = () => {
 		this.closeWindowEvent();
+		const step = this.state.step + 1;
 		if (this.state.start) {
 			return this.setState({ start: false, result: 1 }, () =>
 				setTimeout(() => this.setState({ result: 0 }), 1500));
 		}
-		const step = this.state.step + 1;
 		if (step < 5) {
 			this.closeWindowEvent();
 			return this.setState({ step, result: 1 }, () =>
@@ -119,7 +119,7 @@ class Game extends Component {
 			return <SingleResult message={message} status={this.state.result} />;
 		}
 		if (this.state.end) return this.renderEnd();
-		else if (this.state.sart) return this.renderStart();
+		else if (this.state.start) return this.renderStart();
 		return (
 			<StyleRoot>
 				<Timer onTimerEnd={this.showResult} time={getTime(contest, step)} />
