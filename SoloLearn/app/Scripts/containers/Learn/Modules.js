@@ -489,7 +489,7 @@ class Modules extends Component {
 					noBoxShadow
 					name="Certificate"
 					color="transparent"
-					disabled={isCourseFinished}
+					disabled={!isCourseFinished}
 					customLink={`/certificate/${id}`}
 					iconUrl={isCourseFinished ?
 						'https://api.sololearn.com/uploads/Modules/certificate.png' :

@@ -4,9 +4,9 @@ import Paper from 'material-ui/Paper';
 import 'styles/courseChip.scss';
 
 const CustomWrapper = ({ children, className }) => (
-	<div className={className}>
+	<span className={className}>
 		{children}
-	</div>
+	</span>
 );
 
 const CourseChip = ({
