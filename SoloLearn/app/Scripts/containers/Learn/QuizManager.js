@@ -95,7 +95,6 @@ class QuizManager extends Component {
 			this.setState(this.state);
 			return;
 		}
-		console.log('HERE');
 		this.props.selectQuiz(Object.assign({}, { id: quizId }, { number }, { isText }));
 
 		if (this.props.isShortcut) {
@@ -163,8 +162,6 @@ class QuizManager extends Component {
 				isShortcutCorrectCounts: this.props.isShortcutCorrectCounts,
 			}),
 		);
-
-		console.log(activeQuiz.number);
 
 		return (
 			<div className="quizOverlay">

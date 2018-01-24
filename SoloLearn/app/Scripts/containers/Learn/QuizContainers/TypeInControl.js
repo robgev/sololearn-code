@@ -135,13 +135,21 @@ hint = () => {
 	const { desiredText } = this;
 	// First we find the index from where the answer and the input differ
 	const commonPrefixIndex = findCommonPrefix(desiredText, input);
+	// Check if adding one more symbol will complete the answer.
+	// If it is one symbol answer, then obviously adding one symbol will complete the answer.
+	// If commonPrefixIndex + 1 is indicating the index of the last symbol of the string, which
+	// is desiredText.length - 1 then we will just unlock;
+	if (desiredText.length !== 1 && commonPrefixIndex !== desiredText.length - 1) {
 	// Now we take that common part which is substring(0, commonPrefixIndex)
 	// And also do +1 to have a hint concatinated
-	const correctPart = desiredText.substring(0, commonPrefixIndex + 1);
-	// We also take the wrong part for remaining text
-	const wrongPart = input.substring(commonPrefixIndex + 1);
-	const newInput = `${correctPart}${wrongPart}`;
-	this.setState({ text: newInput });
+		const correctPart = desiredText.substring(0, commonPrefixIndex + 1);
+		// We also take the wrong part for remaining text
+		const wrongPart = input.substring(commonPrefixIndex + 1);
+		const newInput = `${correctPart}${wrongPart}`;
+		this.setState({ text: newInput });
+	} else {
+		this.unlock();
+	}
 }
 
 render() {

@@ -20,7 +20,7 @@ export default class PlaceholderTypeIn extends Component {
 		this.state = {
 			isChecked: false,
 		};
-
+		this.isCorrect = false;
 		this.unlock = this.unlock.bind(this);
 		this.hint = this.hint.bind(this);
 		this.check = this.check.bind(this);
@@ -32,6 +32,9 @@ export default class PlaceholderTypeIn extends Component {
 
 	hint() {
 		this._child.hint();
+		if (this._child.isCorrect) {
+			this.isCorrect = true;
+		}
 	}
 
 	check() {

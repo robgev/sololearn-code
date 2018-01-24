@@ -103,6 +103,11 @@ handleHint = () => {
 		Progress.applyHint(this.props.activeQuiz.id, PointExchangeTypes.Hint, this.hintPrice);
 		this._child._quizSelectorChild.hint();
 		this.handleHintDialogClose();
+		const { isCorrect } = this._child._quizSelectorChild;
+		// Do fast with rewriting :D
+		if (isCorrect) {
+			this.handleCheck(null, true);
+		}
 	} else {
 		this.setState({ notAvailable: true });
 	}

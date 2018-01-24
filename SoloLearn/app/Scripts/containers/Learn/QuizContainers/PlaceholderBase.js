@@ -16,6 +16,7 @@ export default class PlaceholderBase extends Component {
 	constructor(props) {
 		super(props);
 
+		this.isCorrect = false;
 		this.placeholderItems = null;
 		this.placeholderIndexes = [];
 		this.quiz = this.props.quiz.answers;
@@ -62,89 +63,94 @@ export default class PlaceholderBase extends Component {
 		return segmentContainer;
 	}
 
-    rawParser = function (rawText, answers) {
-    	const containers = [];
+rawParser = function (rawText, answers) {
+	const containers = [];
 
-    	const myRegexp = /\{(\d)\}/gi;
-    	let match = myRegexp.exec(rawText);
-    	let prevIndex = 0;
-    	while (match != null) {
-    		if (match.index > prevIndex) {
-    			containers.push(this.rawTextContent(rawText.substr(prevIndex, match.index - prevIndex)));
-    		}
+	const myRegexp = /\{(\d)\}/gi;
+	let match = myRegexp.exec(rawText);
+	let prevIndex = 0;
+	while (match != null) {
+		if (match.index > prevIndex) {
+			containers.push(this.rawTextContent(rawText.substr(prevIndex, match.index - prevIndex)));
+		}
 
-    		const index = parseInt(match[1]);
+		const index = parseInt(match[1]);
 
-    		const componentData = {
-    			componentType: this.quizComponent,
-    			textComponent: false,
-    			props: {
-    				answer: answers[index],
-    			},
-    		};
+		const componentData = {
+			componentType: this.quizComponent,
+			textComponent: false,
+			props: {
+				answer: answers[index],
+			},
+		};
 
-    		containers.push(componentData);
+		containers.push(componentData);
 
-    		prevIndex = match.index + match[0].length;
+		prevIndex = match.index + match[0].length;
 
-    		match = myRegexp.exec(rawText);
-    	}
-    	if (rawText.length > prevIndex) {
-    		containers.push(this.rawTextContent(rawText.substr(prevIndex)));
-    	}
+		match = myRegexp.exec(rawText);
+	}
+	if (rawText.length > prevIndex) {
+		containers.push(this.rawTextContent(rawText.substr(prevIndex)));
+	}
 
-    	return containers;
-    }
+	return containers;
+}
 
-    generatePlaceholders() {
-    	this.placeholderItems = this.parse(this.props.quiz, this.props.quiz.answers);
-    	return this.placeholderItems.map((element, index) => {
-    		if (element.textComponent) {
-    			return (
-	<element.componentType content={element.props.content} key={index} />
-    			);
-    		}
+generatePlaceholders() {
+	this.placeholderItems = this.parse(this.props.quiz, this.props.quiz.answers);
+	return this.placeholderItems.map((element, index) => {
+		if (element.textComponent) {
+			return (
+				<element.componentType content={element.props.content} key={index} />
+			);
+		}
 
-    		this.placeholderIndexes.push({
-    			index,
-    			answerId: element.props.answer.id,
-    			});
-    		return (
-	<element.componentType answer={element.props.answer} isChecked={this.props.isChecked} key={index} index={index} ref={(child) => { this[`_child${index}`] = child; }} />
-    		);
-    	});
-    }
+		this.placeholderIndexes.push({
+			index,
+			answerId: element.props.answer.id,
+		});
+		return (
+			<element.componentType answer={element.props.answer} isChecked={this.props.isChecked} key={index} index={index} ref={(child) => { this[`_child${index}`] = child; }} />
+		);
+	});
+}
 
-    hint() {
-    	for (let i = 0; i < this.placeholderItems.length; i++) {
-    		const item = this.placeholderItems[i];
-    		if (!item.textComponent) this[`_child${i}`].hint();
-    	}
-    }
+hint() {
+	let isCorrect = true;
+	for (let i = 0; i < this.placeholderItems.length; i++) {
+		const item = this.placeholderItems[i];
+		if (!item.textComponent) {
+			this[`_child${i}`].hint();
+			isCorrect = isCorrect && this[`_child${i}`].isCorrect;
+		}
+	}
+	this.isCorrect = isCorrect;
+}
 
-    unlock() {
-    	for (let i = 0; i < this.placeholderItems.length; i++) {
-    		const item = this.placeholderItems[i];
-    		if (!item.textComponent) this[`_child${i}`].unlock();
-    	}
-    }
+unlock() {
+	for (let i = 0; i < this.placeholderItems.length; i++) {
+		const item = this.placeholderItems[i];
+		if (!item.textComponent) this[`_child${i}`].unlock();
+	}
+}
 
-    check() {
-    	for (let i = 0; i < this.placeholderItems.length; i++) {
-    		const item = this.placeholderItems[i];
-    		if (!item.textComponent) {
-    			if (!this[`_child${i}`].check()) return false;
-    		}
-    	}
+check() {
+	for (let i = 0; i < this.placeholderItems.length; i++) {
+		const item = this.placeholderItems[i];
+		if (!item.textComponent) {
+			if (!this[`_child${i}`].check()) return false;
+		}
+	}
 
-    	return true;
-    }
+	return true;
+}
 
-    render() {
-    	return (
-    		<div className="textBlock">
-    			{this.generatePlaceholders()}
-	</div>
-    	);
-    }
+render() {
+	return (
+		<div className="textBlock">
+			{this.generatePlaceholders()}
+		</div>
+	);
+}
 }

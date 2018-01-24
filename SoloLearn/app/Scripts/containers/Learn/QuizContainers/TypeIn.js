@@ -16,6 +16,7 @@ export default class TypeIn extends Component {
 		super(props);
 
 		this.answer = this.props.quiz.answers[0];
+		this.isCorrect = false;
 
 		this.state = {
 			isChecked: false,
@@ -32,6 +33,9 @@ export default class TypeIn extends Component {
 
 	hint() {
 		this._child.hint();
+		if (this._child.isCorrect) {
+			this.isCorrect = true;
+		}
 	}
 
 	check() {

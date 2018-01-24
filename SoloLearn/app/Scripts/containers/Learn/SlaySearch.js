@@ -53,7 +53,6 @@ class SlayDetailed extends PureComponent {
 	}
 
 	loadMore = async () => {
-		console.log('Here');
 		const { startIndex, loadCount } = this.state;
 		const { params: { query } } = this.props;
 		const length =
