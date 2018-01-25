@@ -7,51 +7,56 @@ export const getFeedItems = feedItems => ({
 	payload: feedItems,
 });
 
+const groupAllChallengesByUser = (searchedFeedItems, currentItem) => {
+	const allChallenges = searchedFeedItems.filter(currentlyCheckedItem =>
+		currentlyCheckedItem.type === feedTypes.completedChallange &&
+		currentlyCheckedItem.contest.player.id === currentItem.contest.player.id);
+	if (allChallenges.length > 1) {
+		const challengesCount = allChallenges.length;
+		return {
+			id: allChallenges[challengesCount - 1].id,
+			toId: currentItem.id,
+			date: currentItem.date,
+			title: `has completed ${challengesCount} challenges`,
+			user: currentItem.user,
+			groupedItems: allChallenges,
+			type: 444,
+		};
+	}
+	return currentItem;
+};
+
 const groupFeedItems = (feedItems) => {
-	const groupedFeedItems = [];
-	let temp = feedItems;
-
-	while (temp.length > 0) {
-		let firstItem = temp[0];
-		temp.splice(0, 1);
-
-		if (firstItem.type !== feedTypes.completedChallange) {
-			groupedFeedItems.push(firstItem);
-		} else {
-			const mergedItems = temp.filter(item =>
-				item.type === feedTypes.completedChallange &&
-				item.contest.player.id === firstItem.contest.player.id);
-			temp = temp.filter(item =>
-				!(item.type === feedTypes.completedChallange &&
-					item.contest.player.id === firstItem.contest.player.id));
-
-			if (mergedItems.length > 0) {
-				const challenegesCount = mergedItems.length + 1;
-				mergedItems.unshift(firstItem);
-
-				firstItem = {
-					id: mergedItems[mergedItems.length - 1].id,
-					toId: firstItem.id,
-					date: firstItem.date,
-					title: `has completed ${challenegesCount} challenges`,
-					user: firstItem.user,
-					groupedItems: mergedItems,
-					type: 444,
+	const reducedItems =
+		feedItems.reduce(({ groupedItems, checkedChallengers }, feedItem, currentIndex) => {
+			if (feedItem.type !== feedTypes.completedChallange) {
+				const newGroup = [ ...groupedItems, feedItem ];
+				return {
+					checkedChallengers,
+					groupedItems: newGroup,
 				};
 			}
-			groupedFeedItems.push(firstItem);
-		}
-	}
+			const playerID = feedItem.contest.player.id;
+			const isUserChallengesAlreadyGrouped = checkedChallengers.includes(playerID);
+			if (!isUserChallengesAlreadyGrouped) {
+				const searchArray = feedItems.slice(currentIndex);
+				const allChallengesByCurrentChallenger =
+					groupAllChallengesByUser(searchArray, feedItem);
+				const newCheckedChallengersList = [ ...checkedChallengers, playerID ];
+				const newGroup = [ ...groupedItems, allChallengesByCurrentChallenger ];
+				return {
+					groupedItems: newGroup,
+					checkedChallengers: newCheckedChallengersList,
+				};
+			}
 
-	if (feedItems.length > 0) {
-		const lastItem = feedItems[feedItems.length - 1];
-		const groupedLastItem = groupedFeedItems[groupedFeedItems.length - 1];
-		if (lastItem.id !== groupedLastItem.id) groupedLastItem.id = lastItem.id;
-	}
+			return {
+				groupedItems,
+				checkedChallengers,
+			};
+		}, { groupedItems: [], checkedChallengers: [] });
 
-	return new Promise((resolve) => {
-		resolve(groupedFeedItems);
-	});
+	return reducedItems.groupedItems;
 };
 
 export const getProfileFeedItems = feedItems => ({
@@ -67,7 +72,7 @@ export const getFeedItemsInternal = (fromId, profileId) => async (dispatch, getS
 		const { length } = response.feed;
 		const { feed, userSuggestions } = getState();
 		const suggestionsBatch = feed.filter(item => item.type === feedTypes.suggestions).length;
-		const feedItems = await groupFeedItems(response.feed);
+		const feedItems = groupFeedItems(response.feed);
 		const feedItemsCount = feed.length + feedItems.length;
 		if (profileId != null) {
 			dispatch(getProfileFeedItems(feedItems));
@@ -101,7 +106,7 @@ export const getProfileNewFeedItems = feedItems => ({
 export const getNewFeedItemsInternal = (toId, userId) => async (dispatch) => {
 	const response = await Service.request('Profile/GetFeed', { toId, profileId: userId, count: 20 });
 	if (response.feed.length > 0) {
-		const feedItems = await groupFeedItems(response.feed);
+		const feedItems = groupFeedItems(response.feed);
 		if (userId != null) {
 			dispatch(getProfileNewFeedItems(feedItems));
 		} else {

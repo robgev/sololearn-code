@@ -15,7 +15,7 @@ const changeFeedItemVote = (feedItems, { votes, vote, id }) => {
 	];
 };
 
-export default function (state = [], action) {
+export default (state = [], action) => {
 	switch (action.type) {
 	case GET_FEED_ITEMS:
 		// console.log(action.payload);
@@ -29,4 +29,4 @@ export default function (state = [], action) {
 	default:
 		return state;
 	}
-}
+};
