@@ -34,6 +34,7 @@ module.exports = {
 			styles: path.resolve(__dirname, 'app/Scripts/styles'),
 			utils: path.resolve(__dirname, 'app/Scripts/utils'),
 			selectors: path.resolve(__dirname, 'app/Scripts/selectors'),
+			texts: path.resolve(__dirname, 'app/Scripts/defaults/texts.js'),
 		},
 	},
 

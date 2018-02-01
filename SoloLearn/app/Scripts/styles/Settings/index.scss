@@ -17,6 +17,11 @@
 		width: 100%;
 		border: 1px solid #F3F3F3;
 		padding: 30px;
+		.setting-banner {
+			border-bottom: 1px solid gray;
+			margin-bottom: 10px;
+			padding: 5px;
+		}
 		.profile-settings-container {
 			display: flex;
 			flex-direction: column;
@@ -55,6 +60,41 @@
 						}
 					}
 				}
+			}
+		}
+		.arsenal-settings-container {
+			.language-card-container {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 10px;
+				.language-data-container {
+					display: flex;
+					align-items: center;
+					width: 100%;
+					.language-icon-image {
+						width: 60px;
+						height: 60px;
+						padding-right: 10px;
+					}
+				}
+			}
+		}
+		.content-settings-container {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			align-items: flex-start;
+			.content-setting-banner {
+				width: 100%;
+			}
+			.content-card-container {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				height: 60px;
+				width: 100%;
+				margin-bottom: 10px;
 			}
 		}
 	}

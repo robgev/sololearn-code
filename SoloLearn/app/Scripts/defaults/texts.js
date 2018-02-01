@@ -71,6 +71,21 @@ const texts = {
 
 	// Discuss
 	postDeleteConfirmText: 'Are you sure you want to delete this post?',
+
+	// Settings
+	challengesBanner: 'Accept challenges using these weapons:',
+	customizeFeed: 'Customize Your Feed',
+	feedItemNames: {
+		feedAchievements: 'Profile Updates',
+		feedPostQuestions: 'Questions',
+		feedPostAnswers: 'Answers',
+		feedCodes: 'Codes',
+		feedCourses: 'Courses',
+		feedLessons: 'Lessons',
+		feedChallenges: 'Challenges',
+		feedLessonComments: 'Lesson Comments',
+		feedCodeComments: 'Code Comments',
+	},
 };
 
 export default texts;

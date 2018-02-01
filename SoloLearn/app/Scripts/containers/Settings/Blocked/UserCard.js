@@ -1,6 +1,6 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import ProfileAvatar from './ProfileAvatar';
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
 const UserData = ({ name, followers, level }) => (
 	<div className="user-meta-data">

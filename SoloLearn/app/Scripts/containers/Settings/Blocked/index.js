@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from 'material-ui/CircularProgress';
 import BusyWrapper from 'components/Shared/BusyWrapper';
-import UserCard from 'components/Shared/UserCard';
 import { blockUser, getBlockedUsers } from 'actions/settings';
+import UserCard from './UserCard';
 
 const mapStateToProps = ({ settings: { blockedUsers } }) => ({ blockedUsers });
 
@@ -49,7 +49,6 @@ class Blocked extends PureComponent {
 
 	render() {
 		const { blockedUsers, blockUser } = this.props;
-		console.log(blockedUsers);
 		const {
 			loading,
 			hasMore,

@@ -10,11 +10,11 @@ export const getSettings = () => async (dispatch) => {
 };
 
 export const updateSetting = newSetting => async (dispatch) => {
-	await Service.request('UpdateSettings', newSetting);
 	dispatch({
 		type: types.UPDATE_SETTING,
 		payload: newSetting,
 	});
+	await Service.request('UpdateSettings', newSetting);
 };
 
 export const getProfileData = () => (dispatch, getState) => {
@@ -71,19 +71,30 @@ export const getBlockedUsers = pagingData => async (dispatch) => {
 		type: types.SET_BLOCKED_USERS,
 		payload,
 	});
+	return users.length;
 };
 
 export const changeWeaponSetting = weaponData => async (dispatch) => {
-	await Service.request('Profile/TogglePlay', weaponData);
 	dispatch({
 		type: types.UPDATE_WEAPON_SETTING,
 		payload: weaponData,
 	});
+	await Service.request('Profile/TogglePlay', weaponData);
 };
 
 export const getWeaponSettings = () => (dispatch, getState) => {
 	const { courses } = getState();
-	const weaponSettings = courses.map(({ id, isPlayEnabled }) => ({ id, isPlayEnabled }));
+	const weaponSettings = courses.map(({
+		id,
+		iconUrl,
+		languageName,
+		isPlayEnabled,
+	}) => ({
+		id,
+		iconUrl,
+		languageName,
+		isPlayEnabled,
+	}));
 	dispatch({
 		type: types.SET_WEAPON_SETTINGS,
 		payload: weaponSettings,
