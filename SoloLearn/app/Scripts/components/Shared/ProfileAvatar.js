@@ -1,78 +1,60 @@
 import React from 'react';
 import { Link } from 'react-router';
 import Avatar from 'material-ui/Avatar';
+import 'styles/profileAvatar.scss';
 
-const styles = {
-	authorDetails: {
-		display: 'flex',
-		alignItems: 'center',
-		fontSize: '12px',
-	},
-	texts: {
-		userName: {
-			color: '#607D8B',
-			margin: '0 0 2px 0',
-		},
-		date: {
-			color: '#777',
-		},
-	},
-	avatar: {
-		margin: '0 5px',
-	},
-	noStyle: {
-		textDecoration: 'none',
-	},
-	metaInfoContainer: {
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'space-between',
-	},
-	reversed: {
-		order: -1,
-		textAlign: 'right',
-	},
-};
+const DisabledContainer = ({ children, className, style }) => (
+	<div style={style} className={className}>
+		{children}
+	</div>
+);
 
 const ProfileAvatar = ({
 	style,
 	userID,
+	disabled,
 	size = 30,
 	userName,
 	avatarUrl,
+	className,
 	timePassed,
 	reversedOrder,
+	sideComponent,
 	withUserNameBox,
-}) => (
-	<Link to={`/profile/${userID}`} style={{ ...style, ...styles.noStyle }}>
-		<div style={styles.authorDetails}>
-			{ avatarUrl ?
-				<Avatar
-					size={size}
-					src={avatarUrl}
-					style={styles.avatar}
-				/>
-				:
-				<Avatar
-					size={size}
-					style={styles.avatar}
-				>{userName.toUpperCase().charAt(0)}
-				</Avatar>
-			}
-			<div style={{ ...styles.metaInfoContainer, ...(reversedOrder ? styles.reversed : {}) }}>
-				{ withUserNameBox &&
-					<div>
-						<p style={styles.texts.name}>{userName}</p>
-					</div>
+}) => {
+	const ConditionalContainer = disabled ? DisabledContainer : Link;
+	return (
+		<ConditionalContainer to={`/profile/${userID}`} style={style} className="avatar-container">
+			<div className={`avatar-wrapper ${className}`}>
+				{ avatarUrl ?
+					<Avatar
+						size={size}
+						src={avatarUrl}
+						style={{ margin: '0 5px' }}
+					/>
+					:
+					<Avatar
+						size={size}
+						style={{ margin: '0 5px' }}
+					>{userName.toUpperCase().charAt(0)}
+					</Avatar>
 				}
-				{ timePassed &&
+				{sideComponent}
+				<div className={`avatar-meta-info-container ${reversedOrder ? 'reversed' : ''}`}>
+					{ withUserNameBox &&
 					<div>
-						<p style={styles.texts.name}>{timePassed}</p>
+						<p className="avatar-user-name">{userName}</p>
 					</div>
-				}
+					}
+					{ timePassed &&
+					<div>
+						<p className="avatar-date-text">{timePassed}</p>
+					</div>
+					}
+				</div>
 			</div>
-		</div>
-	</Link>
-);
+		</ConditionalContainer>
+	);
+};
 
 export default ProfileAvatar;

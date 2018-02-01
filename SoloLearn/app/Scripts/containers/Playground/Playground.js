@@ -276,6 +276,7 @@ class Playground extends Component {
 		case 'css':
 			return cssCode;
 		case 'js':
+		case 'javascript':
 			return jsCode;
 		default:
 			return sourceCode;

@@ -1,0 +1,24 @@
+.avatar-container {
+	text-decoration: none;
+	.avatar-wrapper {
+		display: flex;
+		align-items: center;
+		font-size: 12px;
+	}
+	.avatar-meta-info-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		.avatar-user-name {
+			color: #607D8B;
+			margin: 0 0 2px 0;
+		}
+		.avatar-date-text {
+			color: #777;
+		}
+		&.reversed {
+			order: -1;
+			text-align: right;
+		}
+	}
+}

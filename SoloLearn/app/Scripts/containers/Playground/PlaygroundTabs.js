@@ -120,6 +120,6 @@ const PlaygroundTabs = ({
 			{editorSettings[mode].name}
 		</div>
 	);
-}
+};
 
 export default PlaygroundTabs;

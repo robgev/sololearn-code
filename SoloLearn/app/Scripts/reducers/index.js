@@ -56,6 +56,9 @@ import likes from './likes.reducer';
 // Slay
 import slay from './slay.reducer';
 
+// Settings
+import settings from './settings.reducer';
+
 const reducers = combineReducers({
 	// General
 	tabs,
@@ -98,6 +101,7 @@ const reducers = combineReducers({
 	likes,
 	// Slay
 	slay,
+	settings,
 });
 
 export const store = createStore(reducers, applyMiddleware(

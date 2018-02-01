@@ -12,13 +12,13 @@ const mapStateToProps = ({ userProfile }) => ({
 class Profile extends PureComponent {
 	constructor(props) {
 		super(props);
-		const { name = '', email = '' } = props.userProfile;
+		const { name = '', email } = props.userProfile;
 		this.state = {
-			name,
-			email,
 			oldPass: '',
 			newPass: '',
 			retypePass: '',
+			name: name || '',
+			email: email || '',
 		};
 	}
 
