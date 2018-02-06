@@ -12,6 +12,7 @@ import {
 
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
+import ResultPie from 'components/Shared/ChallengeGraphs/ResultPie';
 import { green500, red500, blue500 } from 'material-ui/styles/colors';
 
 // Material UI components
@@ -114,6 +115,29 @@ const styles = {
 		justifyContent: 'center',
 		alignItems: 'flex-end',
 	},
+	answersColumn: {
+		display: 'flex',
+		flexDirection: 'column'
+	},
+	resultCharts: {
+		display: 'flex',
+		justifyContent: 'center',
+		flexDirection: 'column',
+		alignItems: 'center'
+	},
+	chartContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		width: 500,
+		alignItems: 'center'
+	},
+	resultTableContainer: {
+		backgroundColor: '#eff5ff',
+		width: 250,
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-around'
+	}
 };
 
 const ResultBox = ({ aboveText, insideText, color }) => (
@@ -123,8 +147,46 @@ const ResultBox = ({ aboveText, insideText, color }) => (
 	</div>
 );
 
+const ResultTable = ({
+	myRes,
+	opRes
+}) => {
+	// TODO: make a path to images/check_mark_right.png and images/red_cross_wrong.png
+	const createAnswerUI = res => <div>{res.isCompleted ? 'yay' : 'nah'}</div>;
+
+	const myAnswersUI = myRes.map(createAnswerUI);
+	const opAnswersUI = opRes.map(createAnswerUI);
+	const questionNumberUI = new Array(5).fill(undefined).map((_, i) => (
+		<div>{i + 1}</div>
+	));
+	return (
+		<div style={styles.resultTableContainer}>
+			<div style={styles.answersColumn}>
+				<div>YOU</div>
+				{myAnswersUI}
+			</div>
+			<div style={styles.answersColumn}>
+				<div>&nbsp;</div>
+				{questionNumberUI}
+			</div>
+			<div style={styles.answersColumn}>
+				<div>OPPONENT</div>
+				{opAnswersUI}
+			</div>
+		</div>
+)};
+// TODO: make these props smaller
 const Results = ({
-	courseName, answersBonus, matchResult, totalXp, percUntilNext,
+	courseName,
+	answersBonus,
+	matchResult,
+	totalXp,
+	untilNextLevelXp,
+	percUntilNext,
+	myXp,
+	myLevel,
+	myRes,
+	opRes
 }) => (
 	<div style={styles.appear(fadeIn)}>
 		<p style={styles.languageName}>{courseName.toUpperCase()}</p>
@@ -145,10 +207,18 @@ const Results = ({
 				color={totalXp < 0 ? red500 : green500}
 			/>
 		</div>
-		<CircularProgress
-			mode="determinate"
-			value={percUntilNext}
-		/>
+		<div style={styles.resultCharts}>
+			<div style={styles.chartContainer}>
+				<div>
+					{untilNextLevelXp}XP to Level {myLevel + 1}
+				</div>
+				<ResultPie level={myLevel} pieResults={[{ y: myXp }, { y: untilNextLevelXp }]} />
+				<div>
+					{myXp}XP
+				</div>
+			</div>
+			<ResultTable myRes={myRes} opRes={opRes} />
+		</div>
 	</div>
 );
 
@@ -177,11 +247,20 @@ class Result extends Component {
 		}
 		const { courseName, contest } = this.props;
 		const { status } = contest.player;
-		const { player: { results: myRes }, opponent: { results: opRes } } = contest;
+		const {
+			player: {
+				results: myRes,
+				xp: myXp,
+				level: myLevel
+			},
+			opponent: {
+				results: opRes
+			}
+		} = contest;
 		const answersBonus = this.answerBonusCounter(myRes);
 		const matchResult = this.matchResultCounter(contest);
 		const totalXp = answersBonus + matchResult;
-		const [ _, percUntilNext ] = this.countUntilNextLevel(totalXp);
+		const [ untilNextLevelXp, percUntilNext ] = this.countUntilNextLevel(totalXp);
 		return (
 			<div id="challenge-start" style={styles.container}>
 				<div style={styles.appear(fadeInDown)}>
@@ -197,10 +276,20 @@ class Result extends Component {
 					</div>
 				</div>
 				{
+					// TODO: make these props smaller
 					(status === 1 || status === 2 || status === 8) &&
 					<Results
 						{...{
-							courseName, answersBonus, matchResult, totalXp, percUntilNext,
+							courseName,
+							answersBonus,
+							matchResult,
+							totalXp,
+							untilNextLevelXp,
+							percUntilNext,
+							myXp,
+							myLevel,
+							myRes,
+							opRes
 						}}
 					/>
 				}
