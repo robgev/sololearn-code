@@ -67,7 +67,9 @@ class ViewCorrectAnswers extends Component {
 			)
 		});
 		const playersUI = playerProfles.map(player => {
-			const { name, avatarUrl } = player;
+			const { name, avatarUrl, results } = player;
+			const { quizNumber } = this.state;
+			const { id, isCompleted } = results[quizNumber];
 			return (
 				<div key={player.name} style={{display: 'flex', flexDirection: 'row'}}>
 					{
@@ -76,7 +78,10 @@ class ViewCorrectAnswers extends Component {
 					}
 					<div style={{display: 'flex', flexDirection: 'column'}}>
 						<div>{name}</div>
-						<div>Wrong</div>
+						<div style={{display: 'flex', flexDirection: 'row'}}>
+							<div>{createAnswerUI({id, isCompleted})}</div>
+							<div>{isCompleted ? 'Correct' : 'Wrong'}</div>
+						</div>
 					</div>
 				</div>
 			)
