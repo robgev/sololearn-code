@@ -1,0 +1,44 @@
+.leaderboards-container {
+	.leaderboards-topbar {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding-bottom: 5px;
+		padding-left: 10px;
+		border-bottom: 1px solid #EDEDED;
+		.leaderboard-tabs {
+			display: flex;
+			align-items: center;
+			.mode-item {
+				color: black;
+				margin-right: 20px;
+				cursor: pointer;
+				outline: none;
+				&.active {
+					font-weight: bold;
+				}
+			}
+		}
+	}
+	.leaderboards-body {
+    align-items: stretch;
+		.leaderboard-card-container {
+			.leaderboard-card-wrapper {
+				.leaderboard-card {
+					display: block;
+					padding: 10px;
+					border-bottom: 1px solid #ECECEC;
+					.user-card-container {
+						align-items: center;
+					}
+				}
+				.leaderboard-next-banner {
+					border-top: 1px solid #CDCDCD;
+					border-bottom: 1px solid #EBEBEB;
+					background-color: #ECECEC;
+					padding: 10px;
+				}
+			}
+		}
+	}
+}

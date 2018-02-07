@@ -49,6 +49,9 @@ import Certificate from 'containers/Certificate';
 // Profile
 import Profile from 'containers/Profile/Profile';
 
+// Leaderboards
+import Leaderboards from 'containers/Leaderboards';
+
 // Chalenges
 import Contests from 'containers/Challenges/Feed/Contests';
 import OpponentSelector from 'containers/Challenges/Users/OpponentSelector';
@@ -85,6 +88,7 @@ export default (
 			<Route path="/feed" component={Feed} />
 			<Route path="/profile/:id(/:tab)(/:selected)" component={Profile} />
 			<Route path="/certificate/:id" component={Certificate} />
+			<Route path="/leaderboards(/:userId/:mode/:range)" component={Leaderboards} />
 			<Route path="/contests" component={redirector(Contests)} />
 			<Route path="/choose-opponent" component={redirector(OpponentSelector)} />
 			<Route path="/challenge/:id" component={redirector(Challenge)} />

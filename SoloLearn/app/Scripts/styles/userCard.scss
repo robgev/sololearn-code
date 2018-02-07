@@ -1,0 +1,13 @@
+.user-card-container {
+	display: flex;
+	justify-content: space-between;
+	.user-info {
+		display: flex;
+		.user-meta-data {
+			.user-overview {
+				color: gray;
+				font-size: 12px;
+			}
+		}
+	}
+}

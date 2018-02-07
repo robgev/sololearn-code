@@ -86,6 +86,16 @@ const texts = {
 		feedLessonComments: 'Lesson Comments',
 		feedCodeComments: 'Code Comments',
 	},
+
+	// Leaderboards
+	today: 'Today',
+	thisWeek: 'This Week',
+	thisMonth: 'This Month',
+	allTime: 'All Time',
+	following: 'Following',
+	local: 'Local',
+	global: 'Global',
+	next: '... You are the next',
 };
 
 export default texts;

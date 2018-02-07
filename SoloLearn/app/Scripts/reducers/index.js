@@ -59,7 +59,19 @@ import slay from './slay.reducer';
 // Settings
 import settings from './settings.reducer';
 
+// Leaderboards
+import leaderboards from './leaderboards.reducer';
+
 const reducers = combineReducers({
+	profile,
+	comments,
+	challenges,
+	imitLoggedin,
+	loginModal,
+	likes,
+	slay,
+	settings,
+	leaderboards,
 	// General
 	tabs,
 	activeTab,
@@ -88,20 +100,7 @@ const reducers = combineReducers({
 	feed,
 	feedPins,
 	userSuggestions,
-	// Profile
-	profile,
-	// Comments
-	comments,
-	// Play
-	challenges,
-	// Login
-	imitLoggedin,
-	loginModal,
-	// Likes
-	likes,
-	// Slay
-	slay,
-	settings,
+
 });
 
 export const store = createStore(reducers, applyMiddleware(

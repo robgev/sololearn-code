@@ -105,79 +105,79 @@ class Lessons extends Component {
 		}
 	}
 
-    handleClick = (lessonId, lessonState, url) => {
-    	if (lessonState.visualState == ProgressState.Disabled) {
-    		return;
-    	}
-    	this.props.selectLesson(lessonId, lessonState);
-    	this.props.selectQuiz(this.getActiveQuiz(this.props.lessons[lessonId]));
-    	browserHistory.push(url);
-    }
-    getActiveQuiz = (lesson) => {
-    	const quizzes = lesson.quizzes;
-    	const currentNumber = this.props.params.quizNumber || 1;
-    	const activeQuiz = {};
-    	const isCheckpoint = lesson.type == LessonType.Checkpoint;
-    	for (let i = 0; i < quizzes.length; i++) {
-    		if (isCheckpoint) {
-    			if ((i * 2) + 1 == currentNumber) {
-    				Object.assign(activeQuiz, { id: quizzes[i].id }, { number: currentNumber }, { isText: true });
-    			}
-    		}
-    		if ((isCheckpoint ? (i + 1) * 2 : i + 1) == currentNumber) {
-    			Object.assign(activeQuiz, { id: quizzes[i].id }, { number: currentNumber }, { isText: false });
-    		}
-    	}
-    	return activeQuiz;
-    }
-    renderLessons() {
-    	const lessons = this.props.activeModule.lessons;
+handleClick = (lessonId, lessonState, url) => {
+	if (lessonState.visualState == ProgressState.Disabled) {
+		return;
+	}
+	this.props.selectLesson(lessonId, lessonState);
+	this.props.selectQuiz(this.getActiveQuiz(this.props.lessons[lessonId]));
+	browserHistory.push(url);
+}
+getActiveQuiz = (lesson) => {
+	const quizzes = lesson.quizzes;
+	const currentNumber = this.props.params.quizNumber || 1;
+	const activeQuiz = {};
+	const isCheckpoint = lesson.type == LessonType.Checkpoint;
+	for (let i = 0; i < quizzes.length; i++) {
+		if (isCheckpoint) {
+			if ((i * 2) + 1 == currentNumber) {
+				Object.assign(activeQuiz, { id: quizzes[i].id }, { number: currentNumber }, { isText: true });
+			}
+		}
+		if ((isCheckpoint ? (i + 1) * 2 : i + 1) == currentNumber) {
+			Object.assign(activeQuiz, { id: quizzes[i].id }, { number: currentNumber }, { isText: false });
+		}
+	}
+	return activeQuiz;
+}
+renderLessons() {
+	const lessons = this.props.activeModule.lessons;
 
-    	return lessons.map((lesson, index) => {
-    		const lessonState = Progress.getLessonState(lesson);
-    		const isDisabled = lessonState.visualState === ProgressState.Disabled;
+	return lessons.map((lesson, index) => {
+		const lessonState = Progress.getLessonState(lesson);
+		const isDisabled = lessonState.visualState === ProgressState.Disabled;
 
-    		return (
-	<div
-	key={lesson.id}
-	className={`lesson-item ${lessonState.stateClass}`}
-    				style={styles.lessonWrapper}
-    				onClick={() => this.handleClick(lesson.id, lessonState, `/learn/${this.props.params.courseName}/${this.props.params.moduleId}/${this.props.params.moduleName}/${lesson.id}/${toSeoFrendly(lesson.name, 100)}/${lessonState.activeQuizNumber}`)}
-    			>
-	<Paper
-			key={lesson.id}
-    					zDepth={isDisabled ? 0 : 1}
-    					style={{
-    						...styles.lesson.base,
-    						...(isDisabled ? styles.lesson.disabled : {}),
-    					}}
-		>
-			<div className="number" style={styles.lessonNumber}>{`${index + 1}/${lessons.length}`}</div>
-			<div className="name" style={styles.lessonName}>{lesson.name}</div>
-			<div className="info" style={[ styles.lessonInfo.base, styles.lessonInfo[lessonState.stateClass] ]}>
-	<span>{lesson.quizzes.length} questions</span>
-    					</div>
-    				</Paper>
-    			</div>
-    		);
-    	});
-    }
+		return (
+			<div
+				key={lesson.id}
+				className={`lesson-item ${lessonState.stateClass}`}
+				style={styles.lessonWrapper}
+				onClick={() => this.handleClick(lesson.id, lessonState, `/learn/${this.props.params.courseName}/${this.props.params.moduleId}/${this.props.params.moduleName}/${lesson.id}/${toSeoFrendly(lesson.name, 100)}/${lessonState.activeQuizNumber}`)}
+			>
+				<Paper
+					key={lesson.id}
+					zDepth={isDisabled ? 0 : 1}
+					style={{
+						...styles.lesson.base,
+						...(isDisabled ? styles.lesson.disabled : {}),
+					}}
+				>
+					<div className="number" style={styles.lessonNumber}>{`${index + 1}/${lessons.length}`}</div>
+					<div className="name" style={styles.lessonName}>{lesson.name}</div>
+					<div className="info" style={[ styles.lessonInfo.base, styles.lessonInfo[lessonState.stateClass] ]}>
+						<span>{lesson.quizzes.length} questions</span>
+					</div>
+				</Paper>
+			</div>
+		);
+	});
+}
 
-    render() {
-    	const {
-    		course, modules, activeModule, isLoaded,
-    	} = this.props;
+render() {
+	const {
+		course, modules, activeModule, isLoaded,
+	} = this.props;
 
-    	if (!isLoaded) {
-    		return <div>Loading...</div>;
-    	}
+	if (!isLoaded) {
+		return <div>Loading...</div>;
+	}
 
-    	return (
-	<div className="lessons" style={styles.lessons}>
-	{this.renderLessons()}
-    		</div>
-    	);
-    }
+	return (
+		<div className="lessons" style={styles.lessons}>
+			{this.renderLessons()}
+		</div>
+	);
+}
 }
 
 function mapStateToProps(state) {
