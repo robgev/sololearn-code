@@ -14,7 +14,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import ResultPie from 'components/Shared/ChallengeGraphs/ResultPie';
 import { green500, red500, blue500 } from 'material-ui/styles/colors';
-
+import { createAnswerUI } from './gameUtil';
 // Material UI components
 import { getChallengeStatus } from 'utils';
 import contestTypes from 'defaults/contestTypes';
@@ -151,13 +151,10 @@ const ResultTable = ({
 	myRes,
 	opRes
 }) => {
-	// TODO: make a path to images/check_mark_right.png and images/red_cross_wrong.png
-	const createAnswerUI = res => <div>{res.isCompleted ? 'yay' : 'nah'}</div>;
-
 	const myAnswersUI = myRes.map(createAnswerUI);
 	const opAnswersUI = opRes.map(createAnswerUI);
 	const questionNumberUI = new Array(5).fill(undefined).map((_, i) => (
-		<div>{i + 1}</div>
+		<div key={i}>{i + 1}</div>
 	));
 	return (
 		<div style={styles.resultTableContainer}>
@@ -300,6 +297,15 @@ class Result extends Component {
 						secondary
 						onClick={this.props.leave}
 					/>
+					{
+						(status === 1 || status === 2 || status === 8) &&
+						<RaisedButton
+							label="View Correct Answers"
+							style={styles.button}
+							secondary
+							onClick={this.props.goToViewCorrectAnswers}
+						/>
+					}
 				</div>
 			</div>
 		);
