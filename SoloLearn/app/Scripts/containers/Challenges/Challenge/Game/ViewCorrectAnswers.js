@@ -11,16 +11,13 @@ import {
 } from 'react-animations';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { green500, red500, blue500 } from 'material-ui/styles/colors';
+import 'styles/Challenges/Challenge/Game/ViewCorrectAnswers.scss';
 import { QuizComponents, QuizType } from 'containers/Learn/QuizSelector';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import TypeSelector from './TypeSelector';
 import { createAnswerUI } from './gameUtil';
 
 const styles = {
-	container: {
-		padding: '20px 0 0 0',
-		textAlign: 'center',
-	},
 	animate: animation => ({
 		animation: '750ms',
 		animationName: Radium.keyframes(animation, animation.name),
@@ -71,14 +68,14 @@ class ViewCorrectAnswers extends Component {
 			const { quizNumber } = this.state;
 			const { id, isCompleted } = results[quizNumber];
 			return (
-				<div key={player.name} style={{display: 'flex', flexDirection: 'row'}}>
+				<div key={player.name} className='player-ui-wrapper'>
 					{
 						avatarUrl &&
 						<img src={avatarUrl}/>
 					}
-					<div style={{display: 'flex', flexDirection: 'column'}}>
+					<div className='player-ui-info'>
 						<div>{name}</div>
-						<div style={{display: 'flex', flexDirection: 'row'}}>
+						<div className='player-ui-quiz-result'>
 							<div>{createAnswerUI({id, isCompleted})}</div>
 							<div>{isCompleted ? 'Correct' : 'Wrong'}</div>
 						</div>
@@ -91,19 +88,11 @@ class ViewCorrectAnswers extends Component {
 		const QuizComponent = QuizComponents[quiz.type];
 		// TODO: add preselected buttons
 		return (
-			<div id="challenge-start" style={styles.container}>
+			<div className='container'>
 				<Tabs>
 					{createQuizTabs}
 				</Tabs>
-				<div className='players' style={{
-					display: 'flex',
-					flexDirection: 'row',
-					justifyContent: 'space-between',
-					backgroundColor: '#eff5ff',
-					margin: 50,
-					padding: 20
-				}}>
-				
+				<div className='players'>
 					{playersUI}
 				</div>
 				<div style={styles.animate(fadeInUp)}>

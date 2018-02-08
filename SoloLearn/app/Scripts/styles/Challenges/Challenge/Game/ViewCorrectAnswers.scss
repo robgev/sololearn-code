@@ -1,0 +1,24 @@
+
+.container {
+    padding: 20px 0 0 0;
+    text-align: center;
+}
+.players {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: '#eff5ff';
+    margin: 50;
+    padding: 20;
+}
+.player-ui-quiz-result {
+    display: flex;
+}
+.player-ui-info {
+    display: flex;
+    flex-direction: column;
+}
+.player-ui-wrapper {
+    display: flex;
+    flex-direction: row;
+}
