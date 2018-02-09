@@ -30,9 +30,7 @@ const muiTheme = getMuiTheme(Theme);
 
 const styles = {
 	wrapper: {
-		// display: 'flex',
-		// flexFlow: 'column',
-		// height: '100%'
+		paddingTop: 60,
 	},
 };
 
@@ -64,7 +62,7 @@ class MainLayout extends Component {
 				{
 					this.state.loading ?
 						<LoadingOverlay /> :
-						<div style={styles.wrapper}>
+						<div>
 							<Dialog
 								title="Please login"
 								open={this.props.loginModal}
@@ -80,7 +78,9 @@ class MainLayout extends Component {
 								<Login />
 							</Dialog>
 							<Header />
-							{this.props.children}
+							<div style={styles.wrapper}>
+								{this.props.children}
+							</div>
 						</div>
 				}
 			</MuiThemeProvider>
