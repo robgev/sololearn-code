@@ -172,6 +172,7 @@ class PlaceholderDragAndDrop extends Component {
 	}
 
 	render() {
+		const { isShowingCorrectAnswers } = this.props;
 		return (
 			<div className="placeholder-dnd" style={styles.wrapper}>
 				{dragulaMirror}
@@ -179,7 +180,12 @@ class PlaceholderDragAndDrop extends Component {
 				{dragulaUnselectable}
 				{dragulaTransit}
 				<div id="top" style={styles.topStyle}>
-					<PlaceholderBase quiz={this.props.quiz} quizComponent={PlaceholderControl} ref={(child) => { this._child = child; }} />
+					<PlaceholderBase
+						ref={(child) => { this._child = child; }}
+						quiz={this.props.quiz}
+						quizComponent={PlaceholderControl}
+						isShowingCorrectAnswers={isShowingCorrectAnswers}
+					/>
 				</div>
 				<div id="bottom" style={styles.bag} ref="bottom">{this.generateAnswers()}</div>
 			</div>
