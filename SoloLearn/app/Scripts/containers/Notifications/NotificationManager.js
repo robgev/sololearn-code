@@ -1,6 +1,5 @@
 // General modules
 import React, { PureComponent } from 'react';
-import Radium from 'radium';
 import { connect } from 'react-redux';
 
 // Material UI components
@@ -14,46 +13,60 @@ import {
 	getNotificationCountInternal as getNotificationCount,
 } from 'actions/profile';
 
+import 'styles/Notifications/index.scss';
+
 // Additional components
 import NotificationsPopup from './NotificationsPopup';
-
-import { NotificationManagerStyles as styles } from './styles';
 
 const mapStateToProps = ({ notificationsCount }) => ({ notificationsCount });
 
 const mapDispatchToProps = { getNotificationCount, setNotificationCount };
 
 @connect(mapStateToProps, mapDispatchToProps)
-@Radium
 class NotificationManager extends PureComponent {
 	state = { isOpened: false };
+
 	componentWillMount() {
 		this.props.getNotificationCount();
 	}
+
 	toggleNotificationsOpen = () => {
 		this.setState({ isOpened: !this.state.isOpened });
 		this.props.setNotificationCount(0);
 	}
+
 	render() {
+		const { isOpened } = this.state;
+		const { notificationsCount } = this.props;
 		return (
-			<div style={styles.notifications}>
+			<div className="notifications-button-container">
 				<Badge
-					badgeContent={this.props.notificationsCount}
-					style={{ margin: '0 10px 0 0' }}
-					badgeStyle={this.props.notificationsCount > 0 ? styles.zeroPlus : styles.zero}
+					style={{ padding: 0, paddingRight: 10 }}
+					badgeStyle={{
+						width: 10,
+						height: 10,
+						top: 30,
+						right: 29,
+						zIndex: 1,
+						padding: 2,
+						fontSize: 8,
+						color: '#fff',
+						backgroundColor: '#F44336',
+						border: '1px solid #607d8b',
+						visibility: notificationsCount <= 0 ? 'hidden' : 'initial',
+					}}
+					badgeContent={notificationsCount}
 				>
 					<IconButton
-						style={styles.notificationsButton.base}
-						iconStyle={styles.notificationsButton.icon}
+						className="notification-button"
 						onClick={this.toggleNotificationsOpen}
 					>
 						<NotificationsIcon color="#fff" />
 					</IconButton>
 				</Badge>
-				{
-					this.state.isOpened &&
+				{ isOpened &&
 					<NotificationsPopup
-						isOpened={this.state.isOpened}
+						isOpened={isOpened}
 						toggleNotificationsOpen={this.toggleNotificationsOpen}
 					/>
 				}

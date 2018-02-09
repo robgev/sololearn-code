@@ -108,40 +108,6 @@ export const NotificationListStyles = {
 	},
 };
 
-export const NotificationManagerStyles = {
-	notifications: {
-		position: 'relative',
-		zIndex: 1000,
-		float: 'right',
-	},
-	notificationsButton: {
-		base: {
-			width: '40px',
-			height: '40px',
-			padding: '10px',
-		},
-		icon: {
-			width: '20px',
-			height: '20px',
-		},
-	},
-	zeroPlus: {
-		width: '10px',
-		height: '10px',
-		fontSize: '8px',
-		top: 30,
-		right: 29,
-		padding: '2px',
-		backgroundColor: '#F44336',
-		color: '#fff',
-		border: '1px solid #607d8b',
-		zIndex: 1,
-	},
-	zero: {
-		visibility: 'hidden',
-	},
-};
-
 export const NotificationsPopupStyles = {
 	wrapper: {
 		position: 'absolute',

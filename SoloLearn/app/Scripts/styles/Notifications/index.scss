@@ -1,0 +1,26 @@
+.notifications-button-container {
+	.notification-badge {
+		padding: 0;
+		padding-left: 10px;
+		> span {
+			width: 10px;
+			height: 10px;
+			top: 30;
+			right: 30;
+			font-size: 8px;
+			padding: 2px;
+			color: #fff;
+			background-color: #F44336;
+			border: 1px solid #607d8b;
+			z-index: 1;
+		}
+		.notofication-button {
+			width: 40px;
+			height: 40px;
+			padding: 10px;
+		}
+		&.hidden {
+			visibility: hidden;
+		}
+	}
+}

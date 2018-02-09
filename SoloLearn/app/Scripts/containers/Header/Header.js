@@ -1,24 +1,18 @@
 // React modules
-import React, { Component } from 'react';
+import React from 'react';
+import 'styles/header.scss';
 
 // Additional components
 import TabList from './Tabs';
-import Actions from './Actions';
+import NotificationManager from '../Notifications/NotificationManager';
+import SettingsMenu from './HeaderSettingsMenu';
 
-const styles = {
-	header: {
-		backgroundColor: '#607D8B',
-		// flex: '0 1 auto'
-	},
-};
+const Header = () => (
+	<div className="header">
+		<SettingsMenu />
+		<TabList />
+		<NotificationManager />
+	</div>
+);
 
-export default class Header extends Component {
-	render() {
-		return (
-			<div className="header" style={styles.header}>
-				<Actions />
-				<TabList />
-			</div>
-		);
-	}
-}
+export default Header;

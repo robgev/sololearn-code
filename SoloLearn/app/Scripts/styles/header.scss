@@ -1,0 +1,12 @@
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	position: fixed;
+	width: 100%;
+	z-index: 999;
+	background-color: #607D8B;
+	.tabs {
+		width: 100%;
+	}
+}

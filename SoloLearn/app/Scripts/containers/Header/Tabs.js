@@ -1,37 +1,28 @@
-// React modules
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
-
-// Redux modules
-import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import selectTab from '../../actions/tabs';
-
-// Material UI components
+import { connect } from 'react-redux';
 import { Tabs, Tab } from 'material-ui/Tabs';
+import selectTab from 'actions/tabs';
 
-class TabList extends Component {
-    tabList = this.props.tabs.map(tab => (
-	<Tab
-	key={tab.id}
-    		value={tab.id}
-	label={tab.name}
-	containerElement={<Link to={tab.url} />}
-	onClick={() => this.props.selectTab(tab)}
-	className="tab-item"
-    	/>
-    ));
-    render() {
-    	return (
-    		<Tabs
-    			className="tabs"
-		value={this.props.activeTabId}
+const TabList = ({ tabs, activeTabId }) => (
+	<Tabs
+		className="tabs"
+		value={activeTabId}
 	>
-    			{this.tabList}
+		{	tabs.map(tab => (
+			<Tab
+				key={tab.id}
+				value={tab.id}
+				label={tab.name}
+				className="tab-item"
+				containerElement={<Link to={tab.url} />}
+				onClick={() => this.props.selectTab(tab)}
+			/>
+		))
+		}
 	</Tabs>
-    	);
-    }
-}
+);
 
 function mapStateToProps(state) {
 	return {
