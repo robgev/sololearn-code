@@ -9,6 +9,7 @@ import {
 	fadeInDown,
 	fadeInRight,
 } from 'react-animations';
+import SwipeableViews from 'react-swipeable-views';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { green500, red500, blue500 } from 'material-ui/styles/colors';
 import 'styles/Challenges/Challenge/Game/ViewCorrectAnswers.scss';
@@ -32,6 +33,9 @@ class ViewCorrectAnswers extends Component {
 	componentDidMount() {
 		this.props.updateContest()
 			.then(() => this.setState({ updated: true }));
+	}
+	handleTabChange(i) {
+		this.setState({quizNumber: i})
 	}
 	render() {
 		if (!this.state.updated) {
@@ -67,7 +71,7 @@ class ViewCorrectAnswers extends Component {
 					value={i}
 					label={i + 1}
 					key={i}
-					onClick={() => this.setState({quizNumber: i})}
+					onClick={() => this.handleTabChange(i)}
 				/>
 			)
 		});
@@ -92,9 +96,14 @@ class ViewCorrectAnswers extends Component {
 			)
 		})
 		const { contest } = this.props;
-		const quiz = contest.challenges[this.state.quizNumber];
-		const QuizComponent = QuizComponents[quiz.type];
-		// TODO: add preselected buttons
+		const quizes = contest.challenges.slice(0, 5).map(quiz => (
+			<TypeSelector
+				isShowingCorrectAnswers
+				showResult={() => console.log('woop')}
+				quiz={quiz}
+			/>
+		));
+		const { quizNumber } = this.state;
 		return (
 			<div className='container'>
 				<Tabs>
@@ -104,11 +113,12 @@ class ViewCorrectAnswers extends Component {
 					{playersUI}
 				</div>
 				<div style={styles.animate(fadeInUp)}>
-					<TypeSelector
-						isShowingCorrectAnswers
-						showResult={() => console.log('woop')}
-						quiz={quiz}
-					/>
+					<SwipeableViews
+						index={quizNumber}
+						onChangeIndex={this.handleTabChange}
+					>
+						{quizes}
+					</SwipeableViews>
 				</div>
 			</div>
 		);
