@@ -47,10 +47,18 @@ class ViewCorrectAnswers extends Component {
 					}
 				}
 			} = this.props;
+			// a workaround for a case when one player finished all the questions
+			// while another one finished only 3 or smth
+			let newResults = null;
+			if (results.length < 5) {
+				const numberOfItemsToAdd = 5 - results.length;
+				const itemsToAdd = Array(numberOfItemsToAdd).fill(undefined).map((_, id) => ({id, isCompleted: false}));
+				newResults = [...results, ...itemsToAdd];
+			}
 			return {
 				name,
 				avatarUrl,
-				results
+				results: newResults || results,
 			}
 		});
 		const createQuizTabs = Array(5).fill(undefined).map((_, i) => {
