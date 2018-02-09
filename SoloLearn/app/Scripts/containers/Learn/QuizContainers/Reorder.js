@@ -95,10 +95,14 @@ export default class Reorder extends Component {
     componentWillMount() {
     	const answers = this.props.quiz.answers;
     	const shuffledAnswers = this.shuffle(answers.slice()); // MUST CHECK
-
-    	this.setState({
-    		correctOrderedAnswers: answers,
-    		answers: shuffledAnswers,
-    	});
+		const { isShowingCorrectAnswers } = this.props;
+		if (isShowingCorrectAnswers) {
+			this.unlock();
+		} else {
+			this.setState({
+				correctOrderedAnswers: answers,
+				answers: shuffledAnswers,
+			});
+		}
     }
 }
