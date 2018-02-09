@@ -158,7 +158,7 @@ render() {
 	const additionalStyles = {
 		fontSize: `${defaultFontSize}px`,
 	};
-
+	const { isShowingCorrectAnswers } = this.props;
 	return (
 		<div className="typeIn-control" style={styles.answerContainer}>
 			<div className="prefix" style={styles.property}>{this.answer.properties.prefix}</div>
@@ -174,7 +174,7 @@ render() {
 						name="type-in-control"
 						key={this.answer.id}
 						maxLength={this.state.maxLength}
-						value={this.state.text}
+						value={isShowingCorrectAnswers ? this.desiredText : this.state.text}
 						onChange={this.onChange}
 						style={{
 							...styles.inputRootStyle.base,

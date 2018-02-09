@@ -47,10 +47,12 @@ export default class TypeIn extends Component {
 	}
 
 	render() {
+		const { isShowingCorrectAnswers } = this.props;
 		return (
 			<div className="typeIn" style={styles.wrapper}>
 				<TypeInControl
 					singleTipeIn
+					isShowingCorrectAnswers={isShowingCorrectAnswers}
 					fontSize={42}
 					answer={this.answer}
 					isChecked={this.state.isChecked}
