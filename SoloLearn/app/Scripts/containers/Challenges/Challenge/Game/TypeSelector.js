@@ -50,13 +50,14 @@ class TypeSelector extends Component {
 	}
 	render() {
 		const QuizComponent = QuizComponents[this.props.quiz.type];
-		const { quiz } = this.props;
+		const { quiz, isShowingCorrectAnswers } = this.props;
 		return (
 			<div>
 				<div style={styles.center}>
 					<div dangerouslySetInnerHTML={{ __html: this.generateQuestion(quiz.type, quiz.question) }} style={styles.quizQuestion} />
 					<QuizComponent
 						quiz={quiz}
+						isShowingCorrectAnswers={isShowingCorrectAnswers}
 						ref={(child) => { this._child = child; }}
 					/>
 					<RaisedButton

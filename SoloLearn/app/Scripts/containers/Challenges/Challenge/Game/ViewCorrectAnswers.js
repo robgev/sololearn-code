@@ -97,6 +97,7 @@ class ViewCorrectAnswers extends Component {
 				</div>
 				<div style={styles.animate(fadeInUp)}>
 					<TypeSelector
+						isShowingCorrectAnswers
 						showResult={() => console.log('woop')}
 						quiz={quiz}
 					/>
