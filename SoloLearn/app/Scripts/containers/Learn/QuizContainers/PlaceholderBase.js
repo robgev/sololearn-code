@@ -98,11 +98,16 @@ rawParser = function (rawText, answers) {
 }
 
 generatePlaceholders() {
+	const { isShowingCorrectAnswers } = this.props;
 	this.placeholderItems = this.parse(this.props.quiz, this.props.quiz.answers);
 	return this.placeholderItems.map((element, index) => {
 		if (element.textComponent) {
 			return (
-				<element.componentType content={element.props.content} key={index} />
+				<element.componentType
+					isShowingCorrectAnswers={isShowingCorrectAnswers}
+					content={element.props.content}
+					key={index}
+				/>
 			);
 		}
 
@@ -111,7 +116,14 @@ generatePlaceholders() {
 			answerId: element.props.answer.id,
 		});
 		return (
-			<element.componentType answer={element.props.answer} isChecked={this.props.isChecked} key={index} index={index} ref={(child) => { this[`_child${index}`] = child; }} />
+			<element.componentType
+				isShowingCorrectAnswers={isShowingCorrectAnswers}
+				answer={element.props.answer}
+				isChecked={this.props.isChecked}
+				key={index}
+				index={index}
+				ref={(child) => { this[`_child${index}`] = child; }}
+			/>
 		);
 	});
 }

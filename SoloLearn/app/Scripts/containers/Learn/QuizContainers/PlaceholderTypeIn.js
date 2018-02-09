@@ -46,9 +46,18 @@ export default class PlaceholderTypeIn extends Component {
 	}
 
 	render() {
+		// console.log(this.props);
+		const { isShowingCorrectAnswers } = this.props;
 		return (
 			<div className="placeholder-typeIn" style={styles.wrapper}>
-				<PlaceholderBase type={3} quiz={this.props.quiz} isChecked={this.state.isChecked} quizComponent={TypeInControl} ref={(child) => { this._child = child; }} />
+				<PlaceholderBase
+					type={3}
+					quiz={this.props.quiz}
+					isChecked={this.state.isChecked}
+					quizComponent={TypeInControl}
+					isShowingCorrectAnswers={isShowingCorrectAnswers}
+					ref={(child) => { this._child = child; }}
+				/>
 			</div>
 		);
 	}
