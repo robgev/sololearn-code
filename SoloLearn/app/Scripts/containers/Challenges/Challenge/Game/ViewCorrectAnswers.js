@@ -13,6 +13,10 @@ import SwipeableViews from 'react-swipeable-views';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { green500, red500, blue500 } from 'material-ui/styles/colors';
 import RaisedButton from 'material-ui/RaisedButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import 'styles/Challenges/Challenge/Game/ViewCorrectAnswers.scss';
 import { QuizComponents, QuizType } from 'containers/Learn/QuizSelector';
@@ -25,6 +29,14 @@ const styles = {
 		animationName: Radium.keyframes(animation, animation.name),
 	}),
 };
+
+const optionsMessages = [
+	'Spelling Errors',
+	'Wrong Question',
+	'Wrong Answer',
+	'Off Topic',
+	'Other'
+];
 
 class ViewCorrectAnswers extends Component {
 	state = {
@@ -97,11 +109,25 @@ class ViewCorrectAnswers extends Component {
 			)
 		})
 		const { contest } = this.props;
-		console.log(contest.challenges);
+		const menuIcons = optionsMessages.map((opt, i) => (
+			<MenuItem
+				key={i}
+				primaryText={opt}
+				onClick={() => console.log(opt)}
+			/>
+		))
 		const quizes = contest.challenges.slice(0, 5).map(quiz => (
 			<div key={quiz.id}>
 				<div className='players'>
 					{playersUI}
+				</div>
+				<div className='options-icon-wrapper'>
+					<IconMenu
+						style={{ width: 40, height: 40 }}
+						iconButtonElement={<IconButton><MoreVertIcon color='black' /></IconButton>}
+					>
+						{menuIcons}
+					</IconMenu>
 				</div>
 				<TypeSelector
 					isShowingCorrectAnswers
@@ -118,7 +144,7 @@ class ViewCorrectAnswers extends Component {
 				</Tabs>
 				<div className='back-to-results-button'>
 					<RaisedButton
-						label="Back to Results"
+						label='Back to Results'
 						secondary
 						onClick={this.props.backToResults}
 					/>
