@@ -107,18 +107,22 @@ export default class MultipleChoice extends Component {
 	}
 
 	renderList = (isSingleChoice) => {
-		const { selectedAnswerId } = this.state;
+		const { selectedAnswerId, answers } = this.state;
+		const { isShowingCorrectAnswers } = this.props;
+		const correctAnswers = answers.filter(ans => ans.isCorrect);
 		if (isSingleChoice) {
+			const correctAnswerId = correctAnswers[0].id;
 			return (
 				<RadioButtonGroup
 					name="singleChoice"
 					style={styles.radioButtonGroup}
-					valueSelected={this.state.selectedAnswerId}
+					valueSelected={ isShowingCorrectAnswers ? correctAnswerId : selectedAnswerId}
 					onChange={(event, value) => this.handleRadioButtonSelection(event, value)}
 				>
 					{
-						this.state.answers.map(answer => (
+						answers.map(answer => (
 							<RadioButton
+								disabled={isShowingCorrectAnswers && answer.id !== correctAnswerId}
 								key={answer.id}
 								value={answer.id}
 								label={answer.text}
@@ -131,29 +135,33 @@ export default class MultipleChoice extends Component {
 					}
 				</RadioButtonGroup>
 			);
-		}
-
-		return (
-			<List style={styles.checkBoxGroup}>
-				{
-					this.state.answers.map((answer, index) => (
-						<ListItem
-							key={answer.id}
-							style={styles.checkBox}
-							primaryText={answer.text}
-							leftCheckbox={
-								<Checkbox
-									checked={answer.isSelected}
-									onCheck={
-										(event, isChecked) => this.handleCheckBoxSelection(event, isChecked, index)
+		} else {
+			return (
+				<List style={styles.checkBoxGroup}>
+					{
+						answers.map((answer, index) => {
+							const isCorrectAnswer = correctAnswers.some(ans => ans.id === answer.id);
+							return (
+								<ListItem
+									key={answer.id}
+									style={styles.checkBox}
+									primaryText={answer.text}
+									leftCheckbox={
+										<Checkbox
+											disabled={isShowingCorrectAnswers && !isCorrectAnswer}
+											checked={isShowingCorrectAnswers ? isCorrectAnswer : answer.isSelected}
+											onCheck={
+												(event, isChecked) => this.handleCheckBoxSelection(event, isChecked, index)
+											}
+										/>
 									}
 								/>
-							}
-						/>
-					))
-				}
-			</List>
-		);
+							);
+						})
+					}
+				</List>
+			);
+		}
 	}
 
 	unlock = () => {
