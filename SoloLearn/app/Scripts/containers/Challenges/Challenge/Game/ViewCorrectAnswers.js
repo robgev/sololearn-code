@@ -97,8 +97,9 @@ class ViewCorrectAnswers extends Component {
 			)
 		})
 		const { contest } = this.props;
+		console.log(contest.challenges);
 		const quizes = contest.challenges.slice(0, 5).map(quiz => (
-			<div>
+			<div key={quiz.id}>
 				<div className='players'>
 					{playersUI}
 				</div>
