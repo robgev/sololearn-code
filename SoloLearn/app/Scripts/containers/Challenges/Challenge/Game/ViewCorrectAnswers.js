@@ -12,12 +12,13 @@ import {
 import SwipeableViews from 'react-swipeable-views';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { green500, red500, blue500 } from 'material-ui/styles/colors';
+import RaisedButton from 'material-ui/RaisedButton';
+
 import 'styles/Challenges/Challenge/Game/ViewCorrectAnswers.scss';
 import { QuizComponents, QuizType } from 'containers/Learn/QuizSelector';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import TypeSelector from './TypeSelector';
 import { createAnswerUI } from './gameUtil';
-
 const styles = {
 	animate: animation => ({
 		animation: '750ms',
@@ -97,11 +98,16 @@ class ViewCorrectAnswers extends Component {
 		})
 		const { contest } = this.props;
 		const quizes = contest.challenges.slice(0, 5).map(quiz => (
-			<TypeSelector
-				isShowingCorrectAnswers
-				showResult={() => console.log('woop')}
-				quiz={quiz}
-			/>
+			<div>
+				<div className='players'>
+					{playersUI}
+				</div>
+				<TypeSelector
+					isShowingCorrectAnswers
+					showResult={() => console.log('woop')}
+					quiz={quiz}
+				/>
+			</div>
 		));
 		const { quizNumber } = this.state;
 		return (
@@ -109,8 +115,12 @@ class ViewCorrectAnswers extends Component {
 				<Tabs>
 					{createQuizTabs}
 				</Tabs>
-				<div className='players'>
-					{playersUI}
+				<div className='back-to-results-button'>
+					<RaisedButton
+						label="Back to Results"
+						secondary
+						onClick={this.props.backToResults}
+					/>
 				</div>
 				<div style={styles.animate(fadeInUp)}>
 					<SwipeableViews

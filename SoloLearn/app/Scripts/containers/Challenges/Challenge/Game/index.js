@@ -127,6 +127,7 @@ class Game extends Component {
 			courseName={this.props.courseName}
 			leave={() => browserHistory.push('/contests')}
 			updateContest={this.props.updateContest}
+			backToResults={this.backToResults}
 		/>
 	);
 	render() {
