@@ -14,6 +14,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import ResultPie from 'components/Shared/ChallengeGraphs/ResultPie';
 import { green500, red500, blue500 } from 'material-ui/styles/colors';
+import 'styles/Challenges/Challenge/Game/Result';
 import { createAnswerUI } from './gameUtil';
 // Material UI components
 import { getChallengeStatus } from 'utils';
@@ -23,53 +24,6 @@ import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import Profile from './Profile';
 
 const styles = {
-	container: {
-		padding: '20px 0 0 0',
-		textAlign: 'center',
-	},
-
-	userWrapper: {
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-
-	user: {
-		textAlign: 'center',
-		width: '40%',
-	},
-
-	avatar: {
-		margin: '0 0 8px 0',
-	},
-
-	userName: {
-		fontWeight: 500,
-		color: '#616161',
-		margin: '0 0 5px 0',
-	},
-
-	level: {
-		fontSize: '14px',
-	},
-
-	versusStyle: {
-		fontSize: '27px',
-		fontWeight: 500,
-		color: '#455A64',
-	},
-
-	languageName: {
-		display: 'inline-block',
-		width: '120px',
-		fontSize: '14px',
-		fontWeight: 500,
-		padding: '5px',
-		color: '#fff',
-		backgroundColor: '#607D8B',
-		textAlign: 'center',
-	},
-
 	status: {
 		display: 'inline-block',
 		width: 120,
@@ -78,15 +32,6 @@ const styles = {
 		padding: 5,
 		textAlign: 'center',
 	},
-
-	result: box => ({
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		flexDirection: 'column',
-		margin: 20,
-		width: box ? 95 : null,
-	}),
 
 	resultTitle: color => ({
 		color,
@@ -102,46 +47,14 @@ const styles = {
 		fontWeight: 500,
 	}),
 
-	button: {
-		margin: '50px 10px 0 10px',
-	},
-
 	appear: animation => ({
 		animation: '750ms',
 		animationName: Radium.keyframes(animation, animation.name),
 	}),
-	resultBoxes: {
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'flex-end',
-	},
-	answersColumn: {
-		display: 'flex',
-		flexDirection: 'column'
-	},
-	resultCharts: {
-		display: 'flex',
-		justifyContent: 'center',
-		flexDirection: 'column',
-		alignItems: 'center'
-	},
-	chartContainer: {
-		display: 'flex',
-		flexDirection: 'row',
-		width: 500,
-		alignItems: 'center'
-	},
-	resultTableContainer: {
-		backgroundColor: '#eff5ff',
-		width: 250,
-		display: 'flex',
-		flexDirection: 'row',
-		justifyContent: 'space-around'
-	}
 };
 
 const ResultBox = ({ aboveText, insideText, color }) => (
-	<div style={styles.result(true)}>
+	<div className='result-box'>
 		<p style={styles.resultTitle(color)}>{aboveText}</p>
 		<p style={styles.rewardXp(color)}>{insideText} XP</p>
 	</div>
@@ -157,16 +70,16 @@ const ResultTable = ({
 		<div key={i}>{i + 1}</div>
 	));
 	return (
-		<div style={styles.resultTableContainer}>
-			<div style={styles.answersColumn}>
+		<div className='result-table-container'>
+			<div className='answers-column'>
 				<div>YOU</div>
 				{myAnswersUI}
 			</div>
-			<div style={styles.answersColumn}>
+			<div className='answers-column'>
 				<div>&nbsp;</div>
 				{questionNumberUI}
 			</div>
-			<div style={styles.answersColumn}>
+			<div className='answers-column'>
 				<div>OPPONENT</div>
 				{opAnswersUI}
 			</div>
@@ -186,8 +99,8 @@ const Results = ({
 	opRes
 }) => (
 	<div style={styles.appear(fadeIn)}>
-		<p style={styles.languageName}>{courseName.toUpperCase()}</p>
-		<div style={styles.resultBoxes}>
+		<p className='language'>{courseName.toUpperCase()}</p>
+		<div className='result-boxes'>
 			<ResultBox
 				aboveText="ANSWERS BONUS"
 				insideText={answersBonus}
@@ -204,8 +117,8 @@ const Results = ({
 				color={totalXp < 0 ? red500 : green500}
 			/>
 		</div>
-		<div style={styles.resultCharts}>
-			<div style={styles.chartContainer}>
+		<div className='result-charts'>
+			<div className='chart-container'>
 				<div>
 					{untilNextLevelXp}XP to Level {myLevel + 1}
 				</div>
@@ -259,16 +172,16 @@ class Result extends Component {
 		const totalXp = answersBonus + matchResult;
 		const [ untilNextLevelXp, percUntilNext ] = this.countUntilNextLevel(totalXp);
 		return (
-			<div id="challenge-start" style={styles.container}>
+			<div id="challenge-start" className='container'>
 				<div style={styles.appear(fadeInDown)}>
 					{status !== contestTypes.GotChallenged && getChallengeStatus(status, styles.status)}
 				</div>
-				<div style={styles.userWrapper}>
-					<div style={{ ...styles.user, ...styles.appear(fadeInLeft) }}>
+				<div className='player-wrapper'>
+					<div className='player' style={styles.appear(fadeInLeft) }>
 						<Profile player={contest.player} />
 					</div>
-					<span style={styles.versusStyle}>{this.counter(myRes)} : {this.counter(opRes)}</span>
-					<div style={{ ...styles.user, ...styles.appear(fadeInRight) }}>
+					<span className='versus'>{this.counter(myRes)} : {this.counter(opRes)}</span>
+					<div className='player' style={styles.appear(fadeInRight)}>
 						<Profile player={contest.opponent} />
 					</div>
 				</div>
@@ -290,10 +203,10 @@ class Result extends Component {
 						}}
 					/>
 				}
-				<div style={{ ...styles.result, ...styles.appear(fadeInUp) }}>
+				<div style={styles.appear(fadeInUp)}>
 					<RaisedButton
 						label="Leave"
-						style={styles.button}
+						className='button'
 						secondary
 						onClick={this.props.leave}
 					/>
@@ -301,7 +214,7 @@ class Result extends Component {
 						(status === 1 || status === 2 || status === 8) &&
 						<RaisedButton
 							label="View Correct Answers"
-							style={styles.button}
+							className='button'
 							secondary
 							onClick={this.props.goToViewCorrectAnswers}
 						/>
