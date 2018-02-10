@@ -122,7 +122,7 @@ const Results = ({
 				<div>
 					{untilNextLevelXp}XP to Level {myLevel + 1}
 				</div>
-				<ResultPie level={myLevel} pieResults={[{ y: myXp }, { y: untilNextLevelXp }]} />
+				<ResultPie level={myLevel} initialPieResults={[{ y: myXp }, { y: untilNextLevelXp }]} addedAmountOfXp={totalXp} />
 				<div>
 					{myXp}XP
 				</div>
