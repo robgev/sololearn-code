@@ -8,8 +8,8 @@ import Dialog from 'material-ui/Dialog';
 import Paper from 'material-ui/Paper';
 import { List } from 'material-ui/List';
 import FlatButton from 'material-ui/FlatButton';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
 
 // Redux modules
 import {
@@ -20,15 +20,11 @@ import {
 import { isLoaded } from 'reducers';
 
 // Additional components
+import Layout from 'components/Layouts/GeneralLayout';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import ContestItem from './ContestItem';
 
 const styles = {
-	contestsWrapper: {
-		width: '1000px',
-		margin: '15px auto',
-	},
-
 	contests: {
 		padding: 0,
 	},
@@ -155,52 +151,54 @@ class Contests extends PureComponent {
 		} = contests || {};
 
 		return !isContestsLoaded ? <LoadingOverlay /> : (
-			<Paper id="contests" style={styles.contestsWrapper}>
-				{
-					invited && invited.length > 0 &&
-					<div>
-						<p style={{ ...styles.header.base, ...styles.header.title }}>INVITED</p>
-						<List style={styles.contests}>{this.renderContests(invited)}</List>
-					</div>
-				}
-				{
-					invited && ongoing.length > 0 &&
-					<div>
-						<p style={{ ...styles.header.base, ...styles.header.title }}>ONGOING</p>
-						<List style={styles.contests}>{this.renderContests(ongoing)}</List>
-					</div>
-				}
-				{
-					invited && completed.length > 0 &&
-					<div>
-						<div style={styles.headerWithAction}>
-							<p style={styles.header.title}>COMPLETED</p>
-							<FlatButton label="Clear" style={styles.headerButton} onClick={clearContests} />
+			<Layout>
+				<Paper id="contests">
+					{
+						invited && invited.length > 0 &&
+						<div>
+							<p style={{ ...styles.header.base, ...styles.header.title }}>INVITED</p>
+							<List style={styles.contests}>{this.renderContests(invited)}</List>
 						</div>
-						<List style={styles.contests}>{this.renderContests(completed)}</List>
-					</div>
-				}
-				<Dialog
-					id="courses"
-					modal={false}
-					autoScrollBodyContent
-					title="Choose your weapon"
-					open={this.state.selectCourse}
-					titleStyle={styles.coursesTitle}
-					contentStyle={styles.coursesPopup}
-					onRequestClose={this.toggleCoursePopup}
-				>
-					{this.renderCourses()}
-				</Dialog>
-				<FloatingActionButton
-					secondary
-					zDepth={3}
-					onClick={this.toggleCoursePopup}
-					style={styles.newChallengeButton}
-				>
-					<ContentAdd />
-				</FloatingActionButton>
-			</Paper>
+					}
+					{
+						invited && ongoing.length > 0 &&
+						<div>
+							<p style={{ ...styles.header.base, ...styles.header.title }}>ONGOING</p>
+							<List style={styles.contests}>{this.renderContests(ongoing)}</List>
+						</div>
+					}
+					{
+						invited && completed.length > 0 &&
+						<div>
+							<div style={styles.headerWithAction}>
+								<p style={styles.header.title}>COMPLETED</p>
+								<FlatButton label="Clear" style={styles.headerButton} onClick={clearContests} />
+							</div>
+							<List style={styles.contests}>{this.renderContests(completed)}</List>
+						</div>
+					}
+					<Dialog
+						id="courses"
+						modal={false}
+						autoScrollBodyContent
+						title="Choose your weapon"
+						open={this.state.selectCourse}
+						titleStyle={styles.coursesTitle}
+						contentStyle={styles.coursesPopup}
+						onRequestClose={this.toggleCoursePopup}
+					>
+						{this.renderCourses()}
+					</Dialog>
+					<FloatingActionButton
+						secondary
+						zDepth={3}
+						onClick={this.toggleCoursePopup}
+						style={styles.newChallengeButton}
+					>
+						<ContentAdd />
+					</FloatingActionButton>
+				</Paper>
+			</Layout>
 		);
 	}
 }

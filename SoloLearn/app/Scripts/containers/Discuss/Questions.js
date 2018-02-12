@@ -65,7 +65,7 @@ class Questions extends Component {
 						item={this.renderQuestion}
 						list={this.props.questions}
 						loadMore={this.loadQuestions}
-						width={1000}
+						width={950}
 						window
 					/>
 				)}

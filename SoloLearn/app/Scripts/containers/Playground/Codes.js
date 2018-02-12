@@ -82,7 +82,7 @@ class Codes extends Component {
 						item={this.renderCode}
 						list={this.props.codes}
 						loadMore={this.loadCodes}
-						width={1000}
+						width={950}
 						rowHeight={100}
 						window
 					/>

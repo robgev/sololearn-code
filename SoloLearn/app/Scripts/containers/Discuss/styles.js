@@ -388,10 +388,6 @@ export const QuestionsStyles = {
 };
 
 export const QuestionsBaseStyles = {
-	container: {
-		position: 'relative',
-		flex: '1 1 auto',
-	},
 	toolbar: {
 		overflow: 'hidden',
 		padding: '5px',

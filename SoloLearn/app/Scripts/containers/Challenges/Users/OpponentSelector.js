@@ -14,13 +14,16 @@ import { chooseContestCourse } from 'actions/challenges';
 import { isLoaded } from 'reducers';
 
 // Additional data and components
-import Followers from './Followers';
-import Following from './Following';
-import AllPlayers from './AllPlayers';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import Layout from 'components/Layouts/GeneralLayout';
 
 // Utils
 import { EnumNameMapper } from 'utils';
+
+// Local components
+import Followers from './Followers';
+import Following from './Following';
+import AllPlayers from './AllPlayers';
 
 const TabTypes = {
 	AllPlayers: 0,
@@ -30,10 +33,6 @@ const TabTypes = {
 EnumNameMapper.apply(TabTypes);
 
 const styles = {
-	container: {
-		width: '1000px',
-		margin: '15px auto',
-	},
 
 	tabsWrapper: {
 		flex: 1,
@@ -73,36 +72,38 @@ class OpponentSelector extends Component {
 		}
 
 		return (
-			<Paper id="followers-base" style={styles.container}>
-				<Tabs value={this.state.activeTab} style={styles.tabsWrapper} tabItemContainerStyle={styles.tabs} inkBarStyle={styles.inkBarStyle}>
-					<Tab
-						label="All Players"
-						value={TabTypes.AllPlayers}
-						style={styles.tab}
-						onClick={() => this.handleTabChange(TabTypes.AllPlayers)}
-					/>
-					<Tab
-						label="Followers"
-						value={TabTypes.Followers}
-						style={styles.tab}
-						onClick={() => this.handleTabChange(TabTypes.Followers)}
-					/>
-					<Tab
-						label="Following"
-						value={TabTypes.Following}
-						style={styles.tab}
-						onClick={() => this.handleTabChange(TabTypes.Following)}
-					/>
-				</Tabs>
-				{this.state.activeTab == TabTypes.AllPlayers && <AllPlayers /> }
-				{this.state.activeTab == TabTypes.Followers && <Followers />}
-				{this.state.activeTab == TabTypes.Following && <Following />}
-			</Paper>
+			<Layout>
+				<Paper>
+					<Tabs value={this.state.activeTab} style={styles.tabsWrapper} tabItemContainerStyle={styles.tabs} inkBarStyle={styles.inkBarStyle}>
+						<Tab
+							label="All Players"
+							value={TabTypes.AllPlayers}
+							style={styles.tab}
+							onClick={() => this.handleTabChange(TabTypes.AllPlayers)}
+						/>
+						<Tab
+							label="Followers"
+							value={TabTypes.Followers}
+							style={styles.tab}
+							onClick={() => this.handleTabChange(TabTypes.Followers)}
+						/>
+						<Tab
+							label="Following"
+							value={TabTypes.Following}
+							style={styles.tab}
+							onClick={() => this.handleTabChange(TabTypes.Following)}
+						/>
+					</Tabs>
+					{this.state.activeTab == TabTypes.AllPlayers && <AllPlayers /> }
+					{this.state.activeTab == TabTypes.Followers && <Followers />}
+					{this.state.activeTab == TabTypes.Following && <Following />}
+				</Paper>
+			</Layout>
 		);
 	}
 
 	componentDidMount() {
-		const isLoaded = this.props.isLoaded;
+		const { isLoaded } = this.props;
 
 		if (!isLoaded) {
 			browserHistory.replace('/contests');

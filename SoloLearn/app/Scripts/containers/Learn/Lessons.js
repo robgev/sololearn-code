@@ -1,7 +1,7 @@
 // React modules
 import React, { Component } from 'react';
-import Radium, { Style } from 'radium';
-import { Link, browserHistory } from 'react-router';
+import Radium from 'radium';
+import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -20,15 +20,11 @@ import { isLoaded } from 'reducers';
 
 // Utils
 import { toSeoFrendly } from 'utils';
+import Layout from 'components/Layouts/GeneralLayout';
 
 import { LessonType } from './QuizManager';
 
 const styles = {
-	lessons: {
-		width: '1000px',
-		margin: '0 auto',
-		textAlign: 'center',
-	},
 
 	lessonWrapper: {
 		display: 'inline-block',
@@ -173,9 +169,9 @@ render() {
 	}
 
 	return (
-		<div className="lessons" style={styles.lessons}>
+		<Layout>
 			{this.renderLessons()}
-		</div>
+		</Layout>
 	);
 }
 }

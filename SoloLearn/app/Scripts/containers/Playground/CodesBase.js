@@ -18,6 +18,7 @@ import { grey700 } from 'material-ui/styles/colors';
 import { connect } from 'react-redux';
 import { isLoaded } from 'reducers';
 import LanguageCard from 'components/Shared/languageCard';
+import Layout from 'components/Layouts/GeneralLayout';
 import editorSettings from 'defaults/playgroundEditorSettings';
 
 // Additional components
@@ -126,7 +127,7 @@ class CodesBase extends Component {
 	render() {
 		const { isLanguagePopupOpen, languages } = this.state;
 		return (
-			<div className="codes" style={styles.container}>
+			<Layout>
 				<div className="toolbar" style={styles.toolbar}>
 					<div className="search" style={styles.search}>
 						<SearchIcon color={grey700} style={styles.searchIcon} />
@@ -199,7 +200,7 @@ class CodesBase extends Component {
 						))
 					}
 				</Dialog>
-			</div>
+			</Layout>
 		);
 	}
 }

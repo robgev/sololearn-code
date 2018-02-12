@@ -24,7 +24,10 @@ import { isLoaded } from 'reducers';
 // Service
 import Service, { AppDefaults } from 'api/service';
 import Progress, { ProgressState } from 'api/progress';
+
+// Components
 import CourseChip from 'components/Shared/CourseChip';
+import Layout from 'components/Layouts/GeneralLayout';
 
 // Popups
 import Popup from 'api/popupService';
@@ -34,13 +37,6 @@ import { toSeoFrendly, EnumNameMapper, numberFormatter } from 'utils';
 import texts from 'defaults/texts';
 
 const styles = {
-	parent: {
-		position: 'relative',
-		width: '1000px',
-		margin: '0 auto',
-		height: '100%',
-	},
-
 	noCourses: {
 		position: 'absolute',
 		top: '50%',
@@ -527,7 +523,7 @@ class Modules extends Component {
 		];
 
 		return (
-			<div style={styles.parent} key="course-selector-rappper">
+			<Layout>
 				{ userCourses.length > 0 ?
 
 					[
@@ -574,7 +570,7 @@ class Modules extends Component {
 				}
 
 				{ this.state.resetPopupOpened && Popup.getPopup(Popup.generatePopupActions(resetProgressActions), this.state.resetPopupOpened, this.handleResetPopupClose, [ { key: 'hintSkipConfirmText', replacemant: this.skipPrice } ]) }
-			</div>
+			</Layout>
 		);
 	}
 }

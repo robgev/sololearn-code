@@ -20,6 +20,7 @@ import Popup from 'api/popupService';
 
 // Additional components
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import Layout from 'components/Layouts/GeneralLayout';
 import Question from './Question';
 import Replies from './Replies';
 import AddReply from './AddReply';
@@ -187,7 +188,7 @@ class Post extends Component {
 		}
 		const usersQuestion = post.userID === this.props.userId;
 		return (
-			<div style={styles.postWrapper}>
+			<Layout>
 				<div>
 					<Question question={post} votePost={this.votePost} remove={this.openDeletePopup} />
 					<div style={styles.repliesData}>
@@ -244,7 +245,7 @@ class Post extends Component {
 						this.state.deletePopupOpened, this.closeDeletePopup, [ { key: 'postDeleteConfirmText', replacemant: '' } ],
 					)
 				}
-			</div>
+			</Layout>
 		);
 	}
 }

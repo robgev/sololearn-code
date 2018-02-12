@@ -24,7 +24,6 @@ import { LessonType } from './QuizManager';
 const styles = {
 	wrapper: {
 		position: 'relative',
-		width: '1000px',
 		margin: '0 auto',
 		overflow: 'hidden',
 	},

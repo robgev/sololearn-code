@@ -173,10 +173,6 @@ export const NotificationsPopupStyles = {
 };
 
 export const NotificationsViewStyles = {
-	container: {
-		width: '1000px',
-		margin: '20px auto',
-	},
 	notificationsHeader: {
 		display: 'flex',
 		justifyContent: 'space-between',

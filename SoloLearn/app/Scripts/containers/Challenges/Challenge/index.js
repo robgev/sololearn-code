@@ -9,14 +9,12 @@ import { getContest, setContest } from 'actions/challenges';
 import { isLoaded } from 'reducers';
 // Additional components
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import Layout from 'components/Layouts/GeneralLayout';
 import Game from './Game';
 
 const styles = {
 	challengeWrapper: {
-		position: 'relative',
-		width: '1000px',
 		height: '80vh',
-		margin: '15px auto',
 		overflow: 'hidden',
 	},
 };
@@ -46,18 +44,20 @@ class Challenge extends PureComponent {
 		} = this.props;
 
 		return (
-			<StyleRoot>
-				<Paper id="challenge" style={styles.challengeWrapper}>
-					{isActiveContestLoaded ?
-						<Game
-							contest={contest}
-							courseName={courses.find(item => item.id === contest.courseID).languageName}
-							updateContest={this.updateContest}
-						/> :
-						<LoadingOverlay />
-					}
-				</Paper>
-			</StyleRoot>
+			<Layout>
+				<StyleRoot>
+					<Paper id="challenge" style={styles.challengeWrapper}>
+						{isActiveContestLoaded ?
+							<Game
+								contest={contest}
+								courseName={courses.find(item => item.id === contest.courseID).languageName}
+								updateContest={this.updateContest}
+							/> :
+							<LoadingOverlay />
+						}
+					</Paper>
+				</StyleRoot>
+			</Layout>
 		);
 	}
 }

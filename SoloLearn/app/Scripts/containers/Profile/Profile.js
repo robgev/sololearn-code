@@ -27,6 +27,7 @@ import Skills from './Skills';
 import Badges from './Badges';
 import FollowersBase from './FollowersBase';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import Layout from 'components/Layouts/GeneralLayout';
 
 // Utils
 import { EnumNameMapper } from 'utils';
@@ -41,20 +42,9 @@ const TabTypes = {
 EnumNameMapper.apply(TabTypes);
 
 const styles = {
-	container: {
-		width: '100%',
-		position: 'relative',
-		minHeight: '100px',
-	},
-
 	cover: {
 		height: '200px',
 		backgroundColor: '#607d8b',
-	},
-
-	profileOverlay: {
-		width: '1000px',
-		margin: '-100px auto 0',
 	},
 
 	userInfo: {
@@ -238,8 +228,7 @@ class Profile extends Component {
 		}
 
 		return (
-			<div id="profile" style={styles.container}>
-				<div className="cover" style={styles.cover} />
+			<Layout>
 				<div style={styles.profileOverlay}>
 					<Paper className="profile-overlay" style={styles.userInfo}>
 						<Header
@@ -337,7 +326,7 @@ class Profile extends Component {
 						<FollowersBase userId={profile.data.id} closePopup={this.handlePopupClose} />
 					</Dialog>
 				</div>
-			</div>
+			</Layout>
 		);
 	}
 }

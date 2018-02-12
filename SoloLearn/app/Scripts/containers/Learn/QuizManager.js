@@ -23,6 +23,7 @@ import Progress, { ProgressState } from 'api/progress';
 
 // Additional data and components
 import Comments from 'containers/Comments/CommentsBase';
+import Layout from 'components/Layouts/GeneralLayout';
 
 export const LessonType = {
 	Checkpoint: 0,
@@ -164,7 +165,7 @@ class QuizManager extends Component {
 		);
 
 		return (
-			<div className="quizOverlay">
+			<Layout>
 				<Tabs className="quizTimeline" value={parseInt(this.props.activeQuiz.number, 10) - 1}>
 					{this.generateTimeline(quizzes, activeQuiz)}
 				</Tabs>
@@ -178,7 +179,7 @@ class QuizManager extends Component {
 						commentsOpened={this.state.commentsOpened}
 					/>
 				}
-			</div>
+			</Layout>
 		);
 	}
 

@@ -19,6 +19,7 @@ import { changeDiscussQuery, changeDiscussOrdering } from 'actions/discuss';
 import Service from 'api/service';
 
 // Additional components
+import Layout from 'components/Layouts/GeneralLayout';
 import Questions from './Questions';
 
 import { QuestionsBaseStyles as styles } from './styles';
@@ -70,7 +71,7 @@ class QuestionsBase extends Component {
 	}
 	render() {
 		return (
-			<div className="discuss" style={styles.container}>
+			<Layout>
 				<div className="toolbar" style={styles.toolbar}>
 					<div className="search" style={styles.search}>
 						<SearchIcon color={grey700} style={styles.searchIcon} />
@@ -121,7 +122,7 @@ class QuestionsBase extends Component {
 						<ContentAdd />
 					</FloatingActionButton>
 				</Link>
-			</div>
+			</Layout>
 		);
 	}
 }

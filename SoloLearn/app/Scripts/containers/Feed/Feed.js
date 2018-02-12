@@ -1,5 +1,6 @@
 // React modules
 import React from 'react';
+import Layout from 'components/Layouts/GeneralLayout';
 
 // Redux modules
 import { connect } from 'react-redux';
@@ -8,19 +9,15 @@ import { isLoaded } from '../../reducers';
 // Additional data and components
 import FeedItemsBase from './FeedItemsBase';
 
-const styles = {
-	container: {
-		position: 'relative',
-		// flex: '1 1 auto',
-		width: '600px',
-		margin: '20px auto',
-	},
-};
-
 const Feed = ({ feed, feedPins, isLoaded }) => (
-	<div id="feed" style={styles.container}>
-		<FeedItemsBase feed={feed} feedPins={feedPins} isUserProfile={false} isLoaded={isLoaded} />
-	</div>
+	<Layout>
+		<FeedItemsBase
+			feed={feed}
+			isLoaded={isLoaded}
+			feedPins={feedPins}
+			isUserProfile={false}
+		/>
+	</Layout>
 );
 
 const mapStateToProps = state => ({
