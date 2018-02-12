@@ -30,13 +30,27 @@ const styles = {
 		animationName: Radium.keyframes(animation, animation.name),
 	}),
 };
-
 const optionsMessages = [
-	'Spelling Errors',
-	'Wrong Question',
-	'Wrong Answer',
-	'Off Topic',
-	'Other'
+	{
+		name: 'Spelling Errors',
+		reason: 41,
+	},
+	{
+		name: 'Wrong Question',
+		reason: 42
+	},
+	{
+		name: 'Wrong Answer',
+		reason: 43
+	},
+	{
+		name: 'Off Topic',
+		reason: 44
+	},
+	{
+		name: 'Other',
+		reason: 0
+	}
 ];
 
 class ViewCorrectAnswers extends Component {
@@ -50,6 +64,16 @@ class ViewCorrectAnswers extends Component {
 	}
 	handleTabChange(i) {
 		this.setState({quizNumber: i})
+	}
+	sendReport(itemId, reason) {
+		Service.request('ReportItem', {
+			itemId,
+			itemType: 6, // this is a report type, on the server-side 6 stands for challenge report
+			reason // this is a challenge report type
+		})
+		.then((response) => {
+			console.log(response);
+		})
 	}
 	render() {
 		if (!this.state.updated) {
@@ -111,16 +135,15 @@ class ViewCorrectAnswers extends Component {
 		})
 		const { contest } = this.props;
 		
-		const menuIcons = optionsMessages.map((opt, i) => (
-			<MenuItem
-				key={i}
-				primaryText={opt}
-				onClick={() => Service.request('yo', {})
-				.then((response) => {
-					console.log(response);
-				})}
-			/>
-		))
+		const menuIcons = (quizId) => {
+			return optionsMessages.map((opt, i) => (
+				<MenuItem
+					key={i}
+					primaryText={opt.name}
+					onClick={this.sendReport.bind(null, quizId, opt.reason)}
+				/>
+			))
+		}
 		const quizes = contest.challenges.slice(0, 5).map(quiz => (
 			<div key={quiz.id}>
 				<div className='players'>
@@ -131,7 +154,7 @@ class ViewCorrectAnswers extends Component {
 						style={{ width: 40, height: 40 }}
 						iconButtonElement={<IconButton><MoreVertIcon color='black' /></IconButton>}
 					>
-						{menuIcons}
+						{menuIcons(quiz.id)}
 					</IconMenu>
 				</div>
 				<TypeSelector
