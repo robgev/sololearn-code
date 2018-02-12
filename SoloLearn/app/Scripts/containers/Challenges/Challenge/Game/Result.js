@@ -13,6 +13,7 @@ import {
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import ResultPie from 'components/Shared/ChallengeGraphs/ResultPie';
+import AnimatedNumber from 'components/Shared/AnimatedNumber';
 import { green500, red500, blue500 } from 'material-ui/styles/colors';
 import 'styles/Challenges/Challenge/Game/Result';
 import { createAnswerUI } from './gameUtil';
@@ -22,6 +23,10 @@ import contestTypes from 'defaults/contestTypes';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
 import Profile from './Profile';
+import Comment from '../../../Comments/Comment';
+
+const XP_ANIMATION_DURATION = 1000;
+const XP_ANIMATION_START_IN = 1000;
 
 const styles = {
 	status: {
@@ -60,6 +65,36 @@ const ResultBox = ({ aboveText, insideText, color }) => (
 	</div>
 );
 
+const AnimatedResults = ({
+	oldPoints,
+	newPoints,
+	myLevel
+}) => (
+	<div className='chart-container'>
+		<AnimatedNumber
+			fromNumber={oldPoints.untilNextLevelXp}
+			toNumber={newPoints.untilNextLevelXp}
+			text={`XP to Level ${myLevel + 1}`}
+			animationDuration={XP_ANIMATION_DURATION}
+			animationStartIn={XP_ANIMATION_START_IN}
+		/>
+		<ResultPie
+			level={myLevel}
+			oldPieResults={[{ y: oldPoints.xp }, { y: oldPoints.untilNextLevelXp }]}
+			newPieResults={[{ y: newPoints.xp}, { y: newPoints.untilNextLevelXp }]}
+			animationDuration={XP_ANIMATION_DURATION}
+			startAfter={XP_ANIMATION_START_IN}
+		/>
+		<AnimatedNumber
+			fromNumber={oldPoints.xp}
+			toNumber={newPoints.xp}
+			text={`xp`}
+			animationDuration={XP_ANIMATION_DURATION}
+			animationStartIn={XP_ANIMATION_START_IN}
+		/>
+	</div>
+);
+
 const ResultTable = ({
 	myRes,
 	opRes
@@ -91,9 +126,8 @@ const Results = ({
 	answersBonus,
 	matchResult,
 	totalXp,
-	untilNextLevelXp,
-	percUntilNext,
-	myXp,
+	oldPoints,
+	newPoints,
 	myLevel,
 	myRes,
 	opRes
@@ -118,15 +152,7 @@ const Results = ({
 			/>
 		</div>
 		<div className='result-charts'>
-			<div className='chart-container'>
-				<div>
-					{untilNextLevelXp}XP to Level {myLevel + 1}
-				</div>
-				<ResultPie level={myLevel} initialPieResults={[{ y: myXp }, { y: untilNextLevelXp }]} addedAmountOfXp={totalXp} />
-				<div>
-					{myXp}XP
-				</div>
-			</div>
+			<AnimatedResults myLevel={myLevel} oldPoints={oldPoints} newPoints={newPoints} />
 			<ResultTable myRes={myRes} opRes={opRes} />
 		</div>
 	</div>
@@ -142,25 +168,27 @@ class Result extends Component {
 
 	answerBonusCounter = results => results.reduce((xp, current) => xp + current.earnedXp, 0)
 	matchResultCounter = contest =>
-		(contest.player.status === 1 ? contest.player.rewardXp : -contest.opponent.rewardXp)
+	(contest.player.status === 1 ? contest.player.rewardXp : -contest.opponent.rewardXp)
 	countUntilNextLevel = (totalXp) => {
-		const { player: { level, xp } } = this.props.contest;
-		const newXp = xp + totalXp;
+		const { player: { level, xp: oldXp } } = this.props.contest;
 		const nextLevelXp = this.props.levels[level - 1].maxXp;
-		const untilNextLevelXp = nextLevelXp - newXp;
-		const percentage = 100 - (100 * (untilNextLevelXp / nextLevelXp));
-		return [ untilNextLevelXp, percentage ];
+		const newXp = oldXp + totalXp;
+		const newUntilNextLevelXp = nextLevelXp - newXp;
+		const oldUntilNextLevelXp = nextLevelXp - oldXp;
+		return {
+			oldPoints: { xp: oldXp, untilNextLevelXp: oldUntilNextLevelXp },
+			newPoints: { xp: newXp, untilNextLevelXp: newUntilNextLevelXp }
+		};
 	}
 	render() {
 		if (!this.state.updated) {
 			return <LoadingOverlay />;
 		}
-		const { courseName, contest } = this.props;
+		const { courseName, contest, levels } = this.props;
 		const { status } = contest.player;
 		const {
 			player: {
 				results: myRes,
-				xp: myXp,
 				level: myLevel
 			},
 			opponent: {
@@ -170,7 +198,7 @@ class Result extends Component {
 		const answersBonus = this.answerBonusCounter(myRes);
 		const matchResult = this.matchResultCounter(contest);
 		const totalXp = answersBonus + matchResult;
-		const [ untilNextLevelXp, percUntilNext ] = this.countUntilNextLevel(totalXp);
+		const { oldPoints, newPoints } = this.countUntilNextLevel(totalXp);
 		return (
 			<div id="challenge-start" className='container'>
 				<div style={styles.appear(fadeInDown)}>
@@ -194,9 +222,8 @@ class Result extends Component {
 							answersBonus,
 							matchResult,
 							totalXp,
-							untilNextLevelXp,
-							percUntilNext,
-							myXp,
+							oldPoints,
+							newPoints,
 							myLevel,
 							myRes,
 							opRes

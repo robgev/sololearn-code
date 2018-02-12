@@ -10,26 +10,22 @@ class ResultPie extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pieResults: props.initialPieResults
+            pieResults: props.oldPieResults
         }
     }
 
     componentDidMount() {
-        setTimeout(this.addTotalContestXp, 1000);
+        const { startAfter } = this.props;
+        setTimeout(this.addTotalContestXp, startAfter);
     }
 
     addTotalContestXp = () => {
-        const { pieResults } = this.state;
-        const { addedAmountOfXp } = this.props;
-        const [{y: myXp}, {y: untilNextLevelXp}] = pieResults;
-        const newMyXp = myXp + addedAmountOfXp;
-        const newUntilNextLevelXp = untilNextLevelXp - addedAmountOfXp;
-        const newPieResults = [{ y: newMyXp }, { y: newUntilNextLevelXp }];
+        const { newPieResults } = this.props;
         this.setState({ pieResults: newPieResults });
     }
 
     render() {
-        const { level, addedAmountOfXp } = this.props;
+        const { level, animationDuration } = this.props;
         const { pieResults } = this.state;
         return (
             <div className='pie-chart-wrapper'>
@@ -38,7 +34,7 @@ class ResultPie extends React.Component {
                     <div>{level}</div>
                 </div>
                 <VictoryPie
-                    animate={{ duration: 2000 }}
+                    animate={{ duration: animationDuration }}
                     className='pie-chart'
                     style={{
                         parent: {

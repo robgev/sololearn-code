@@ -19,6 +19,7 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import 'styles/Challenges/Challenge/Game/ViewCorrectAnswers.scss';
+import Service from 'api/service';
 import { QuizComponents, QuizType } from 'containers/Learn/QuizSelector';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import TypeSelector from './TypeSelector';
@@ -109,11 +110,15 @@ class ViewCorrectAnswers extends Component {
 			)
 		})
 		const { contest } = this.props;
+		
 		const menuIcons = optionsMessages.map((opt, i) => (
 			<MenuItem
 				key={i}
 				primaryText={opt}
-				onClick={() => console.log(opt)}
+				onClick={() => Service.request('yo', {})
+				.then((response) => {
+					console.log(response);
+				})}
 			/>
 		))
 		const quizes = contest.challenges.slice(0, 5).map(quiz => (
