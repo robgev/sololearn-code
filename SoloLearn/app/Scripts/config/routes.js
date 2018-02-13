@@ -57,6 +57,9 @@ import Contests from 'containers/Challenges/Feed/Contests';
 import OpponentSelector from 'containers/Challenges/Users/OpponentSelector';
 import Challenge from 'containers/Challenges/Challenge';
 
+// Discover
+import DiscoverContainer from 'containers/Profile/DiscoverContainer';
+
 export default (
 	[
 		<Route component={MainLayout} key="mainLayoutRoutes">
@@ -93,6 +96,7 @@ export default (
 			<Route path="/choose-opponent" component={redirector(OpponentSelector)} />
 			<Route path="/challenge/:id" component={redirector(Challenge)} />
 			<Route path="/notifications" component={redirector(Notifications)} />
+			<Route path="/discover" component={redirector(DiscoverContainer)} />
 			<Route path="/login" component={Login} />
 		</Route>,
 	]
