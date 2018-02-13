@@ -1,0 +1,9 @@
+.slay-container {
+	display: flex;
+	justify-content: center;
+	padding-top: 20px;
+	.main-content {
+		width: 50vw;
+		padding-right: 30px;
+	}
+}
