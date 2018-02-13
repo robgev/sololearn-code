@@ -62,6 +62,9 @@ import settings from './settings.reducer';
 // Leaderboards
 import leaderboards from './leaderboards.reducer';
 
+// Discover
+import discoverSuggestions from './reducer_discover';
+
 const reducers = combineReducers({
 	profile,
 	comments,
@@ -72,6 +75,7 @@ const reducers = combineReducers({
 	slay,
 	settings,
 	leaderboards,
+	discoverSuggestions,
 	// General
 	tabs,
 	activeTab,
