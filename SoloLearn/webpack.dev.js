@@ -27,6 +27,7 @@ module.exports = {
 		extensions: [ '.ts', '.js', '.json', '.css', '.scss', '.html' ],
 		alias: {
 			actions: path.resolve(__dirname, 'app/Scripts/actions'),
+			assets: path.resolve(__dirname, 'wwwroot/assets'),
 			api: path.resolve(__dirname, 'app/Scripts/api'),
 			components: path.resolve(__dirname, 'app/Scripts/components'),
 			config: path.resolve(__dirname, 'app/Scripts/config'),

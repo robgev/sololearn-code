@@ -1,12 +1,65 @@
 .header {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: center;
 	position: fixed;
 	width: 100%;
 	z-index: 999;
 	background-color: #607D8B;
-	.tabs {
-		width: 100%;
+	.header-wrapper {
+		display: flex;
+		justify-content: space-between;
+		width: calc(65vw + 40px);
+		.header-right {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			.home-icon {
+				width: 40px;
+				.cls-1 {
+					fill: white;
+				}
+			}
+			.tabs {
+				display: flex;
+				padding-left: 15px;
+				.tab-item {
+					display: flex;
+					align-items: center;
+					position: relative;
+					padding: 15px;
+					color: white;
+					.tab-icon {
+						width: 20px;
+						padding-right: 5px;
+					}
+					&.active {
+						border-bottom-color: white;
+						&:after {
+							transform: scaleX(1);
+						}
+					}
+					&:after {
+						display: block;
+						content: '';
+						position: absolute;
+						width: 100%;
+						bottom: 0;
+						right: 0;
+						border-bottom: 2px solid #fff;
+						-webkit-transform: scaleX(0);
+						transform: scaleX(0);
+						transition: -webkit-transform .2s ease-in-out;
+						transition: transform .2s ease-in-out;
+						transition: transform .2s ease-in-out, -webkit-transform .2s ease-in-out;
+					}
+				}
+			}
+		}
+		.header-left {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
 	}
 }

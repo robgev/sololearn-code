@@ -1,10 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router';
+import tabs from 'constants/Tabs';
 
-const TabList = ({ tabs }) => (
+const TabList = ({ pathname }) => (
 	<div className="tabs">
 		{	tabs.map(tab => (
-			<Link key={tab.id} to={tab.url}> { tab.name }</Link>
+			<Link
+				key={tab.id}
+				to={tab.url}
+				className={`tab-item ${pathname.includes(tab.url) ? 'active' : ''}`}
+			>
+				<img className="tab-icon" alt="Tab icon" src={`assets/${tab.imgUrl}`} />
+				{ tab.name }
+			</Link>
 		))
 		}
 	</div>

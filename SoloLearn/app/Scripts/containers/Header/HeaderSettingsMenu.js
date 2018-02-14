@@ -22,7 +22,6 @@ class SettingsMenu extends PureComponent {
 	render() {
 		return (
 			<IconMenu
-				style={{ width: 40, height: 40, padding: '0 10px' }}
 				anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
 				targetOrigin={{ horizontal: 'left', vertical: 'top' }}
 				iconButtonElement={<IconButton><MoreVertIcon color="#fff" /></IconButton>}

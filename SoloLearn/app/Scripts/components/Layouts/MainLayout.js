@@ -1,21 +1,17 @@
 // React modules
-import React, { Component } from 'react';
-import Radium from 'radium';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { find } from 'lodash';
 
 // Material UI components
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 // Redux modules
 import { changeLoginModal } from 'actions/login.action';
 import { loadDefaults } from 'actions/defaultActions';
 import { defaultsLoaded } from 'reducers';
-import selectTab from 'actions/tabs';
 import { Auth } from 'utils';
 
 // Additional components
@@ -26,39 +22,45 @@ import LoadingOverlay from 'components/Shared/LoadingOverlay';
 // Theme
 import Theme from 'defaults/theme';
 
-const muiTheme = getMuiTheme(Theme);
-
 const styles = {
 	wrapper: {
 		paddingTop: 60,
+		backgroundColor: '#F4F4F4',
 	},
 };
 
-class MainLayout extends Component {
+const mapStateToProps = state => ({
+	tabs: state.tabs,
+	loggedin: state.loggedin,
+	loginModal: state.loginModal,
+	defaultsLoaded: defaultsLoaded(state),
+});
+
+const mapDispatchToProps = {
+	loadDefaults,
+	changeLoginModal,
+};
+
+ @connect(mapStateToProps, mapDispatchToProps)
+ @Auth
+class MainLayout extends PureComponent {
 	state = { loading: true }
-	componentWillMount() {
-		// find the tab for current url and select it
-		this.selectTab();
+
+	async componentWillMount() {
 		if (!this.props.defaultsLoaded || !this.props.loggedin) {
-			this.props.loadDefaults()
-				.then(() => this.setState({ loading: false }));
-		} else {
-			this.setState({ loading: false });
+			await this.props.loadDefaults();
 		}
+		this.setState({ loading: false });
 	}
-	selectTab = () => {
-		const { selectTab: changeTab, tabs, location: { pathname } } = this.props;
-		const currTab = find(tabs, tab => pathname.includes(tab.url) || tab.url.includes(pathname));
-		if (currTab) {
-			changeTab(currTab);
-		}
-	}
+
 	changeModalState = () => {
 		this.props.changeLoginModal(!this.props.loginModal);
 	}
+
 	render() {
+		const { location: { pathname } } = this.props;
 		return (
-			<MuiThemeProvider muiTheme={muiTheme}>
+			<MuiThemeProvider muiTheme={getMuiTheme(Theme)}>
 				{
 					this.state.loading ?
 						<LoadingOverlay /> :
@@ -77,7 +79,7 @@ class MainLayout extends Component {
 							>
 								<Login />
 							</Dialog>
-							<Header />
+							<Header pathname={pathname} />
 							<div style={styles.wrapper}>
 								{this.props.children}
 							</div>
@@ -88,21 +90,4 @@ class MainLayout extends Component {
 	}
 }
 
-function mapStateToProps(state) {
-	return {
-		tabs: state.tabs,
-		defaultsLoaded: defaultsLoaded(state),
-		loggedin: state.loggedin,
-		loginModal: state.loginModal,
-	};
-}
-
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({
-		loadDefaults,
-		selectTab,
-		changeLoginModal,
-	}, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Auth(Radium(MainLayout)));
+export default MainLayout;
