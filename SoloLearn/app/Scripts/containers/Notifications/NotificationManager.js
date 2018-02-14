@@ -45,8 +45,8 @@ class NotificationManager extends PureComponent {
 					badgeStyle={{
 						width: 10,
 						height: 10,
-						top: 30,
-						right: 29,
+						top: 10,
+						right: 15,
 						zIndex: 1,
 						padding: 2,
 						fontSize: 8,

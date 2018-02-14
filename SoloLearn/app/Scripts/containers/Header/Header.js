@@ -9,8 +9,12 @@ import SettingsMenu from './HeaderSettingsMenu';
 
 const Header = () => (
 	<div className="header">
+		<div className="header-right">
+			{/* Logo */}
+			{/* Search */}
+			<TabList />
+		</div>
 		<SettingsMenu />
-		<TabList />
 		<NotificationManager />
 	</div>
 );

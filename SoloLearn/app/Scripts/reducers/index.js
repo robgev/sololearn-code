@@ -4,7 +4,6 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
 // General reducers
-import tabs from './reducer_tabs';
 import activeTab from './reducer_active_tab';
 import userProfile from './reducer_user';
 
@@ -77,7 +76,6 @@ const reducers = combineReducers({
 	leaderboards,
 	discoverSuggestions,
 	// General
-	tabs,
 	activeTab,
 	userProfile,
 	// Learn
