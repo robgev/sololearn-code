@@ -1,33 +1,18 @@
-const tryMinify = (number, size, symbol, allowTenth) => {
-	let text = null;
+const roundToOneDigit = (number) => {
+	const factor = Math.pow(10, 1);
+	return Math.round(number * factor) / factor;
+}
 
-	if (number >= size / (allowTenth ? 10 : 1)) {
-		const num = (number * 1.0) / size;
-
-		text = Math.floor(num);
-
-		const tenNum = Math.floor(num * 10);
-
-		if (num < 100 && num !== Math.floor(num) && tenNum % 10 !== 0) {
-			text += `.${tenNum % 10}`;
-		}
-
-		text += symbol;
-	}
-
-	return text;
-};
-
-const numberFormatter = (number, allowTenth) => {
+const numberFormatter = (number) => {
 	if (number < 1000) {
-		return number;
+		return `${number}`;
+	} else if (number < 1000000) {
+		return `${roundToOneDigit(number / 1000)}K`
+		
+	} else if (number < 1000000000) {
+		return `${roundToOneDigit(number / 1000000)}M`
 	}
-
-	let res = tryMinify(number, 1000000000, 'B', allowTenth);
-	if (res == null) res = tryMinify(number, 1000000, 'M', allowTenth);
-	if (res == null) res = tryMinify(number, 1000, 'K', allowTenth);
-
-	return res;
+	return `${roundToOneDigit(number / 1000000000)}B`;
 };
 
 export default numberFormatter;
