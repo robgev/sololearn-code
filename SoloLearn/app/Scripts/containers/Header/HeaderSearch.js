@@ -20,9 +20,12 @@ class HeaderSearch extends PureComponent {
 		};
 	}
 
-	toggleSearch = () => {
-		const { searchOpened } = this.state;
-		this.setState({ searchOpened: !searchOpened });
+	openSearch = () => {
+		this.setState({ searchOpened: true }, () => { this.searchInput.focus(); });
+	}
+
+	closeSearch = () => {
+		this.setState({ searchOpened: false });
 	}
 
 	handleMenuChange = (e, idx, searchArea) => {
@@ -44,7 +47,7 @@ class HeaderSearch extends PureComponent {
 		return (
 			<div className="header-search-container">
 				<IconButton
-					onClick={this.toggleSearch}
+					onClick={this.openSearch}
 					className="header-search-icon"
 					iconStyle={{
 						width: 27,
@@ -78,9 +81,10 @@ class HeaderSearch extends PureComponent {
 							searchText={searchValue}
 							onUpdateInput={this.onChange}
 							onKeyPress={this.handleKeyPress}
+							ref={(searchInput) => { this.searchInput = searchInput; }}
 						/>
 					</div>
-					<IconButton onClick={this.toggleSearch}>
+					<IconButton onClick={this.closeSearch}>
 						<CloseIcon color="white" />
 					</IconButton>
 				</div>
