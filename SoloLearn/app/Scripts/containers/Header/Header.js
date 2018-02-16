@@ -18,7 +18,8 @@ const getCurrentSection = (pathName) => {
 	// Change if you can think of any other solution
 	const defaultValue = 'learn';
 	const sectionName = pathName.split('/')[1];
-	return sectionName === 'contests' ? defaultValue : sectionName;
+	const validSectionNames = [ 'codes', 'discuss', 'users', 'learn' ];
+	return validSectionNames.includes(sectionName) ? sectionName : defaultValue;
 };
 
 const Header = ({ pathname }) => (

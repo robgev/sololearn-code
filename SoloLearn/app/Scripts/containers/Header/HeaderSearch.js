@@ -74,10 +74,10 @@ class HeaderSearch extends PureComponent {
 						underlineStyle={{ border: 'none' }}
 						onChange={this.handleMenuChange}
 					>
+						<MenuItem value="learn" primaryText="Lessons" />
 						<MenuItem value="codes" primaryText="Codes" />
 						<MenuItem value="discuss" primaryText="Posts" />
 						<MenuItem value="users" primaryText="Users" />
-						<MenuItem value="learn" primaryText="Lessons" />
 					</DropDownMenu>
 					<div className="search-wrapper">
 						<AutoComplete
