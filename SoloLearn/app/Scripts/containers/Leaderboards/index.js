@@ -21,8 +21,7 @@ class Leaderboards extends PureComponent {
 	constructor(props) {
 		super(props);
 		const { params: { mode: modeValue, range: rangeValue, id } } = props;
-		const userId = id || 2326527; // this.props.userId;
-
+		const userId = id || this.props.userId;
 		// Set default mode and turn into int in case it's not set
 		const mode = modeValue ? parseInt(modeValue, 10) : 1;
 		const range = rangeValue ? parseInt(rangeValue, 10) : 1; // Same thing

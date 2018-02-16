@@ -7,7 +7,7 @@ const LeaderboardCard = ({ leaderboards }) => (
 	<div className="leaderboard-card-container">
 		{
 			leaderboards.map((user, index) => (
-				<div className="leaderboard-card-wrapper">
+				<div className="leaderboard-card-wrapper" key={user.name}>
 					{ index === 10 && // after top 10
 					<div className="leaderboard-next-banner">
 						{ texts.next }
