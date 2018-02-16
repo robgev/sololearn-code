@@ -20,6 +20,13 @@ class HeaderSearch extends PureComponent {
 		};
 	}
 
+	componentWillReceiveProps(newProps) {
+		const { currentSection } = newProps;
+		if (currentSection !== this.props.currentSection) {
+			this.setState({ searchArea: currentSection });
+		}
+	}
+
 	openSearch = () => {
 		this.setState({ searchOpened: true }, () => { this.searchInput.focus(); });
 	}

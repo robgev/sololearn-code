@@ -12,7 +12,14 @@ import SettingsMenu from './HeaderSettingsMenu';
 
 // /codes/something/something splitted by / returns ["", "codes", ....] so we take
 // the element with the index 1 => current section.
-const getCurrentSection = pathName => pathName.split('/')[1];
+const getCurrentSection = (pathName) => {
+	// We have the case of play which has no menu item so we need to check the case
+	// Of the result being 'contests'. In that case we will pick a default value.
+	// Change if you can think of any other solution
+	const defaultValue = 'learn';
+	const sectionName = pathName.split('/')[1];
+	return sectionName === 'contests' ? defaultValue : sectionName;
+};
 
 const Header = ({ pathname }) => (
 	<div className="header">
