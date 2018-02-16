@@ -20,9 +20,40 @@
 					fill: white;
 				}
 			}
+			.header-search-container {
+				display: flex;
+				padding-left: 10px;
+				position: relative;
+				.header-overlay {
+					display: flex;
+					align-items: center;
+					position: absolute;
+					background-color: #607D8B;
+					width: 0px;
+					opacity: 0;
+					height: 100%;
+					padding-bottom: 1px;
+					visibility: hidden;
+					transition: width .07s ease-in-out, opacity .02s ease-in-out;
+					.search-wrapper {
+						display: flex;
+						align-items: center;
+						height: 30px;
+						border: 1px solid #C6C6CB;
+						border-radius: 5px;
+						background-color: white;
+						padding-left: 10px;
+					}
+					&.open {
+						width: 500px;
+						z-index: 1;
+						opacity: 1;
+						visibility: visible;
+					}
+				}
+			}
 			.tabs {
 				display: flex;
-				padding-left: 15px;
 				.tab-item {
 					display: flex;
 					align-items: center;
