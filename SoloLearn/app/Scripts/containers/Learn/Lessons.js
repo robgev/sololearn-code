@@ -198,6 +198,6 @@ function mapDispatchToProps(dispatch) {
 	}, dispatch);
 }
 
-const translatedLessons = translate()(Lessons);
+const translatedLessons = translate()(Radium(Lessons));
 
-export default connect(mapStateToProps, mapDispatchToProps)(Radium(translatedLessons));
+export default connect(mapStateToProps, mapDispatchToProps)(translatedLessons);
