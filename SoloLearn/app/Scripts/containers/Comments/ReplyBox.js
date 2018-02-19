@@ -13,6 +13,10 @@ import LoadingOverlay from 'components/Shared/LoadingOverlay';
 // Styles
 import { ReplyBoxStyle as styles } from './styles';
 
+
+// i18n
+import { translate } from 'react-i18next';
+
 class ReplyBox extends Component {
 	state = {
 		isLoading: false,
@@ -28,7 +32,10 @@ class ReplyBox extends Component {
 
 	render() {
 		const {
-			isPrimary, userName, profile,
+			isPrimary,
+			userName,
+			profile,
+			t,
 		} = this.props;
 		return (
 			<div
@@ -75,7 +82,7 @@ class ReplyBox extends Component {
 					</div>
 					<div style={styles.replyBoxControls}>
 						<FlatButton
-							label="Reply"
+							label={t('comments.reply')}
 							disabled={this.props.disabled}
 							primary
 							onClick={this.submitReply}
@@ -87,4 +94,4 @@ class ReplyBox extends Component {
 	}
 }
 
-export default ReplyBox;
+export default translate()(ReplyBox);
