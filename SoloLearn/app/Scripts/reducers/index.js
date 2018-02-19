@@ -62,7 +62,7 @@ import settings from './settings.reducer';
 import leaderboards from './leaderboards.reducer';
 
 // Discover
-import discoverSuggestions from './reducer_discover';
+import discoverSuggestions from './discover.reducer';
 
 const reducers = combineReducers({
 	profile,

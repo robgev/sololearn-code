@@ -41,7 +41,7 @@ class DiscoverContainer extends PureComponent {
 						{discoverSuggestions.map(collection => (
 							<UserCard
 								{...collection}
-								key={collection.name}
+								key={collection.id}
 							/>
 						))}
 					</BusyWrapper>
