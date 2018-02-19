@@ -24,7 +24,6 @@ const getCurrentSection = (pathName) => {
 
 const Header = ({ pathname }) => (
 	<div className="header">
-		{console.log(pathname)}
 		<div className="header-wrapper">
 			<div className="header-right">
 				<Link to="/feed" className="home-icon">

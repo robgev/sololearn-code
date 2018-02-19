@@ -96,7 +96,7 @@ export default (
 			<Route path="/choose-opponent" component={redirector(OpponentSelector)} />
 			<Route path="/challenge/:id" component={redirector(Challenge)} />
 			<Route path="/notifications" component={redirector(Notifications)} />
-			<Route path="/discover" component={redirector(DiscoverContainer)} />
+			<Route path="/discover(/:query)" component={redirector(DiscoverContainer)} />
 			<Route path="/login" component={Login} />
 		</Route>,
 	]

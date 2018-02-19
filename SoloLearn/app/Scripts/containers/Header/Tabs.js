@@ -8,7 +8,7 @@ const TabList = ({ pathname }) => (
 			<Link
 				key={tab.id}
 				to={tab.url}
-				className={`tab-item ${pathname.includes(tab.url) ? 'active' : ''}`}
+				className={`tab-item ${pathname.includes(tab.url) || pathname.includes(tab.aliasUrl) ? 'active' : ''}`}
 			>
 				<img className="tab-icon" alt="Tab icon" src={`assets/${tab.imgUrl}`} />
 				{ tab.name }

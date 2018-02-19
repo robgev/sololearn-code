@@ -71,7 +71,6 @@ class SlayDetailed extends PureComponent {
 				items={lessons}
 				loading={loading}
 				hasMore={hasMore}
-				searchValue={query}
 				loadMore={this.loadMore}
 				cardComponent={CourseCard}
 			/>

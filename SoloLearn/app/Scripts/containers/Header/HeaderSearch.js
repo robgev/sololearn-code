@@ -1,5 +1,10 @@
 // React modules
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
+
+import { getCodesInternal, emptyCodes } from 'actions/playground';
+
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import AutoComplete from 'material-ui/AutoComplete';
@@ -7,6 +12,12 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 
+const mapDispatchToProps = {
+	getCodesInternal,
+	emptyCodes,
+};
+
+@connect(null, mapDispatchToProps)
 class HeaderSearch extends PureComponent {
 	constructor(props) {
 		super(props);
@@ -39,13 +50,32 @@ class HeaderSearch extends PureComponent {
 		this.setState({ searchArea });
 	}
 
-	handleSearchTextChange = (e) => {
-		this.setState({ searchValue: e.target.value });
+	handleSearchTextChange = (searchValue) => {
+		this.setState({ searchValue });
 	}
 
-	handleKeyPress = (e) => {
-		if (e.key === 'Enter') {
-			// Do something.
+	handleKeyPress = async (e) => {
+		const { searchValue } = this.state;
+		if (e.key === 'Enter' && searchValue.trim()) { // Enter pressed and query is not empty
+			const { searchArea } = this.state;
+			switch (searchArea) {
+			case 'discuss':
+				browserHistory.push(`/discuss/filter/${searchValue}`);
+				break;
+			case 'learn':
+				browserHistory.push(`/learn/search/${searchValue}`);
+				break;
+			case 'codes':
+				await this.props.emptyCodes();
+				await this.props.getCodesInternal(0, 4, '', searchValue);
+				browserHistory.push('/codes');
+				break;
+			case 'users':
+				browserHistory.push(`/discover/${searchValue}`);
+				break;
+			default:
+				break;
+			}
 		}
 	}
 
@@ -67,8 +97,9 @@ class HeaderSearch extends PureComponent {
 				</IconButton>
 				<div className={`header-overlay ${searchOpened ? 'open' : ''}`}>
 					<DropDownMenu
+						autoWidth={false}
 						value={searchArea}
-						style={{ height: 56 }}
+						style={{ height: 56, width: 140 }}
 						labelStyle={{ color: 'white' }}
 						className="header-dropdown"
 						underlineStyle={{ border: 'none' }}
@@ -86,8 +117,8 @@ class HeaderSearch extends PureComponent {
 							hintText="Search"
 							underlineShow={false}
 							searchText={searchValue}
-							onUpdateInput={this.onChange}
 							onKeyPress={this.handleKeyPress}
+							onUpdateInput={this.handleSearchTextChange}
 							ref={(searchInput) => { this.searchInput = searchInput; }}
 						/>
 					</div>

@@ -8,8 +8,8 @@ import { getCodesInternal, emptyCodes } from 'actions/playground';
 
 // Additional components
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
 import CodeItem from './CodeItem';
-import InfiniteVirtualizedList from '../../components/Shared/InfiniteVirtualizedList';
 
 const styles = {
 	bottomLoading: {
@@ -79,8 +79,8 @@ class Codes extends Component {
 			<div>
 				{(isLoaded && codes.length > 0) &&
 					<InfiniteVirtualizedList
+						list={codes}
 						item={this.renderCode}
-						list={this.props.codes}
 						loadMore={this.loadCodes}
 						width={950}
 						rowHeight={100}

@@ -52,10 +52,10 @@ class QuestionsBase extends Component {
 		}
 	}
 	// Get search suggestions
-	handleUpdateInput = async (query) => {
-		const { tags } = await Service.request('Discussion/getTags', { query });
-		this.setState({ suggestions: tags });
-	}
+	// handleUpdateInput = async (query) => {
+	// 	const { tags } = await Service.request('Discussion/getTags', { query });
+	// 	this.setState({ suggestions: tags });
+	// }
 	// Clear search input
 	clearSearchInput = () => {
 		browserHistory.push('/discuss');
@@ -64,32 +64,15 @@ class QuestionsBase extends Component {
 	handleFilterChange = (e, index, value) => {
 		this.props.changeDiscussOrdering(value);
 	}
-	handleEnter = (e) => {
-		if (e.key === 'Enter') {
-			browserHistory.push(`/discuss/filter/${e.target.value}`);
-		}
-	}
+	// handleEnter = (e) => {
+	// 	if (e.key === 'Enter') {
+	// 		browserHistory.push(`/discuss/filter/${e.target.value}`);
+	// 	}
+	// }
 	render() {
 		return (
 			<Layout>
 				<div className="toolbar" style={styles.toolbar}>
-					<div className="search" style={styles.search}>
-						<SearchIcon color={grey700} style={styles.searchIcon} />
-						<AutoComplete
-							style={styles.searchInput}
-							menuStyle={styles.searchSuggestionsList}
-							hintText="Search..."
-							searchText={this.props.query}
-							underlineStyle={{ display: 'none' }}
-							dataSource={this.state.suggestions}
-							onUpdateInput={this.handleUpdateInput}
-							onNewRequest={this.loadQuestionByState}
-							filter={() => true}
-							onKeyPress={this.handleEnter}
-						/>
-						{this.props.query.length > 0
-							&& <Clear color={grey700} style={styles.clearIcon} onClick={this.clearSearchInput} />}
-					</div>
 					<DropDownMenu
 						style={styles.discussFilter}
 						value={this.props.ordering}
