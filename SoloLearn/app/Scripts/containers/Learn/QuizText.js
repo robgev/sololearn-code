@@ -24,6 +24,9 @@ const tooltipOpened = (<Style
 	}}
 />);
 
+// i18n
+import { translate } from 'react-i18next';
+
 const tooltipTopPlaced = (<Style
 	scopeSelector=".tooltip-content.top"
 	rules={{
@@ -457,7 +460,7 @@ class QuizText extends Component {
 	render() {
 		const { isBookmarked, countLoaded } = this.state;
 		const {
-			openComments, withToolbar, userData, date,
+			openComments, withToolbar, userData, date, t
 		} = this.props;
 		return (
 			<Paper className="text-container" style={styles.textContainer}>
@@ -481,7 +484,7 @@ class QuizText extends Component {
 						onClick={openComments}
 						style={styles.commentButton}
 						labelStyle={styles.commentButtonLabel}
-						label={`${countLoaded ? this.commentsCount : ''} COMMENTS`}
+						label={`${countLoaded ? this.commentsCount : ''} ${t('common.comments')}`}
 					/>
 				}
 			</Paper>
@@ -511,4 +514,4 @@ class QuizText extends Component {
 	// REMOVE EVENT LISTENERS
 }
 
-export default Radium(QuizText);
+export default translate()(Radium(QuizText));

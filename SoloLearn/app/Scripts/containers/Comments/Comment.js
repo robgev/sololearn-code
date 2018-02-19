@@ -29,6 +29,9 @@ const mapDispatchToProps = {
 	getLikes,
 };
 
+// i18n
+import { translate } from 'react-i18next';
+
 @connect(mapStateToProps, mapDispatchToProps)
 class Comment extends Component {
 	state = {
@@ -69,18 +72,18 @@ class Comment extends Component {
 	getPrimaryControls = (comment) => {
 		const isReply = comment.parentID != null;
 		const hasReplies = !!comment.replies;
-
+		const { t } = this.props;
 		return (
 			<div style={styles.commentControls.right}>
 				{!isReply &&
 					<FlatButton
-						label={comment.replies + (comment.replies === 1 ? ' Reply' : ' Replies')}
+						label={comment.replies + (comment.replies === 1 ? t('comments.reply') : t('comments.replies-other'))}
 						primary={hasReplies}
 						disabled={!hasReplies || comment.index === -1}
 						onClick={this.openCloseReplies}
 					/>}
 				<FlatButton
-					label="Reply"
+					label={t('comments.reply')}
 					primary
 					onClick={() =>
 						this.props.openReplyBoxToolbar(comment.id, comment.parentID, comment.userName, isReply)}
@@ -109,15 +112,15 @@ class Comment extends Component {
 
 	getEditControls = () => {
 		const saveDisabled = this.state.errorText.length === 0;
-
+		const { t } = this.props;
 		return (
 			<div className="edit-controls" style={styles.commentControls.right}>
 				<FlatButton
-					label="Cancel"
+					label={t('common.cancel-title')}
 					onClick={this.closeEdit}
 				/>
 				<FlatButton
-					label="Save"
+					label={t('common.save-action-title')}
 					primary={saveDisabled}
 					disabled={!saveDisabled}
 					onClick={() => { this.props.editComment(this.props.comment, this.state.textFieldValue); }}
@@ -126,34 +129,37 @@ class Comment extends Component {
 		);
 	}
 
-	getMenuControls = comment => (
-		<IconMenu
-			iconButtonElement={<IconButton style={styles.iconMenu.icon}><MoreVertIcon /></IconButton>}
-			anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-			targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-		>
-			{
-				comment.userID === this.props.userId ?
-					[
+	getMenuControls = comment => {
+		const { t } = this.props;
+		(
+			<IconMenu
+				iconButtonElement={<IconButton style={styles.iconMenu.icon}><MoreVertIcon /></IconButton>}
+				anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+				targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+			>
+				{
+					comment.userID === this.props.userId ?
+						[
+							<MenuItem
+								primaryText={t('common.edit-action-title')}
+								key={`edit${comment.id}`}
+								onClick={this.openEdit}
+							/>,
+							<MenuItem
+								primaryText={t('common.delete-title')}
+								key={`remove${comment.id}`}
+								onClick={() => { this.props.deleteComment(comment); }}
+							/>,
+						]
+						:
 						<MenuItem
-							primaryText="Edit"
-							key={`edit${comment.id}`}
-							onClick={this.openEdit}
-						/>,
-						<MenuItem
-							primaryText="Delete"
-							key={`remove${comment.id}`}
-							onClick={() => { this.props.deleteComment(comment); }}
-						/>,
-					]
-					:
-					<MenuItem
-						primaryText="Report"
-						key={`report${comment.id}`}
-					/>
-			}
-		</IconMenu>
-	)
+							primaryText={t('common.report-action-title')}
+							key={`report${comment.id}`}
+						/>
+				}
+			</IconMenu>
+		)
+	}
 
 	getEditableArea = (comment) => {
 		const isEditing = (this.props.isEditing && this.props.activeComment.id === comment.id);
@@ -187,13 +193,6 @@ class Comment extends Component {
 	}
 
 	render() {
-		if (this.props.comment.type === 'LOAD_MORE') {
-			return (
-				<FlatButton
-					label="Load More"
-					onClick={this.loadMore}
-				/>);
-		}
 		const {
 			comment,
 			comment: {
@@ -205,7 +204,16 @@ class Comment extends Component {
 				userName,
 			},
 			activeComment,
+			t
 		} = this.props;
+		if (this.props.comment.type === 'LOAD_MORE') {
+			return (
+				<FlatButton
+					label={t('common.loadMore')}
+					onClick={this.loadMore}
+				/>);
+		}
+		
 		const isReply = parentID != null;
 		const isEditing = (this.props.isEditing && activeComment.id === id);
 		console.log(isEditing);
@@ -259,4 +267,4 @@ class Comment extends Component {
 	}
 }
 
-export default Comment;
+export default translate()(Comment);

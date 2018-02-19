@@ -5,6 +5,9 @@ import { getBookmarkLessons } from 'actions/slay';
 import CourseCard from 'components/Shared/CourseCard';
 import SlayLayout from 'components/Layouts/SlayLayout';
 
+// i18n
+import { translate } from 'react-i18next';
+
 const mapStateToProps = state => ({ lessons: state.slay.filteredCollectionItems });
 
 const mapDispatchToProps = { getBookmarkLessons };
@@ -44,7 +47,7 @@ class SlayHome extends PureComponent {
 
 	render() {
 		const { loading, hasMore } = this.state;
-		const { lessons } = this.props;
+		const { lessons, t } = this.props;
 		return (
 			<SlayLayout
 				items={lessons}
@@ -53,11 +56,11 @@ class SlayHome extends PureComponent {
 				cardComponent={CourseCard}
 			>
 				{lessons.length ||
-					<p>There are no bookmarks yet</p>
+					<p>{t('common.empty-list-message')}</p>
 				}
 			</SlayLayout>
 		);
 	}
 }
 
-export default SlayHome;
+export default translate()(SlayHome);

@@ -3,6 +3,9 @@ import { browserHistory } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import Playground from 'containers/Playground/Playground';
 
+// i18n
+import { translate } from 'react-i18next';
+
 const styles = {
 	codeContainer: {
 		overflow: 'hidden',
@@ -61,6 +64,7 @@ class CodeBlock extends Component {
 			format,
 			basePath,
 			courseLanguage,
+			t
 		} = this.props;
 		const playgroundParams = {
 			primary: courseLanguage,
@@ -79,7 +83,7 @@ class CodeBlock extends Component {
 								params={playgroundParams}
 							/>
 							<FlatButton
-								label="Close the sandbox"
+								label={t('common.close-title')}
 								style={styles.codeButton}
 								className="shortcut-button"
 								onClick={this.closePlayground}
@@ -91,7 +95,7 @@ class CodeBlock extends Component {
 								<span className={`code ${format}`} style={styles.code} dangerouslySetInnerHTML={{ __html: text }} />
 							</span>
 							<FlatButton
-								label="Try It Yourself"
+								label={t('learn.try-it-yourself')}
 								style={styles.codeButton}
 								className="shortcut-button"
 								onClick={this.openPlayground}
@@ -111,4 +115,4 @@ class CodeBlock extends Component {
 	}
 }
 
-export default CodeBlock;
+export default translate()(CodeBlock);

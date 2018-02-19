@@ -38,6 +38,9 @@ const mapDispatchToProps = {
 	deleteCommentInternal,
 };
 
+// i18n
+import { translate } from 'react-i18next';
+
 @connect(mapStateToProps, mapDispatchToProps)
 class CommentsBase extends Component {
 	constructor(props) {
@@ -167,31 +170,34 @@ class CommentsBase extends Component {
 	}
 
 	// Render popup heading
-	getPopupTitle = () => (
-		<div style={styles.commentsFilterWrapper}>
-			<Toolbar style={styles.commentsFilter.base}>
-				<ToolbarTitle onClick={this.closeReplies} text="COMMENTS" style={styles.commentsFilter.title} />
-				<ToolbarGroup lastChild>
-					<DropDownMenu
-						style={styles.filterDropDown.base}
-						value={this.state.ordering}
-						onChange={this.handleFilterChange}
-						autoWidth={false}
-					>
-						<MenuItem style={styles.filterDropDown.item} value={2} primaryText="Most Popular" />
-						<MenuItem style={styles.filterDropDown.item} value={1} primaryText="Most Recent" />
-					</DropDownMenu>
-					<IconButton
-						iconStyle={styles.close.icon.big}
-						onClick={this.props.closeComments}
-						style={{ ...styles.close.button.comments, ...styles.close.button.big }}
-					>
-						<Close color={grey600} />
-					</IconButton>
-				</ToolbarGroup>
-			</Toolbar>
-		</div>
-	)
+	getPopupTitle = () => {
+		const { t } = this.props;
+		return (
+			<div style={styles.commentsFilterWrapper}>
+				<Toolbar style={styles.commentsFilter.base}>
+					<ToolbarTitle onClick={this.closeReplies} text={t('common.comments')} style={styles.commentsFilter.title} />
+					<ToolbarGroup lastChild>
+						<DropDownMenu
+							style={styles.filterDropDown.base}
+							value={this.state.ordering}
+							onChange={this.handleFilterChange}
+							autoWidth={false}
+						>
+							<MenuItem style={styles.filterDropDown.item} value={2} primaryText={t('comments.filter.most-popular')} />
+							<MenuItem style={styles.filterDropDown.item} value={1} primaryText={t('comments.filter.most-recent')} />
+						</DropDownMenu>
+						<IconButton
+							iconStyle={styles.close.icon.big}
+							onClick={this.props.closeComments}
+							style={{ ...styles.close.button.comments, ...styles.close.button.big }}
+						>
+							<Close color={grey600} />
+						</IconButton>
+					</ToolbarGroup>
+				</Toolbar>
+			</div>
+		)
+	}
 
 	render() {
 		const {
@@ -267,4 +273,4 @@ class CommentsBase extends Component {
 	}
 }
 
-export default CommentsBase;
+export default translate()(CommentsBase);

@@ -4,6 +4,9 @@ import CollectionCard from 'components/Shared/CollectionCard';
 
 import 'styles/relatedLessons.scss';
 
+// i18n
+import { translate } from 'react-i18next';
+
 const RelatedLessons = ({
 	id,
 	userID,
@@ -12,6 +15,7 @@ const RelatedLessons = ({
 	lessonsByUser,
 	relevantLessons,
 	implementations,
+	t
 }) => (
 	<div className="related-container">
 		{	(implementations && !!implementations.length) &&
@@ -20,13 +24,13 @@ const RelatedLessons = ({
 				id={id}
 				noName
 				noViewMore
-				name="Implementations"
+				name={t('lesson.implementations')}
 				items={implementations}
 			/>
 		}
 		{ nextLesson &&
 			<CourseCard
-				title="Up next"
+				title={t('lesson.up-next')}
 				{...nextLesson}
 			/>
 		}
@@ -35,11 +39,11 @@ const RelatedLessons = ({
 				<CollectionCard
 					id={id}
 					noViewMore
-					name="See also"
+					name={t('lesson.see-also')}
 					items={relevantLessons}
 				/> :
 				<CourseCard
-					title="See also"
+					title={t('lesson.see-also')}
 					{...relevantLessons[0]}
 				/>
 			)
@@ -48,11 +52,11 @@ const RelatedLessons = ({
 			(lessonsByUser.length > 1 ?
 				<CollectionCard
 					userID={userID}
-					name={`More by ${userName}`}
+					name={`${t('lesson.view-more-by-author')} ${userName}`}
 					items={lessonsByUser}
 				/> :
 				<CourseCard
-					title={`More by ${userName}`}
+					title={`${t('lesson.view-more-by-author')} ${userName}`}
 					{...lessonsByUser[0]}
 				/>
 			)
@@ -60,4 +64,4 @@ const RelatedLessons = ({
 	</div>
 );
 
-export default RelatedLessons;
+export default translate()(RelatedLessons);
