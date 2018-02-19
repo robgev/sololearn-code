@@ -21,6 +21,9 @@ import QuizText from '../Learn/QuizText';
 import { QuizType } from '../Learn/QuizSelector';
 import { LessonType } from './QuizManager';
 
+// i18n
+import { translate } from 'react-i18next';
+
 const styles = {
 	wrapper: {
 		position: 'relative',
@@ -317,6 +320,7 @@ render() {
 		isLoaded,
 		activeQuiz,
 		activeModule,
+		t
 	} = this.props;
 
 	const {
@@ -347,7 +351,7 @@ render() {
 					openComments={this.props.openComments}
 				/>
 				<RaisedButton
-					label="Continue"
+					label={t('learn.buttons-continue')}
 					style={styles.skipText}
 					labelColor="#fff"
 					backgroundColor="#8bc34a"
@@ -390,7 +394,7 @@ render() {
 	];
 
 	const isCheckpoint = !this.props.isShortcut ? this.props.activeLesson.type == LessonType.Checkpoint : this.props.shortcutLesson.type == LessonType.Checkpoint;
-	const resultButtonLabel = this.props.isShortcut ? 'Continue' : (this.state.isCorrect ? 'Continue' : 'Try Again');
+	const resultButtonLabel = this.props.isShortcut ? 'Continue' : (this.state.isCorrect ? t('learn.buttons-continue') : t('learn.buttons-try-again'));
 	const resultButtonAction = this.props.isShortcut ? this.continueQuiz : (this.state.isCorrect ? this.continueQuiz : this.tryAgain);
 
 	return (
@@ -400,12 +404,18 @@ render() {
 				<div>
 					{ (quiz.type == QuizType.TypeIn || quiz.type == QuizType.PlaceholderTypeIn) &&
 					<div style={styles.quizAction}>
-						<FlatButton label="Hint" onTouchTap={this.handleHintDialogOpen} />
+						<FlatButton
+							label={t('learn.buttons-hint-answer')}
+							onTouchTap={this.handleHintDialogOpen}
+						/>
 						{ this.state.hintOpened && Popup.getPopup(Popup.generatePopupActions(hintActions), this.state.hintOpened, this.handleHintDialogClose, [ { key: 'hintHintConfirmText', replacemant: this.hintPrice } ]) }
 					</div>
 					}
 					<div style={styles.quizAction}>
-						<FlatButton label="Unlock" onTouchTap={this.handleUnlockDialogOpen} />
+						<FlatButton
+							label={t('learn.buttons-unlock-answer')}
+							onTouchTap={this.handleUnlockDialogOpen}
+						/>
 						{ this.state.unlockOpened && Popup.getPopup(Popup.generatePopupActions(unlockActions), this.state.unlockOpened, this.handleUnlockDialogClose, [ { key: 'hintSkipConfirmText', replacemant: this.skipPrice } ]) }
 					</div>
 				</div>
@@ -420,7 +430,15 @@ render() {
 
 			<QuizSelector quiz={quiz} retryIndex={this.retryIndex} ref={(child) => { this._child = child; }} />
 
-			{ !this.state.checkOpened && <RaisedButton labelColor="#fff" backgroundColor="#8bc34a" label="Check" style={styles.checkButton} onTouchTap={this.handleCheck} />}
+			{ !this.state.checkOpened &&
+				<RaisedButton
+					labelColor="#fff"
+					backgroundColor="#8bc34a"
+					label={t('learn.buttons-check')}
+					style={styles.checkButton}
+					onTouchTap={this.handleCheck}
+				/>
+			}
 			{ this.state.checkOpened &&
 				<RaisedButton
 					labelColor="#fff"
@@ -469,6 +487,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	selectQuiz,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Quiz);
+
+const translatedQuiz = translate()(Quiz);
+
+export default connect(mapStateToProps, mapDispatchToProps)(translatedQuiz);
 
 // (this.state.countLoaded ? this.commentsCount : "") + "

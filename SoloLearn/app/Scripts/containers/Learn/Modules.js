@@ -36,6 +36,9 @@ import Popup from 'api/popupService';
 import { toSeoFrendly, EnumNameMapper, numberFormatter } from 'utils';
 import texts from 'defaults/texts';
 
+// i18n
+import { translate } from 'react-i18next';
+
 const styles = {
 	noCourses: {
 		position: 'absolute',
@@ -298,7 +301,11 @@ class Modules extends Component {
 					<div className="shortcut-content" style={styles.shortcutContent}>
 						{ (module.allowShortcut && moduleState.visualState === ProgressState.Disabled) &&
 						<Link to={`/learn/${this.props.params.courseName}/${module.id}/shortcut/1`}>
-							<RaisedButton className="shortcut-button" label={texts.shortcutButton} overlayStyle={styles.shortcutButton} />
+							<RaisedButton
+								className="shortcut-button"
+								label={texts.shortcutButton}
+								overlayStyle={styles.shortcutButton}
+							/>
 						</Link>
 						}
 					</div>,
@@ -338,7 +345,7 @@ class Modules extends Component {
 	}
 
 	renderCourses() {
-		const { courses } = this.props;
+		const { courses, t } = this.props;
 		const userCourses = this.props.userProfile.skills;
 
 		const courseIds = courses.map(item => item.id);
@@ -381,9 +388,17 @@ class Modules extends Component {
 												anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
 												targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 											>
-												<MenuItem primaryText="Remove" onClick={() => this.toggleCourse(course.id, false)} />
-												<MenuItem primaryText="Reset Progress" onClick={() => this.handleResetPopupOpen(course.id)} />
-												<MenuItem primaryText="Share" />
+												<MenuItem
+													primaryText={t('course_picker.action.remove')}
+													onClick={() => this.toggleCourse(course.id, false)}
+												/>
+												<MenuItem
+													primaryText={t('course_picker.action.reset-progress')}
+													onClick={() => this.handleResetPopupOpen(course.id)}
+												/>
+												<MenuItem
+													primaryText={t('common.share-title')}
+												/>
 											</IconMenu>
 										</div>,
 										<Divider key="user-course-item-divider" />,
@@ -418,8 +433,13 @@ class Modules extends Component {
 										anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
 										targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 									>
-										<MenuItem primaryText="Add to My Courses" onClick={() => this.toggleCourse(course.id, true)} />
-										<MenuItem primaryText="Share" />
+										<MenuItem
+											primaryText={t('course_picker.action.add-to-my-courses')}
+											onClick={() => this.toggleCourse(course.id, true)}
+										/>
+										<MenuItem
+											primaryText={t('common.share-title')}
+										/>
 									</IconMenu>
 								</div>,
 								<Divider key="available-course-item-divider" />,
@@ -498,7 +518,11 @@ class Modules extends Component {
 
 	render() {
 		const that = this;
-		const { course, isLoaded: isModuleLoaded } = this.props;
+		const {
+			course,
+			isLoaded: isModuleLoaded,
+			t
+		} = this.props;
 		if (!isModuleLoaded && this.props.userProfile.skills.length > 0) {
 			return <CircularProgress size={80} thickness={5} />;
 		}
@@ -537,10 +561,18 @@ class Modules extends Component {
 								<img src={`https://www.sololearn.com/Icons/Courses/${course.id}.png`} alt={course.name} style={styles.courseIcon} />
 								<div style={styles.courseInfo}>
 									<p style={styles.courseName}>{course.name}</p>
-									<LinearProgress style={styles.courseProgress} mode="determinate" value={activeCourseProgress * 100} color="#8BC34A" />
+									<LinearProgress
+										style={styles.courseProgress}
+										mode="determinate"
+										value={activeCourseProgress * 100}
+										color="#8BC34A"
+									/>
 								</div>
 							</div>
-							<FlatButton label="CHANGE" style={styles.courseActions} />
+							<FlatButton
+								label={t('learn.course-picker-title')}
+								style={styles.courseActions}
+							/>
 						</div>,
 						<div className="modules" key="modules">
 							{this.renderModules()}
@@ -549,9 +581,14 @@ class Modules extends Component {
 					]
 					:
 					<div className="no-courses" style={styles.noCourses}>
-						<p style={styles.noCoursesTitle}>No Courses</p>
-						<p style={styles.noCoursesSubTitle}>Start Learning Now!</p>
-						<RaisedButton style={styles.addCoursesButton} label="Add Courses" secondary onClick={() => this.openCourseSelect()} />
+						<p style={styles.noCoursesTitle}>{t('learn.add-courses-title')}</p>
+						<p style={styles.noCoursesSubTitle}>{t('learn.add-courses-message')}</p>
+						<RaisedButton
+							style={styles.addCoursesButton}
+							label={t('learn.add-courses-button-title')}
+							secondary
+							onClick={() => this.openCourseSelect()}
+						/>
 					</div>
 				}
 				{
@@ -560,7 +597,7 @@ class Modules extends Component {
 						id="courses"
 						modal={false}
 						open={this.state.selectCourse}
-						title="Select Course"
+						title={t('course_picker.title')}
 						titleStyle={styles.coursesTitle}
 						bodyStyle={styles.courses}
 						autoScrollBodyContent
@@ -575,4 +612,4 @@ class Modules extends Component {
 	}
 }
 
-export default Modules;
+export default translate()(Modules);

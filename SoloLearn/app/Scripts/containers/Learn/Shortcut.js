@@ -21,6 +21,9 @@ import QuizManager from './QuizManager';
 // Marterial UI components
 import FlatButton from 'material-ui/FlatButton';
 
+// i18n
+import { translate } from 'react-i18next';
+
 class Shortcut extends PureComponent {
 	constructor(props) {
 		super(props);
@@ -140,8 +143,9 @@ class Shortcut extends PureComponent {
     }
 
     beforeUnload = (e) => {
+		const { t } = this.props;
     	// the method that will be used for both add and remove event
-    	const confirmationMessage = 'Are you sure you want to leave the test?';
+    	const confirmationMessage = t('learn.lesson-test-leave-message');
     	// Gecko + IE
     	(e || window.event).returnValue = confirmationMessage;
     	// Webkit, Safari, Chrome
@@ -204,4 +208,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	setShortcutLesson,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Shortcut);
+const translatedShortcut = translate()(Shortcut);
+
+export default connect(mapStateToProps, mapDispatchToProps)(translatedShortcut);

@@ -24,6 +24,9 @@ import Layout from 'components/Layouts/GeneralLayout';
 
 import { LessonType } from './QuizManager';
 
+// i18n
+import { translate } from 'react-i18next';
+
 const styles = {
 
 	lessonWrapper: {
@@ -128,7 +131,7 @@ getActiveQuiz = (lesson) => {
 }
 renderLessons() {
 	const lessons = this.props.activeModule.lessons;
-
+	const { t } = this.props;
 	return lessons.map((lesson, index) => {
 		const lessonState = Progress.getLessonState(lesson);
 		const isDisabled = lessonState.visualState === ProgressState.Disabled;
@@ -151,7 +154,7 @@ renderLessons() {
 					<div className="number" style={styles.lessonNumber}>{`${index + 1}/${lessons.length}`}</div>
 					<div className="name" style={styles.lessonName}>{lesson.name}</div>
 					<div className="info" style={[ styles.lessonInfo.base, styles.lessonInfo[lessonState.stateClass] ]}>
-						<span>{lesson.quizzes.length} questions</span>
+						<span>{lesson.quizzes.length} {t('learn.questions-format')}</span>
 					</div>
 				</Paper>
 			</div>
@@ -195,4 +198,6 @@ function mapDispatchToProps(dispatch) {
 	}, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Radium(Lessons));
+const translatedLessons = translate()(Lessons);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Radium(translatedLessons));
