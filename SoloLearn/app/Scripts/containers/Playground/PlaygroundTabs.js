@@ -1,6 +1,9 @@
 // React modules
 import React from 'react';
 
+// i18n
+import { translate } from 'react-i18next';
+
 // Material UI components
 import { Tabs, Tab } from 'material-ui/Tabs';
 
@@ -57,6 +60,7 @@ const PlaygroundTabs = ({
 	theme,
 	runCode,
 	handleTabChange,
+	t,
 }) => {
 	const isDarkTheme = theme === 'monokai';
 
@@ -86,7 +90,7 @@ const PlaygroundTabs = ({
 					value="javascript"
 				/>
 				<Tab
-					label="OUTPUT"
+					label={t('code_playground.output')}
 					style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
 					onClick={runCode}
 					value={null}
@@ -107,7 +111,7 @@ const PlaygroundTabs = ({
 					value="php"
 				/>
 				<Tab
-					label="OUTPUT"
+					label={t('code_playground.output')}
 					style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
 					onClick={runCode}
 					value={null}
@@ -122,4 +126,5 @@ const PlaygroundTabs = ({
 	);
 };
 
-export default PlaygroundTabs;
+
+export default translate()(PlaygroundTabs);

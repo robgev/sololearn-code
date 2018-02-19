@@ -1,6 +1,9 @@
 // React modules
 import React from 'react';
 
+// i18n
+import { translate } from 'react-i18next';
+
 // Material UI components
 import Dialog from 'material-ui/Dialog';
 import Toggle from 'material-ui/Toggle';
@@ -75,11 +78,12 @@ const OverlaySaveActions = ({
 	handleSavePopupClose,
 	handleCodeStateChange,
 	handleCodeNameChange,
+	t,
 }) => {
 	const savePopupActions = [
 		<FlatButton
 			primary
-			label="Submit"
+			label={t('common.submit-action-title')}
 			disabled={!codeName}
 			onTouchTap={submitSave}
 		/>,
@@ -110,7 +114,7 @@ const OverlaySaveActions = ({
 				/>
 				<p style={styles.charactersRemaining}>{codeName.length}/100</p>
 				<Toggle
-					label="Public:"
+					label={t('code_playground.popups.save-popup-public-toggle-title')}
 					defaultToggled={isPublic}
 					style={styles.codeStateToggle}
 					thumbStyle={styles.thumbOff}
@@ -122,7 +126,7 @@ const OverlaySaveActions = ({
 			</Dialog>
 			<Snackbar
 				open={snackBarOpened}
-				message={isSaving ? 'Saving...' : 'Saved'}
+				message={isSaving ? 'Saving...' : t('code_playground.alert.saved-title')}
 				style={styles.snackbar}
 				autoHideDuration={3000}
 				onRequestClose={handleSnackBarClose}
@@ -131,4 +135,4 @@ const OverlaySaveActions = ({
 	);
 };
 
-export default OverlaySaveActions;
+export default translate()(OverlaySaveActions);

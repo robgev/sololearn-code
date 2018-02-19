@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import Radium from 'radium';
 import { map, uniqBy } from 'lodash';
 
+// i18n
+import { translate } from 'react-i18next';
+
 // Material UI components
 import Dialog from 'material-ui/Dialog';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -126,6 +129,7 @@ class CodesBase extends Component {
 
 	render() {
 		const { isLanguagePopupOpen, languages } = this.state;
+		const { t } = this.props;
 		return (
 			<Layout>
 				<div className="toolbar" style={styles.toolbar}>
@@ -148,7 +152,7 @@ class CodesBase extends Component {
 						onChange={this.handleLanguageFilterChange}
 						autoWidth={false}
 					>
-						<MenuItem value="" primaryText="All" />
+						<MenuItem value="" primaryText={t('code.language-filter.all')} />
 						<MenuItem value="cpp" primaryText="C++" />
 						<MenuItem value="cs" primaryText="C#" />
 						<MenuItem value="java" primaryText="Java" />
@@ -163,10 +167,10 @@ class CodesBase extends Component {
 						onChange={this.handleOrderingFilterChange}
 						autoWidth={false}
 					>
-						<MenuItem value={4} primaryText="Trending" />
-						<MenuItem value={2} primaryText="Most Popular" />
-						<MenuItem value={1} primaryText="Most Recent" />
-						<MenuItem value={3} primaryText="My Codes" />
+						<MenuItem value={4} primaryText={t('code.filter.trending')} />
+						<MenuItem value={2} primaryText={t('code.filter.most-popular')} />
+						<MenuItem value={1} primaryText={t('code.filter.most-recent')} />
+						<MenuItem value={3} primaryText={t('code.filter.my-codes')} />
 					</DropDownMenu>
 				</div>
 				<Codes
@@ -187,7 +191,7 @@ class CodesBase extends Component {
 					<ContentAdd />
 				</FloatingActionButton>
 				<Dialog
-					title="Select a Language"
+					title={t('code.language-picker-title')}
 					open={isLanguagePopupOpen}
 					onRequestClose={this.toggleLanguagePopup}
 				>
@@ -212,4 +216,6 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps)(Radium(CodesBase));
+const translatedCodesBase = translate()(CodesBase);
+
+export default connect(mapStateToProps)(Radium(translatedCodesBase));

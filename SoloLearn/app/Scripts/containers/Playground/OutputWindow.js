@@ -2,6 +2,9 @@
 import React from 'react';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
+// i18n
+import { translate } from 'react-i18next';
+
 const styles = {
 	webOutput: {
 		base: {
@@ -60,6 +63,7 @@ const OutputWindow = ({
 	type,
 	showWebOutput,
 	programRunning,
+	t,
 }) =>  (
 	<div
 		className="web-output"
@@ -73,11 +77,11 @@ const OutputWindow = ({
 			}
 			<iframe id="output-frame" frameBorder="0" style={styles.webIframe}></iframe>
 			<div id="js-console" style={type == "web" ? styles.jsConsole.base : styles.jsConsole.hide}>
-					<label style={styles.jsConsoleLabel}>JavaScript Console</label>
+					<label style={styles.jsConsoleLabel}>JavaScript {t('code_playground.console.title')}</label>
 					<div className="log-message" style={styles.logMessage}></div>
 					<div className="error-message" style={styles.errorMessage}></div>
 			</div>
 	</div>
 );
 
-export default OutputWindow;
+export default translate()(OutputWindow);

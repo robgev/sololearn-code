@@ -4,6 +4,9 @@ import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { findKey } from 'lodash';
 
+// i18n
+import { translate } from 'react-i18next';
+
 // Material UI components
 import Paper from 'material-ui/Paper';
 import Dialog from 'material-ui/Dialog';
@@ -442,6 +445,7 @@ ${succeedingSubstr}
 
 	// Show output
 	showOutput = (language, output) => {
+		const { t } = this.props;
 		if (language === 'web') {
 			const frame = document.getElementById('output-frame');
 			const iWindow = frame.contentWindow;
@@ -478,7 +482,7 @@ ${succeedingSubstr}
 			iDoc.close();
 		} else {
 			output = output.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-			const message = output !== '' ? output : 'No output.';
+			const message = output !== '' ? output : t('code_playground.no-output');
 
 			document.querySelector('.default-output').innerHTML = message;
 		}
@@ -615,11 +619,14 @@ ${succeedingSubstr}
 			inputsPopupOpened,
 			latestSavedCodeData,
 		} = this.state;
-		const { withBottomToolbar } = this.props;
+		const {
+			t,
+			withBottomToolbar,
+		} = this.props;
 
 		const inputsPopupActions = [
 			<FlatButton
-				label="Submit"
+				label={t('common.submit-action-title')}
 				primary
 				onTouchTap={this.runCondeWithInputs}
 			/>,
@@ -725,4 +732,4 @@ ${succeedingSubstr}
 	}
 }
 
-export default Playground;
+export default translate()(Playground);

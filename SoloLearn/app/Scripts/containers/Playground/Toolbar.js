@@ -4,6 +4,9 @@ import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { omit } from 'lodash';
 
+// i18n
+import { translate } from 'react-i18next';
+
 // Service
 import Service from 'api/service';
 
@@ -227,6 +230,7 @@ class Toolbar extends PureComponent {
 
 	render() {
 		const {
+			t,
 			type,
 			theme,
 			userId,
@@ -283,19 +287,19 @@ class Toolbar extends PureComponent {
 				</div>
 				<div className="right" style={styles.toolbar.right}>
 					<FlatButton
-						label="Save"
+						label={t('common.save-action-title')}
 						disabled={isSaving}
 						onClick={this.save}
 						style={styles.codeAction.save}
 					/>
 					<FlatButton
-						label="Save As"
+						label={t('code_playground.actions.save-as')}
 						disabled={isSaving}
 						style={styles.codeAction.save}
 						onClick={this.openSavePopup}
 					/>
 					<FlatButton
-						label="Reset"
+						label={t('code_playground.actions.reset-code')}
 						style={styles.codeAction.reset}
 						onClick={resetEditorValue}
 					/>
@@ -338,4 +342,6 @@ const mapStateToProps = state => ({
 	userId: state.userProfile.id,
 });
 
-export default connect(mapStateToProps, null)(Toolbar);
+const translatedToolbar = translate()(Toolbar);
+
+export default connect(mapStateToProps, null)(translatedToolbar);
