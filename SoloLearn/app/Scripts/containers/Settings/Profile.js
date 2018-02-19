@@ -1,5 +1,9 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+
+// i18n
+import { translate } from 'react-i18next';
+
 import Avatar from 'material-ui/Avatar';
 import TextField from 'material-ui/TextField';
 import EditIcon from 'material-ui/svg-icons/image/edit';
@@ -64,7 +68,7 @@ class Profile extends PureComponent {
 						name="email"
 						value={email}
 						style={{ width: '100%' }}
-						floatingLabelText="Email"
+						floatingLabelText={t('common.email-title')}
 						onChange={this.handleChange}
 					/>
 				</div>
@@ -82,7 +86,7 @@ class Profile extends PureComponent {
 						name="newPass"
 						value={newPass}
 						style={{ width: '100%' }}
-						floatingLabelText="New Password"
+						floatingLabelText={t('chnage_password.new-password-placeholder')}
 						onChange={this.handleChange}
 					/>
 					<TextField
@@ -90,7 +94,7 @@ class Profile extends PureComponent {
 						name="retypePass"
 						value={retypePass}
 						style={{ width: '100%' }}
-						floatingLabelText="Retype Password"
+						floatingLabelText={t('chnage_password.confirm-password-placeholder')}
 						onChange={this.handleChange}
 					/>
 				</div>
@@ -99,4 +103,4 @@ class Profile extends PureComponent {
 	}
 }
 
-export default Profile;
+export default translate()(Profile);

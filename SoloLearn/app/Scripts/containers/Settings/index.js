@@ -2,6 +2,9 @@ import React from 'react';
 import { Link } from 'react-router';
 import Layout from 'components/Layouts/GeneralLayout';
 
+// i18n
+import { translate } from 'react-i18next';
+
 import 'styles/Settings/index.scss';
 
 import Main from './Profile';
@@ -16,15 +19,15 @@ const SettingsMapping = {
 	content: ContentSettings,
 };
 
-const Settings = ({ params: { settingID = 'profile' } }) => {
+const Settings = ({ t, params: { settingID = 'profile' }}) => {
 	const SettingsComponent = SettingsMapping[settingID];
 	return (
 		<Layout className="settings-container">
 			<div className="settings-sections">
-				<Link to="/settings/profile">Profile Settings</Link>
-				<Link to="/settings/blocking">Blocking</Link>
-				<Link to="/settings/weapons">Arsenal Management</Link>
-				<Link to="/settings/content">Content Preferences</Link>
+				<Link to="/settings/profile">{t('settings.edit-profile')}</Link>
+				<Link to="/settings/blocking">{t('settings.blocked-accounts')}</Link>
+				<Link to="/settings/weapons">{t('settings.manage-weapons')}</Link>
+				<Link to="/settings/content">{t('settings.activity-feed')}</Link>
 			</div>
 			<div className="settings-main">
 				<SettingsComponent />
@@ -33,4 +36,4 @@ const Settings = ({ params: { settingID = 'profile' } }) => {
 	);
 };
 
-export default Settings;
+export default translate()(Settings);
