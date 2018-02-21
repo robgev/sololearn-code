@@ -28,7 +28,8 @@ class InfiniteLeaderboard extends PureComponent {
 		style,
 		index,
 	}) => {
-		const user = this.props.leaderboards[index];
+		const { leaderboards, userId } = this.props;
+		const user = leaderboards[index];
 		return (
 			<div
 				key={key}
@@ -37,7 +38,7 @@ class InfiniteLeaderboard extends PureComponent {
 			>
 				<Link
 					to={`/profile/${user.userID}`}
-					className="leaderboard-card"
+					className={`leaderboard-card ${user.userID === userId ? 'highlighted' : ''}`}
 				>
 					<UserCard {...user} />
 				</Link>
@@ -67,7 +68,6 @@ class InfiniteLeaderboard extends PureComponent {
 
 	render() {
 		const { leaderboards } = this.props;
-		console.log(leaderboards, 'LALALA');
 		return (
 			<WindowScroller>
 				{

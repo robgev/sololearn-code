@@ -111,7 +111,7 @@ class Leaderboards extends PureComponent {
 							userId={userId}
 							leaderboards={leaderboards}
 						/> :
-						<LeaderboardCard leaderboards={leaderboards} />
+						<LeaderboardCard userId={userId} leaderboards={leaderboards} />
 					}
 				</BusyWrapper>
 			</Layout>

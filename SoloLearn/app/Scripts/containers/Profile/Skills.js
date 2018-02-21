@@ -40,7 +40,7 @@ class Skills extends PureComponent {
 				<Paper className="skills-group">
 					<p className="skills-header">Status + Rank</p>
 					<div className="skills-details">
-						<Link to="/leaderboard" className="leaderboard-link">
+						<Link to="/leaderboards" className="leaderboard-link">
 							Check out the leaderboard
 						</Link>
 						<div className="progress-wrapper">
