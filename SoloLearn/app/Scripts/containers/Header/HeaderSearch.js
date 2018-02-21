@@ -5,6 +5,9 @@ import { browserHistory } from 'react-router';
 
 import { getCodesInternal, emptyCodes } from 'actions/playground';
 
+// i18n
+import { translate } from 'react-i18next';
+
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import AutoComplete from 'material-ui/AutoComplete';
@@ -18,6 +21,7 @@ const mapDispatchToProps = {
 };
 
 @connect(null, mapDispatchToProps)
+@translate()
 class HeaderSearch extends PureComponent {
 	constructor(props) {
 		super(props);
@@ -81,6 +85,7 @@ class HeaderSearch extends PureComponent {
 
 	render() {
 		const { searchValue, searchOpened, searchArea } = this.state;
+		const { t } = this.props;
 		return (
 			<div className="header-search-container">
 				<IconButton
@@ -114,7 +119,7 @@ class HeaderSearch extends PureComponent {
 						<AutoComplete
 							fullWidth
 							dataSource={[]}
-							hintText="Search"
+							hintText={t('search_bar.placeholder')}
 							underlineShow={false}
 							searchText={searchValue}
 							onKeyPress={this.handleKeyPress}
