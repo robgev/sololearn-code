@@ -293,7 +293,6 @@ class Profile extends Component {
 								isLoaded={profile.codes.length > 0}
 								ordering={3}
 								language=""
-								query=""
 								isUserProfile
 								userId={profile.data.id}
 							/>

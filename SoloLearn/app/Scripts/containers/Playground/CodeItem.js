@@ -123,7 +123,6 @@ class CodeItem extends Component {
 				<div className="details-wrapper" style={styles.detailsWrapper}>
 					<div className="details">
 						<p className="title" style={styles.title}>{code.name}</p>
-						<p className="date" style={styles.date}>Last modified: {dateModified}</p>
 						<div className="stats" style={styles.stats}>
 							<div style={styles.mainStats}>
 								<div className="votes">

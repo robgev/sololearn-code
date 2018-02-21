@@ -52,11 +52,11 @@ class Codes extends Component {
 	loadCodes = async () => {
 		try {
 			const {
-				codes, ordering, language, query, userId,
+				codes, ordering, language, userId,
 			} = this.props;
 			const index = codes ? codes.length : 0;
 			this.setState({ isLoading: true });
-			await this.props.getCodesInternal(index, ordering, language, query, userId);
+			await this.props.getCodesInternal(index, ordering, language, '', userId);
 			this.setState({ isLoading: false });
 		} catch (e) {
 			console.log(e);
