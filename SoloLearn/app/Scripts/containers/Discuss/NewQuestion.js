@@ -11,6 +11,9 @@ import ChipInput from 'material-ui-chip-input';
 import { connect } from 'react-redux';
 import { addQuestion } from 'actions/discuss';
 
+// i18n
+import { translate } from 'react-i18next';
+
 // Service
 import Service from 'api/service';
 
@@ -22,6 +25,7 @@ import { NewQuestionStyles as styles } from './styles';
 const mapDispatchToProps = { addQuestion };
 
 @connect(null, mapDispatchToProps)
+@translate()
 @Radium
 class NewQuestion extends Component {
 	state = {
@@ -62,12 +66,13 @@ class NewQuestion extends Component {
 
 	// Add question form submit
 	handleSubmit = async (e) => {
+		const { t } = this.props
 		e.preventDefault();
 		const allowSubmit = this.state.title.length !== 0 && this.state.tags.length !== 0;
 		if (!allowSubmit) {
 			this.setState({
-				titleErrorText: this.state.title.length === 0 ? 'Question is required' : '',
-				tagsErrorText: this.state.tags.length === 0 ? 'Add at least one tag' : '',
+				titleErrorText: this.state.title.length === 0 ? t('question.invalid-title') : '',
+				tagsErrorText: this.state.tags.length === 0 ? t('question.empty-tags') : '',
 			});
 		} else {
 			this.setState({ isLoading: true });
@@ -89,14 +94,15 @@ class NewQuestion extends Component {
 	)
 
 	render() {
+		const { t } = this.props;
 		return (
 			<Paper id="new-question" style={styles.container}>
 				{this.state.isLoading && <LoadingOverlay />}
-				<h2 style={styles.heading}>New Question</h2>
+				<h2 style={styles.heading}>{t('question.title')}</h2>
 				<form onSubmit={this.handleSubmit}>
 					<div className="question-data" style={styles.questionData}>
 						<TextField
-							floatingLabelText="Question"
+							floatingLabelText={t('question.title-placeholder')}
 							fullWidth
 							defaultValue={this.state.title}
 							errorText={this.state.titleErrorText}
@@ -106,12 +112,12 @@ class NewQuestion extends Component {
 						<span
 							style={styles.textFieldCoutner}
 						>
-							{128 - this.state.title.length} characters remaining
+							{this.state.title.length} / 128
 						</span>
 					</div>
 					<div className="question-data" style={styles.questionData}>
 						<TextField
-							floatingLabelText="Description"
+							floatingLabelText={t('question.message-placeholder')}
 							multiLine
 							rowsMax={4}
 							fullWidth
@@ -122,7 +128,7 @@ class NewQuestion extends Component {
 						<span
 							style={styles.textFieldCoutner}
 						>
-							{512 - this.state.message.length} characters remaining
+							{this.state.message.length} / 512
 						</span>
 					</div>
 					<div className="question-data" style={styles.questionData}>
@@ -134,12 +140,12 @@ class NewQuestion extends Component {
 							onChange={chips => this.handleTagsChange(chips)}
 							fullWidth
 							fullWidthInput
-							floatingLabelText="Relevant Tags"
+							floatingLabelText={t('question.tags-placeholder')}
 							errorText={this.state.tagsErrorText}
 						/>
 					</div>
 					<div className="editor-actions" style={styles.editorActions}>
-						<FlatButton type="submit" label="POST" primary />
+						<FlatButton type="submit" label={t('common.post-action-title')} primary />
 					</div>
 				</form>
 			</Paper>

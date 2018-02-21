@@ -22,6 +22,9 @@ import Service from 'api/service';
 import Layout from 'components/Layouts/GeneralLayout';
 import Questions from './Questions';
 
+// i18n
+import { translate } from 'react-i18next';
+
 import { QuestionsBaseStyles as styles } from './styles';
 
 const mapStateToProps = state => ({
@@ -34,6 +37,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = { changeDiscussOrdering, changeDiscussQuery };
 
 @connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })
+@translate()
 @Radium
 class QuestionsBase extends Component {
 	state = {
@@ -70,6 +74,7 @@ class QuestionsBase extends Component {
 	// 	}
 	// }
 	render() {
+		const { t } = this.props;
 		return (
 			<Layout>
 				<div className="toolbar" style={styles.toolbar}>
@@ -79,13 +84,13 @@ class QuestionsBase extends Component {
 						onChange={this.handleFilterChange}
 						autoWidth={false}
 					>
-						<MenuItem style={styles.discussFilterItem} value={8} primaryText="Trending" />
-						<MenuItem style={styles.discussFilterItem} value={1} primaryText="Most Recent" />
-						<MenuItem style={styles.discussFilterItem} value={2} primaryText="Most Popular" />
+						<MenuItem style={styles.discussFilterItem} value={8} primaryText={t('discuss.filter.trending')} />
+						<MenuItem style={styles.discussFilterItem} value={1} primaryText={t('discuss.filter.most-recent')} />
+						<MenuItem style={styles.discussFilterItem} value={2} primaryText={t('discuss.filter.most-popular')} />
 						<MenuItem style={styles.discussFilterItem} value={3} primaryText="Most Answered" />
-						<MenuItem style={styles.discussFilterItem} value={4} primaryText="Unanswered" />
-						<MenuItem style={styles.discussFilterItem} value={5} primaryText="My Questions" />
-						<MenuItem style={styles.discussFilterItem} value={6} primaryText="My Answers" />
+						<MenuItem style={styles.discussFilterItem} value={4} primaryText={t('discuss.filter.unanswered')} />
+						<MenuItem style={styles.discussFilterItem} value={5} primaryText={t('discuss.filter.my-questions')} />
+						<MenuItem style={styles.discussFilterItem} value={6} primaryText={t('discuss.filter.my-answers')} />
 					</DropDownMenu>
 				</div>
 				<Questions
