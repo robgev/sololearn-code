@@ -29,6 +29,9 @@ import FollowersBase from './FollowersBase';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import Layout from 'components/Layouts/GeneralLayout';
 
+// i18n
+import { translate } from 'react-i18next';
+
 // Utils
 import { EnumNameMapper } from 'utils';
 
@@ -79,7 +82,7 @@ const styles = {
 		padding: 0,
 	},
 };
-
+@translate()
 class Profile extends Component {
 	constructor(props) {
 		super(props);
@@ -112,42 +115,42 @@ class Profile extends Component {
 	}
 
 	getLabel = (type) => {
-		const { profile } = this.props;
+		const { t, profile } = this.props;
 
 		switch (type) {
 		case TabTypes.Codes:
 			return (
 				<div style={styles.label}>
 					<p>{profile.data.codes}</p>
-					<p>Codes</p>
+					<p>{t('profile.tab.codes')}</p>
 				</div>
 			);
 		case TabTypes.Posts:
 			return (
 				<div style={styles.label}>
 					<p>{profile.data.posts}</p>
-					<p>Posts</p>
+					<p>{t('profile.tab.posts')}</p>
 				</div>
 			);
 		case TabTypes.Skills:
 			return (
 				<div style={styles.label}>
 					<p>{profile.data.skills.length}</p>
-					<p>Skills</p>
+					<p>{t('profile.tab.skills')}</p>
 				</div>
 			);
 		case TabTypes.Badges:
 			return (
 				<div style={styles.label}>
 					<p>{profile.data.badges.filter(item => item.isUnlocked).length}</p>
-					<p>Badges</p>
+					<p>{t('profile.tab.badges')}</p>
 				</div>
 			);
 		case TabTypes.Activity:
 			return (
 				<div style={styles.label}>
 					<FeedIcon color={grey600} />
-					<p>Activity</p>
+					<p>{t('profile.tab.activity')}</p>
 				</div>
 			);
 		default:
