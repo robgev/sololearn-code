@@ -36,6 +36,9 @@ import Header from './Header';
 import FeedPins from './FeedPins';
 import FeedItems from './FeedItems';
 
+// i18next
+import { translate } from 'react-i18next';
+
 const scroll = Scroll.animateScroll;
 
 const styles = {
@@ -292,7 +295,7 @@ class FeedItemsBase extends Component {
 	}
 
 	renderPopup = () => {
-		const { courses, createContest } = this.props;
+		const { courses, createContest, t } = this.props;
 		const courseIndex = courses.findIndex(course => course.id === this.popupData.courseId);
 		let course = courses[courseIndex];
 
@@ -315,7 +318,7 @@ class FeedItemsBase extends Component {
 						/>
 						<div style={styles.courseInfo}>
 							<p style={styles.courseName}>{course.name}</p>
-							<p style={styles.learnersCount}>{numberFormatter(learners, true)} Users</p>
+							<p style={styles.learnersCount}>{numberFormatter(learners, true)} {t('learn.course-learners-format')}</p>
 							{hasProgress &&
 								<LinearProgress
 									style={styles.progress}
@@ -327,7 +330,7 @@ class FeedItemsBase extends Component {
 					</div>
 					<div className="actions" style={styles.actions}>
 						<Link to={`/learn/${alias}`}>
-							<FlatButton label="Open Course" primary />
+							<FlatButton label={t('learn.open-course-action-tite')} primary />
 						</Link>
 					</div>
 				</div>
@@ -347,7 +350,7 @@ class FeedItemsBase extends Component {
 					/>
 					<div>
 						<p style={styles.userName}>{this.popupData.userName}</p>
-						<p style={styles.level}>LEVEL {this.popupData.level}</p>
+						<p style={styles.level}>{t('common.user-level')} {this.popupData.level}</p>
 					</div>
 				</div>
 				<div className="user-stats" style={styles.userStatsWrapper}>
@@ -371,11 +374,11 @@ class FeedItemsBase extends Component {
 				</div>
 				<div className="actions" style={styles.actions}>
 					<Link to={`/profile/${this.popupData.userId}`}>
-						<FlatButton label="Show profile" primary />
+						<FlatButton label={t('profile.show-profile')} primary />
 					</Link>
 					<FlatButton
 						primary
-						label="Challenge"
+						label={t('profile.challenge')}
 						style={{ display: 'inline-block' }}
 						onClick={() => createContest(this.popupData.userId, this.popupData.courseId)}
 					/>
@@ -401,7 +404,13 @@ class FeedItemsBase extends Component {
 
 	render() {
 		const {
-			feed, feedPins, userProfile, levels, isLoaded, isUserProfile,
+			t,
+			feed,
+			feedPins,
+			userProfile,
+			levels,
+			isLoaded,
+			isUserProfile,
 		} = this.props;
 		return (
 			<div className="wrapper">
@@ -422,19 +431,19 @@ class FeedItemsBase extends Component {
 										style={[ styles.newActivityButton.wrapper, interpolatingStyle ]}
 										onClick={this.scrollToFeedItems}
 									>
-										<p style={styles.newActivityButton.title}>New Activity</p>
+										<p style={styles.newActivityButton.title}>{t('feed.new-activity-title')}</p>
 										<Arrow color="#fff" style={styles.newActivityButton.icon} />
 									</div>
 								)
 							}
 						</Motion>
 					}
-					{!isUserProfile && <p className="sub-title" style={styles.subTitle}>Activity Feed</p>}
+					{!isUserProfile && <p className="sub-title" style={styles.subTitle}>{t('feed.title')}</p>}
 					{
 						(feedPins.length > 0 && !isUserProfile) &&
 
 						[ <FeedPins pins={feedPins} openPopup={this.handlePopupOpen} key="feedPins" />,
-							<p className="sub-title" style={styles.subTitle} key="separator">Most Recent</p> ]
+							<p className="sub-title" style={styles.subTitle} key="separator">{t('feed.most-recent-title')}</p> ]
 					}
 					{(isLoaded && feed.length > 0) &&
 						<FeedItems feedItems={feed} openPopup={this.handlePopupOpen} />}
@@ -448,7 +457,7 @@ class FeedItemsBase extends Component {
 									[ styles.loadMore.base, styles.loadMore.active ]}
 							>
 								<FlatButton
-									label="Load More"
+									label={t('common.loadMore')}
 									onClick={() => { this.loadFeedItems(this.getLastFeedItem().id); }}
 								/>
 							</div>,
@@ -496,4 +505,6 @@ const mapDispatchToProps = {
 	createContest: createContestInternal,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Radium(FeedItemsBase));
+const translatedFeedItemsBase = translate()(FeedItemsBase);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Radium(translatedFeedItemsBase));

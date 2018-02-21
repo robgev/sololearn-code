@@ -8,6 +8,9 @@ import Paper from 'material-ui/Paper';
 import LinearProgress from 'material-ui/LinearProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 
+// i18next
+import { translate } from 'react-i18next';
+
 const styles = {
 	container: {
 		cursor: 'pointer',
@@ -60,7 +63,7 @@ const styles = {
 
 class Header extends PureComponent {
 	render() {
-		const { levels, profile } = this.props;
+		const { levels, profile, t } = this.props;
 		const { level: userLevel, xp: currentXp } = profile;
 		let maxXp = null;
 		let status = '';
@@ -95,7 +98,7 @@ class Header extends PureComponent {
 						<div className="details" style={styles.details}>
 							<p style={styles.name}>{profile.name}</p>
 							<Link to="/leaderboard" style={styles.leaderboardLink}>
-								Check out the leaderboard
+								{t('leaderboard.rank.placeholder')}
 							</Link>
 							<div style={styles.progressWrapper}>
 								<LinearProgress
@@ -113,7 +116,7 @@ class Header extends PureComponent {
 					<div className="actions" style={styles.actions}>
 						<RaisedButton
 							secondary
-							label="Invite Friends"
+							label={t('discover_peers.invite-friends')}
 						/>
 					</div>
 				</Paper>
@@ -122,4 +125,4 @@ class Header extends PureComponent {
 	}
 }
 
-export default Header;
+export default translate()(Header);
