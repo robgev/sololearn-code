@@ -24,6 +24,9 @@ import Layout from 'components/Layouts/GeneralLayout';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import ContestItem from './ContestItem';
 
+// i18next
+import { translate } from 'react-i18next';
+
 const styles = {
 	contests: {
 		padding: 0,
@@ -140,6 +143,7 @@ class Contests extends PureComponent {
 
 	render() {
 		const {
+			t,
 			contests,
 			clearContests,
 			isContestsLoaded,
@@ -156,14 +160,14 @@ class Contests extends PureComponent {
 					{
 						invited && invited.length > 0 &&
 						<div>
-							<p style={{ ...styles.header.base, ...styles.header.title }}>INVITED</p>
+							<p style={{ ...styles.header.base, ...styles.header.title }}>{t('play.section.invites')}</p>
 							<List style={styles.contests}>{this.renderContests(invited)}</List>
 						</div>
 					}
 					{
 						invited && ongoing.length > 0 &&
 						<div>
-							<p style={{ ...styles.header.base, ...styles.header.title }}>ONGOING</p>
+							<p style={{ ...styles.header.base, ...styles.header.title }}>{t('play.section.ongoing')}</p>
 							<List style={styles.contests}>{this.renderContests(ongoing)}</List>
 						</div>
 					}
@@ -171,8 +175,8 @@ class Contests extends PureComponent {
 						invited && completed.length > 0 &&
 						<div>
 							<div style={styles.headerWithAction}>
-								<p style={styles.header.title}>COMPLETED</p>
-								<FlatButton label="Clear" style={styles.headerButton} onClick={clearContests} />
+								<p style={styles.header.title}>{t('play.section.completed')}</p>
+								<FlatButton label={t('play.clear-challenges-button-title')} style={styles.headerButton} onClick={clearContests} />
 							</div>
 							<List style={styles.contests}>{this.renderContests(completed)}</List>
 						</div>
@@ -215,4 +219,6 @@ const mapDispatchToProps = {
 	chooseContestCourse,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Contests);
+const translateContests = translate()(Contests);
+
+export default connect(mapStateToProps, mapDispatchToProps)(translateContests);

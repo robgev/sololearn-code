@@ -25,6 +25,9 @@ import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import Profile from './Profile';
 import Comment from '../../../Comments/Comment';
 
+// i18next
+import { translate } from 'react-i18next';
+
 const XP_ANIMATION_DURATION = 1000;
 const XP_ANIMATION_START_IN = 1000;
 
@@ -68,13 +71,14 @@ const ResultBox = ({ aboveText, insideText, color }) => (
 const AnimatedResults = ({
 	oldPoints,
 	newPoints,
-	myLevel
+	myLevel,
+	t
 }) => (
 	<div className='chart-container'>
 		<AnimatedNumber
 			fromNumber={oldPoints.untilNextLevelXp}
 			toNumber={newPoints.untilNextLevelXp}
-			text={`XP to Level ${myLevel + 1}`}
+			text={`${t('play.result.reach-to-level')} ${myLevel + 1}`}
 			animationDuration={XP_ANIMATION_DURATION}
 			animationStartIn={XP_ANIMATION_START_IN}
 		/>
@@ -97,7 +101,8 @@ const AnimatedResults = ({
 
 const ResultTable = ({
 	myRes,
-	opRes
+	opRes,
+	t
 }) => {
 	const myAnswersUI = myRes.map(createAnswerUI);
 	const opAnswersUI = opRes.map(createAnswerUI);
@@ -107,7 +112,7 @@ const ResultTable = ({
 	return (
 		<div className='result-table-container'>
 			<div className='answers-column'>
-				<div>YOU</div>
+				<div>{t('play.result.self-result-title')}</div>
 				{myAnswersUI}
 			</div>
 			<div className='answers-column'>
@@ -115,7 +120,7 @@ const ResultTable = ({
 				{questionNumberUI}
 			</div>
 			<div className='answers-column'>
-				<div>OPPONENT</div>
+				<div>{t('play.result.opponent-result-title')}</div>
 				{opAnswersUI}
 			</div>
 		</div>
@@ -130,30 +135,40 @@ const Results = ({
 	newPoints,
 	myLevel,
 	myRes,
-	opRes
+	opRes,
+	t
 }) => (
 	<div style={styles.appear(fadeIn)}>
 		<p className='language'>{courseName.toUpperCase()}</p>
 		<div className='result-boxes'>
 			<ResultBox
-				aboveText="ANSWERS BONUS"
+				aboveText={t('play.result.answers-bonus')}
 				insideText={answersBonus}
 				color={blue500}
 			/>
 			<ResultBox
-				aboveText="MATCH RESULT"
+				aboveText={t('play.result.match-result')}
 				insideText={matchResult}
 				color={matchResult < 0 ? red500 : green500}
 			/>
 			<ResultBox
-				aboveText="TOTAL XP"
+				aboveText={t('play.result.total-xp')}
 				insideText={totalXp}
 				color={totalXp < 0 ? red500 : green500}
 			/>
 		</div>
 		<div className='result-charts'>
-			<AnimatedResults myLevel={myLevel} oldPoints={oldPoints} newPoints={newPoints} />
-			<ResultTable myRes={myRes} opRes={opRes} />
+			<AnimatedResults {...{
+				t,
+				myLevel,
+				oldPoints,
+				newPoints
+			}} />
+			<ResultTable {...{
+				myRes,
+				opRes,
+				t
+			}}/>
 		</div>
 	</div>
 );
@@ -184,7 +199,7 @@ class Result extends Component {
 		if (!this.state.updated) {
 			return <LoadingOverlay />;
 		}
-		const { courseName, contest, levels } = this.props;
+		const { t, courseName, contest, levels } = this.props;
 		const { status } = contest.player;
 		const {
 			player: {
@@ -226,7 +241,8 @@ class Result extends Component {
 							newPoints,
 							myLevel,
 							myRes,
-							opRes
+							opRes,
+							t
 						}}
 					/>
 				}
@@ -240,7 +256,7 @@ class Result extends Component {
 					{
 						(status === 1 || status === 2 || status === 8) &&
 						<RaisedButton
-							label="View Correct Answers"
+							label={t('play.result.view-correct-answers')}
 							className='button'
 							secondary
 							onClick={this.props.goToViewCorrectAnswers}
@@ -254,4 +270,6 @@ class Result extends Component {
 
 const mapStateToProps = ({ levels }) => ({ levels });
 
-export default connect(mapStateToProps)(Radium(Result));
+const translatedResult = translate()(Radium(Result));
+
+export default connect(mapStateToProps)(translatedResult);
