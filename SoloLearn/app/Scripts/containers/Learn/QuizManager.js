@@ -20,6 +20,7 @@ import {
 // Utils
 import { toSeoFrendly } from 'utils';
 import Progress, { ProgressState } from 'api/progress';
+import Service from 'api/service';
 
 // Additional data and components
 import Comments from 'containers/Comments/CommentsBase';
@@ -34,6 +35,38 @@ class QuizManager extends Component {
 	state = {
 		commentsOpened: false,
 	}
+
+	async componentWillMount() {
+		const {
+			lessons,
+			params,
+			isLoaded,
+			isShortcut,
+			selectQuiz,
+			selectLesson,
+			selectModule,
+			shortcutLesson,
+			loadCourseInternal,
+		} = this.props;
+		if (!isShortcut) {
+			Service.request('/AddLessonImpression', { lessonId: params.lessonId });
+		}
+		if (!isLoaded && !isShortcut) {
+			try {
+				await loadCourseInternal();
+				selectModule(parseInt(params.moduleId, 10));
+				selectLesson(parseInt(params.lessonId, 10));
+				const lesson = lessons[params.lessonId];
+				this.getActiveQuiz(lesson);
+			} catch (e) {
+				console.log(e);
+			}
+		} else if (isShortcut) {
+			const activeQuiz = shortcutLesson.quizzes[0];
+			selectQuiz({ id: activeQuiz.id, number: activeQuiz.number, isText: false });
+		}
+	}
+
 	generateTimeline = (quizzes, activeQuiz) => {
 		const timeline = [];
 		const lesson = !this.props.isShortcut ? this.props.activeLesson : this.props.shortcutLesson;
@@ -181,23 +214,6 @@ class QuizManager extends Component {
 				}
 			</Layout>
 		);
-	}
-
-	componentWillMount() {
-		if (!this.props.isLoaded && !this.props.isShortcut) {
-			this.props.loadCourseInternal().then(() => {
-				this.props.selectModule(parseInt(this.props.params.moduleId, 10));
-				this.props.selectLesson(parseInt(this.props.params.lessonId, 10));
-
-				const lesson = this.props.lessons[this.props.params.lessonId];
-				this.getActiveQuiz(lesson);
-			}).catch((error) => {
-				console.log(error);
-			});
-		} else if (this.props.isShortcut) {
-			const activeQuiz = this.props.shortcutLesson.quizzes[0];
-			this.props.selectQuiz({ id: activeQuiz.id, number: activeQuiz.number, isText: false });
-		}
 	}
 }
 
