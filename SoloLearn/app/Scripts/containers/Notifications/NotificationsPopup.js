@@ -20,7 +20,11 @@ const RadiumLink = Radium(Link);
 
 const mapDispatchToProps = { markAllRead: markReadInternal };
 
+// i18n
+import { translate } from 'react-i18next';
+
 @connect(null, mapDispatchToProps)
+@translate()
 @Radium
 class NotificationPopup extends Component {
 	componentDidMount() {
@@ -41,6 +45,7 @@ class NotificationPopup extends Component {
 	}
 
 	render() {
+		const { t } = this.props;
 		return (
 			<Motion
 				defaultStyle={{ opacity: 0, top: 40 }}
@@ -56,12 +61,13 @@ class NotificationPopup extends Component {
 								<div className="arrow" style={styles.arrow} />
 								<Paper className="notifications-container" style={styles.notificationsContainer}>
 									<div className="notification-header" style={styles.notificationsHeader}>
-										<p className="notifications-title" style={styles.notificationsTitle}>Notifications</p>
+										<p className="notifications-title" style={styles.notificationsTitle}>{t('notifications.title')}</p>
 										<button
 											type="button"
 											style={styles.notificationsHeaderButton}
 											onClick={() => this.props.markAllRead(null)}
-										>Mark all as read
+										>
+										{t('notifications.mark-all-as-read-action-title')}
 										</button>
 									</div>
 									<Divider />
