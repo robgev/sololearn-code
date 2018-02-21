@@ -3,6 +3,9 @@ import React from 'react';
 
 import contestTypes from 'defaults/contestTypes';
 
+// i18n
+import i18n from 'i18n';
+
 const styles = {
 	base: {
 		width: '80px',
@@ -36,19 +39,19 @@ const styles = {
 const getChallengeStatus = (status, style = {}) => {
 	switch (status) {
 	case contestTypes.Won:
-		return <p style={{ ...styles.base, ...styles.wonColor, ...style }}>YOU WON</p>;
+		return <p style={{ ...styles.base, ...styles.wonColor, ...style }}>{i18n.t('play.result.status-won')}</p>;
 	case contestTypes.Lost:
-		return <p style={{ ...styles.base, ...styles.lostColor, ...style }}>YOU LOST</p>;
+		return <p style={{ ...styles.base, ...styles.lostColor, ...style }}>{i18n.t('play.result.status-lost')}</p>;
 	case contestTypes.Draw:
-		return <p style={{ ...styles.base, ...styles.drawColor, ...style }}>DRAW</p>;
+		return <p style={{ ...styles.base, ...styles.drawColor, ...style }}>{i18n.t('play.result.status-draw')}</p>;
 	case contestTypes.Expired:
-		return <p style={{ ...styles.base, ...styles.defaultColor, ...style }}>EXPIRED</p>;
+		return <p style={{ ...styles.base, ...styles.defaultColor, ...style }}>{i18n.t('play.result.status-expired')}</p>;
 	case contestTypes.GotDeclined:
-		return <p style={{ ...styles.base, ...styles.defaultColor, ...style }}>DECLINED</p>;
+		return <p style={{ ...styles.base, ...styles.defaultColor, ...style }}>{i18n.t('play.result.challenge-declined')}</p>;
 	case contestTypes.Started:
-		return <p style={{ ...styles.base, ...styles.yourTurnColor, ...style }}>YOUR TURN</p>;
+		return <p style={{ ...styles.base, ...styles.yourTurnColor, ...style }}>{i18n.t('play.result.status-your-turn')}</p>;
 	case contestTypes.Challenged:
-		return <p style={{ ...styles.base, ...styles.defaultColor, ...style }}>WAITING</p>;
+		return <p style={{ ...styles.base, ...styles.defaultColor, ...style }}>{i18n.t('play.result.status-waiting')}</p>;
 	default:
 		return <p />;
 	}
