@@ -10,6 +10,9 @@ import CorrectIcon from 'material-ui/svg-icons/action/done';
 import WrongIcon from 'material-ui/svg-icons/content/clear';
 import { lightGreen500, red600 } from 'material-ui/styles/colors';
 
+// i18n
+import i18n from 'i18n';
+
 // App texts
 import texts from 'defaults/texts';
 
@@ -141,12 +144,13 @@ class PopupService {
 							<p
 								key="correctText"
 								style={{ ...styles.text.base, ...styles.text.correct }}
-							>Correct!
+							>
+								{i18n.t('learn.answer-correct')}
 							</p>,
 							<FlatButton
 								key="comments-button"
 								onClick={openComments}
-								label={`${commentCount || ''} COMMENTS`}
+								label={`${commentCount || ''} ${i18n.t('common.comments')}`}
 							/>,
 						] :
 						[
@@ -158,7 +162,8 @@ class PopupService {
 							<p
 								key="wrongText"
 								style={{ ...styles.text.base, ...styles.text.wrong }}
-							> Wrong
+							>
+								{i18n.t('learn.answer-wrong')}
 							</p>,
 							isCheckpoint &&
 							<RaisedButton
@@ -172,7 +177,7 @@ class PopupService {
 							<FlatButton
 								key="comments-button"
 								onClick={openComments}
-								label={`${commentCount || ''} COMMENTS`}
+								label={`${commentCount || ''} ${i18n.t('common.comments')}`}
 							/>,
 						]
 					}
