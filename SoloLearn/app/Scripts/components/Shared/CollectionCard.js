@@ -6,12 +6,16 @@ import FlatButton from 'material-ui/FlatButton';
 import 'styles/collectionCard.scss';
 import CourseChip from './CourseChip';
 
+// i18next
+import { translate } from 'react-i18next';
+
 const collectionTypes = {
 	slayLessons: 1,
 	courses: 2,
 };
 
 const CollectionCard = ({
+	t,
 	id,
 	type,
 	name,
@@ -37,7 +41,7 @@ const CollectionCard = ({
 				<p>{ name }</p>
 				{ !noViewMore &&
 					<FlatButton
-						label="Load more"
+						label={t('common.loadMore')}
 						containerElement={
 							<Link to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} />
 						}
@@ -64,4 +68,6 @@ const CollectionCard = ({
 
 const mapStateToProps = state => ({ courses: state.courses });
 
-export default connect(mapStateToProps, null)(CollectionCard);
+const translatedCollectionCard = translate()(CollectionCard);
+
+export default connect(mapStateToProps, null)(translatedCollectionCard);

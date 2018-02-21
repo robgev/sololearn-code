@@ -4,6 +4,10 @@ import {
 	VictoryLegend,
 } from 'victory';
 import 'styles/components/Shared/ChallengeGraphs/ResultPie';
+
+// i18next
+import { translate } from 'react-i18next';
+
 // import { ChallengeColors } from 'constants/ChartColors';
 // TODO: find a way to put a word right inside of the circle
 class ResultPie extends React.Component {
@@ -25,12 +29,12 @@ class ResultPie extends React.Component {
     }
 
     render() {
-        const { level, animationDuration } = this.props;
+        const { t, level, animationDuration } = this.props;
         const { pieResults } = this.state;
         return (
             <div className='pie-chart-wrapper'>
                 <div className='level'>
-                    <div>LEVEL</div>
+                    <div>{t('play.level')}</div>
                     <div>{level}</div>
                 </div>
                 <VictoryPie
@@ -49,4 +53,4 @@ class ResultPie extends React.Component {
     }
 }
 
-export default ResultPie;
+export default translate()(ResultPie);
