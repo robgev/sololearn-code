@@ -95,6 +95,7 @@ class Playground extends Component {
 			latestSavedCodeData: {},
 			languageSelector: 'web',
 			userCodeLanguage: 'web',
+			shouldShowToolbar: false,
 			inputsPopupOpened: false,
 			commentsOpened: props.commentSelected,
 		};
@@ -260,6 +261,7 @@ class Playground extends Component {
 					...codeData,
 					code: sourceCode,
 					latestSavedCodeData,
+					shouldShowToolbar: true,
 					mode: foundEditorSettingKey,
 					languageSelector: isWeb ? 'web' : foundEditorSettingKey,
 				});
@@ -616,6 +618,7 @@ ${succeedingSubstr}
 			commentsOpened,
 			languageSelector,
 			userCodeLanguage,
+			shouldShowToolbar,
 			inputsPopupOpened,
 			latestSavedCodeData,
 		} = this.state;
@@ -623,6 +626,7 @@ ${succeedingSubstr}
 			t,
 			withBottomToolbar,
 		} = this.props;
+		console.log(shouldShowToolbar, withBottomToolbar);
 
 		const inputsPopupActions = [
 			<FlatButton
@@ -681,7 +685,7 @@ ${succeedingSubstr}
 							handleThemeChange={this.handleThemeChange}
 							handleLanguageChange={this.handleLanguageChange}
 						/>
-						{ withBottomToolbar &&
+						{ (withBottomToolbar && shouldShowToolbar) &&
 							<BottomToolbar
 								codeData={latestSavedCodeData}
 								openComments={this.openComments}
