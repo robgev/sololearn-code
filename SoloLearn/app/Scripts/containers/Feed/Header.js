@@ -117,6 +117,7 @@ class Header extends PureComponent {
 						<RaisedButton
 							secondary
 							label={t('discover_peers.invite-friends')}
+							containerElement={<Link to="/discover" />}
 						/>
 					</div>
 				</Paper>

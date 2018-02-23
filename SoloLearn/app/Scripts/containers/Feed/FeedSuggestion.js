@@ -82,6 +82,7 @@ class FeedSuggestion extends Component {
 		return (
 			<Paper className="user" style={styles.user}>
 				<ProfileAvatar
+					vertical
 					size={50}
 					withUserNameBox
 					style={styles.avatar}

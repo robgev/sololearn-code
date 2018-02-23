@@ -84,7 +84,7 @@ const FeedItemBase = ({
 					to={`/profile/${user.id}`}
 					style={{ ...styles.userName, ...styles.linkStyle }}
 				>
-					{user.name}
+					{`${user.name} `}
 				</Link>
 				{title}
 			</p>
