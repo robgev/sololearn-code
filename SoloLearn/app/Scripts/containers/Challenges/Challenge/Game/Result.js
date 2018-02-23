@@ -215,7 +215,7 @@ class Result extends Component {
 		const totalXp = answersBonus + matchResult;
 		const { oldPoints, newPoints } = this.countUntilNextLevel(totalXp);
 		return (
-			<div id="challenge-start" className='container'>
+			<div id="challenge-start" className='result-container'>
 				<div style={styles.appear(fadeInDown)}>
 					{status !== contestTypes.GotChallenged && getChallengeStatus(status, styles.status)}
 				</div>

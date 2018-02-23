@@ -33,7 +33,7 @@ render() {
 	} = this.props;
 	const { following } = this.state;
 	return (
-		<div className="container">
+		<div className="user-card-container">
 			<div className="profile-container">
 				<img src={avatarUrl} alt="avatar" className="profile-avatar" />
 				<div className="profile-data">

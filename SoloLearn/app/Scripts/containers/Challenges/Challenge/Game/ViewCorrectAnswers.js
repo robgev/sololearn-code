@@ -166,7 +166,7 @@ class ViewCorrectAnswers extends Component {
 		));
 		const { quizNumber } = this.state;
 		return (
-			<div className='container'>
+			<div className='correct-answers-container'>
 				<Tabs>
 					{createQuizTabs}
 				</Tabs>
