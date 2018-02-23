@@ -5,6 +5,9 @@ import scrollToElement from 'scroll-to-element';
 // Additional data and components
 import Badge from './Badge';
 
+// i18next
+import { translate } from 'react-i18next';
+
 const styles = {
 	container: {
 		margin: '5px 0 0 0',
@@ -21,16 +24,16 @@ const styles = {
 		textTransform: 'uppercase',
 	},
 };
-
+@translate()
 class Badges extends PureComponent {
 	componentDidMount() {
 		scrollToElement(this._selected);
 	}
 	render() {
-		const { badges, selectedId } = this.props;
+		const { t, badges, selectedId } = this.props;
 		return (
 			<div id="Badges" style={styles.container}>
-				<p style={styles.title}>Badges</p>
+				<p style={styles.title}>{t('profile.tab.badges')}</p>
 				<div className="content" style={styles.content}>
 					{
 						badges.map((badge) => {

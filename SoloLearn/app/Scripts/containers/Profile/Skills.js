@@ -14,16 +14,38 @@ import LanguageCodes from 'constants/LanguageCodes';
 import 'styles/Profile/skills.scss';
 import SkillChip from './SkillChip';
 
+// i18next
+import i18n from 'i18n';
+import { translate } from 'react-i18next';
+
+const getTranslatedLabel = label => {
+	switch (label) {
+		case 'learner':
+			return i18n.t('skills.chart-learner');
+		case 'contributor':
+			return i18n.t('skills.chart-contributor');
+		case 'influencer':
+			return i18n.t('skills.chart-influencer');
+		case 'challenger':
+			return i18n.t('skills.chart-challenger');
+		case 'coder':
+			return i18n.t('skills.chart-coder');
+		default:
+			console.log(label);
+			return label;
+	}
+}
+
 const createChartData = ranks => Object.keys(ranks)
 	.sort((currentItem, comparedItem) => ranks[comparedItem] - ranks[currentItem])
 	.map((key, index) => ({
 		x: index,
-		label: key,
+		label: getTranslatedLabel(key),
 		percentage: ranks[key],
 		fill: PolarChartColors[key],
 		y: (Math.sqrt(ranks[key]) * 50) + 50,
 	}));
-
+@translate()
 class Skills extends PureComponent {
 	state = {
 		courseID: null,
@@ -33,15 +55,15 @@ class Skills extends PureComponent {
 
 	render() {
 		const { courseID } = this.state;
-		const { levels, profile, skills } = this.props;
+		const { t, levels, profile, skills } = this.props;
 		const { maxXp, status } = calculateProgress(levels, profile.level, profile.xp);
 		return (
 			<div className="skills-container">
 				<Paper className="skills-group">
-					<p className="skills-header">Status + Rank</p>
+					<p className="skills-header">{t('skills.status-plus-rank')}</p>
 					<div className="skills-details">
-						<Link to="/leaderboards" className="leaderboard-link">
-							Check out the leaderboard
+						<Link to="/leaderboard" className="leaderboard-link">
+							{t('leaderboard.rank.placeholder')}
 						</Link>
 						<div className="progress-wrapper">
 							<LinearProgress
@@ -57,27 +79,27 @@ class Skills extends PureComponent {
 					</div>
 				</Paper>
 				<Paper className="skills-group">
-					<p className="skills-header">Languages</p>
+					<p className="skills-header">{t('skills.languages')}</p>
 					<div className={`courses ${skills.length <= 0 ? 'centered' : ''}`}>
 						{skills.length > 0 ?
 							skills.map(course =>
 								<SkillChip key={course.id} course={course} />) :
-							<p>Nothing to show</p>
+							<p>{t('common.empty-list-message')}</p>
 						}
 					</div>
 				</Paper>
 				<Paper className="skills-group">
-					<p className="skills-header">Skills</p>
+					<p className="skills-header">{t('skills.skills-section-title')}</p>
 					<PolarChart chartData={createChartData(profile.skillRanks)} />
 				</Paper>
 				<Paper className="skills-group">
 					<div className="skills-row">
-						<p className="skills-header">Challenges</p>
+						<p className="skills-header">{t('skills.challenges-section-title')}</p>
 						<DropDownMenu
 							value={courseID}
 							onChange={this.handleCourseChange}
 						>
-							<MenuItem value={null} primaryText="All" />
+							<MenuItem value={null} primaryText={t('code.language-filter.all')} />
 							{ profile.contestStats.map(({ courseID: currentCourseID }) =>
 								<MenuItem value={currentCourseID} primaryText={LanguageCodes[currentCourseID]} />)}
 						</DropDownMenu>

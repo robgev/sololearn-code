@@ -11,6 +11,9 @@ import { getFollowersInternal } from 'actions/profile';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import Follower from './FollowerItem';
 
+// i18next
+import { translate } from 'react-i18next';
+
 const styles = {
 	container: {
 		position: 'relative',
@@ -91,7 +94,7 @@ class Followers extends Component {
 	))
 
 	render() {
-		const { isFollowersLoaded, followers } = this.props;
+		const { t, isFollowersLoaded, followers } = this.props;
 		const { fullyLoaded, isLoading } = this.state;
 
 		return (
@@ -116,7 +119,7 @@ class Followers extends Component {
 					</div>
 				}
 				{(fullyLoaded && followers.length === 0) &&
-					<div style={styles.noResults}>No Results Found</div>
+					<div style={styles.noResults}>{t('common.no-results')}</div>
 				}
 			</div>
 		);
@@ -154,4 +157,4 @@ function mapDispatchToProps(dispatch) {
 	}, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Followers);
+export default connect(mapStateToProps, mapDispatchToProps)(translate()(Followers));

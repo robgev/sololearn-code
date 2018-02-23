@@ -2,7 +2,10 @@ import React from 'react';
 import { Link } from 'react-router';
 import { Circle } from 'react-progressbar.js';
 
-const SkillChips = ({ course }) => (
+// i18next
+import { translate } from 'react-i18next';
+
+const SkillChips = ({ t, course }) => (
 	<div className="course">
 		<div className="course-progress">
 			<Circle
@@ -29,11 +32,11 @@ const SkillChips = ({ course }) => (
 			<p className="course-xp">{course.xp} XP</p>
 			{ course.progress >= 1 &&
 				<Link to={`/certificate/${course.id}`}>
-					View Certificate
+					{t('skills.view-certificate')}
 				</Link>
 			}
 		</div>
 	</div>
 );
 
-export default SkillChips;
+export default translate()(SkillChips);

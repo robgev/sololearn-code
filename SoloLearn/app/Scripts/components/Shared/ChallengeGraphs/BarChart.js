@@ -8,6 +8,9 @@ import {
 } from 'victory';
 import { ChallengeColors } from 'constants/ChartColors';
 
+// i18next
+import { translate } from 'react-i18next';
+
 const createChartData = (contests, courseID, dataKey) => {
 	const filteredContests =
 	courseID ? contests.filter(currentContest => currentContest.courseID === courseID) : contests;
@@ -28,7 +31,7 @@ const CustomLabel = props => (
 	/>
 );
 
-const BarChart = ({ courseID, contestHistory }) => (
+const BarChart = ({ t, courseID, contestHistory }) => (
 	<VictoryChart
 		width={800}
 		height={300}
@@ -71,8 +74,8 @@ const BarChart = ({ courseID, contestHistory }) => (
 				tickLabels: { display: 'none' },
 			}}
 		/>
-		<text x={600} y={300}>Daily Performance</text>
+		<text x={600} y={300}>{t('skills.challenge-daily-performance')}</text>
 	</VictoryChart>
 );
 
-export default BarChart;
+export default translate()(BarChart);

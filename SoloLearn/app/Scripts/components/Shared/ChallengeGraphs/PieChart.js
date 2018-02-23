@@ -5,6 +5,9 @@ import {
 } from 'victory';
 import { ChallengeColors } from 'constants/ChartColors';
 
+// i18next
+import { translate } from 'react-i18next';
+
 // For more info on redce see MDN
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
 const createChartData = (stats, courseID) => {
@@ -28,7 +31,7 @@ const createChartData = (stats, courseID) => {
 	]);
 };
 
-const PieChart = ({ contestStats, courseID }) => (
+const PieChart = ({ t, contestStats, courseID }) => (
 	<svg
 		role="img"
 		width={400}
@@ -69,13 +72,13 @@ const PieChart = ({ contestStats, courseID }) => (
 			standalone={false}
 			orientation="horizontal"
 			data={[
-				{ name: 'Won', symbol: { fill: ChallengeColors.wins, type: 'square' } },
-				{ name: 'Draw', symbol: { fill: ChallengeColors.draws, type: 'square' } },
-				{ name: 'Lost', symbol: { fill: ChallengeColors.loses, type: 'square' } },
+				{ name: t('skills.challenge-pie-won'), symbol: { fill: ChallengeColors.wins, type: 'square' } },
+				{ name: t('skills.challenge-pie-draw'), symbol: { fill: ChallengeColors.draws, type: 'square' } },
+				{ name: t('skills.challenge-pie-lost'), symbol: { fill: ChallengeColors.loses, type: 'square' } },
 			]}
 		/>
 		<circle cx={200} cy={200} r={105} fill="rgba(255, 255, 255, 0.3)" />
 	</svg>
 );
 
-export default PieChart;
+export default translate()(PieChart);

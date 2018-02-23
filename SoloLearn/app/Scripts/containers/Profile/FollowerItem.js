@@ -10,6 +10,9 @@ import { followUserInternal, unfollowUserInternal } from 'actions/profile';
 
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
+// i18next
+import { translate } from 'react-i18next';
+
 const styles = {
 	follower: {
 		display: 'flex',
@@ -79,7 +82,7 @@ class FollowerItem extends Component {
 	}
 
 	render() {
-		const { follower, fromFollowers, isFollowing } = this.props;
+		const { t, follower, fromFollowers, isFollowing } = this.props;
 
 		return (
 			<div id="follower" style={styles.follower}>
@@ -93,11 +96,11 @@ class FollowerItem extends Component {
 					/>
 					<Link to={`/profile/${follower.id}`} style={styles.authorDetails}>
 						<p style={styles.name}>{follower.name}</p>
-						<p style={styles.info}>{follower.followers} Followers | Level {follower.level}</p>
+						<p style={styles.info}>{follower.followers} {t('common.user-followers')} | {t('common.user-level')} {follower.level}</p>
 					</Link>
 				</div>
 				<RaisedButton
-					label={this.state.isFollowing ? 'Following' : 'Follow'}
+					label={this.state.isFollowing ? t('common.user-following') : t('common.follow-user')}
 					primary={!this.state.isFollowing}
 					secondary={this.state.isFollowing}
 					style={styles.followButton.base}
@@ -129,4 +132,4 @@ function mapDispatchToProps(dispatch) {
 	}, dispatch);
 }
 
-export default connect(() => ({}), mapDispatchToProps)(FollowerItem);
+export default connect(() => ({}), mapDispatchToProps)(translate()(FollowerItem));

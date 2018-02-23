@@ -15,6 +15,9 @@ import { followUserInternal, unfollowUserInternal } from 'actions/profile';
 import { numberFormatter } from 'utils';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
+// i18next
+import { translate } from 'react-i18next';
+
 const styles = {
 	detailsWrapper: {
 		position: 'relative',
@@ -135,7 +138,7 @@ class Header extends Component {
 	}
 
 	render() {
-		const { profile, levels } = this.props;
+		const { t, profile, levels } = this.props;
 
 		const nextLevel = levels.filter(item => item.maxXp > profile.xp)[0];
 
@@ -144,7 +147,7 @@ class Header extends Component {
 				{
 					profile.id !== this.props.userId &&
 					<RaisedButton
-						label={this.state.isFollowing ? 'Following' : 'Follow'}
+						label={this.state.isFollowing ? t('common.user-following') : t('common.follow-user')}
 						primary={!this.state.isFollowing}
 						secondary={this.state.isFollowing}
 						style={styles.actionButton.base}
@@ -174,7 +177,7 @@ class Header extends Component {
 							onClick={this.props.openPopup}
 						/>
 					</div>
-					<p style={styles.level}>LEVEL {profile.level}</p>
+					<p style={styles.level}>{t('common.user-level')} {profile.level}</p>
 					<div className="progress-wrapper" style={styles.userStats}>
 						<LinearProgress
 							style={styles.progress}
@@ -200,4 +203,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	unfollowUser: unfollowUserInternal,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(translate()(Header));

@@ -14,6 +14,9 @@ import { EnumNameMapper } from 'utils';
 import Followers from './Followers';
 import Following from './Following';
 
+// i18next
+import { translate } from 'react-i18next';
+
 const TabTypes = {
 	Followers: 1,
 	Following: 2,
@@ -73,7 +76,7 @@ class FollowersBase extends Component {
 	}
 
 	render() {
-		const { userId } = this.props;
+		const { t, userId } = this.props;
 
 		return (
 			<div id="followers-base" style={styles.container}>
@@ -85,13 +88,13 @@ class FollowersBase extends Component {
 						tabItemContainerStyle={styles.tabs}
 					>
 						<Tab
-							label="Followers"
+							label={t('followers.tab.followers-title')}
 							value={TabTypes.Followers}
 							style={styles.tab}
 							onClick={() => this.handleTabChange(TabTypes.Followers)}
 						/>
 						<Tab
-							label="Following"
+							label={t('common.user-following')}
 							value={TabTypes.Following}
 							style={styles.tab}
 							onClick={() => this.handleTabChange(TabTypes.Following)}
@@ -108,4 +111,4 @@ class FollowersBase extends Component {
 	}
 }
 
-export default FollowersBase;
+export default translate()(FollowersBase);
