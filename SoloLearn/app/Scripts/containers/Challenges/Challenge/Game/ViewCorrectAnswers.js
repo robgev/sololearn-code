@@ -24,6 +24,10 @@ import { QuizComponents, QuizType } from 'containers/Learn/QuizSelector';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import TypeSelector from './TypeSelector';
 import { createAnswerUI } from './gameUtil';
+
+// i18next
+import { translate } from 'react-i18next';
+
 const styles = {
 	animate: animation => ({
 		animation: '750ms',
@@ -76,6 +80,7 @@ class ViewCorrectAnswers extends Component {
 		})
 	}
 	render() {
+		const { t } = this.props;
 		if (!this.state.updated) {
 			return <LoadingOverlay />;
 		}
@@ -127,7 +132,7 @@ class ViewCorrectAnswers extends Component {
 						<div>{name}</div>
 						<div className='player-ui-quiz-result'>
 							<div>{createAnswerUI({id, isCompleted})}</div>
-							<div>{isCompleted ? 'Correct' : 'Wrong'}</div>
+							<div>{isCompleted ? t('play.answers.correct-answer') : t('play.answers.wrong-answer')}</div>
 						</div>
 					</div>
 				</div>
@@ -192,4 +197,4 @@ class ViewCorrectAnswers extends Component {
 
 const mapStateToProps = ({ levels }) => ({ levels });
 
-export default connect(mapStateToProps)(Radium(ViewCorrectAnswers));
+export default connect(mapStateToProps)(translate()(Radium(ViewCorrectAnswers)));
