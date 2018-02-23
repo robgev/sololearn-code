@@ -12,6 +12,7 @@ const DisabledContainer = ({ children, className, style }) => (
 const ProfileAvatar = ({
 	style,
 	userID,
+	vertical,
 	disabled,
 	size = 30,
 	userName,
@@ -25,7 +26,7 @@ const ProfileAvatar = ({
 	const ConditionalContainer = disabled ? DisabledContainer : Link;
 	return (
 		<ConditionalContainer to={`/profile/${userID}`} style={style} className="avatar-container">
-			<div className={`avatar-wrapper ${className}`}>
+			<div className={`avatar-wrapper ${vertical ? 'vertical' : ''} ${className || ''}`}>
 				{ avatarUrl ?
 					<Avatar
 						size={size}

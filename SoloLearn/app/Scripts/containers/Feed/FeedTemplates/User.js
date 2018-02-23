@@ -59,6 +59,7 @@ class User extends Component {
 			<Link to={`/profile/${user.id}`} className="user" style={styles.user} onClick={e => this.openCoursePopup(e)}>
 				<ProfileAvatar
 					size={45}
+					vertical
 					withUserNameBox
 					style={styles.avatar}
 					userID={user.id}

@@ -4,6 +4,9 @@
 		display: flex;
 		align-items: center;
 		font-size: 12px;
+		&.vertical {
+			flex-direction: column;
+		}
 	}
 	.avatar-meta-info-container {
 		display: flex;

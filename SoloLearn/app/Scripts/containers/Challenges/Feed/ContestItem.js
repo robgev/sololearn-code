@@ -107,6 +107,7 @@ class ContestItemBase extends PureComponent {
 				innerDivStyle={styles.content}
 			>
 				<ProfileAvatar
+					vertical
 					userID={opponent.id}
 					userName={opponent.name}
 					avatarUrl={opponent.avatarUrl}
