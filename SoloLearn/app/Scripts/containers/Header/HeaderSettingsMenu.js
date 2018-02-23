@@ -4,27 +4,44 @@ import { connect } from 'react-redux';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
 import { logout, imitateLogin } from 'actions/login.action';
+
+const mapStateToProps = ({ userProfile }) => ({ avatarUrl: userProfile.avatarUrl });
 
 const mapDispatchToProps = {
 	logout,
 	imitateLogin,
 };
 
-@connect(null, mapDispatchToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 class SettingsMenu extends PureComponent {
 	singOut = () => {
 		this.props.logout()
 			.then(() => browserHistory.push('/login'));
 	}
 	render() {
+		const { avatarUrl } = this.props;
 		return (
 			<IconMenu
 				anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
 				targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-				iconButtonElement={<IconButton><MoreVertIcon color="#fff" /></IconButton>}
+				iconStyle={{ display: 'flex', alignItems: 'center' }}
+				iconButtonElement={
+					<IconButton>
+						<div>
+							<ProfileAvatar
+								disabled
+								avatarUrl={avatarUrl}
+							/>
+							<div>
+								<ArrowDown color="white" />
+							</div>
+						</div>
+					</IconButton>
+				}
 			>
 				<MenuItem
 					primaryText="Sign out"
