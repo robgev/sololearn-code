@@ -1,9 +1,15 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
+import { translate } from 'react-i18next';
+
 import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from 'material-ui/RaisedButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
+import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+
 import { getLeaderboard } from 'actions/leaderboards';
+
 import Layout from 'components/Layouts/GeneralLayout';
 import BusyWrapper from 'components/Shared/BusyWrapper';
 import texts from 'texts';
@@ -17,19 +23,22 @@ const mapStateToProps =
 	({ leaderboards, userProfile: { id: userId } }) => ({ leaderboards, userId });
 
 @connect(mapStateToProps, { getLeaderboard })
+@translate()
 class Leaderboards extends PureComponent {
 	constructor(props) {
 		super(props);
-		const { params: { mode: modeValue, range: rangeValue, id } } = props;
-		const userId = id || this.props.userId;
+		const { params: { mode: modeValue, range: rangeValue, userId } } = props;
+		const calculatedUserId = parseInt(userId || this.props.userId, 10);
 		// Set default mode and turn into int in case it's not set
 		const mode = modeValue ? parseInt(modeValue, 10) : 1;
 		const range = rangeValue ? parseInt(rangeValue, 10) : 1; // Same thing
 		this.state = {
 			mode,
 			range,
-			userId,
+			userRank: -1,
 			loading: true,
+			scrollToIndex: 0,
+			userId: calculatedUserId,
 		};
 	}
 
@@ -42,18 +51,23 @@ class Leaderboards extends PureComponent {
 			index: 0,
 			count: 20,
 		}); // The last two are provisional params for initial load of all time leaderboard
-		this.setState({ loading: false });
+		const userRank = this.findRank();
+		this.setState({ loading: false, userRank });
 	}
 
 	async componentWillReceiveProps(newProps) {
-		const { params: newParams } = newProps;
-		const { params } = this.props;
+		const { params: newParams, leaderboards: newLeaderboards } = newProps;
+		const { params, leaderboards } = this.props;
 		if (newParams.mode !== params.mode || newParams.range !== params.range) {
 			const mode = parseInt(newParams.mode, 10);
 			const range = parseInt(newParams.range, 10);
 			this.setState({ loading: true, mode, range });
 			await this.props.getLeaderboard({ ...newParams, index: 0, count: 20 });
-			this.setState({ loading: false });
+			const userRank = this.findRank(newLeaderboards);
+			this.setState({ loading: false, userRank });
+		} else if (newLeaderboards.length !== leaderboards.length) {
+			const userRank = this.findRank(newLeaderboards);
+			this.setState({ loading: false, userRank });
 		}
 	}
 
@@ -62,14 +76,34 @@ class Leaderboards extends PureComponent {
 		browserHistory.replace(`/leaderboards/${userId}/${mode}/${range}`);
 	}
 
+	findRank = (newLeaderboards) => {
+		const leaderboards = newLeaderboards || this.props.leaderboards;
+		const { userId } = this.state;
+
+		const targetUser = leaderboards.find(({ userID }) => userID === userId);
+		return targetUser ? targetUser.rank : -1; // If the user is not found in the list, return - 1
+	}
+
+	scrollTo = () => {
+		const { userId, range, userRank } = this.state;
+		if (range === 0) {
+			this.infiniteBoard.getWrappedInstance().scrollTo(userRank);
+		} else {
+			document.getElementById(`user-card-${userId}`).scrollIntoView({ block: 'center', behavior: 'smooth' });
+		}
+	}
+
 	render() {
-		const { leaderboards } = this.props;
+		const { leaderboards, t } = this.props;
 		const {
 			mode,
 			range,
 			userId,
 			loading,
+			userRank,
+			scrollToIndex,
 		} = this.state;
+
 		return (
 			<Layout className="leaderboards-container">
 				<div className="leaderboards-topbar">
@@ -110,8 +144,26 @@ class Leaderboards extends PureComponent {
 							mode={mode}
 							userId={userId}
 							leaderboards={leaderboards}
+							scrollToIndex={scrollToIndex}
+							ref={(infiniteBoard) => { this.infiniteBoard = infiniteBoard; }}
 						/> :
-						<LeaderboardCard userId={userId} leaderboards={leaderboards} />
+						<LeaderboardCard
+							userId={userId}
+							leaderboards={leaderboards}
+						/>
+					}
+					{ userRank > 0 &&
+						<RaisedButton
+							labelColor="#FFFFFF"
+							onClick={this.scrollTo}
+							labelPosition="before"
+							className="scroll-button"
+							backgroundColor="#78909C"
+							style={{ borderRadius: 100 }}
+							buttonStyle={{ borderRadius: 100 }}
+							label={t(`leaderboard.action.${userId === this.props.userId ? 'find-me' : 'find-them'}`)}
+							icon={<ArrowDown />}
+						/>
 					}
 				</BusyWrapper>
 			</Layout>

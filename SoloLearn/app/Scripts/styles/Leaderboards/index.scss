@@ -44,4 +44,19 @@
 			}
 		}
 	}
+	.scroll-button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 10vw;
+		position: fixed;
+		bottom: 30;
+		right: 0;
+		left: 0;
+		margin: auto;
+		border-radius: 100px;
+		color: white;
+    font-size: 20px;
+		cursor: pointer;
+	}
 }

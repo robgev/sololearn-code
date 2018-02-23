@@ -3,7 +3,10 @@ import { Link } from 'react-router';
 import texts from 'texts';
 import UserCard from './UserCard';
 
-const LeaderboardCard = ({ leaderboards, userId }) => (
+const LeaderboardCard = ({
+	userId,
+	leaderboards,
+}) => (
 	<div className="leaderboard-card-container">
 		{
 			leaderboards.map((user, index) => (
@@ -16,6 +19,7 @@ const LeaderboardCard = ({ leaderboards, userId }) => (
 					<Link
 						key={user.name}
 						to={`/profile/${user.userID}`}
+						id={`user-card-${user.userID}`}
 						className={`leaderboard-card ${user.userID === userId ? 'highlighted' : ''}`}
 					>
 						<UserCard {...user} />

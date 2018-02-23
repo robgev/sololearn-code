@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import {
 	List,
+	AutoSizer,
 	WindowScroller,
 } from 'react-virtualized';
 import { loadMore } from 'actions/leaderboards';
@@ -12,7 +13,7 @@ const mapDispatchToProps = {
 	loadMore,
 };
 
-@connect(null, mapDispatchToProps)
+@connect(null, mapDispatchToProps, null, { withRef: true })
 class InfiniteLeaderboard extends PureComponent {
 	constructor() {
 		super();
@@ -38,6 +39,7 @@ class InfiniteLeaderboard extends PureComponent {
 			>
 				<Link
 					to={`/profile/${user.userID}`}
+					id={`user-card-${user.userID}`}
 					className={`leaderboard-card ${user.userID === userId ? 'highlighted' : ''}`}
 				>
 					<UserCard {...user} />
@@ -66,26 +68,42 @@ class InfiniteLeaderboard extends PureComponent {
 		}
 	}
 
+	scrollTo = (scrollIndex) => {
+		this._list.scrollToRow(scrollIndex);
+	}
+
 	render() {
-		const { leaderboards } = this.props;
+		const { leaderboards, scrollToIndex } = this.props;
 		return (
-			<WindowScroller>
-				{
-					({ height, scrollTop }) => (
-						<List
-							autoHeight
-							width={960}
-							rowHeight={51}
-							height={height}
-							scrollTop={scrollTop}
-							rowCount={leaderboards.length}
-							ref={(list) => { this._list = list; }}
-							onRowsRendered={this.handleNextFetch}
-							className="leaderboard-card-container"
-							rowRenderer={this.renderLeaderboardCard}
-						/>
-					)
-				}
+			<WindowScroller ref={this._setRef}>
+				{({
+					height, registerChild, onChildScroll, scrollTop,
+				}) => (
+					<div style={{ flex: '1 1 auto ' }}>
+						<AutoSizer disableHeight>
+							{({ width }) => (
+								<div ref={registerChild}>
+									<List
+										autoHeight
+										width={width}
+										rowHeight={51}
+										height={height}
+										scrollTop={scrollTop}
+										overscanRowCount={2}
+										onScroll={onChildScroll}
+										scrollToAlignment="center"
+										scrollToIndex={scrollToIndex}
+										rowCount={leaderboards.length}
+										ref={(list) => { this._list = list; }}
+										onRowsRendered={this.handleNextFetch}
+										className="leaderboard-card-container"
+										rowRenderer={this.renderLeaderboardCard}
+									/>
+								</div>
+							)}
+						</AutoSizer>
+					</div>
+				)}
 			</WindowScroller>
 		);
 	}
