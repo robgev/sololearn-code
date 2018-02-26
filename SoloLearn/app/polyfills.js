@@ -1,4 +1,5 @@
 "use strict";
+exports.__esModule = true;
 require("ie-shim"); // Internet Explorer 9 support.
 require("core-js/es6/symbol");
 require("core-js/es6/object");
