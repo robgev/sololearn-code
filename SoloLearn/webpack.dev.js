@@ -67,8 +67,11 @@ module.exports = {
 				],
 			},
 			{
-				test: /\.(png|jpg|gif|ico|woff|woff2|ttf|svg|eot)$/i,
-				exclude: /node_modules/,
+				test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+				loader: 'file-loader?name=fonts/[name].[ext]',
+			},
+			{
+				test: /\.(png|jpg|gif|ico)$/i,
 				loader: 'file-loader?name=/assets/[name].[ext]',
 			},
 			{
@@ -113,7 +116,7 @@ module.exports = {
 
 		new CopyWebpackPlugin([
 			{ from: './app/images/*.*', to: 'assets/', flatten: true },
-			{ from: './app/translations/*.*', to: 'assets/translations', flatten: true }
+			{ from: './app/translations/*.*', to: 'assets/translations', flatten: true },
 		]),
 	],
 };

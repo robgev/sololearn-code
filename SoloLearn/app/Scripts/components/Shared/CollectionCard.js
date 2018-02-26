@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import Slider from 'react-slick';
 import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
+import { translate } from 'react-i18next';
+// i18next
+
 import 'styles/collectionCard.scss';
 import CourseChip from './CourseChip';
-
-// i18next
-import { translate } from 'react-i18next';
 
 const collectionTypes = {
 	slayLessons: 1,
@@ -28,7 +29,7 @@ const CollectionCard = ({
 }) => {
 	// lessons are the old Sololearn-created courses, like learn HTML, C# etc.
 	const isCourses = type === collectionTypes.courses;
-	const collectionItems = isCourses ? courses.slice(0, 8) : items.slice(0, 8);
+	const collectionItems = isCourses ? courses : items;
 	return (
 		<Paper
 			style={{
@@ -48,20 +49,29 @@ const CollectionCard = ({
 					/>
 				}
 			</div>
-			<div className="courses-list">
+			<Slider
+				infinite
+				dots={false}
+				speed={500}
+				swipeToSlide
+				slidesToShow={8}
+				className="courses-list"
+			>
 				{
 					collectionItems.map(lessonItem => (
 						lessonItem.itemType !== 4 &&
-						<CourseChip
-							{...lessonItem}
-							round={round}
-							noName={noName}
-							isCourse={isCourses}
-							key={`${lessonItem.name}-${lessonItem.id}`}
-						/>
+						<div>
+							<CourseChip
+								{...lessonItem}
+								round={round}
+								noName={noName}
+								isCourse={isCourses}
+								key={`${lessonItem.name}-${lessonItem.id}`}
+							/>
+						</div>
 					))
 				}
-			</div>
+			</Slider>
 		</Paper>
 	);
 };

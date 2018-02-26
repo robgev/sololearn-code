@@ -54,9 +54,12 @@ module.exports = {
 				],
 			},
 			{
-				test: /\.(png|jpg|gif|ico|woff|woff2|ttf|svg|eot)$/,
-				exclude: /node_modules/,
-				loader: 'file?name=assets/[name]-[hash:6].[ext]',
+				test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+				loader: 'file-loader?name=fonts/[name].[ext]',
+			},
+			{
+				test: /\.(png|jpg|gif|ico)$/i,
+				loader: 'file-loader?name=/assets/[name].[ext]',
 			},
 			{
 				test: /\.css$/,

@@ -4,9 +4,29 @@
 	padding-bottom: 10px;
 }
 .courses-list {
+	margin: 0 auto;
+	padding: 10px 40px;
+	width: 100%;
+	color: #333;
 	display: flex;
-	height: auto;
-	flex-wrap: wrap;
-	overflow-x: hidden;
-	white-space: nowrap;
+}
+
+.slick-slider {
+	.slick-prev {
+		left: 0;
+		&:before {
+			color: #00558B;
+		}
+	}
+
+	.slick-next {
+		right: 0;
+		&:before {
+			color: #00558B;
+		}
+	}
+
+	.slick-slide {
+		height: initial;
+	}
 }
