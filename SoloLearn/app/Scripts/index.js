@@ -12,6 +12,7 @@ import { loadDefaults } from 'actions/defaultActions';
 import { store, defaultsLoaded } from 'reducers';
 import routes from './config/routes';
 import './i18n';
+import './analytics';
 injectTapEventPlugin();
 
 const mapStateToProps = state => ({
