@@ -5,7 +5,7 @@ import AlertContainer from 'react-alert';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Paper from 'material-ui/Paper';
-import { logout, login, signup, forgotPassword } from '../../actions/login.action';
+import { logout, login, signup, forgotPassword } from 'actions/login.action';
 
 import Login from './Login';
 

@@ -9,7 +9,7 @@ import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
 import { logout, imitateLogin } from 'actions/login.action';
 
-const mapStateToProps = ({ userProfile }) => ({ avatarUrl: userProfile.avatarUrl });
+const mapStateToProps = ({ userProfile }) => ({ avatarUrl: userProfile ? userProfile.avatarUrl : null });
 
 const mapDispatchToProps = {
 	logout,
@@ -24,7 +24,7 @@ class SettingsMenu extends PureComponent {
 	}
 	render() {
 		const { avatarUrl } = this.props;
-		return (
+		return avatarUrl && (
 			<IconMenu
 				anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
 				targetOrigin={{ horizontal: 'left', vertical: 'top' }}
