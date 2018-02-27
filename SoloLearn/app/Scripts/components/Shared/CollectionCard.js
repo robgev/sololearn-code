@@ -56,17 +56,25 @@ const CollectionCard = ({
 				swipeToSlide
 				slidesToShow={8}
 				className="courses-list"
+				responsive={[
+					{ breakpoint: 440, settings: { slidesToShow: 1 } },
+					{ breakpoint: 640, settings: { slidesToShow: 2 } },
+					{ breakpoint: 840, settings: { slidesToShow: 3 } },
+					{ breakpoint: 1040, settings: { slidesToShow: 4 } },
+					{ breakpoint: 1240, settings: { slidesToShow: 5 } },
+					{ breakpoint: 1440,  settings: { slidesToShow: 6 } },
+					{ breakpoint: 1640,  settings: { slidesToShow: 7 } }
+				]}
 			>
 				{
 					collectionItems.map(lessonItem => (
 						lessonItem.itemType !== 4 &&
-						<div>
+						<div key={`${lessonItem.name}-${lessonItem.id}`}>
 							<CourseChip
 								{...lessonItem}
 								round={round}
 								noName={noName}
 								isCourse={isCourses}
-								key={`${lessonItem.name}-${lessonItem.id}`}
 							/>
 						</div>
 					))
