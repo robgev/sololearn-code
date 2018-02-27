@@ -62,7 +62,7 @@ class Skills extends PureComponent {
 				<Paper className="skills-group">
 					<p className="skills-header">{t('skills.status-plus-rank')}</p>
 					<div className="skills-details">
-						<Link to="/leaderboard" className="leaderboard-link">
+						<Link to="/leaderboards" className="leaderboard-link">
 							{t('leaderboard.rank.placeholder')}
 						</Link>
 						<div className="progress-wrapper">

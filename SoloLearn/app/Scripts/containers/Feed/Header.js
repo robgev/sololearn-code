@@ -97,7 +97,7 @@ class Header extends PureComponent {
 						/>
 						<div className="details" style={styles.details}>
 							<p style={styles.name}>{profile.name}</p>
-							<Link to="/leaderboard" style={styles.leaderboardLink}>
+							<Link to="/leaderboards" style={styles.leaderboardLink}>
 								{t('leaderboard.rank.placeholder')}
 							</Link>
 							<div style={styles.progressWrapper}>
