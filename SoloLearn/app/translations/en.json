@@ -1,4 +1,9 @@
 {
+  "Localizable": {},
+  "Created by Grigor Hakobyan on 3/26/17": {},
+  "Copyright © 2017 SoloLearn Inc": {
+    " All rights reserved": {}
+  },
   "common": {
     "cancel-title": "Cancel",
     "ok-title": "OK",
@@ -13,10 +18,10 @@
     "no-connection-message": "Please check your internet connection and try again.",
     "block-user": "Block",
     "unblock-user": "Unblock",
-    "user-level": "Level %@",
+    "user-level": "Level",
     "user-following": "FOLLOWING",
-    "user-followers-one": "%@ Follower",
-    "user-followers": "%@ Followers",
+    "user-followers-one": "Follower",
+    "user-followers": "Followers",
     "follow-user": "Follow",
     "share-title": "Share",
     "email-title": "Email",
@@ -28,7 +33,7 @@
     "post-action-title": "Post",
     "copy-text-action-title": "Copy Text",
     "report-action-title": "Report",
-    "comments-format": "%@ COMMENTS",
+    "comments-format": "COMMENTS",
     "comments": "COMMENTS",
     "comment-format-one": "1 COMMENT",
     "error": {
@@ -38,7 +43,7 @@
     },
     "saved-message": "Saved",
     "save-action-title": "Save",
-    "author-format": "by %@",
+    "author-format": "by",
     "success-title": "Success",
     "no-results": "No Results",
     "follow-limit-reached": "You've hit a follow limit.",
@@ -54,44 +59,44 @@
       "most-recent": "Most Recent",
       "most-popular": "Most Popular"
     },
-    "replying-to-format": "Replying to %@",
+    "replying-to-format": "Replying to",
     "write-reply-placeholder": "Write a reply",
     "delete-comment-popup-message": "Are you sure you want to delete this comment?",
-    "replies-other": "%lu Replies",
+    "replies-other": "Replies",
     "replies-one": "1 Reply",
     "reply": "Reply"
   },
   "date": {
     "now-past": "just now",
     "now-future": "in a few seconds",
-    "seconds-past": "%.f seconds",
-    "seconds-future": "in %.f seconds",
+    "seconds-past": "seconds",
+    "seconds-future": "in  seconds",
     "one-minute-past": "1 minute",
     "one-minute-future": "in 1 minute",
-    "minutes-past": "%.f minutes",
-    "minutes-future": "in %.f minutes",
+    "minutes-past": "minutes",
+    "minutes-future": "in  minutes",
     "one-hour-past": "last hour",
     "one-hour-future": "next hour",
-    "hours-past": "%.f hours",
-    "hours-future": "in %.f hours",
+    "hours-past": "hours",
+    "hours-future": "in  hours",
     "one-day-past": "yesterday",
     "one-day-future": "tomorrow",
-    "days-past": "%.f days",
-    "days-future": "in %.f days",
+    "days-past": "days",
+    "days-future": "in  days",
     "one-week-past": "last week",
-    "weeks-past": "%.f weeks",
+    "weeks-past": "weeks",
     "one-week-future": "next week",
-    "weeks-future": "in %.f weeks",
+    "weeks-future": "in  weeks",
     "one-month-past": "last month",
     "one-month-future": "next month",
-    "months-past": "%.f months",
-    "months-future": "in %.f months",
+    "months-past": "months",
+    "months-future": "in  months",
     "one-year-past": "last year",
     "one-year-future": "next year",
-    "years-past": "%.f years",
-    "years-future": "in %.f years",
-    "hour": "%ld hr",
-    "min": "%ld min"
+    "years-past": "years",
+    "years-future": "in  years",
+    "hour": "hr",
+    "min": "min"
   },
   "tab": {
     "learn": "Learn",
@@ -356,18 +361,18 @@
       "global-title": "All Time"
     },
     "action": {
-      "find-me": "You are #%d",
-      "find-them": "They are #%d"
+      "find-me": "You are #",
+      "find-them": "They are #"
     },
     "rank": {
       "placeholder": "Check out the Leaderboards",
-      "month": "%@ this month",
-      "week": "%@ this week",
-      "country": "%@ in %@",
-      "country-month": "%@ in %@ this month",
-      "country-week": "%@ in %@ this week",
-      "percent-format": "Top %.2f%%",
-      "default-format": "#%d"
+      "month": "this month",
+      "week": "this week",
+      "country": "in",
+      "country-month": "in  this month",
+      "country-week": "in  this week",
+      "percent-format": "Top",
+      "default-format": "#"
     },
     "no-country-specified-title": "No Location specified",
     "no-country-specified-message": "Select your location to see your rank.",
@@ -382,7 +387,7 @@
   "feed": {
     "title": "Activity Feed",
     "most-recent-title": "Most Recent",
-    "groupped-chellenge-format": "%@ has completed %@ challenges",
+    "groupped-chellenge-format": "has completed  challenges",
     "suggestions": "Suggestions",
     "new-activity-title": "New Activity",
     "discover-peers-title": "It's Lonely Here",
@@ -433,14 +438,14 @@
     "delete-question-message": "Are you sure you want to delete this post?",
     "new-answer-placeholder": "Write new answer",
     "edit-answer-placeholder": "Your Answer",
-    "answer-other-format": "%@ ANSWERS",
-    "answer-one-format": "%@ ANSWER",
+    "answer-other-format": "ANSWERS",
+    "answer-one-format": "ANSWER",
     "following-title": "You are now following this Q&A thread",
-    "date-by-name-format": "%@ by %@",
+    "date-by-name-format": "by",
     "invalid-thread": "Question not found",
     "hide-post-popup-title": "Hide post",
     "hide-post-popup-message": "Are you sure you want to hide this post?",
-    "edited-by-format": "Edited by %@ (%@)"
+    "edited-by-format": "Edited by  ()"
   },
   "report": {
     "report-submitted-title": "Report Submitted",
@@ -523,8 +528,8 @@
     },
     "edit-prfile": "EDIT PROFILE",
     "challenge": "CHALLENGE",
-    "status-text-one": "%@ more level to %@ status",
-    "status-text-other": "%@ more levels to %@ status",
+    "status-text-one": "more level to  status",
+    "status-text-other": "more levels to  status",
     "show-profile": "SHOW PROFILE",
     "status-bronze": "Bronze",
     "status-silver": "Silver",
@@ -552,13 +557,13 @@
   },
   "block": {
     "user": {
-      "title": "Block %@?",
+      "title": "Block ?",
       "message": "They won't be able to find your profile and posts on SoloLearn. We won't let them know you blocked item."
     }
   },
   "blocked": {
     "user": {
-      "title": "%@ Blocked",
+      "title": "Blocked",
       "message": "You can unblock them anytime from the Settings page."
     }
   },
@@ -580,7 +585,7 @@
       "answers-bonus": "ANSWERS BONUS",
       "match-result": "MATCH\\nRESULT",
       "total-xp": "TOTAL XP",
-      "reach-to-level": "%lu XP to LEVEL %lu",
+      "reach-to-level": "XP to LEVEL",
       "rounds-summary-title": "ROUNDS SUMMARY",
       "self-result-title": "YOU",
       "opponent-result-title": "OPPONENT",
@@ -602,18 +607,18 @@
       "quit-challenge-popup-title": "Quit Challenge",
       "quit-challenge-descripion": "Are you sure? You will lose the current round."
     },
-    "title": "%@ Challenge",
+    "title": "Challenge",
     "answers": {
-      "round-title": "ROUND %i/5",
-      "current-round-format": "Round %lu",
+      "round-title": "ROUND /5",
+      "current-round-format": "Round",
       "correct-answer": "Correct!",
       "wrong-answer": "Wrong",
       "time-out": "Time Out"
     },
     "start-challenge": "START A CHALLENGE",
-    "challanged-me": "%@ challenged you!",
-    "challenge-expire-format": "Expires in %@",
-    "level-format": "LEVEL\\n%d",
+    "challanged-me": "challenged you!",
+    "challenge-expire-format": "Expires in",
+    "level-format": "LEVEL\\n",
     "level": "LEVEL",
     "vs": "VS",
     "challenge-declined": "Challenge Declined",
@@ -623,8 +628,8 @@
     "challenge-creation-error-title": "Could not create challenge",
     "challenge-creation-error-message": "You have reached the limit of ongoing challenges",
     "clear-challenges-button-title": "Clear",
-    "challenge-won-format": "%@ won",
-    "challenge-lost-format": "%@ lost",
+    "challenge-won-format": "won",
+    "challenge-lost-format": "lost",
     "challenge-won-empty-format": "won",
     "challenge-lost-empty-format": "lost"
   },
@@ -638,24 +643,24 @@
     "popups": {
       "unlock-popup-title": "Unlock Answer",
       "unlock": {
-        "description": "Use %lu XP of your %@ XP to unlock the correct answer."
+        "description": "Use  XP of your  XP to unlock the correct answer."
       },
       "unlock-popup-ok-action-title": "Unlock",
       "hint-popup-ok-action-title": "Get Hint",
       "reset-font-size": "Reset font size"
     },
     "take-shortcut": "Take a Shortcut",
-    "questions-format": "%i questions",
+    "questions-format": "questions",
     "test-out": "Test Out",
     "test-completed-message": "You have successfully completed the test!",
-    "answer-check-attemps-left-format": "%lu attempts left",
+    "answer-check-attemps-left-format": "attempts left",
     "answer-correct": "CORRECT",
     "answer-wrong": "WRONG",
     "try-it-yourself": "TRY IT YOURSELF",
     "achievement-unlocked": "Achievement Unlocked",
     "hint-popup-title": "Hint",
     "hint-not-enough-xp": "You don't have enough XP to use this feature",
-    "get-hint-format": "Use %lu XP of your %@ XP to get a hint.",
+    "get-hint-format": "Use  XP of your  XP to get a hint.",
     "reset-course-popup-title": "Reset",
     "reset-course-popup-message": "All your course progress, including challenge history, will be lost. Are you sure you want to continue?",
     "module-locked-title": "Module locked",
@@ -665,7 +670,7 @@
     "lesson-test-leave-message": "Are you sure you want to leave the test?",
     "lesson-test-failed-message": "Test Out failed. You ran out of lives.",
     "open-course-action-tite": "OPEN COURSE",
-    "course-learners-format": "%@ Users",
+    "course-learners-format": "Users",
     "noImage-tryAgain": "Try Again",
     "noImage-title": "Could not load image",
     "add-courses-button-title": "ADD COURSES",
@@ -682,7 +687,7 @@
   },
   "certificate": {
     "title": "CERTIFICATE",
-    "completed-successfully": "You've successfully completed the %@ course.",
+    "completed-successfully": "You've successfully completed the  course.",
     "congrats-title": "CONGRATULATIONS",
     "complete-course-message": "Complete the course to unlock your certificate"
   },
@@ -713,8 +718,8 @@
     "implementations": "Implementations",
     "up-next": "Up Next",
     "see-also": "See Also",
-    "view-more-by-author": "More by %@",
-    "lessonsBy": "Lessons by %@",
+    "view-more-by-author": "More by",
+    "lessonsBy": "Lessons by",
     "copy-link": "Copy Link",
     "bookmark-added": "Added to your bookmarks",
     "bookmark-removed": "Removed from your bookmarks",
