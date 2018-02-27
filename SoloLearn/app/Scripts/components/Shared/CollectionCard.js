@@ -54,7 +54,7 @@ const CollectionCard = ({
 				dots={false}
 				speed={500}
 				swipeToSlide
-				slidesToShow={8}
+				slidesToShow={collectionItems.length >= 8 ? 8 : collectionItems.length}
 				className="courses-list"
 				responsive={[
 					{ breakpoint: 440, settings: { slidesToShow: 1 } },
