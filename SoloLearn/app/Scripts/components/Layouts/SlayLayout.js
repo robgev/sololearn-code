@@ -11,6 +11,7 @@ const Layout = ({
 	children,
 	hasMore,
 	loadMore,
+	isCourses,
 	cardComponent: CardComponent,
 }) => (
 	<div className="slay-container">
@@ -37,6 +38,7 @@ const Layout = ({
 					{items.map(collection => (
 						<CardComponent
 							{...collection}
+							isCourses={isCourses}
 							key={collection.name}
 						/>
 					))}

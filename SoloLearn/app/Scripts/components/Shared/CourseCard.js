@@ -18,6 +18,7 @@ const CourseCard = ({
 	iconUrl,
 	itemType,
 	userName,
+	isCourses,
 	viewCount,
 	comments,
 }) => (
@@ -29,7 +30,7 @@ const CourseCard = ({
 		}
 		<Link
 			to={
-				itemType === slayItemTypes.course ?
+				itemType === slayItemTypes.course || isCourses ?
 					`/learn/${getCourseAliasById(courses, id)}` :
 					`/learn/slayLesson/${itemType}/${id}/1`
 			}
@@ -39,7 +40,7 @@ const CourseCard = ({
 				<img
 					src={iconUrl}
 					alt="Course Icon"
-					className={`card-image ${itemType === slayItemTypes.course ? 'round' : ''}`}
+					className={`card-image ${itemType === slayItemTypes.course || isCourses ? 'round' : ''}`}
 				/>
 			</div>
 			<div className="info-container">

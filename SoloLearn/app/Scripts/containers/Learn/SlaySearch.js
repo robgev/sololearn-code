@@ -65,7 +65,7 @@ class SlayDetailed extends PureComponent {
 
 	render() {
 		const { loading, hasMore } = this.state;
-		const { lessons, params: { query } } = this.props;
+		const { lessons } = this.props;
 		return (
 			<SlayLayout
 				items={lessons}
