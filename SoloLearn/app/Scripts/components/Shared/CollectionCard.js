@@ -15,6 +15,21 @@ const collectionTypes = {
 	courses: 2,
 };
 
+const generateBreakpoints = (collectionItems) => {
+	const breakpointValues = [ 1640, 1440, 1240, 1040, 840, 640, 440 ];
+	const initialNumberOfShownItems = 8;
+	return breakpointValues.map((currentPoint, index) => {
+		const slidesToShow = initialNumberOfShownItems - (index + 1);
+		return {
+			breakpoint: currentPoint,
+			settings: {
+				slidesToShow,
+				infinite: collectionItems.length > slidesToShow,
+			},
+		};
+	});
+};
+
 const CollectionCard = ({
 	t,
 	id,
@@ -50,21 +65,13 @@ const CollectionCard = ({
 				}
 			</div>
 			<Slider
-				infinite
 				dots={false}
 				speed={500}
 				swipeToSlide
-				slidesToShow={collectionItems.length >= 8 ? 8 : collectionItems.length}
+				slidesToShow={8}
 				className="courses-list"
-				responsive={[
-					{ breakpoint: 440, settings: { slidesToShow: 1 } },
-					{ breakpoint: 640, settings: { slidesToShow: 2 } },
-					{ breakpoint: 840, settings: { slidesToShow: 3 } },
-					{ breakpoint: 1040, settings: { slidesToShow: 4 } },
-					{ breakpoint: 1240, settings: { slidesToShow: 5 } },
-					{ breakpoint: 1440,  settings: { slidesToShow: 6 } },
-					{ breakpoint: 1640,  settings: { slidesToShow: 7 } }
-				]}
+				infinite={collectionItems.length > 8}
+				responsive={generateBreakpoints(collectionItems)}
 			>
 				{
 					collectionItems.map(lessonItem => (

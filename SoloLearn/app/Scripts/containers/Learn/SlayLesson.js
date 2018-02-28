@@ -107,7 +107,7 @@ class SlayLesson extends PureComponent {
 		return (
 			<LessonLayout loading={loading}>
 				{ !loading &&
-					<div>
+					<div style={{ width: '100%' }}>
 						<SlayLessonContent
 							date={date}
 							quizId={id}
