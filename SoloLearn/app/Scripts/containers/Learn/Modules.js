@@ -27,6 +27,7 @@ import Progress, { ProgressState } from 'api/progress';
 
 // Components
 import CourseChip from 'components/Shared/CourseChip';
+import BusyWrapper from 'components/Shared/BusyWrapper';
 import Layout from 'components/Layouts/GeneralLayout';
 
 // Popups
@@ -244,6 +245,7 @@ class Modules extends Component {
 		super(props);
 
 		this.state = {
+			loading: false,
 			selectCourse: false,
 			resetPopupOpened: false,
 			lockedPopupOpened: false,
@@ -258,7 +260,7 @@ class Modules extends Component {
 		this.resetProgress = this.resetProgress.bind(this);
 	}
 
-	componentWillMount() {
+	async componentWillMount() {
 		const {
 			course,
 			courses,
@@ -268,6 +270,7 @@ class Modules extends Component {
 			loadCourseInternal,
 			params: { courseName },
 		} = this.props;
+		this.setState({ loading: true })
 		if (!isLoaded || courseName !== course.alias) {
 			const courseNameIsANumber = courseName.match(/\d+/);
 			// I've added this temporary code to reroute to the slay lessons
@@ -279,11 +282,12 @@ class Modules extends Component {
 					item.alias.toLowerCase() === courseName.toLowerCase());
 				if (userProfile.skills.length > 0) {
 					const courseId = currentCourse ? currentCourse.id : null;
-					loadCourseInternal(courseId);
+					await loadCourseInternal(courseId);
 				}
 			}
 		}
 		selectModule(null);
+		this.setState({ loading: false })
 	}
 
 	renderModules() {
@@ -456,13 +460,16 @@ class Modules extends Component {
 		this.props.toggleCourseInternal(courseId, enable);
 	}
 
-	selectCourse(courseId, addToCourses) {
+	async selectCourse(courseId, addToCourses) {
 		const { alias } = this.props.courses.find(item => item.id === courseId);
 		browserHistory.push(`/learn/${alias}`);
-
 		this.closeCourseSelect();
-		if (addToCourses) this.props.toggleCourseInternal(courseId, true);
-		this.props.loadCourseInternal(courseId);
+		this.setState({ loading: true });
+		if (addToCourses) {
+		 await this.props.toggleCourseInternal(courseId, true);
+		}
+		await this.props.loadCourseInternal(courseId);
+		this.setState({ loading: false });
 	}
 
 	openCourseSelect() {
@@ -507,10 +514,7 @@ class Modules extends Component {
 					color="transparent"
 					disabled={!isCourseFinished}
 					customLink={`/certificate/${id}`}
-					iconUrl={isCourseFinished ?
-						'https://api.sololearn.com/uploads/Modules/certificate.png' :
-						'https://api.sololearn.com/uploads/Modules/certificate_disabled.png'
-					}
+					iconUrl={`https://api.sololearn.com/uploads/Modules/certificate${isCourseFinished ? '' : '_disabled'}.png`}
 				/>
 			</div>
 		);
@@ -523,6 +527,7 @@ class Modules extends Component {
 			isLoaded: isModuleLoaded,
 			t
 		} = this.props;
+		const { loading } = this.state;
 		if (!isModuleLoaded && this.props.userProfile.skills.length > 0) {
 			return <CircularProgress size={80} thickness={5} />;
 		}
@@ -547,67 +552,72 @@ class Modules extends Component {
 		];
 
 		return (
-			<Layout>
-				{ userCourses.length > 0 ?
+			<BusyWrapper
+				isBusy={loading}
+				style={{ minHeight: '60vh' }}
+			>
+				<Layout>
+					{ userCourses.length > 0 ?
 
-					[
-						<div
-							className="course-selector"
-							style={styles.courseBar}
-							onClick={() => this.openCourseSelect()}
-							key="course-selector"
-						>
-							<div className="details" style={styles.courseDetails}>
-								<img src={`https://www.sololearn.com/Icons/Courses/${course.id}.png`} alt={course.name} style={styles.courseIcon} />
-								<div style={styles.courseInfo}>
-									<p style={styles.courseName}>{course.name}</p>
-									<LinearProgress
-										style={styles.courseProgress}
-										mode="determinate"
-										value={activeCourseProgress * 100}
-										color="#8BC34A"
-									/>
+						[
+							<div
+								className="course-selector"
+								style={styles.courseBar}
+								onClick={() => this.openCourseSelect()}
+								key="course-selector"
+							>
+								<div className="details" style={styles.courseDetails}>
+									<img src={`https://www.sololearn.com/Icons/Courses/${course.id}.png`} alt={course.name} style={styles.courseIcon} />
+									<div style={styles.courseInfo}>
+										<p style={styles.courseName}>{course.name}</p>
+										<LinearProgress
+											style={styles.courseProgress}
+											mode="determinate"
+											value={activeCourseProgress * 100}
+											color="#8BC34A"
+										/>
+									</div>
 								</div>
-							</div>
-							<FlatButton
-								label={t('learn.course-picker-title')}
-								style={styles.courseActions}
+								<FlatButton
+									label={t('learn.course-picker-title')}
+									style={styles.courseActions}
+								/>
+							</div>,
+							<div className="modules" key="modules">
+								{this.renderModules()}
+								{this.showCertificate()}
+							</div>,
+						]
+						:
+						<div className="no-courses" style={styles.noCourses}>
+							<p style={styles.noCoursesTitle}>{t('learn.add-courses-title')}</p>
+							<p style={styles.noCoursesSubTitle}>{t('learn.add-courses-message')}</p>
+							<RaisedButton
+								style={styles.addCoursesButton}
+								label={t('learn.add-courses-button-title')}
+								secondary
+								onClick={() => this.openCourseSelect()}
 							/>
-						</div>,
-						<div className="modules" key="modules">
-							{this.renderModules()}
-							{this.showCertificate()}
-						</div>,
-					]
-					:
-					<div className="no-courses" style={styles.noCourses}>
-						<p style={styles.noCoursesTitle}>{t('learn.add-courses-title')}</p>
-						<p style={styles.noCoursesSubTitle}>{t('learn.add-courses-message')}</p>
-						<RaisedButton
-							style={styles.addCoursesButton}
-							label={t('learn.add-courses-button-title')}
-							secondary
-							onClick={() => this.openCourseSelect()}
-						/>
-					</div>
-				}
-				{
-					this.state.selectCourse &&
-					<Dialog
-						id="courses"
-						modal={false}
-						open={this.state.selectCourse}
-						title={t('course_picker.title')}
-						titleStyle={styles.coursesTitle}
-						bodyStyle={styles.courses}
-						autoScrollBodyContent
-						onRequestClose={this.closeCourseSelect}
-					>{this.renderCourses()}
-					</Dialog>
-				}
+						</div>
+					}
+					{
+						this.state.selectCourse &&
+						<Dialog
+							id="courses"
+							modal={false}
+							open={this.state.selectCourse}
+							title={t('course_picker.title')}
+							titleStyle={styles.coursesTitle}
+							bodyStyle={styles.courses}
+							autoScrollBodyContent
+							onRequestClose={this.closeCourseSelect}
+						>{this.renderCourses()}
+						</Dialog>
+					}
 
-				{ this.state.resetPopupOpened && Popup.getPopup(Popup.generatePopupActions(resetProgressActions), this.state.resetPopupOpened, this.handleResetPopupClose, [ { key: 'hintSkipConfirmText', replacemant: this.skipPrice } ]) }
-			</Layout>
+					{ this.state.resetPopupOpened && Popup.getPopup(Popup.generatePopupActions(resetProgressActions), this.state.resetPopupOpened, this.handleResetPopupClose, [ { key: 'hintSkipConfirmText', replacemant: this.skipPrice } ]) }
+				</Layout>
+			</BusyWrapper>
 		);
 	}
 }
