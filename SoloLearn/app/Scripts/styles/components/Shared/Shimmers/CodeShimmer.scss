@@ -1,0 +1,6 @@
+@import 'shimmer';
+
+.code-shimmer-container {
+	@extend %shimmer-container;
+	height: 80px;
+}

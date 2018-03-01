@@ -10,6 +10,7 @@ import { getCodesInternal, emptyCodes } from 'actions/playground';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
 import CodeItem from './CodeItem';
+import CodeShimmer from 'components/Shared/Shimmers/CodeShimmer';
 
 const styles = {
 	bottomLoading: {
@@ -88,7 +89,7 @@ class Codes extends Component {
 					/>
 				}
 				{((!isLoaded || codes.length === 0) && !isUserProfile)
-					&& <LoadingOverlay />}
+					&& <CodeShimmer />}
 				{
 					((isUserProfile || codes.length > 0)) &&
 					<div
