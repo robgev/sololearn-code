@@ -23,6 +23,7 @@ import { isLoaded } from 'reducers';
 import Layout from 'components/Layouts/GeneralLayout';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import ContestItem from './ContestItem';
+import PlayShimmer from 'components/Shared/Shimmers/PlayShimmer';
 
 // i18next
 import { translate } from 'react-i18next';
@@ -153,57 +154,64 @@ class Contests extends PureComponent {
 			ongoing,
 			completed,
 		} = contests || {};
-
-		return !isContestsLoaded ? <LoadingOverlay /> : (
-			<Layout>
-				<Paper id="contests">
-					{
-						invited && invited.length > 0 &&
-						<div>
-							<p style={{ ...styles.header.base, ...styles.header.title }}>{t('play.section.invites')}</p>
-							<List style={styles.contests}>{this.renderContests(invited)}</List>
-						</div>
-					}
-					{
-						invited && ongoing.length > 0 &&
-						<div>
-							<p style={{ ...styles.header.base, ...styles.header.title }}>{t('play.section.ongoing')}</p>
-							<List style={styles.contests}>{this.renderContests(ongoing)}</List>
-						</div>
-					}
-					{
-						invited && completed.length > 0 &&
-						<div>
-							<div style={styles.headerWithAction}>
-								<p style={styles.header.title}>{t('play.section.completed')}</p>
-								<FlatButton label={t('play.clear-challenges-button-title')} style={styles.headerButton} onClick={clearContests} />
+		if (!isContestsLoaded) {
+			return (
+				<Layout>
+					<PlayShimmer />
+				</Layout>
+			)
+		} else {
+			return (
+				<Layout>
+					<Paper id="contests">
+						{
+							invited && invited.length > 0 &&
+							<div>
+								<p style={{ ...styles.header.base, ...styles.header.title }}>{t('play.section.invites')}</p>
+								<List style={styles.contests}>{this.renderContests(invited)}</List>
 							</div>
-							<List style={styles.contests}>{this.renderContests(completed)}</List>
-						</div>
-					}
-					<Dialog
-						id="courses"
-						modal={false}
-						autoScrollBodyContent
-						title="Choose your weapon"
-						open={this.state.selectCourse}
-						titleStyle={styles.coursesTitle}
-						contentStyle={styles.coursesPopup}
-						onRequestClose={this.toggleCoursePopup}
-					>
-						{this.renderCourses()}
-					</Dialog>
-					<FloatingActionButton
-						secondary
-						zDepth={3}
-						onClick={this.toggleCoursePopup}
-						style={styles.newChallengeButton}
-					>
-						<ContentAdd />
-					</FloatingActionButton>
-				</Paper>
-			</Layout>
-		);
+						}
+						{
+							invited && ongoing.length > 0 &&
+							<div>
+								<p style={{ ...styles.header.base, ...styles.header.title }}>{t('play.section.ongoing')}</p>
+								<List style={styles.contests}>{this.renderContests(ongoing)}</List>
+							</div>
+						}
+						{
+							invited && completed.length > 0 &&
+							<div>
+								<div style={styles.headerWithAction}>
+									<p style={styles.header.title}>{t('play.section.completed')}</p>
+									<FlatButton label={t('play.clear-challenges-button-title')} style={styles.headerButton} onClick={clearContests} />
+								</div>
+								<List style={styles.contests}>{this.renderContests(completed)}</List>
+							</div>
+						}
+						<Dialog
+							id="courses"
+							modal={false}
+							autoScrollBodyContent
+							title="Choose your weapon"
+							open={this.state.selectCourse}
+							titleStyle={styles.coursesTitle}
+							contentStyle={styles.coursesPopup}
+							onRequestClose={this.toggleCoursePopup}
+						>
+							{this.renderCourses()}
+						</Dialog>
+						<FloatingActionButton
+							secondary
+							zDepth={3}
+							onClick={this.toggleCoursePopup}
+							style={styles.newChallengeButton}
+						>
+							<ContentAdd />
+						</FloatingActionButton>
+					</Paper>
+				</Layout>
+			);
+		}
 	}
 }
 
