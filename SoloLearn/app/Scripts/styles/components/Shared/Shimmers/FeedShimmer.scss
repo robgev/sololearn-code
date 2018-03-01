@@ -1,18 +1,11 @@
 @import 'shimmer';
 
-%feed-shimmer-container {
-	width: 50vw;
-	margin: 10px 0px;
-}
-
 .feed-shimmer-medium-container {
 	@extend %shimmer-container;
-	@extend %feed-shimmer-container;
 	height: 150px;
 }
 .feed-shimmer-small-container {
 	@extend %shimmer-container;
-	@extend %feed-shimmer-container;
 	height: 100px;
 }
 .feed-shimmer-title {
