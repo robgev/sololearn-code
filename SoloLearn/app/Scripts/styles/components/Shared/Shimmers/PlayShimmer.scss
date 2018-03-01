@@ -1,0 +1,12 @@
+@import 'shimmer';
+
+.play-shimmer-container {
+	@extend %shimmer-container;
+	height: 50px;
+}
+.play-shimmer-title {
+	@extend %shimmer-container;
+	width: 10vw;
+	height: 30px;
+	margin: 10px 0px;
+}
