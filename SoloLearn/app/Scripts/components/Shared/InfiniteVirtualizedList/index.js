@@ -169,15 +169,19 @@ class InfiniteVirtalizedList extends Component {
 			);
 		}
 		return (
-			<List
-				onRowsRendered={this.handleNextFetch}
-				width={this.width}
-				height={this.height}
-				rowCount={this.props.list.length}
-				ref={(list) => { this._list = list; }}
-				rowRenderer={this.rowRenderer}
-				rowHeight={this.rowHeight}
-			/>
+			<AutoSizer disableHeight>
+				{({ width }) => (
+					<List
+						width={width}
+						height={this.height}
+						rowHeight={this.rowHeight}
+						rowRenderer={this.rowRenderer}
+						rowCount={this.props.list.length}
+						ref={(list) => { this._list = list; }}
+						onRowsRendered={this.handleNextFetch}
+					/>
+				)}
+			</AutoSizer>
 		);
 	}
 }

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
-import Popover from 'material-ui/Popover';
+import Dialog from 'material-ui/Dialog';
 import CircularProgress from 'material-ui/CircularProgress';
 import Divider from 'material-ui/Divider';
 
@@ -53,11 +53,8 @@ class Likes extends PureComponent {
 				style={{ ...this.props.style, cursor: 'pointer' }}
 			>
 				{votes > 0 && '+'}{numberFormatter(votes)}
-				<Popover
+				<Dialog
 					open={this.state.open}
-					anchorEl={this.state.anchorEl}
-					anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-					targetOrigin={{ horizontal: 'left', vertical: 'top' }}
 					onRequestClose={this.closeList}
 					style={{ height: 300 }}
 				>
@@ -72,7 +69,7 @@ class Likes extends PureComponent {
 								loadMore={this.props.getLikes}
 							/>)
 					}
-				</Popover>
+				</Dialog>
 			</div>
 		);
 	}
