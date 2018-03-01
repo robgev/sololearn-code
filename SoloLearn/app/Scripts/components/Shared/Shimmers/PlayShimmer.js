@@ -6,7 +6,7 @@ const PlayShimmer = () => {
 		return (
 			<div className='play-shimmer-container' key={i}/>
 		)
-});
+	});
 	return(
 		<div>
 			<div className='play-shimmer-title'></div>

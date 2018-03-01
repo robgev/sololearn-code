@@ -18,7 +18,7 @@ const FeedShimmer = () => {
 				/>
 			)
 		}
-});
+	});
 	return(
 		<div>
 			<div className='feed-shimmer-title'></div>
