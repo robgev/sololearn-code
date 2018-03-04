@@ -389,11 +389,11 @@ class Playground extends Component {
 	}
 
 	wrapByTag = (code, tag) => {
-		const hasTag = code.includes(tag);
+		const hasTag = code ? code.includes(tag) : false;
 		if (!hasTag) {
 			return (
 				`<${tag}>
-						${code}
+						${code || ''}
 </${tag}>`
 			);
 		}
@@ -408,14 +408,14 @@ class Playground extends Component {
 		const succeedingSubstr = code.slice(insertPosition);
 		return (
 			`${precedingSubstr}
-	${value}
+	${value || ''}
 ${succeedingSubstr}
 							`
 		);
 	}
 
 	wrapAndAdd = (code, value) => {
-		const hasTag = code.includes('head');
+		const hasTag = code ? code.includes('head') : false;
 		const wrappedCode = this.wrapByTag(code, 'html');
 		const headWrappedValue =
 			`<head>
@@ -434,7 +434,7 @@ ${succeedingSubstr}
 
 	getStructurizeWebCode() {
 		const { cssCode, jsCode } = this.state;
-		return this.insertToHead(`<style>${cssCode}</style><script>${jsCode}</script>`);
+		return this.insertToHead(`<style>${cssCode || ''}</style><script>${jsCode || ''}</script>`);
 	}
 
 	// TODO: Implement those functions
