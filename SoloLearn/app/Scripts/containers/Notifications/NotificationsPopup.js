@@ -51,7 +51,7 @@ class NotificationPopup extends Component {
 				defaultStyle={{ opacity: 0, top: 40 }}
 				style={{
 					opacity: spring(1),
-					top: spring(50, { stiffness: 120, damping: 15 }),
+					top: spring(31, { stiffness: 120, damping: 15 }),
 				}}
 			>
 				{

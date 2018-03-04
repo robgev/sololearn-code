@@ -53,9 +53,9 @@ export const NotificationListStyles = {
 	notificationsContainer: {
 		position: 'absolute',
 		backgroundColor: '#fff',
-		width: '400px',
-		top: '20px',
-		right: 0,
+		width: 400,
+		top: 1,
+		right: 25,
 	},
 	notificationsTitle: {
 		padding: '11px 14px',
@@ -111,9 +111,9 @@ export const NotificationListStyles = {
 export const NotificationsPopupStyles = {
 	wrapper: {
 		position: 'absolute',
-		right: 0,
+		right: 5,
+		top: 31,
 		opacity: 0,
-		zIndex: 10001,
 	},
 	arrow: {
 		position: 'absolute',
@@ -125,7 +125,7 @@ export const NotificationsPopupStyles = {
 		height: 0,
 		width: 0,
 		bottom: '100%',
-		right: '29px',
+		right: 20,
 		top: 0,
 		zIndex: 10001,
 	},
@@ -153,9 +153,9 @@ export const NotificationsPopupStyles = {
 	notificationsContainer: {
 		position: 'absolute',
 		backgroundColor: '#fff',
-		width: '400px',
-		top: '20px',
-		right: 0,
+		width: 400,
+		top: 20,
+		right: 15,
 	},
 	notificationsFooter: {
 		padding: '8px 12px',
