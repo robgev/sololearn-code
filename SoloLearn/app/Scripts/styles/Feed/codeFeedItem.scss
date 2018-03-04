@@ -1,12 +1,12 @@
-.code-item-container {
-	.code-feed-item-wrapper {
+.code-item-container, .comment-item-container {
+	.code-feed-item-wrapper, .comment-feed-item-wrapper {
 		display: flex;
 		position: relative;
 		padding: 7px;
 		z-index: 2;
 		text-decoration: none;
 		background-color: #eee;
-		.code-snippet {
+		.code-snippet, .comment-text {
 			flex: 2;
 			color: #777;
 			fontSize: 13px;

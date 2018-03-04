@@ -18,6 +18,7 @@ import Badge from './FeedTemplates/Badge';
 import Course from './FeedTemplates/Course';
 import Post from './FeedTemplates/Post';
 import Code from './FeedTemplates/Code';
+import Comment from './FeedTemplates/Comment';
 import Challenge from './FeedTemplates/Challenge';
 import FeedSuggestions from './FeedSuggestions';
 
@@ -150,7 +151,7 @@ class FeedItem extends Component {
 			this.url = `/playground/${feedItem.code.publicID}`;
 			return (
 				<div onClick={() => this.props.setSelectedComment(feedItem.comment.id)}>
-					<Code code={feedItem.code} />
+					<Comment url={this.url} comment={feedItem.comment} />
 					<VoteControls
 						absolute
 						userVote={feedItem.vote}
