@@ -235,10 +235,14 @@ class Playground extends Component {
 				sourceCode,
 			} = code;
 			// Check language of user code for setting up correct link
-			const foundEditorSettingKey = findKey(editorSettings, { language });
+			const foundEditorSettingKey = params.secondary ?
+				findKey(editorSettings, { language, alias: params.secondary }) :
+				findKey(editorSettings, { language });
 			if (foundEditorSettingKey) {
 				const { alias, type } = editorSettings[foundEditorSettingKey];
-				browserHistory.replace(`${basePath}/${publicID}/${alias}`);
+				if (!params.secondary) { // if the language/tab is not specified
+					browserHistory.replace(`${basePath}/${publicID}/${alias}`);
+				}
 				const isWeb = checkWeb(alias);
 				const codeData = {
 					sourceCode,
@@ -259,11 +263,11 @@ class Playground extends Component {
 					type,
 					publicID,
 					...codeData,
-					code: sourceCode,
 					latestSavedCodeData,
 					shouldShowToolbar: true,
 					mode: foundEditorSettingKey,
 					languageSelector: isWeb ? 'web' : foundEditorSettingKey,
+					code: this.getTabCodeData(foundEditorSettingKey, codeData),
 				});
 			}
 			this.setState({ isGettingCode: false });
@@ -626,7 +630,6 @@ ${succeedingSubstr}
 			t,
 			withBottomToolbar,
 		} = this.props;
-		console.log(shouldShowToolbar, withBottomToolbar);
 
 		const inputsPopupActions = [
 			<FlatButton
