@@ -111,7 +111,7 @@ export const NotificationListStyles = {
 export const NotificationsPopupStyles = {
 	wrapper: {
 		position: 'absolute',
-		right: '15px',
+		right: 0,
 		opacity: 0,
 		zIndex: 10001,
 	},

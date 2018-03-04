@@ -4,6 +4,7 @@ import Radium from 'radium';
 import { Link } from 'react-router';
 import { Motion, spring } from 'react-motion';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 
 // Material UI components
 import { Paper, Divider } from 'material-ui';
@@ -21,7 +22,6 @@ const RadiumLink = Radium(Link);
 const mapDispatchToProps = { markAllRead: markReadInternal };
 
 // i18n
-import { translate } from 'react-i18next';
 
 @connect(null, mapDispatchToProps)
 @translate()
@@ -67,7 +67,7 @@ class NotificationPopup extends Component {
 											style={styles.notificationsHeaderButton}
 											onClick={() => this.props.markAllRead(null)}
 										>
-										{t('notifications.mark-all-as-read-action-title')}
+											{t('notifications.mark-all-as-read-action-title')}
 										</button>
 									</div>
 									<Divider />
