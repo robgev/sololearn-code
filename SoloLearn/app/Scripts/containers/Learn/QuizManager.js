@@ -92,7 +92,7 @@ class QuizManager extends Component {
 		const isCheckpoint = lesson.type === LessonType.Checkpoint;
 		// let currentIndex = 0;
 
-		quizzes.map((quiz, index) => {
+		quizzes.forEach((quiz, index) => {
 			const isCompleted = (isLessonCompleted || index <= activeQuizIndex) && !this.props.isShortcut;
 			const isCurrent = quizzes[index].id === activeQuiz.id;
 			// if (isCurrent) currentIndex = (isCheckpoint ? index * 2 : index);
@@ -105,7 +105,7 @@ class QuizManager extends Component {
 					isText: true,
 					index,
 					number: (index * 2) + 1,
-					state: (isCurrent ? progressState.Active : isCompleted ? progressState.Normal : progressState.Disabled),
+					state: (isCurrent ? progressState.Active : (isCompleted ? progressState.Normal : progressState.Disabled)),
 				});
 			}
 			timeline.push({
@@ -115,12 +115,18 @@ class QuizManager extends Component {
 				isText: false,
 				index,
 				number: isCheckpoint ? (index + 1) * 2 : index + 1,
-				state: (isCurrent ? progressState.Active : isCompleted ? progressState.Normal : progressState.Disabled),
+				state: (isCurrent ? progressState.Active : (isCompleted ? progressState.Normal : progressState.Disabled)),
 			});
 		});
 
 		return timeline.map((item, index) => (
-			<Tab value={index} label={item.quizId} key={item.key} onClick={() => this.loadLessonLink(item.quizId, item.number, item.isText, item.state)} className={`${ProgressState.getName(item.state)} timeline-item`} />
+			<Tab
+				value={index}
+				key={item.key}
+				label={item.quizId}
+				className={`${ProgressState.getName(item.state)} timeline-item`}
+				onClick={() => this.loadLessonLink(item.quizId, item.number, item.isText, item.state)}
+			/>
 		));
 	}
 

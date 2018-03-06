@@ -210,6 +210,7 @@ continueQuiz = () => {
 			if (quizIndex < lesson.quizzes.length - 1) {
 				const nextQuiz = lesson.quizzes[quizIndex + 1];
 				this.props.loadLessonLink(nextQuiz.id, parseInt(activeQuizData.number) + 1, nextisText, 2);
+				this.setState({ isCorrect: false });
 			} else {
 				const module = this.props.activeModule;
 				const lessons = module.lessons;
@@ -227,6 +228,7 @@ continueQuiz = () => {
 					}
 				} else {
 					// Else show lessons
+					this.setState({ isCorrect: false });
 					browserHistory.push(`/learn/${this.props.activeModuleId}/${this.props.params.moduleName}/`);
 				}
 				// return;
@@ -320,7 +322,7 @@ render() {
 		isLoaded,
 		activeQuiz,
 		activeModule,
-		t
+		t,
 	} = this.props;
 
 	const {
@@ -459,8 +461,13 @@ render() {
 	);
 }
 
-componentWillMount() {
-// MUST CHECK
+componentWillReceiveProps(newProps) {
+	const { activeQuiz: newQuiz } = newProps;
+	const { activeQuiz } = this.props;
+	const { isCorrect } = this.state;
+	if (isCorrect && newQuiz.id !== activeQuiz.id && newQuiz.number !== activeQuiz.number) {
+		this.setState({ checkOpened: false });
+	}
 }
 
 componentWillUnmount() {
@@ -486,7 +493,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	selectLesson,
 	selectQuiz,
 }, dispatch);
-
 
 const translatedQuiz = translate()(Quiz);
 
