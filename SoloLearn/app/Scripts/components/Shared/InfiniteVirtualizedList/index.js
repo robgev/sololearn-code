@@ -123,23 +123,27 @@ class InfiniteVirtalizedList extends Component {
 			);
 		} else if (this.props.window) {
 			return (
-				<WindowScroller>
-					{
-						({ height, scrollTop }) => (
-							<List
-								autoHeight
-								scrollTop={scrollTop}
-								onRowsRendered={this.handleNextFetch}
-								width={this.width}
-								height={height}
-								rowCount={this.props.list.length}
-								ref={(list) => { this._list = list; }}
-								rowRenderer={this.rowRenderer}
-								rowHeight={this.rowHeight}
-							/>
-						)
-					}
-				</WindowScroller>
+				<AutoSizer disableHeight>
+					{({ width }) => (
+						<WindowScroller>
+							{
+								({ height, scrollTop }) => (
+									<List
+										autoHeight
+										scrollTop={scrollTop}
+										onRowsRendered={this.handleNextFetch}
+										width={width}
+										height={height}
+										rowCount={this.props.list.length}
+										ref={(list) => { this._list = list; }}
+										rowRenderer={this.rowRenderer}
+										rowHeight={this.rowHeight}
+									/>
+								)
+							}
+						</WindowScroller>
+					)}
+				</AutoSizer>
 			);
 		} else if (this.props.cache) {
 			return (
