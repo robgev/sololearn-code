@@ -68,16 +68,23 @@ export const clearProfileFeedItems = () => ({ type: types.CLEAR_PROFILE_FEED_ITE
 
 export const getFeedItemsInternal = (fromId, profileId) => async (dispatch, getState) => {
 	try {
-		const response = await Service.request('Profile/GetFeed', { fromId, profileId, count: 20 });
+		const requestLimitCount = 20;
+		const response = await Service.request('Profile/GetFeed', { fromId, profileId, count: requestLimitCount });
 		const { length } = response.feed;
 		const { feed, userSuggestions } = getState();
 		const suggestionsBatch = feed.filter(item => item.type === feedTypes.suggestions).length;
 		const feedItems = groupFeedItems(response.feed);
 		const feedItemsCount = feed.length + feedItems.length;
+		console.log(feedItemsCount, requestLimitCount);
 		if (profileId != null) {
 			dispatch(getProfileFeedItems(feedItems));
+			if (feedItemsCount < requestLimitCount / 2) {
+				const lastItem = feedItems[feedItems.length - 1];
+				const startId = lastItem.type === 444 ? lastItem.toId : lastItem.id;
+				await dispatch(getFeedItemsInternal(startId, profileId));
+			}
 			return length;
-		} else if (feedItemsCount >= 20 * (1 + suggestionsBatch) &&
+		} else if (feedItemsCount >= requestLimitCount * (1 + suggestionsBatch) &&
 			suggestionsBatch < userSuggestions.length) {
 			const suggestionsObj = {
 				suggestions: userSuggestions[suggestionsBatch],
@@ -87,6 +94,14 @@ export const getFeedItemsInternal = (fromId, profileId) => async (dispatch, getS
 			feedItems.push(suggestionsObj);
 		}
 		dispatch(getFeedItems(feedItems));
+		// If after grouping challenges, we have less than the half of the elements
+		// We will send another GetFeed request
+		if (feedItemsCount < requestLimitCount / 2) {
+			console.log('Here');
+			const lastItem = feedItems[feedItems.length - 1];
+			const startId = lastItem.type === 444 ? lastItem.toId : lastItem.id;
+			dispatch(getFeedItemsInternal(startId, profileId));
+		}
 		return length;
 	} catch (e) {
 		return console.log(e);
