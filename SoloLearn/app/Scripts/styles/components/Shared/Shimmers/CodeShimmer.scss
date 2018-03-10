@@ -1,6 +1,83 @@
 @import 'shimmer';
 
+.code-shimmer-shimmer {
+    @extend %shimmer-container;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+}
+
 .code-shimmer-container {
-	@extend %shimmer-container;
-	height: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 50px;
+    width: 50vw;
+    position: absolute;
+    .user {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+
+        .avatar {
+            background-color: $shimmer-dark-color;
+            // background-color: black;
+            overflow: hidden;
+            height: 40px;
+            width: 40px;
+            border-radius: 20px;
+        }
+
+        .name-and-date {
+            display: flex;
+            flex-direction: column;
+            margin-right: 10px;
+            align-items: flex-end;
+            .name {
+                background-color: $shimmer-dark-color;
+                height: 10px;
+                width: 70px;
+                margin-bottom: 10px;
+            }
+
+            .date {
+                background-color: $shimmer-dark-color;
+                height: 10px;
+                width: 50px;
+            }
+
+        }
+    }
+    .code {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        .avatar {
+            width: 50px;
+            height: 50px;
+            background-color: $shimmer-dark-color;
+        }
+
+        .code-info {
+            display: flex;
+            flex-direction: column;
+            margin-left: 10px;
+
+            .title {
+                background-color: $shimmer-dark-color;
+                height: 10px;
+                width: 100px;
+                margin-bottom: 10px;
+            }
+
+            .info {
+                background-color: $shimmer-dark-color;
+                height: 10px;
+                width: 70px;
+            }
+        }
+    }
 }
