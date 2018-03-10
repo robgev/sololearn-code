@@ -1,12 +1,78 @@
 @import 'shimmer';
 
-.play-shimmer-container {
-	@extend %shimmer-container;
-	height: 50px;
+.play-shimmer-shimmer {
+    @extend %shimmer-container;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
 }
-.play-shimmer-title {
-	@extend %shimmer-container;
-	width: 10vw;
-	height: 30px;
-	margin: 10px 0px;
+
+.play-shimmer-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 50px;
+    width: 50vw;
+    position: absolute;
+    .user {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+
+        .avatar {
+            background-color: $shimmer-dark-color;
+            // background-color: black;
+            overflow: hidden;
+            height: 40px;
+            width: 40px;
+            border-radius: 20px;
+        }
+
+        .name-and-date {
+            display: flex;
+            flex-direction: column;
+            margin-left: 10px;
+
+            .name {
+                background-color: $shimmer-dark-color;
+                height: 10px;
+                width: 100px;
+                margin-bottom: 10px;
+            }
+
+            .date {
+                background-color: $shimmer-dark-color;
+                height: 10px;
+                width: 70px;
+            }
+
+        }
+    }
+    .contest {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: row;
+        width: 300px;
+        .language {
+            background-color: $shimmer-dark-color;
+            width: 70px;
+            height: 7px;
+        }
+
+        .state {
+            background-color: $shimmer-dark-color;
+            width: 70px;
+            height: 15px;
+        }
+
+        .result {
+            background-color: $shimmer-dark-color;
+            width: 40px;
+            height: 20px;
+        }
+
+    }
 }
