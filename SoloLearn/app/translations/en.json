@@ -451,6 +451,7 @@
     "report-submitted-title": "Report Submitted",
     "report-submitted-message": "Your feedback is important in helping us improve the quality of SoloLearn content.",
     "report-popup-title": "Why are you reporting this?",
+		"report-other-reason": "Please, specify the reason",
     "report-option-1": "This is inappropriate for SoloLearn",
     "report-option-2": "It's spam, a scam or a fake account",
     "report-option-3": "This account may have been hacked",

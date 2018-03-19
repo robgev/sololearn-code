@@ -5,16 +5,12 @@ import { Link } from 'react-router';
 
 // Material UI components
 import { TextField, IconMenu, MenuItem, FlatButton, IconButton } from 'material-ui';
-import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
-import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
-import { grey500, blueGrey500 } from 'material-ui/styles/colors';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 // Redux modules
 import getLikes from 'actions/likes';
 
 // Utils
-import Likes from 'components/Shared/Likes';
 import VoteControls from 'components/Shared/VoteControls';
 import { updateDate, updateMessage } from 'utils';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
@@ -129,7 +125,7 @@ class Comment extends Component {
 		);
 	}
 
-	getMenuControls = comment => {
+	getMenuControls = (comment) => {
 		const { t } = this.props;
 		(
 			<IconMenu
@@ -158,7 +154,7 @@ class Comment extends Component {
 						/>
 				}
 			</IconMenu>
-		)
+		);
 	}
 
 	getEditableArea = (comment) => {
@@ -204,7 +200,7 @@ class Comment extends Component {
 				userName,
 			},
 			activeComment,
-			t
+			t,
 		} = this.props;
 		if (this.props.comment.type === 'LOAD_MORE') {
 			return (
@@ -213,7 +209,7 @@ class Comment extends Component {
 					onClick={this.loadMore}
 				/>);
 		}
-		
+
 		const isReply = parentID != null;
 		const isEditing = (this.props.isEditing && activeComment.id === id);
 		console.log(isEditing);

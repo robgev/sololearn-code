@@ -4,16 +4,23 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 // Material UI components
-import LinearProgress from 'material-ui/LinearProgress';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import LinearProgress from 'material-ui/LinearProgress';
 import Person from 'material-ui/svg-icons/social/person';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 // Redux modules
 import { followUserInternal, unfollowUserInternal } from 'actions/profile';
 
 // Utils and defaults
 import { numberFormatter } from 'utils';
+import ReportItemTypes from 'constants/ReportItemTypes';
+
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import ReportPopup from 'components/Shared/ReportPopup';
 
 // i18next
 import { translate } from 'react-i18next';
@@ -121,6 +128,7 @@ class Header extends Component {
 		super(props);
 
 		this.state = {
+			open: false,
 			isFollowing: this.props.profile.isFollowing,
 		};
 
@@ -137,25 +145,47 @@ class Header extends Component {
 		}
 	}
 
+	toggleReportPopup = () => {
+		const { open } = this.state;
+		this.setState({ open: !open });
+	}
+
 	render() {
-		const { t, profile, levels } = this.props;
+		const { open } = this.state;
+		const {
+			t, profile, levels, userId,
+		} = this.props;
 
 		const nextLevel = levels.filter(item => item.maxXp > profile.xp)[0];
 
 		return (
 			<div className="details-wrapper" style={styles.detailsWrapper}>
 				{
-					profile.id !== this.props.userId &&
-					<RaisedButton
-						label={this.state.isFollowing ? t('common.user-following') : t('common.follow-user')}
-						primary={!this.state.isFollowing}
-						secondary={this.state.isFollowing}
-						style={styles.actionButton.base}
-						labelStyle={styles.actionButton.label}
-						buttonStyle={styles.actionButton.button}
-						overlayStyle={styles.actionButton.overlay}
-						onClick={() => { this.handleFollowing(profile.id, !this.state.isFollowing, null); }}
-					/>
+					profile.id !== userId &&
+					<div>
+						<RaisedButton
+							label={this.state.isFollowing ? t('common.user-following') : t('common.follow-user')}
+							primary={!this.state.isFollowing}
+							secondary={this.state.isFollowing}
+							style={styles.actionButton.base}
+							labelStyle={styles.actionButton.label}
+							buttonStyle={styles.actionButton.button}
+							overlayStyle={styles.actionButton.overlay}
+							onClick={() => { this.handleFollowing(profile.id, !this.state.isFollowing, null); }}
+						/>
+						<IconMenu
+							iconButtonElement={
+								<IconButton><MoreVertIcon /></IconButton>
+							}
+							anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+							targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+						>
+							<MenuItem
+								primaryText={t('common.report-action-title')}
+								onClick={this.toggleReportPopup}
+							/>
+						</IconMenu>
+					</div>
 				}
 				<div className="details" style={styles.details}>
 					<ProfileAvatar
@@ -191,6 +221,12 @@ class Header extends Component {
 						<span style={{ ...styles.xp.base, ...styles.xp.right }}>{nextLevel.maxXp} XP</span>
 					</div>
 				</div>
+				<ReportPopup
+					open={open}
+					itemId={userId}
+					itemType={ReportItemTypes.profile}
+					onRequestClose={this.toggleReportPopup}
+				/>
 			</div>
 		);
 	}
