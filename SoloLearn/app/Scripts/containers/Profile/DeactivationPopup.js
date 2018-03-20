@@ -12,7 +12,7 @@ class ReportPopup extends PureComponent {
 		super();
 		this.customReasonMaxLength = 256;
 		this.state = {
-			reportReason: 1,
+			reportReason: 11,
 			customReason: '',
 		};
 	}
@@ -29,21 +29,30 @@ class ReportPopup extends PureComponent {
 
 	submitReport = async () => {
 		const {
-			itemId,
 			itemType,
+			accessLevel,
 			onRequestClose,
+			reportedUserId,
 			onSubmitFinished,
 		} = this.props;
 		const { reportReason, customReason } = this.state;
 		try {
-			await Service.request('ReportItem', {
-				itemId,
-				itemType,
-				reason: reportReason,
-				message: customReason,
-			});
+			if (accessLevel > 1) {
+				await Service.request('Profile/DeactivateUser', {
+					reason: reportReason,
+					userId: reportedUserId,
+					message: customReason,
+				});
+			} else {
+				await Service.request('ReportItem', {
+					itemType,
+					reason: reportReason,
+					message: customReason,
+					itemId: reportedUserId,
+				});
+			}
 			this.setState({
-				reportReason: 1,
+				reportReason: 11,
 				customReason: '',
 			});
 			if (typeof onSubmitFinished === 'function') {
@@ -67,7 +76,7 @@ class ReportPopup extends PureComponent {
 			<FlatButton
 				primary
 				onClick={() => this.submitReport()}
-				label={t('common.report-action-title')}
+				label={t('common.deactivate-action-title')}
 			/>,
 		];
 		return (
@@ -75,28 +84,32 @@ class ReportPopup extends PureComponent {
 				open={open}
 				actions={actions}
 				onRequestClose={onRequestClose}
-				title={t('report.report-popup-title')}
+				title={t('deactivate.deactivate-popup-title')}
 			>
 				<RadioButtonGroup
-					name="reportReason"
-					defaultSelected={1}
+					name="deactivateReason"
+					defaultSelected={11}
 					onChange={this.handleReasonChange}
 				>
 					<RadioButton
-						value={1}
-						label={t('report.report-option-1')}
+						value={11}
+						label={t('deactivate.deactivate-option-1')}
 					/>
 					<RadioButton
-						value={2}
-						label={t('report.report-option-2')}
+						value={12}
+						label={t('deactivate.deactivate-option-2')}
 					/>
 					<RadioButton
-						value={3}
-						label={t('report.report-option-3')}
+						value={13}
+						label={t('deactivate.deactivate-option-3')}
+					/>
+					<RadioButton
+						value={14}
+						label={t('deactivate.deactivate-option-4')}
 					/>
 					<RadioButton
 						value={0}
-						label={t('report.report-option-4')}
+						label={t('deactivate.deactivate-option-5')}
 					/>
 				</RadioButtonGroup>
 				{ reportReason === 0 &&

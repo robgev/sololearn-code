@@ -16,7 +16,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { followUserInternal, unfollowUserInternal } from 'actions/profile';
 
 // Utils and defaults
-import { numberFormatter } from 'utils';
+import { numberFormatter, determineAccessLevel } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
 
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
@@ -24,6 +24,8 @@ import ReportPopup from 'components/Shared/ReportPopup';
 
 // i18next
 import { translate } from 'react-i18next';
+
+import DeactivationPopup from './DeactivationPopup';
 
 const styles = {
 	detailsWrapper: {
@@ -123,12 +125,25 @@ const styles = {
 	},
 };
 
+const mapStateToProps = state => ({
+	userId: state.userProfile.id,
+	accessLevel: state.userProfile.accessLevel,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+	followUser: followUserInternal,
+	unfollowUser: unfollowUserInternal,
+}, dispatch);
+
+@connect(mapStateToProps, mapDispatchToProps)
+@translate()
 class Header extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			open: false,
+			reportPopupOpen: false,
+			deactivationPopupOpen: false,
 			isFollowing: this.props.profile.isFollowing,
 		};
 
@@ -146,14 +161,19 @@ class Header extends Component {
 	}
 
 	toggleReportPopup = () => {
-		const { open } = this.state;
-		this.setState({ open: !open });
+		const { reportPopupOpen } = this.state;
+		this.setState({ reportPopupOpen: !reportPopupOpen });
+	}
+
+	toggleDeactivationPopup = () => {
+		const { deactivationPopupOpen } = this.state;
+		this.setState({ deactivationPopupOpen: !deactivationPopupOpen });
 	}
 
 	render() {
-		const { open } = this.state;
+		const { reportPopupOpen, deactivationPopupOpen } = this.state;
 		const {
-			t, profile, levels, userId,
+			t, profile, levels, userId, accessLevel,
 		} = this.props;
 
 		const nextLevel = levels.filter(item => item.maxXp > profile.xp)[0];
@@ -184,6 +204,13 @@ class Header extends Component {
 								primaryText={t('common.report-action-title')}
 								onClick={this.toggleReportPopup}
 							/>
+							{ (determineAccessLevel(accessLevel) > 0
+									&& !determineAccessLevel(profile.accessLevel) > 0) &&
+									<MenuItem
+										primaryText={t('common.deactivate-action-title')}
+										onClick={this.toggleDeactivationPopup}
+									/>
+							}
 						</IconMenu>
 					</div>
 				}
@@ -222,21 +249,21 @@ class Header extends Component {
 					</div>
 				</div>
 				<ReportPopup
-					open={open}
-					itemId={userId}
+					itemId={profile.id}
+					open={reportPopupOpen}
 					itemType={ReportItemTypes.profile}
 					onRequestClose={this.toggleReportPopup}
+				/>
+				<DeactivationPopup
+					reportedUserId={profile.id}
+					open={deactivationPopupOpen}
+					itemType={ReportItemTypes.profile}
+					onRequestClose={this.toggleDeactivationPopup}
+					accessLevel={determineAccessLevel(accessLevel)}
 				/>
 			</div>
 		);
 	}
 }
 
-const mapStateToProps = state => ({ userId: state.userProfile.id });
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-	followUser: followUserInternal,
-	unfollowUser: unfollowUserInternal,
-}, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(translate()(Header));
+export default Header;

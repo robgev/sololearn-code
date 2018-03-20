@@ -32,6 +32,8 @@
     "post-action-title": "Publicar",
     "copy-text-action-title": "Copiar Texto",
     "report-action-title": "Reportar",
+		"deactivate-action-title": "Desactivar",
+		"report-more-hint": "Por favor, especifica el motive",
     "comments-format": "COMENTARIOS",
     "error": {
       "generic-title": "Error",
@@ -452,7 +454,6 @@
     "report-submitted-title": "Reporte Enviado",
     "report-submitted-message": "Tu feedback es importante para ayudarnos a mejorar la calidad del contenido en SoloLearn.",
     "report-popup-title": "¿Por qué estás reportando esto?",
-		"report-other-reason": "Por favor, especifica el motive",
     "report-option-1": "Esto es inapropiado para SoloLearn",
     "report-option-2": "Es spam, un engaño o cuenta falsa",
     "report-option-3": "Esta cuenta pudo haber sido haqueada",
@@ -463,6 +464,18 @@
     "challenge-report-option-4": "Fuera de tema",
     "challenge-report-option-5": "Otro"
   },
+	"deactivate": {
+		"deactivate-popup-title": "Por favor, selecciona el motivo de la desactivación",
+		"deactivate-option-1": "Lenguaje ofensivo",
+		"deactivate-option-2": "Entradas/comentarios/respuestas spam",
+		"deactivate-option-3": "Cuenta falsa",
+		"deactivate-option-4": "Actividad sospechosa en la sección Play",
+		"deactivate-option-5": "Otro",
+		"deactivate_successful_title": "Se ha enviado un informe para revisión",
+		"deactivate_successful_message": "Gracias por contribuir a la seguridad de SoloLearn",
+		"deactivate_instant_successful_title": "Perfil desactivado",
+		"deactivate_instant_successful_message": "Gracias por contribuir a la seguridad de SoloLearn"
+	},
   "code": {
     "title": "Códigos",
     "filter": {

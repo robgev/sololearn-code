@@ -18,6 +18,7 @@ import EnumNameMapper from './enumNameMapper';
 import findCommonPrefix from './findCommonPrefix';
 import getChallengeStatus from './getChallengeStatus';
 import getCourseAliasById from './getCourseAliasById';
+import determineAccessLevel from './determineAccesslLevel';
 
 const hash = pass => hmacsha1('password', pass).slice(0, -1);
 const checkWeb = alias => [ 'html', 'css', 'js' ].includes(alias);
@@ -47,4 +48,5 @@ export {
 	findCommonPrefix,
 	getChallengeStatus,
 	getCourseAliasById,
+	determineAccessLevel,
 };

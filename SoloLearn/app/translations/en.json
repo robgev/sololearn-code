@@ -33,6 +33,8 @@
     "post-action-title": "Post",
     "copy-text-action-title": "Copy Text",
     "report-action-title": "Report",
+		"deactivate-action-title": "Deactivate",
+		"report-more-hint": "Please, specify the reason",
     "comments-format": "COMMENTS",
     "comments": "COMMENTS",
     "comment-format-one": "1 COMMENT",
@@ -451,7 +453,6 @@
     "report-submitted-title": "Report Submitted",
     "report-submitted-message": "Your feedback is important in helping us improve the quality of SoloLearn content.",
     "report-popup-title": "Why are you reporting this?",
-		"report-other-reason": "Please, specify the reason",
     "report-option-1": "This is inappropriate for SoloLearn",
     "report-option-2": "It's spam, a scam or a fake account",
     "report-option-3": "This account may have been hacked",
@@ -462,6 +463,18 @@
     "challenge-report-option-4": "Off Topic",
     "challenge-report-option-5": "Other"
   },
+	"deactivate": {
+		"deactivate-popup-title": "Please provide the reason of deactivation.",
+		"deactivate-option-1": "Offensive language",
+		"deactivate-option-2": "Spam posts/comments/answers",
+		"deactivate-option-3": "Fake account",
+		"deactivate-option-4": "Suspicious activity in Play section",
+		"deactivate-option-5": "Other",
+		"deactivate_successful_title": "Report Submitted",
+		"deactivate_successful_message": "Your feedback is important in helping us improve the quality of SoloLearn content.",
+		"deactivate_instant_successful_title": "Profile Deactivated",
+		"deactivate_instant_successful_message": "Thanks for keeping SoloLearn safe."
+	},
   "code": {
     "title": "Code",
     "filter": {

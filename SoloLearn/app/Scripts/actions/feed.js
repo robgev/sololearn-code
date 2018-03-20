@@ -75,7 +75,6 @@ export const getFeedItemsInternal = (fromId, profileId) => async (dispatch, getS
 		const suggestionsBatch = feed.filter(item => item.type === feedTypes.suggestions).length;
 		const feedItems = groupFeedItems(response.feed);
 		const feedItemsCount = feed.length + feedItems.length;
-		console.log(feedItemsCount, requestLimitCount);
 		if (profileId != null) {
 			dispatch(getProfileFeedItems(feedItems));
 			if (feedItemsCount < requestLimitCount / 2) {

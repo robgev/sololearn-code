@@ -32,6 +32,8 @@
     "post-action-title": "Написать",
     "copy-text-action-title": "Копировать текст",
     "report-action-title": "Пожаловаться",
+		"deactivate-action-title": "Деактивировать",
+		"report-more-hint": "Пожалуйста, укажите причину",
     "comments-format": "КОММЕНТОВ",
     "error": {
       "generic-title": "Ошибка",
@@ -452,7 +454,6 @@
     "report-submitted-title": "Жалоба подтверждена",
     "report-submitted-message": "Ваш отзыв является важной помощью для нас в улучшении качества содержимого SoloLearn.",
     "report-popup-title": "Почему вы подаете жалобу?",
-    "report-other-reason": "Пожалуйста, укажите причину",
     "report-option-1": "Это является неуместным для SoloLearn",
     "report-option-2": "Это спам, мошенничество, или поддельный аккаунт",
     "report-option-3": "Возможно, этот аккаунт был взломан",
@@ -463,6 +464,18 @@
     "challenge-report-option-4": "Не по теме",
     "challenge-report-option-5": "Другое"
   },
+	"deactivate": {
+		"deactivate-popup-title": "Выберите причину деактивации.",
+		"deactivate-option-1": "Ненормативная лексика",
+		"deactivate-option-2": "Спам в публикациях, комментариях или ответах ",
+		"deactivate-option-3": "Поддельный аккаунт",
+		"deactivate-option-4": "Подозрительная деятельность в разделе «Игра»",
+		"deactivate-option-5": "Другое",
+		"deactivate_successful_title": "Заявка отправлена",
+		"deactivate_successful_message": "Спасибо за ваш вклад в безопасность SoloLearn.",
+		"deactivate_instant_successful_title": "Профиль деактивирован",
+		"deactivate_instant_successful_message": "Спасибо за ваш вклад в безопасность SoloLearn."
+	},
   "code": {
     "title": "Коды",
     "filter": {
