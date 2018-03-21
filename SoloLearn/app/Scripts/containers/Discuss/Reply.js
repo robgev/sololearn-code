@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import Radium from 'radium';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
 
 // Material UI components
 import { TextField, IconMenu, MenuItem, FlatButton, IconButton } from 'material-ui';
@@ -36,7 +35,6 @@ const mapDispatchToProps = {
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
-@translate()
 @Radium
 class Reply extends Component {
 	state = {
@@ -123,7 +121,7 @@ class Reply extends Component {
 
 	render() {
 		const {
-			reply, t, accessLevel, toggleReportPopup, toggleRemovalPopup,
+			reply, accessLevel, toggleReportPopup, toggleRemovalPopup,
 		} = this.props;
 		const determinedAccessLevel = determineAccessLevel(accessLevel);
 		return (
@@ -149,12 +147,12 @@ class Reply extends Component {
 							{		reply.userID === this.props.userId &&
 								[
 									<MenuItem
-										primaryText={t('common.edit-action-title')}
+										primaryText="Edit"
 										key={`edit${reply.id}`}
 										onClick={this.openEdit}
 									/>,
 									<MenuItem
-										primaryText={t('common.delete-title')}
+										primaryText="Delete"
 										key={`remove${reply.id}`}
 										onClick={() => { this.props.remove(reply); }}
 									/>,
@@ -162,7 +160,7 @@ class Reply extends Component {
 							}
 							{ reply.userID !== this.props.userId &&
 								<MenuItem
-									primaryText={t('common.report-action-title')}
+									primaryText="Report"
 									onClick={() => toggleReportPopup(reply)}
 								/>
 							}
@@ -171,8 +169,8 @@ class Reply extends Component {
 								<MenuItem
 									onClick={() => toggleRemovalPopup(reply)}
 									primaryText={determinedAccessLevel === 1 ?
-										t('discuss.forum_request_removal_prompt_title') :
-										t('discuss.forum_remove_prompt_title')
+										'Request Removal' :
+										'Remove'
 									}
 								/>
 							}
