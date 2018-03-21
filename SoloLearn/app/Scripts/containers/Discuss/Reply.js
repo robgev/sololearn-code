@@ -17,14 +17,11 @@ import { editPostInternal, toggleAcceptedAnswerInternal } from 'actions/discuss'
 import getLikesInternal from 'actions/likes';
 
 import Likes from 'components/Shared/Likes';
-import ReportPopup from 'components/Shared/ReportPopup';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import PostedDate from 'components/Shared/PostedDate';
 
-import ReportItemTypes from 'constants/ReportItemTypes';
 import { updateDate, determineAccessLevel } from 'utils';
 
-import RemovalPopup from './RemovalPopup';
 import { ReplyStyles as styles } from './styles';
 
 const mapStateToProps = state => ({
@@ -46,19 +43,7 @@ class Reply extends Component {
 		isEditing: false,
 		textFieldValue: this.props.reply.message,
 		errorText: '',
-		removalPopupOpen: false,
-		reportPopupOpen: false,
 	};
-
-	toggleRemovalPopup = () => {
-		const { removalPopupOpen } = this.state;
-		this.setState({ removalPopupOpen: !removalPopupOpen });
-	}
-
-	toggleReportPopup = () => {
-		const { reportPopupOpen } = this.state;
-		this.setState({ reportPopupOpen: !reportPopupOpen });
-	}
 
 	getLikes = () => {
 		this.props.getLikes(this.props.reply.id);
@@ -137,8 +122,9 @@ class Reply extends Component {
 	}
 
 	render() {
-		const { reply, t, accessLevel } = this.props;
-		const { removalPopupOpen, reportPopupOpen } = this.state;
+		const {
+			reply, t, accessLevel, toggleReportPopup, toggleRemovalPopup,
+		} = this.props;
 		const determinedAccessLevel = determineAccessLevel(accessLevel);
 		return (
 			<div className="reply" key={reply.id} style={(reply.isAccepted && !this.state.isEditing) ? [ styles.reply.base, styles.reply.accepted ] : styles.reply.base}>
@@ -177,13 +163,13 @@ class Reply extends Component {
 							{ reply.userID !== this.props.userId &&
 								<MenuItem
 									primaryText={t('common.report-action-title')}
-									onClick={this.toggleReportPopup}
+									onClick={() => toggleReportPopup(reply)}
 								/>
 							}
 							{ reply.userID !== this.props.userId &&
 								determinedAccessLevel > 0 &&
 								<MenuItem
-									onClick={this.toggleRemovalPopup}
+									onClick={() => toggleRemovalPopup(reply)}
 									primaryText={determinedAccessLevel === 1 ?
 										t('discuss.forum_request_removal_prompt_title') :
 										t('discuss.forum_remove_prompt_title')
@@ -218,20 +204,6 @@ class Reply extends Component {
 						<PostedDate date={reply.date} style={{ float: 'right' }} />
 					</div>
 				}
-				<ReportPopup
-					itemId={reply.id}
-					open={reportPopupOpen}
-					itemType={ReportItemTypes.profile}
-					onRequestClose={this.toggleReportPopup}
-				/>
-				<RemovalPopup
-					post={reply}
-					open={removalPopupOpen}
-					removedItemId={reply.id}
-					itemType={ReportItemTypes.post}
-					accessLevel={determinedAccessLevel}
-					onRequestClose={this.toggleRemovalPopup}
-				/>
 			</div>
 		);
 	}
