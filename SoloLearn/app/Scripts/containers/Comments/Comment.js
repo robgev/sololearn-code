@@ -12,7 +12,7 @@ import getLikes from 'actions/likes';
 
 // Utils
 import VoteControls from 'components/Shared/VoteControls';
-import { updateDate, updateMessage } from 'utils';
+import { updateDate, updateMessage, determineAccessLevel } from 'utils';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import { loadRepliesTypes } from './Comments';
 
@@ -24,9 +24,6 @@ const mapStateToProps = state => ({ userId: state.userProfile.id });
 const mapDispatchToProps = {
 	getLikes,
 };
-
-// i18n
-import { translate } from 'react-i18next';
 
 @connect(mapStateToProps, mapDispatchToProps)
 class Comment extends Component {
@@ -102,7 +99,7 @@ class Comment extends Component {
 	}
 
 	getLikes = () => {
-		const { getLikes, comment, commentType } = this.props;
+		const { comment, commentType } = this.props;
 		getLikes(commentType === 'lesson' ? 3 : 4, comment.id);
 	}
 
@@ -126,32 +123,49 @@ class Comment extends Component {
 	}
 
 	getMenuControls = (comment) => {
-		const { t } = this.props;
-		(
+		const {
+			t,
+			accessLevel,
+			commentType,
+			toggleReportPopup,
+			toggleRemovalPopup,
+		} = this.props;
+		const determinedAccessLevel = determineAccessLevel(accessLevel);
+		return (
 			<IconMenu
 				iconButtonElement={<IconButton style={styles.iconMenu.icon}><MoreVertIcon /></IconButton>}
 				anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
 				targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 			>
-				{
-					comment.userID === this.props.userId ?
-						[
-							<MenuItem
-								primaryText={t('common.edit-action-title')}
-								key={`edit${comment.id}`}
-								onClick={this.openEdit}
-							/>,
-							<MenuItem
-								primaryText={t('common.delete-title')}
-								key={`remove${comment.id}`}
-								onClick={() => { this.props.deleteComment(comment); }}
-							/>,
-						]
-						:
+				{		comment.userID === this.props.userId &&
+					[
 						<MenuItem
-							primaryText={t('common.report-action-title')}
-							key={`report${comment.id}`}
-						/>
+							primaryText={t('common.edit-action-title')}
+							key={`edit${comment.id}`}
+							onClick={this.openEdit}
+						/>,
+						<MenuItem
+							primaryText={t('common.delete-title')}
+							key={`remove${comment.id}`}
+							onClick={() => { this.props.deleteComment(comment); }}
+						/>,
+					]
+				}
+				{ comment.userID !== this.props.userId &&
+					<MenuItem
+						primaryText={t('common.report-action-title')}
+						onClick={() => toggleReportPopup(comment)}
+					/>
+				}
+				{ comment.userID !== this.props.userId &&
+					determinedAccessLevel > 0 &&
+					<MenuItem
+						onClick={() => toggleRemovalPopup(comment)}
+						primaryText={(determinedAccessLevel === 1 && commentType !== 'lesson') ?
+							t('discuss.forum_request_removal_prompt_title') :
+							t('discuss.forum_remove_prompt_title')
+						}
+					/>
 				}
 			</IconMenu>
 		);
@@ -212,7 +226,6 @@ class Comment extends Component {
 
 		const isReply = parentID != null;
 		const isEditing = (this.props.isEditing && activeComment.id === id);
-		console.log(isEditing);
 
 		return (
 			<div style={{ ...styles.commentContainer.base, marginLeft: isReply ? 20 : 0 }}>
@@ -263,4 +276,4 @@ class Comment extends Component {
 	}
 }
 
-export default translate()(Comment);
+export default Comment;

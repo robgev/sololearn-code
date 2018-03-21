@@ -68,6 +68,10 @@
     "delete-comment-popup-message": "Действительно хотите удалить этот комментарий?",
     "replies-other": "Ответов",
     "replies-one": "1 Ответ",
+		"lesson_comment_request_removal_title": "Запрос на удаление",
+		"lesson_comment_request_removal_message": "Вы уверены, что хотите отметить данный комментарий для удаления?",
+		"lesson_comment_remove_title": "Удалить комментарий",
+		"lesson_comment_remove_message": "Действительно хотите удалить этот комментарий?",
     "reply": "Ответить"
   },
   "date": {

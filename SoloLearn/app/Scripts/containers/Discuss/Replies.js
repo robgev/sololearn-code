@@ -34,7 +34,7 @@ class Replies extends Component {
 			canLoadAbove: !!props.replies[0] && props.replies[0].index === 0,
 			removalPopupOpen: false,
 			reportPopupOpen: false,
-			targetItem: 0,
+			targetItem: null,
 		};
 	}
 	componentWillReceiveProps(nextProps) {
@@ -51,12 +51,12 @@ class Replies extends Component {
 	componentWillUnmount() {
 		cache.clearAll();
 	}
-	toggleRemovalPopup = (targetItem = 0) => {
+	toggleRemovalPopup = (targetItem = null) => {
 		const { removalPopupOpen } = this.state;
 		this.setState({ removalPopupOpen: !removalPopupOpen, targetItem });
 	}
 
-	toggleReportPopup = (targetItem = 0) => {
+	toggleReportPopup = (targetItem = null) => {
 		const { reportPopupOpen } = this.state;
 		this.setState({ reportPopupOpen: !reportPopupOpen, targetItem });
 	}
@@ -95,17 +95,17 @@ class Replies extends Component {
 					ref={(list) => { this._list = list; }}
 				/>
 				<ReportPopup
-					itemId={targetItem.id}
 					open={reportPopupOpen}
-					itemType={ReportItemTypes.profile}
+					itemType={ReportItemTypes.post}
+					itemId={targetItem ? targetItem.id : 0}
 					onRequestClose={this.toggleReportPopup}
 				/>
 				<RemovalPopup
 					post={targetItem}
 					open={removalPopupOpen}
-					removedItemId={targetItem.id}
 					itemType={ReportItemTypes.post}
 					accessLevel={determinedAccessLevel}
+					itemId={targetItem ? targetItem.id : 0}
 					onRequestClose={this.toggleRemovalPopup}
 				/>
 			</div>

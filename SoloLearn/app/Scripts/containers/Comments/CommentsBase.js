@@ -1,6 +1,7 @@
 // General modules
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 
 // Material UI components
 import Dialog from 'material-ui/Dialog';
@@ -38,10 +39,8 @@ const mapDispatchToProps = {
 	deleteCommentInternal,
 };
 
-// i18n
-import { translate } from 'react-i18next';
-
 @connect(mapStateToProps, mapDispatchToProps)
+@translate()
 class CommentsBase extends Component {
 	constructor(props) {
 		super(props);
@@ -196,12 +195,12 @@ class CommentsBase extends Component {
 					</ToolbarGroup>
 				</Toolbar>
 			</div>
-		)
+		);
 	}
 
 	render() {
 		const {
-			id, type, commentsType, comments, profile, areCommentsLoaded,
+			id, type, commentsType, comments, profile, areCommentsLoaded, t,
 		} = this.props;
 
 		const deleteActions = [
@@ -244,6 +243,7 @@ class CommentsBase extends Component {
 					onRequestClose={this.props.closeComments}
 				>
 					<Comments
+						t={t}
 						id={id}
 						type={type}
 						commentsType={commentsType}
@@ -273,4 +273,4 @@ class CommentsBase extends Component {
 	}
 }
 
-export default translate()(CommentsBase);
+export default CommentsBase;

@@ -13,13 +13,17 @@ import {
 	editCommentInternal, setSelectedComment,
 	getCommentsAboveInternal,
 } from 'actions/comments';
+import { determineAccessLevel } from 'utils';
 import { getSelectedCommentId } from 'selectors';
+import ReportItemTypes from 'constants/ReportItemTypes';
 import { lastNonForcedDownIndex, notForcedDownCount } from 'utils/comments.utils';
 
 // Additional components
 import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import ReportPopup from 'components/Shared/ReportPopup';
 import Comment from './Comment';
+import RemovalPopup from './RemovalPopup';
 
 // Styles
 import { CommentsStyle as styles } from './styles';
@@ -38,6 +42,7 @@ const cache = () => new CellMeasurerCache({
 
 const mapStateToProps = state => ({
 	selectedComment: getSelectedCommentId(state),
+	accessLevel: state.userProfile.accessLevel,
 });
 
 const mapDispatchToProps = {
@@ -57,6 +62,9 @@ class Comments extends Component {
 		isLoading: false,
 		latestLoadingComment: 0,
 		cache: cache(),
+		removalPopupOpen: false,
+		reportPopupOpen: false,
+		targetItem: null,
 	};
 
 	componentDidMount() {
@@ -158,23 +166,41 @@ class Comments extends Component {
 		this.recompute(index);
 	}
 
+	toggleRemovalPopup = (targetItem = null) => {
+		const { removalPopupOpen } = this.state;
+		this.setState({ removalPopupOpen: !removalPopupOpen, targetItem });
+	}
+
+	toggleReportPopup = (targetItem = null) => {
+		const { reportPopupOpen } = this.state;
+		this.setState({ reportPopupOpen: !reportPopupOpen, targetItem });
+	}
+
 	renderComment = (comment) => {
 		const {
 			props: {
+				t,
 				isEditing,
+				accessLevel,
 				activeComment,
 				openEdit,
 				cancelAll,
 				openReplyBoxToolbar,
 				commentsType,
 			},
-			state: { isReplying, isLoading, latestLoadingComment },
+			state: {
+				isLoading,
+				isReplying,
+				latestLoadingComment,
+			},
 			voteComment, editComment, loadReplies, loadCommentsAbove, deleteComment,
 		} = this;
 		return (
 			<Comment
+				t={t}
 				key={comment.id}
 				comment={comment}
+				accessLevel={accessLevel}
 				commentType={commentsType}
 				isEditing={isEditing}
 				isReplying={isReplying}
@@ -187,13 +213,27 @@ class Comments extends Component {
 				deleteComment={deleteComment}
 				loadReplies={loadReplies}
 				loadCommentsAbove={loadCommentsAbove}
+				toggleReportPopup={this.toggleReportPopup}
+				toggleRemovalPopup={this.toggleRemovalPopup}
 				isLoadingReplies={isLoading && latestLoadingComment === comment.id}
 			/>
 		);
 	}
 
 	render() {
-		const { comments, isLoaded, selectedComment } = this.props;
+		const {
+			targetItem,
+			reportPopupOpen,
+			removalPopupOpen,
+		} = this.state;
+		const {
+			isLoaded,
+			comments,
+			accessLevel,
+			commentsType,
+			selectedComment,
+		} = this.props;
+		const determinedAccessLevel = determineAccessLevel(accessLevel);
 		return (
 			<div id="comments" style={{ maxHeight: 660, height: '100%' }}>
 				{(!isLoaded || !comments.length) && <LoadingOverlay />}
@@ -218,6 +258,21 @@ class Comments extends Component {
 						</div>
 					)
 				}
+				<ReportPopup
+					open={reportPopupOpen}
+					itemId={targetItem ? targetItem.id : 0}
+					onRequestClose={this.toggleReportPopup}
+					itemType={ReportItemTypes[`${commentsType}Comment`]}
+				/>
+				<RemovalPopup
+					comment={targetItem}
+					open={removalPopupOpen}
+					commentsType={commentsType}
+					accessLevel={determinedAccessLevel}
+					itemId={targetItem ? targetItem.id : 0}
+					onRequestClose={this.toggleRemovalPopup}
+					itemType={ReportItemTypes[`${commentsType}Comment`]}
+				/>
 			</div>
 		);
 	}

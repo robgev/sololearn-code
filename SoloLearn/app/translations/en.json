@@ -68,6 +68,11 @@
     "delete-comment-popup-message": "Are you sure you want to delete this comment?",
     "replies-other": "Replies",
     "replies-one": "1 Reply",
+		"lesson_comment_remove_title": "Remove comment",
+		"lesson_comment_remove_message": "Are you sure you want to remove this comment?",
+
+		"lesson_comment_request_removal_title": "Request Removal",
+		"lesson_comment_request_removal_message": "Are you sure you want to mark this comment for removal?",
     "reply": "Reply"
   },
   "date": {
