@@ -63,7 +63,6 @@ class Replies extends Component {
 					item={this.renderReply}
 					list={this.props.replies}
 					loadMore={this.props.loadReplies}
-					width={1000}
 					cache={cache}
 					window
 					ref={(list) => { this._list = list; }}

@@ -6,6 +6,8 @@
   },
   "common": {
     "cancel-title": "Отменить",
+		"remove-title": "Удалить",
+		"confirm-title": "Подтвердить",
     "ok-title": "OK",
     "delete-title": "Удалить",
     "edit-action-title": "Изменить",
@@ -448,7 +450,11 @@
     "invalid-thread": "Вопрос не найден",
     "hide-post-popup-title": "Скрыть пост",
     "hide-post-popup-message": "Вы уверены что хотите скрыть этот пост?",
-    "edited-by-format": "Отредактировано:  ()"
+    "edited-by-format": "Отредактировано:  ()",
+		"forum_remove_prompt_title": "Удалить",
+		"forum_remove_prompt_text": "Вы уверены что хотите удалить этот пост?",
+		"forum_request_removal_prompt_title": "Запрос на удаление",
+		"forum_request_removal_prompt_text": "Вы уверены, что хотите отметить данную публикацию для удаления?"
   },
   "report": {
     "report-submitted-title": "Жалоба подтверждена",

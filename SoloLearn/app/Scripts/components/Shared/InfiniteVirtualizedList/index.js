@@ -99,27 +99,31 @@ class InfiniteVirtalizedList extends Component {
 	render() {
 		if (this.props.window && this.props.cache) {
 			return (
-				<WindowScroller
-					additional={this.props.additional}
-				>
-					{({ height, scrollTop, onChildScroll }) => (
-						<List
-							autoHeight
-							onRowsRendered={this.handleNextFetch}
-							width={this.width}
-							rowCount={this.props.list.length}
-							ref={(list) => { this._list = list; }}
+				<AutoSizer disableHeight>
+					{({ width }) => (
+						<WindowScroller
 							additional={this.props.additional}
-							height={height}
-							scrollTop={scrollTop}
-							onScroll={onChildScroll}
-							rowHeight={this.props.cache.rowHeight}
-							deferredMeasurementCache={this.props.cache}
-							rowRenderer={this.autoSizedRowRenderer}
-						/>
-					)
-					}
-				</WindowScroller>
+						>
+							{({ height, scrollTop, onChildScroll }) => (
+								<List
+									autoHeight
+									onRowsRendered={this.handleNextFetch}
+									width={width}
+									rowCount={this.props.list.length}
+									ref={(list) => { this._list = list; }}
+									additional={this.props.additional}
+									height={height}
+									scrollTop={scrollTop}
+									onScroll={onChildScroll}
+									rowHeight={this.props.cache.rowHeight}
+									deferredMeasurementCache={this.props.cache}
+									rowRenderer={this.autoSizedRowRenderer}
+								/>
+							)
+							}
+						</WindowScroller>
+					)}
+				</AutoSizer>
 			);
 		} else if (this.props.window) {
 			return (

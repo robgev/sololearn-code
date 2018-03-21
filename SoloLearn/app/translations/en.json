@@ -6,6 +6,8 @@
   },
   "common": {
     "cancel-title": "Cancel",
+		"remove-title": "Remove",
+		"confirm-title": "Confirm",
     "ok-title": "OK",
     "delete-title": "Delete",
     "edit-action-title": "Edit",
@@ -447,7 +449,11 @@
     "invalid-thread": "Question not found",
     "hide-post-popup-title": "Hide post",
     "hide-post-popup-message": "Are you sure you want to hide this post?",
-    "edited-by-format": "Edited by  ()"
+    "edited-by-format": "Edited by  ()",
+		"forum_remove_prompt_title": "Remove post",
+		"forum_remove_prompt_text": "Are you sure you want to remove this post?",
+		"forum_request_removal_prompt_title": "Request Removal",
+		"forum_request_removal_prompt_text": "Are you sure you want to mark this post for removal?"
   },
   "report": {
     "report-submitted-title": "Report Submitted",

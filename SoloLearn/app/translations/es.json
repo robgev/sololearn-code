@@ -6,6 +6,8 @@
   },
   "common": {
     "cancel-title": "Cancelar",
+		"remove-title": "Eliminar",
+		"confirm-title": "Confirmar",
     "ok-title": "OK",
     "delete-title": "Borrar",
     "edit-action-title": "Editar",
@@ -448,7 +450,11 @@
     "invalid-thread": "Pregunta no encontrada",
     "hide-post-popup-title": "Ocultar publicación",
     "hide-post-popup-message": "¿Estás seguro que deseas ocultar esta publicación?",
-    "edited-by-format": "Editado por  ()"
+    "edited-by-format": "Editado por  ()",
+		"forum_remove_prompt_title": "Eliminar publicación",
+		"forum_remove_prompt_text": "¿Estás seguro que deseas eliminar esta publicación?",
+		"forum_request_removal_prompt_text": "¿Estás seguro de que deseas marcar esta entrada para su eliminación?",
+		"forum_request_removal_prompt_title": "Solicitar eliminación"
   },
   "report": {
     "report-submitted-title": "Reporte Enviado",

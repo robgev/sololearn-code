@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import Radium from 'radium';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 
 // Material UI components
 import { TextField, IconMenu, MenuItem, FlatButton, IconButton } from 'material-ui';
@@ -16,13 +17,20 @@ import { editPostInternal, toggleAcceptedAnswerInternal } from 'actions/discuss'
 import getLikesInternal from 'actions/likes';
 
 import Likes from 'components/Shared/Likes';
+import ReportPopup from 'components/Shared/ReportPopup';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import PostedDate from 'components/Shared/PostedDate';
-import { updateDate } from 'utils';
 
+import ReportItemTypes from 'constants/ReportItemTypes';
+import { updateDate, determineAccessLevel } from 'utils';
+
+import RemovalPopup from './RemovalPopup';
 import { ReplyStyles as styles } from './styles';
 
-const mapStateToProps = state => ({ userId: state.userProfile.id });
+const mapStateToProps = state => ({
+	userId: state.userProfile.id,
+	accessLevel: state.userProfile.accessLevel,
+});
 
 const mapDispatchToProps = {
 	editPostInternal,
@@ -31,13 +39,26 @@ const mapDispatchToProps = {
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
+@translate()
 @Radium
 class Reply extends Component {
 	state = {
 		isEditing: false,
 		textFieldValue: this.props.reply.message,
 		errorText: '',
+		removalPopupOpen: false,
+		reportPopupOpen: false,
 	};
+
+	toggleRemovalPopup = () => {
+		const { removalPopupOpen } = this.state;
+		this.setState({ removalPopupOpen: !removalPopupOpen });
+	}
+
+	toggleReportPopup = () => {
+		const { reportPopupOpen } = this.state;
+		this.setState({ reportPopupOpen: !reportPopupOpen });
+	}
 
 	getLikes = () => {
 		this.props.getLikes(this.props.reply.id);
@@ -116,7 +137,9 @@ class Reply extends Component {
 	}
 
 	render() {
-		const { reply } = this.props;
+		const { reply, t, accessLevel } = this.props;
+		const { removalPopupOpen, reportPopupOpen } = this.state;
+		const determinedAccessLevel = determineAccessLevel(accessLevel);
 		return (
 			<div className="reply" key={reply.id} style={(reply.isAccepted && !this.state.isEditing) ? [ styles.reply.base, styles.reply.accepted ] : styles.reply.base}>
 				<div className="details-wrapper" style={styles.detailsWrapper}>
@@ -137,12 +160,35 @@ class Reply extends Component {
 							anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
 							targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 						>
-							{
-								reply.userID === this.props.userId ?
-									[ <MenuItem primaryText="Edit" key={`edit${reply.id}`} onClick={this.openEdit} />,
-										<MenuItem primaryText="Delete" key={`remove${reply.id}`} onClick={() => { this.props.remove(reply); }} /> ]
-									:
-									<MenuItem primaryText="Report" key={`report${reply.id}`} />
+							{		reply.userID === this.props.userId &&
+								[
+									<MenuItem
+										primaryText={t('common.edit-action-title')}
+										key={`edit${reply.id}`}
+										onClick={this.openEdit}
+									/>,
+									<MenuItem
+										primaryText={t('common.delete-title')}
+										key={`remove${reply.id}`}
+										onClick={() => { this.props.remove(reply); }}
+									/>,
+								]
+							}
+							{ reply.userID !== this.props.userId &&
+								<MenuItem
+									primaryText={t('common.report-action-title')}
+									onClick={this.toggleReportPopup}
+								/>
+							}
+							{ reply.userID !== this.props.userId &&
+								determinedAccessLevel > 0 &&
+								<MenuItem
+									onClick={this.toggleRemovalPopup}
+									primaryText={determinedAccessLevel === 1 ?
+										t('discuss.forum_request_removal_prompt_title') :
+										t('discuss.forum_remove_prompt_title')
+									}
+								/>
 							}
 						</IconMenu>
 					}
@@ -172,6 +218,20 @@ class Reply extends Component {
 						<PostedDate date={reply.date} style={{ float: 'right' }} />
 					</div>
 				}
+				<ReportPopup
+					itemId={reply.id}
+					open={reportPopupOpen}
+					itemType={ReportItemTypes.profile}
+					onRequestClose={this.toggleReportPopup}
+				/>
+				<RemovalPopup
+					post={reply}
+					open={removalPopupOpen}
+					removedItemId={reply.id}
+					itemType={ReportItemTypes.post}
+					accessLevel={determinedAccessLevel}
+					onRequestClose={this.toggleRemovalPopup}
+				/>
 			</div>
 		);
 	}
