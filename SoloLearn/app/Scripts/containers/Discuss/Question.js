@@ -119,9 +119,11 @@ class Question extends Component {
 							]
 						}
 						{ question.userID !== this.props.userId &&
+							determinedAccessLevel > 1 &&
 							<MenuItem
-								primaryText={t('common.report-action-title')}
-								onClick={this.toggleReportPopup}
+								primaryText={t('common.edit-action-title')}
+								key={`edit${question.id}`}
+								containerElement={<Link to={`/discuss/edit/${question.id}`} />}
 							/>
 						}
 						{ question.userID !== this.props.userId &&
@@ -132,6 +134,12 @@ class Question extends Component {
 									t('discuss.forum_request_removal_prompt_title') :
 									t('discuss.forum_remove_prompt_title')
 								}
+							/>
+						}
+						{ question.userID !== this.props.userId &&
+							<MenuItem
+								primaryText={t('common.report-action-title')}
+								onClick={this.toggleReportPopup}
 							/>
 						}
 					</IconMenu>
