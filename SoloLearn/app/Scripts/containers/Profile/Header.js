@@ -127,7 +127,7 @@ const styles = {
 
 const mapStateToProps = state => ({
 	userId: state.userProfile.id,
-	accessLevel: state.userProfile.accessLevel,
+	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -204,7 +204,7 @@ class Header extends Component {
 								primaryText={t('common.report-action-title')}
 								onClick={this.toggleReportPopup}
 							/>
-							{ (determineAccessLevel(accessLevel) > 0
+							{ (accessLevel > 0
 									&& !determineAccessLevel(profile.accessLevel) > 0) &&
 									<MenuItem
 										primaryText={t('common.deactivate-action-title')}
@@ -259,7 +259,7 @@ class Header extends Component {
 					open={deactivationPopupOpen}
 					itemType={ReportItemTypes.profile}
 					onRequestClose={this.toggleDeactivationPopup}
-					accessLevel={determineAccessLevel(accessLevel)}
+					accessLevel={accessLevel}
 				/>
 			</div>
 		);

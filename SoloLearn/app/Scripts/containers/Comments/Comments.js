@@ -42,7 +42,7 @@ const cache = () => new CellMeasurerCache({
 
 const mapStateToProps = state => ({
 	selectedComment: getSelectedCommentId(state),
-	accessLevel: state.userProfile.accessLevel,
+	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
 });
 
 const mapDispatchToProps = {
@@ -233,7 +233,6 @@ class Comments extends Component {
 			commentsType,
 			selectedComment,
 		} = this.props;
-		const determinedAccessLevel = determineAccessLevel(accessLevel);
 		return (
 			<div id="comments" style={{ maxHeight: 660, height: '100%' }}>
 				{(!isLoaded || !comments.length) && <LoadingOverlay />}
@@ -268,7 +267,7 @@ class Comments extends Component {
 					comment={targetItem}
 					open={removalPopupOpen}
 					commentsType={commentsType}
-					accessLevel={determinedAccessLevel}
+					accessLevel={accessLevel}
 					itemId={targetItem ? targetItem.id : 0}
 					onRequestClose={this.toggleRemovalPopup}
 					itemType={ReportItemTypes[`${commentsType}Comment`]}

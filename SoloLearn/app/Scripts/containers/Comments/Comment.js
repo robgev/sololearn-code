@@ -130,7 +130,6 @@ class Comment extends Component {
 			toggleReportPopup,
 			toggleRemovalPopup,
 		} = this.props;
-		const determinedAccessLevel = determineAccessLevel(accessLevel);
 		return (
 			<IconMenu
 				iconButtonElement={<IconButton style={styles.iconMenu.icon}><MoreVertIcon /></IconButton>}
@@ -158,10 +157,10 @@ class Comment extends Component {
 					/>
 				}
 				{ comment.userID !== this.props.userId &&
-					determinedAccessLevel > 0 &&
+					accessLevel > 0 &&
 					<MenuItem
 						onClick={() => toggleRemovalPopup(comment)}
-						primaryText={(determinedAccessLevel === 1 && commentType !== 'lesson') ?
+						primaryText={(accessLevel === 1 && commentType !== 'lesson') ?
 							t('discuss.forum_request_removal_prompt_title') :
 							t('discuss.forum_remove_prompt_title')
 						}

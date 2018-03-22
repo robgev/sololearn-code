@@ -17,7 +17,7 @@ import RemovalPopup from './RemovalPopup';
 import { RepliesStyles as styles } from './styles';
 
 const mapStateToProps = state => ({
-	accessLevel: state.userProfile.accessLevel,
+	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
 });
 
 const cache = new CellMeasurerCache({
@@ -77,7 +77,6 @@ class Replies extends Component {
 	render() {
 		const { accessLevel } = this.props;
 		const { removalPopupOpen, reportPopupOpen, targetItem } = this.state;
-		const determinedAccessLevel = determineAccessLevel(accessLevel);
 		return (
 			<div style={styles.container}>
 				{this.state.canLoadAbove && this.props.replies.length > 0 &&
@@ -104,7 +103,7 @@ class Replies extends Component {
 					post={targetItem}
 					open={removalPopupOpen}
 					itemType={ReportItemTypes.post}
-					accessLevel={determinedAccessLevel}
+					accessLevel={accessLevel}
 					itemId={targetItem ? targetItem.id : 0}
 					onRequestClose={this.toggleRemovalPopup}
 				/>

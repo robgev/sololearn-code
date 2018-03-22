@@ -32,7 +32,7 @@ import { QuestionStyles as styles } from './styles';
 
 const mapStateToProps = state => ({
 	userId: state.userProfile.id,
-	accessLevel: state.userProfile.accessLevel,
+	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
 });
 
 const mapDispatchToProps = {
@@ -65,7 +65,6 @@ class Question extends Component {
 	render() {
 		const { removalPopupOpen, reportPopupOpen } = this.state;
 		const { question, accessLevel, t } = this.props;
-		const determinedAccessLevel = determineAccessLevel(accessLevel);
 
 		return (
 			<Paper className="question" key={question.id} style={styles.question}>
@@ -119,7 +118,7 @@ class Question extends Component {
 							]
 						}
 						{ question.userID !== this.props.userId &&
-							determinedAccessLevel > 1 &&
+							accessLevel > 1 &&
 							<MenuItem
 								primaryText={t('common.edit-action-title')}
 								key={`edit${question.id}`}
@@ -127,10 +126,10 @@ class Question extends Component {
 							/>
 						}
 						{ question.userID !== this.props.userId &&
-							determinedAccessLevel > 0 &&
+							accessLevel > 0 &&
 							<MenuItem
 								onClick={this.toggleRemovalPopup}
-								primaryText={determinedAccessLevel === 1 ?
+								primaryText={accessLevel === 1 ?
 									t('discuss.forum_request_removal_prompt_title') :
 									t('discuss.forum_remove_prompt_title')
 								}
@@ -175,7 +174,7 @@ class Question extends Component {
 					open={removalPopupOpen}
 					removedItemId={question.id}
 					itemType={ReportItemTypes.post}
-					accessLevel={determinedAccessLevel}
+					accessLevel={accessLevel}
 					onRequestClose={this.toggleRemovalPopup}
 				/>
 			</Paper>

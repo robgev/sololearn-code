@@ -25,7 +25,7 @@ import { ReplyStyles as styles } from './styles';
 
 const mapStateToProps = state => ({
 	userId: state.userProfile.id,
-	accessLevel: state.userProfile.accessLevel,
+	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
 });
 
 const mapDispatchToProps = {
@@ -123,7 +123,6 @@ class Reply extends Component {
 		const {
 			reply, accessLevel, toggleReportPopup, toggleRemovalPopup,
 		} = this.props;
-		const determinedAccessLevel = determineAccessLevel(accessLevel);
 		return (
 			<div className="reply" key={reply.id} style={(reply.isAccepted && !this.state.isEditing) ? [ styles.reply.base, styles.reply.accepted ] : styles.reply.base}>
 				<div className="details-wrapper" style={styles.detailsWrapper}>
@@ -165,10 +164,10 @@ class Reply extends Component {
 								/>
 							}
 							{ reply.userID !== this.props.userId &&
-								determinedAccessLevel > 0 &&
+								accessLevel > 0 &&
 								<MenuItem
 									onClick={() => toggleRemovalPopup(reply)}
-									primaryText={determinedAccessLevel === 1 ?
+									primaryText={accessLevel === 1 ?
 										'Request Removal' :
 										'Remove'
 									}

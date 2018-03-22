@@ -9,10 +9,13 @@ import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import { red500 } from 'material-ui/styles/colors';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 
+import { determineAccessLevel } from 'utils';
+
 import 'styles/Playground/bottomToolbar.scss';
 
 const mapStateToProps = state => ({
 	userId: state.userProfile.id,
+	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
 });
 
 @connect(mapStateToProps)
@@ -42,6 +45,7 @@ class BottomToolbar extends PureComponent {
 		const {
 			userId,
 			codeData,
+			accessLevel,
 			openComments,
 		} = this.props;
 		const {
@@ -74,7 +78,7 @@ class BottomToolbar extends PureComponent {
 				</div>
 				<div className="toolbar-right">
 					<div className="toggle-container">
-						{ userID === userId &&
+						{ (userID === userId || accessLevel > 1) &&
 							<div className="my-code-actions">
 								<RaisedButton
 									labelColor="white"
