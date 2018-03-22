@@ -78,28 +78,30 @@ class BottomToolbar extends PureComponent {
 				</div>
 				<div className="toolbar-right">
 					<div className="toggle-container">
-						{ (userID === userId || accessLevel > 1) &&
-							<div className="my-code-actions">
-								<RaisedButton
-									labelColor="white"
-									icon={<DeleteIcon />}
-									label="Delete this code"
-									style={{ marginRight: 5 }}
-									backgroundColor={red500}
-									onClick={this.deleteCurrentCode}
-								/>
-								<Toggle
-									label="Public:"
-									style={{ width: 50 }}
-									defaultToggled={isPublic}
-									onToggle={this.togglePublicState}
-									trackStyle={{ backgroundColor: '#BDBDBD' }}
-									thumbStyle={{ backgroundColor: '#E0E0E0' }}
-									trackSwitchedStyle={{ backgroundColor: '#9CCC65' }}
-									thumbSwitchedStyle={{ backgroundColor: '#AED581' }}
-								/>
-							</div>
-						}
+						<div className="my-code-actions">
+							{ userID === userId &&
+							<RaisedButton
+								labelColor="white"
+								icon={<DeleteIcon />}
+								label="Delete this code"
+								style={{ marginRight: 5 }}
+								backgroundColor={red500}
+								onClick={this.deleteCurrentCode}
+							/>
+							}
+							{ (userID === userId || accessLevel > 1) &&
+							<Toggle
+								label="Public:"
+								style={{ width: 50 }}
+								defaultToggled={isPublic}
+								onToggle={this.togglePublicState}
+								trackStyle={{ backgroundColor: '#BDBDBD' }}
+								thumbStyle={{ backgroundColor: '#E0E0E0' }}
+								trackSwitchedStyle={{ backgroundColor: '#9CCC65' }}
+								thumbSwitchedStyle={{ backgroundColor: '#AED581' }}
+							/>
+							}
+						</div>
 					</div>
 					{ !!id &&
 					<FlatButton
