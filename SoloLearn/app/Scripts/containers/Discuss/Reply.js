@@ -180,8 +180,15 @@ class Reply extends Component {
 					!this.state.isEditing &&
 					<div className="additional-details" style={styles.additionalDetails}>
 						{
-							this.props.isUsersQuestion ?
-								<IconButton className="follow" style={styles.bestAnswerButton.base} iconStyle={styles.bestAnswerButton.icon} onClick={() => this.props.toggleAcceptedAnswerInternal(reply.id, reply.isAccepted)}>
+							(this.props.isUsersQuestion || accessLevel > 1) ?
+								<IconButton
+									className="follow"
+									style={styles.bestAnswerButton.base}
+									iconStyle={styles.bestAnswerButton.icon}
+									onClick={
+										() => this.props.toggleAcceptedAnswerInternal(reply.id, reply.isAccepted)
+									}
+								>
 									<AcceptedIcon color={reply.isAccepted ? lightGreen500 : grey500} />
 								</IconButton>
 								:
