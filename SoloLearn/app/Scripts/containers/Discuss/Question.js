@@ -23,7 +23,7 @@ import { removeDups, determineAccessLevel } from 'utils';
 
 // Redux modules
 import { questionFollowingInternal } from 'actions/discuss';
-import getLikesInternal from 'actions/likes';
+import getLikesCurried from 'actions/likes';
 
 import RemovalPopup from './RemovalPopup';
 import DiscussTag from './DiscussTag';
@@ -36,7 +36,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-	questionFollowingInternal, getLikes: getLikesInternal(2),
+	questionFollowingInternal, getLikes: getLikesCurried('postLikes'),
 };
 
 @connect(mapStateToProps, mapDispatchToProps)

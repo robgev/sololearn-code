@@ -12,14 +12,14 @@ import { green500 } from 'material-ui/styles/colors';
 import { removeDups, updateDate } from 'utils';
 
 import Likes from 'components/Shared/Likes';
-import getLikesInternal from 'actions/likes';
+import getLikesCurried from 'actions/likes';
 import DiscussTag from './DiscussTag';
 
 import { QuestionItemStyles as styles } from './styles';
 
 export const noStyleLink = { textDecoration: 'none' };
 
-const mapDispatchToProps = { getLikes: getLikesInternal(2) };
+const mapDispatchToProps = { getLikes: getLikesCurried('postLikes') };
 
 @connect(null, mapDispatchToProps)
 @Radium

@@ -13,7 +13,7 @@ import { grey500, blueGrey500, lightGreen500 } from 'material-ui/styles/colors';
 
 // Redux modules
 import { editPostInternal, toggleAcceptedAnswerInternal } from 'actions/discuss';
-import getLikesInternal from 'actions/likes';
+import getLikesCurried from 'actions/likes';
 
 import Likes from 'components/Shared/Likes';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
@@ -31,7 +31,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
 	editPostInternal,
 	toggleAcceptedAnswerInternal,
-	getLikes: getLikesInternal(2),
+	getLikes: getLikesCurried('postLikes'),
 };
 
 @connect(mapStateToProps, mapDispatchToProps)

@@ -10,16 +10,19 @@ import { numberFormatter } from 'utils';
 import ProfileAvatar from './ProfileAvatar';
 import InfiniteVirtualizedList from './InfiniteVirtualizedList';
 
+const mapStateToProps = state => ({ likes: state.likes });
+const mapDispatchToProps = { setLikesList };
+
+@connect(mapStateToProps, mapDispatchToProps)
 class Likes extends PureComponent {
 	state = {
 		open: false,
-		anchorEl: null,
 	}
-	openList = (e) => {
+	openList = () => {
 		if (this.props.likes != null) {
 			this.props.setLikesList(null);
 		}
-		this.setState({ open: true, anchorEl: e.currentTarget });
+		this.setState({ open: true });
 		this.props.getLikes();
 	}
 	handleKeyPress = (e) => {
@@ -75,7 +78,4 @@ class Likes extends PureComponent {
 	}
 }
 
-const mapStateToProps = state => ({ likes: state.likes });
-const mapDispatchToProps = { setLikesList };
-
-export default connect(mapStateToProps, mapDispatchToProps)(Likes);
+export default Likes;

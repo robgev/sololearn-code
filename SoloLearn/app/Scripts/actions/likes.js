@@ -1,13 +1,13 @@
 import { curry } from 'lodash';
-import Service from '../api/service';
-import { SET_LIKES_LIST } from '../constants/ActionTypes';
+import Service from 'api/service';
+import { SET_LIKES_LIST } from 'constants/ActionTypes';
 
 const commentTypes = {
-	1: 'Playground/GetCodeLikes',
-	2: 'Discussion/GetPostLikes',
-	3: 'Discussion/GetLessonCommentLikes',
-	4: 'Discussion/GetCodeCommentLikes',
-	5: 'Discussion/GetUserLessonCommentLikes',
+	codeLikes: 'Playground/GetCodeLikes',
+	postLikes: 'Discussion/GetPostLikes',
+	lessonCommentLikes: 'Discussion/GetLessonCommentLikes',
+	codeCommentLikes: 'Discussion/GetCodeCommentLikes',
+	userLessonCommentLikes: 'Discussion/GetUserLessonCommentLikes',
 };
 
 export const setLikesList = likes => ({ type: SET_LIKES_LIST, payload: likes });
@@ -17,20 +17,20 @@ const getParamsWithIdType = ({
 }) => {
 	const params = { index, count: 20 };
 	switch (type) {
-	case 1:
+	case 'codeLikes':
 		return { ...params, codeId: id };
-	case 2:
+	case 'postLikes':
 		return { ...params, postId: id };
-	case 3:
-	case 4:
-	case 5:
+	case 'lessonCommentLikes':
+	case 'codeCommentLikes':
+	case 'userLessonCommentLikes':
 		return { ...params, commentId: id };
 	default:
 		return null;
 	}
 };
 
-const getLikesInternal = (type, id) => async (dispatch, getState) => {
+export const getLikesInternal = (type, id) => async (dispatch, getState) => {
 	try {
 		const { likes } = getState();
 		const index = likes ? likes.length : 0;
