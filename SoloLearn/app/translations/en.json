@@ -710,6 +710,9 @@
   "upvotes": {
     "title": "Recent Upvotes"
   },
+  "downvotes": {
+    "title": "Recent Downvotes"
+  },
   "certificate": {
     "title": "CERTIFICATE",
     "completed-successfully": "You've successfully completed the  course.",

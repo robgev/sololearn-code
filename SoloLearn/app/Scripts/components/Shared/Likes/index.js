@@ -3,12 +3,11 @@ import { connect } from 'react-redux';
 
 import Dialog from 'material-ui/Dialog';
 import CircularProgress from 'material-ui/CircularProgress';
-import Divider from 'material-ui/Divider';
 
 import { setLikesList } from 'actions/likes';
 import { numberFormatter } from 'utils';
-import ProfileAvatar from './ProfileAvatar';
-import InfiniteVirtualizedList from './InfiniteVirtualizedList';
+
+import PopupContent from './PopupContent';
 
 const mapStateToProps = state => ({ likes: state.likes });
 const mapDispatchToProps = { setLikesList };
@@ -17,36 +16,50 @@ const mapDispatchToProps = { setLikesList };
 class Likes extends PureComponent {
 	state = {
 		open: false,
+		tabIndex: 0,
 	}
+
+	handleKeyPress = (e) => {
+		if (e.key === 'Enter') { this.openList(); }
+	}
+
+	changeTab = (tabIndex) => {
+		console.log(tabIndex);
+		this.setState({ tabIndex }, this.openList);
+	}
+
 	openList = () => {
-		if (this.props.likes != null) {
-			this.props.setLikesList(null);
+		const {
+			likes,
+			getLikes,
+			setLikesList,
+			getDownvotes,
+		} = this.props;
+		const { tabIndex } = this.state;
+		if (likes != null) {
+			setLikesList(null);
 		}
 		this.setState({ open: true });
-		this.props.getLikes();
+		if (tabIndex) {
+			getDownvotes();
+		} else {
+			getLikes();
+		}
 	}
-	handleKeyPress = (e) => {
-		if (e.key === 'Enter') { this.openList(e); }
-	}
+
 	closeList = () => {
 		this.setState({ open: false });
 		this.props.setLikesList(null);
 	}
-	renderOneLike = user => (
-		<div>
-			<div key={user.id} style={{ padding: 5 }}>
-				<ProfileAvatar
-					userID={user.id}
-					withUserNameBox
-					userName={user.name}
-					avatarUrl={user.avatarUrl}
-				/>
-			</div>
-			<Divider />
-		</div>
-	);
+
 	render() {
-		const { votes, likes } = this.props;
+		const {
+			likes,
+			votes,
+			getLikes,
+			accessLevel,
+			getDownvotes,
+		} = this.props;
 		return (
 			<div
 				onClick={this.openList}
@@ -59,19 +72,22 @@ class Likes extends PureComponent {
 				<Dialog
 					open={this.state.open}
 					onRequestClose={this.closeList}
-					style={{ height: 300 }}
+					style={{ paddingTop: 0 }}
 				>
-					{
-						likes == null ?
-							(<div style={{ width: 300 }}><CircularProgress /></div>) :
-							(<InfiniteVirtualizedList
-								item={this.renderOneLike}
-								list={likes}
-								width={300}
-								rowHeight={50}
-								loadMore={this.props.getLikes}
-							/>)
-					}
+					<div style={{ height: 300 }}>
+						{
+							likes == null ?
+								<CircularProgress /> :
+								<PopupContent
+									likes={likes}
+									getLikes={getLikes}
+									accessLevel={accessLevel}
+									getDownvotes={getDownvotes}
+									onTabChange={this.changeTab}
+									tabIndex={this.state.tabIndex}
+								/>
+						}
+					</div>
 				</Dialog>
 			</div>
 		);

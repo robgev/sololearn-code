@@ -714,7 +714,10 @@
     "alert-sign-out-action-title": "Выход"
   },
   "upvotes": {
-    "title": "Оценки"
+    "title": "Нравится"
+  },
+  "downvotes": {
+    "title": "Не нравится"
   },
   "certificate": {
     "title": "Сертификат",

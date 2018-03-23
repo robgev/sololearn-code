@@ -716,6 +716,9 @@
   "upvotes": {
     "title": "Votos positivos Recientes"
   },
+  "downvotes": {
+    "title": "Votos negativos Recientes"
+  },
   "certificate": {
     "title": "Diploma",
     "completed-successfully": "Has completado satisfactoriamente el curso",
