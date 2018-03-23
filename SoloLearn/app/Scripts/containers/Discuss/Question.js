@@ -23,7 +23,7 @@ import { removeDups, determineAccessLevel } from 'utils';
 
 // Redux modules
 import { questionFollowingInternal } from 'actions/discuss';
-import getLikesCurried from 'actions/likes';
+import getLikesAndDownvotesCurried from 'actions/likes';
 
 import RemovalPopup from './RemovalPopup';
 import DiscussTag from './DiscussTag';
@@ -36,7 +36,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-	questionFollowingInternal, getLikes: getLikesCurried('postLikes'),
+	questionFollowingInternal,
+	getLikes: getLikesAndDownvotesCurried('postLikes'),
+	getDownvotes: getLikesAndDownvotesCurried('postDownvotes'),
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -50,6 +52,10 @@ class Question extends Component {
 
 	getLikes = () => {
 		this.props.getLikes(this.props.question.id);
+	}
+
+	getDownvotes = () => {
+		this.props.getDownvotes(this.props.question.id);
 	}
 
 	toggleRemovalPopup = () => {
@@ -78,7 +84,12 @@ class Question extends Component {
 						>
 							<ThumbUp color={question.vote === 1 ? blueGrey500 : grey500} />
 						</IconButton>
-						<Likes votes={question.votes} getLikes={this.getLikes} />
+						<Likes
+							votes={question.votes}
+							getLikes={this.getLikes}
+							accessLevel={accessLevel}
+							getDownvotes={this.getDownvotes}
+						/>
 						<IconButton
 							className="downvote"
 							style={styles.vote.button.base}

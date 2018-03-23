@@ -13,7 +13,7 @@ import { grey500, blueGrey500, lightGreen500 } from 'material-ui/styles/colors';
 
 // Redux modules
 import { editPostInternal, toggleAcceptedAnswerInternal } from 'actions/discuss';
-import getLikesCurried from 'actions/likes';
+import getLikesAndDownvotesCurried from 'actions/likes';
 
 import Likes from 'components/Shared/Likes';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
@@ -31,7 +31,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
 	editPostInternal,
 	toggleAcceptedAnswerInternal,
-	getLikes: getLikesCurried('postLikes'),
+	getLikes: getLikesAndDownvotesCurried('postLikes'),
+	getDownvotes: getLikesAndDownvotesCurried('postDownvotes'),
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -45,6 +46,10 @@ class Reply extends Component {
 
 	getLikes = () => {
 		this.props.getLikes(this.props.reply.id);
+	}
+
+	getDownvotes = () => {
+		this.props.getDownvotes(this.props.reply.id);
 	}
 
 	getEditableArea = () => {
@@ -130,7 +135,12 @@ class Reply extends Component {
 						<IconButton className="upvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(reply, 1); }}>
 							<ThumbUp color={reply.vote === 1 ? blueGrey500 : grey500} />
 						</IconButton>
-						<Likes votes={reply.votes} getLikes={this.getLikes} />
+						<Likes
+							votes={reply.votes}
+							getLikes={this.getLikes}
+							accessLevel={accessLevel}
+							getDownvotes={this.getDownvotes}
+						/>
 						<IconButton className="downvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(reply, -1); }}>
 							<ThumbDown color={reply.vote === -1 ? blueGrey500 : grey500} />
 						</IconButton>

@@ -8,7 +8,7 @@ import { TextField, IconMenu, MenuItem, FlatButton, IconButton } from 'material-
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 // Redux modules
-import { getLikesInternal } from 'actions/likes';
+import { getLikesAndDownvotesInternal } from 'actions/likes';
 
 // Utils
 import VoteControls from 'components/Shared/VoteControls';
@@ -22,7 +22,7 @@ import { CommentStyle as styles } from './styles';
 const mapStateToProps = state => ({ userId: state.userProfile.id });
 
 const mapDispatchToProps = {
-	getLikes: getLikesInternal,
+	getLikes: getLikesAndDownvotesInternal,
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -101,6 +101,11 @@ class Comment extends Component {
 	getVotes = () => {
 		const { comment, commentType, getLikes } = this.props;
 		getLikes(`${commentType}CommentLikes`, comment.id);
+	}
+
+	getDownvotes = () => {
+		const { comment, commentType, getLikes } = this.props;
+		getLikes(`${commentType}CommentDownvotes`, comment.id);
 	}
 
 	getEditControls = () => {
@@ -212,6 +217,7 @@ class Comment extends Component {
 				avatarUrl,
 				userName,
 			},
+			accessLevel,
 			activeComment,
 			t,
 		} = this.props;
@@ -259,7 +265,9 @@ class Comment extends Component {
 									<VoteControls
 										getVotes={this.getVotes}
 										userVote={comment.vote}
+										accessLevel={accessLevel}
 										totalVotes={comment.votes}
+										getDownvotes={this.getDownvotes}
 										onUpvote={() => this.props.voteComment(comment, 1)}
 										onDownvote={() => this.props.voteComment(comment, -1)}
 									/>

@@ -9,31 +9,46 @@ import ChatBubble from 'material-ui/svg-icons/communication/chat-bubble-outline'
 import { green500 } from 'material-ui/styles/colors';
 
 // Utils
-import { removeDups, updateDate } from 'utils';
+import { removeDups, updateDate, determineAccessLevel } from 'utils';
 
 import Likes from 'components/Shared/Likes';
-import getLikesCurried from 'actions/likes';
+import getLikesAndDownvotesCurried from 'actions/likes';
 import DiscussTag from './DiscussTag';
 
 import { QuestionItemStyles as styles } from './styles';
 
 export const noStyleLink = { textDecoration: 'none' };
 
-const mapDispatchToProps = { getLikes: getLikesCurried('postLikes') };
+const mapStateToProps = state => ({
+	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
+});
 
-@connect(null, mapDispatchToProps)
+const mapDispatchToProps = {
+	getLikes: getLikesAndDownvotesCurried('postLikes'),
+	getDownvotes: getLikesAndDownvotesCurried('postDownvotes'),
+};
+
+@connect(mapStateToProps, mapDispatchToProps)
 @Radium
 class QuestionItem extends PureComponent {
 	getLikes = () => {
 		this.props.getLikes(this.props.question.id);
 	}
+	getDownvotes = () => {
+		this.props.getDownvotes(this.props.question.id);
+	}
 	render() {
-		const { question } = this.props;
+		const { question, accessLevel } = this.props;
 		return (
 			<div style={styles.question}>
 
 				<div style={styles.stats}>
-					<Likes votes={question.votes} getLikes={this.getLikes} />
+					<Likes
+						votes={question.votes}
+						getLikes={this.getLikes}
+						accessLevel={accessLevel}
+						getDownvotes={this.getDownvotes}
+					/>
 					<div style={styles.answersCountWrapper}>
 						<p style={styles.answersCount}>{question.answers > 99 ? '99+' : question.answers}</p>
 						<ChatBubble color={green500} style={styles.chatBubble} />

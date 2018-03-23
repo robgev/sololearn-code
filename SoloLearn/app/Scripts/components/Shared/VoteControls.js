@@ -14,7 +14,9 @@ const VoteControls = ({
 	onUpvote,
 	className,
 	totalVotes,
+	accessLevel,
 	onDownvote,
+	getDownvotes,
 }) => (
 	<div className={`vote-controls ${absolute ? 'absolute-controls' : ''} ${className}`}>
 		<IconButton
@@ -27,7 +29,12 @@ const VoteControls = ({
 		>
 			<ThumbUp color={userVote === 1 ? blueGrey500 : grey500} />
 		</IconButton>
-		<Likes votes={totalVotes} getLikes={getVotes} />
+		<Likes
+			votes={totalVotes}
+			getLikes={getVotes}
+			accessLevel={accessLevel}
+			getDownvotes={getDownvotes}
+		/>
 		<IconButton
 			className="icon-button down"
 			iconStyle={{

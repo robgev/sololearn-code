@@ -8,6 +8,11 @@ const commentTypes = {
 	lessonCommentLikes: 'Discussion/GetLessonCommentLikes',
 	codeCommentLikes: 'Discussion/GetCodeCommentLikes',
 	userLessonCommentLikes: 'Discussion/GetUserLessonCommentLikes',
+	codeDownvotes: 'Playground/GetCodeDownvotes',
+	postDownvotes: 'Discussion/GetPostDownvotes',
+	lessonCommentDownvotes: 'Discussion/GetLessonCommentDownvotes',
+	codeCommentDownvotes: 'Discussion/GetCodeCommentDownvotes',
+	userLessonCommentDownvotes: 'Discussion/GetUserLessonCommentDownvotes',
 };
 
 export const setLikesList = likes => ({ type: SET_LIKES_LIST, payload: likes });
@@ -18,19 +23,24 @@ const getParamsWithIdType = ({
 	const params = { index, count: 20 };
 	switch (type) {
 	case 'codeLikes':
+	case 'codeDownvotes':
 		return { ...params, codeId: id };
 	case 'postLikes':
+	case 'postDownvotes':
 		return { ...params, postId: id };
 	case 'lessonCommentLikes':
 	case 'codeCommentLikes':
 	case 'userLessonCommentLikes':
+	case 'lessonCommentDownvotes':
+	case 'codeCommentDownvotes':
+	case 'userLessonCommentDownvotes':
 		return { ...params, commentId: id };
 	default:
 		return null;
 	}
 };
 
-export const getLikesInternal = (type, id) => async (dispatch, getState) => {
+export const getLikesAndDownvotesInternal = (type, id) => async (dispatch, getState) => {
 	try {
 		const { likes } = getState();
 		const index = likes ? likes.length : 0;
@@ -43,4 +53,4 @@ export const getLikesInternal = (type, id) => async (dispatch, getState) => {
 	}
 };
 
-export default curry(getLikesInternal);
+export default curry(getLikesAndDownvotesInternal);
