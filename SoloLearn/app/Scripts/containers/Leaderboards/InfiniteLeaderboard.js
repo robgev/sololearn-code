@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import VisibilitySensor from 'react-visibility-sensor';
 import {
 	List,
 	AutoSizer,
@@ -29,7 +30,7 @@ class InfiniteLeaderboard extends PureComponent {
 		style,
 		index,
 	}) => {
-		const { leaderboards, userId } = this.props;
+		const { leaderboards, userId, onScrollVisibility } = this.props;
 		const user = leaderboards[index];
 		return (
 			<div
@@ -37,13 +38,31 @@ class InfiniteLeaderboard extends PureComponent {
 				style={style}
 				className="leaderboard-card-wrapper"
 			>
-				<Link
-					to={`/profile/${user.userID}`}
-					id={`user-card-${user.userID}`}
-					className={`leaderboard-card ${user.userID === userId ? 'highlighted' : ''}`}
-				>
-					<UserCard {...user} />
-				</Link>
+				{	user.userID === userId ?
+					<VisibilitySensor
+						scrollCheck
+						scrollThrottle={100}
+						intervalDelay={8000}
+						onChange={onScrollVisibility}
+					>
+						<Link
+							key={user.name}
+							to={`/profile/${user.userID}`}
+							id={`user-card-${user.userID}`}
+							className="leaderboard-card highlighted"
+						>
+							<UserCard {...user} />
+						</Link>
+					</VisibilitySensor> :
+					<Link
+						key={user.name}
+						to={`/profile/${user.userID}`}
+						id={`user-card-${user.userID}`}
+						className="leaderboard-card"
+					>
+						<UserCard alltime {...user} />
+					</Link>
+				}
 			</div>
 		);
 	}

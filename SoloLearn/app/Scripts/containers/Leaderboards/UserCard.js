@@ -12,8 +12,10 @@ const UserData = ({ name, xp }) => (
 const UserCard = ({
 	id,
 	xp,
-	rank,
 	name,
+	alltime,
+	rank,
+	rangeXp,
 	avatarUrl,
 }) => (
 	<div className="user-card-container">
@@ -25,8 +27,8 @@ const UserCard = ({
 			className="user-info"
 			sideComponent={
 				<UserData
-					xp={xp}
 					name={name}
+					xp={alltime ? xp : rangeXp}
 				/>
 			}
 		/>

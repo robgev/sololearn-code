@@ -38,6 +38,7 @@ class Leaderboards extends PureComponent {
 			userRank: -1,
 			loading: true,
 			scrollToIndex: 0,
+			shouldHideButton: false,
 			userId: calculatedUserId,
 		};
 	}
@@ -93,6 +94,10 @@ class Leaderboards extends PureComponent {
 		}
 	}
 
+	onScrollVisibility = (shouldHideButton) => {
+		this.setState({ shouldHideButton });
+	}
+
 	render() {
 		const { leaderboards, t } = this.props;
 		const {
@@ -102,6 +107,7 @@ class Leaderboards extends PureComponent {
 			loading,
 			userRank,
 			scrollToIndex,
+			shouldHideButton,
 		} = this.state;
 
 		return (
@@ -145,14 +151,17 @@ class Leaderboards extends PureComponent {
 							userId={userId}
 							leaderboards={leaderboards}
 							scrollToIndex={scrollToIndex}
+							onScrollVisibility={this.onScrollVisibility}
 							ref={(infiniteBoard) => { this.infiniteBoard = infiniteBoard; }}
 						/> :
 						<LeaderboardCard
 							userId={userId}
+							userRank={userRank}
 							leaderboards={leaderboards}
+							onScrollVisibility={this.onScrollVisibility}
 						/>
 					}
-					{ userRank > 0 &&
+					{ (userRank > 0 && !shouldHideButton) &&
 						<RaisedButton
 							labelColor="#FFFFFF"
 							onClick={this.scrollTo}

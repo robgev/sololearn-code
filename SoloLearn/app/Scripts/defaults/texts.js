@@ -12,7 +12,7 @@ const texts = {
 		return i18n.t('common.cancel-title');
 	},
 	// popupRetry: 'Retry',
-	get popupDelete(){
+	get popupDelete() {
 		return i18n.t('common.delete-title');
 	},
 
@@ -149,19 +149,19 @@ const texts = {
 
 	// Leaderboards
 	get today() {
-		return i18n.t('leaderboard.picker.day-title')
+		return i18n.t('leaderboard.picker.day-title');
 	},
-	get thisWeektoday() {
-		return i18n.t('leaderboard.picker.week-title')
+	get thisWeek() {
+		return i18n.t('leaderboard.picker.week-title');
 	},
 	get thisMonth() {
-		return i18n.t('leaderboard.picker.month-title')
+		return i18n.t('leaderboard.picker.month-title');
 	},
 	get allTime() {
-		return i18n.t('leaderboard.picker.global-title')
+		return i18n.t('leaderboard.picker.global-title');
 	},
 	get following() {
-		return i18n.t('leaderboard.tab.following-title')
+		return i18n.t('leaderboard.tab.following-title');
 	},
 	get local() {
 		return i18n.t('leaderboard.tab.local-title');
