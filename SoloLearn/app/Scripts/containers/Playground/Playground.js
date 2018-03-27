@@ -292,6 +292,22 @@ class Playground extends Component {
 		}
 	}
 
+	voteCode = async ({
+		vote,
+		id: codeId,
+		votes: totalVotes,
+	}, newVote) => {
+		const userVote = vote === newVote ? 0 : newVote;
+		const votes = (totalVotes + userVote) - vote;
+		const latestSavedCodeData = {
+			...this.state.latestSavedCodeData,
+			vote: userVote,
+			votes,
+		};
+		this.setState({ latestSavedCodeData });
+		await Service.request('Playground/VoteCode', { id: codeId, vote: userVote });
+	};
+
 	// Change web tabs
 	handleTabChange = (mode) => {
 		const { basePath } = this.props;
@@ -690,6 +706,7 @@ ${succeedingSubstr}
 						/>
 						{ (withBottomToolbar && shouldShowToolbar) &&
 							<BottomToolbar
+								voteCode={this.voteCode}
 								codeData={latestSavedCodeData}
 								openComments={this.openComments}
 							/>

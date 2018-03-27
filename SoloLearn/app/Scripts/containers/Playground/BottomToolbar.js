@@ -5,11 +5,13 @@ import Service from 'api/service';
 import Toggle from 'material-ui/Toggle';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import { red500 } from 'material-ui/styles/colors';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import VoteControls from 'components/Shared/VoteControls';
 
 import { determineAccessLevel } from 'utils';
+import getLikesAndDownvotesCurried from 'actions/likes';
 
 import 'styles/Playground/bottomToolbar.scss';
 
@@ -18,7 +20,12 @@ const mapStateToProps = state => ({
 	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
 });
 
-@connect(mapStateToProps)
+const mapDispatchToProps = {
+	getLikes: getLikesAndDownvotesCurried('codeLikes'),
+	getDownvotes: getLikesAndDownvotesCurried('codeDownvotes'),
+};
+
+@connect(mapStateToProps, mapDispatchToProps)
 class BottomToolbar extends PureComponent {
 	constructor(props) {
 		super(props);
@@ -40,16 +47,27 @@ class BottomToolbar extends PureComponent {
 		browserHistory.replace('/codes');
 	}
 
+	getVotes = () => {
+		this.props.getLikes(this.props.codeData.id);
+	}
+
+	getDownvotes = () => {
+		this.props.getDownvotes(this.props.codeData.id);
+	}
+
 	render() {
 		const { isPublic } = this.state;
 		const {
 			userId,
 			codeData,
 			accessLevel,
+			voteCode,
 			openComments,
 		} = this.props;
 		const {
 			id,
+			vote,
+			votes,
 			name,
 			userID,
 			language,
@@ -104,10 +122,23 @@ class BottomToolbar extends PureComponent {
 						</div>
 					</div>
 					{ !!id &&
-					<FlatButton
-						onClick={openComments}
-						label={`${comments} COMMENTS`}
-					/>
+						[
+							<VoteControls
+								userVote={vote}
+								totalVotes={votes}
+								key="voteControls"
+								getVotes={this.getVotes}
+								accessLevel={accessLevel}
+								getDownvotes={this.getDownvotes}
+								onUpvote={() => voteCode(codeData, 1)}
+								onDownvote={() => voteCode(codeData, -1)}
+							/>,
+							<FlatButton
+								key="flatButton"
+								onClick={openComments}
+								label={`${comments} COMMENTS`}
+							/>,
+						]
 					}
 				</div>
 			</div>
