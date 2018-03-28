@@ -4,10 +4,19 @@ import { numberFormatter } from 'utils';
 import Service from 'api/service';
 import 'styles/components/Shared/UserCard.scss';
 
+const CustomWrapper = ({ children, className }) => (
+	<span className={className}>
+		{children}
+	</span>
+);
+
 class UserCard extends Component {
-state = {
-	following: false,
-}
+	constructor(props) {
+		super(props);
+		this.state = {
+			following: props.isFollowing,
+		};
+	}
 
 handleFollowClick = () => {
 	const { following } = this.state;
@@ -17,7 +26,7 @@ handleFollowClick = () => {
 	Service.request(endpoint, { id })
 		.then((response) => {
 			if (!response.isSuccessful) {
-				this.setState({ following: false });
+				this.setState({ following }); // revert the following state, if there was a server error
 			}
 		});
 }
@@ -28,13 +37,14 @@ render() {
 		followers,
 		level,
 		name,
-		isFollowing,
 		id,
+		withLink,
 	} = this.props;
 	const { following } = this.state;
+	const WrapperComponent = withLink ? Link : CustomWrapper;
 	return (
 		<div className="user-card-container">
-			<div className="profile-container">
+			<WrapperComponent to={`/profile/${id}`} className="profile-container">
 				<img src={avatarUrl} alt="avatar" className="profile-avatar" />
 				<div className="profile-data">
 					<div className="profile-name">
@@ -49,7 +59,7 @@ render() {
 						</div>
 					</div>
 				</div>
-			</div>
+			</WrapperComponent>
 			<div
 				className={following ? 'following-button' : 'follow-button'}
 				onClick={this.handleFollowClick}

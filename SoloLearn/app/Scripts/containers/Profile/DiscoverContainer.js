@@ -40,6 +40,7 @@ class DiscoverContainer extends PureComponent {
 					>
 						{discoverSuggestions.map(collection => (
 							<UserCard
+								withLink
 								{...collection}
 								key={collection.id}
 							/>
