@@ -40,6 +40,7 @@
     "comments-format": "COMMENTS",
     "comments": "COMMENTS",
     "comment-format-one": "1 COMMENT",
+    "input_message_hint": "Write your message…",
     "error": {
       "generic-title": "Error",
       "generic-message": "Something went wrong",

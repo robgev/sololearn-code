@@ -43,6 +43,7 @@
       "try-again-message": "Пожалуйста, попробуйте ещё раз через пару минут."
     },
     "comment-format-one": "1 КОММЕНТ",
+		"input_message_hint": "Напишите Ваше сообщение…",
     "comments": "КОММЕНТОВ",
     "saved-message": "Сохранено",
     "save-action-title": "Сохранить",

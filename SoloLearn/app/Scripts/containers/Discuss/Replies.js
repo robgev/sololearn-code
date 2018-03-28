@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {
 	CellMeasurerCache,
 } from 'react-virtualized';
+import { translate } from 'react-i18next';
 import { determineAccessLevel } from 'utils';
 import RaisedButton from 'material-ui/RaisedButton';
 import ReportItemTypes from 'constants/ReportItemTypes';
@@ -27,6 +28,7 @@ const cache = new CellMeasurerCache({
 });
 
 @connect(mapStateToProps)
+@translate()
 class Replies extends Component {
 	constructor(props) {
 		super(props);
@@ -66,6 +68,7 @@ class Replies extends Component {
 		<Reply
 			key={reply.id}
 			reply={reply}
+			t={this.props.t}
 			votePost={this.props.votePost}
 			remove={this.props.openDeletePopup}
 			toggleReportPopup={this.toggleReportPopup}

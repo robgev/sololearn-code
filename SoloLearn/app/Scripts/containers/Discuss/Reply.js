@@ -53,7 +53,7 @@ class Reply extends Component {
 	}
 
 	getEditableArea = () => {
-		const { reply } = this.props;
+		const { reply, t } = this.props;
 
 		if (!this.state.isEditing) {
 			return (
@@ -68,7 +68,7 @@ class Reply extends Component {
 				<div key={`editor${reply.id}`} style={styles.editor}>
 					<TextField
 						key={`replyTextField${reply.id}`}
-						hintText="Message"
+						hintText={t('common.input_message_hint')}
 						multiLine
 						maxLength="2048"
 						rowsMax={4}
@@ -78,11 +78,11 @@ class Reply extends Component {
 						onChange={e => this.onChange(e)}
 						style={styles.textField}
 					/>
-					<span style={styles.textFieldCoutner} key={`replyTextCounter${reply.id}`}>{2048 - this.state.textFieldValue.length} characters remaining</span>
+					<span style={styles.textFieldCoutner} key={`replyTextCounter${reply.id}`}>{2048 - this.state.textFieldValue.length}</span>
 				</div>,
 				<div key={`editorActions${reply.id}`} style={styles.editorActions}>
-					<FlatButton label="Cancel" onClick={() => this.closeEdit()} />
-					<FlatButton label="Save" primary={saveDisabled} disabled={!saveDisabled} onClick={this.save} />
+					<FlatButton label={t('common.cancel-title')} onClick={() => this.closeEdit()} />
+					<FlatButton label={t('common.save-action-title')} primary={saveDisabled} disabled={!saveDisabled} onClick={this.save} />
 				</div>,
 			]
 		);
@@ -126,7 +126,7 @@ class Reply extends Component {
 
 	render() {
 		const {
-			reply, accessLevel, toggleReportPopup, toggleRemovalPopup,
+			t, reply, accessLevel, toggleReportPopup, toggleRemovalPopup,
 		} = this.props;
 		return (
 			<div className="reply" key={reply.id} style={(reply.isAccepted && !this.state.isEditing) ? [ styles.reply.base, styles.reply.accepted ] : styles.reply.base}>
@@ -156,12 +156,12 @@ class Reply extends Component {
 							{		reply.userID === this.props.userId &&
 								[
 									<MenuItem
-										primaryText="Edit"
+										primaryText={t('common.edit-action-title')}
 										key={`edit${reply.id}`}
 										onClick={this.openEdit}
 									/>,
 									<MenuItem
-										primaryText="Delete"
+										primaryText={t('common.delete-title')}
 										key={`remove${reply.id}`}
 										onClick={() => { this.props.remove(reply); }}
 									/>,
@@ -169,7 +169,7 @@ class Reply extends Component {
 							}
 							{ reply.userID !== this.props.userId &&
 								<MenuItem
-									primaryText="Report"
+									primaryText={t('common.report-action-title')}
 									onClick={() => toggleReportPopup(reply)}
 								/>
 							}
@@ -178,8 +178,8 @@ class Reply extends Component {
 								<MenuItem
 									onClick={() => toggleRemovalPopup(reply)}
 									primaryText={accessLevel === 1 ?
-										'Request Removal' :
-										'Remove'
+										t('discuss.forum_request_removal_prompt_title') :
+										t('common.remove-title')
 									}
 								/>
 							}

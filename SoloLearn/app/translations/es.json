@@ -43,6 +43,7 @@
       "try-again-message": "Por favor intenta de nuevo en un momento."
     },
     "comment-format-one": "1 COMENTARIO",
+		"input_message_hint": "Escribe tu mensaje...",
     "comments": "COMENTARIOS",
     "saved-message": "Guardado",
     "save-action-title": "Guardar",
