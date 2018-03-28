@@ -19,7 +19,7 @@ const SettingsMapping = {
 	content: ContentSettings,
 };
 
-const Settings = ({ t, params: { settingID = 'profile' }}) => {
+const Settings = ({ t, params: { settingID = 'profile' } }) => {
 	const SettingsComponent = SettingsMapping[settingID];
 	return (
 		<Layout className="settings-container">

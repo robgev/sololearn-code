@@ -39,6 +39,7 @@ class Profile extends PureComponent {
 			newPass,
 			retypePass,
 		} = this.state;
+		const { t } = this.props;
 		return (
 			<div className="profile-settings-container">
 				<div className="image-group">

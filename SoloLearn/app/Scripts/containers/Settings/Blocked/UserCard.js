@@ -5,7 +5,9 @@ import ProfileAvatar from 'components/Shared/ProfileAvatar';
 // i18n
 import { translate } from 'react-i18next';
 
-const UserData = ({ name, followers, level }) => (
+const UserData = ({
+	t, name, followers, level,
+}) => (
 	<div className="user-meta-data">
 		<p className="user-name">{ name }</p>
 		<p className="user-overview">{ followers } {t('common.user-followers')} | {t('common.user-level')} { level }</p>
@@ -31,6 +33,7 @@ const UserCard = ({
 			className="user-info"
 			sideComponent={
 				<UserData
+					t={t}
 					name={name}
 					level={level}
 					followers={followers}
