@@ -31,6 +31,24 @@ export const LessonType = {
 	Quiz: 1,
 };
 
+const mapStateToProps = state => ({
+	isLoaded: isLoaded(state, 'quizzes'),
+	course: state.course,
+	lessons: state.lessonsMapping,
+	activeQuiz: state.activeQuiz,
+	activeModule: !state.course ? null : state.modulesMapping[state.activeModuleId],
+	activeLesson: !state.course ? null : state.lessonsMapping[state.activeLessonId],
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+	loadDefaults,
+	loadCourseInternal,
+	selectLesson,
+	selectModule,
+	selectQuiz,
+}, dispatch);
+
+@connect(mapStateToProps, mapDispatchToProps)
 class QuizManager extends Component {
 	state = {
 		commentsOpened: false,
@@ -38,7 +56,6 @@ class QuizManager extends Component {
 
 	async componentWillMount() {
 		const {
-			lessons,
 			params,
 			isLoaded,
 			isShortcut,
@@ -54,9 +71,9 @@ class QuizManager extends Component {
 		if (!isLoaded && !isShortcut) {
 			try {
 				await loadCourseInternal();
-				selectModule(parseInt(params.moduleId, 10));
 				selectLesson(parseInt(params.lessonId, 10));
-				const lesson = lessons[params.lessonId];
+				selectModule(parseInt(params.moduleId, 10));
+				const lesson = this.props.lessons[params.lessonId];
 				this.getActiveQuiz(lesson);
 			} catch (e) {
 				console.log(e);
@@ -149,7 +166,7 @@ class QuizManager extends Component {
 
 	getActiveQuiz = (lesson) => {
 		const { quizzes } = lesson;
-		const currentNumber = this.props.params.quizNumber;
+		const currentNumber = parseInt(this.props.params.quizNumber || 1, 10);
 		const activeQuiz = {};
 		const isCheckpoint = lesson.type === LessonType.Checkpoint;
 		for (let i = 0; i < quizzes.length; i++) {
@@ -183,9 +200,12 @@ class QuizManager extends Component {
 	render() {
 		const { isLoaded, activeLesson, activeQuiz } = this.props;
 
-		if ((!isLoaded && !this.props.isShortcut) || (this.props.isShortcut && !activeQuiz)) {
+		if ((!isLoaded && !this.props.isShortcut) ||
+			(this.props.isShortcut && !activeQuiz) ||
+			(this.props.params.quizNumber && !this.props.activeQuiz)) {
 			return <div>Loading...</div>;
 		}
+		console.log('HERE in Render');
 
 		const quizzes = !this.props.isShortcut ? activeLesson.quizzes : this.props.shortcutLesson.quizzes;
 
@@ -223,21 +243,4 @@ class QuizManager extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	isLoaded: isLoaded(state, 'quizzes'),
-	course: state.course,
-	lessons: state.lessonsMapping,
-	activeQuiz: state.activeQuiz,
-	activeModule: !state.course ? null : state.modulesMapping[state.activeModuleId],
-	activeLesson: !state.course ? null : state.lessonsMapping[state.activeLessonId],
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-	loadDefaults,
-	loadCourseInternal,
-	selectLesson,
-	selectModule,
-	selectQuiz,
-}, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(QuizManager);
+export default QuizManager;
