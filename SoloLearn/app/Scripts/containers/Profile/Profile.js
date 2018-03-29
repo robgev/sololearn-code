@@ -18,14 +18,6 @@ import { getProfileInternal, clearOpenedProfile } from 'actions/defaultActions';
 import { emptyProfileFollowers } from 'actions/profile';
 import { isLoaded } from 'reducers';
 
-// Additional data and components
-import Header from './Header';
-import FeedItemsBase from '../Feed/FeedItemsBase';
-import Codes from '../Playground/Codes';
-import Questions from '../Discuss/Questions';
-import Skills from './Skills';
-import Badges from './Badges';
-import FollowersBase from './FollowersBase';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import Layout from 'components/Layouts/GeneralLayout';
 
@@ -34,6 +26,15 @@ import { translate } from 'react-i18next';
 
 // Utils
 import { EnumNameMapper } from 'utils';
+
+// Additional data and components
+import Header from './Header';
+import FeedItemsBase from '../Feed/FeedItemsBase';
+import Codes from '../Playground/Codes';
+import Questions from '../Discuss/Questions';
+import Skills from './Skills';
+import Badges from './Badges';
+import FollowersBase from './FollowersBase';
 
 const TabTypes = {
 	Codes: 1,

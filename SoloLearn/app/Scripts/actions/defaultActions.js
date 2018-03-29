@@ -24,7 +24,8 @@ export const getProfileInternal = userId => async (dispatch) => {
 		}
 	} else {
 		const { profile } = await Service.request('Profile/GetProfile', { id: userId });
-		dispatch(getProfile(profile));
+		const payload = { ...profile, blockedState: false };
+		dispatch(getProfile(payload));
 	}
 };
 

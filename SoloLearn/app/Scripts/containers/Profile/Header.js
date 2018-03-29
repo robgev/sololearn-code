@@ -14,6 +14,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 // Redux modules
 import { followUserInternal, unfollowUserInternal } from 'actions/profile';
+import { blockUser } from 'actions/settings';
 
 // Utils and defaults
 import { numberFormatter, determineAccessLevel } from 'utils';
@@ -26,6 +27,7 @@ import ReportPopup from 'components/Shared/ReportPopup';
 import { translate } from 'react-i18next';
 
 import DeactivationPopup from './DeactivationPopup';
+import BlockPopup from './BlockPopup';
 
 const styles = {
 	detailsWrapper: {
@@ -130,10 +132,11 @@ const mapStateToProps = state => ({
 	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = {
+	blockUser,
 	followUser: followUserInternal,
 	unfollowUser: unfollowUserInternal,
-}, dispatch);
+};
 
 @connect(mapStateToProps, mapDispatchToProps)
 @translate()
@@ -143,6 +146,7 @@ class Header extends Component {
 
 		this.state = {
 			reportPopupOpen: false,
+			blockPopupOpened: false,
 			deactivationPopupOpen: false,
 			isFollowing: this.props.profile.isFollowing,
 		};
@@ -160,9 +164,23 @@ class Header extends Component {
 		}
 	}
 
+	blockUser = () => {
+		const { profile, blockUser } = this.props;
+		blockUser({
+			userId: profile.id,
+			block: !profile.blockedState,
+		});
+		this.toggleBlockPopup();
+	}
+
 	toggleReportPopup = () => {
 		const { reportPopupOpen } = this.state;
 		this.setState({ reportPopupOpen: !reportPopupOpen });
+	}
+
+	toggleBlockPopup = () => {
+		const { blockPopupOpened } = this.state;
+		this.setState({ blockPopupOpened: !blockPopupOpened });
 	}
 
 	toggleDeactivationPopup = () => {
@@ -171,7 +189,11 @@ class Header extends Component {
 	}
 
 	render() {
-		const { reportPopupOpen, deactivationPopupOpen } = this.state;
+		const {
+			reportPopupOpen,
+			blockPopupOpened,
+			deactivationPopupOpen,
+		} = this.state;
 		const {
 			t, profile, levels, userId, accessLevel,
 		} = this.props;
@@ -203,6 +225,10 @@ class Header extends Component {
 							<MenuItem
 								primaryText={t('common.report-action-title')}
 								onClick={this.toggleReportPopup}
+							/>
+							<MenuItem
+								primaryText={t('common.block-user')}
+								onClick={this.toggleBlockPopup}
 							/>
 							{ (accessLevel > 0
 									&& !determineAccessLevel(profile.accessLevel) > 0) &&
@@ -253,6 +279,12 @@ class Header extends Component {
 					open={reportPopupOpen}
 					itemType={ReportItemTypes.profile}
 					onRequestClose={this.toggleReportPopup}
+				/>
+				<BlockPopup
+					userId={profile.id}
+					open={blockPopupOpened}
+					blockUser={this.blockUser}
+					onRequestClose={this.toggleBlockPopup}
 				/>
 				<DeactivationPopup
 					reportedUserId={profile.id}
