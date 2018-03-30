@@ -15,7 +15,7 @@ import Game from './Game';
 const styles = {
 	challengeWrapper: {
 		height: '80vh',
-		overflow: 'hidden',
+		overflowY: 'scroll',
 	},
 };
 
