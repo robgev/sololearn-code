@@ -112,10 +112,11 @@ class Playground extends Component {
 			if (!isNumber) {
 				const foundEditorSettingKey = findKey(editorSettings, { alias: params.primary });
 				if (foundEditorSettingKey) {
-					const { alias, type } = editorSettings[foundEditorSettingKey];
+					const { alias, type, language } = editorSettings[foundEditorSettingKey];
 					const { html, css, javascript } = texts;
 					const isWeb = checkWeb(alias);
 					const codeData = {
+						language,
 						sourceCode: isWeb ? html : '',
 						cssCode: isWeb ? css : '',
 						jsCode: isWeb ? javascript : '',
@@ -158,6 +159,7 @@ class Playground extends Component {
 			cssCode: '',
 			jsCode: '',
 			codeType: '',
+			language: 'web',
 		};
 
 		this.setState({
@@ -183,7 +185,7 @@ class Playground extends Component {
 			const { sourceCode, cssCode, jsCode } = code;
 			const foundEditorSettingKey = findKey(editorSettings, { alias: params.primary });
 			if (foundEditorSettingKey) {
-				const { alias, type } = editorSettings[foundEditorSettingKey];
+				const { alias, type, language } = editorSettings[foundEditorSettingKey];
 				const isWeb = checkWeb(alias);
 				const codeData = {
 					sourceCode,
@@ -195,6 +197,7 @@ class Playground extends Component {
 
 				const latestSavedCodeData = {
 					...code,
+					language,
 					codeType: 'templateCode',
 					userCodeLanguage: isWeb ? 'web' : foundEditorSettingKey,
 				};

@@ -179,7 +179,6 @@ ${this.props.code}
 		if (isUserCode && userID !== userId) {
 			const wrappedCode = this.wrapCodeWithComment();
 			return {
-				id,
 				name,
 				isPublic,
 				...cleanedProps,
@@ -187,7 +186,6 @@ ${this.props.code}
 			};
 		}
 		return {
-			id,
 			name,
 			isPublic,
 			...cleanedProps,
@@ -196,12 +194,17 @@ ${this.props.code}
 
 	saveCodeInternal = (id) => {
 		const sentData = this.generateSendData(id);
-		console.log(this.props.userCodeData);
 		const {
 			userCodeData: { language }, name, code, cssCode, jsCode, isPublic,
 		} = sentData;
 		return Service.request('Playground/SaveCode', {
-			id, language, name, code, cssCode, jsCode, isPublic,
+			id,
+			language,
+			name,
+			code,
+			cssCode,
+			jsCode,
+			isPublic,
 		});
 	}
 
