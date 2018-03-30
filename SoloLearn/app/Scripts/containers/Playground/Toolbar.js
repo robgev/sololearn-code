@@ -84,6 +84,12 @@ const styles = {
 	},
 };
 
+const mapStateToProps = state => ({
+	userId: state.userProfile.id,
+});
+
+connect(mapStateToProps, null);
+@translate()
 class Toolbar extends PureComponent {
 	constructor() {
 		super();
@@ -113,16 +119,90 @@ class Toolbar extends PureComponent {
 		});
 	}
 
-	saveCodeInternal = (id) => {
+	wrapCodeWithComment = () => {
+		const { userCodeData: { userName, language } } = this.props;
+		console.log('Language is', language);
+		if (language === 'web') {
+			const code =
+`<!-- Created by ${userName} -->
+
+${this.props.code}
+`;
+			const cssCode =
+`/* Created by ${userName} */
+
+${this.props.cssCode}
+`;
+			const jsCode =
+`// Created by ${userName}
+
+${this.props.jsCode}
+`;
+			return {
+				code,
+				cssCode,
+				jsCode,
+			};
+		}
+		switch (language) {
+		case 'cpp':
+		case 'cs':
+		case 'java':
+		case 'php':
+		{
+			const code =
+`// Created by ${userName}
+
+${this.props.code}
+`;
+			return { code };
+		}
+		case 'py':
+		case 'rb':
+		{
+			const code =
+`# Created by ${userName}
+
+${this.props.code}
+`;
+			return { code };
+		}
+		default:
+			return null;
+		}
+	}
+
+	generateSendData = (id) => {
 		const { isPublic, codeName: name } = this.state;
+		const { isUserCode, userCodeData: { userID }, userId } = this.props;
 		const cleanedProps = omit(this.props, [ 'id', 'isUserCode' ]);
-		const sendData = {
+		if (isUserCode && userID !== userId) {
+			const wrappedCode = this.wrapCodeWithComment();
+			return {
+				id,
+				name,
+				isPublic,
+				...cleanedProps,
+				...wrappedCode,
+			};
+		}
+		return {
 			id,
 			name,
 			isPublic,
 			...cleanedProps,
 		};
-		return Service.request('Playground/SaveCode', sendData);
+	}
+
+	saveCodeInternal = (id) => {
+		const sentData = this.generateSendData(id);
+		console.log(this.props.userCodeData);
+		const {
+			userCodeData: { language }, name, code, cssCode, jsCode, isPublic,
+		} = sentData;
+		return Service.request('Playground/SaveCode', {
+			id, language, name, code, cssCode, jsCode, isPublic,
+		});
 	}
 
 	save = async () => {
@@ -158,15 +238,11 @@ class Toolbar extends PureComponent {
 	submitSave = async () => {
 		const { setLatestSavedData } = this.props;
 		if (this.state.codeName.trim()) {
-			try {
-				const { code } = await this.saveCodeInternal(0);
-				setLatestSavedData(code);
-				const { publicID, language } = code;
-				// this.handleInputsPopupClose();
-				browserHistory.replace(`/playground/${publicID}/${language}`);
-			} catch (error) {
-				console.log(error);
-			}
+			const { code } = await this.saveCodeInternal(0);
+			setLatestSavedData(code);
+			const { publicID, language } = code;
+			// this.handleInputsPopupClose();
+			browserHistory.replace(`/playground/${publicID}/${language}`);
 		} else {
 			this.setState({ errorText: texts.codeNameError });
 		}
@@ -338,10 +414,4 @@ class Toolbar extends PureComponent {
 	}
 }
 
-const mapStateToProps = state => ({
-	userId: state.userProfile.id,
-});
-
-const translatedToolbar = translate()(Toolbar);
-
-export default connect(mapStateToProps, null)(translatedToolbar);
+export default Toolbar;
