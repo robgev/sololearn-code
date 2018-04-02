@@ -87,6 +87,6 @@ class MainLayout extends PureComponent {
 			</MuiThemeProvider>
 		);
 	}
-}
+ }
 
 export default MainLayout;

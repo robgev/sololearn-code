@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { translate } from 'react-i18next';
 import tabs from 'constants/Tabs';
 
-const TabList = ({ pathname }) => (
+const TabList = ({ pathname, t }) => (
 	<div className="tabs">
 		{	tabs.map(tab => (
 			<Link
@@ -11,11 +12,11 @@ const TabList = ({ pathname }) => (
 				className={`tab-item ${pathname.includes(tab.url) || pathname.includes(tab.aliasUrl) ? 'active' : ''}`}
 			>
 				<img className="tab-icon" alt="Tab icon" src={`assets/${tab.imgUrl}`} />
-				{ tab.name }
+				{ t(tab.name) }
 			</Link>
 		))
 		}
 	</div>
 );
 
-export default TabList;
+export default translate()(TabList);

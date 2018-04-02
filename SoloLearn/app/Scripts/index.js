@@ -1,18 +1,17 @@
 // React modules
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
-import { bindActionCreators } from 'redux';
 import { Provider, connect } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import 'styles/root.scss';
-import Service from 'api/service';
 import { loadDefaults } from 'actions/defaultActions';
 import { store, defaultsLoaded } from 'reducers';
 import routes from './config/routes';
 import './i18n';
 import './analytics';
+
 injectTapEventPlugin();
 
 const mapStateToProps = state => ({
