@@ -104,7 +104,6 @@ export const loadCourseInternal = courseId => (dispatch, getState) => {
 
 	if (course != null) {
 		localStorage.save('selectedCourseId', course.id);
-		browserHistory.replace(`/learn/${course.alias}`);
 		return new Promise((resolve) => {
 			Progress.courseId = course.id;
 			Progress.loadCourse(course); // Getting progress of course
@@ -125,7 +124,6 @@ export const loadCourseInternal = courseId => (dispatch, getState) => {
 	localStorage.save('selectedCourseId', selectedCourseId);
 	return Service.request('GetCourse', { id: selectedCourseId }).then((response) => {
 		const { course } = response;
-		browserHistory.replace(`/learn/${course.alias}`);
 		Progress.courseId = course.id;
 		Progress.loadCourse(course); // Getting progress of course
 		Progress.sync().then(() => {
