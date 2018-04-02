@@ -141,7 +141,7 @@ renderLessons() {
 				key={lesson.id}
 				className={`lesson-item ${lessonState.stateClass}`}
 				style={styles.lessonWrapper}
-				onClick={() => this.handleClick(lesson.id, lessonState, `/learn/${this.props.params.courseName}/${this.props.params.moduleId}/${this.props.params.moduleName}/${lesson.id}/${toSeoFrendly(lesson.name, 100)}/${lessonState.activeQuizNumber}`)}
+				onClick={() => this.handleClick(lesson.id, lessonState, `/learn/${this.props.params.courseName}/${this.props.params.moduleId}/${this.props.params.moduleName}/${lesson.id}/${toSeoFrendly(lesson.name, 100)}/1`)}
 			>
 				<Paper
 					key={lesson.id}
