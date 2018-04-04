@@ -228,6 +228,11 @@ class ProgressManager {
 		}
 	}
 
+	getModuleStateById(moduleId) {
+		const currentModule = this.modules.find(module => module.id === moduleId);
+		return this.getModuleState(currentModule);
+	}
+
 	getModuleState(module) {
 		// / <summary>Get State for specified module</summary>
 		// / <param name="module" type="app.models.Module">Module</param>

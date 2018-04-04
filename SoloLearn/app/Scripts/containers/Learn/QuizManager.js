@@ -31,6 +31,24 @@ export const LessonType = {
 	Quiz: 1,
 };
 
+const mapStateToProps = state => ({
+	isLoaded: isLoaded(state, 'quizzes'),
+	course: state.course,
+	lessons: state.lessonsMapping,
+	activeQuiz: state.activeQuiz,
+	activeModule: !state.course ? null : state.modulesMapping[state.activeModuleId],
+	activeLesson: !state.course ? null : state.lessonsMapping[state.activeLessonId],
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+	loadDefaults,
+	loadCourseInternal,
+	selectLesson,
+	selectModule,
+	selectQuiz,
+}, dispatch);
+
+@connect(mapStateToProps, mapDispatchToProps)
 class QuizManager extends Component {
 	state = {
 		commentsOpened: false,
@@ -38,13 +56,10 @@ class QuizManager extends Component {
 
 	async componentWillMount() {
 		const {
-			lessons,
 			params,
 			isLoaded,
 			isShortcut,
 			selectQuiz,
-			selectLesson,
-			selectModule,
 			shortcutLesson,
 			loadCourseInternal,
 		} = this.props;
@@ -54,10 +69,43 @@ class QuizManager extends Component {
 		if (!isLoaded && !isShortcut) {
 			try {
 				await loadCourseInternal();
-				selectModule(parseInt(params.moduleId, 10));
-				selectLesson(parseInt(params.lessonId, 10));
-				const lesson = lessons[params.lessonId];
-				this.getActiveQuiz(lesson);
+				const lessonId = parseInt(params.lessonId, 10);
+				const moduleId = parseInt(params.moduleId, 10);
+				// As always, there are <censored> mappings. This one being:
+				// 1 - Module is disabled
+				// 2 - Module is active
+				// 3 - Module is finished
+				const { params: { courseName, moduleName } } = this.props;
+				const { _visualState: lessonState } = Progress.getLessonStateById(lessonId);
+
+				const { _visualState: moduleState } = Progress.getModuleStateById(moduleId);
+				if (lessonState < 2) {
+					if (moduleState < 2) {
+						const {
+							lessons,
+							modules,
+							localProgress,
+							getModuleStateById,
+						} = Progress;
+						// Get the active module id
+						const { id: activeModuleId, name: moduleName } =
+							modules.find(({ id }) => getModuleStateById(id)._visualState > 1)
+							|| modules[0].id;
+						const activeLessonId = localProgress.length ?
+							localProgress[localProgress.length - 1].lessonID :
+							lessons[0].id;
+						this.setActiveLesson(activeLessonId, activeModuleId);
+						browserHistory.replace(`/learn/${courseName}/${activeModuleId}/${toSeoFrendly(moduleName, 100)}/${activeLessonId}/${toSeoFrendly(this.props.activeLesson.name, 100)}/${this.props.activeQuiz.number}`);
+					} else {
+						const { localProgress } = Progress;
+						const activeLessonId = localProgress[localProgress.length - 1].lessonID;
+						this.setActiveLesson(activeLessonId, moduleId);
+						browserHistory.replace(`/learn/${courseName}/${moduleId}/${toSeoFrendly(moduleName, 100)}/${activeLessonId}/${toSeoFrendly(this.props.activeLesson.name, 100)}/${this.props.activeQuiz.number}`);
+					}
+				} else {
+					this.setActiveLesson(lessonId, moduleId);
+				}
+				console.log(Progress);
 			} catch (e) {
 				console.log(e);
 			}
@@ -65,6 +113,18 @@ class QuizManager extends Component {
 			const activeQuiz = shortcutLesson.quizzes[0];
 			selectQuiz({ id: activeQuiz.id, number: activeQuiz.number, isText: false });
 		}
+	}
+
+	setActiveLesson = (lessonId, moduleId) => {
+		const {
+			lessons,
+			selectLesson,
+			selectModule,
+		} = this.props;
+		selectLesson(lessonId);
+		selectModule(moduleId);
+		const lesson = lessons[lessonId];
+		this.getActiveQuiz(lesson);
 	}
 
 	generateTimeline = (quizzes, activeQuiz) => {
@@ -149,7 +209,7 @@ class QuizManager extends Component {
 
 	getActiveQuiz = (lesson) => {
 		const { quizzes } = lesson;
-		const currentNumber = this.props.params.quizNumber;
+		const currentNumber = parseInt(this.props.params.quizNumber || 1, 10);
 		const activeQuiz = {};
 		const isCheckpoint = lesson.type === LessonType.Checkpoint;
 		for (let i = 0; i < quizzes.length; i++) {
@@ -183,9 +243,12 @@ class QuizManager extends Component {
 	render() {
 		const { isLoaded, activeLesson, activeQuiz } = this.props;
 
-		if ((!isLoaded && !this.props.isShortcut) || (this.props.isShortcut && !activeQuiz)) {
+		if ((!isLoaded && !this.props.isShortcut) ||
+			(this.props.isShortcut && !activeQuiz) ||
+			(this.props.params.quizNumber && !this.props.activeQuiz)) {
 			return <div>Loading...</div>;
 		}
+		console.log('HERE in Render');
 
 		const quizzes = !this.props.isShortcut ? activeLesson.quizzes : this.props.shortcutLesson.quizzes;
 
@@ -223,21 +286,4 @@ class QuizManager extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	isLoaded: isLoaded(state, 'quizzes'),
-	course: state.course,
-	lessons: state.lessonsMapping,
-	activeQuiz: state.activeQuiz,
-	activeModule: !state.course ? null : state.modulesMapping[state.activeModuleId],
-	activeLesson: !state.course ? null : state.lessonsMapping[state.activeLessonId],
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-	loadDefaults,
-	loadCourseInternal,
-	selectLesson,
-	selectModule,
-	selectQuiz,
-}, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(QuizManager);
+export default QuizManager;
