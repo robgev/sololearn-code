@@ -104,7 +104,6 @@ export const loadCourseInternal = courseId => (dispatch, getState) => {
 
 	if (course != null) {
 		localStorage.save('selectedCourseId', course.id);
-		console.log('Here');
 		return new Promise((resolve) => {
 			Progress.courseId = course.id;
 			Progress.loadCourse(course); // Getting progress of course

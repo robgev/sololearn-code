@@ -60,8 +60,6 @@ class QuizManager extends Component {
 			isLoaded,
 			isShortcut,
 			selectQuiz,
-			selectLesson,
-			selectModule,
 			shortcutLesson,
 			loadCourseInternal,
 		} = this.props;
@@ -71,10 +69,43 @@ class QuizManager extends Component {
 		if (!isLoaded && !isShortcut) {
 			try {
 				await loadCourseInternal();
-				selectLesson(parseInt(params.lessonId, 10));
-				selectModule(parseInt(params.moduleId, 10));
-				const lesson = this.props.lessons[params.lessonId];
-				this.getActiveQuiz(lesson);
+				const lessonId = parseInt(params.lessonId, 10);
+				const moduleId = parseInt(params.moduleId, 10);
+				// As always, there are <censored> mappings. This one being:
+				// 1 - Module is disabled
+				// 2 - Module is active
+				// 3 - Module is finished
+				const { params: { courseName, moduleName } } = this.props;
+				const { _visualState: lessonState } = Progress.getLessonStateById(lessonId);
+
+				const { _visualState: moduleState } = Progress.getModuleStateById(moduleId);
+				if (lessonState < 2) {
+					if (moduleState < 2) {
+						const {
+							lessons,
+							modules,
+							localProgress,
+							getModuleStateById,
+						} = Progress;
+						// Get the active module id
+						const { id: activeModuleId, name: moduleName } =
+							modules.find(({ id }) => getModuleStateById(id)._visualState > 1)
+							|| modules[0].id;
+						const activeLessonId = localProgress.length ?
+							localProgress[localProgress.length - 1].lessonID :
+							lessons[0].id;
+						this.setActiveLesson(activeLessonId, activeModuleId);
+						browserHistory.replace(`/learn/${courseName}/${activeModuleId}/${toSeoFrendly(moduleName, 100)}/${activeLessonId}/${toSeoFrendly(this.props.activeLesson.name, 100)}/${this.props.activeQuiz.number}`);
+					} else {
+						const { localProgress } = Progress;
+						const activeLessonId = localProgress[localProgress.length - 1].lessonID;
+						this.setActiveLesson(activeLessonId, moduleId);
+						browserHistory.replace(`/learn/${courseName}/${moduleId}/${toSeoFrendly(moduleName, 100)}/${activeLessonId}/${toSeoFrendly(this.props.activeLesson.name, 100)}/${this.props.activeQuiz.number}`);
+					}
+				} else {
+					this.setActiveLesson(lessonId, moduleId);
+				}
+				console.log(Progress);
 			} catch (e) {
 				console.log(e);
 			}
@@ -82,6 +113,18 @@ class QuizManager extends Component {
 			const activeQuiz = shortcutLesson.quizzes[0];
 			selectQuiz({ id: activeQuiz.id, number: activeQuiz.number, isText: false });
 		}
+	}
+
+	setActiveLesson = (lessonId, moduleId) => {
+		const {
+			lessons,
+			selectLesson,
+			selectModule,
+		} = this.props;
+		selectLesson(lessonId);
+		selectModule(moduleId);
+		const lesson = lessons[lessonId];
+		this.getActiveQuiz(lesson);
 	}
 
 	generateTimeline = (quizzes, activeQuiz) => {
