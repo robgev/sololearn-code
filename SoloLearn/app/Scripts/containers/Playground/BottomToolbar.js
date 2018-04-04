@@ -11,6 +11,7 @@ import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import VoteControls from 'components/Shared/VoteControls';
 
 import { determineAccessLevel } from 'utils';
+import { removeCode } from 'actions/playground';
 import getLikesAndDownvotesCurried from 'actions/likes';
 
 import 'styles/Playground/bottomToolbar.scss';
@@ -21,6 +22,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
+	removeCode,
 	getLikes: getLikesAndDownvotesCurried('codeLikes'),
 	getDownvotes: getLikesAndDownvotesCurried('codeDownvotes'),
 };
@@ -42,8 +44,8 @@ class BottomToolbar extends PureComponent {
 	}
 
 	deleteCurrentCode = async () => {
-		const { codeData: { id } } = this.props;
-		await Service.request('Playground/DeleteCode', { id });
+		const { codeData: { id }, removeCode } = this.props;
+		removeCode(id);
 		browserHistory.replace('/codes');
 	}
 

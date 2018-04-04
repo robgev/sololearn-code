@@ -21,6 +21,14 @@ const getProfileCodes = codes => ({
 	payload: codes,
 });
 
+export const removeCode = id => async (dispatch) => {
+	await Service.request('Playground/DeleteCode', { id });
+	dispatch({
+		type: types.REMOVE_CODE,
+		payload: id,
+	});
+};
+
 export const getCodesInternal = (index, orderBy, language, query, profileId = null, count = 20) =>
 	async (dispatch) => {
 		const { codes } = await Service.request('Playground/GetPublicCodes', {
