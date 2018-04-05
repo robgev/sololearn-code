@@ -400,11 +400,11 @@ class Playground extends Component {
 		}
 	}
 
-	setLatestSavedData = (latestSavedCodeData) => {
+	setLatestSavedData = (latestSavedCodeData, callback) => {
 		console.log(latestSavedCodeData);
 		this.setState({
 			latestSavedCodeData,
-		});
+		}, callback);
 	}
 
 	wrapByTag = (code, tag) => {
@@ -622,6 +622,12 @@ ${succeedingSubstr}
 		});
 	}
 
+	showToolbar = () => {
+		this.setState({
+			shouldShowToolbar: true,
+		});
+	}
+
 	render() {
 		const {
 			id,
@@ -696,6 +702,7 @@ ${succeedingSubstr}
 							isRunning={isRunning}
 							runCode={this.runCode}
 							language={userCodeLanguage}
+							showToolbar={this.showToolbar}
 							showWebOutput={showWebOutput}
 							insertToHead={this.insertToHead}
 							isUserCode={codeType === 'userCode'}

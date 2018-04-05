@@ -86,9 +86,11 @@ const styles = {
 
 const mapStateToProps = state => ({
 	userId: state.userProfile.id,
+	avatarUrl: state.userProfile.avatarUrl,
+	userName: state.userProfile.name,
 });
 
-connect(mapStateToProps, null);
+@connect(mapStateToProps, null)
 @translate()
 class Toolbar extends PureComponent {
 	constructor() {
@@ -239,13 +241,18 @@ ${this.props.code}
 	}
 
 	submitSave = async () => {
-		const { setLatestSavedData } = this.props;
+		const {
+			setLatestSavedData, avatarUrl, userName, showToolbar,
+		} = this.props;
 		if (this.state.codeName.trim()) {
 			const { code } = await this.saveCodeInternal(0);
-			setLatestSavedData(code);
-			const { publicID, language } = code;
-			// this.handleInputsPopupClose();
-			browserHistory.replace(`/playground/${publicID}/${language}`);
+			setLatestSavedData({ ...code, avatarUrl, userName }, () => {
+				const { publicID, language } = code;
+				// this.handleInputsPopupClose();
+				browserHistory.replace(`/playground/${publicID}/${language}`);
+				this.handleSavePopupClose();
+				showToolbar();
+			});
 		} else {
 			this.setState({ errorText: texts.codeNameError });
 		}
