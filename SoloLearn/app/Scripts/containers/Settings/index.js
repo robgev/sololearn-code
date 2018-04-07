@@ -20,6 +20,7 @@ const SettingsMapping = {
 };
 
 const Settings = ({ t, params: { settingID = 'profile' } }) => {
+	document.title = 'Sololearn | Settings';
 	const SettingsComponent = SettingsMapping[settingID];
 	return (
 		<Layout className="settings-container">

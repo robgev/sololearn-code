@@ -102,6 +102,7 @@ class Lessons extends Component {
 				console.log(error);
 			});
 		}
+		document.title = `${this.props.activeModule.name}`;
 	}
 
 handleClick = (lessonId, lessonState, url) => {

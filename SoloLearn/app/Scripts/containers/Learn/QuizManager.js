@@ -113,6 +113,7 @@ class QuizManager extends Component {
 			const activeQuiz = shortcutLesson.quizzes[0];
 			selectQuiz({ id: activeQuiz.id, number: activeQuiz.number, isText: false });
 		}
+		document.title = `${this.props.activeLesson.name}`;
 	}
 
 	setActiveLesson = (lessonId, moduleId) => {

@@ -91,8 +91,12 @@ const styles = {
 };
 
 class Contests extends PureComponent {
-	state = {
-		selectCourse: false,
+	constructor() {
+		super();
+		this.state = {
+			selectCourse: false,
+		};
+		document.title = 'Sololearn | Contests';
 	}
 
 	componentDidMount() {
@@ -159,27 +163,27 @@ class Contests extends PureComponent {
 				<Layout>
 					<PlayShimmer />
 				</Layout>
-			)
-		} else {
-			return (
-				<Layout>
-					<Paper id="contests">
-						{
-							invited && invited.length > 0 &&
+			);
+		}
+		return (
+			<Layout>
+				<Paper id="contests">
+					{
+						invited && invited.length > 0 &&
 							<div>
 								<p style={{ ...styles.header.base, ...styles.header.title }}>{t('play.section.invites')}</p>
 								<List style={styles.contests}>{this.renderContests(invited)}</List>
 							</div>
-						}
-						{
-							invited && ongoing.length > 0 &&
+					}
+					{
+						invited && ongoing.length > 0 &&
 							<div>
 								<p style={{ ...styles.header.base, ...styles.header.title }}>{t('play.section.ongoing')}</p>
 								<List style={styles.contests}>{this.renderContests(ongoing)}</List>
 							</div>
-						}
-						{
-							invited && completed.length > 0 &&
+					}
+					{
+						invited && completed.length > 0 &&
 							<div>
 								<div style={styles.headerWithAction}>
 									<p style={styles.header.title}>{t('play.section.completed')}</p>
@@ -187,31 +191,30 @@ class Contests extends PureComponent {
 								</div>
 								<List style={styles.contests}>{this.renderContests(completed)}</List>
 							</div>
-						}
-						<Dialog
-							id="courses"
-							modal={false}
-							autoScrollBodyContent
-							title="Choose your weapon"
-							open={this.state.selectCourse}
-							titleStyle={styles.coursesTitle}
-							contentStyle={styles.coursesPopup}
-							onRequestClose={this.toggleCoursePopup}
-						>
-							{this.renderCourses()}
-						</Dialog>
-						<FloatingActionButton
-							secondary
-							zDepth={3}
-							onClick={this.toggleCoursePopup}
-							style={styles.newChallengeButton}
-						>
-							<ContentAdd />
-						</FloatingActionButton>
-					</Paper>
-				</Layout>
-			);
-		}
+					}
+					<Dialog
+						id="courses"
+						modal={false}
+						autoScrollBodyContent
+						title="Choose your weapon"
+						open={this.state.selectCourse}
+						titleStyle={styles.coursesTitle}
+						contentStyle={styles.coursesPopup}
+						onRequestClose={this.toggleCoursePopup}
+					>
+						{this.renderCourses()}
+					</Dialog>
+					<FloatingActionButton
+						secondary
+						zDepth={3}
+						onClick={this.toggleCoursePopup}
+						style={styles.newChallengeButton}
+					>
+						<ContentAdd />
+					</FloatingActionButton>
+				</Paper>
+			</Layout>
+		);
 	}
 }
 

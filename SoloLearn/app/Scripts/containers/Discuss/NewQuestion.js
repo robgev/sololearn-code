@@ -28,15 +28,19 @@ const mapDispatchToProps = { addQuestion };
 @translate()
 @Radium
 class NewQuestion extends Component {
-	state = {
-		title: '',
-		titleErrorText: '',
-		message: '',
-		tags: [],
-		tagsErrorText: '',
-		suggestions: [],
-		isLoading: false,
-	};
+	constructor() {
+		super();
+		document.title = 'Create a new question';
+		this.state = {
+			title: '',
+			titleErrorText: '',
+			message: '',
+			tags: [],
+			tagsErrorText: '',
+			suggestions: [],
+			isLoading: false,
+		};
+	}
 
 	// Detect title change
 	onTitleChange = (e) => {
@@ -66,7 +70,7 @@ class NewQuestion extends Component {
 
 	// Add question form submit
 	handleSubmit = async (e) => {
-		const { t } = this.props
+		const { t } = this.props;
 		e.preventDefault();
 		const allowSubmit = this.state.title.length !== 0 && this.state.tags.length !== 0;
 		if (!allowSubmit) {

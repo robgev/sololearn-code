@@ -48,6 +48,7 @@ class Codes extends Component {
 		if (!this.props.isLoaded) {
 			this.loadCodes();
 		}
+		document.title = 'Sololearn | Code';
 	}
 
 	loadCodes = async () => {

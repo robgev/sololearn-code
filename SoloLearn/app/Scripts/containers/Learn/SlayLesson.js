@@ -38,6 +38,7 @@ class SlayLesson extends PureComponent {
 	componentWillMount() {
 		const { lessonId } = this.props.params;
 		this.loadLesson(lessonId);
+		console.log(this.props);
 	}
 
 	componentWillReceiveProps(newProps) {
@@ -67,6 +68,7 @@ class SlayLesson extends PureComponent {
 		default:
 			break;
 		}
+		document.title = `${this.props.activeLesson.name}`;
 	}
 
 	getLessonsByAuthor = async () => {

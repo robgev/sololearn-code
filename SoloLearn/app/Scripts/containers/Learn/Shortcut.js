@@ -33,6 +33,7 @@ class Shortcut extends PureComponent {
 			isShortcutCorrectCounts: 0,
 			shortcutPassed: false,
 		};
+		document.title = 'Shortcut Quiz';
 	}
 
     backToLearn = () => {
@@ -143,7 +144,7 @@ class Shortcut extends PureComponent {
     }
 
     beforeUnload = (e) => {
-		const { t } = this.props;
+    	const { t } = this.props;
     	// the method that will be used for both add and remove event
     	const confirmationMessage = t('learn.lesson-test-leave-message');
     	// Gecko + IE

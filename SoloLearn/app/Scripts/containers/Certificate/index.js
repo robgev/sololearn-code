@@ -42,6 +42,7 @@ class Certificate extends PureComponent {
 		} else {
 			this.redirect();
 		}
+		document.title = 'Certificate';
 	}
 
 	redirect = () => {

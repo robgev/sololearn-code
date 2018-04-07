@@ -21,6 +21,7 @@ class Questions extends Component {
 	state = { isLoading: false }
 	componentWillMount() {
 		this.loadQuestions();
+		document.title = 'Sololearn | Discuss';
 	}
 	componentDidUpdate(prevProps) {
 		if (prevProps.query !== this.props.query ||

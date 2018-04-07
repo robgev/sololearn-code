@@ -12,16 +12,19 @@ import NotificationList from './NotificationList';
 
 import { NotificationsViewStyles as styles } from './styles';
 
-const Notifications = () => (
-	<Layout>
-		<Paper>
-			<div className="notification-header" style={styles.notificationsHeader}>
-				<p className="notifications-title" style={styles.notificationsTitle}>Your Notifications</p>
-			</div>
-			<Divider />
-			<NotificationList isPopup={false} />
-		</Paper>
-	</Layout>
-);
+const Notifications = () => {
+	document.title = 'Sololearn | Notifications';
+	return (
+		<Layout>
+			<Paper>
+				<div className="notification-header" style={styles.notificationsHeader}>
+					<p className="notifications-title" style={styles.notificationsTitle}>Your Notifications</p>
+				</div>
+				<Divider />
+				<NotificationList isPopup={false} />
+			</Paper>
+		</Layout>
+	);
+};
 
 export default Radium(Notifications);

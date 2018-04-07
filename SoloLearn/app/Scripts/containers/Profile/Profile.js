@@ -98,6 +98,7 @@ class Profile extends Component {
 		const { tab = '' } = params;
 		await this.props.getProfile(params.id);
 		this.selectTab(tab);
+		document.title = `${this.props.profile.data.name}'s Profile`;
 	}
 
 	async componentWillReceiveProps(newProps) {

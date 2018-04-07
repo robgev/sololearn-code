@@ -19,6 +19,7 @@ class SlayDetailed extends PureComponent {
 			loading: true,
 			hasMore: true,
 		};
+		document.title = 'Sololearn | Slay Search';
 	}
 
 	async componentWillMount() {

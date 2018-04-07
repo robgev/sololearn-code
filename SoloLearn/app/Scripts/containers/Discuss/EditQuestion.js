@@ -49,6 +49,7 @@ class EditQuestion extends Component {
 			isLoading: false,
 			editorLoaded: isLoaded,
 		};
+		document.title = 'Edit your question';
 	}
 
 	async componentWillMount() {

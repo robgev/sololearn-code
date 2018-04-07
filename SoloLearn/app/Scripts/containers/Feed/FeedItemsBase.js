@@ -189,6 +189,7 @@ class FeedItemsBase extends Component {
 		};
 		this.interval = null;
 		this.popupData = {};
+		document.title = 'Sololearn | Feed';
 	}
 
 	componentWillMount() {
@@ -418,42 +419,42 @@ class FeedItemsBase extends Component {
 				{!isUserProfile && <Header profile={userProfile} levels={levels} />}
 				{
 					(!this.props.isLoaded && !this.state.fullyLoaded) ?
-					(
-						<FeedShimmer />
-					) :
-					(
-						<div>
-							{
-								this.state.hasNewItems &&
-								<Motion
-									defaultStyle={{ top: -30 }}
-									style={{ top: spring(10, { stiffness: 250, damping: 26 }) }}
-								>
-									{interpolatingStyle =>
-										(
-											<div
-												className="new-activity-button"
-												style={[ styles.newActivityButton.wrapper, interpolatingStyle ]}
-												onClick={this.scrollToFeedItems}
-											>
-												<p style={styles.newActivityButton.title}>{t('feed.new-activity-title')}</p>
-												<Arrow color="#fff" style={styles.newActivityButton.icon} />
-											</div>
-										)
-									}
-								</Motion>
-							}
-							{!isUserProfile && <p className="sub-title" style={styles.subTitle}>{t('feed.title')}</p>}
-							{
-								(feedPins.length > 0 && !isUserProfile) &&
+						(
+							<FeedShimmer />
+						) :
+						(
+							<div>
+								{
+									this.state.hasNewItems &&
+									<Motion
+										defaultStyle={{ top: -30 }}
+										style={{ top: spring(10, { stiffness: 250, damping: 26 }) }}
+									>
+										{interpolatingStyle =>
+											(
+												<div
+													className="new-activity-button"
+													style={[ styles.newActivityButton.wrapper, interpolatingStyle ]}
+													onClick={this.scrollToFeedItems}
+												>
+													<p style={styles.newActivityButton.title}>{t('feed.new-activity-title')}</p>
+													<Arrow color="#fff" style={styles.newActivityButton.icon} />
+												</div>
+											)
+										}
+									</Motion>
+								}
+								{!isUserProfile && <p className="sub-title" style={styles.subTitle}>{t('feed.title')}</p>}
+								{
+									(feedPins.length > 0 && !isUserProfile) &&
 
 								[ <FeedPins pins={feedPins} openPopup={this.handlePopupOpen} key="feedPins" />,
 									<p className="sub-title" style={styles.subTitle} key="separator">{t('feed.most-recent-title')}</p> ]
-							}
-							{(isLoaded && feed.length > 0) &&
+								}
+								{(isLoaded && feed.length > 0) &&
 								<FeedItems feedItems={feed} openPopup={this.handlePopupOpen} />}
-							{
-								((isUserProfile || feed.length > 0) && !this.state.fullyLoaded) &&
+								{
+									((isUserProfile || feed.length > 0) && !this.state.fullyLoaded) &&
 								[
 									<div
 										key="loadMore"
@@ -475,20 +476,20 @@ class FeedItemsBase extends Component {
 										<LoadingOverlay size={30} />
 									</div>,
 								]
-							}
-							{
-								this.state.popupOpened &&
-								<Dialog
-									modal={false}
-									open={this.state.popupOpened}
-									onRequestClose={this.handlePopupClose}
-									bodyStyle={styles.popup}
-								>
-									{this.renderPopup()}
-								</Dialog>
-							}
-						</div>
-					)
+								}
+								{
+									this.state.popupOpened &&
+									<Dialog
+										modal={false}
+										open={this.state.popupOpened}
+										onRequestClose={this.handlePopupClose}
+										bodyStyle={styles.popup}
+									>
+										{this.renderPopup()}
+									</Dialog>
+								}
+							</div>
+						)
 				}
 			</div>
 		);

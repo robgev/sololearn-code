@@ -25,6 +25,7 @@ class Challenge extends PureComponent {
 		if (!this.props.isLoaded) {
 			this.props.getContest(id);
 		}
+		document.title = 'Challenge';
 	}
 
 	componentWillUnmount() {

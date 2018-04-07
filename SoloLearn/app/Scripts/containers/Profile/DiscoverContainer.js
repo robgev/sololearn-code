@@ -26,6 +26,7 @@ class DiscoverContainer extends PureComponent {
 		this.setState({
 			loading: false,
 		});
+		document.title = 'Sololearn | Discover';
 	}
 
 	render() {

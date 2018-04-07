@@ -9,20 +9,22 @@ import SlayLayout from 'components/Layouts/SlayLayout';
 
 const mapStateToProps = state => ({
 	collectionCourses: state.slay.lessonsByUser,
+	authorName: state.slay.activeLesson.userName,
 });
 
 const mapDispatchToProps = { getLessonsByAuthor };
 
 @connect(mapStateToProps, mapDispatchToProps)
 class SlayMoreByAuthor extends PureComponent {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			startIndex: 0,
 			loadCount: 10,
 			loading: true,
 			hasMore: true,
 		};
+		document.title = `Sololearn | More lessons by ${props.authorName}`;
 	}
 
 	async componentWillMount() {

@@ -22,6 +22,7 @@ class SlayHome extends PureComponent {
 			loading: true,
 			hasMore: true,
 		};
+		document.title = 'Sololearn | Slay Bookmarks';
 	}
 
 	async componentWillMount() {

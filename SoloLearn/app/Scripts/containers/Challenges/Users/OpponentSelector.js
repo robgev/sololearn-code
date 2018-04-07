@@ -58,6 +58,7 @@ class OpponentSelector extends Component {
 		this.state = {
 			activeTab: TabTypes.AllPlayers,
 		};
+		document.title = 'Choose your opponent';
 	}
 
 	handleTabChange(value) {

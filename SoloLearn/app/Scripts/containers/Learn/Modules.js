@@ -270,7 +270,7 @@ class Modules extends Component {
 			loadCourseInternal,
 			params: { courseName },
 		} = this.props;
-		this.setState({ loading: true })
+		this.setState({ loading: true });
 		if (!isLoaded || courseName !== course.alias) {
 			const courseNameIsANumber = courseName.match(/\d+/);
 			// I've added this temporary code to reroute to the slay lessons
@@ -285,9 +285,10 @@ class Modules extends Component {
 					await loadCourseInternal(courseId);
 				}
 			}
+			document.title = `Modules of ${this.props.course.name}`;
 		}
 		selectModule(null);
-		this.setState({ loading: false })
+		this.setState({ loading: false });
 	}
 
 	renderModules() {
@@ -525,7 +526,7 @@ class Modules extends Component {
 		const {
 			course,
 			isLoaded: isModuleLoaded,
-			t
+			t,
 		} = this.props;
 		const { loading } = this.state;
 		if (!isModuleLoaded && this.props.userProfile.skills.length > 0) {

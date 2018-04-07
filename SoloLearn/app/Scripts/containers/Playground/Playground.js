@@ -174,6 +174,7 @@ class Playground extends Component {
 		});
 
 		browserHistory.replace(`${basePath}/html`);
+		document.title = 'Sololearn | Playground';
 	}
 
 	getCodeTemplate = async () => {
@@ -219,6 +220,7 @@ class Playground extends Component {
 		} catch (error) {
 			console.log(error);
 		}
+		document.title = 'Sololearn | Playground';
 	}
 
 	// Get user saved code
@@ -277,6 +279,7 @@ class Playground extends Component {
 		} catch (error) {
 			console.log(error);
 		}
+		document.title = `${this.state.latestSavedCodeData.name}`;
 	}
 
 	getTabCodeData = (mode, codes) => {

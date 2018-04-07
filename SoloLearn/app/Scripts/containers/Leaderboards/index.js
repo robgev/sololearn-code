@@ -41,6 +41,7 @@ class Leaderboards extends PureComponent {
 			shouldHideButton: false,
 			userId: calculatedUserId,
 		};
+		document.title = 'Sololearn | Leaderboards';
 	}
 
 	async componentWillMount() {

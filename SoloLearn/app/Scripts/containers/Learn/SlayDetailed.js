@@ -24,6 +24,7 @@ class SlayDetailed extends PureComponent {
 			loading: true,
 			hasMore: true,
 		};
+		document.title = 'Slay | Detailed';
 	}
 
 	async componentWillMount() {

@@ -29,6 +29,7 @@ class Index extends PureComponent {
 		if (this.props.loggedin != null) {
 			this.props.logout();
 		}
+		document.title = 'Please log in';
 	}
 
 	checkToFeed = (err) => {

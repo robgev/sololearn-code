@@ -61,7 +61,8 @@ class Post extends Component {
 	}
 
 	async componentWillMount() {
-		this.initialize();
+		await this.initialize();
+		document.title = this.props.post.title;
 	}
 
 	async componentWillReceiveProps(newProps) {
