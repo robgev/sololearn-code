@@ -537,7 +537,8 @@ ${succeedingSubstr}
 		const {
 			type,
 			sourceCode,
-			languageSelector: language,
+			languageSelector: languageAlias,
+			latestSavedCodeData: { language },
 		} = this.state;
 
 		this.clearOutput();
@@ -566,7 +567,7 @@ ${succeedingSubstr}
 			const compiledCode = await this.compileCode(sourceCode, language, '');
 			// Show output
 			this.showOutput(language, compiledCode.output);
-		} else if (this.checkForInput(language)) {
+		} else if (this.checkForInput(languageAlias)) {
 			this.setState({ inputsPopupOpened: true });
 		} else {
 			this.setState({
@@ -581,11 +582,11 @@ ${succeedingSubstr}
 		}
 	}
 
-	runCondeWithInputs = async () => {
+	runCodeWithInputs = async () => {
 		const {
 			inputs,
 			sourceCode,
-			languageSelector: language,
+			latestSavedCodeData: { language },
 		} = this.state;
 
 		this.setState({
@@ -593,7 +594,6 @@ ${succeedingSubstr}
 			isRunning: true,
 			inputsPopupOpened: false,
 		});
-
 		const compiledCode = await this.compileCode(sourceCode, language, inputs);
 		this.setState({
 			inputs: '',
@@ -660,7 +660,7 @@ ${succeedingSubstr}
 			<FlatButton
 				label={t('common.submit-action-title')}
 				primary
-				onTouchTap={this.runCondeWithInputs}
+				onTouchTap={this.runCodeWithInputs}
 			/>,
 		];
 
