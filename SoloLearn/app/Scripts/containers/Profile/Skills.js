@@ -8,33 +8,33 @@ import LinearProgress from 'material-ui/LinearProgress';
 import PolarChart from 'components/Shared/PolarChart';
 import ChallengeGraphs from 'components/Shared/ChallengeGraphs';
 
+// i18next
+import i18n from 'i18n';
+import { translate } from 'react-i18next';
+
 import { calculateProgress } from 'utils';
 import { PolarChartColors } from 'constants/ChartColors';
 import LanguageCodes from 'constants/LanguageCodes';
 import 'styles/Profile/skills.scss';
 import SkillChip from './SkillChip';
 
-// i18next
-import i18n from 'i18n';
-import { translate } from 'react-i18next';
-
-const getTranslatedLabel = label => {
+const getTranslatedLabel = (label) => {
 	switch (label) {
-		case 'learner':
-			return i18n.t('skills.chart-learner');
-		case 'contributor':
-			return i18n.t('skills.chart-contributor');
-		case 'influencer':
-			return i18n.t('skills.chart-influencer');
-		case 'challenger':
-			return i18n.t('skills.chart-challenger');
-		case 'coder':
-			return i18n.t('skills.chart-coder');
-		default:
-			console.log(label);
-			return label;
+	case 'learner':
+		return i18n.t('skills.chart-learner');
+	case 'contributor':
+		return i18n.t('skills.chart-contributor');
+	case 'influencer':
+		return i18n.t('skills.chart-influencer');
+	case 'challenger':
+		return i18n.t('skills.chart-challenger');
+	case 'coder':
+		return i18n.t('skills.chart-coder');
+	default:
+		console.log(label);
+		return label;
 	}
-}
+};
 
 const createChartData = ranks => Object.keys(ranks)
 	.sort((currentItem, comparedItem) => ranks[comparedItem] - ranks[currentItem])
@@ -45,6 +45,13 @@ const createChartData = ranks => Object.keys(ranks)
 		fill: PolarChartColors[key],
 		y: (Math.sqrt(ranks[key]) * 50) + 50,
 	}));
+
+const ModeratorStatus = ({ badge }) => {
+	const splittedBadge = badge.split('|');
+	return splittedBadge.length > 1 &&
+	<div style={{ textTransform: 'uppercase' }}>{splittedBadge[0].split('_mod')[0]} Moderator</div>;
+};
+
 @translate()
 class Skills extends PureComponent {
 	state = {
@@ -55,12 +62,15 @@ class Skills extends PureComponent {
 
 	render() {
 		const { courseID } = this.state;
-		const { t, levels, profile, skills } = this.props;
+		const {
+			t, levels, profile, skills,
+		} = this.props;
 		const { maxXp, status } = calculateProgress(levels, profile.level, profile.xp);
 		return (
 			<div className="skills-container">
 				<Paper className="skills-group">
 					<p className="skills-header">{t('skills.status-plus-rank')}</p>
+					<ModeratorStatus badge={profile.badge} />
 					<div className="skills-details">
 						<Link to="/leaderboards" className="leaderboard-link">
 							{t('leaderboard.rank.placeholder')}
