@@ -10,7 +10,7 @@ const BusyWrapper = ({
 	loadingComponent,
 	wrapperClassName = '',
 }) => (
-	<div className={`content-wrapper ${className}`}>
+	<div className={`busy-wrap-container ${className}`}>
 		<div
 			className={`content-wrapper ${wrapperClassName}`}
 			style={{
