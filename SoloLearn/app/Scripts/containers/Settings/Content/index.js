@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import CircularProgress from 'material-ui/CircularProgress';
 import texts from 'texts';
 import BusyWrapper from 'components/Shared/BusyWrapper';
 import { updateSetting, getSettings } from 'actions/settings';
@@ -32,6 +33,11 @@ class Content extends PureComponent {
 				isBusy={loading}
 				style={{ minHeight: '60vh' }}
 				wrapperClassName="content-settings-container"
+				loadingComponent={
+					<CircularProgress
+						size={100}
+					/>
+				}
 			>
 				<p className="setting-banner content-setting-banner">{texts.customizeFeed}</p>
 				{feedSettings && Object.keys(feedSettings).map(currentSettingKey => (

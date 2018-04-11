@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
+import CircularProgress from 'material-ui/CircularProgress';
+
 import Progress from 'api/progress';
 import Service from 'api/service';
 import { loadCourseInternal } from 'actions/learn';
@@ -58,6 +60,11 @@ class Certificate extends PureComponent {
 			<BusyWrapper
 				isBusy={loading}
 				style={{ minHeight: '60vh' }}
+				loadingComponent={
+					<CircularProgress
+						size={100}
+					/>
+				}
 			>
 				<div>
 					<img src={imageData} alt="Certificate" />

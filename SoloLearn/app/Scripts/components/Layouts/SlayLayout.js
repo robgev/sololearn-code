@@ -2,6 +2,7 @@ import React from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import BusyWrapper from 'components/Shared/BusyWrapper';
 import CircularProgress from 'material-ui/CircularProgress';
+import SlayHomeShimmer from 'components/Shared/Shimmers/SlayHomeShimmer';
 
 import 'styles/slayBase.scss';
 
@@ -18,7 +19,7 @@ const Layout = ({
 		<div className="main-content">
 			<BusyWrapper
 				isBusy={loading}
-				style={{ minHeight: '60vh' }}
+				loadingComponent={<SlayHomeShimmer />}
 			>
 				<InfiniteScroll
 					pageStart={0}

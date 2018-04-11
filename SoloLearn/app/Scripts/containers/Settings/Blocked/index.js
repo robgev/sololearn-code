@@ -58,6 +58,11 @@ class Blocked extends PureComponent {
 				isBusy={loading}
 				style={{ minHeight: '60vh' }}
 				wrapperClassName="blocked-settings-container"
+				loadingComponent={
+					<CircularProgress
+						size={100}
+					/>
+				}
 			>
 				<InfiniteScroll
 					pageStart={0}

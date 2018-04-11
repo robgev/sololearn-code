@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import CircularProgress from 'material-ui/CircularProgress';
 
 import { getDiscoverSuggestions } from 'actions/discover';
 import UserCard from 'components/Shared/UserCard';
@@ -38,6 +39,11 @@ class DiscoverContainer extends PureComponent {
 					<BusyWrapper
 						isBusy={loading}
 						style={{ minHeight: '60vh' }}
+						loadingComponent={
+							<CircularProgress
+								size={100}
+							/>
+						}
 					>
 						{discoverSuggestions.map(collection => (
 							<UserCard

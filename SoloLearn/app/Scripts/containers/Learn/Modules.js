@@ -5,16 +5,16 @@ import Radium from 'radium';
 import { connect } from 'react-redux';
 
 // Material UI components
+import Paper from 'material-ui/Paper';
 import Dialog from 'material-ui/Dialog';
 import Divider from 'material-ui/Divider';
-import LinearProgress from 'material-ui/LinearProgress';
-import CircularProgress from 'material-ui/CircularProgress';
-import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import LinearProgress from 'material-ui/LinearProgress';
+import CircularProgress from 'material-ui/CircularProgress';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 // Redux modules
@@ -556,6 +556,11 @@ class Modules extends Component {
 			<BusyWrapper
 				isBusy={loading}
 				style={{ minHeight: '60vh' }}
+				loadingComponent={
+					<CircularProgress
+						size={100}
+					/>
+				}
 			>
 				<Layout>
 					{ userCourses.length > 0 ?

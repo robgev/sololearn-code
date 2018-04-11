@@ -6,6 +6,7 @@ import { translate } from 'react-i18next';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
+import CircularProgress from 'material-ui/CircularProgress';
 import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 
 import { getLeaderboard } from 'actions/leaderboards';
@@ -145,6 +146,11 @@ class Leaderboards extends PureComponent {
 					isBusy={loading}
 					style={{ minHeight: '30vh' }}
 					wrapperClassName="leaderboards-body"
+					loadingComponent={
+						<CircularProgress
+							size={100}
+						/>
+					}
 				>
 					{ range === 0 ?
 						<InfiniteLeaderboard

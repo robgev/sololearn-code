@@ -38,7 +38,6 @@ class SlayLesson extends PureComponent {
 	componentWillMount() {
 		const { lessonId } = this.props.params;
 		this.loadLesson(lessonId);
-		console.log(this.props);
 	}
 
 	componentWillReceiveProps(newProps) {
