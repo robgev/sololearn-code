@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import Paper from 'material-ui/Paper';
+import { Circle } from 'react-progressbar.js';
 import 'styles/courseChip.scss';
 
 const CustomWrapper = ({ children, className }) => (
@@ -17,6 +18,7 @@ const CourseChip = ({
 	iconUrl,
 	noName,
 	disabled,
+	progress,
 	isCourse,
 	itemType,
 	customLink,
@@ -31,7 +33,9 @@ const CourseChip = ({
 		>
 			<Paper
 				style={{
-					display: 'inline-block',
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
 					height: 100,
 					width: 100,
 					backgroundColor: color,
@@ -39,6 +43,22 @@ const CourseChip = ({
 					...(noBoxShadow ? { boxShadow: 'none' } : {}),
 				}}
 			>
+				{ isCourse &&
+					<Circle
+						progress={progress}
+						options={{
+							color: '#9CCC65',
+							strokeWidth: 4,
+							trailColor: '#DCDCDE',
+							trailWidth: 4,
+						}}
+						containerStyle={{
+							width: 100,
+							height: 100,
+							position: 'absolute',
+						}}
+					/>
+				}
 				<img
 					src={iconUrl}
 					alt="Course Icon"

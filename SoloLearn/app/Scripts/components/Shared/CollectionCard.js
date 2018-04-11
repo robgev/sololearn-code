@@ -36,6 +36,7 @@ const CollectionCard = ({
 	type,
 	name,
 	items,
+	skills,
 	userID,
 	courses,
 	round = false,
@@ -74,25 +75,30 @@ const CollectionCard = ({
 				responsive={generateBreakpoints(collectionItems)}
 			>
 				{
-					collectionItems.map(lessonItem => (
-						lessonItem.itemType !== 4 &&
-						<div key={`${lessonItem.name}-${lessonItem.id}`}>
-							<CourseChip
-								{...lessonItem}
-								round={round}
-								noName={noName}
-								isCourse={isCourses}
-							/>
-						</div>
-					))
+					collectionItems.map((lessonItem) => {
+						const foundSkill = isCourses
+							? skills.find(({ id: skillId }) => lessonItem.id === skillId)
+							: null;
+						const progress = foundSkill ? foundSkill.progress : 0;
+						return (
+							lessonItem.itemType !== 4 &&
+							<div key={`${lessonItem.name}-${lessonItem.id}`}>
+								<CourseChip
+									{...lessonItem}
+									round={round}
+									noName={noName}
+									isCourse={isCourses}
+									progress={progress}
+								/>
+							</div>
+						);
+					})
 				}
 			</Slider>
 		</Paper>
 	);
 };
 
-const mapStateToProps = state => ({ courses: state.courses });
+const mapStateToProps = state => ({ courses: state.courses, skills: state.userProfile.skills });
 
-const translatedCollectionCard = translate()(CollectionCard);
-
-export default connect(mapStateToProps, null)(translatedCollectionCard);
+export default connect(mapStateToProps, null)(translate()(CollectionCard));
