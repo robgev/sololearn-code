@@ -8,7 +8,11 @@ import { getQuestionsInternal, emptyQuestions } from 'actions/discuss';
 
 // Additional components
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import BusyWrapper from 'components/Shared/BusyWrapper';
+import DiscussShimmer from 'components/Shared/Shimmers/DiscussShimmer';
 import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
+
+import 'styles/Discuss/Questions.scss';
 import QuestionItem from './QuestionItem';
 
 import { QuestionsStyles as styles } from './styles';
@@ -57,9 +61,12 @@ class Questions extends Component {
 		const { isLoaded, questions, isUserProfile } = this.props;
 
 		return (
-			<div>
-				{((!isLoaded || questions.length === 0) && !isUserProfile)
-					&& <LoadingOverlay />}
+			<BusyWrapper
+				isBusy={((!isLoaded || questions.length === 0) && !isUserProfile)}
+				wrapperClassName="discuss-wrapper"
+				className="discuss-busy-container"
+				loadingComponent={<DiscussShimmer />}
+			>
 				{(isLoaded && questions.length > 0) && (
 					<InfiniteVirtualizedList
 						rowHeight={100}
@@ -72,15 +79,15 @@ class Questions extends Component {
 				)}
 				{
 					((isUserProfile || questions.length > 0)) &&
-					<div
-						style={!this.state.isLoading ?
-							styles.bottomLoading.base :
-							[ styles.bottomLoading.base, styles.bottomLoading.active ]}
-					>
-						<LoadingOverlay size={30} />
-					</div>
+						<div
+							style={!this.state.isLoading ?
+								styles.bottomLoading.base :
+								[ styles.bottomLoading.base, styles.bottomLoading.active ]}
+						>
+							<LoadingOverlay size={30} />
+						</div>
 				}
-			</div>
+			</BusyWrapper>
 		);
 	}
 }
