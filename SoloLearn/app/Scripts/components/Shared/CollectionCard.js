@@ -69,9 +69,11 @@ const CollectionCard = ({
 				dots={false}
 				speed={500}
 				swipeToSlide
+				arrows={false}
+				infinite={false}
 				slidesToShow={8}
+				draggable={false}
 				className="courses-list"
-				infinite={collectionItems.length > 8}
 				responsive={generateBreakpoints(collectionItems)}
 			>
 				{

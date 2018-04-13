@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { getCollectionItems } from 'actions/slay';
-import CourseCard from 'components/Shared/CourseCard';
+import CourseBox from 'components/Shared/CourseBox';
 import SlayLayout from 'components/Layouts/SlayLayout';
 
 // import 'styles/slayHome.scss';
@@ -67,7 +67,12 @@ class SlayDetailed extends PureComponent {
 				items={courseItems}
 				isCourses={isCourses}
 				loadMore={this.loadMore}
-				cardComponent={CourseCard}
+				cardComponent={CourseBox}
+				style={{
+					flexDirection: 'row',
+					flexWrap: 'wrap',
+					justifyContent: 'flex-start',
+				}}
 			/>
 		);
 	}

@@ -7,6 +7,7 @@ import SlayHomeShimmer from 'components/Shared/Shimmers/SlayHomeShimmer';
 import 'styles/slayBase.scss';
 
 const Layout = ({
+	style,
 	items,
 	loading,
 	children,
@@ -31,6 +32,7 @@ const Layout = ({
 						flexDirection: 'column',
 						justifyContent: 'center',
 						alignItems: 'center',
+						...style,
 					}}
 					loader={loading ? null : <CircularProgress />}
 					// Loading specifies initial load.
