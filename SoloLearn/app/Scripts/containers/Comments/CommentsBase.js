@@ -220,47 +220,35 @@ class CommentsBase extends Component {
 
 		return (
 			<div>
-				<Dialog
-					modal={false}
-					open={this.props.commentsOpened}
-					title={this.getPopupTitle()}
-					autoScrollBodyContent
-					actions={
-						<ReplyBox
-							inputRef={(input) => { this._input = input; }}
-							profile={profile}
-							isPrimary={!this.state.isReplying}
-							replyText={this.state.replyText}
-							setReplyText={this.setReplyText}
-							userName={this.state.activeComment.userName}
-							closeToolbar={this.partialCancel}
-							reply={this.addComment}
-							disabled={this.isReplyDisabled()}
-						/>
-					}
-					actionsContainerStyle={styles.replyBoxWrapper}
-					bodyStyle={styles.dialogBody}
-					onRequestClose={this.props.closeComments}
-				>
-					<Comments
-						t={t}
-						id={id}
-						type={type}
-						commentsType={commentsType}
-						comments={comments}
-						isEditing={this.state.isEditing}
-						isReplying={this.state.isReplying}
-						activeComment={this.state.activeComment}
-						isLoaded={areCommentsLoaded}
-						ordering={this.state.ordering}
-						openEdit={this.openEdit}
-						cancelAll={this.cancelAll}
-						openReplyBoxToolbar={this.openReplyBoxToolbar}
-						deleteComment={this.handleDeleteDialogOpen}
-						selectedComment={this.state.selectedComment}
-						ref={(_comments) => { this._comments = _comments; }}
-					/>
-				</Dialog>
+				<ReplyBox
+					inputRef={(input) => { this._input = input; }}
+					profile={profile}
+					isPrimary={!this.state.isReplying}
+					replyText={this.state.replyText}
+					setReplyText={this.setReplyText}
+					userName={this.state.activeComment.userName}
+					closeToolbar={this.partialCancel}
+					reply={this.addComment}
+					disabled={this.isReplyDisabled()}
+				/>
+				<Comments
+					t={t}
+					id={id}
+					type={type}
+					commentsType={commentsType}
+					comments={comments}
+					isEditing={this.state.isEditing}
+					isReplying={this.state.isReplying}
+					activeComment={this.state.activeComment}
+					isLoaded={areCommentsLoaded}
+					ordering={this.state.ordering}
+					openEdit={this.openEdit}
+					cancelAll={this.cancelAll}
+					openReplyBoxToolbar={this.openReplyBoxToolbar}
+					deleteComment={this.handleDeleteDialogOpen}
+					selectedComment={this.state.selectedComment}
+					ref={(_comments) => { this._comments = _comments; }}
+				/>
 				{this.state.isDeleting &&
 					Popup.getPopup(
 						Popup.generatePopupActions(deleteActions),

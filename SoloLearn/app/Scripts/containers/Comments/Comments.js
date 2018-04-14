@@ -238,6 +238,7 @@ class Comments extends Component {
 				{(!isLoaded || !comments.length) && <LoadingOverlay />}
 				<div style={{ height: '100%' }}>
 					<InfiniteVirtualizedList
+						window
 						item={this.renderComment}
 						list={comments}
 						loadMore={this.loadComments}
