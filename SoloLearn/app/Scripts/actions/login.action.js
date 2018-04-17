@@ -9,7 +9,10 @@ export const imitateLogin = () => ({ type: types.IMITATE_LOGIN });
 export const changeLoginModal = isOpen => ({ type: types.CHANGE_LOGIN_MODAL, payload: isOpen });
 
 export const logout = () => (dispatch) => {
-	new Storage().clear();
+	const currentStorage = new Storage();
+	const deviceID = currentStorage.load('DeviceUniqueID');
+	currentStorage.clear();
+	currentStorage.save('DeviceUniqueID', deviceID);
 	dispatch(getUserProfile(null));
 	dispatch({ type: types.CLEAR_FEED });
 	return Service.request('Logout')
@@ -20,6 +23,7 @@ export const login = ({ email, password }) => async (dispatch, getState) => {
 	const { userProfile, imitLoggedin } = getState();
 	try {
 		if (userProfile != null) await dispatch(logout());
+		Service.isFirstRequest = true;
 		const res = await Service.request('Login', { email, password: hash(password) });
 		if (res.error) return { err: faultGenerator(res.error.data) };
 		const { profile } = await Service.request('Profile/GetProfile', { id: res.user.id });
