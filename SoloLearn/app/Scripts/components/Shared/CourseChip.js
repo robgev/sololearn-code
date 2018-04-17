@@ -21,6 +21,7 @@ const CourseChip = ({
 	progress,
 	isCourse,
 	itemType,
+	size = 100,
 	customLink,
 	noBoxShadow,
 	color = 'white',
@@ -36,8 +37,8 @@ const CourseChip = ({
 					display: 'flex',
 					justifyContent: 'center',
 					alignItems: 'center',
-					height: 100,
-					width: 100,
+					height: size,
+					width: size,
 					backgroundColor: color,
 					borderRadius: (isCourse || round) ? '100%' : 0,
 					...(noBoxShadow ? { boxShadow: 'none' } : {}),
@@ -53,8 +54,8 @@ const CourseChip = ({
 							trailWidth: 4,
 						}}
 						containerStyle={{
-							width: 100,
-							height: 100,
+							width: size,
+							height: size,
 							position: 'absolute',
 						}}
 					/>
