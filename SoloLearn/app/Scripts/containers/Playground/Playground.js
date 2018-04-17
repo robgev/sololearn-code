@@ -404,7 +404,6 @@ class Playground extends Component {
 	}
 
 	setLatestSavedData = (latestSavedCodeData, callback) => {
-		console.log(latestSavedCodeData);
 		this.setState({
 			latestSavedCodeData,
 		}, callback);

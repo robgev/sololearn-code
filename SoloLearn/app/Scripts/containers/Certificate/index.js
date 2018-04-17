@@ -26,7 +26,6 @@ class Certificate extends PureComponent {
 		const { params: { id }, loadCourseInternal } = this.props;
 		const courseId = parseInt(id, 10);
 		if (!this.props.course) {
-			console.log('Loading');
 			await loadCourseInternal(courseId);
 		}
 		const { modules } = this.props.course;

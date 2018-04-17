@@ -238,7 +238,6 @@ class FeedItemsBase extends Component {
 		const fromId = !firstItem.groupedItems ? firstItem.toId : firstItem.id;
 		try {
 			const count = await this.props.getNewFeedItems(fromId, this.props.userId);
-			console.log(!this.state.hasNewItems && count > 0 && this.getScrollState());
 			if (!this.state.hasNewItems && count > 0 && this.getScrollState()) {
 				this.setState({ hasNewItems: true });
 			}

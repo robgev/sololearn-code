@@ -96,7 +96,6 @@ export const getFeedItemsInternal = (fromId, profileId) => async (dispatch, getS
 		// If after grouping challenges, we have less than the half of the elements
 		// We will send another GetFeed request
 		if (feedItemsCount < requestLimitCount / 2) {
-			console.log('Here');
 			const lastItem = feedItems[feedItems.length - 1];
 			const startId = lastItem.type === 444 ? lastItem.toId : lastItem.id;
 			dispatch(getFeedItemsInternal(startId, profileId));

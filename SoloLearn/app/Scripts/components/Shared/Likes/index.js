@@ -24,7 +24,6 @@ class Likes extends PureComponent {
 	}
 
 	changeTab = (tabIndex) => {
-		console.log(tabIndex);
 		this.setState({ tabIndex }, this.openList);
 	}
 

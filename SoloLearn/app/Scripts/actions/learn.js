@@ -120,7 +120,6 @@ export const loadCourseInternal = courseId => (dispatch, getState) => {
 		});
 	}
 	selectedCourseId = selectedCourseId || userCourses[0].id;
-	console.log('HERE');
 	localStorage.save('selectedCourseId', selectedCourseId);
 	return Service.request('GetCourse', { id: selectedCourseId }).then((response) => {
 		const { course } = response;

@@ -14,7 +14,6 @@ import { translate } from 'react-i18next';
 const createChartData = (contests, courseID, dataKey) => {
 	const filteredContests =
 	courseID ? contests.filter(currentContest => currentContest.courseID === courseID) : contests;
-	console.log(filteredContests);
 	const relevantContests = filteredContests.length > 15 ?
 		filteredContests.slice(filteredContests.length - 15) : filteredContests;
 	// We will show only 15 of contests and we get like > 60

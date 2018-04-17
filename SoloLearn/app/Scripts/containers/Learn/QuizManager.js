@@ -105,7 +105,6 @@ class QuizManager extends Component {
 				} else {
 					this.setActiveLesson(lessonId, moduleId);
 				}
-				console.log(Progress);
 			} catch (e) {
 				console.log(e);
 			}
@@ -249,7 +248,6 @@ class QuizManager extends Component {
 			(this.props.params.quizNumber && !this.props.activeQuiz)) {
 			return <div>Loading...</div>;
 		}
-		console.log('HERE in Render');
 
 		const quizzes = !this.props.isShortcut ? activeLesson.quizzes : this.props.shortcutLesson.quizzes;
 

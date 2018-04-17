@@ -123,7 +123,6 @@ class Toolbar extends PureComponent {
 
 	wrapCodeWithComment = () => {
 		const { userCodeData: { userName, language } } = this.props;
-		console.log('Language is', language);
 		if (language === 'web') {
 			const code =
 `<!-- Created by ${userName} -->

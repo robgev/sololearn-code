@@ -31,7 +31,6 @@ const getTranslatedLabel = (label) => {
 	case 'coder':
 		return i18n.t('skills.chart-coder');
 	default:
-		console.log(label);
 		return label;
 	}
 };
