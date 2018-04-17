@@ -11,8 +11,9 @@ import LockIcon from 'material-ui/svg-icons/action/lock';
 import { grey500, blueGrey500 } from 'material-ui/styles/colors';
 
 // Utils
-import { numberFormatter, updateDate, getLanguageColor } from 'utils';
+import { numberFormatter, updateDate } from 'utils';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import LanguageIcon from 'components/Shared/LanguageIcon';
 
 const styles = {
 	code: {
@@ -21,17 +22,6 @@ const styles = {
 		color: 'inherit',
 		padding: '10px',
 		borderBottom: '1px solid #f3f3f3',
-	},
-
-	languageIcon: {
-		display: 'inline-flex',
-		width: '40px',
-		height: '40px',
-		alignItems: 'center',
-		justifyContent: 'center',
-		fontSize: '13px',
-		color: '#fff',
-		margin: '0px 10px 0 0',
 	},
 
 	detailsWrapper: {
@@ -119,7 +109,7 @@ class CodeItem extends Component {
 		const dateModified = updateDate(code.modifiedDate);
 		return (
 			<Link className="code" style={styles.code} to={`/playground/${code.publicID}`}>
-				<div className="language" style={[ styles.languageIcon, { backgroundColor: getLanguageColor(code.language) } ]}>{code.language}</div>
+				<LanguageIcon language={code.language} />
 				<div className="details-wrapper" style={styles.detailsWrapper}>
 					<div className="details">
 						<p className="title" style={styles.title}>{code.name}</p>
