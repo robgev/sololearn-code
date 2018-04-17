@@ -1,6 +1,6 @@
 // React modules
 import React from 'react';
-import { Route, IndexRoute, browserHistory } from 'react-router';
+import { Route, Redirect, IndexRoute, browserHistory } from 'react-router';
 import { redirector } from 'utils';
 
 // Layouts
@@ -75,6 +75,8 @@ export default (
 					<IndexRoute component={Quiz} />
 				</Route>
 			</Route>
+			<Redirect path="/courses(/:courseName)" to="/learn(/:courseName)" />
+			<Redirect path="/course(/:courseName)" to="/learn(/:courseName)" />
 			<Route path="/learn(/:courseName)" component={Modules} />
 			<Route path="/learn/:courseName/:moduleId(/:moduleName)" component={Lessons} />
 			<Route path="/learn/:courseName/:moduleId/:moduleName/:lessonId(/:lessonName)" component={QuizManager}>
