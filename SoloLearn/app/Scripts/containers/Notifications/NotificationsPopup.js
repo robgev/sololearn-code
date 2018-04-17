@@ -57,7 +57,7 @@ class NotificationPopup extends Component {
 				{
 					interpolatingStyle =>
 						(
-							<div id="notifications" style={[ styles.wrapper, interpolatingStyle ]}>
+							<div id="notifications" className="notifications" style={[ styles.wrapper, interpolatingStyle ]}>
 								<div className="arrow" style={styles.arrow} />
 								<Paper className="notifications-container" style={styles.notificationsContainer}>
 									<div className="notification-header" style={styles.notificationsHeader}>

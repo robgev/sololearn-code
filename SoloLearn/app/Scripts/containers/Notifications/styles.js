@@ -1,5 +1,6 @@
 export const NotificationItemStyles = {
 	notificationItem: {
+		zIndex: 'initial',
 	},
 	notificationItemInner: {
 		padding: '10px',
@@ -33,7 +34,6 @@ export const NotificationItemStyles = {
 	},
 	title: {
 		fontSize: '13px',
-		zIndex: 1000000,
 	},
 	userName: {
 		textDecoration: 'none',

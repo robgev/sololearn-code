@@ -24,4 +24,12 @@
 			visibility: hidden;
 		}
 	}
+	.notifications {
+		.notification-snackbar {
+			.notification-content {
+				height: 100%;
+				align-items: center;
+			}
+		}
+	}
 }
