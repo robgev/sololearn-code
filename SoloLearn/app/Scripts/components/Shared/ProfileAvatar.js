@@ -19,6 +19,7 @@ const ProfileAvatar = ({
 	avatarUrl,
 	className,
 	timePassed,
+	avatarStyle,
 	reversedOrder,
 	sideComponent,
 	withUserNameBox,
@@ -31,12 +32,12 @@ const ProfileAvatar = ({
 					<Avatar
 						size={size}
 						src={avatarUrl}
-						style={{ margin: '0 5px' }}
+						style={{ margin: '0 5px', ...avatarStyle }}
 					/>
 					:
 					<Avatar
 						size={size}
-						style={{ margin: '0 5px' }}
+						style={{ margin: '0 5px', ...avatarStyle }}
 					>{userName.toUpperCase().charAt(0)}
 					</Avatar>
 				}
