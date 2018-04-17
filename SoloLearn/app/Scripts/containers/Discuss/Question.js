@@ -16,10 +16,11 @@ import { grey500, blueGrey500 } from 'material-ui/styles/colors';
 // Utils
 import Likes from 'components/Shared/Likes';
 import PostedDate from 'components/Shared/PostedDate';
+import PreviewItem from 'components/Shared/PreviewItem';
 import ReportPopup from 'components/Shared/ReportPopup';
 import DiscussAuthor from 'components/Shared/ProfileAvatar';
 import ReportItemTypes from 'constants/ReportItemTypes';
-import { removeDups, determineAccessLevel } from 'utils';
+import { removeDups, determineAccessLevel, generatePreviews } from 'utils';
 
 // Redux modules
 import { questionFollowingInternal } from 'actions/discuss';
@@ -71,6 +72,7 @@ class Question extends Component {
 	render() {
 		const { removalPopupOpen, reportPopupOpen } = this.state;
 		const { question, accessLevel, t } = this.props;
+		const previewsData = generatePreviews(question.message);
 
 		return (
 			<Paper className="question" key={question.id} style={styles.question}>
@@ -108,6 +110,12 @@ class Question extends Component {
 							}
 						</div>
 						<pre className="message" style={styles.message}>{question.message}</pre>
+						{ previewsData.map(singlePreviewData => (
+							<PreviewItem
+								{...singlePreviewData}
+								key={singlePreviewData.link}
+							/>
+						))}
 					</div>
 					<IconMenu
 						iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}

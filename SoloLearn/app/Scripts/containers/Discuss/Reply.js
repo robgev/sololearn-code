@@ -17,9 +17,10 @@ import getLikesAndDownvotesCurried from 'actions/likes';
 
 import Likes from 'components/Shared/Likes';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import PreviewItem from 'components/Shared/PreviewItem';
 import PostedDate from 'components/Shared/PostedDate';
 
-import { updateDate, determineAccessLevel } from 'utils';
+import { updateDate, determineAccessLevel, generatePreviews } from 'utils';
 
 import { ReplyStyles as styles } from './styles';
 
@@ -53,11 +54,21 @@ class Reply extends Component {
 	}
 
 	getEditableArea = () => {
-		const { reply, t } = this.props;
+		const { reply, t, recompute } = this.props;
+		const previewsData = generatePreviews(this.state.textFieldValue);
 
 		if (!this.state.isEditing) {
 			return (
-				<pre className="message" style={styles.message}>{this.state.textFieldValue}</pre>
+				<div>
+					<pre className="message" style={styles.message}>{this.state.textFieldValue}</pre>
+					{ previewsData.map(singlePreviewData => (
+						<PreviewItem
+							{...singlePreviewData}
+							recompute={recompute}
+							key={singlePreviewData.link}
+						/>
+					))}
+				</div>
 			);
 		}
 

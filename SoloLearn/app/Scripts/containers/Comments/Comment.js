@@ -12,8 +12,9 @@ import { getLikesAndDownvotesInternal } from 'actions/likes';
 
 // Utils
 import VoteControls from 'components/Shared/VoteControls';
-import { updateDate, updateMessage } from 'utils';
+import { updateDate, updateMessage, generatePreviews } from 'utils';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import PreviewItem from 'components/Shared/PreviewItem';
 import { loadRepliesTypes } from './Comments';
 
 // Style
@@ -176,15 +177,27 @@ class Comment extends Component {
 	}
 
 	getEditableArea = (comment) => {
+		const { recompute } = this.props;
 		const isEditing = (this.props.isEditing && this.props.activeComment.id === comment.id);
+		const previewsData = generatePreviews(this.state.textFieldValue);
 
 		return (
 			<div style={styles.commentContent}>
 				{!isEditing &&
-					<div
-						dangerouslySetInnerHTML={{ __html: updateMessage(this.state.textFieldValue) }}
-						style={styles.commentMessage}
-					/>}
+					<div>
+						<div
+							dangerouslySetInnerHTML={{ __html: updateMessage(this.state.textFieldValue) }}
+							style={styles.commentMessage}
+						/>
+						{ previewsData.map(singlePreviewData => (
+							<PreviewItem
+								{...singlePreviewData}
+								recompute={recompute}
+								key={singlePreviewData.link}
+							/>
+						))}
+					</div>
+				}
 				{isEditing &&
 					[
 						<TextField

@@ -69,6 +69,7 @@ class Replies extends Component {
 			key={reply.id}
 			reply={reply}
 			t={this.props.t}
+			recompute={this.recompute}
 			votePost={this.props.votePost}
 			remove={this.props.openDeletePopup}
 			toggleReportPopup={this.toggleReportPopup}

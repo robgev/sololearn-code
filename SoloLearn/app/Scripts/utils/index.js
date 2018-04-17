@@ -11,6 +11,7 @@ import toSeoFrendly from './linkPrettify';
 import updateDate from './dateFormatter';
 import faultGenerator from './faultGenerator';
 import updateMessage from './messageFormatter';
+import generatePreviews from './generatePreviews';
 import numberFormatter from './numberFormatter';
 import getLanguageColor from './getLanguageColor';
 import calculateProgress from './calculateProgress';
@@ -41,6 +42,7 @@ export {
 	toSeoFrendly,
 	updateMessage,
 	faultGenerator,
+	generatePreviews,
 	numberFormatter,
 	calculateProgress,
 	getLanguageColor,

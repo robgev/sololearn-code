@@ -202,6 +202,7 @@ class Comments extends Component {
 				comment={comment}
 				accessLevel={accessLevel}
 				commentType={commentsType}
+				recompute={this.recompute}
 				isEditing={isEditing}
 				isReplying={isReplying}
 				activeComment={activeComment}
@@ -234,9 +235,9 @@ class Comments extends Component {
 			selectedComment,
 		} = this.props;
 		return (
-			<div id="comments" style={{ maxHeight: 660, height: '100%' }}>
+			<div id="comments">
 				{(!isLoaded || !comments.length) && <LoadingOverlay />}
-				<div style={{ height: '100%' }}>
+				<div>
 					<InfiniteVirtualizedList
 						window
 						item={this.renderComment}

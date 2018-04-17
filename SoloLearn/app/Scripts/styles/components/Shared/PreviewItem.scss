@@ -1,0 +1,26 @@
+.preview-container {
+	.preview-wrapper {
+		display: flex;
+		align-items: center;
+		padding: 10px;
+		width: calc(100% - 10px);
+		margin-bottom: 10px;
+		.preview-info {
+			.primary {
+				color: #959595;
+			}
+			.secondary {
+				color: #979797;
+				font-size: 13px;
+			}
+		}
+		.chip-container {
+			margin: 0 10px 0 0;
+			width: 40px;
+			.chip-image {
+				width: 100%;
+				height: 100%;
+			}
+		}
+	}
+}
