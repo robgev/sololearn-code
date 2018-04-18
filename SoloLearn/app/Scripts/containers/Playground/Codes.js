@@ -9,8 +9,8 @@ import { getCodesInternal, emptyCodes } from 'actions/playground';
 // Additional components
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
-import CodeItem from './CodeItem';
 import CodeShimmer from 'components/Shared/Shimmers/CodeShimmer';
+import CodeItem from './CodeItem';
 
 const styles = {
 	bottomLoading: {
@@ -76,7 +76,10 @@ class Codes extends Component {
 	)
 
 	render() {
-		const { isLoaded, codes, isUserProfile } = this.props;
+		const { isLoading } = this.state;
+		const {
+			isLoaded, codes, isUserProfile, t,
+		} = this.props;
 		return (
 			<div>
 				{(isLoaded && codes.length > 0) &&
@@ -88,8 +91,11 @@ class Codes extends Component {
 						window
 					/>
 				}
-				{((!isLoaded || codes.length === 0) && !isUserProfile)
+				{(isLoading && !isUserProfile)
 					&& <CodeShimmer />}
+				{ codes.length === 0 &&
+				<p>{t('code.no-saved-code-title')}</p>
+				}
 				{
 					((isUserProfile || codes.length > 0)) &&
 					<div

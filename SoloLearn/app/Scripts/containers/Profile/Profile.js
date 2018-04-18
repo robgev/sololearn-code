@@ -224,7 +224,7 @@ class Profile extends Component {
 	}
 
 	render() {
-		const { profile, levels } = this.props;
+		const { profile, levels, t } = this.props;
 
 		if (!this.props.isLoaded) {
 			return (
@@ -294,6 +294,7 @@ class Profile extends Component {
 						this.state.activeTab === TabTypes.Codes &&
 						<div className="section" style={styles.section}>
 							<Codes
+								t={t}
 								codes={profile.codes}
 								isLoaded={profile.codes.length > 0}
 								ordering={3}

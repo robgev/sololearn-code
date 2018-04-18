@@ -114,6 +114,7 @@ class CodesBase extends Component {
 					</DropDownMenu>
 				</div>
 				<Codes
+					t={t}
 					codes={this.props.codes}
 					isLoaded={this.props.isLoaded}
 					ordering={this.state.ordering}
