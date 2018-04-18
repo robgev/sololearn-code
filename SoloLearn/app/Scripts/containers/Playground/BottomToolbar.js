@@ -84,6 +84,7 @@ class BottomToolbar extends PureComponent {
 						<ProfileAvatar
 							size={40}
 							userID={userID}
+							userName={userName}
 							avatarUrl={avatarUrl}
 						/>
 						<div className="user-text-data">
