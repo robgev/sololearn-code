@@ -94,6 +94,7 @@ class QuestionsBase extends Component {
 					</DropDownMenu>
 				</div>
 				<Questions
+					t={t}
 					questions={this.props.questions}
 					isLoaded={this.props.isLoaded}
 					ordering={this.props.ordering}

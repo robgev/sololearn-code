@@ -58,11 +58,14 @@ class Questions extends Component {
 	}
 	renderQuestion = question => (<QuestionItem question={question} />)
 	render() {
-		const { isLoaded, questions, isUserProfile } = this.props;
+		const { isLoading } = this.state;
+		const {
+			isLoaded, questions, isUserProfile, t,
+		} = this.props;
 
 		return (
 			<BusyWrapper
-				isBusy={((!isLoaded || questions.length === 0) && !isUserProfile)}
+				isBusy={(isLoading && !isUserProfile)}
 				wrapperClassName="discuss-wrapper"
 				className="discuss-busy-container"
 				loadingComponent={<DiscussShimmer />}
@@ -77,15 +80,18 @@ class Questions extends Component {
 						window
 					/>
 				)}
-				{
-					((isUserProfile || questions.length > 0)) &&
-						<div
-							style={!this.state.isLoading ?
-								styles.bottomLoading.base :
-								[ styles.bottomLoading.base, styles.bottomLoading.active ]}
-						>
-							<LoadingOverlay size={30} />
-						</div>
+				{((isUserProfile && questions.length > 0)) &&
+				<div
+					className="test"
+					style={!this.state.isLoading ?
+						styles.bottomLoading.base :
+						[ styles.bottomLoading.base, styles.bottomLoading.active ]}
+				>
+					<LoadingOverlay size={30} />
+				</div>
+				}
+				{ questions.length === 0 &&
+					<p>{t('common.empty-list-message')}</p>
 				}
 			</BusyWrapper>
 		);
