@@ -46,6 +46,9 @@ const createChartData = ranks => Object.keys(ranks)
 	}));
 
 const ModeratorStatus = ({ badge }) => {
+	if (!badge) {
+		return null;
+	}
 	const splittedBadge = badge.split('|');
 	return splittedBadge.length > 1 &&
 	<div style={{ textTransform: 'uppercase' }}>{splittedBadge[0].split('_mod')[0]} Moderator</div>;
