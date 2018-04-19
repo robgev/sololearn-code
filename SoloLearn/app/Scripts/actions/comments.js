@@ -158,6 +158,11 @@ const getCommentUrlAndParams = ({
 			'Discussion/CreateLessonComment',
 			{ ...common, quizId: id, type },
 		];
+	case 'userLesson':
+		return [
+			'Discussion/CreateUserLessonComment',
+			{ ...common, lessonId: id, type },
+		];
 	case 'code':
 		return [
 			'Discussion/CreateCodeComment',

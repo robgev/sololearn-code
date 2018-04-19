@@ -158,9 +158,11 @@ class CommentsBase extends Component {
 		const { replyText: message } = this.state;
 		this.setReplyText('');
 		const { activeComment, ordering } = this.state;
-		const { id, type, commentsType } = this.props;
+		const {
+			id, type, commentsType, addCommentInternal,
+		} = this.props;
 		const parentId = activeComment.parentId == null ? activeComment.id : activeComment.parentId;
-		await this.props.addCommentInternal({
+		await addCommentInternal({
 			id, parentId, message, type, commentsType, ordering,
 		});
 		this.partialCancel();
