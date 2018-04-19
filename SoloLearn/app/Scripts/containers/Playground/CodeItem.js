@@ -5,8 +5,7 @@ import Radium from 'radium';
 
 // Material UI components
 import CommentsIcon from 'material-ui/svg-icons/communication/comment';
-import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
-import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
+import Thumbs from 'material-ui/svg-icons/action/thumbs-up-down';
 import LockIcon from 'material-ui/svg-icons/action/lock';
 import { grey500, blueGrey500 } from 'material-ui/styles/colors';
 
@@ -116,13 +115,12 @@ class CodeItem extends Component {
 						<div className="stats" style={styles.stats}>
 							<div style={styles.mainStats}>
 								<div className="votes">
-									<ThumbUp className="upvote" style={styles.vote.button} color={code.vote === 1 ? blueGrey500 : grey500} />
+									<Thumbs className="upvote" style={styles.vote.button} color={code.vote === 1 ? blueGrey500 : grey500} />
 									<span style={styles.vote.text}>{code.votes > 0 ? `+${numberFormatter(code.votes)}` : numberFormatter(code.votes)}</span>
-									<ThumbDown className="downvote" style={styles.vote.button} color={code.vote === -1 ? blueGrey500 : grey500} />
 								</div>
 								<div className="comments" style={styles.comments.base}>
-									<span style={styles.comments.text}>{code.comments}</span>
 									<CommentsIcon style={styles.comments.icon} color={grey500} />
+									<span style={styles.comments.text}>{code.comments}</span>
 								</div>
 								<div>
 									{ !code.isPublic &&
