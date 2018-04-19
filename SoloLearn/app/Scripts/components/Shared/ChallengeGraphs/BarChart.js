@@ -30,6 +30,10 @@ const CustomLabel = props => (
 	/>
 );
 
+const PerformanceText = ({ x, y, t }) => (
+	<text x={x} y={y}>{t('skills.challenge-daily-performance')}</text>
+);
+
 const BarChart = ({ t, courseID, contestHistory }) => (
 	<VictoryChart
 		width={800}
@@ -73,7 +77,7 @@ const BarChart = ({ t, courseID, contestHistory }) => (
 				tickLabels: { display: 'none' },
 			}}
 		/>
-		<text x={600} y={300}>{t('skills.challenge-daily-performance')}</text>
+		<PerformanceText t={t} x={600} y={300}>{t('skills.challenge-daily-performance')}</PerformanceText>
 	</VictoryChart>
 );
 
