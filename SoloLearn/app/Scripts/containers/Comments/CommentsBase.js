@@ -78,7 +78,7 @@ class CommentsBase extends Component {
 		}, callback);
 
 	// Open comment editing area
-	openEdit = (id, parentId, userName) => {
+	openEdit = (id, parentId, userName, cb) => {
 		this.partialCancel({
 			isEditing: true,
 			activeComment: {
@@ -89,6 +89,7 @@ class CommentsBase extends Component {
 		}, () => {
 			this._comments.getWrappedInstance().recompute();
 			this._comments.getWrappedInstance()._forceUpdate();
+			cb();
 		});
 	}
 

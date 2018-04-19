@@ -88,7 +88,9 @@ class Comment extends Component {
 
 	openEdit = () => {
 		const { comment } = this.props;
-		this.props.openEdit(comment.id, comment.parentID, comment.userName);
+		this.props.openEdit(comment.id, comment.parentID, comment.userName, () => {
+			setTimeout(() => this._editRef.focus(), 100);
+		});
 	}
 
 	closeEdit = () => {
@@ -207,6 +209,7 @@ class Comment extends Component {
 							maxLength="2048"
 							rowsMax={4}
 							fullWidth
+							ref={(_editRef) => { this._editRef = _editRef; }}
 							defaultValue={this.state.textFieldValue}
 							errorText={this.state.errorText}
 							onChange={e => this.onChange(e)}
