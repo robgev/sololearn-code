@@ -194,4 +194,5 @@ export const addCommentInternal =
 		comment.votes = 0;
 		comment.index = -2;
 		dispatch(addComment({ comment, parentId, ordering }));
+		return comment;
 	};

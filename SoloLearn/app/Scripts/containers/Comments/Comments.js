@@ -77,6 +77,7 @@ class Comments extends Component {
 
 	recompute = (index) => { this._list.recomputeRowHeights(index); }
 	_forceUpdate = () => { this._list._forceUpdate(); }
+	_scrollTo = (id) => { this._list._scrollTo(id); }
 
 	loadCommentsAbove = async (parentId = null) => {
 		const {

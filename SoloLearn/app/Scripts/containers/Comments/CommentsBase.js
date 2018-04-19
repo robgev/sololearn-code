@@ -163,12 +163,13 @@ class CommentsBase extends Component {
 			id, type, commentsType, addCommentInternal,
 		} = this.props;
 		const parentId = activeComment.parentId == null ? activeComment.id : activeComment.parentId;
-		await addCommentInternal({
+		const newComment = await addCommentInternal({
 			id, parentId, message, type, commentsType, ordering,
 		});
 		this.partialCancel();
 		this._comments.getWrappedInstance().recompute();
 		this._comments.getWrappedInstance()._forceUpdate();
+		this._comments.getWrappedInstance()._scrollTo(newComment.id);
 	}
 
 	// Render popup heading
