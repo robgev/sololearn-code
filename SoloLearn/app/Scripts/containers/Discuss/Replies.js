@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import {
 	CellMeasurerCache,
 } from 'react-virtualized';
-import { translate } from 'react-i18next';
 import { determineAccessLevel } from 'utils';
 import RaisedButton from 'material-ui/RaisedButton';
 import ReportItemTypes from 'constants/ReportItemTypes';
@@ -27,8 +26,7 @@ const cache = new CellMeasurerCache({
 	fixedWidth: true,
 });
 
-@connect(mapStateToProps)
-@translate()
+@connect(mapStateToProps, null, null, { withRef: true })
 class Replies extends Component {
 	constructor(props) {
 		super(props);

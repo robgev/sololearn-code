@@ -1,6 +1,7 @@
 // React modules
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
+import { translate } from 'react-i18next';
 import Radium from 'radium';
 
 // Material UI components
@@ -45,6 +46,7 @@ const mapDispatchToProps = {
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
+@translate()
 @Radium
 class Post extends Component {
 	constructor(props) {
@@ -73,7 +75,7 @@ class Post extends Component {
 		} else if (newParams.replyId != null && newParams.replyId !== oldParams.replyId) {
 			this.props.emptyReplies();
 			await this.getReplies(newParams.replyId);
-			this._replies.scrollTo(newParams.replyId);
+			this._replies.getWrappedInstance().scrollTo(newParams.replyId);
 		}
 	}
 
@@ -87,7 +89,7 @@ class Post extends Component {
 		await this.props.loadPostInternal(params.id);
 		await this.getReplies(params.replyId);
 		if (params.replyId) {
-			this._replies.scrollTo(params.replyId);
+			this._replies.getWrappedInstance().scrollTo(params.replyId);
 		}
 		this.checkAlias(params.questionName);
 	}
@@ -107,8 +109,9 @@ class Post extends Component {
 
 	addReply = async (message) => {
 		const id = await this.props.addReply(this.props.post.id, message, this.state.ordering === 1);
-		this._replies.recompute(this.props.post.replies.findIndex(r => r.id === id));
-		this._replies.scrollTo(id);
+		this._replies.getWrappedInstance()
+			.recompute(this.props.post.replies.findIndex(r => r.id === id));
+		this._replies.getWrappedInstance().scrollTo(id);
 	}
 
 	// Check alias of post
@@ -141,7 +144,7 @@ class Post extends Component {
 
 	votePost = (post, voteValue) => {
 		this.props.votePostInternal(post, voteValue);
-		this._replies._forceUpdate();
+		this._replies.getWrappedInstance()._forceUpdate();
 	}
 
 	// Open deleting confimation dialog
@@ -155,7 +158,7 @@ class Post extends Component {
 		const index = this.props.post.replies.findIndex(r => r.id === this.deletingPost.id) - 1;
 		this.setState({ deletePopupOpened: false });
 		this.deletingPost = null;
-		this._replies.recompute(index);
+		this._replies.getWrappedInstance().recompute(index);
 	}
 
 	remove = () => {
@@ -183,7 +186,7 @@ class Post extends Component {
 	];
 
 	render() {
-		const { post } = this.props;
+		const { post, t } = this.props;
 		if (!this.props.isLoaded) {
 			return <LoadingOverlay />;
 		}
@@ -216,6 +219,7 @@ class Post extends Component {
 					{
 						this.props.isLoaded &&
 						<Replies
+							t={t}
 							replies={post.replies}
 							votePost={this.votePost}
 							openDeletePopup={this.openDeletePopup}
