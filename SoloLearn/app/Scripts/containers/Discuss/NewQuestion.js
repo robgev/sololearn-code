@@ -53,8 +53,9 @@ class NewQuestion extends Component {
 	}
 
 	// Collect tags into one array
-	handleTagsChange = (chips) => {
-		this.setState({ tags: chips });
+	handleTagsChange = (newTag) => {
+		const { tags } = this.state;
+		this.setState({ tags: [ ...tags, newTag ] });
 	}
 
 	// Get search suggestions
@@ -65,6 +66,13 @@ class NewQuestion extends Component {
 			this.setState({ suggestions });
 		} catch (e) {
 			console.log(e);
+		}
+	}
+
+	handleBlur = ({ target: { value } }) => {
+		if (value) {
+			const { tags } = this.state;
+			this.setState({ tags: tags.concat(value) });
 		}
 	}
 
@@ -137,15 +145,17 @@ class NewQuestion extends Component {
 					</div>
 					<div className="question-data" style={styles.questionData}>
 						<ChipInput
-							newChipKeyCodes={[ 13, 32 ]}
-							chipRenderer={this.renderChip}
-							onUpdateInput={this.handleUpdateInput}
-							dataSource={this.state.suggestions}
-							onChange={chips => this.handleTagsChange(chips)}
 							fullWidth
 							fullWidthInput
-							floatingLabelText={t('question.tags-placeholder')}
+							value={this.state.tags}
+							onBlur={this.handleBlur}
+							newChipKeyCodes={[ 13, 32 ]}
+							chipRenderer={this.renderChip}
+							dataSource={this.state.suggestions}
 							errorText={this.state.tagsErrorText}
+							onRequestAdd={this.handleTagsChange}
+							onUpdateInput={this.handleUpdateInput}
+							floatingLabelText={t('question.tags-placeholder')}
 						/>
 					</div>
 					<div className="editor-actions" style={styles.editorActions}>
