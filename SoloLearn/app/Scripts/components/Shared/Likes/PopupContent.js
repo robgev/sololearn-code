@@ -33,29 +33,37 @@ const PopupContent = ({
 		onChange={onTabChange}
 	>
 		<Tab label={t('upvotes.title')} value={0}>
-			<InfiniteVirtualizedList
-				list={likes}
-				width={300}
-				rowHeight={50}
-				loadMore={getLikes}
-				item={renderOneLike}
-			/>
+			{ likes.length === 0 ?
+				<p>{t('common.empty-list-message')}</p> :
+				<InfiniteVirtualizedList
+					list={likes}
+					width={300}
+					rowHeight={50}
+					loadMore={getLikes}
+					item={renderOneLike}
+				/>
+			}
 		</Tab>
 		<Tab label={t('downvotes.title')} value={1}>
-			<InfiniteVirtualizedList
-				list={likes}
-				width={300}
-				rowHeight={50}
-				item={renderOneLike}
-				loadMore={getDownvotes}
-			/>
+			{ likes.length === 0 ?
+				<p>{t('common.empty-list-message')}</p> :
+				<InfiniteVirtualizedList
+					list={likes}
+					width={300}
+					rowHeight={50}
+					item={renderOneLike}
+					loadMore={getDownvotes}
+				/>
+			}
 		</Tab>
 	</Tabs> :
-	<InfiniteVirtualizedList
-		list={likes}
-		width={300}
-		rowHeight={50}
-		loadMore={getLikes}
-		item={renderOneLike}
-	/>);
+	likes.length === 0 ?
+		<p>{t('common.empty-list-message')}</p> :
+		<InfiniteVirtualizedList
+			list={likes}
+			width={300}
+			rowHeight={50}
+			loadMore={getLikes}
+			item={renderOneLike}
+		/>);
 export default translate()(PopupContent);
