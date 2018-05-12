@@ -74,7 +74,7 @@
 
 		"lesson_comment_request_removal_title": "Request Removal",
 		"lesson_comment_request_removal_message": "Are you sure you want to mark this comment for removal?",
-    "reply": "Reply"
+    "reply": "Add"
   },
   "date": {
     "now-past": "just now",

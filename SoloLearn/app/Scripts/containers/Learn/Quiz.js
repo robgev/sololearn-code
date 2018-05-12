@@ -16,9 +16,8 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 // Additional data and components
-import QuizSelector from '../Learn/QuizSelector';
+import QuizSelector, { QuizType } from '../Learn/QuizSelector';
 import QuizText from '../Learn/QuizText';
-import { QuizType } from '../Learn/QuizSelector';
 import { LessonType } from './QuizManager';
 
 // i18n

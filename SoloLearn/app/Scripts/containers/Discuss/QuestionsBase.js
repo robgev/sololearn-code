@@ -1,13 +1,12 @@
 // React modules
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import { Link, browserHistory } from 'react-router';
+import { translate } from 'react-i18next';
 import Radium from 'radium';
 
 // Material UI components
-import { AutoComplete, DropDownMenu, MenuItem, FloatingActionButton } from 'material-ui';
-import SearchIcon from 'material-ui/svg-icons/action/search';
-import Clear from 'material-ui/svg-icons/content/clear';
-import { grey700 } from 'material-ui/styles/colors';
+import { DropDownMenu, MenuItem, FloatingActionButton } from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
 // Redux modules
@@ -15,15 +14,11 @@ import { connect } from 'react-redux';
 import { isLoaded } from 'reducers';
 import { changeDiscussQuery, changeDiscussOrdering } from 'actions/discuss';
 
-// Service
-import Service from 'api/service';
-
 // Additional components
 import Layout from 'components/Layouts/GeneralLayout';
 import Questions from './Questions';
 
 // i18n
-import { translate } from 'react-i18next';
 
 import { QuestionsBaseStyles as styles } from './styles';
 

@@ -237,7 +237,7 @@ class Comment extends Component {
 			activeComment,
 			t,
 		} = this.props;
-		if (this.props.comment.type === 'LOAD_MORE') {
+		if (this.props.comment.id && this.props.comment.type === 'LOAD_MORE') {
 			return (
 				<FlatButton
 					label={t('common.loadMore')}
