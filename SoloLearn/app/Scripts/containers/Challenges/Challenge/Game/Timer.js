@@ -10,7 +10,7 @@ export default class extends PureComponent {
 		requestAnimationFrame(this.addTime);
 	}
 	componentWillUnmount() {
-		clearInterval(this.timer);
+		cancelAnimationFrame(this.timer);
 	}
 	addTime = () => {
 		const { time } = this.props;
@@ -19,7 +19,7 @@ export default class extends PureComponent {
 			((timeDifferenceInSeconds(now, this.timeCounter) * 100) / time);
 		this.timeCounter = now;
 		if (timer <= 0) {
-			clearInterval(this.timer);
+			cancelAnimationFrame(this.timer);
 			this.props.onTimerEnd();
 		} else {
 			this.setState({ timer });
