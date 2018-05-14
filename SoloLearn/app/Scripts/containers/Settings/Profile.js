@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 
 // i18n
@@ -24,6 +25,10 @@ class Profile extends PureComponent {
 			name: name || '',
 			email: email || '',
 		};
+	}
+
+	componentWillMount() {
+		ReactGA.ga('send', 'screenView', { screenName: 'Edit Profile Page' });
 	}
 
 	handleChange = (e) => {

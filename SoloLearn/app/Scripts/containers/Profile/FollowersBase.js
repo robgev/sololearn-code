@@ -71,6 +71,10 @@ class FollowersBase extends Component {
 		};
 	}
 
+	componentWillMount() {
+		ReactGA.ga('send', 'screenView', { screenName: 'Followers Page' });
+	}
+
 	handleTabChange(value) {
 		this.setState({ activeTab: value });
 	}

@@ -1,5 +1,6 @@
 // General modules
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import { Link, browserHistory } from 'react-router';
 import Radium from 'radium';
 import { connect } from 'react-redux';
@@ -280,12 +281,11 @@ class Modules extends Component {
 			} else {
 				const currentCourse = courses.find(item =>
 					item.alias.toLowerCase() === courseName.toLowerCase());
-				if (userProfile.skills.length > 0) {
-					const courseId = currentCourse ? currentCourse.id : null;
-					await loadCourseInternal(courseId);
-				}
+				const courseId = currentCourse ? currentCourse.id : null;
+				await loadCourseInternal(courseId);
 			}
-			document.title = `Modules of ${this.props.course.name}`;
+			document.title = this.props.course ? `Modules of ${this.props.course.name}` : 'Sololearn | Slay';
+			ReactGA.ga('send', 'screenView', { screenName: 'Modules Page' });
 		}
 		selectModule(null);
 		this.setState({ loading: false });
@@ -474,6 +474,7 @@ class Modules extends Component {
 	}
 
 	openCourseSelect() {
+		ReactGA.ga('send', 'screenView', { screenName: 'Manage Courses Page' });
 		this.setState({ selectCourse: true });
 	}
 

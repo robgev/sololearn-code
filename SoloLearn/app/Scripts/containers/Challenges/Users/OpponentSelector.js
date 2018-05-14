@@ -1,5 +1,6 @@
 // General modules
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -61,6 +62,20 @@ class OpponentSelector extends Component {
 		document.title = 'Choose your opponent';
 	}
 
+	componentDidMount() {
+		const { isLoaded } = this.props;
+
+		if (!isLoaded) {
+			browserHistory.replace('/contests');
+		}
+		ReactGA.ga('send', 'screenView', { screenName: 'Player Search Page' });
+	}
+
+	// Set contest course null
+	componentWillUnmount() {
+		this.props.chooseContestCourse(null);
+	}
+
 	handleTabChange(value) {
 		this.setState({ activeTab: value });
 	}
@@ -101,19 +116,6 @@ class OpponentSelector extends Component {
 				</Paper>
 			</Layout>
 		);
-	}
-
-	componentDidMount() {
-		const { isLoaded } = this.props;
-
-		if (!isLoaded) {
-			browserHistory.replace('/contests');
-		}
-	}
-
-	// Set contest course null
-	componentWillUnmount() {
-		this.props.chooseContestCourse(null);
 	}
 }
 

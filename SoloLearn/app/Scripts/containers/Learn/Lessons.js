@@ -1,5 +1,6 @@
 // React modules
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import Radium from 'radium';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
@@ -103,6 +104,7 @@ class Lessons extends Component {
 			});
 		}
 		document.title = `${this.props.activeModule.name}`;
+		ReactGA.ga('send', 'screenView', { screenName: 'Lessons Page' });
 	}
 
 handleClick = (lessonId, lessonState, url) => {

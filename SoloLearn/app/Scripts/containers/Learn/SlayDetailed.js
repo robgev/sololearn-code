@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 
 import { getCollectionItems } from 'actions/slay';
@@ -34,10 +35,13 @@ class SlayDetailed extends PureComponent {
 		const { params } = this.props;
 		const { startIndex, loadCount } = this.state;
 		const collectionId = parseInt(params.collectionId, 10);
-		if (collectionId !== 1) { // Default SoloLearn lessons
+		if (collectionId !== 1) { // 1 stands for Default SoloLearn lessons
 			const length =
 				await this.props.getCollectionItems(collectionId, { index: startIndex, count: loadCount });
 			this.setState({ loading: false, hasMore: length === loadCount });
+			ReactGA.ga('send', 'screenView', { screenName: 'Collection Page' });
+		} else {
+			ReactGA.ga('send', 'screenView', { screenName: 'Lessons Page' });
 		}
 		this.setState({ loading: false });
 	}

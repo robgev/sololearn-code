@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -33,6 +34,7 @@ class Blocked extends PureComponent {
 			hasMore: length === loadCount,
 			startIndex: startIndex + loadCount,
 		});
+		ReactGA.ga('send', 'screenView', { screenName: 'Blocked Users Page' });
 	}
 
 	loadMore = async () => {

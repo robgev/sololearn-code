@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 
 import Dialog from 'material-ui/Dialog';
@@ -17,6 +18,10 @@ class Likes extends PureComponent {
 	state = {
 		open: false,
 		tabIndex: 0,
+	}
+
+	componentWillMount() {
+		ReactGA.ga('send', 'screenView', { screenName: 'Upvotes Page' });
 	}
 
 	handleKeyPress = (e) => {

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -44,6 +45,7 @@ class Certificate extends PureComponent {
 			this.redirect();
 		}
 		document.title = 'Certificate';
+		ReactGA.ga('send', 'screenView', { screenName: 'Certificate Page' });
 	}
 
 	redirect = () => {

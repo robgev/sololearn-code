@@ -1,5 +1,6 @@
 // React modules
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
 
 // Material UI components
@@ -99,6 +100,7 @@ class Profile extends Component {
 		await this.props.getProfile(params.id);
 		this.selectTab(tab);
 		document.title = `${this.props.profile.data.name}'s Profile`;
+		ReactGA.ga('send', 'screenView', { screenName: 'Profile Page' });
 	}
 
 	async componentWillReceiveProps(newProps) {
@@ -164,18 +166,23 @@ class Profile extends Component {
 		switch (value) {
 		case TabTypes.Activity:
 			browserHistory.replace(`/profile/${this.props.params.id}/activity`);
+			ReactGA.ga('send', 'screenView', { screenName: 'Profile Feed Page' });
 			break;
 		case TabTypes.Codes:
 			browserHistory.replace(`/profile/${this.props.params.id}/codes`);
+			ReactGA.ga('send', 'screenView', { screenName: 'Profile Codes Page' });
 			break;
 		case TabTypes.Posts:
 			browserHistory.replace(`/profile/${this.props.params.id}/posts`);
+			ReactGA.ga('send', 'screenView', { screenName: 'Profile Discussion Page' });
 			break;
 		case TabTypes.Skills:
 			browserHistory.replace(`/profile/${this.props.params.id}/skills`);
+			ReactGA.ga('send', 'screenView', { screenName: 'Profile Skills Page' });
 			break;
 		case TabTypes.Badges:
 			browserHistory.replace(`/profile/${this.props.params.id}/badges/${this.props.params.selected || ''}`);
+			ReactGA.ga('send', 'screenView', { screenName: 'Profile Badges Page' });
 			break;
 		default:
 			break;

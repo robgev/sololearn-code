@@ -1,5 +1,6 @@
 // React modules
 import React from 'react';
+import ReactGA from 'react-ga';
 import Radium from 'radium';
 // Material UI components
 import Avatar from 'material-ui/Avatar';
@@ -89,6 +90,7 @@ const styles = {
 };
 
 const Start = (props) => {
+	ReactGA.ga('send', 'screenView', { screenName: 'Start Challenge Page' });
 	const { courseName, contest } = props;
 	return (
 		<div id="challenge-start" style={styles.container}>

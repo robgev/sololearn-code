@@ -1,5 +1,6 @@
 // React modules
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import Radium from 'radium';
 import { map, uniqBy } from 'lodash';
 
@@ -77,6 +78,9 @@ class CodesBase extends Component {
 
 	toggleLanguagePopup = () => {
 		const { isLanguagePopupOpen } = this.state;
+		if (!isLanguagePopupOpen) {
+			ReactGA.ga('send', 'screenView', { screenName: 'Code Picker Page' });
+		}
 		this.setState({ isLanguagePopupOpen: !isLanguagePopupOpen });
 	}
 

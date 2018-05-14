@@ -1,5 +1,6 @@
 // React modules
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import Radium from 'radium';
 import { connect } from 'react-redux';
 
@@ -49,6 +50,7 @@ class Codes extends Component {
 			this.loadCodes();
 		}
 		document.title = 'Sololearn | Code';
+		ReactGA.ga('send', 'screenView', { screenName: 'Codes Page' });
 	}
 
 	loadCodes = async () => {

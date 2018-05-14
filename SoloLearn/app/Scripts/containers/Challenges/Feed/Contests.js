@@ -1,5 +1,6 @@
 // React modules
 import React, { PureComponent } from 'react';
+import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 
@@ -101,10 +102,16 @@ class Contests extends PureComponent {
 
 	componentDidMount() {
 		this.props.getContests();
+		ReactGA.ga('send', 'screenView', { screenName: 'Play Page' });
 	}
 
-	toggleCoursePopup = () => {
-		this.setState({ selectCourse: !this.state.selectCourse });
+	openCoursePopup = () => {
+		ReactGA.ga('send', 'screenView', { screenName: 'Play Selection Page' });
+		this.setState({ selectCourse: true });
+	}
+
+	closeCoursePopup = () => {
+		this.setState({ selectCourse: false });
 	}
 
 	chooseContestCourse = (courseId) => {
@@ -200,14 +207,14 @@ class Contests extends PureComponent {
 						open={this.state.selectCourse}
 						titleStyle={styles.coursesTitle}
 						contentStyle={styles.coursesPopup}
-						onRequestClose={this.toggleCoursePopup}
+						onRequestClose={this.closeCoursePopup}
 					>
 						{this.renderCourses()}
 					</Dialog>
 					<FloatingActionButton
 						secondary
 						zDepth={3}
-						onClick={this.toggleCoursePopup}
+						onClick={this.openCoursePopup}
 						style={styles.newChallengeButton}
 					>
 						<ContentAdd />

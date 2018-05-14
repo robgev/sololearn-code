@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 
 import Comments from 'containers/Comments/CommentsBase';
@@ -68,6 +69,11 @@ class SlayLesson extends PureComponent {
 			break;
 		}
 		document.title = `${this.props.activeLesson.name}`;
+		if (this.props.activeLesson.parts) {
+			ReactGA.ga('send', 'screenView', { screenName: 'Course Lesson Lesson Page' });
+		} else {
+			ReactGA.ga('send', 'screenView', { screenName: 'Lesson Page' });
+		}
 	}
 
 	getLessonsByAuthor = async () => {

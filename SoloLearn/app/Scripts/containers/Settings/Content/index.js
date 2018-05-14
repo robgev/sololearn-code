@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import CircularProgress from 'material-ui/CircularProgress';
 import texts from 'texts';
@@ -23,6 +24,7 @@ class Content extends PureComponent {
 	async componentWillMount() {
 		await this.props.getSettings();
 		this.setState({ loading: false });
+		ReactGA.ga('send', 'screenView', { screenName: 'Activity Feed Settings Page' });
 	}
 
 	render() {

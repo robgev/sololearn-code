@@ -1,5 +1,6 @@
 // React modules
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { findKey } from 'lodash';
@@ -174,6 +175,7 @@ class Playground extends Component {
 		});
 
 		browserHistory.replace(`${basePath}/html`);
+		ReactGA.ga('send', 'screenView', { screenName: 'Code Editor Page' });
 		document.title = 'Sololearn | Playground';
 	}
 
@@ -221,6 +223,7 @@ class Playground extends Component {
 			console.log(error);
 		}
 		document.title = 'Sololearn | Playground';
+		ReactGA.ga('send', 'screenView', { screenName: 'Code Editor Page' });
 	}
 
 	// Get user saved code
@@ -280,6 +283,7 @@ class Playground extends Component {
 			console.log(error);
 		}
 		document.title = `${this.state.latestSavedCodeData.name}`;
+		ReactGA.ga('send', 'screenView', { screenName: 'Code Editor Page' });
 	}
 
 	getTabCodeData = (mode, codes) => {
@@ -322,6 +326,8 @@ class Playground extends Component {
 		const { alias } = editorSettings[mode];
 		const isUserCode = codeType === 'userCode';
 		const link = isUserCode ? `${basePath}/${publicID}/` : `${basePath}/`;
+		const screenName = `Code Editor Page (${mode !== 'html' ? mode : '%@'})`;
+		ReactGA.ga('send', 'screenView', { screenName });
 		this.setState({
 			code,
 			mode,
@@ -558,6 +564,7 @@ ${succeedingSubstr}
 			this.compileCode(response, language, '');
 			// Show output
 			this.showOutput(language, response);
+			ReactGA.ga('send', 'screenView', { screenName: 'Code Output Page (html)' });
 		} else if (type === 'combined') {
 			this.setState({
 				showOutput: true,
@@ -569,6 +576,7 @@ ${succeedingSubstr}
 			const compiledCode = await this.compileCode(sourceCode, language, '');
 			// Show output
 			this.showOutput(language, compiledCode.output);
+			ReactGA.ga('send', 'screenView', { screenName: 'Code Output Page (html)' });
 		} else if (this.checkForInput(languageAlias)) {
 			this.setState({ inputsPopupOpened: true });
 		} else {
@@ -581,6 +589,7 @@ ${succeedingSubstr}
 			const compiledCode = await this.compileCode(sourceCode, language, '');
 			// Show output
 			this.showOutput(language, compiledCode.output);
+			ReactGA.ga('send', 'screenView', { screenName: 'Code Output Page' });
 		}
 	}
 
@@ -601,6 +610,7 @@ ${succeedingSubstr}
 			inputs: '',
 		});
 		this.showOutput(language, compiledCode.output);
+		ReactGA.ga('send', 'screenView', { screenName: 'Code Output Page' });
 	}
 
 	closeComments = () => {

@@ -1,5 +1,6 @@
 // React modules
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 
 // Additional components
 import Radium from 'radium';
@@ -28,6 +29,9 @@ const styles = {
 };
 
 class TypeSelector extends Component {
+	componentWillMount() {
+		ReactGA.ga('send', 'screenView', { screenName: 'Game Page' });
+	}
 	check = () => {
 		const result = this._child.check() ? 2 : 3;
 		this.props.showResult(result);

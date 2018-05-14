@@ -1,5 +1,6 @@
 // React modules
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import Radium from 'radium';
 import { connect } from 'react-redux';
 import {
@@ -62,7 +63,7 @@ const styles = {
 };
 
 const ResultBox = ({ aboveText, insideText, color }) => (
-	<div className='result-box'>
+	<div className="result-box">
 		<p style={styles.resultTitle(color)}>{aboveText}</p>
 		<p style={styles.rewardXp(color)}>{insideText} XP</p>
 	</div>
@@ -72,9 +73,9 @@ const AnimatedResults = ({
 	oldPoints,
 	newPoints,
 	myLevel,
-	t
+	t,
 }) => (
-	<div className='chart-container'>
+	<div className="chart-container">
 		<AnimatedNumber
 			fromNumber={oldPoints.untilNextLevelXp}
 			toNumber={newPoints.untilNextLevelXp}
@@ -84,15 +85,15 @@ const AnimatedResults = ({
 		/>
 		<ResultPie
 			level={myLevel}
-			oldPieResults={[{ y: oldPoints.xp }, { y: oldPoints.untilNextLevelXp }]}
-			newPieResults={[{ y: newPoints.xp}, { y: newPoints.untilNextLevelXp }]}
+			oldPieResults={[ { y: oldPoints.xp }, { y: oldPoints.untilNextLevelXp } ]}
+			newPieResults={[ { y: newPoints.xp }, { y: newPoints.untilNextLevelXp } ]}
 			animationDuration={XP_ANIMATION_DURATION}
 			startAfter={XP_ANIMATION_START_IN}
 		/>
 		<AnimatedNumber
 			fromNumber={oldPoints.xp}
 			toNumber={newPoints.xp}
-			text={`xp`}
+			text="xp"
 			animationDuration={XP_ANIMATION_DURATION}
 			animationStartIn={XP_ANIMATION_START_IN}
 		/>
@@ -102,7 +103,7 @@ const AnimatedResults = ({
 const ResultTable = ({
 	myRes,
 	opRes,
-	t
+	t,
 }) => {
 	const myAnswersUI = myRes.map(createAnswerUI);
 	const opAnswersUI = opRes.map(createAnswerUI);
@@ -110,21 +111,22 @@ const ResultTable = ({
 		<div key={i}>{i + 1}</div>
 	));
 	return (
-		<div className='result-table-container'>
-			<div className='answers-column'>
+		<div className="result-table-container">
+			<div className="answers-column">
 				<div>{t('play.result.self-result-title')}</div>
 				{myAnswersUI}
 			</div>
-			<div className='answers-column'>
+			<div className="answers-column">
 				<div>&nbsp;</div>
 				{questionNumberUI}
 			</div>
-			<div className='answers-column'>
+			<div className="answers-column">
 				<div>{t('play.result.opponent-result-title')}</div>
 				{opAnswersUI}
 			</div>
 		</div>
-)};
+	);
+};
 // TODO: make these props smaller
 const Results = ({
 	courseName,
@@ -136,11 +138,11 @@ const Results = ({
 	myLevel,
 	myRes,
 	opRes,
-	t
+	t,
 }) => (
 	<div style={styles.appear(fadeIn)}>
-		<p className='language'>{courseName.toUpperCase()}</p>
-		<div className='result-boxes'>
+		<p className="language">{courseName.toUpperCase()}</p>
+		<div className="result-boxes">
 			<ResultBox
 				aboveText={t('play.result.answers-bonus')}
 				insideText={answersBonus}
@@ -157,18 +159,20 @@ const Results = ({
 				color={totalXp < 0 ? red500 : green500}
 			/>
 		</div>
-		<div className='result-charts'>
+		<div className="result-charts">
 			<AnimatedResults {...{
 				t,
 				myLevel,
 				oldPoints,
-				newPoints
-			}} />
+				newPoints,
+			}}
+			/>
 			<ResultTable {...{
 				myRes,
 				opRes,
-				t
-			}}/>
+				t,
+			}}
+			/>
 		</div>
 	</div>
 );
@@ -178,12 +182,13 @@ class Result extends Component {
 	componentDidMount() {
 		this.props.update()
 			.then(() => this.setState({ updated: true }));
+		ReactGA.ga('send', 'screenView', { screenName: 'Challenge Result Page' });
 	}
 	counter = arr => arr.reduce((res, curr) => (curr.isCompleted ? res + 1 : res), 0)
 
 	answerBonusCounter = results => results.reduce((xp, current) => xp + current.earnedXp, 0)
 	matchResultCounter = contest =>
-	(contest.player.status === 1 ? contest.player.rewardXp : -contest.opponent.rewardXp)
+		(contest.player.status === 1 ? contest.player.rewardXp : -contest.opponent.rewardXp)
 	countUntilNextLevel = (totalXp) => {
 		const { player: { level, xp: oldXp } } = this.props.contest;
 		const nextLevelXp = this.props.levels[level - 1].maxXp;
@@ -192,39 +197,41 @@ class Result extends Component {
 		const oldUntilNextLevelXp = nextLevelXp - oldXp;
 		return {
 			oldPoints: { xp: oldXp, untilNextLevelXp: oldUntilNextLevelXp },
-			newPoints: { xp: newXp, untilNextLevelXp: newUntilNextLevelXp }
+			newPoints: { xp: newXp, untilNextLevelXp: newUntilNextLevelXp },
 		};
 	}
 	render() {
 		if (!this.state.updated) {
 			return <LoadingOverlay />;
 		}
-		const { t, courseName, contest, levels } = this.props;
+		const {
+			t, courseName, contest, levels,
+		} = this.props;
 		const { status } = contest.player;
 		const {
 			player: {
 				results: myRes,
-				level: myLevel
+				level: myLevel,
 			},
 			opponent: {
-				results: opRes
-			}
+				results: opRes,
+			},
 		} = contest;
 		const answersBonus = this.answerBonusCounter(myRes);
 		const matchResult = this.matchResultCounter(contest);
 		const totalXp = answersBonus + matchResult;
 		const { oldPoints, newPoints } = this.countUntilNextLevel(totalXp);
 		return (
-			<div id="challenge-start" className='result-container'>
+			<div id="challenge-start" className="result-container">
 				<div style={styles.appear(fadeInDown)}>
 					{status !== contestTypes.GotChallenged && getChallengeStatus(status, styles.status)}
 				</div>
-				<div className='player-wrapper'>
-					<div className='player' style={styles.appear(fadeInLeft) }>
+				<div className="player-wrapper">
+					<div className="player" style={styles.appear(fadeInLeft)}>
 						<Profile player={contest.player} />
 					</div>
-					<span className='versus'>{this.counter(myRes)} : {this.counter(opRes)}</span>
-					<div className='player' style={styles.appear(fadeInRight)}>
+					<span className="versus">{this.counter(myRes)} : {this.counter(opRes)}</span>
+					<div className="player" style={styles.appear(fadeInRight)}>
 						<Profile player={contest.opponent} />
 					</div>
 				</div>
@@ -242,14 +249,14 @@ class Result extends Component {
 							myLevel,
 							myRes,
 							opRes,
-							t
+							t,
 						}}
 					/>
 				}
 				<div style={styles.appear(fadeInUp)}>
 					<RaisedButton
 						label="Leave"
-						className='button'
+						className="button"
 						secondary
 						onClick={this.props.leave}
 					/>
@@ -257,7 +264,7 @@ class Result extends Component {
 						(status === 1 || status === 2 || status === 8) &&
 						<RaisedButton
 							label={t('play.result.view-correct-answers')}
-							className='button'
+							className="button"
 							secondary
 							onClick={this.props.goToViewCorrectAnswers}
 						/>

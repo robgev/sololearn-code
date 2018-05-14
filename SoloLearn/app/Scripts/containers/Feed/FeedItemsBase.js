@@ -1,5 +1,6 @@
 // General modules
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import Radium from 'radium';
 import Scroll from 'react-scroll';
 import { Link } from 'react-router';
@@ -190,6 +191,7 @@ class FeedItemsBase extends Component {
 		this.interval = null;
 		this.popupData = {};
 		document.title = 'Sololearn | Feed';
+		ReactGA.ga('send', 'screenView', { screenName: 'Feed Page' });
 	}
 
 	componentWillMount() {

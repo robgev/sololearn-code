@@ -1,5 +1,6 @@
 // React modules
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import Radium from 'radium';
 import { connect } from 'react-redux';
 
@@ -38,6 +39,7 @@ class NotificationList extends Component {
 			fullyLoaded: false,
 		};
 		this.isUnmounted = false;
+		ReactGA.ga('send', 'screenView', { screenName: 'Notifications Page' });
 	}
 
 	async componentWillMount() {

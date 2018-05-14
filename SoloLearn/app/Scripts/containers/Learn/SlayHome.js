@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 
 import { getLessonCollections } from 'actions/slay';
@@ -30,6 +31,7 @@ class SlayHome extends PureComponent {
 			hasMore: length === loadCount,
 			startIndex: startIndex + loadCount,
 		});
+		ReactGA.ga('send', 'screenView', { screenName: 'Home Store Page' });
 	}
 
 	loadMore = async () => {

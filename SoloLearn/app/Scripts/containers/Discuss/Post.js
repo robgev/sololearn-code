@@ -1,5 +1,6 @@
 // React modules
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
 import Radium from 'radium';
@@ -65,6 +66,7 @@ class Post extends Component {
 	async componentWillMount() {
 		await this.initialize();
 		document.title = this.props.post.title;
+		ReactGA.ga('send', 'screenView', { screenName: 'Discussion Thread Page' });
 	}
 
 	async componentWillReceiveProps(newProps) {

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
 import { translate } from 'react-i18next';
@@ -19,6 +20,22 @@ import 'styles/Leaderboards/index.scss';
 
 import InfiniteLeaderboard from './InfiniteLeaderboard';
 import LeaderboardCard from './LeaderboardCard';
+
+const sendGoogleEvent = (mode) => {
+	switch (mode) {
+	case 0:
+		ReactGA.ga('send', 'screenView', { screenName: 'Global Leaderboard Page' });
+		break;
+	case 1:
+		ReactGA.ga('send', 'screenView', { screenName: 'Social Leaderboard Page' });
+		break;
+	case 2:
+		ReactGA.ga('send', 'screenView', { screenName: 'Local Leaderboard Page' });
+		break;
+	default:
+		break;
+	}
+};
 
 const mapStateToProps =
 	({ leaderboards, userProfile: { id: userId } }) => ({ leaderboards, userId });
@@ -42,6 +59,7 @@ class Leaderboards extends PureComponent {
 			shouldHideButton: false,
 			userId: calculatedUserId,
 		};
+		sendGoogleEvent(mode);
 		document.title = 'Sololearn | Leaderboards';
 	}
 
@@ -62,6 +80,7 @@ class Leaderboards extends PureComponent {
 		const { params: newParams, leaderboards: newLeaderboards } = newProps;
 		const { params, leaderboards } = this.props;
 		if (newParams.mode !== params.mode || newParams.range !== params.range) {
+			sendGoogleEvent(newParams.mode);
 			const mode = parseInt(newParams.mode, 10);
 			const range = parseInt(newParams.range, 10);
 			this.setState({ loading: true, mode, range });

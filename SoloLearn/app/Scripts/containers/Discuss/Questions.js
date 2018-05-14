@@ -1,5 +1,6 @@
 // React modules
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import Radium from 'radium';
 
 // Redux modules
@@ -26,6 +27,7 @@ class Questions extends Component {
 	componentWillMount() {
 		this.loadQuestions();
 		document.title = 'Sololearn | Discuss';
+		ReactGA.ga('send', 'screenView', { screenName: 'Discussion Page' });
 	}
 	componentDidUpdate(prevProps) {
 		if (prevProps.query !== this.props.query ||

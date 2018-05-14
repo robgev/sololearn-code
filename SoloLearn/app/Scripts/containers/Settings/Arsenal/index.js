@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { changeWeaponSetting, getWeaponSettings } from 'actions/settings';
 import texts from 'texts';
@@ -15,6 +16,7 @@ const mapDispatchToProps = {
 class Arsenal extends PureComponent {
 	componentWillMount() {
 		this.props.getWeaponSettings();
+		ReactGA.ga('send', 'screenView', { screenName: 'Challenge Settings Page' });
 	}
 
 	render() {

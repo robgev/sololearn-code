@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactGA from 'react-ga';
 import { Link } from 'react-router';
 import Layout from 'components/Layouts/GeneralLayout';
 
@@ -21,6 +22,7 @@ const SettingsMapping = {
 
 const Settings = ({ t, params: { settingID = 'profile' } }) => {
 	document.title = 'Sololearn | Settings';
+	ReactGA.ga('send', 'screenView', { screenName: 'Settings Page' });
 	const SettingsComponent = SettingsMapping[settingID];
 	return (
 		<Layout className="settings-container">

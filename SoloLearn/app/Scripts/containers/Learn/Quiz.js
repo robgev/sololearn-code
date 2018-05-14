@@ -1,5 +1,6 @@
 // React modules
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
@@ -340,6 +341,7 @@ render() {
 	}
 
 	if (activeQuiz.isText) {
+		ReactGA.ga('send', 'screenView', { screenName: 'Lesson Text Page' });
 		return (
 			<div className="quiz-text" style={styles.wrapper}>
 				<QuizText
@@ -397,7 +399,7 @@ render() {
 	const isCheckpoint = !this.props.isShortcut ? this.props.activeLesson.type == LessonType.Checkpoint : this.props.shortcutLesson.type == LessonType.Checkpoint;
 	const resultButtonLabel = this.props.isShortcut ? 'Continue' : (this.state.isCorrect ? t('learn.buttons-continue') : t('learn.buttons-try-again'));
 	const resultButtonAction = this.props.isShortcut ? this.continueQuiz : (this.state.isCorrect ? this.continueQuiz : this.tryAgain);
-
+	ReactGA.ga('send', 'screenView', { screenName: 'Lesson Quiz Page' });
 	return (
 		<div className="quiz" style={styles.wrapper}>
 			<div className="actions" style={styles.quizActions}>

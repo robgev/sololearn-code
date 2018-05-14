@@ -41,123 +41,120 @@ const optionsMessages = [
 	},
 	{
 		name: 'Wrong Question',
-		reason: 42
+		reason: 42,
 	},
 	{
 		name: 'Wrong Answer',
-		reason: 43
+		reason: 43,
 	},
 	{
 		name: 'Off Topic',
-		reason: 44
+		reason: 44,
 	},
 	{
 		name: 'Other',
-		reason: 0
-	}
+		reason: 0,
+	},
 ];
 
 class ViewCorrectAnswers extends Component {
 	state = {
 		updated: false,
-		quizNumber: 0
+		quizNumber: 0,
 	}
 	componentDidMount() {
 		this.props.updateContest()
 			.then(() => this.setState({ updated: true }));
+		ReactGA.ga('send', 'screenView', { screenName: 'Challenge Round Review Page' });
 	}
 	handleTabChange(i) {
-		this.setState({quizNumber: i})
+		this.setState({ quizNumber: i });
 	}
 	sendReport(itemId, reason) {
 		Service.request('ReportItem', {
 			itemId,
 			itemType: 6, // this is a report type, on the server-side 6 stands for challenge report
-			reason // this is a challenge report type
+			reason, // this is a challenge report type
 		})
-		.then((response) => {
-			console.log(response);
-		})
+			.then((response) => {
+				console.log(response);
+			});
 	}
 	render() {
 		const { t } = this.props;
 		if (!this.state.updated) {
 			return <LoadingOverlay />;
 		}
-		const playerProfles = ['player', 'opponent'].map((playerProf) => {
+		const playerProfles = [ 'player', 'opponent' ].map((playerProf) => {
 			const {
 				contest: {
 					[playerProf]: {
 						name,
 						avatarUrl,
-						results
-					}
-				}
+						results,
+					},
+				},
 			} = this.props;
 			// a workaround for a case when one player finished all the questions
 			// while another one finished only 3 or smth
 			let newResults = null;
 			if (results.length < 5) {
 				const numberOfItemsToAdd = 5 - results.length;
-				const itemsToAdd = Array(numberOfItemsToAdd).fill(undefined).map((_, id) => ({id, isCompleted: false}));
-				newResults = [...results, ...itemsToAdd];
+				const itemsToAdd = Array(numberOfItemsToAdd).fill(undefined).map((_, id) => ({ id, isCompleted: false }));
+				newResults = [ ...results, ...itemsToAdd ];
 			}
 			return {
 				name,
 				avatarUrl,
 				results: newResults || results,
-			}
+			};
 		});
-		const createQuizTabs = Array(5).fill(undefined).map((_, i) => {
-			return (
-				<Tab
-					value={i}
-					label={i + 1}
-					key={i}
-					onClick={() => this.handleTabChange(i)}
-				/>
-			)
-		});
-		const playersUI = playerProfles.map(player => {
+		const createQuizTabs = Array(5).fill(undefined).map((_, i) => (
+			<Tab
+				value={i}
+				label={i + 1}
+				key={i}
+				onClick={() => this.handleTabChange(i)}
+			/>
+		));
+		const playersUI = playerProfles.map((player) => {
 			const { name, avatarUrl, results } = player;
 			const { quizNumber } = this.state;
 			const { id, isCompleted } = results[quizNumber];
 			return (
-				<div key={player.name} className='player-ui-wrapper'>
+				<div key={player.name} className="player-ui-wrapper">
 					{
 						avatarUrl &&
-						<img src={avatarUrl}/>
+						<img src={avatarUrl} />
 					}
-					<div className='player-ui-info'>
+					<div className="player-ui-info">
 						<div>{name}</div>
-						<div className='player-ui-quiz-result'>
-							<div>{createAnswerUI({id, isCompleted})}</div>
+						<div className="player-ui-quiz-result">
+							<div>{createAnswerUI({ id, isCompleted })}</div>
 							<div>{isCompleted ? t('play.answers.correct-answer') : t('play.answers.wrong-answer')}</div>
 						</div>
 					</div>
 				</div>
-			)
-		})
+			);
+		});
 		const { contest } = this.props;
-		
-		const menuIcons = (quizId) => {
-			return optionsMessages.map((opt, i) => (
-				<MenuItem
-					key={i}
-					primaryText={opt.name}
-					onClick={this.sendReport.bind(null, quizId, opt.reason)}
-				/>
-			))
-		}
+
+		const menuIcons = quizId => optionsMessages.map((opt, i) => (
+			<MenuItem
+				key={i}
+				primaryText={opt.name}
+				onClick={this.sendReport.bind(null, quizId, opt.reason)}
+			/>
+		));
 		const quizes = contest.challenges.slice(0, 5).map(quiz => (
 			<div key={quiz.id}>
-				<div className='players'>
+				<div className="players">
 					{playersUI}
 				</div>
-				<div className='options-icon-wrapper'>
+				<div className="options-icon-wrapper">
 					<IconMenu
 						style={{ width: 40, height: 40 }}
-						iconButtonElement={<IconButton><MoreVertIcon color='black' /></IconButton>}
+						iconButtonElement={<IconButton><MoreVertIcon color="black" /></IconButton>}
 					>
 						{menuIcons(quiz.id)}
 					</IconMenu>
@@ -171,13 +168,13 @@ class ViewCorrectAnswers extends Component {
 		));
 		const { quizNumber } = this.state;
 		return (
-			<div className='correct-answers-container'>
+			<div className="correct-answers-container">
 				<Tabs>
 					{createQuizTabs}
 				</Tabs>
-				<div className='back-to-results-button'>
+				<div className="back-to-results-button">
 					<RaisedButton
-						label='Back to Results'
+						label="Back to Results"
 						secondary
 						onClick={this.props.backToResults}
 					/>
