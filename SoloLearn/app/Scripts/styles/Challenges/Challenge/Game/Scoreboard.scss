@@ -1,0 +1,21 @@
+.scoreboard-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 5px 15px;
+	.player-container, .opponent-container {
+		display: flex;
+		align-items: center;
+		.user-info-container {
+			padding-left: 10px;
+			.user-level {
+				text-transform: uppercase;
+			}
+		}
+	}
+	.score-container {
+		.score-number, .score-colon {
+			font-size: 30px;
+		}
+	}
+}

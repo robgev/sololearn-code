@@ -27,3 +27,6 @@ export const getTime = (contest, index) => {
 	}
 	return time;
 };
+
+export const countResult = resultsArray =>
+	resultsArray.reduce((acc, item) => (item.isCompleted ? acc + 1 : acc), 0);

@@ -11,6 +11,7 @@ import TypeSelector from './TypeSelector';
 import Start from './Start';
 import Result from './Result';
 import Timer from './Timer';
+import Scoreboard from './Scoreboard';
 import ViewCorrectAnswers from './ViewCorrectAnswers';
 import { getTime } from './challenge.utils';
 
@@ -21,6 +22,7 @@ const styles = {
 	}),
 };
 
+@Radium
 class Game extends Component {
 	constructor(props) {
 		super(props);
@@ -37,6 +39,8 @@ class Game extends Component {
 			// result = 3 show result page Wrong
 			result: 0,
 			eventActive: false,
+			opponentScore: 0,
+			playerScore: 0,
 		};
 	}
 	componentWillUnmount() {
@@ -45,10 +49,23 @@ class Game extends Component {
 		}
 		this.removeCloseWindowEvent();
 	}
+	countNewScore = () => {
+		const { step, opponentScore } = this.state;
+		const { contest: { opponent } } = this.props;
+		if (opponent.results.length) {
+			return opponent.results[step].isCompleted ? opponentScore + 1 : opponentScore;
+		}
+		return opponentScore;
+	}
 	// Show Correct or Wrong on screen and send the result to the server
 	showResult = (result) => {
-		this.setState({ result });
-		this.pushContest(result === 2);
+		const { playerScore } = this.state;
+		const isAnswerCorrect = result === 2;
+		const newOpponentScore = this.countNewScore();
+		const newPlayerScore =
+			isAnswerCorrect ? playerScore + 1 : playerScore;
+		this.setState({ result, playerScore: newPlayerScore, opponentScore: newOpponentScore });
+		this.pushContest(isAnswerCorrect);
 		setTimeout(() => {
 			this.nextStep();
 		}, 1500);
@@ -70,13 +87,13 @@ class Game extends Component {
 		// await this.props.updateContest();
 		return this.setState({ result: 0, end: true });
 	}
-	
+
 	goToViewCorrectAnswers = () => {
-		this.setState({ viewCorrectAnswers: true, end: false })
+		this.setState({ viewCorrectAnswers: true, end: false });
 	}
 
 	backToResults = () => {
-		this.setState({ viewCorrectAnswers: false, end: true })
+		this.setState({ viewCorrectAnswers: false, end: true });
 	}
 
 	declineContest = () => {
@@ -134,7 +151,7 @@ class Game extends Component {
 		const message = this.state.result === 1 ? `Round ${this.state.step + 1}` :
 			(this.state.result === 2 ? 'Correct' : 'Wrong');
 		const { contest } = this.props;
-		const { step } = this.state;
+		const { step, opponentScore, playerScore } = this.state;
 		if (this.state.result !== 0) {
 			return <SingleResult message={message} status={this.state.result} />;
 		}
@@ -144,6 +161,12 @@ class Game extends Component {
 		return (
 			<StyleRoot>
 				<Timer onTimerEnd={this.showResult} time={getTime(contest, step)} />
+				<Scoreboard
+					player={contest.player}
+					playerScore={playerScore}
+					opponent={contest.opponent}
+					opponentScore={opponentScore}
+				/>
 				<div style={styles.animate(fadeInUp)}>
 					<TypeSelector
 						showResult={this.showResult}
@@ -155,4 +178,4 @@ class Game extends Component {
 	}
 }
 
-export default Radium(Game);
+export default Game;
