@@ -54,6 +54,11 @@ class Comment extends Component {
 		this.props.loadReplies(comment.parentID || comment.id, type);
 	}
 
+	// TODO: IMPORTANT:
+	// Move this function to Comments.js, do this stuff inside InfiniteVirtualizedList's
+	// One item rendering function. This way we can conditionally render comments
+	// And avoid unnecessary checks on all the items of the comment
+	// E.G AvatarURL, getEditableArea and unnecessary load button.
 	loadMore = () => {
 		const { comment } = this.props;
 		if (comment.loadAbove) {
@@ -235,10 +240,12 @@ class Comment extends Component {
 			},
 			accessLevel,
 			activeComment,
+			commentsLength,
 			t,
 		} = this.props;
-		if (this.props.comment.id && this.props.comment.type === 'LOAD_MORE') {
-			return (
+		if (this.props.comment.type === 'LOAD_MORE') {
+			// Shitty temporary solution
+			return commentsLength === 1 ? null : (
 				<FlatButton
 					label={t('common.loadMore')}
 					onClick={this.loadMore}

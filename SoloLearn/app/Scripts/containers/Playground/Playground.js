@@ -746,13 +746,15 @@ ${succeedingSubstr}
 							<div style={styles.outputHeader}>Output: </div>
 							<pre className="default-output" style={styles.defaultOutput} />
 						</Paper>
-						<Comments
-							id={id}
-							type={1}
-							commentsType="code"
-							closeComments={this.closeComments}
-							commentsOpened={commentsOpened}
-						/>
+						{ (withBottomToolbar && shouldShowToolbar) &&
+							<Comments
+								id={id}
+								type={1}
+								commentsType="code"
+								commentsOpened={commentsOpened}
+								closeComments={this.closeComments}
+							/>
+						}
 						<Dialog
 							open={inputsPopupOpened}
 							title={texts.inputsPopupTitle}

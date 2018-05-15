@@ -188,6 +188,7 @@ class Comments extends Component {
 				cancelAll,
 				openReplyBoxToolbar,
 				commentsType,
+				comments,
 			},
 			state: {
 				isLoading,
@@ -196,9 +197,13 @@ class Comments extends Component {
 			},
 			voteComment, editComment, loadReplies, loadCommentsAbove, deleteComment,
 		} = this;
+		// TODO: IMPORTANT
+		// Do conditional rendering for the case of LOAD_MORE comment items.
+		// As a temporary solution I am passing comments length now.
 		return (
 			<Comment
 				t={t}
+				commentsLength={comments.length}
 				key={comment.id}
 				comment={comment}
 				accessLevel={accessLevel}
