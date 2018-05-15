@@ -85,8 +85,6 @@ class Leaderboards extends PureComponent {
 			const range = parseInt(newParams.range, 10);
 			this.setState({ loading: true, mode, range });
 			await this.props.getLeaderboard({ ...newParams, index: 0, count: 20 });
-			const userRank = this.findRank(newLeaderboards);
-			this.setState({ loading: false, userRank });
 		} else if (newLeaderboards.length !== leaderboards.length) {
 			const userRank = this.findRank(newLeaderboards);
 			this.setState({ loading: false, userRank });
@@ -196,7 +194,7 @@ class Leaderboards extends PureComponent {
 							backgroundColor="#78909C"
 							style={{ borderRadius: 100 }}
 							buttonStyle={{ borderRadius: 100 }}
-							label={t(`leaderboard.action.${userId === this.props.userId ? 'find-me' : 'find-them'}`)}
+							label={`${t(`leaderboard.action.${userId === this.props.userId ? 'find-me' : 'find-them'}`)} ${userRank}`}
 							icon={<ArrowDown />}
 						/>
 					}
