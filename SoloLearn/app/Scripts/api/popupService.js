@@ -119,6 +119,8 @@ class PopupService {
 
 	checkPopup({
 		isCorrect,
+		isShortcut,
+		shortcutLives,
 		isCheckpoint,
 		commentCount,
 		actionCallback,
@@ -147,11 +149,12 @@ class PopupService {
 							>
 								{i18n.t('learn.answer-correct')}
 							</p>,
+							isShortcut ? null :
 							<FlatButton
-								key="comments-button"
-								onClick={openComments}
-								label={`${commentCount || ''} ${i18n.t('common.comments')}`}
-							/>,
+									key="comments-button"
+									onClick={openComments}
+									label={`${commentCount || ''} ${i18n.t('common.comments')}`}
+								/>,
 						] :
 						[
 							<WrongIcon
@@ -174,11 +177,13 @@ class PopupService {
 								style={styles.backButton}
 								labelStyle={styles.backButtonLabel}
 							/>,
-							<FlatButton
-								key="comments-button"
-								onClick={openComments}
-								label={`${commentCount || ''} ${i18n.t('common.comments')}`}
-							/>,
+							isShortcut ?
+								<p>{shortcutLives} {i18n.t('learn.answer-check-attemps-left-format')}</p> :
+								<FlatButton
+									key="comments-button"
+									onClick={openComments}
+									label={`${commentCount || ''} ${i18n.t('common.comments')}`}
+								/>,
 						]
 					}
 				</Paper>

@@ -455,7 +455,9 @@ render() {
 				isCheckpoint,
 				commentCount,
 				isCorrect: this.state.isCorrect,
+				isShortcut: this.props.isShortcut,
 				actionCallback: this.continueQuiz,
+				shortcutLives: this.props.shortcutLives,
 				openComments: this.props.openComments,
 			})}
 		</div>
