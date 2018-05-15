@@ -189,13 +189,6 @@ class CommentsBase extends Component {
 							<MenuItem style={styles.filterDropDown.item} value={2} primaryText={t('comments.filter.most-popular')} />
 							<MenuItem style={styles.filterDropDown.item} value={1} primaryText={t('comments.filter.most-recent')} />
 						</DropDownMenu>
-						<IconButton
-							iconStyle={styles.close.icon.big}
-							onClick={this.props.closeComments}
-							style={{ ...styles.close.button.comments, ...styles.close.button.big }}
-						>
-							<Close color={grey600} />
-						</IconButton>
 					</ToolbarGroup>
 				</Toolbar>
 			</div>
@@ -224,6 +217,7 @@ class CommentsBase extends Component {
 
 		return (
 			<div>
+				{this.getPopupTitle()}
 				<ReplyBox
 					inputRef={(input) => { this._input = input; }}
 					profile={profile}

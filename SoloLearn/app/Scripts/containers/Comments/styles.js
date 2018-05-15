@@ -31,7 +31,6 @@ export const CommentsBaseStyle = {
 	commentsFilterWrapper: {
 		position: 'relative',
 		padding: 0,
-		zIndex: 10003,
 	},
 
 	commentsFilter: {
@@ -39,7 +38,6 @@ export const CommentsBaseStyle = {
 			position: 'relative',
 			backgroundColor: 'rgb(232, 232, 232)',
 			boxShadow: '0 3px 6px rgba(0,0,0,.16), 0 3px 6px rgba(0,0,0,.23)',
-			zIndex: 1005,
 		},
 
 		title: {
