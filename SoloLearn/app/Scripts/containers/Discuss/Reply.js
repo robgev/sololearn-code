@@ -86,7 +86,8 @@ class Reply extends Component {
 						fullWidth
 						defaultValue={this.state.textFieldValue}
 						errorText={this.state.errorText}
-						onChange={e => this.onChange(e)}
+						onChange={this.onChange}
+						ref={(_editRef) => { this._editRef = _editRef; }}
 						style={styles.textField}
 					/>
 					<span style={styles.textFieldCoutner} key={`replyTextCounter${reply.id}`}>{2048 - this.state.textFieldValue.length}</span>
@@ -101,7 +102,7 @@ class Reply extends Component {
 
 	// Open answer text editor
 	openEdit = () => {
-		this.setState({ isEditing: true });
+		this.setState({ isEditing: true }, () => this._editRef.focus());
 	}
 
 	// Close answer text editor
