@@ -417,11 +417,6 @@ export const QuestionsBaseStyles = {
 	discussFilter: {
 		float: 'right',
 	},
-	addButton: {
-		position: 'fixed',
-		bottom: 20,
-		right: 20,
-	},
 };
 
 export const ReplyStyles = {

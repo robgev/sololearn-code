@@ -1,13 +1,11 @@
 // React modules
 import React, { Component } from 'react';
-import ReactGA from 'react-ga';
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
 import Radium from 'radium';
 
 // Material UI components
-import { DropDownMenu, MenuItem, FloatingActionButton } from 'material-ui';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import { DropDownMenu, MenuItem } from 'material-ui';
 
 // Redux modules
 import { connect } from 'react-redux';
@@ -16,6 +14,7 @@ import { changeDiscussQuery, changeDiscussOrdering } from 'actions/discuss';
 
 // Additional components
 import Layout from 'components/Layouts/GeneralLayout';
+import AddQuestionButton from 'components/Shared/AddQuestionButton';
 import Questions from './Questions';
 
 // i18n
@@ -97,15 +96,7 @@ class QuestionsBase extends Component {
 					isUserProfile={false}
 					ref={(questions) => { this._questions = questions; }}
 				/>
-				<Link style={{ textDecoration: 'none' }} to="/discuss/new">
-					<FloatingActionButton
-						style={styles.addButton}
-						zDepth={3}
-						secondary
-					>
-						<ContentAdd />
-					</FloatingActionButton>
-				</Link>
+				<AddQuestionButton />
 			</Layout>
 		);
 	}

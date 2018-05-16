@@ -1,27 +1,19 @@
 // React modules
 import React, { Component } from 'react';
-import ReactGA from 'react-ga';
 import Radium from 'radium';
-import { map, uniqBy } from 'lodash';
 
 // i18n
 import { translate } from 'react-i18next';
 
 // Material UI components
-import Dialog from 'material-ui/Dialog';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import TextField from 'material-ui/TextField';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-import { grey700 } from 'material-ui/styles/colors';
 
 // Redux modules
 import { connect } from 'react-redux';
 import { isLoaded } from 'reducers';
-import LanguageCard from 'components/Shared/languageCard';
 import Layout from 'components/Layouts/GeneralLayout';
-import editorSettings from 'defaults/playgroundEditorSettings';
+import AddCodeButton from 'components/Shared/AddCodeButton';
 
 // Additional components
 import Codes from './Codes';
@@ -43,24 +35,14 @@ const styles = {
 	languageFilter: {
 		float: 'right',
 	},
-
-	newCodeButton: {
-		position: 'fixed',
-		bottom: 20,
-		right: 20,
-	},
 };
 
 class CodesBase extends Component {
 	constructor() {
 		super();
-		const languagesArray = map(editorSettings, item => item);
-		const languages = uniqBy(languagesArray, 'language');
 		this.state = {
 			ordering: 4,
 			language: '',
-			languages,
-			isLanguagePopupOpen: false,
 		};
 	}
 
@@ -76,16 +58,7 @@ class CodesBase extends Component {
 		this.codes.getWrappedInstance().loadCodesByState();
 	}
 
-	toggleLanguagePopup = () => {
-		const { isLanguagePopupOpen } = this.state;
-		if (!isLanguagePopupOpen) {
-			ReactGA.ga('send', 'screenView', { screenName: 'Code Picker Page' });
-		}
-		this.setState({ isLanguagePopupOpen: !isLanguagePopupOpen });
-	}
-
 	render() {
-		const { isLanguagePopupOpen, languages } = this.state;
 		const { t } = this.props;
 		return (
 			<Layout>
@@ -126,28 +99,7 @@ class CodesBase extends Component {
 					isUserProfile={false}
 					ref={(codes) => { this.codes = codes; }}
 				/>
-				<FloatingActionButton
-					secondary
-					zDepth={3}
-					style={styles.newCodeButton}
-					onClick={this.toggleLanguagePopup}
-				>
-					<ContentAdd />
-				</FloatingActionButton>
-				<Dialog
-					title={t('code.language-picker-title')}
-					open={isLanguagePopupOpen}
-					onRequestClose={this.toggleLanguagePopup}
-				>
-					{
-						languages.map(currentElement => (
-							<LanguageCard
-								{...currentElement}
-								linkPrefix="/playground"
-							/>
-						))
-					}
-				</Dialog>
+				<AddCodeButton />
 			</Layout>
 		);
 	}

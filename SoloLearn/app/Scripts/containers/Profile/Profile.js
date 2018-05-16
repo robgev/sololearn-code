@@ -21,6 +21,8 @@ import { isLoaded } from 'reducers';
 
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import Layout from 'components/Layouts/GeneralLayout';
+import AddCodeButton from 'components/Shared/AddCodeButton';
+import AddQuestionButton from 'components/Shared/AddQuestionButton';
 
 // i18n
 import { translate } from 'react-i18next';
@@ -309,6 +311,7 @@ class Profile extends Component {
 								isUserProfile
 								userId={profile.data.id}
 							/>
+							<AddCodeButton />
 						</div>
 					}
 					{
@@ -323,6 +326,7 @@ class Profile extends Component {
 								isUserProfile
 								userId={profile.data.id}
 							/>
+							<AddQuestionButton />
 						</div>
 					}
 					{this.state.activeTab === TabTypes.Skills &&
