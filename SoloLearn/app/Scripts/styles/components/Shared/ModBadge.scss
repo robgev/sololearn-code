@@ -1,0 +1,16 @@
+.badge-container {
+	display: inline-flex;
+	max-width: 56px;
+	border-radius: 15px;
+	color: #315871;
+	&.big {
+		padding: 3px;
+	}
+	&.small {
+		padding: 1px;
+	}
+	&.absolute {
+		position: absolute;
+		bottom: 0px;
+	}
+}

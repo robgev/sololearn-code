@@ -48,6 +48,7 @@ const Opponent = ({ opponent, createContest }) => (
 				size={35}
 				withUserNameBox
 				userID={opponent.id}
+				badge={opponent.badge}
 				userName={opponent.name}
 				avatarUrl={opponent.avatarUrl}
 			/>

@@ -4,6 +4,12 @@
 		display: flex;
 		align-items: center;
 		font-size: 12px;
+		.profile-picture-container {
+			display: flex;
+	    flex-direction: column;
+	    align-items: center;
+	    position: relative;
+		}
 		&.vertical {
 			flex-direction: column;
 		}

@@ -20,6 +20,7 @@ import findCommonPrefix from './findCommonPrefix';
 import getChallengeStatus from './getChallengeStatus';
 import getCourseAliasById from './getCourseAliasById';
 import determineAccessLevel from './determineAccessLevel';
+import determineBadge, { determineBadgeColor } from './modBadgeUtils';
 
 const hash = pass => hmacsha1('password', pass).slice(0, -1);
 const checkWeb = alias => [ 'html', 'css', 'js' ].includes(alias);
@@ -42,6 +43,7 @@ export {
 	toSeoFrendly,
 	updateMessage,
 	faultGenerator,
+	determineBadge,
 	generatePreviews,
 	numberFormatter,
 	calculateProgress,
@@ -50,5 +52,6 @@ export {
 	findCommonPrefix,
 	getChallengeStatus,
 	getCourseAliasById,
+	determineBadgeColor,
 	determineAccessLevel,
 };

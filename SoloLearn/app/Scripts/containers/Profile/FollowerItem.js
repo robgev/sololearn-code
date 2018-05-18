@@ -82,7 +82,9 @@ class FollowerItem extends Component {
 	}
 
 	render() {
-		const { t, follower, fromFollowers, isFollowing } = this.props;
+		const {
+			t, follower, fromFollowers, isFollowing,
+		} = this.props;
 
 		return (
 			<div id="follower" style={styles.follower}>
@@ -91,6 +93,7 @@ class FollowerItem extends Component {
 						size={50}
 						style={styles.avatar}
 						userID={follower.id}
+						badge={follower.badge}
 						userName={follower.name}
 						avatarUrl={follower.avatarUrl}
 					/>

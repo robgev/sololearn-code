@@ -242,9 +242,11 @@ class Header extends Component {
 				}
 				<div className="details" style={styles.details}>
 					<ProfileAvatar
-						size={70}
-						style={styles.avatar}
+						size={100}
+						withBorder
 						userID={profile.id}
+						style={styles.avatar}
+						badge={profile.badge}
 						userName={profile.name}
 						avatarUrl={profile.avatarUrl}
 					/>

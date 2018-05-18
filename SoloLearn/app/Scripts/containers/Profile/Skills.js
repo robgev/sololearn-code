@@ -12,7 +12,7 @@ import ChallengeGraphs from 'components/Shared/ChallengeGraphs';
 import i18n from 'i18n';
 import { translate } from 'react-i18next';
 
-import { calculateProgress } from 'utils';
+import { calculateProgress, determineBadge } from 'utils';
 import { PolarChartColors } from 'constants/ChartColors';
 import LanguageCodes from 'constants/LanguageCodes';
 import 'styles/Profile/skills.scss';
@@ -46,12 +46,9 @@ const createChartData = ranks => Object.keys(ranks)
 	}));
 
 const ModeratorStatus = ({ badge }) => {
-	if (!badge) {
-		return null;
-	}
-	const splittedBadge = badge.split('|');
-	return splittedBadge.length > 1 &&
-	<div style={{ textTransform: 'uppercase' }}>{splittedBadge[0].split('_mod')[0]} Moderator</div>;
+	const modBadge = determineBadge(badge);
+	return !modBadge ? null
+		: <div style={{ textTransform: 'uppercase' }}>{i18n.t(`profile.skills.${modBadge}`)}</div>;
 };
 
 @translate()
@@ -72,7 +69,7 @@ class Skills extends PureComponent {
 			<div className="skills-container">
 				<Paper className="skills-group">
 					<p className="skills-header">{t('skills.status-plus-rank')}</p>
-					<ModeratorStatus badge={profile.badge} />
+					<ModeratorStatus t={t} badge={profile.badge} />
 					<div className="skills-details">
 						<Link to={`/leaderboards/${profile.id}`} className="leaderboard-link">
 							{t('leaderboard.rank.placeholder')}

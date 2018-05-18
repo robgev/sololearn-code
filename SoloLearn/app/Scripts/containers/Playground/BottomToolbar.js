@@ -71,6 +71,7 @@ class BottomToolbar extends PureComponent {
 			vote,
 			votes,
 			name,
+			badge,
 			userID,
 			language,
 			userName,
@@ -83,6 +84,7 @@ class BottomToolbar extends PureComponent {
 					<div className="user-data">
 						<ProfileAvatar
 							size={40}
+							badge={badge}
 							userID={userID}
 							userName={userName}
 							avatarUrl={avatarUrl}

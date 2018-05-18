@@ -108,6 +108,7 @@ class ContestItemBase extends PureComponent {
 			>
 				<ProfileAvatar
 					vertical
+					badge={opponent.badge}
 					userID={opponent.id}
 					userName={opponent.name}
 					avatarUrl={opponent.avatarUrl}

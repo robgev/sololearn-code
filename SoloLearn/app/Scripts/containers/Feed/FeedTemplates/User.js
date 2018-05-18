@@ -63,6 +63,7 @@ class User extends Component {
 					withUserNameBox
 					style={styles.avatar}
 					userID={user.id}
+					badge={user.badge}
 					userName={user.name}
 					avatarUrl={user.avatarUrl}
 				/>

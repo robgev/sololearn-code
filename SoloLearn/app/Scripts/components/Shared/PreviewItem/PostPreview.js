@@ -20,7 +20,7 @@ class PostPreview extends PureComponent {
 			return null;
 		}
 		const {
-			avatarUrl, title, userName,
+			avatarUrl, title, userName, badge,
 		} = postData;
 		// Will need badge in future too. Destructure badge if needed.
 		return (
@@ -28,6 +28,7 @@ class PostPreview extends PureComponent {
 				<ProfileAvatar
 					disabled
 					size={40}
+					badge={badge}
 					avatarUrl={avatarUrl}
 					userName={userName}
 					avatarStyle={{ margin: '0 10px 0 0' }}

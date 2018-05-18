@@ -579,6 +579,9 @@
     "challenge-pie-won": "Won",
     "challenge-pie-draw": "Draw",
     "challenge-pie-lost": "Lost",
+		"platinum_mod": "PLATINUM MODERATOR",
+		"gold_mod": "GOLD MODERATOR",
+		"mod": "MODERATOR",
     "challenge-daily-performance": "Daily Performance"
   },
   "block": {

@@ -18,7 +18,7 @@ const SlayLessonToolbar = ({
 	openComments,
 	commentsCount,
 	toggleBookmark,
-	t
+	t,
 }) => (
 	<div className="lesson-toolbar">
 		<div className="lesson-data">

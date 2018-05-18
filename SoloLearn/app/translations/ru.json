@@ -581,6 +581,9 @@
     "challenge-pie-draw": "Ничей",
     "challenge-pie-lost": "Проигр.",
     "challenges-section-title": "ВЫЗОВЫ",
+    "profile_skills_platinum_mod": "ПЛАТИНОВЫЙ МОДЕРАТОР",
+    "profile_skills_gold_mod": "ЗОЛОТОЙ МОДЕРАТОР",
+    "profile_skills_mod": "МОДЕРАТОР",
     "challenge-daily-performance": "Ежедневная статистика"
   },
   "block": {

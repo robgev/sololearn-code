@@ -222,6 +222,7 @@ class Reply extends Component {
 						}
 						<ProfileAvatar
 							withUserNameBox
+							badge={reply.badge}
 							userID={reply.userID}
 							avatarUrl={reply.avatarUrl}
 							userName={reply.userName}

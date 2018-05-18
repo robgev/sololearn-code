@@ -133,6 +133,7 @@ class CodeItem extends Component {
 									reversedOrder
 									withUserNameBox
 									userID={code.userID}
+									badge={code.badge}
 									timePassed={dateModified}
 									userName={code.userName}
 									avatarUrl={code.avatarUrl}

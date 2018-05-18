@@ -13,7 +13,6 @@ import LoadingOverlay from 'components/Shared/LoadingOverlay';
 // Styles
 import { ReplyBoxStyle as styles } from './styles';
 
-
 // i18n
 import { translate } from 'react-i18next';
 
@@ -62,6 +61,7 @@ class ReplyBox extends Component {
 						<ProfileAvatar
 							size={40}
 							userID={profile.id}
+							badge={profile.badge}
 							userName={profile.name}
 							avatarUrl={profile.avatarUrl}
 						/>

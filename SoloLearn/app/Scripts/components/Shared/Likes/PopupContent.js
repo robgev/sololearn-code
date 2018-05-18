@@ -11,6 +11,7 @@ const 	renderOneLike = user => (
 			<ProfileAvatar
 				userID={user.id}
 				withUserNameBox
+				badge={user.badge}
 				userName={user.name}
 				avatarUrl={user.avatarUrl}
 			/>

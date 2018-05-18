@@ -1,13 +1,8 @@
 // React modules
 import React from 'react';
 import { Link } from 'react-router';
-
-// Material UI components
-import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
-import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
-import { grey500 } from 'material-ui/styles/colors';
-
-import { updateDate } from 'utils';
+import { updateDate, determineBadge } from 'utils';
+import ModBadge from 'components/Shared/ModBadge';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
 const styles = {
@@ -74,6 +69,7 @@ const FeedItemBase = ({
 		<ProfileAvatar
 			size={40}
 			userID={user.id}
+			badge={user.badge}
 			userName={user.name}
 			style={styles.linkStyle}
 			avatarUrl={user.avatarUrl}
@@ -85,6 +81,10 @@ const FeedItemBase = ({
 					style={{ ...styles.userName, ...styles.linkStyle }}
 				>
 					{`${user.name} `}
+					<ModBadge
+						className="small"
+						badge={determineBadge(user.badge)}
+					/>
 				</Link>
 				{title}
 			</p>

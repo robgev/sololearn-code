@@ -90,6 +90,7 @@ class Header extends PureComponent {
 					<div className="details-wrapper" style={styles.detailsWrapper}>
 						<ProfileAvatar
 							size={50}
+							badge={profile.badge}
 							userID={profile.id}
 							style={styles.avatar}
 							userName={profile.name}

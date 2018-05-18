@@ -347,6 +347,7 @@ class FeedItemsBase extends Component {
 				<div className="user-details" style={styles.userDetails}>
 					<ProfileAvatar
 						size={40}
+						badge={this.popupData.badge}
 						userID={this.popupData.userId}
 						userName={this.popupData.userName}
 						avatarUrl={this.popupData.avatarUrl}

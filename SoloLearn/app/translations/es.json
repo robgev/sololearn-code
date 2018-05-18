@@ -581,6 +581,9 @@
     "challenge-pie-draw": "Empate",
     "challenge-pie-lost": "Perdiste",
     "challenges-section-title": "DESAFÍOS",
+		"profile_skills_gold_mod": "MODERADOR DE ORO",
+		"profile_skills_platinum_mod": "MODERADOR DE PLATINO",
+		"profile_skills_mod": "MODERADOR",
     "challenge-daily-performance": "Desempeño Diario"
   },
   "block": {

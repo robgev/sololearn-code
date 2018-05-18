@@ -16,6 +16,7 @@ const Scoreboard = ({
 			<ProfileAvatar
 				disabled
 				size={40}
+				badge={player.badge}
 				userName={player.name}
 				avatarUrl={player.avatarUrl}
 				avatarStyle={{ margin: '0 10px 0 0' }}
@@ -38,6 +39,7 @@ const Scoreboard = ({
 			<ProfileAvatar
 				disabled
 				size={40}
+				badge={opponent.badge}
 				userName={opponent.name}
 				avatarUrl={opponent.avatarUrl}
 				avatarStyle={{ margin: '0 10px 0 0' }}
