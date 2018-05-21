@@ -214,7 +214,7 @@ ${this.props.code}
 			userId,
 			isUserCode,
 			userCodeData,
-			setLatestSavedData,
+			setNewState,
 		} = this.props;
 		if (isUserCode && userCodeData.userID === userId) {
 			this.setState({
@@ -226,9 +226,11 @@ ${this.props.code}
 				this.setState({
 					isSaving: false,
 				}, () => {
-					setLatestSavedData({
-						...code,
-						codeType: 'userCode',
+					setNewState({
+						latestSavedCodeData: {
+							...code,
+							codeType: 'userCode',
+						},
 					});
 				});
 			} catch (error) {
@@ -241,11 +243,14 @@ ${this.props.code}
 
 	submitSave = async () => {
 		const {
-			setLatestSavedData, avatarUrl, userName, showToolbar,
+			setNewState, avatarUrl, userName, showToolbar,
 		} = this.props;
 		if (this.state.codeName.trim()) {
 			const { code } = await this.saveCodeInternal(0);
-			setLatestSavedData({ ...code, avatarUrl, userName }, () => {
+			setNewState({
+				latestSavedCodeData: { ...code, avatarUrl, userName },
+				id: code.id,
+			}, () => {
 				const { publicID, language } = code;
 				// this.handleInputsPopupClose();
 				browserHistory.replace(`/playground/${publicID}/${language}`);

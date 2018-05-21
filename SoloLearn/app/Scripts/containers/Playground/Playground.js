@@ -409,9 +409,9 @@ class Playground extends Component {
 		}
 	}
 
-	setLatestSavedData = (latestSavedCodeData, callback) => {
+	setNewState = (state, callback) => {
 		this.setState({
-			latestSavedCodeData,
+			...state,
 		}, callback);
 	}
 
@@ -714,6 +714,7 @@ ${succeedingSubstr}
 							isRunning={isRunning}
 							runCode={this.runCode}
 							language={userCodeLanguage}
+							setNewState={this.setNewState}
 							showToolbar={this.showToolbar}
 							showWebOutput={showWebOutput}
 							insertToHead={this.insertToHead}
@@ -721,7 +722,6 @@ ${succeedingSubstr}
 							userCodeData={latestSavedCodeData}
 							languageSelector={languageSelector}
 							resetEditorValue={this.resetEditorValue}
-							setLatestSavedData={this.setLatestSavedData}
 							handleEditorChange={this.handleEditorChange}
 							handleThemeChange={this.handleThemeChange}
 							handleLanguageChange={this.handleLanguageChange}
