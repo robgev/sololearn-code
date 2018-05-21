@@ -64,12 +64,14 @@ class TypeSelector extends Component {
 						isShowingCorrectAnswers={isShowingCorrectAnswers}
 						ref={(child) => { this._child = child; }}
 					/>
-					<RaisedButton
-						secondary
-						label="Check"
-						onClick={this.check}
-						style={styles.button}
-					/>
+					{!isShowingCorrectAnswers &&
+						<RaisedButton
+							secondary
+							label="Check"
+							onClick={this.check}
+							style={styles.button}
+						/>
+					}
 				</div>
 			</div>
 		);
