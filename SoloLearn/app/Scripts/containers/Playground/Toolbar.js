@@ -252,8 +252,9 @@ ${this.props.code}
 				id: code.id,
 			}, () => {
 				const { publicID, language } = code;
+				const codeLanguage = language === 'web' ? 'html' : language; // Simple validation for the case, when the code is web.
 				// this.handleInputsPopupClose();
-				browserHistory.replace(`/playground/${publicID}/${language}`);
+				browserHistory.replace(`/playground/${publicID}/${codeLanguage}`);
 				this.handleSavePopupClose();
 				showToolbar();
 			});
