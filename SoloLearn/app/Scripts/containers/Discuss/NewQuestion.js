@@ -31,6 +31,8 @@ class NewQuestion extends Component {
 	constructor() {
 		super();
 		document.title = 'Create a new question';
+		this.maxQuestionLength = 1024;
+		this.maxTitleLength = 128;
 		this.state = {
 			title: '',
 			titleErrorText: '',
@@ -44,12 +46,16 @@ class NewQuestion extends Component {
 
 	// Detect title change
 	onTitleChange = (e) => {
-		this.setState({ title: e.target.value });
+		if (e.target.value.length <= this.maxTitleLength) {
+			this.setState({ title: e.target.value });
+		}
 	}
 
 	// Detect title change
 	onMessageChange = (e) => {
-		this.setState({ message: e.target.value });
+		if (e.target.value.length <= this.maxQuestionLength) {
+			this.setState({ message: e.target.value });
+		}
 	}
 
 	// Collect tags into one array
@@ -114,33 +120,33 @@ class NewQuestion extends Component {
 				<form onSubmit={this.handleSubmit}>
 					<div className="question-data" style={styles.questionData}>
 						<TextField
-							floatingLabelText={t('question.title-placeholder')}
 							fullWidth
-							defaultValue={this.state.title}
-							errorText={this.state.titleErrorText}
-							onChange={e => this.onTitleChange(e)}
+							value={this.state.title}
 							style={styles.textField}
+							onChange={this.onTitleChange}
+							errorText={this.state.titleErrorText}
+							floatingLabelText={t('question.title-placeholder')}
 						/>
 						<span
 							style={styles.textFieldCoutner}
 						>
-							{this.state.title.length} / 128
+							{this.state.title.length} / { this.maxTitleLength }
 						</span>
 					</div>
 					<div className="question-data" style={styles.questionData}>
 						<TextField
-							floatingLabelText={t('question.message-placeholder')}
 							multiLine
-							rowsMax={4}
 							fullWidth
-							defaultValue={this.state.message}
-							onChange={e => this.onMessageChange(e)}
+							rowsMax={4}
 							style={styles.textField}
+							value={this.state.message}
+							onChange={e => this.onMessageChange(e)}
+							floatingLabelText={t('question.message-placeholder')}
 						/>
 						<span
 							style={styles.textFieldCoutner}
 						>
-							{this.state.message.length} / 512
+							{this.state.message.length} / {this.maxQuestionLength}
 						</span>
 					</div>
 					<div className="question-data" style={styles.questionData}>
