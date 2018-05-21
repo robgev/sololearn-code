@@ -416,8 +416,8 @@
   },
   "question": {
     "title": "Новый вопрос",
-    "title-placeholder": "Заголовок вопроса",
-    "message-placeholder": "Описание вопроса...",
+    "title-placeholder": "Вопрос",
+    "message-placeholder": "Описание",
     "tags-placeholder": "Подходящие теги",
     "submit-title": "Подтвердить",
     "invalid-title": "Введите заголовок",

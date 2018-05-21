@@ -417,8 +417,8 @@
   },
   "question": {
     "title": "New Question",
-    "title-placeholder": "Question title",
-    "message-placeholder": "Question body goes here...",
+		"title-placeholder": "Question",
+    "message-placeholder": "Description",
     "tags-placeholder": "Relevant Tags",
     "invalid-title": "Please enter a title",
     "empty-tags": "Please enter at least one tag"

@@ -416,8 +416,8 @@
   },
   "question": {
     "title": "Nueva Pregunta",
-    "title-placeholder": "Título de la pregunta",
-    "message-placeholder": "Descripción de la pregunta...",
+    "title-placeholder": "Pregunta",
+    "message-placeholder": "Descripción",
     "tags-placeholder": "Etiquetas Relevantes",
     "submit-title": "Enviar",
     "invalid-title": "Por favor, introduce un título",
