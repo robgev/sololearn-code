@@ -4,6 +4,8 @@ const getRawComments = state => state.comments.data;
 
 export const getSelectedCommentId = state => state.comments.selected;
 
+export const getCommentsCount = state => getRawComments(state).filter(i => i.id).length || 0;
+
 export const getComments = createSelector(
 	getRawComments,
 	(comments) => {

@@ -13,12 +13,14 @@ import VoteControls from 'components/Shared/VoteControls';
 import { determineAccessLevel } from 'utils';
 import { removeCode } from 'actions/playground';
 import getLikesAndDownvotesCurried from 'actions/likes';
+import { getCommentsCount } from 'selectors';
 
 import 'styles/Playground/bottomToolbar.scss';
 
 const mapStateToProps = state => ({
 	userId: state.userProfile.id,
 	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
+	commentsCount: getCommentsCount(state),
 });
 
 const mapDispatchToProps = {
@@ -65,6 +67,7 @@ class BottomToolbar extends PureComponent {
 			accessLevel,
 			voteCode,
 			openComments,
+			commentsCount,
 		} = this.props;
 		const {
 			id,
@@ -75,7 +78,6 @@ class BottomToolbar extends PureComponent {
 			userID,
 			language,
 			userName,
-			comments,
 			avatarUrl,
 		} = codeData;
 		return (
@@ -141,7 +143,7 @@ class BottomToolbar extends PureComponent {
 							<FlatButton
 								key="flatButton"
 								onClick={openComments}
-								label={`${comments} COMMENTS`}
+								label={`${commentsCount} COMMENTS`}
 							/>,
 						]
 					}

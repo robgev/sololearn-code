@@ -1,3 +1,3 @@
-import { getComments, getSelectedCommentId } from './comments.selector';
+import { getComments, getSelectedCommentId, getCommentsCount } from './comments.selector';
 
-export { getComments, getSelectedCommentId };
+export { getComments, getSelectedCommentId, getCommentsCount };
