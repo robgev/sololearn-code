@@ -26,6 +26,7 @@ const tooltipOpened = (<Style
 
 // i18n
 import { translate } from 'react-i18next';
+import { log } from 'util';
 
 const tooltipTopPlaced = (<Style
 	scopeSelector=".tooltip-content.top"
@@ -460,7 +461,7 @@ class QuizText extends Component {
 	render() {
 		const { isBookmarked, countLoaded } = this.state;
 		const {
-			openComments, withToolbar, userData, date, t
+			openComments, withToolbar, userData, date, t,
 		} = this.props;
 		return (
 			<Paper className="text-container" style={styles.textContainer}>
