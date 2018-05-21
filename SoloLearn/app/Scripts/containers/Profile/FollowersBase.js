@@ -1,5 +1,7 @@
 // React modules
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
+import { translate } from 'react-i18next';
 
 // Material UI components
 import { Tabs, Tab } from 'material-ui/Tabs';
@@ -13,9 +15,6 @@ import { EnumNameMapper } from 'utils';
 // Additional data and components
 import Followers from './Followers';
 import Following from './Following';
-
-// i18next
-import { translate } from 'react-i18next';
 
 const TabTypes = {
 	Followers: 1,
