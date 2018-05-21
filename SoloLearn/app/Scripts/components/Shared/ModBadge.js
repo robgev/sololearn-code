@@ -6,8 +6,10 @@ const ModBadge = ({ badge, className }) => {
 	const modBadgeColor = determineBadgeColor(badge);
 	return !badge ? null : (
 		<div style={{ backgroundColor: `${modBadgeColor}` }} className={`badge-container ${badge} ${className}`}>
-			{(badge === 'gold_mod' || badge === 'platinum_mod') && <span className="icon">KING </span>}
-			Mod
+			{(badge === 'gold_mod' || badge === 'platinum_mod') &&
+				<img className="icon" src="/assets/mod.png" alt="Mod" />
+			}
+			<span className="mod">Mod</span>
 		</div>
 	);
 };

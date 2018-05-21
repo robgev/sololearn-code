@@ -2,12 +2,21 @@
 	display: inline-flex;
 	max-width: 56px;
 	border-radius: 15px;
-	color: #315871;
+	color: white;
+	.icon {
+		width: 15px;
+    height: 15px;
+	}
+	.mod {
+		display: inline-block;
+		line-height: 18px;
+	}
 	&.big {
 		padding: 3px;
 	}
 	&.small {
-		padding: 1px;
+		padding: 0 4px;
+		margin-left: 5px;
 	}
 	&.absolute {
 		position: absolute;
