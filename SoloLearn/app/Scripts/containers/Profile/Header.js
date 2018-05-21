@@ -1,7 +1,6 @@
 // General modules
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 // Material UI components
 import IconMenu from 'material-ui/IconMenu';
