@@ -73,7 +73,8 @@
 		"lesson_comment_request_removal_message": "Вы уверены, что хотите отметить данный комментарий для удаления?",
 		"lesson_comment_remove_title": "Удалить комментарий",
 		"lesson_comment_remove_message": "Действительно хотите удалить этот комментарий?",
-    "reply": "Ответить"
+		"reply": "Ответить",
+		"add": "Добавить"
   },
   "date": {
     "now-past": "прямо сейчас",

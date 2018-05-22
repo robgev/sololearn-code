@@ -239,14 +239,19 @@ class Comment extends Component {
 				avatarUrl,
 				userName,
 			},
+			comments,
 			accessLevel,
 			activeComment,
-			commentsLength,
 			t,
 		} = this.props;
-		if (this.props.comment.type === 'LOAD_MORE') {
+
+		if (comment.type === 'LOAD_MORE') {
+			const hasParentId = comment.parentId !== null;
+			const filteredCommentsLength = hasParentId ?
+				comments.filter(c => (c.type !== 'LOAD_MORE' && comment.parentId === c.parentID)) :
+				comments.filter(c => c.type !== 'LOAD_MORE');
 			// Shitty temporary solution
-			return commentsLength === 1 ? null : (
+			return filteredCommentsLength.length <= 1 ? null : (
 				<FlatButton
 					label={t('common.loadMore')}
 					onClick={this.loadMore}

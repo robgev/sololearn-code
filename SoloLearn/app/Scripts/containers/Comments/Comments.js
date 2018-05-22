@@ -199,11 +199,11 @@ class Comments extends Component {
 		} = this;
 		// TODO: IMPORTANT
 		// Do conditional rendering for the case of LOAD_MORE comment items.
-		// As a temporary solution I am passing comments length now.
+		// As a temporary solution I am passing comments now.
 		return (
 			<Comment
 				t={t}
-				commentsLength={comments.length}
+				comments={comments}
 				key={comment.id}
 				comment={comment}
 				accessLevel={accessLevel}

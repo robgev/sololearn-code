@@ -82,7 +82,7 @@ class ReplyBox extends Component {
 					</div>
 					<div style={styles.replyBoxControls}>
 						<FlatButton
-							label={t('comments.reply')}
+							label={t('comments.add')}
 							disabled={this.props.disabled}
 							primary
 							onClick={this.submitReply}
