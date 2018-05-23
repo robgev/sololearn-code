@@ -90,7 +90,7 @@ class Replies extends Component {
 					additional={this.props.orderBy}
 					item={this.renderReply}
 					list={this.props.replies}
-					loadMore={() => { console.log('loadMore'); }}
+					loadMore={this.props.loadReplies}
 					cache={cache}
 					window
 					ref={(list) => { this._list = list; }}
