@@ -20,6 +20,7 @@ import Service from 'api/service';
 // Additional components
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
+import 'styles/Discuss/NewQuestion.scss';
 import { NewQuestionStyles as styles } from './styles';
 
 const mapDispatchToProps = { addQuestion };
@@ -114,7 +115,7 @@ class NewQuestion extends Component {
 	render() {
 		const { t } = this.props;
 		return (
-			<Paper id="new-question" style={styles.container}>
+			<Paper className="new-question" id="new-question" style={styles.container}>
 				{this.state.isLoading && <LoadingOverlay />}
 				<h2 style={styles.heading}>{t('question.title')}</h2>
 				<form onSubmit={this.handleSubmit}>
@@ -154,6 +155,7 @@ class NewQuestion extends Component {
 							fullWidth
 							fullWidthInput
 							value={this.state.tags}
+							style={styles.textField}
 							onBlur={this.handleBlur}
 							newChipKeyCodes={[ 13, 32 ]}
 							chipRenderer={this.renderChip}
