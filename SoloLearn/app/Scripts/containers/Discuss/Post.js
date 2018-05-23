@@ -129,9 +129,8 @@ class Post extends Component {
 	// Change ordering of replies
 	handleFilterChange = (e, index, value) => {
 		const { post } = this.props;
+		this.setState({ ordering: value }, this.loadRepliesByState);
 		browserHistory.replace(`/discuss/${post.id}/${post.alias}`);
-		this.setState({ ordering: value });
-		this.loadRepliesByState();
 	}
 
 	// Load questions when condition changes
