@@ -293,7 +293,7 @@ class FeedItemsBase extends Component {
 	}
 
 	getChallengeStats = async (userId, courseId) => {
-		const { stats: { totalWins, totalLoses } } = Service.request('Challenge/GetContestStats', { userId, courseId });
+		const { stats: { totalWins, totalLoses } } = await Service.request('Challenge/GetContestStats', { userId, courseId });
 		this.setState({ totalWins, totalLoses });
 	}
 
