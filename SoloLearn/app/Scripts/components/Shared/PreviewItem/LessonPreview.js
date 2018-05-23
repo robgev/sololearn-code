@@ -4,9 +4,13 @@ import Service from 'api/service';
 import CourseChip from 'components/Shared/CourseChip';
 
 class CodePreview extends PureComponent {
-	state = {
-		loading: true,
-		lessonData: null,
+	constructor() {
+		super();
+		this.state = {
+			loading: true,
+			lessonData: null,
+		};
+		this._isMounting = true;
 	}
 
 	async componentWillMount() {
@@ -14,8 +18,15 @@ class CodePreview extends PureComponent {
 		const { lesson: lessonData } = type === 'course'
 			? await Service.request('GetCourseLessonMinimal', { id })
 			: await Service.request('GetLessonMinimal', { id });
-		this.setState({ lessonData, loading: false }, recompute);
+		if (this._isMounting) {
+			this.setState({ lessonData, loading: false }, recompute);
+		}
 	}
+
+	componentWillUnmount() {
+		this._isMounting = false;
+	}
+
 	render() {
 		const { loading, lessonData } = this.state;
 		if (loading) {

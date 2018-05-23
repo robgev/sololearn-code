@@ -4,16 +4,27 @@ import Service from 'api/service';
 import LanguageIcon from 'components/Shared/LanguageIcon';
 
 class CodePreview extends PureComponent {
-	state = {
-		loading: true,
-		codeData: null,
+	constructor() {
+		super();
+		this.state = {
+			loading: true,
+			codeData: null,
+		};
+		this._isMounting = true;
 	}
 
 	async componentWillMount() {
 		const { publicId, recompute } = this.props;
 		const { code: codeData } = await Service.request('Playground/GetCodeMinimal', { publicId });
-		this.setState({ codeData, loading: false }, recompute);
+		if (this._isMounting) {
+			this.setState({ codeData, loading: false }, recompute);
+		}
 	}
+
+	componentWillUnmount() {
+		this._isMounting = false;
+	}
+
 	render() {
 		const { loading, codeData } = this.state;
 		if (loading) {
