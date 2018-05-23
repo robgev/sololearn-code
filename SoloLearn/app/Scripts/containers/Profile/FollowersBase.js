@@ -1,7 +1,6 @@
 // React modules
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
-import { translate } from 'react-i18next';
 
 // Material UI components
 import { Tabs, Tab } from 'material-ui/Tabs';
@@ -107,11 +106,11 @@ class FollowersBase extends Component {
 						<Close color={grey600} />
 					</IconButton>
 				</div>
-				{this.state.activeTab === TabTypes.Followers && <Followers userId={userId} />}
-				{this.state.activeTab === TabTypes.Following && <Following userId={userId} />}
+				{this.state.activeTab === TabTypes.Followers && <Followers t={t} userId={userId} />}
+				{this.state.activeTab === TabTypes.Following && <Following t={t} userId={userId} />}
 			</div>
 		);
 	}
 }
 
-export default translate()(FollowersBase);
+export default FollowersBase;

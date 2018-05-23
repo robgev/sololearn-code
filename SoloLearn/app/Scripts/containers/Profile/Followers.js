@@ -11,9 +11,6 @@ import { getFollowersInternal } from 'actions/profile';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import Follower from './FollowerItem';
 
-// i18next
-import { translate } from 'react-i18next';
-
 const styles = {
 	container: {
 		position: 'relative',
@@ -157,4 +154,4 @@ function mapDispatchToProps(dispatch) {
 	}, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate()(Followers));
+export default connect(mapStateToProps, mapDispatchToProps)(Followers);

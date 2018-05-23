@@ -340,7 +340,7 @@ class Profile extends Component {
 						style={styles.popupOverlay}
 						bodyStyle={styles.popup}
 					>
-						<FollowersBase userId={profile.data.id} closePopup={this.handlePopupClose} />
+						<FollowersBase t={t} userId={profile.data.id} closePopup={this.handlePopupClose} />
 					</Dialog>
 				</div>
 			</Layout>
