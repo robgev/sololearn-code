@@ -7,6 +7,7 @@ import { translate } from 'react-i18next';
 
 // Material UI components
 import { Paper, IconButton, IconMenu, MenuItem } from 'material-ui';
+import Snackbar from 'material-ui/Snackbar';
 import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
 import FollowIcon from 'material-ui/svg-icons/toggle/star';
@@ -49,6 +50,7 @@ class Question extends Component {
 	state = {
 		reportPopupOpen: false,
 		removalPopupOpen: false,
+		followSnackbarOpen: false,
 	}
 
 	getLikes = () => {
@@ -69,8 +71,18 @@ class Question extends Component {
 		this.setState({ reportPopupOpen: !reportPopupOpen });
 	}
 
+	handleFollowing = () => {
+		const { question } = this.props;
+		this.props.questionFollowingInternal(question.id, !question.isFollowing);
+		this.setState({ followSnackbarOpen: true });
+	}
+
+	handleSnackbarClose = () => {
+		this.setState({ followSnackbarOpen: false });
+	}
+
 	render() {
-		const { removalPopupOpen, reportPopupOpen } = this.state;
+		const { removalPopupOpen, reportPopupOpen, followSnackbarOpen } = this.state;
 		const { question, accessLevel, t } = this.props;
 		const previewsData = generatePreviews(question.message);
 
@@ -167,9 +179,7 @@ class Question extends Component {
 						className="follow"
 						style={styles.followButton.base}
 						iconStyle={styles.followButton.icon}
-						onClick={() => {
-							this.props.questionFollowingInternal(question.id, !question.isFollowing);
-						}}
+						onClick={this.handleFollowing}
 					>
 						<FollowIcon color={question.isFollowing ? blueGrey500 : grey500} />
 					</IconButton>
@@ -195,6 +205,12 @@ class Question extends Component {
 					itemType={ReportItemTypes.post}
 					accessLevel={accessLevel}
 					onRequestClose={this.toggleRemovalPopup}
+				/>
+				<Snackbar
+					autoHideDuration={1500}
+					open={followSnackbarOpen}
+					onRequestClose={this.handleSnackbarClose}
+					message={question.isFollowing ? t('discuss.following-title') : t('discuss.not-following-title')}
 				/>
 			</Paper>
 		);
