@@ -1,5 +1,5 @@
 // General modules
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
@@ -60,21 +60,23 @@ const styles = {
 	},
 };
 
-class FollowerItem extends Component {
+class FollowerItem extends PureComponent {
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			isFollowing: props.follower.isFollowing,
 		};
-
-		this.handleFollowing = this.handleFollowing.bind(this);
 	}
 
-	handleFollowing(id, follow, fromFollowers) {
-		this.setState({ isFollowing: follow });
+	handleFollowing = () => {
+		const {
+			follower: { id }, fromFollowers,
+		} = this.props;
+		const { isFollowing } = this.state;
+		this.setState({ isFollowing: !isFollowing });
 
-		if (follow) {
+		if (!isFollowing) {
 			this.props.followUser(id, fromFollowers);
 		} else {
 			this.props.unfollowUser(id, fromFollowers);
@@ -83,7 +85,7 @@ class FollowerItem extends Component {
 
 	render() {
 		const {
-			t, follower, fromFollowers, isFollowing,
+			t, follower,
 		} = this.props;
 
 		return (
@@ -110,29 +112,16 @@ class FollowerItem extends Component {
 					labelStyle={styles.followButton.label}
 					buttonStyle={styles.followButton.button}
 					overlayStyle={styles.followButton.overlay}
-					onClick={
-						() => {
-							this.handleFollowing(follower.id, !isFollowing, fromFollowers);
-						}}
+					onClick={this.handleFollowing}
 				/>
 			</div>
 		);
 	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		const { follower } = this.props;
-		const { isFollowing } = this.state;
-		const { follower: newFollowerValue } = nextProps;
-		const { isFollowing: newIsFollowingValue } = nextState;
-		return (follower !== newFollowerValue || isFollowing !== newIsFollowingValue);
-	}
 }
 
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({
-		followUser: followUserInternal,
-		unfollowUser: unfollowUserInternal,
-	}, dispatch);
-}
+const mapDispatchToProps = {
+	followUser: followUserInternal,
+	unfollowUser: unfollowUserInternal,
+};
 
-export default connect(() => ({}), mapDispatchToProps)(translate()(FollowerItem));
+export default connect(null, mapDispatchToProps)(translate()(FollowerItem));
