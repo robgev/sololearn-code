@@ -5,7 +5,7 @@ import { Circle } from 'react-progressbar.js';
 // i18next
 import { translate } from 'react-i18next';
 
-const SkillChips = ({ t, course }) => (
+const SkillChips = ({ t, course, shouldShowLink }) => (
 	<div className="course">
 		<div className="course-progress">
 			<Circle
@@ -30,7 +30,7 @@ const SkillChips = ({ t, course }) => (
 		<div className="course-details">
 			<p className="course-name">{course.languageName}</p>
 			<p className="course-xp">{course.xp} XP</p>
-			{ course.progress >= 1 &&
+			{ (course.progress >= 1 && shouldShowLink) &&
 				<Link to={`/certificate/${course.id}`}>
 					{t('skills.view-certificate')}
 				</Link>

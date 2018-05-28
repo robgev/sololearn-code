@@ -233,7 +233,9 @@ class Profile extends Component {
 	}
 
 	render() {
-		const { profile, levels, t } = this.props;
+		const {
+ profile, userId, levels, t 
+} = this.props;
 
 		if (!this.props.isLoaded) {
 			return (
@@ -330,7 +332,12 @@ class Profile extends Component {
 						</div>
 					}
 					{this.state.activeTab === TabTypes.Skills &&
-						<Skills profile={profile.data} levels={levels} skills={profile.data.skills} />}
+						<Skills
+							levels={levels}
+							profile={profile.data}
+							currentUserId={userId}
+							skills={profile.data.skills}
+						/>}
 					{this.state.activeTab === TabTypes.Badges &&
 						<Badges badges={profile.data.badges} selectedId={this.props.params.selected || null} />}
 					<Dialog
@@ -352,6 +359,7 @@ const mapStateToProps = state => ({
 	isLoaded: isLoaded(state, 'profile'),
 	profile: state.profile,
 	levels: state.levels,
+	userId: state.userProfile.id,
 });
 
 const mapDispatchToProps = {

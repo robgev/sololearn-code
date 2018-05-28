@@ -62,7 +62,11 @@ class Skills extends PureComponent {
 	render() {
 		const { courseID } = this.state;
 		const {
-			t, levels, profile, skills,
+			t,
+			skills,
+			levels,
+			userId,
+			profile,
 		} = this.props;
 		const { maxXp, status } = calculateProgress(levels, profile.level, profile.xp);
 		return (
@@ -91,8 +95,13 @@ class Skills extends PureComponent {
 					<p className="skills-header">{t('skills.languages')}</p>
 					<div className={`courses ${skills.length <= 0 ? 'centered' : ''}`}>
 						{skills.length > 0 ?
-							skills.map(course =>
-								<SkillChip key={course.id} course={course} />) :
+							skills.map(course => (
+								<SkillChip
+									key={course.id}
+									course={course}
+									shouldShowLink={profile.id === userId}
+								/>
+							)) :
 							<p>{t('common.empty-list-message')}</p>
 						}
 					</div>
