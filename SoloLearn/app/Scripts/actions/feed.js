@@ -71,13 +71,14 @@ export const getFeedItemsInternal = (fromId, profileId) => async (dispatch, getS
 		const requestLimitCount = 20;
 		const response = await Service.request('Profile/GetFeed', { fromId, profileId, count: requestLimitCount });
 		const { length } = response.feed;
-		const { feed, userSuggestions } = getState();
+		const { feed, userSuggestions, profile } = getState();
 		const suggestionsBatch = feed.filter(item => item.type === feedTypes.suggestions).length;
 		const feedItems = groupFeedItems(response.feed);
 		const feedItemsCount = feed.length + feedItems.length;
 		if (profileId != null) {
+			const profileFeedItemsCount = profile.feed.length + feedItems.length;
 			dispatch(getProfileFeedItems(feedItems));
-			if (feedItemsCount < requestLimitCount / 2) {
+			if (profileFeedItemsCount < requestLimitCount / 2) {
 				const lastItem = feedItems[feedItems.length - 1];
 				const startId = lastItem.type === 444 ? lastItem.toId : lastItem.id;
 				await dispatch(getFeedItemsInternal(startId, profileId));
