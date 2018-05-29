@@ -107,12 +107,14 @@ class Profile extends Component {
 
 	async componentWillReceiveProps(newProps) {
 		const { getProfile, params } = this.props;
-		const { params: { id } } = newProps;
+		const { params: { id, tab, selected } } = newProps;
 		if (params.id !== id) {
 			this.props.emptyProfileFollowers();
 			this.setState({ popupOpened: false });
 			this.props.clearOpenedProfile();
 			await getProfile(id);
+		} else if (params.tab !== tab) {
+			this.selectTab(tab, selected);
 		}
 	}
 
@@ -163,8 +165,9 @@ class Profile extends Component {
 		}
 	}
 
-	handleTabChange = (value) => {
+	handleTabChange = (value, selected) => {
 		this.setState({ activeTab: value });
+		console.log(this.props.params.selected);
 		switch (value) {
 		case TabTypes.Activity:
 			browserHistory.replace(`/profile/${this.props.params.id}/activity`);
@@ -183,7 +186,7 @@ class Profile extends Component {
 			ReactGA.ga('send', 'screenView', { screenName: 'Profile Skills Page' });
 			break;
 		case TabTypes.Badges:
-			browserHistory.replace(`/profile/${this.props.params.id}/badges/${this.props.params.selected || ''}`);
+			browserHistory.replace(`/profile/${this.props.params.id}/badges/${this.props.params.selected || selected || ''}`);
 			ReactGA.ga('send', 'screenView', { screenName: 'Profile Badges Page' });
 			break;
 		default:
@@ -208,7 +211,7 @@ class Profile extends Component {
 		}
 	}
 
-	selectTab = (tab) => {
+	selectTab = (tab, selected) => {
 		switch (tab.toLowerCase()) {
 		case 'activity':
 			this.handleTabChange(TabTypes.Activity);
@@ -223,7 +226,7 @@ class Profile extends Component {
 			this.handleTabChange(TabTypes.Skills);
 			break;
 		case 'badges':
-			this.handleTabChange(TabTypes.Badges);
+			this.handleTabChange(TabTypes.Badges, selected);
 			break;
 		default:
 			browserHistory.replace(`/profile/${this.props.params.id}/activity`);
@@ -234,8 +237,8 @@ class Profile extends Component {
 
 	render() {
 		const {
- profile, userId, levels, t 
-} = this.props;
+			profile, userId, levels, t,
+		} = this.props;
 
 		if (!this.props.isLoaded) {
 			return (
