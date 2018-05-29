@@ -67,6 +67,7 @@ const styles = {
 		fontSize: '11px',
 	},
 };
+
 @translate()
 class ContestItemBase extends PureComponent {
 	setContest = () => {

@@ -1,5 +1,5 @@
 // React modules
-import React, { Component } from 'react';
+import React from 'react';
 
 // Additional data and components
 import User from './User';
@@ -18,29 +18,29 @@ const styles = {
 	},
 };
 
-class Challenge extends Component {
-	constructor(props) {
-		super(props);
-	}
-
-	render() {
-		const contest = this.props.contest;
-		const courseId = contest.courseID;
-		const player = contest.player;
-		const opponent = contest.opponent;
-
-		return (
-			<div className="challenge" style={styles.challenge}>
-				<User user={player} openPopup={this.props.openPopup} courseId={courseId} />
-				<div className="score" style={styles.score}>
-					<span>{player.score}</span>
-					<span> : </span>
-					<span>{opponent.score}</span>
-				</div>
-				<User user={opponent} openPopup={this.props.openPopup} courseId={courseId} />
-			</div>
-		);
-	}
-}
+const Challenge = ({
+	openPopup,
+	contest: { courseID, player, opponent },
+}) => (
+	<div className="challenge" style={styles.challenge}>
+		<User
+			disabled
+			user={player}
+			courseId={courseID}
+			openPopup={openPopup}
+		/>
+		<div className="score" style={styles.score}>
+			<span>{player.score}</span>
+			<span> : </span>
+			<span>{opponent.score}</span>
+		</div>
+		<User
+			disabled
+			user={opponent}
+			courseId={courseID}
+			openPopup={openPopup}
+		/>
+	</div>
+);
 
 export default Challenge;

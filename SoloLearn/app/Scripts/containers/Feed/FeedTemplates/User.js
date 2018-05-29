@@ -32,12 +32,23 @@ const styles = {
 	},
 };
 
-class User extends Component {
-	openCoursePopup(e) {
-		if (this.props.openPopup) {
-			e.stopPropagation();
-			e.preventDefault();
+const DisabledContainer = ({
+	children, className, style, onClick,
+}) => (
+	<div
+		style={style}
+		tabIndex="0"
+		role="button"
+		onClick={onClick}
+		className={className}
+	>
+		{children}
+	</div>
+);
 
+class User extends Component {
+	openCoursePopup = () => {
+		if (this.props.openPopup) {
 			const { user } = this.props;
 
 			const data = {
@@ -53,22 +64,29 @@ class User extends Component {
 	}
 
 	render() {
-		const { user } = this.props;
+		const { user, disabled } = this.props;
+		const ConditionalContainer = disabled ? DisabledContainer : Link;
 
 		return (
-			<Link to={`/profile/${user.id}`} className="user" style={styles.user} onClick={e => this.openCoursePopup(e)}>
+			<ConditionalContainer
+				className="user"
+				style={styles.user}
+				to={`/profile/${user.id}`}
+				onClick={this.openCoursePopup}
+			>
 				<ProfileAvatar
-					size={45}
 					vertical
-					withUserNameBox
-					style={styles.avatar}
+					size={45}
 					userID={user.id}
+					withUserNameBox
 					badge={user.badge}
+					disabled={disabled}
+					style={styles.avatar}
 					userName={user.name}
 					avatarUrl={user.avatarUrl}
 				/>
 				<p style={styles.level}>Level {user.level}</p>
-			</Link>
+			</ConditionalContainer>
 		);
 	}
 }
