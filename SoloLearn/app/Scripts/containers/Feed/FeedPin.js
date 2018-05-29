@@ -262,9 +262,9 @@ class FeedPin extends Component {
 					{pin.posts && <div className="posts" style={styles.posts}>{this.generatePosts()}</div>}
 					{
 						(pin.actionName && pin.actionName !== '') &&
-						<div className="actions" style={styles.actions}>
+						<Link to={this.getPinUrl()} className="actions" style={styles.actions}>
 							<FlatButton label={pin.actionName} primary style={styles.pinButton} />
-						</div>
+						</Link>
 					}
 				</Paper>
 				<Link className="feed-pin" to={this.getPinUrl()} style={styles.linkStyle} />
