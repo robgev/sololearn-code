@@ -65,8 +65,8 @@ class Skills extends PureComponent {
 			t,
 			skills,
 			levels,
-			userId,
 			profile,
+			currentUserId,
 		} = this.props;
 		const { maxXp, status } = calculateProgress(levels, profile.level, profile.xp);
 		return (
@@ -99,7 +99,7 @@ class Skills extends PureComponent {
 								<SkillChip
 									key={course.id}
 									course={course}
-									shouldShowLink={profile.id === userId}
+									shouldShowLink={profile.id === currentUserId}
 								/>
 							)) :
 							<p>{t('common.empty-list-message')}</p>
