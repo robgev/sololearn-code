@@ -36,10 +36,17 @@
 				.profile-image-container {
 					position: relative;
 					margin-bottom: 20px;
+					.profile-image {
+						cursor: pointer;
+					}
 					.profile-edit-button {
 						position: absolute;
 						bottom: 30;
 						right: 20;
+						cursor: pointer;
+					}
+					.image-field {
+						display: none;
 					}
 				}
 			}

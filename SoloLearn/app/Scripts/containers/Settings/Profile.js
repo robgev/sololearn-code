@@ -24,6 +24,7 @@ class Profile extends PureComponent {
 			retypePass: '',
 			name: name || '',
 			email: email || '',
+			image: 'https://www.gorillacircuits.com/wp-content/uploads/2016/01/avatar_placeholder.png',
 		};
 	}
 
@@ -36,10 +37,19 @@ class Profile extends PureComponent {
 		this.setState({ [name]: value });
 	}
 
+	handleInputOpen = () => {
+		this._input.click();
+	}
+
+	handleNewImage = (e) => {
+		this.setState({ image: e.target.files[0] });
+	}
+
 	render() {
 		const {
 			name,
 			email,
+			image,
 			oldPass,
 			newPass,
 			retypePass,
@@ -52,13 +62,22 @@ class Profile extends PureComponent {
 						<Avatar
 							size={300}
 							alt="My Pic"
+							src={image}
 							className="profile-image"
-							src="https://www.gorillacircuits.com/wp-content/uploads/2016/01/avatar_placeholder.png"
+							onClick={this.handleInputOpen}
 							// src={userProfile.avatarUrl}
 						/>
 						<Avatar
 							icon={<EditIcon />}
+							onClick={this.handleInputOpen}
 							className="profile-edit-button"
+						/>
+						<input
+							type="file"
+							name="image"
+							className="image-field"
+							onChange={this.handleNewImage}
+							ref={(input) => { this._input = input; }}
 						/>
 					</div>
 				</div>
