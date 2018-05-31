@@ -1,7 +1,7 @@
 // React modules
 import React from 'react';
 import { Link } from 'react-router';
-import { updateDate, determineBadge } from 'utils';
+import { determineBadge } from 'utils';
 import ModBadge from 'components/Shared/ModBadge';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
@@ -26,13 +26,6 @@ const styles = {
 		fontWeight: 500,
 		color: '#8BC34A',
 		textDecoration: 'none',
-	},
-
-	date: {
-		fontSize: '11px',
-		position: 'absolute',
-		bottom: '10px',
-		right: '10px',
 	},
 
 	votes: {
@@ -63,7 +56,7 @@ const styles = {
 };
 
 const FeedItemBase = ({
-	title, user, date, children,
+	title, user, children,
 }) => (
 	<div className="content" style={styles.content}>
 		<ProfileAvatar
@@ -90,7 +83,6 @@ const FeedItemBase = ({
 			</p>
 			{children}
 		</div>
-		<p className="date" style={styles.date}>{updateDate(date)}</p>
 	</div>
 );
 

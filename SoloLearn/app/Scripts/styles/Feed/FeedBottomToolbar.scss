@@ -1,0 +1,16 @@
+.feed-toolbar-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 10px;
+	margin-bottom: -10px;
+	background-color: #F5F5F5;
+	width: 552px;
+	// Hacky solution :)
+	margin-left: -65px;
+	.date {
+		font-size: 11px;
+		color: #939393;
+		padding-right: 10px;
+	}
+}

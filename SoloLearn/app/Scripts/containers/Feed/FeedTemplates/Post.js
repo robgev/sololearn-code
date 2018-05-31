@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import QuoteIcon from 'material-ui/svg-icons/editor/format-quote';
 import { grey700 } from 'material-ui/styles/colors';
-import VoteControls from 'components/Shared/VoteControls';
+import BottomToolbar from '../FeedBottomToolbar';
 
 const styles = {
 	post: {
@@ -32,7 +32,15 @@ const styles = {
 };
 
 const Post = ({
-	post, isQuestion, url, onUpvote, onDownvote, vote, votes, noVotes,
+	url,
+	post,
+	vote,
+	date,
+	votes,
+	noVotes,
+	onUpvote,
+	isQuestion,
+	onDownvote,
 }) => (
 	<div>
 		<Link
@@ -54,8 +62,8 @@ const Post = ({
 			/>
 		</Link>
 		{ !noVotes &&
-			<VoteControls
-				absolute
+			<BottomToolbar
+				date={date}
 				userVote={vote}
 				totalVotes={votes}
 				onUpvote={onUpvote}

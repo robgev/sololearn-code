@@ -10,7 +10,6 @@ import Paper from 'material-ui/Paper';
 // Additional data and components
 import { setSelectedComment } from 'actions/comments';
 import { voteFeedPostItem, voteFeedCommentItem, voteFeedCodeItem } from 'actions/feed';
-import VoteControls from 'components/Shared/VoteControls';
 import CourseCard from 'components/Shared/CourseCard';
 import FeedItems from './FeedItems';
 import FeedItemBase from './FeedItemBase';
@@ -21,6 +20,7 @@ import Code from './FeedTemplates/Code';
 import Comment from './FeedTemplates/Comment';
 import Challenge from './FeedTemplates/Challenge';
 import FeedSuggestions from './FeedSuggestions';
+import BottomToolbar from './FeedBottomToolbar';
 
 // Utils and Defaults
 import types from '../../defaults/appTypes';
@@ -99,6 +99,7 @@ class FeedItem extends Component {
 				<Post
 					isQuestion
 					url={this.url}
+					date={feedItem.date}
 					post={feedItem.post}
 					vote={feedItem.vote}
 					votes={feedItem.votes}
@@ -115,6 +116,7 @@ class FeedItem extends Component {
 					isQuestion={false}
 					post={feedItem.post}
 					vote={feedItem.vote}
+					date={feedItem.date}
 					votes={feedItem.votes}
 					onUpvote={() => voteFeedPostItem(feedItem, 1)}
 					onDownvote={() => voteFeedPostItem(feedItem, -1)}
@@ -127,8 +129,8 @@ class FeedItem extends Component {
 			return (
 				<div>
 					<Code code={feedItem.code} />
-					<VoteControls
-						absolute
+					<BottomToolbar
+						date={feedItem.date}
 						userVote={feedItem.vote}
 						totalVotes={feedItem.votes}
 						onUpvote={() => voteFeedCodeItem(feedItem, 1)}
@@ -141,10 +143,23 @@ class FeedItem extends Component {
 			return <Challenge contest={feedItem.contest} openPopup={this.props.openPopup} />;
 		case types.suggestions:
 			return <FeedSuggestions suggestions={feedItem.suggestions} />;
-			// case types.postedLessonComment:
-			// case types.postedLessonCommentReply:
-			// 	this.url = `/learn/${feedItem.course.alias}/${feedItem.course.id}/lesson`;
-			// break;
+		case types.postedLessonComment:
+		case types.postedLessonCommentReply:
+			// this.url = `/learn/${feedItem.course.alias}/${feedItem.course.id}`;
+			// <div onClick={() => this.props.setSelectedComment(feedItem.comment.id)}>
+			this.url = `/learn/${feedItem.course.alias}/`;
+			return (
+				<div>
+					<Comment url={this.url} comment={feedItem.comment} />
+					<BottomToolbar
+						date={feedItem.date}
+						userVote={feedItem.vote}
+						totalVotes={feedItem.votes}
+						onUpvote={() => voteFeedCommentItem(feedItem, 1)}
+						onDownvote={() => voteFeedCommentItem(feedItem, -1)}
+					/>
+				</div>
+			);
 		case types.postedCodeComment:
 		case types.postedCodeCommentReply:
 		case types.upvoteCodeComment:
@@ -152,8 +167,8 @@ class FeedItem extends Component {
 			return (
 				<div onClick={() => this.props.setSelectedComment(feedItem.comment.id)}>
 					<Comment url={this.url} comment={feedItem.comment} />
-					<VoteControls
-						absolute
+					<BottomToolbar
+						date={feedItem.date}
 						userVote={feedItem.vote}
 						totalVotes={feedItem.votes}
 						onUpvote={() => voteFeedCommentItem(feedItem, 1)}
@@ -218,7 +233,6 @@ class FeedItem extends Component {
 					<FeedItemBase
 						title={feedItem.title}
 						user={feedItem.user}
-						date={feedItem.date}
 						votes={this.votes}
 					>
 						{this.renderFeedItem()}
