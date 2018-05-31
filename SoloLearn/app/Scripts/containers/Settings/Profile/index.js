@@ -9,6 +9,8 @@ import Avatar from 'material-ui/Avatar';
 import TextField from 'material-ui/TextField';
 import EditIcon from 'material-ui/svg-icons/image/edit';
 
+import CropPopup from './CropPopup';
+
 const mapStateToProps = ({ userProfile }) => ({
 	userProfile,
 });
@@ -21,6 +23,7 @@ class Profile extends PureComponent {
 		this.state = {
 			oldPass: '',
 			newPass: '',
+			open: false,
 			retypePass: '',
 			name: name || '',
 			email: email || '',
@@ -42,11 +45,22 @@ class Profile extends PureComponent {
 	}
 
 	handleNewImage = (e) => {
-		this.setState({ image: e.target.files[0] });
+		const image = URL.createObjectURL(e.target.files[0]);
+		this.setState({
+			image,
+			open: true,
+		});
+	}
+
+	handlePopupClose = () => {
+		this.setState({
+			open: false,
+		});
 	}
 
 	render() {
 		const {
+			open,
 			name,
 			email,
 			image,
@@ -121,6 +135,11 @@ class Profile extends PureComponent {
 						style={{ width: '100%' }}
 						floatingLabelText={t('chnage_password.confirm-password-placeholder')}
 						onChange={this.handleChange}
+					/>
+					<CropPopup
+						open={open}
+						image={image}
+						onRequestClose={this.handlePopupClose}
 					/>
 				</div>
 			</div>
