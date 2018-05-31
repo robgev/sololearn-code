@@ -117,7 +117,7 @@ class Header extends PureComponent {
 					<div className="actions" style={styles.actions}>
 						<RaisedButton
 							secondary
-							label={t('discover_peers.invite-friends')}
+							label={t('discover_peers.title')}
 							containerElement={<Link to="/discover" />}
 						/>
 					</div>

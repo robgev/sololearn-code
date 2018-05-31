@@ -9,7 +9,7 @@ const styles = {
 		display: 'inline-flex',
 		width: 'inherit',
 		padding: '7px',
-		backgroundColor: '#eee',
+		backgroundColor: '#F5F5F5',
 		position: 'relative',
 		zIndex: 2,
 		textDecoration: 'none',
@@ -24,7 +24,7 @@ const styles = {
 		},
 	},
 	postName: {
-		fontSize: '13px',
+		fontSize: '14px',
 		color: '#777',
 		margin: '0 10px',
 		flex: 2,

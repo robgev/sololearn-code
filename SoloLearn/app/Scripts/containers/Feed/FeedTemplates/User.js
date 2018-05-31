@@ -76,7 +76,7 @@ class User extends Component {
 			>
 				<ProfileAvatar
 					vertical
-					size={45}
+					size={60}
 					userID={user.id}
 					withUserNameBox
 					badge={user.badge}
@@ -85,7 +85,6 @@ class User extends Component {
 					userName={user.name}
 					avatarUrl={user.avatarUrl}
 				/>
-				<p style={styles.level}>Level {user.level}</p>
 			</ConditionalContainer>
 		);
 	}

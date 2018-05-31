@@ -17,7 +17,7 @@ const styles = {
 	},
 
 	title: {
-		fontSize: '13px',
+		fontSize: '14px',
 		color: '#545454',
 		margin: '0 0 7px 0',
 	},

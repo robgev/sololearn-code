@@ -103,7 +103,7 @@ class Lessons extends Component {
 				console.log(error);
 			});
 		}
-		document.title = `${this.props.activeModule.name}`;
+		document.title = `${this.props.activeModule ? this.props.activeModule.name : 'Learn'}`;
 		ReactGA.ga('send', 'screenView', { screenName: 'Lessons Page' });
 	}
 
@@ -170,7 +170,7 @@ render() {
 		course, modules, activeModule, isLoaded,
 	} = this.props;
 
-	if (!isLoaded) {
+	if (!isLoaded || !activeModule) {
 		return <div>Loading...</div>;
 	}
 

@@ -18,8 +18,8 @@ html {
   box-sizing: border-box;
 }
 
-.body {
-	background-color: #F4F4F4;
+body {
+	background-color: #F5F5F5;
 }
 
 html, body {
@@ -28,7 +28,9 @@ html, body {
 
 .sidebar {
 	height: 80vh;
-	width: 15vw;
-	border: 3px solid #D6D6D6;
-	border-radius: 5px;
+	width: 250px;
+	background-color: white;
+	box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px,
+											 rgba(0, 0, 0, 0.12) 0px 1px 4px;
+	border-radius: 2px;
 }

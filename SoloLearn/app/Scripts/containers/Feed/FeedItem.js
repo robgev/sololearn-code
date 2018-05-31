@@ -209,6 +209,7 @@ class FeedItem extends Component {
 			return (
 				<div>
 					<Paper
+						zDepth={1}
 						style={styles.feedItem}
 						onClick={this.handleChallengesOpen}
 					>
@@ -229,7 +230,7 @@ class FeedItem extends Component {
 		}
 		return (
 			<div style={styles.feedItemWrapper}>
-				<Paper style={styles.feedItem}>
+				<Paper zDepth={1} style={styles.feedItem}>
 					<FeedItemBase
 						title={feedItem.title}
 						user={feedItem.user}
