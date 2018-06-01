@@ -42,12 +42,13 @@ class SettingsMenu extends PureComponent {
 				anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
 				iconStyle={{ display: 'flex', alignItems: 'center' }}
 				iconButtonElement={
-					<IconButton>
+					<IconButton style={{padding: 0}}>
 						<div>
 							<ProfileAvatar
 								disabled
 								userName={userName}
 								avatarUrl={avatarUrl}
+								avatarStyle={{ border: '1px solid white'}}
 							/>
 							<div>
 								<ArrowDown color="white" />
