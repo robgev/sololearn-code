@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import QuoteIcon from 'material-ui/svg-icons/editor/format-quote';
 import { grey700 } from 'material-ui/styles/colors';
+import { truncate } from 'utils';
 import BottomToolbar from '../FeedBottomToolbar';
 
 const styles = {
@@ -55,7 +56,7 @@ const Post = ({
 			<p
 				style={styles.postName}
 			>
-				{isQuestion ? post.title : post.message}
+				{truncate(isQuestion ? post.title : post.message, 200, 5, true)}
 			</p>
 			<QuoteIcon
 				color={grey700}
