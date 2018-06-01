@@ -1,0 +1,18 @@
+.challenge-user {
+	margin: 0 10px;
+	width: 25%;
+	text-align: center;
+	text-decoration: none;
+	color: inherit;
+	position: relative;
+	z-index: 2;
+	.avatar-container {
+		.avatar-meta-info-container {
+			.avatar-user-name {
+				font-size: 14px;
+				font-weight: 500;
+				color: #8BC34A;
+			}
+		}
+	}
+}

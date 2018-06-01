@@ -6,6 +6,9 @@
 		height: 32px;
 		padding: 8px;
 		vertical-align: middle;
+		&:hover svg {
+			fill: #607D8B !important;
+		}
 	}
 	&.absolute-controls {
 		position: relative;

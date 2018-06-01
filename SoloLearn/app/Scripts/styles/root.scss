@@ -26,11 +26,21 @@ html, body {
   height: 100vh;
 }
 
-.sidebar {
-	height: 80vh;
-	width: 250px;
-	background-color: white;
-	box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px,
-											 rgba(0, 0, 0, 0.12) 0px 1px 4px;
-	border-radius: 2px;
+.hoverable {
+	&:hover {
+		text-decoration: underline !important;
+	}
 }
+
+.sidebar-placeholder {
+	position: relative;
+	.sidebar {
+		height: 80vh;
+		width: 250px;
+		background-color: white;
+		box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px,
+													rgba(0, 0, 0, 0.12) 0px 1px 4px;
+		border-radius: 2px;
+	}
+}
+

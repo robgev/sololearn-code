@@ -54,7 +54,9 @@ class DiscoverContainer extends PureComponent {
 						))}
 					</BusyWrapper>
 				</div>
-				<div className="sidebar" />
+				<div className="sidebar-placeholder">
+					<div className="sidebar" />
+				</div>
 			</div>
 		);
 	}

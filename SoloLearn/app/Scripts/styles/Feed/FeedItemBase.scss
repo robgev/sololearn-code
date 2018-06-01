@@ -1,0 +1,28 @@
+.feed-item-content {
+	display: flex;
+	.avatar-container {
+		position: relative;
+		text-decoration: none;
+		z-index: 2;
+	}
+	.wrapper {
+		margin: 0 0 0 5px;
+		flex-grow: 1;
+		width: 90%;
+		.feed-item-title {
+			font-size: 14px;
+			color: #545454;
+			margin: 0 0 7px 0;
+			.user-name-link {
+				position: relative;
+				font-weight: 500;
+				color: #8BC34A;
+				text-decoration: none;
+				z-index: 2;
+				&:hover .user-name-wrapper {
+					text-decoration: underline;
+				}
+			}
+		}
+	}
+}

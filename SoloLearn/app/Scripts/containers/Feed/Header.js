@@ -11,55 +11,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 // i18next
 import { translate } from 'react-i18next';
 
-const styles = {
-	container: {
-		cursor: 'pointer',
-		padding: '10px',
-	},
-
-	detailsWrapper: {
-		display: 'flex',
-		alignItems: 'center',
-	},
-
-	details: {
-		flex: '2 auto',
-		margin: '0 0 0 8px',
-	},
-
-	name: {
-		fontSize: '14px',
-		fontWeight: 500,
-		color: '#5d5b5b',
-	},
-
-	leaderboardLink: {
-		fontSize: '12px',
-		fontWeight: 500,
-		textDecoration: 'none',
-		color: '#607d8b',
-		margin: '5px 0',
-		display: 'block',
-	},
-
-	progressWrapper: {
-		textAlign: 'right',
-	},
-
-	status: {
-		fontSize: '11px',
-		color: '#777',
-	},
-
-	progress: {
-		backgroundColor: '#dedede',
-	},
-
-	actions: {
-		margin: '10px 0 0 0',
-		textAlign: 'right',
-	},
-};
+import 'styles/Feed/Header.scss';
 
 class Header extends PureComponent {
 	render() {
@@ -86,35 +38,34 @@ class Header extends PureComponent {
 
 		return (
 			<Link to={`/profile/${this.props.profile.id}`}>
-				<Paper className="feed-header" style={styles.container}>
-					<div className="details-wrapper" style={styles.detailsWrapper}>
+				<Paper className="feed-header">
+					<div className="details-wrapper">
 						<ProfileAvatar
 							size={50}
 							badge={profile.badge}
 							userID={profile.id}
-							style={styles.avatar}
 							userName={profile.name}
 							avatarUrl={profile.avatarUrl}
 						/>
-						<div className="details" style={styles.details}>
-							<p style={styles.name}>{profile.name}</p>
-							<Link to="/leaderboards" style={styles.leaderboardLink}>
+						<div className="details">
+							<p className="user-name hoverable">{profile.name}</p>
+							<Link to="/leaderboards" className="leaderboard-link hoverable">
 								{t('leaderboard.rank.placeholder')}
 							</Link>
-							<div style={styles.progressWrapper}>
+							<div className="progress-wrapper">
 								<LinearProgress
 									min={0}
 									max={maxXp}
 									color="#8BC34A"
 									value={currentXp}
 									mode="determinate"
-									style={styles.progress}
+									style={{ backgroundColor: "#dedede" }}
 								/>
-								<span style={styles.status}>{status}</span>
+								<span className="user-status">{status}</span>
 							</div>
 						</div>
 					</div>
-					<div className="actions" style={styles.actions}>
+					<div className="actions">
 						<RaisedButton
 							secondary
 							label={t('discover_peers.title')}

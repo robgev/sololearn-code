@@ -12,9 +12,10 @@ const styles = {
 	},
 
 	score: {
-		fontSize: '25px',
+		fontSize: 25,
 		fontWeight: 500,
 		color: '#545454',
+		marginBottom: 10,
 	},
 };
 

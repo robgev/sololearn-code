@@ -49,7 +49,9 @@ const Layout = ({
 				{children}
 			</BusyWrapper>
 		</div>
-		<div className="sidebar" />
+		<div className="sidebar-placeholder">
+			<div className="sidebar" />
+		</div>
 	</div>
 );
 

@@ -9,16 +9,15 @@ const styles = {
 
 	badge: {
 		base: {
-			height: '40px',
-			width: '40px',
+			height: '60px',
+			width: '60px',
 			display: 'inline-flex',
 			alignItems: 'center',
 			justifyContent: 'center',
 		},
 
 		icon: {
-			height: '90%',
-			width: '90%',
+			width: '100%',
 		},
 	},
 
@@ -28,12 +27,13 @@ const styles = {
 	},
 
 	title: {
-		fontSize: '13px',
+		fontSize: '16px',
+		fontWeight: 500,
 		margin: '0 0 3px 0',
 	},
 
 	description: {
-		fontSize: '11px',
+		fontSize: '13px',
 	},
 };
 
