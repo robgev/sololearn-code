@@ -30,8 +30,7 @@ class NotificationItem extends Component {
 	}
 
 	toggleSnackBar = () => {
-		const { snackbarOpened } = this.state;
-		this.setState({ snackbarOpened: !snackbarOpened });
+		this.setState(state => ({ snackbarOpened: !state.snackbarOpened }));
 	}
 
 	handleClick = () => {
@@ -59,6 +58,8 @@ class NotificationItem extends Component {
 			browserHistory.push(`/discuss/${notification.post.id}`);
 			break;
 		case types.upvotePost:
+			browserHistory.push(`/discuss/${notification.post.id}/answer`);
+			break;
 		case types.upvoteComment:
 		case types.postedAnswer:
 			browserHistory.push(`/discuss/${notification.post.parentID}/answer/${notification.post.id}`);
