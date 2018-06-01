@@ -30,6 +30,7 @@ const styles = {
 		position: 'relative',
 	},
 	feedItem: {
+		cursor: 'pointer',
 		position: 'relative',
 		padding: '10px',
 		margin: '10px 0px',

@@ -17,10 +17,6 @@ const styles = {
 		zIndex: 2,
 	},
 
-	avatar: {
-		margin: '0 0 5px 0',
-	},
-
 	userName: {
 		fontSize: '13px',
 		margin: '0 0 5px 0',
@@ -81,7 +77,6 @@ class User extends Component {
 					withUserNameBox
 					badge={user.badge}
 					disabled={disabled}
-					style={styles.avatar}
 					userName={user.name}
 					avatarUrl={user.avatarUrl}
 				/>
