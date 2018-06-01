@@ -6,7 +6,7 @@ import BottomToolbar from '../FeedBottomToolbar';
 
 const styles = {
 	post: {
-		display: 'inline-flex',
+		display: 'flex',
 		width: 'inherit',
 		padding: '7px',
 		backgroundColor: '#F5F5F5',
@@ -20,7 +20,7 @@ const styles = {
 		},
 		bottom: {
 			transform: 'scale(-1, -1)',
-			margin: '10px 0 0 0',
+			alignSelf: 'flex-end',
 		},
 	},
 	postName: {
