@@ -25,6 +25,15 @@ class SettingsMenu extends PureComponent {
 		this.props.logout()
 			.then(() => browserHistory.push('/login'));
 	}
+
+	goToSettings = () => {
+		browserHistory.push('/settings');
+	}
+
+	goToLeaderboards = () => {
+		browserHistory.push('/leaderboards');
+	}
+
 	render() {
 		const { avatarUrl, userName } = this.props;
 		return (avatarUrl || userName) && (
@@ -48,12 +57,26 @@ class SettingsMenu extends PureComponent {
 				}
 			>
 				<MenuItem
-					primaryText="Sign out"
-					onClick={this.singOut}
+					primaryText="Leaderboards"
+					onClick={this.goToLeaderboards}
+				/>
+				<MenuItem
+					primaryText="Lesson Factory"
+				/>
+				<MenuItem
+					primaryText="Quiz Factory"
+				/>
+				<MenuItem
+					primaryText="Settings"
+					onClick={this.goToSettings}
 				/>
 				<MenuItem
 					primaryText="Imitate logout"
 					onClick={this.props.imitateLogin}
+				/>
+				<MenuItem
+					primaryText="Sign out"
+					onClick={this.singOut}
 				/>
 			</IconMenu>
 		);
