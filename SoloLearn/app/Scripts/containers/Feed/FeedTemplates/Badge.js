@@ -17,8 +17,7 @@ const styles = {
 		},
 
 		icon: {
-			height: '90%',
-			width: '90%',
+			width: '100%',
 		},
 	},
 
