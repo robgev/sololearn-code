@@ -29,8 +29,8 @@ class SettingsMenu extends PureComponent {
 		const { avatarUrl, userName } = this.props;
 		return (avatarUrl || userName) && (
 			<IconMenu
-				anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
-				targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+				targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+				anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
 				iconStyle={{ display: 'flex', alignItems: 'center' }}
 				iconButtonElement={
 					<IconButton>
