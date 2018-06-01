@@ -16,12 +16,13 @@ const styles = {
 	},
 
 	courseIcon: {
-		width: '40px',
-		height: '40px',
+		width: '60px',
+		height: '60px',
 	},
 
 	courseName: {
-		fontSize: '14px',
+		fontSize: '16px',
+		fontWeight: 500,
 		margin: '0 0 0 7px',
 		color: '#565353',
 	},

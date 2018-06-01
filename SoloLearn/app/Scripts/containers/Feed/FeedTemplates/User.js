@@ -6,27 +6,7 @@ import { Link } from 'react-router';
 import PopupTypes from 'defaults/feedPopupTypes';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
-const styles = {
-	user: {
-		margin: '0 10px',
-		width: '25%',
-		textAlign: 'center',
-		textDecoration: 'none',
-		color: 'inherit',
-		position: 'relative',
-		zIndex: 2,
-	},
-
-	userName: {
-		fontSize: '13px',
-		margin: '0 0 5px 0',
-	},
-
-	level: {
-		fontSize: '12px',
-		color: '#8BC34A',
-	},
-};
+import 'styles/Feed/FeedTemplates/User.scss';
 
 const DisabledContainer = ({
 	children, className, style, onClick,
@@ -65,9 +45,8 @@ class User extends Component {
 
 		return (
 			<ConditionalContainer
-				className="user"
-				style={styles.user}
 				to={`/profile/${user.id}`}
+				className="challenge-user"
 				onClick={this.openCoursePopup}
 			>
 				<ProfileAvatar
