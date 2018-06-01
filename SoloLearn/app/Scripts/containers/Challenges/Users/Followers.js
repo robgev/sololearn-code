@@ -5,21 +5,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getFollowersInternal } from '../../../actions/profile';
-import { isLoaded } from '../../../reducers';
+import { isLoaded as isLoadedReducer } from '../../../reducers';
 
 // Additional components
 import Opponents from './Opponents';
 
 class Followers extends Component {
-	constructor(props) {
-		super(props);
-
-		this.getOpponents = this.getOpponents.bind(this);
-	}
-
-	getOpponents(index) {
-		return this.props.getFollowers(index, this.props.userProfile.id, 20, true);
-	}
+	getOpponents = index => this.props.getFollowers(index, this.props.userProfile.id, 20, true)
 
 	render() {
 		const { isLoaded, opponents } = this.props;
@@ -34,7 +26,7 @@ class Followers extends Component {
 
 function mapStateToProps(state) {
 	return {
-		isLoaded: isLoaded(state, 'challengesFollowers'),
+		isLoaded: isLoadedReducer(state, 'challengesFollowers'),
 		opponents: state.challenges.followers,
 		userProfile: state.userProfile,
 	};

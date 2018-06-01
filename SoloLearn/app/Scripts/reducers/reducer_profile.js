@@ -1,6 +1,6 @@
 import {
 	GET_PROFILE, GET_PROFILE_FEED_ITEMS, GET_PROFILE_NEW_FEED_ITEMS, GET_PROFILE_CODES, GET_PROFILE_QUESTIONS,
-	GET_PROFILE_FOLLOWERS, GET_PROFILE_FOLLOWING, FOLLOW_USER, EMPTY_PROFILE_FOLLOWERS, EMPTY_PROFILE, CLEAR_PROFILE_FEED_ITEMS,
+	GET_PROFILE_FOLLOWERS, GET_PROFILE_FOLLOWING, FOLLOW_USER, EMPTY_PROFILE_FOLLOWERS, EMPTY_PROFILE, CLEAR_PROFILE_FEED_ITEMS, REMOVE_CODE,
 } from '../constants/ActionTypes';
 
 const initialState = {
@@ -31,6 +31,8 @@ export default function (state = initialState, action) {
 		return Object.assign({}, state, {
 			codes: state.codes.concat(action.payload),
 		});
+	case REMOVE_CODE:
+		return { ...state, codes: state.codes.filter(code => code.id !== action.payload) };
 	case GET_PROFILE_QUESTIONS:
 		return Object.assign({}, state, {
 			posts: state.posts.concat(action.payload),

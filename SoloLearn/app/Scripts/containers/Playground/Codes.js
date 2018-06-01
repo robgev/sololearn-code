@@ -95,8 +95,8 @@ class Codes extends Component {
 				}
 				{(isLoading && !isUserProfile)
 					&& <CodeShimmer />}
-				{ codes.length === 0 &&
-				<p>{t('code.no-saved-code-title')}</p>
+				{codes.length === 0 && isLoaded &&
+					<p>{t('code.no-saved-code-title')}</p>
 				}
 				{
 					((isUserProfile || codes.length > 0)) &&

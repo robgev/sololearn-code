@@ -89,9 +89,11 @@ export const createContestInternal = (opponentId, overridenCourseId) => (dispatc
 	const store = getState();
 	const { courseId: stateCourseId } = store.challenges;
 	const courseId = stateCourseId || overridenCourseId;
+	console.log(opponentId, courseId);
 
 	return Service.request('Challenge/CreateContest', { courseId, opponentId })
 		.then((response) => {
+			console.log(response);
 			const { contest } = response;
 			dispatch(setContest(contest));
 			browserHistory.push(`/challenge/${contest.id}`);
