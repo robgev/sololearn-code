@@ -27,7 +27,7 @@ const styles = {
 @translate()
 class Badges extends PureComponent {
 	componentDidMount() {
-		scrollToElement(this._selected);
+		scrollToElement(this._selected, { offset: -100 });
 	}
 	render() {
 		const { t, badges, selectedId } = this.props;

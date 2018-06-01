@@ -1,9 +1,7 @@
 // React modules
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-	CellMeasurerCache,
-} from 'react-virtualized';
+import { CellMeasurerCache } from 'react-virtualized';
 import { determineAccessLevel } from 'utils';
 import RaisedButton from 'material-ui/RaisedButton';
 import ReportItemTypes from 'constants/ReportItemTypes';
