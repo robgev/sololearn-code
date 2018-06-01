@@ -45,6 +45,7 @@ const styles = {
 	subTitle: {
 		fontSize: '13px',
 		color: '#777',
+		paddingLeft: 5,
 	},
 
 	pinImage: {
