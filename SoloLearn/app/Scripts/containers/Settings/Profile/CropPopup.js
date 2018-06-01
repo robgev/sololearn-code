@@ -1,6 +1,10 @@
 import React, { PureComponent } from 'react';
 import AvatarEditor from 'react-cropper';
 import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+
+import Service from 'api/service';
+
 import 'cropperjs/dist/cropper.css';
 import 'styles/Settings/Profile/CropPopup.scss';
 
@@ -9,15 +13,37 @@ class Profile extends PureComponent {
 		if (editor) this.editor = editor;
 	}
 
-	handleScroll = (e) => {
-		console.log(e);
+	onCrop = async () => {
+		const dataUrl = this.editor.getCroppedCanvas().toDataURL();
+		console.log(dataUrl);
+		const data = await fetch(dataUrl);
+		const blob = await data.blob();
+		Service.request('UpdateAvatar', blob);
 	}
 
 	render() {
-		const { open, image, onRequestClose } = this.props;
+		const {
+			t,
+			open,
+			image,
+			onRequestClose,
+		} = this.props;
+		const actions = [
+			<FlatButton
+				primary
+				onClick={onRequestClose}
+				label={t('common.cancel-title')}
+			/>,
+			<FlatButton
+				primary
+				onClick={this.onCrop}
+				label={t('common.confirm-title')}
+			/>,
+		];
 		return (
 			<Dialog
 				open={open}
+				actions={actions}
 				title="Edit the image"
 				onRequestClose={onRequestClose}
 				className="avatar-cropper-container"
@@ -28,6 +54,8 @@ class Profile extends PureComponent {
 					dragMode="move"
 					aspectRatio={1 / 1}
 					ref={this.setEditorRef}
+					minCropBoxWidth={256}
+					minCropBoxHeight={256}
 					toggleDragModeOnDblclick={false}
 					style={{ height: 400, width: '100%' }}
 				/>

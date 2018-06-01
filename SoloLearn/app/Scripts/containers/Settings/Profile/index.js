@@ -76,9 +76,9 @@ class Profile extends PureComponent {
 						<Avatar
 							size={300}
 							alt="My Pic"
-							src={image}
 							className="profile-image"
 							onClick={this.handleInputOpen}
+							src="https://www.gorillacircuits.com/wp-content/uploads/2016/01/avatar_placeholder.png"
 							// src={userProfile.avatarUrl}
 						/>
 						<Avatar
@@ -137,6 +137,7 @@ class Profile extends PureComponent {
 						onChange={this.handleChange}
 					/>
 					<CropPopup
+						t={t}
 						open={open}
 						image={image}
 						onRequestClose={this.handlePopupClose}
