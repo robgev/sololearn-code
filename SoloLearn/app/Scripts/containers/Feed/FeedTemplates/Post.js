@@ -28,6 +28,7 @@ const styles = {
 		color: '#777',
 		margin: '0 10px',
 		flex: 2,
+		wordBreak: 'break-word',
 	},
 };
 

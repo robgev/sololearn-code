@@ -70,7 +70,13 @@ class Likes extends PureComponent {
 				onKeyPress={this.handleKeyPress}
 				role="button"
 				tabIndex={0}
-				style={{ ...this.props.style, cursor: 'pointer' }}
+				style={{
+					...this.props.style,
+					cursor: 'pointer',
+					fontSize: 14,
+					fontWeight: 600,
+					color: '#607D8B'
+				}}
 			>
 				{votes > 0 && '+'}{numberFormatter(votes)}
 				<Dialog
