@@ -105,7 +105,9 @@ const styles = {
 	},
 
 	actions: {
-		textAlign: 'right',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'flex-end',
 		padding: '5px',
 	},
 
