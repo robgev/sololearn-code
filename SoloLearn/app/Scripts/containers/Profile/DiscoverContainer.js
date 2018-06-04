@@ -21,13 +21,21 @@ class DiscoverContainer extends PureComponent {
 		};
 	}
 
-	async componentWillMount() {
-		const { params: { query } } = this.props;
-		await this.props.getDiscoverSuggestions(query);
-		this.setState({
-			loading: false,
-		});
+	componentWillMount() {
+		this.handleQuery(this.props.params.query);
 		document.title = 'Sololearn | Discover';
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (this.props.params.query !== nextProps.params.query) {
+			this.handleQuery(nextProps.params.query);
+		}
+	}
+
+	handleQuery = async (query) => {
+		this.setState({ loading: true });
+		await this.props.getDiscoverSuggestions(query);
+		this.setState({ loading: false });
 	}
 
 	render() {
