@@ -460,9 +460,10 @@ class FeedItemsBase extends Component {
 								[
 									<div
 										key="loadMore"
-										style={this.state.isLoading ?
-											styles.loadMore.base :
-											[ styles.loadMore.base, styles.loadMore.active ]}
+										style={{
+											...styles.loadMore.base,
+											...(!this.state.isLoading ? styles.loadMore.active : {}),
+										}}
 									>
 										<FlatButton
 											label={t('common.loadMore')}
@@ -471,9 +472,10 @@ class FeedItemsBase extends Component {
 									</div>,
 									<div
 										key="loading"
-										style={!this.state.isLoading ?
-											styles.bottomLoading.base :
-											[ styles.bottomLoading.base, styles.bottomLoading.active ]}
+										style={{
+											...styles.bottomLoading.base,
+											...(this.state.isLoading ? styles.bottomLoading.active : {}),
+										}}
 									>
 										<LoadingOverlay size={30} />
 									</div>,
