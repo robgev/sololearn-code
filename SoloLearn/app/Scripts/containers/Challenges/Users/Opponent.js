@@ -51,6 +51,7 @@ const Opponent = ({ opponent, createContest }) => (
 				badge={opponent.badge}
 				userName={opponent.name}
 				avatarUrl={opponent.avatarUrl}
+				disabled
 			/>
 		</div>
 		<p style={styles.level}>LEVEL {opponent.level}</p>

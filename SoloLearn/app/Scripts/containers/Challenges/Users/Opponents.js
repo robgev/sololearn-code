@@ -47,12 +47,10 @@ class Opponents extends Component {
 			isLoading: false,
 			fullyLoaded: false,
 		};
-
-		this.handleScroll = this.handleScroll.bind(this);
 	}
 
-	loadOpponents() {
-		const opponents = this.props.opponents;
+	loadOpponents = () => {
+		const { opponents } = this.props;
 
 		this.setState({ isLoading: true }); // if (this.props.codes.length > 0)
 
@@ -67,7 +65,7 @@ class Opponents extends Component {
 	}
 
 	// Check scroll state
-	handleScroll() {
+	handleScroll = () => {
 		const scollingArea = document.getElementById('opponents');
 		if (scollingArea.scrollTop === (scollingArea.scrollHeight - scollingArea.offsetHeight) && !this.state.fullyLoaded && !this.props.notFollowers) {
 			if (!this.state.isLoading && !this.state.fullyLoaded) {
@@ -76,11 +74,9 @@ class Opponents extends Component {
 		}
 	}
 
-	renderOpponents() {
-		return this.props.opponents.map((opponent, index) => (
-			<Opponent key={opponent.id} opponent={opponent} />
-		));
-	}
+	renderOpponents = () => this.props.opponents.map(opponent => (
+		<Opponent key={opponent.id} opponent={opponent} />
+	))
 
 	render() {
 		const { isLoaded, opponents } = this.props;
@@ -102,13 +98,14 @@ class Opponents extends Component {
 						<LoadingOverlay size={30} />
 					</div>
 				}
-				{(fullyLoaded && opponents.length === 0) && <div style={styles.noResults}>No Results Found</div>}
+				{(fullyLoaded && opponents.length === 0) &&
+					<div style={styles.noResults}>No Results Found</div>}
 			</div>
 		);
 	}
 
 	componentWillMount() {
-		const isLoaded = this.props.isLoaded;
+		const { isLoaded } = this.props;
 
 		if (!isLoaded) {
 			this.loadOpponents();

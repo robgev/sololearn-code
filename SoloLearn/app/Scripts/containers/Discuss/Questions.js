@@ -92,7 +92,7 @@ class Questions extends Component {
 					<LoadingOverlay size={30} />
 				</div>
 				}
-				{ questions.length === 0 &&
+				{ questions.length === 0 && isLoaded &&
 					<p>{t('common.empty-list-message')}</p>
 				}
 			</BusyWrapper>

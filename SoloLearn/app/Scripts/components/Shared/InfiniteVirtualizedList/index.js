@@ -56,7 +56,7 @@ class InfiniteVirtalizedList extends Component {
 
 	_scrollTo = (id) => {
 		const index = findIndex(this.props.list, el => el.id && el.id.toString() === id.toString());
-		this._list.scrollToRow(index + 2);
+		this._list.scrollToRow(index);
 		this.setState({ index }, () => this._forceUpdate());
 	}
 

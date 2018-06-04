@@ -5,6 +5,7 @@ import Service from 'api/service';
 import Toggle from 'material-ui/Toggle';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import Dialog from 'material-ui/Dialog';
 import { red500 } from 'material-ui/styles/colors';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
@@ -35,6 +36,7 @@ class BottomToolbar extends PureComponent {
 		super(props);
 		this.state = {
 			isPublic: props.codeData.isPublic,
+			isDeleteModalOpen: false,
 		};
 	}
 
@@ -48,7 +50,7 @@ class BottomToolbar extends PureComponent {
 	deleteCurrentCode = async () => {
 		const { codeData: { id }, removeCode } = this.props;
 		removeCode(id);
-		browserHistory.replace('/codes');
+		browserHistory.goBack();
 	}
 
 	getVotes = () => {
@@ -57,6 +59,10 @@ class BottomToolbar extends PureComponent {
 
 	getDownvotes = () => {
 		this.props.getDownvotes(this.props.codeData.id);
+	}
+
+	toggleDeleteModal = () => {
+		this.setState(state => ({ isDeleteModalOpen: !state.isDeleteModalOpen }));
 	}
 
 	render() {
@@ -93,7 +99,7 @@ class BottomToolbar extends PureComponent {
 						/>
 						<div className="user-text-data">
 							<p className="code-name">
-								{name} <span className="language-tag">{ language }</span>
+								{name} <span className="language-tag">{language}</span>
 							</p>
 							<p className="user-name">
 								{userName}
@@ -104,31 +110,31 @@ class BottomToolbar extends PureComponent {
 				<div className="toolbar-right">
 					<div className="toggle-container">
 						<div className="my-code-actions">
-							{ userID === userId &&
-							<RaisedButton
-								labelColor="white"
-								icon={<DeleteIcon />}
-								label="Delete this code"
-								style={{ marginRight: 5 }}
-								backgroundColor={red500}
-								onClick={this.deleteCurrentCode}
-							/>
+							{userID === userId &&
+								<RaisedButton
+									labelColor="white"
+									icon={<DeleteIcon />}
+									label="Delete this code"
+									style={{ marginRight: 5 }}
+									backgroundColor={red500}
+									onClick={this.toggleDeleteModal}
+								/>
 							}
-							{ (userID === userId || accessLevel > 1) &&
-							<Toggle
-								label="Public:"
-								style={{ width: 50 }}
-								defaultToggled={isPublic}
-								onToggle={this.togglePublicState}
-								trackStyle={{ backgroundColor: '#BDBDBD' }}
-								thumbStyle={{ backgroundColor: '#E0E0E0' }}
-								trackSwitchedStyle={{ backgroundColor: '#9CCC65' }}
-								thumbSwitchedStyle={{ backgroundColor: '#AED581' }}
-							/>
+							{(userID === userId || accessLevel > 1) &&
+								<Toggle
+									label="Public:"
+									style={{ width: 50 }}
+									defaultToggled={isPublic}
+									onToggle={this.togglePublicState}
+									trackStyle={{ backgroundColor: '#BDBDBD' }}
+									thumbStyle={{ backgroundColor: '#E0E0E0' }}
+									trackSwitchedStyle={{ backgroundColor: '#9CCC65' }}
+									thumbSwitchedStyle={{ backgroundColor: '#AED581' }}
+								/>
 							}
 						</div>
 					</div>
-					{ !!id &&
+					{!!id &&
 						[
 							<VoteControls
 								userVote={vote}
@@ -148,6 +154,25 @@ class BottomToolbar extends PureComponent {
 						]
 					}
 				</div>
+				<Dialog
+					title="Are you sure?"
+					actions={[
+						<RaisedButton
+							label="Cancel"
+							secondary
+							onClick={this.toggleDeleteModal}
+						/>,
+						<RaisedButton
+							label="Delete"
+							primary
+							onClick={this.deleteCurrentCode}
+						/>,
+					]
+					}
+					modal={false}
+					open={this.state.isDeleteModalOpen}
+					onRequestClose={this.toggleDeleteModal}
+				/>
 			</div>
 		);
 	}
