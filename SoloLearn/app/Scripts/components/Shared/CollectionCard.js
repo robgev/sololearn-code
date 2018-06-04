@@ -17,7 +17,7 @@ const collectionTypes = {
 
 const generateBreakpoints = (collectionItems) => {
 	const breakpointValues = [ 1640, 1440, 1240, 1040, 840, 640, 440 ];
-	const initialNumberOfShownItems = 8;
+	const initialNumberOfShownItems = 7;
 	return breakpointValues.map((currentPoint, index) => {
 		const slidesToShow = initialNumberOfShownItems - (index + 1);
 		return {
@@ -71,7 +71,7 @@ const CollectionCard = ({
 				swipeToSlide
 				arrows={false}
 				infinite={false}
-				slidesToShow={8}
+				slidesToShow={7}
 				draggable={false}
 				className="courses-list"
 				responsive={generateBreakpoints(collectionItems)}
