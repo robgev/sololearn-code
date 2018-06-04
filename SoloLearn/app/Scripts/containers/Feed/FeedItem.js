@@ -161,6 +161,20 @@ class FeedItem extends Component {
 					/>
 				</div>
 			);
+		case types.postedUserLessonComment:
+			this.url = `/learn/slayLesson/2/${feedItem.userLesson.id}/1`;
+			return (
+				<div onClick={() => this.props.setSelectedComment(feedItem.comment.id)}>
+					<Comment url={this.url} comment={feedItem.comment} />
+					<BottomToolbar
+						date={feedItem.date}
+						userVote={feedItem.vote}
+						totalVotes={feedItem.votes}
+						onUpvote={() => voteFeedCommentItem(feedItem, 1)}
+						onDownvote={() => voteFeedCommentItem(feedItem, -1)}
+					/>
+				</div>
+			);
 		case types.postedCodeComment:
 		case types.postedCodeCommentReply:
 		case types.upvoteCodeComment:
