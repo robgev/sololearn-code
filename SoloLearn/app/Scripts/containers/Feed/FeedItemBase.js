@@ -17,6 +17,7 @@ const FeedItemBase = ({
 			badge={user.badge}
 			userName={user.name}
 			avatarUrl={user.avatarUrl}
+			avatarStyle={{ margin: 0 }}
 		/>
 		<div className="wrapper">
 			<p className="feed-item-title">

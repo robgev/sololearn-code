@@ -34,9 +34,11 @@ html, body {
 
 .sidebar-placeholder {
 	position: relative;
+	width: 250px;
 	.sidebar {
 		height: 80vh;
 		width: 250px;
+		position: fixed;
 		background-color: white;
 		box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px,
 													rgba(0, 0, 0, 0.12) 0px 1px 4px;

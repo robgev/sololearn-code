@@ -46,6 +46,7 @@ class Header extends PureComponent {
 							userID={profile.id}
 							userName={profile.name}
 							avatarUrl={profile.avatarUrl}
+							avatarStyle={{ margin: 0 }}
 						/>
 						<div className="details">
 							<p className="user-name hoverable">{profile.name}</p>

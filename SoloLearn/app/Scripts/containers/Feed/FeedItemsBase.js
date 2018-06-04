@@ -48,7 +48,7 @@ const styles = {
 		textTransform: 'uppercase',
 		fontSize: '14px',
 		color: '#78909c',
-		padding: '10px 0 0 5px',
+		padding: '10px 5px',
 	},
 	newActivityButton: {
 		wrapper: {

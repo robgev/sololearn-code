@@ -6,7 +6,7 @@
 		z-index: 2;
 	}
 	.wrapper {
-		margin: 0 0 0 5px;
+		margin: 0 0 0 10px;
 		flex-grow: 1;
 		width: 90%;
 		.feed-item-title {
@@ -14,11 +14,17 @@
 			color: #545454;
 			margin: 0 0 7px 0;
 			.user-name-link {
+				display: inline-flex;
+				justify-content: center;
+				align-items: center;
 				position: relative;
 				font-weight: 500;
 				color: #8BC34A;
 				text-decoration: none;
 				z-index: 2;
+				.user-name-wrapper {
+					margin-right: 3px;
+				}
 				&:hover .user-name-wrapper {
 					text-decoration: underline;
 				}
