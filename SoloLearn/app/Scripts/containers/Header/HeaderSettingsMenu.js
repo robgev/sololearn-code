@@ -43,7 +43,7 @@ class SettingsMenu extends PureComponent {
 				anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
 				iconStyle={{ display: 'flex', alignItems: 'center' }}
 				iconButtonElement={
-					<IconButton style={{padding: 0}}>
+					<IconButton style={{ width: 'initial', padding: 0}}>
 						<div>
 							<ProfileAvatar
 								disabled
