@@ -16,15 +16,15 @@ const collectionTypes = {
 };
 
 const generateBreakpoints = (collectionItems) => {
-	const breakpointValues = [ 1640, 1440, 1240, 1040, 840, 640, 440 ];
-	const initialNumberOfShownItems = 7;
+	const breakpointValues = [ 1624, 1224, 768, 320 ];
+	const initialNumberOfShownItems = 5;
 	return breakpointValues.map((currentPoint, index) => {
 		const slidesToShow = initialNumberOfShownItems - (index + 1);
 		return {
 			breakpoint: currentPoint,
 			settings: {
 				slidesToShow,
-				infinite: collectionItems.length > slidesToShow,
+				infinite: false,
 			},
 		};
 	});
@@ -71,7 +71,7 @@ const CollectionCard = ({
 				swipeToSlide
 				arrows={false}
 				infinite={false}
-				slidesToShow={7}
+				slidesToShow={5}
 				draggable={false}
 				className="courses-list"
 				responsive={generateBreakpoints(collectionItems)}
