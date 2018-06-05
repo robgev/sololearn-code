@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router';
 import Avatar from 'material-ui/Avatar';
 import { determineBadge, determineBadgeColor } from 'utils';
+import AvatarColors from 'constants/AvatarColors';
+
 import 'styles/profileAvatar.scss';
 import ModBadge from './ModBadge';
 
@@ -50,6 +52,7 @@ const ProfileAvatar = ({
 							size={size}
 							style={{
 								margin: '0 5px',
+								backgroundColor: AvatarColors[userID % AvatarColors.length],
 								...(withBorder ? { border: `4px solid ${modBadgeColor}` } : {}),
 								...avatarStyle,
 							}}

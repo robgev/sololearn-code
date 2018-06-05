@@ -12,6 +12,7 @@ import { logout, imitateLogin } from 'actions/login.action';
 const mapStateToProps = ({ userProfile }) => ({
 	avatarUrl: userProfile ? userProfile.avatarUrl : null,
 	userName: userProfile ? userProfile.name : null,
+	userID: userProfile ? userProfile.id : 0,
 });
 
 const mapDispatchToProps = {
@@ -35,7 +36,7 @@ class SettingsMenu extends PureComponent {
 	}
 
 	render() {
-		const { avatarUrl, userName } = this.props;
+		const { avatarUrl, userName, userID } = this.props;
 		return (avatarUrl || userName) && (
 			<IconMenu
 				targetOrigin={{ horizontal: 'right', vertical: 'top' }}
@@ -46,6 +47,7 @@ class SettingsMenu extends PureComponent {
 						<div>
 							<ProfileAvatar
 								disabled
+								userID={userID}
 								userName={userName}
 								avatarUrl={avatarUrl}
 								avatarStyle={{ border: '1px solid white'}}

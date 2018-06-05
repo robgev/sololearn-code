@@ -32,7 +32,7 @@ const styles = {
 	feedItem: {
 		cursor: 'pointer',
 		position: 'relative',
-		padding: 10,
+		padding: 15,
 		marginBottom: 10,
 	},
 	linkStyle: {

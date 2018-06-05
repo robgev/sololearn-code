@@ -6,7 +6,7 @@ const FeedShimmer = () => {
 	const renderContainers = Array(20).fill(0).map((_, i) => (
 		<Paper style={{
 			height: 150,
-			padding: 10,
+			padding: 15,
 			marginBottom: 10,
 			position: 'relative',
 			marginTop: i === 0 ? 10 : 0,
