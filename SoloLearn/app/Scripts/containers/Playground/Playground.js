@@ -16,6 +16,7 @@ import FlatButton from 'material-ui/FlatButton';
 
 // Redux loaded
 import { isLoaded } from 'reducers';
+import { setCommentsCount } from 'actions/comments';
 
 // Service
 import Service from 'api/service';
@@ -74,7 +75,11 @@ const mapStateToProps = state => ({
 	commentSelected: isLoaded(state, 'commentSelected'),
 });
 
-@connect(mapStateToProps)
+const mapDispatchToProps = {
+	setCommentsCount,
+};
+
+@connect(mapStateToProps, mapDispatchToProps)
 class Playground extends Component {
 	constructor(props) {
 		super(props);
@@ -228,7 +233,7 @@ class Playground extends Component {
 
 	// Get user saved code
 	getUserCode = async () => {
-		const { params, basePath } = this.props;
+		const { params, basePath, setCommentsCount } = this.props;
 		this.setState({ isGettingCode: true });
 
 		// Link requires saved code
@@ -242,6 +247,7 @@ class Playground extends Component {
 				language,
 				sourceCode,
 			} = code;
+			setCommentsCount(code.comments);
 			// Check language of user code for setting up correct link
 			const foundEditorSettingKey = params.secondary ?
 				findKey(editorSettings, { language, alias: params.secondary }) :

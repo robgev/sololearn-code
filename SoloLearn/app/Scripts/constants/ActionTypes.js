@@ -18,6 +18,7 @@ export const SET_SHORTCUT_LESSON = 'SET_SHORTCUT_LESSON';
 export const GET_CODES = 'GET_CODES';
 export const EMPTY_CODES = 'EMPTY_CODES';
 export const REMOVE_CODE = 'REMOVE_CODE';
+export const SET_COMMENTS_COUNT = 'SET_COMMENTS_COUNT';
 
 // Discuss types
 export const GET_QUESTIONS = 'GET_QUESTIONS';

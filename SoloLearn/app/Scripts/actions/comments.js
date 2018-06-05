@@ -86,6 +86,11 @@ const getRepliesAbove = aboveComments => ({
 	payload: { aboveComments },
 });
 
+export const setCommentsCount = count => ({
+	type: types.SET_COMMENTS_COUNT,
+	payload: count,
+});
+
 export const getCommentsAboveInternal = options => async (dispatch) => {
 	const { parentId } = options;
 	const [ url, params ] = getPathAndParams(options);
@@ -139,12 +144,14 @@ export const editCommentInternal = (id, parentId, message, commentsType) =>
 		Service.request(url, { id, message });
 	};
 
-export const deleteCommentInternal = (id, parentId, commentsType) => (dispatch) => {
+export const deleteCommentInternal = (id, parentId, commentsType) => (dispatch, getState) => {
+	const { comments } = getState();
 	const url =
 		commentsType === 'lesson'
 			? 'Discussion/DeleteLessonComment'
 			: 'Discussion/DeleteCodeComment';
 	dispatch(deleteComment(id, parentId));
+	dispatch(setCommentsCount(comments.count - 1));
 	Service.request(url, { id });
 };
 
@@ -177,7 +184,7 @@ export const addCommentInternal =
 	({
 		id, parentId = null, message, type, commentsType, ordering,
 	}) => async (dispatch, getState) => {
-		const { userProfile } = getState();
+		const { userProfile, comments } = getState();
 		const [ url, params ] = getCommentUrlAndParams({
 			id, parentId, message, type, commentsType,
 		});
@@ -193,6 +200,7 @@ export const addCommentInternal =
 		comment.vote = 0;
 		comment.votes = 0;
 		comment.index = -2;
+		dispatch(setCommentsCount(comments.count + 1));
 		dispatch(addComment({ comment, parentId, ordering }));
 		return comment;
 	};

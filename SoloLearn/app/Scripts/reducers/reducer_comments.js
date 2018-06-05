@@ -3,7 +3,7 @@ import {
 	GET_COMMENTS, EMPTY_COMMENTS, VOTE_COMMENT,
 	GET_COMMENT_REPLIES, EMPTY_COMMENT_REPLIES, EDIT_COMMENT,
 	DELETE_COMMENT, ADD_COMMENT, SET_SELECTED_COMMENT, ADD_COMMENTS_ABOVE,
-	ADD_REPLIES_ABOVE,
+	ADD_REPLIES_ABOVE, SET_COMMENTS_COUNT,
 } from 'constants/ActionTypes';
 import {
 	getComments, addComment, voteComment,
@@ -57,7 +57,17 @@ const data = (state = [], action) => {
 	}
 };
 
+const count = (state = 0, action) => {
+	switch (action.type) {
+	case SET_COMMENTS_COUNT:
+		return action.payload;
+	default:
+		return state;
+	}
+};
+
 export default combineReducers({
 	data,
+	count,
 	selected,
 });

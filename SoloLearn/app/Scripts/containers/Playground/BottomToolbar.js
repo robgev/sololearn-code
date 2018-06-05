@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 import Service from 'api/service';
 import Toggle from 'material-ui/Toggle';
@@ -30,6 +31,7 @@ const mapDispatchToProps = {
 	getDownvotes: getLikesAndDownvotesCurried('codeDownvotes'),
 };
 
+@translate()
 @connect(mapStateToProps, mapDispatchToProps)
 class BottomToolbar extends PureComponent {
 	constructor(props) {
@@ -68,10 +70,11 @@ class BottomToolbar extends PureComponent {
 	render() {
 		const { isPublic } = this.state;
 		const {
+			t,
 			userId,
+			voteCode,
 			codeData,
 			accessLevel,
-			voteCode,
 			openComments,
 			commentsCount,
 		} = this.props;
@@ -149,7 +152,10 @@ class BottomToolbar extends PureComponent {
 							<FlatButton
 								key="flatButton"
 								onClick={openComments}
-								label={`${commentsCount} COMMENTS`}
+								label={commentsCount === 1 ?
+									t('common.comment-format-one') :
+									`${commentsCount} ${t('common.comments')}`
+								}
 							/>,
 						]
 					}
