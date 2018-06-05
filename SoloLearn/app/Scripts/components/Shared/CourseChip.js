@@ -21,7 +21,9 @@ const CourseChip = ({
 	progress,
 	isCourse,
 	itemType,
-	size = 100,
+	size = 85,
+	className,
+	paperStyle,
 	customLink,
 	noBoxShadow,
 	color = 'white',
@@ -29,7 +31,7 @@ const CourseChip = ({
 	const WrapperComponent = disabled ? CustomWrapper : Link;
 	return (
 		<WrapperComponent
-			className="chip-container"
+			className={`chip-container ${className}`}
 			to={customLink || (isCourse ? `/learn/${alias}` : `/learn/slayLesson/${itemType}/${id}/1`)}
 		>
 			<Paper
@@ -42,6 +44,7 @@ const CourseChip = ({
 					backgroundColor: color,
 					borderRadius: (isCourse || round) ? '100%' : 0,
 					...(noBoxShadow ? { boxShadow: 'none' } : {}),
+					...paperStyle,
 				}}
 			>
 				{ isCourse &&

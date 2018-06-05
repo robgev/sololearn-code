@@ -32,8 +32,9 @@ const CollectionCard = ({
 	const collectionItems = isCourses ? courses : items;
 	return (
 		<Paper
+			zDepth={1}
 			style={{
-				padding: 10,
+				padding: 15,
 				width: '100%',
 				marginBottom: 10,
 				overflow: 'hidden',
@@ -59,13 +60,15 @@ const CollectionCard = ({
 						const progress = foundSkill ? foundSkill.progress : 0;
 						return (
 							lessonItem.itemType !== 4 &&
-							<div key={`${lessonItem.name}-${lessonItem.id}`}>
+							<div className="course-chip-wrapper" key={`${lessonItem.name}-${lessonItem.id}`}>
 								<CourseChip
 									{...lessonItem}
 									round={round}
 									noName={noName}
 									isCourse={isCourses}
 									progress={progress}
+									className="collection-card-chip"
+									paperStyle={{ width: 85, height: 85 }}
 								/>
 							</div>
 						);
