@@ -23,6 +23,7 @@ const CollectionCard = ({
 	skills,
 	userID,
 	courses,
+	description,
 	round = false,
 	noName = false,
 	noViewMore = false,
@@ -40,7 +41,7 @@ const CollectionCard = ({
 				overflow: 'hidden',
 			}}
 		>
-			<div className="meta-info">
+			<div className={`meta-info ${!description ? 'big-padding-bottom' : ''}`}>
 				<p>{ name }</p>
 				{ !noViewMore &&
 					<FlatButton
@@ -51,6 +52,9 @@ const CollectionCard = ({
 					/>
 				}
 			</div>
+			{ description &&
+			<p className="course-description">{description}</p>
+			}
 			<div className="courses-list">
 				{
 					collectionItems.map((lessonItem) => {
