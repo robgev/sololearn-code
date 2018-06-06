@@ -21,7 +21,8 @@ const CourseChip = ({
 	progress,
 	isCourse,
 	itemType,
-	size = 85,
+	language,
+	size = 95,
 	className,
 	paperStyle,
 	customLink,
@@ -41,6 +42,7 @@ const CourseChip = ({
 					alignItems: 'center',
 					height: size,
 					width: size,
+					position: 'relative',
 					backgroundColor: color,
 					borderRadius: (isCourse || round) ? '100%' : 0,
 					...(noBoxShadow ? { boxShadow: 'none' } : {}),
@@ -68,6 +70,9 @@ const CourseChip = ({
 					alt="Course Icon"
 					className={`chip-image ${(isCourse || round) ? 'round' : ''}`}
 				/>
+				{ (!isCourse && language) &&
+					<span className="language-tag">{language}</span>
+				}
 			</Paper>
 			{!noName &&
 			<p className="course-name">{name}</p>

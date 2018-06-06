@@ -1,24 +1,57 @@
+/* mixin for multiline */
+@mixin multiLineEllipsis($lineHeight: 1.2em, $lineCount: 1, $bgColor: white){
+	overflow: hidden;
+  position: relative;
+  line-height: $lineHeight;
+  max-height: $lineHeight * $lineCount;
+  margin-right: -1em;
+	padding-right: 1em;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	text-overflow: -o-ellipsis-lastline
+  &:before {
+    content: '...';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+    background: $bgColor;
+  }
+}
+
 .chip-container {
-	width: 100px;
 	display: block;
 	text-decoration: none;
 	color: rgba(0, 0, 0, 0.87);
+	padding-right: 30px;
 	.chip-image {
-		width: 85px;
-		height: 85px;
+		width: 95px;
+		height: 95px;
+	}
+	.language-tag {
+		position: absolute;
+		right: 2px;
+		bottom: 2px;
+		color: white;
+		font-size: 12px;
+		font-weight: 300;
 	}
 	.round {
 		border-radius: 100%;
 	}
 	.course-name {
 		width: 100%;
-		line-height: 14px;
-		font-size: 14px;
-		padding-top: 5px;
-		height: 26px;
-		text-overflow: ellipsis;
-		overflow: hidden;
-		white-space: normal;
-		text-align: center;
+		font-size: 13px;
+		padding-top: 7px;
+		@include multiLineEllipsis($lineHeight: 14px, $lineCount: 2, $bgColor: white);
 	}
 }

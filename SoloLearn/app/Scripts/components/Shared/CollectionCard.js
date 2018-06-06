@@ -44,12 +44,9 @@ const CollectionCard = ({
 			<div className={`meta-info ${!description ? 'big-padding-bottom' : ''}`}>
 				<p>{ name }</p>
 				{ !noViewMore &&
-					<FlatButton
-						label={t('common.loadMore')}
-						containerElement={
-							<Link to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} />
-						}
-					/>
+				<Link to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} >
+					{t('common.loadMore')}
+				</Link>
 				}
 			</div>
 			{ description &&
@@ -72,7 +69,7 @@ const CollectionCard = ({
 									isCourse={isCourses}
 									progress={progress}
 									className="collection-card-chip"
-									paperStyle={{ width: 85, height: 85 }}
+									paperStyle={{ width: 95, height: 95 }}
 								/>
 							</div>
 						);
