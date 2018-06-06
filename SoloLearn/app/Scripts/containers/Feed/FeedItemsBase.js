@@ -419,6 +419,7 @@ class FeedItemsBase extends Component {
 		return (
 			<div className="wrapper">
 				{!isUserProfile && <Header profile={userProfile} levels={levels} />}
+				{!isUserProfile && <p className="sub-title" style={styles.subTitle}>{t('feed.title')}</p>}
 				{
 					(!this.props.isLoaded && !this.state.fullyLoaded) ?
 						(
@@ -446,7 +447,6 @@ class FeedItemsBase extends Component {
 										}
 									</Motion>
 								}
-								{!isUserProfile && <p className="sub-title" style={styles.subTitle}>{t('feed.title')}</p>}
 								{
 									(feedPins.length > 0 && !isUserProfile) &&
 

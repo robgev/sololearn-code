@@ -9,7 +9,6 @@ const FeedShimmer = () => {
 			padding: 15,
 			marginBottom: 10,
 			position: 'relative',
-			marginTop: i === 0 ? 10 : 0,
 		}}
 		>
 			<div className="feed-shimmer-container" key={i}>
