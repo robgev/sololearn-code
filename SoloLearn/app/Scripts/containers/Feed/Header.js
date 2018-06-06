@@ -37,44 +37,45 @@ class Header extends PureComponent {
 		}
 
 		return (
-			<Link to={`/profile/${this.props.profile.id}`}>
-				<Paper className="feed-header">
-					<div className="details-wrapper">
-						<ProfileAvatar
-							size={50}
-							badge={profile.badge}
-							userID={profile.id}
-							userName={profile.name}
-							avatarUrl={profile.avatarUrl}
-							avatarStyle={{ margin: 0 }}
-						/>
-						<div className="details">
+			<Paper className="feed-header">
+				<div className="details-wrapper">
+					<ProfileAvatar
+						size={50}
+						badge={profile.badge}
+						userID={profile.id}
+						userName={profile.name}
+						avatarUrl={profile.avatarUrl}
+						avatarStyle={{ margin: 0 }}
+					/>
+					<div className="details">
+						<Link to={`/profile/${this.props.profile.id}`}>
 							<p className="user-name hoverable">{profile.name}</p>
-							<Link to="/leaderboards" className="leaderboard-link hoverable">
-								{t('leaderboard.rank.placeholder')}
-							</Link>
-							<div className="progress-wrapper">
-								<LinearProgress
-									min={0}
-									max={maxXp}
-									color="#8BC34A"
-									value={currentXp}
-									mode="determinate"
-									style={{ backgroundColor: "#dedede" }}
-								/>
-								<span className="user-status">{status}</span>
-							</div>
+						</Link>
+						<Link to="/leaderboards" className="leaderboard-link hoverable">
+							{t('leaderboard.rank.placeholder')}
+						</Link>
+						<div className="progress-wrapper">
+							<LinearProgress
+								min={0}
+								max={maxXp}
+								color="#8BC34A"
+								value={currentXp}
+								mode="determinate"
+								style={{ backgroundColor: '#dedede' }}
+							/>
+							<span className="user-status">{status}</span>
 						</div>
 					</div>
-					<div className="actions">
-						<RaisedButton
-							secondary
-							label={t('discover_peers.title')}
-							containerElement={<Link to="/discover" />}
-						/>
-					</div>
-				</Paper>
-			</Link>
+				</div>
+				<div className="actions">
+					<RaisedButton
+						secondary
+						label={t('discover_peers.title')}
+						containerElement={<Link to="/discover" />}
+					/>
+				</div>
+			</Paper>
+
 		);
 	}
 }
