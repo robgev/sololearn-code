@@ -1,0 +1,17 @@
+.mention-container {
+	.item {
+		cursor: pointer;
+		padding: 5;
+	}
+	.item:hover {
+		background-color: gray;
+	}
+	.suggestions {
+		position: 'absolute';
+		width: '200px';
+		border-radius: '6px';
+		background: 'white';
+		box-shadow: rgba(0, 0, 0, 0.4) 0px 1px 4px;
+		flex-direction: 'column';
+	}
+}
