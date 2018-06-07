@@ -4,14 +4,16 @@ import 'styles/components/Shared/Shimmers/FeedShimmer.scss';
 
 const FeedShimmer = () => {
 	const renderContainers = Array(20).fill(0).map((_, i) => (
-		<Paper style={{
-			height: 150,
-			padding: 15,
-			marginBottom: 10,
-			position: 'relative',
-		}}
+		<Paper
+			style={{
+				height: 150,
+				padding: 15,
+				marginBottom: 10,
+				position: 'relative',
+			}}
+			key={i}
 		>
-			<div className="feed-shimmer-container" key={i}>
+			<div className="feed-shimmer-container">
 				<div className="post-head">
 					<div className="avatar" />
 					<div className="post-meta-info">

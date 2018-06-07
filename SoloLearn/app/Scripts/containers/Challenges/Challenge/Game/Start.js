@@ -3,7 +3,6 @@ import React from 'react';
 import ReactGA from 'react-ga';
 import Radium from 'radium';
 // Material UI components
-import Avatar from 'material-ui/Avatar';
 import RaisedButton from 'material-ui/RaisedButton';
 import { fadeInRight, fadeInLeft, fadeIn, fadeInUp } from 'react-animations';
 import Profile from './Profile';
