@@ -1,0 +1,84 @@
+.lesssons-in-enter, .lesssons-in-appear {
+	transform: translateY(100px);
+	opacity: 0;
+}
+.lesssons-in-enter-active, .lesssons-in-appear-active {
+	animation-name: lessons-in;
+	animation-duration: 200ms;
+}
+.lessons-in-enter-done {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+@keyframes lessons-in {
+	from {
+		transform: translateY(100px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+.lesson-item {
+	display: inline-block;
+	margin: 20px 0 0 0;
+	cursor: pointer;
+	backface-visibility: hidden;
+	transform:translate3d(0,0,0);
+	.lesson {
+		position: relative;
+		display: inline-block;
+		height: 155px;
+		width: 155px;
+		overflow: hidden;
+		margin: 4px;
+		.number {
+			padding: 4px;
+			font-size: 12px;
+			float: right;
+			color: #777;
+		}
+		.name {
+			padding: 20px 10px;
+			text-align: left;
+			height: 115px;
+			color: #565656;
+			font-size: 15px;
+		}
+		.info {
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			padding: 10px;
+			font-size: 14px;
+			text-align: left;
+			&.active {
+				background-color: #607d8b;
+				color: #fff;
+			}
+			&.normal {
+				background-color: #8bc34a;
+				color: #fff;
+			}
+			&.disabled {
+				background-color: inherit;
+				color: #565656;
+			}
+		}
+		&.disabled {
+			background-color: #e4e4e4;
+		}
+	}
+	&.initial {
+		transform: translateY(100px);
+		opacity: 0;
+	}
+	&.over {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
