@@ -27,11 +27,13 @@ const CourseChip = ({
 	paperStyle,
 	customLink,
 	noBoxShadow,
+	wrapperStyle,
 	color = 'white',
 }) => {
 	const WrapperComponent = disabled ? CustomWrapper : Link;
 	return (
 		<WrapperComponent
+			style={wrapperStyle}
 			className={`chip-container ${className}`}
 			to={customLink || (isCourse ? `/learn/${alias}` : `/learn/slayLesson/${itemType}/${id}/1`)}
 		>

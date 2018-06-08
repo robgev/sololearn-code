@@ -247,16 +247,12 @@ class Modules extends Component {
 
 		this.state = {
 			loading: false,
-			selectCourse: false,
 			resetPopupOpened: false,
-			lockedPopupOpened: false,
 		};
 
 		// Keeping for progress resetting
 		this.editableCourseId = null;
 
-		this.handleClick = this.handleClick.bind(this);
-		this.closeCourseSelect = this.closeCourseSelect.bind(this);
 		this.handleResetPopupClose = this.handleResetPopupClose.bind(this);
 		this.resetProgress = this.resetProgress.bind(this);
 	}
@@ -349,114 +345,6 @@ class Modules extends Component {
 		this.props.selectModule(moduleId);
 	}
 
-	renderCourses() {
-		const { courses, t } = this.props;
-		const userCourses = this.props.userProfile.skills;
-
-		const courseIds = courses.map(item => item.id);
-		const userCoursesIds = userCourses.map(item => item.id);
-
-		const difference = userCoursesIds.map((id, index) => {
-			if (courseIds.indexOf(id) < 0) {
-				return userCourses[index];
-			}
-		}).concat(courseIds.map((id, index) => {
-			if (userCoursesIds.indexOf(id) < 0) {
-				return courses[index];
-			}
-		})).filter(item => item !== undefined);
-
-		return (
-			<div>
-				{ userCourses.length > 0 &&
-					[
-						<div className="user-courses" key="user-courses">
-							<p style={styles.coursesSubTitle}>My Courses</p>
-							{
-								userCourses.map(course => (
-									[
-										<div key={course.id} style={styles.course}>
-											<div
-												className="details"
-												style={styles.courseDetails}
-												onClick={() => this.selectCourse(course.id, false)}
-											>
-												<img src={`https://www.sololearn.com/Icons/Courses/${course.id}.png`} alt={course.name} style={styles.courseIcon} />
-												<div style={styles.courseInfo}>
-													<p style={styles.courseName}>{course.name}</p>
-													<LinearProgress style={styles.courseProgress} mode="determinate" value={course.progress * 100} color="#8BC34A" />
-												</div>
-											</div>
-											<IconMenu
-												style={styles.courseActions}
-												iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-												anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-												targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-											>
-												<MenuItem
-													primaryText={t('course_picker.action.remove')}
-													onClick={() => this.toggleCourse(course.id, false)}
-												/>
-												<MenuItem
-													primaryText={t('course_picker.action.reset-progress')}
-													onClick={() => this.handleResetPopupOpen(course.id)}
-												/>
-												<MenuItem
-													primaryText={t('common.share-title')}
-												/>
-											</IconMenu>
-										</div>,
-										<Divider key="user-course-item-divider" />,
-									]
-								))
-							}
-						</div>,
-						<Divider key="user-courses-divider" />,
-					]
-				}
-				{ difference.length > 0 &&
-				<div className="available-courses" style={styles.availableCourses}>
-					<p style={styles.coursesSubTitle}>Available Courses</p>
-					{
-						difference.map(course => (
-							[
-								<div key={course.id} style={styles.course}>
-									<div
-										className="details"
-										style={styles.courseDetails}
-										onClick={() => this.selectCourse(course.id, true)}
-									>
-										<img src={`https://www.sololearn.com/Icons/Courses/${course.id}.png`} alt={course.name} style={styles.courseIcon} />
-										<div style={styles.courseInfo}>
-											<p style={styles.courseName}>{course.name}</p>
-											<p>{numberFormatter(course.learners, true)}</p>
-										</div>
-									</div>
-									<IconMenu
-										style={styles.courseActions}
-										iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-										anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-										targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-									>
-										<MenuItem
-											primaryText={t('course_picker.action.add-to-my-courses')}
-											onClick={() => this.toggleCourse(course.id, true)}
-										/>
-										<MenuItem
-											primaryText={t('common.share-title')}
-										/>
-									</IconMenu>
-								</div>,
-								<Divider key="available-course-item-divider" />,
-							]
-						))
-					}
-				</div>
-				}
-			</div>
-		);
-	}
-
 	toggleCourse(courseId, enable) {
 		this.props.toggleCourseInternal(courseId, enable);
 	}
@@ -471,15 +359,6 @@ class Modules extends Component {
 		}
 		await this.props.loadCourseInternal(courseId);
 		this.setState({ loading: false });
-	}
-
-	openCourseSelect() {
-		ReactGA.ga('send', 'screenView', { screenName: 'Manage Courses Page' });
-		this.setState({ selectCourse: true });
-	}
-
-	closeCourseSelect() {
-		this.setState({ selectCourse: false });
 	}
 
 	resetProgress(courseId) {
@@ -509,11 +388,17 @@ class Modules extends Component {
 		const { progress } = Progress.getModuleState(lastModule);
 		const isCourseFinished = progress === 100;
 		return (
-			<div style={styles.module.base}>
+			<div style={{
+				...styles.module.base,
+				display: 'flex',
+				justifyContent: 'center',
+			}}
+			>
 				<CourseChip
 					noBoxShadow
 					name="Certificate"
 					color="transparent"
+					wrapperStyle={{ padding: 0 }}
 					disabled={!isCourseFinished}
 					customLink={`/certificate/${id}`}
 					iconUrl={`https://api.sololearn.com/uploads/Modules/certificate${isCourseFinished ? '' : '_disabled'}.png`}
@@ -570,11 +455,28 @@ class Modules extends Component {
 							<div
 								className="course-selector"
 								style={styles.courseBar}
-								onClick={() => this.openCourseSelect()}
 								key="course-selector"
 							>
 								<div className="details" style={styles.courseDetails}>
 									<img src={`https://www.sololearn.com/Icons/Courses/${course.id}.png`} alt={course.name} style={styles.courseIcon} />
+									<IconMenu
+										style={styles.courseActions}
+										iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+										anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+										targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+									>
+										<MenuItem
+											primaryText={t('course_picker.action.remove')}
+											onClick={() => this.toggleCourse(course.id, false)}
+										/>
+										<MenuItem
+											primaryText={t('course_picker.action.reset-progress')}
+											onClick={() => this.handleResetPopupOpen(course.id)}
+										/>
+										<MenuItem
+											primaryText={t('common.share-title')}
+										/>
+									</IconMenu>
 									<div style={styles.courseInfo}>
 										<p style={styles.courseName}>{course.name}</p>
 										<LinearProgress
@@ -585,10 +487,6 @@ class Modules extends Component {
 										/>
 									</div>
 								</div>
-								<FlatButton
-									label={t('learn.course-picker-title')}
-									style={styles.courseActions}
-								/>
 							</div>,
 							<div className="modules" key="modules">
 								{this.renderModules()}
@@ -606,20 +504,6 @@ class Modules extends Component {
 								onClick={() => this.openCourseSelect()}
 							/>
 						</div>
-					}
-					{
-						this.state.selectCourse &&
-						<Dialog
-							id="courses"
-							modal={false}
-							open={this.state.selectCourse}
-							title={t('course_picker.title')}
-							titleStyle={styles.coursesTitle}
-							bodyStyle={styles.courses}
-							autoScrollBodyContent
-							onRequestClose={this.closeCourseSelect}
-						>{this.renderCourses()}
-						</Dialog>
 					}
 
 					{ this.state.resetPopupOpened && Popup.getPopup(Popup.generatePopupActions(resetProgressActions), this.state.resetPopupOpened, this.handleResetPopupClose, [ { key: 'hintSkipConfirmText', replacemant: this.skipPrice } ]) }
