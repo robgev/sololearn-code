@@ -25,12 +25,23 @@ class SlayHome extends PureComponent {
 
 	async componentWillMount() {
 		const { startIndex, loadCount } = this.state;
-		const length = await this.props.getLessonCollections({ index: startIndex, count: loadCount });
-		this.setState({
-			loading: false,
-			hasMore: length === loadCount,
-			startIndex: startIndex + loadCount,
-		});
+		const { collections, getLessonCollections } = this.props;
+		if (!collections.length) {
+			const length = await getLessonCollections({ index: startIndex, count: loadCount });
+			this.setState({
+				loading: false,
+				hasMore: length === loadCount,
+				startIndex: startIndex + loadCount,
+			});
+		} else {
+			this.setState({
+				loading: false,
+				startIndex: startIndex + collections.length,
+				// If number of collections is divisible by the number
+				// of items we get on every load, then there is 1 more collection
+				hasMore: collections.length % loadCount === 0,
+			});
+		}
 		ReactGA.ga('send', 'screenView', { screenName: 'Home Store Page' });
 	}
 
