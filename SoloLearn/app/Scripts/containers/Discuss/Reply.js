@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import Radium from 'radium';
 import { connect } from 'react-redux';
+import Linkify from 'react-linkify';
 
 // Material UI components
 import { TextField, IconMenu, MenuItem, FlatButton, IconButton } from 'material-ui';
@@ -60,7 +61,11 @@ class Reply extends Component {
 		if (!this.state.isEditing) {
 			return (
 				<div>
-					<pre className="message" style={styles.message}>{this.state.textFieldValue}</pre>
+					<pre className="message" style={styles.message}>
+						<Linkify>
+							{this.state.textFieldValue}
+						</Linkify>
+					</pre>
 					{ previewsData.map(singlePreviewData => (
 						<PreviewItem
 							{...singlePreviewData}

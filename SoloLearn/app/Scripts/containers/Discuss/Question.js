@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import Radium from 'radium';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
+import Linkify from 'react-linkify';
 
 // Material UI components
 import { Paper, IconButton, IconMenu, MenuItem } from 'material-ui';
@@ -121,7 +122,11 @@ class Question extends Component {
 									<DiscussTag tag={tag} index={index} key={tag} />)
 							}
 						</div>
-						<pre className="message" style={styles.message}>{question.message}</pre>
+						<pre className="message" style={styles.message}>
+							<Linkify>
+								{question.message}
+							</Linkify>
+						</pre>
 						{ previewsData.map(singlePreviewData => (
 							<PreviewItem
 								{...singlePreviewData}
