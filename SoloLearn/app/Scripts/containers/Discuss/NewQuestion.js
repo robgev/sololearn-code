@@ -131,7 +131,7 @@ class NewQuestion extends Component {
 						<span
 							style={styles.textFieldCoutner}
 						>
-							{this.state.title.length} / { this.maxTitleLength }
+							{this.state.title.length} / {this.maxTitleLength}
 						</span>
 					</div>
 					<div className="question-data" style={styles.questionData}>

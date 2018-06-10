@@ -22,7 +22,7 @@ import getCourseAliasById from './getCourseAliasById';
 import determineAccessLevel from './determineAccessLevel';
 import determineBadge, { determineBadgeColor } from './modBadgeUtils';
 
-export { replaceMention, setMention, getMentionsList } from './mention';
+export { replaceMention, getMentionsList, mentionUsers } from './mention';
 
 const hash = pass => hmacsha1('password', pass).slice(0, -1);
 const checkWeb = alias => [ 'html', 'css', 'js' ].includes(alias);

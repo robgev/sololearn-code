@@ -242,7 +242,7 @@ class Post extends Component {
 						</div>
 					}
 				</div>
-				<AddReply save={this.addReply} />
+				<AddReply save={this.addReply} postId={this.props.post.id} />
 
 				{
 					this.state.deletePopupOpened &&

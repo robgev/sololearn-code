@@ -1,102 +1,105 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import getCoordinates from 'textarea-caret';
-import { getClosestAt, mentionTags } from './utils';
-import './MentionInput.scss';
+import { EditorState, convertToRaw } from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
+import createMentionPlugin from 'draft-js-mention-plugin';
+import { mentionUsers } from 'utils';
+import 'draft-js-mention-plugin/lib/plugin.css';
 
-class Mention extends React.Component {
-	state = {
-		text: '',
-		names: [],
-		suggestor: {
-			open: false,
-			top: 0,
-			left: 0,
-			height: 0,
-		},
-	};
-	tags = [];
-	cursorPosition = null;
-	handleChange = (e) => {
-		if (this.tags.length >= 10) {
-			return;
-		}
-		const { value, selectionStart } = e.target;
-		const { top, left, height } = getCoordinates(
-			e.target,
-			e.target.selectionEnd,
-		);
-		this.cursorPosition = selectionStart;
-		const closestAt = getClosestAt(value, selectionStart);
-		if (closestAt !== null) {
-			const partial = value.substring(closestAt + 1, selectionStart);
-			this.props.getNames(partial).then((names) => {
-				this.setState({
-					suggestor: {
-						open: true, top, left, height,
-					},
-					names: names.filter(name => !this.tags.some(tag => tag.name.slice(1) === name.name)),
-				});
-			});
-		} else {
-			this.setState(state => ({
-				names: [],
-				suggestor: { ...state.suggestor, open: false },
-			}));
-		}
-		this.setState({
-			text: value,
+import Entry from './Entry';
+import './editorStyles.scss';
+import './mentionStyles.scss';
+
+class MentionInput extends Component {
+	constructor(props) {
+		super(props);
+		this.mentionPlugin = createMentionPlugin({
+			mentionComponent: ({ children }) => <b>{children}</b>,
 		});
+		this.state = {
+			editorState: EditorState.createEmpty(),
+			suggestions: [],
+		};
+	}
+
+	onChange = (editorState) => {
+		this.setState({ editorState });
 	};
-	select = (name) => {
-		const { text } = this.state;
-		const closestAt = getClosestAt(text, this.cursorPosition);
-		this.setState(state => ({
-			text:
-				text.substr(0, closestAt + 1) +
-				name.name +
-				text.substr(this.cursorPosition),
-			suggestor: { ...state.suggestor, open: false },
-			names: [],
-		}));
-		this.tags.push({ name: `@${name.name}`, id: name.id });
+
+	onSearchChange = (e) => {
+		const { value } = e;
+		this.props.getUsers(value)
+			.then((users) => {
+				const mentions = this.getMentions();
+				if (mentions.length < 10) {
+					const suggestions = users
+						.filter(user => !mentions.some(mentioned => mentioned.id === user.id));
+					this.setState({ suggestions });
+				}
+			});
 	};
-	submit = () => {
-		const text = mentionTags(this.state.text, this.tags);
-		this.props.submit(text);
+
+	getEditorContent = () => convertToRaw(this.state.editorState.getCurrentContent())
+
+	getMentions = () => Object.values(this.getEditorContent().entityMap)
+		.map(el => el.data.mention);
+
+	getBlocks = () => this.getEditorContent().blocks
+
+	focus = () => {
+		this.editor.focus();
 	};
+
+	popValue = () => {
+		const blocks = this.getBlocks();
+		const mentions = this.getMentions();
+		const { result } = blocks.reduce((acc, curr) => {
+			const { text, entityRanges } = curr;
+			const mentionIndex = acc.mentionIndex + entityRanges.length;
+			const lineMentions = mentions.slice(acc.mentionIndex, mentionIndex);
+			return { result: acc.result + mentionUsers(text, lineMentions, entityRanges), mentionIndex };
+		}, { result: '', mentionIndex: 0 });
+		this.setState({ editorState: EditorState.createEmpty() });
+		return result;
+	}
+
 	render() {
+		const { MentionSuggestions } = this.mentionPlugin;
+		const plugins = [ this.mentionPlugin ];
+
 		return (
-			<div className="mention-container">
-				<input onChange={this.handleChange} value={this.state.text} />
-				<div
-					className="suggestions"
-					style={{
-						display: this.state.suggestor.open ? 'flex' : 'none',
-						top: this.state.suggestor.top + 30,
-						left: this.state.suggestor.left,
-					}}
-				>
-					{this.state.names.map(name => (
-						<span
-							role="button"
-							tabIndex={0}
-							className="item"
-							onClick={() => this.select(name)}
-							key={name.id}
-						>
-							{name.name}
-						</span>
-					))}
-				</div>
+			<div
+				className={`editor ${this.props.className}`}
+				style={this.props.style}
+				onClick={this.focus}
+				role="button"
+				tabIndex={0}
+			>
+				<Editor
+					editorState={this.state.editorState}
+					onChange={this.onChange}
+					plugins={plugins}
+					ref={(element) => { this.editor = element; }}
+				/>
+				<MentionSuggestions
+					onSearchChange={this.onSearchChange}
+					suggestions={this.state.suggestions}
+					entryComponent={Entry}
+				/>
 			</div>
 		);
 	}
 }
 
-Mention.propTypes = {
-	getNames: PropTypes.func.isRequired,
-	submit: PropTypes.func.isRequired,
+MentionInput.defaultProps = {
+	className: '',
+	style: {},
 };
 
-export default Mention;
+MentionInput.propTypes = {
+	getUsers: PropTypes.func.isRequired,
+	className: PropTypes.string,
+	style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+};
+
+export default MentionInput;
