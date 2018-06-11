@@ -35,6 +35,9 @@
 				font-size: 13px;
 				height: 32px; // 16px line height
 				@include multiLineEllipsis($lineHeight: 16px, $lineCount: 2, $bgColor: white);
+				&.centered {
+					text-align: center
+				}
 			}
 			.view-stats {
 				display: flex;

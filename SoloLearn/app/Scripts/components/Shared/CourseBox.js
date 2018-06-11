@@ -41,7 +41,7 @@ const CourseCard = ({
 				/>
 			</div>
 			<div className="info-container">
-				<span className="wrapped-text course-name" title={name}>{name}</span>
+				<span className={`course-name ${isCourses ? 'centered' : ''}`} title={name}>{name}</span>
 				{ (Number.isInteger(viewCount) && Number.isInteger(comments)) &&
 					<ViewStats
 						views={viewCount}
