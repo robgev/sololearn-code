@@ -89,7 +89,6 @@ class SlayDetailed extends PureComponent {
 				style={{
 					flexDirection: 'row',
 					flexWrap: 'wrap',
-					justifyContent: 'flex-start',
 				}}
 			/>
 		);
