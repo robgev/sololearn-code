@@ -24,6 +24,7 @@ class MentionInput extends Component {
 
 	onChange = (editorState) => {
 		this.setState({ editorState });
+		this.props.onChange();
 	};
 
 	onSearchChange = (e) => {
@@ -49,6 +50,8 @@ class MentionInput extends Component {
 	focus = () => {
 		this.editor.focus();
 	};
+
+	getLength = () => this.state.editorState.getCurrentContent().getPlainText().length
 
 	popValue = () => {
 		const blocks = this.getBlocks();
@@ -76,6 +79,9 @@ class MentionInput extends Component {
 				tabIndex={0}
 			>
 				<Editor
+					placeholder={this.props.placeholder}
+					onFocus={this.props.onFocus}
+					onBlur={this.props.onBlur}
 					editorState={this.state.editorState}
 					onChange={this.onChange}
 					plugins={plugins}
@@ -94,11 +100,21 @@ class MentionInput extends Component {
 MentionInput.defaultProps = {
 	className: '',
 	style: {},
+	disabled: false,
+	placeholder: '',
+	onFocus: () => { }, // noop
+	onBlur: () => { }, // noop
+	onChange: () => { }, // noop
 };
 
 MentionInput.propTypes = {
 	getUsers: PropTypes.func.isRequired,
 	className: PropTypes.string,
+	onFocus: PropTypes.func,
+	onBlur: PropTypes.func,
+	onChange: PropTypes.func,
+	disabled: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+	placeholder: PropTypes.string,
 	style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 

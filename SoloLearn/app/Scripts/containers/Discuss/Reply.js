@@ -66,7 +66,7 @@ class Reply extends Component {
 							{this.state.textFieldValue}
 						</Linkify>
 					</pre>
-					{ previewsData.map(singlePreviewData => (
+					{previewsData.map(singlePreviewData => (
 						<PreviewItem
 							{...singlePreviewData}
 							recompute={recompute}
@@ -170,7 +170,7 @@ class Reply extends Component {
 							anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
 							targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 						>
-							{		reply.userID === this.props.userId &&
+							{reply.userID === this.props.userId &&
 								[
 									<MenuItem
 										primaryText={t('common.edit-action-title')}
@@ -184,13 +184,13 @@ class Reply extends Component {
 									/>,
 								]
 							}
-							{ reply.userID !== this.props.userId &&
+							{reply.userID !== this.props.userId &&
 								<MenuItem
 									primaryText={t('common.report-action-title')}
 									onClick={() => toggleReportPopup(reply)}
 								/>
 							}
-							{ reply.userID !== this.props.userId &&
+							{reply.userID !== this.props.userId &&
 								accessLevel > 0 &&
 								<MenuItem
 									onClick={() => toggleRemovalPopup(reply)}
