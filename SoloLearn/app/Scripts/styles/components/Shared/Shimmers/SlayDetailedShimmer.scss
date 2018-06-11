@@ -18,6 +18,16 @@
 
 .slay-detailed-shimmer-wrapper {
 	width: 100%;
+	.collection-title-container {
+		position: relative;
+		padding-left: 15px;
+		padding-top: 15px;
+		.collection-title {
+			width: 215px;
+			height: 16px;
+			background-color: $shimmer-dark-color;
+		}
+	}
 	.course-chips {
 		display: flex;
 		width: 100%;

@@ -4,6 +4,10 @@ import 'styles/components/Shared/Shimmers/SlayDetailedShimmer.scss';
 
 const SlayDetailedShimmer = () => (
 	<Paper className="slay-detailed-shimmer-wrapper">
+		<div className="collection-title-container">
+			<div className="collection-title" />
+			<div className="slay-home-shimmer-shimmer" />
+		</div>
 		<div className="course-chips">
 			{ Array(40).fill(0).map((__, idx) => (
 				<div className="shimmer-chip-container" key={idx}>
