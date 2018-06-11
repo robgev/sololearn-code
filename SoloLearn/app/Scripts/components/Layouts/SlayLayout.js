@@ -44,7 +44,16 @@ const Layout = ({
 						alignItems: 'center',
 						...style,
 					}}
-					loader={loading ? null : <CircularProgress style={{ paddingBottom: 15 }} />}
+					loader={loading ?
+						null :
+						<CircularProgress
+							style={{
+								width: '100%',
+								paddingBottom: 15,
+								textAlign: 'center',
+							}}
+						/>
+					}
 					// Loading specifies initial load.
 					// We don't want infinite scroll loading thing on inital load
 				>
