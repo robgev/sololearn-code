@@ -15,12 +15,16 @@ const Layout = ({
 	loadMore,
 	isCourses,
 	cardComponent: CardComponent,
+	loadingComponent: LoadingComponent,
 }) => (
 	<div className="slay-container">
 		<div className="main-content">
 			<BusyWrapper
 				isBusy={loading}
-				loadingComponent={<SlayHomeShimmer />}
+				loadingComponent={LoadingComponent ?
+					<LoadingComponent /> :
+					<SlayHomeShimmer />
+				}
 			>
 				<InfiniteScroll
 					pageStart={0}

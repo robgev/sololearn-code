@@ -15,7 +15,7 @@ const BusyWrapper = ({
 			className={`content-wrapper ${wrapperClassName}`}
 			style={{
 				...style,
-				opacity: isBusy ? 0 : 1,
+				...(isBusy ? { display: 'none' } : {}),
 			}}
 		>
 			{children}

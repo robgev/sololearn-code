@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { getCollectionItems } from 'actions/slay';
 import CourseBox from 'components/Shared/CourseBox';
 import SlayLayout from 'components/Layouts/SlayLayout';
+import SlayDetailedShimmer from 'components/Shared/Shimmers/SlayDetailedShimmer';
 
 // import 'styles/slayHome.scss';
 
@@ -72,6 +73,7 @@ class SlayDetailed extends PureComponent {
 				isCourses={isCourses}
 				loadMore={this.loadMore}
 				cardComponent={CourseBox}
+				loadingComponent={SlayDetailedShimmer}
 				style={{
 					flexDirection: 'row',
 					flexWrap: 'wrap',
