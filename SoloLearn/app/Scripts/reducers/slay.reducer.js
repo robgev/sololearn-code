@@ -5,6 +5,7 @@ import {
 	SET_LESSON_COLLECTIONS,
 	APPEND_LESSONS_BY_USER,
 	APPEND_COLLECTION_ITEMS,
+	SET_CURRENT_LESSON_COLLECTION,
 } from 'constants/ActionTypes';
 import { differenceBy } from 'lodash';
 import { combineReducers } from 'redux';
@@ -18,6 +19,15 @@ const slayCollections = (state = [], action) => {
 	switch (action.type) {
 	case SET_LESSON_COLLECTIONS:
 		return safeAdd(state, action.payload);
+	default:
+		return state;
+	}
+};
+
+const selectedCollection = (state = null, action) => {
+	switch (action.type) {
+	case SET_CURRENT_LESSON_COLLECTION:
+		return action.payload;
 	default:
 		return state;
 	}
@@ -58,5 +68,6 @@ export default combineReducers({
 	activeLesson,
 	lessonsByUser,
 	slayCollections,
+	selectedCollection,
 	filteredCollectionItems,
 });

@@ -2,9 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
-import FlatButton from 'material-ui/FlatButton';
 import { translate } from 'react-i18next';
-// i18next
 
 import 'styles/collectionCard.scss';
 import CourseChip from './CourseChip';

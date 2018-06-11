@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import Paper from 'material-ui/Paper';
 import { getCourseAliasById } from 'utils';
 import { slayItemTypes } from 'constants/ItemTypes';
 
@@ -13,11 +12,9 @@ const CourseCard = ({
 	title,
 	name,
 	color,
-	userID,
 	courses,
 	iconUrl,
 	itemType,
-	userName,
 	isCourses,
 	viewCount,
 	comments,

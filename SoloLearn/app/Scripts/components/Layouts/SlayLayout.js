@@ -7,6 +7,7 @@ import SlayHomeShimmer from 'components/Shared/Shimmers/SlayHomeShimmer';
 import 'styles/slayBase.scss';
 
 const Layout = ({
+	title,
 	style,
 	paper,
 	items,
@@ -15,14 +16,17 @@ const Layout = ({
 	hasMore,
 	loadMore,
 	isCourses,
+	wrapperStyle,
 	cardComponent: CardComponent,
 	loadingComponent: LoadingComponent,
 }) => (
 	<div className="slay-container">
 		<div className="main-content">
 			<BusyWrapper
+				title={title}
 				paper={paper}
 				isBusy={loading}
+				style={wrapperStyle}
 				loadingComponent={LoadingComponent ?
 					<LoadingComponent /> :
 					<SlayHomeShimmer />

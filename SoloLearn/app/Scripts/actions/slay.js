@@ -32,6 +32,24 @@ export const getCollectionItems = (collectionId, pagingData) => async (dispatch)
 	}
 };
 
+export const setSelectedCollection = collectionId => async (dispatch, getState) => {
+	const { slayCollections } = getState().slay;
+	if (slayCollections.length) {
+		const currentCollection = slayCollections.find(c => c.id === collectionId);
+		dispatch({
+			type: types.SET_CURRENT_LESSON_COLLECTION,
+			payload: currentCollection,
+		});
+	} else {
+		const { collection } =
+			await Service.request('/GetCollection', { id: collectionId });
+		dispatch({
+			type: types.SET_CURRENT_LESSON_COLLECTION,
+			payload: collection,
+		});
+	}
+};
+
 export const searchLessons = (query, pagingData) => async (dispatch) => {
 	try {
 		const { lessons } =

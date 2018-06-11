@@ -10,6 +10,7 @@ const PlainContainer = ({ children, className, style }) => (
 );
 
 const BusyWrapper = ({
+	title,
 	style,
 	paper,
 	isBusy,
@@ -28,6 +29,12 @@ const BusyWrapper = ({
 					...(isBusy ? { display: 'none' } : {}),
 				}}
 			>
+				{!title ?
+					null :
+					<div className="card-title">
+						<p>{title}</p>
+					</div>
+				}
 				{children}
 			</ContentContainer>
 			{	isBusy &&

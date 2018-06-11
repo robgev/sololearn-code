@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 
-import { getCollectionItems } from 'actions/slay';
+import { getCollectionItems, setSelectedCollection } from 'actions/slay';
 import CourseBox from 'components/Shared/CourseBox';
 import SlayLayout from 'components/Layouts/SlayLayout';
 import SlayDetailedShimmer from 'components/Shared/Shimmers/SlayDetailedShimmer';
@@ -11,10 +11,11 @@ import SlayDetailedShimmer from 'components/Shared/Shimmers/SlayDetailedShimmer'
 
 const mapStateToProps = state => ({
 	courses: state.courses,
+	selectedCollection: state.slay.selectedCollection,
 	collectionCourses: state.slay.filteredCollectionItems,
 });
 
-const mapDispatchToProps = { getCollectionItems };
+const mapDispatchToProps = { getCollectionItems, setSelectedCollection };
 
 @connect(mapStateToProps, mapDispatchToProps)
 class SlayDetailed extends PureComponent {
@@ -36,6 +37,7 @@ class SlayDetailed extends PureComponent {
 		const { params } = this.props;
 		const { startIndex, loadCount } = this.state;
 		const collectionId = parseInt(params.collectionId, 10);
+		await this.props.setSelectedCollection(collectionId);
 		if (collectionId !== 1) { // 1 stands for Default SoloLearn lessons
 			const length =
 				await this.props.getCollectionItems(collectionId, { index: startIndex, count: loadCount });
@@ -61,7 +63,12 @@ class SlayDetailed extends PureComponent {
 
 	render() {
 		const { loading, hasMore } = this.state;
-		const { params, collectionCourses, courses } = this.props;
+		const {
+			params,
+			courses,
+			collectionCourses,
+			selectedCollection,
+		} = this.props;
 		const collectionId = parseInt(params.collectionId, 10);
 		const isCourses = collectionId === 1;
 		const courseItems = !isCourses ? collectionCourses : courses;
@@ -75,6 +82,10 @@ class SlayDetailed extends PureComponent {
 				loadMore={this.loadMore}
 				cardComponent={CourseBox}
 				loadingComponent={SlayDetailedShimmer}
+				title={loading ? '' : selectedCollection.name}
+				wrapperStyle={{
+					alignItems: 'initial',
+				}}
 				style={{
 					flexDirection: 'row',
 					flexWrap: 'wrap',
