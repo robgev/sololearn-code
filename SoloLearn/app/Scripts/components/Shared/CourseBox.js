@@ -45,13 +45,6 @@ const CourseCard = ({
 			</div>
 			<div className="info-container">
 				<span className="wrapped-text course-name" title={name}>{name}</span>
-				<Link
-					className="wrapped-text user-link"
-					to={`/profile/${userID}`}
-					title={userName}
-				>
-					{userName}
-				</Link>
 				{ (Number.isInteger(viewCount) && Number.isInteger(comments)) &&
 					<ViewStats
 						views={viewCount}
