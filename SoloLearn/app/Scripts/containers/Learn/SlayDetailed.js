@@ -67,6 +67,7 @@ class SlayDetailed extends PureComponent {
 		const courseItems = !isCourses ? collectionCourses : courses;
 		return (
 			<SlayLayout
+				paper
 				loading={loading}
 				hasMore={hasMore}
 				items={courseItems}

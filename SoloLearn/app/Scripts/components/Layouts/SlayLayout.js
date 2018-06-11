@@ -8,6 +8,7 @@ import 'styles/slayBase.scss';
 
 const Layout = ({
 	style,
+	paper,
 	items,
 	loading,
 	children,
@@ -20,6 +21,7 @@ const Layout = ({
 	<div className="slay-container">
 		<div className="main-content">
 			<BusyWrapper
+				paper={paper}
 				isBusy={loading}
 				loadingComponent={LoadingComponent ?
 					<LoadingComponent /> :

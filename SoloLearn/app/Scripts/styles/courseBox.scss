@@ -1,6 +1,8 @@
+@import 'utils';
+
 .course-box-container {
-	width: calc(100% / 5 - 20px);
-	padding: 10px;
+	width: calc(100% / 5 - 30px);
+	padding: 15px;
 	text-decoration: none;
 	.course-card-wrapper {
 		display: flex;
@@ -9,7 +11,6 @@
 		width: 100%;
 		color: rgba(0, 0, 0, 0.87);
 		text-decoration: none;
-		margin-bottom: 10px;
 		.image-wrapper {
 			width: 100%;
 	    height: 0;
@@ -30,20 +31,10 @@
 			flex-direction: column;
 			justify-content: space-between;
 			padding-top: 5px;
-			.wrapped-text {
-				width: 100%;
-				height: 20px;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-			}
 			.course-name {
-		    font-size: 13px;
-			}
-			.user-link {
-				text-decoration: none;
-				color: #2196F3;
-				font-size: 12px;
+				font-size: 13px;
+				height: 32px; // 16px line height
+				@include multiLineEllipsis($lineHeight: 16px, $lineCount: 2, $bgColor: white);
 			}
 			.view-stats {
 				display: flex;
