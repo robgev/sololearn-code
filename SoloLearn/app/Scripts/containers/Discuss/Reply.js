@@ -21,7 +21,7 @@ import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import PreviewItem from 'components/Shared/PreviewItem';
 import PostedDate from 'components/Shared/PostedDate';
 
-import { updateDate, determineAccessLevel, generatePreviews } from 'utils';
+import { updateDate, determineAccessLevel, generatePreviews, replaceMention } from 'utils';
 
 import { ReplyStyles as styles } from './styles';
 
@@ -63,7 +63,7 @@ class Reply extends Component {
 				<div>
 					<pre className="message" style={styles.message}>
 						<Linkify>
-							{this.state.textFieldValue}
+							{replaceMention(this.state.textFieldValue)}
 						</Linkify>
 					</pre>
 					{previewsData.map(singlePreviewData => (

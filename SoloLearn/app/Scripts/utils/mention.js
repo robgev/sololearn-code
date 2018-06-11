@@ -1,5 +1,7 @@
+import React from 'react';
 import Service from 'api/service';
 import { last } from 'lodash';
+import { Link } from 'react-router';
 
 const mentionTypes = {
 	discuss: 'Discussion/SearchMentionUsers', // int postId, string query
@@ -15,9 +17,11 @@ export const replaceMention = (text) => {
 	while (regex.test(last(resArr))) {
 		const [ tagged, id, name ] = regex.exec(last(resArr));
 		const partial = last(resArr).split(tagged);
-		resArr = [ ...resArr.slice(0, resArr.length - 1), partial[0], { id, name, tag: 'user' }, partial[1] ];
+		resArr = [ ...resArr.slice(0, resArr.length - 1), partial[0], { id, name, type: 'tag' }, partial[1] ];
 	}
-	return resArr;
+	return resArr.map(curr => (curr.type === 'tag'
+		? <b key={curr.id}><Link style={{ color: '#0645AD' }} to={`/profile/${curr.id}`}>{curr.name}</Link></b>
+		: <span key={curr}>{curr}</span>));
 };
 
 export const getMentionsList = (type, params) =>
