@@ -215,7 +215,10 @@ class Post extends Component {
 						</div>
 					</div>
 				</div>
-				<div style={styles.repliesWrapper}>
+				<div
+					style={styles.repliesWrapper}
+					ref={(repliesWrapper) => { this.repliesWrapper = repliesWrapper; }}
+				>
 					{(this.state.isLoading && post.replies.length === 0) && <LoadingOverlay size={30} />}
 					{
 						this.props.isLoaded &&
@@ -223,6 +226,7 @@ class Post extends Component {
 							t={t}
 							replies={post.replies}
 							votePost={this.votePost}
+							scrollElement={this.repliesWrapper}
 							openDeletePopup={this.openDeletePopup}
 							isUsersQuestion={usersQuestion}
 							loadReplies={this.getReplies}

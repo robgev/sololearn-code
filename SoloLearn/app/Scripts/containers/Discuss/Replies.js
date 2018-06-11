@@ -73,9 +73,11 @@ class Replies extends Component {
 			toggleRemovalPopup={this.toggleRemovalPopup}
 		/>
 	)
+
 	_forceUpdate = () => this._list._forceUpdate();
+
 	render() {
-		const { accessLevel } = this.props;
+		const { accessLevel, scrollElement } = this.props;
 		const { removalPopupOpen, reportPopupOpen, targetItem } = this.state;
 		return (
 			<div style={styles.container}>
@@ -91,6 +93,7 @@ class Replies extends Component {
 					loadMore={this.props.loadReplies}
 					cache={cache}
 					window
+					scrollElement={scrollElement}
 					ref={(list) => { this._list = list; }}
 				/>
 				<ReportPopup

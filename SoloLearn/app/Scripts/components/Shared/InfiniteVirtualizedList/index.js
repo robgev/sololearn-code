@@ -99,31 +99,36 @@ class InfiniteVirtalizedList extends Component {
 	render() {
 		if (this.props.window && this.props.cache) {
 			return (
-				<AutoSizer disableHeight>
-					{({ width }) => (
-						<WindowScroller
-							additional={this.props.additional}
-						>
-							{({ height, scrollTop, onChildScroll }) => (
-								<List
-									autoHeight
-									onRowsRendered={this.handleNextFetch}
-									width={width}
-									rowCount={this.props.list.length}
-									ref={(list) => { this._list = list; }}
-									additional={this.props.additional}
-									height={height}
-									scrollTop={scrollTop}
-									onScroll={onChildScroll}
-									rowHeight={this.props.cache.rowHeight}
-									deferredMeasurementCache={this.props.cache}
-									rowRenderer={this.autoSizedRowRenderer}
-								/>
-							)
-							}
-						</WindowScroller>
+				<WindowScroller
+					scrollElement={this.props.scrollElement || window}
+				>
+					{({
+						height, registerChild, scrollTop, onChildScroll,
+					}) => (
+						<div style={{ flex: '1 1 auto ' }}>
+							<AutoSizer disableHeight>
+								{({ width }) => (
+									<div ref={registerChild}>
+										<List
+											autoHeight
+											width={width}
+											height={height}
+											scrollTop={scrollTop}
+											onScroll={onChildScroll}
+											rowCount={this.props.list.length}
+											ref={(list) => { this._list = list; }}
+											additional={this.props.additional}
+											rowHeight={this.props.cache.rowHeight}
+											onRowsRendered={this.handleNextFetch}
+											rowRenderer={this.autoSizedRowRenderer}
+											deferredMeasurementCache={this.props.cache}
+										/>
+									</div>
+								)}
+							</AutoSizer>
+						</div>
 					)}
-				</AutoSizer>
+				</WindowScroller>
 			);
 		} else if (this.props.window) {
 			return (
