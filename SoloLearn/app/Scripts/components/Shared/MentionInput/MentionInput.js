@@ -7,6 +7,7 @@ import { mentionUsers } from 'utils';
 import 'draft-js-mention-plugin/lib/plugin.css';
 
 import Entry from './Entry';
+import getCurrentSelectedLength from './getCurrentSelectedLength';
 import './editorStyles.scss';
 import './mentionStyles.scss';
 
@@ -23,9 +24,30 @@ class MentionInput extends Component {
 	}
 
 	onChange = (editorState) => {
-		this.setState({ editorState });
-		this.props.onChange();
+		this.setState({ editorState }, () => {
+			this.props.onLengthChange(this.getLength());
+		});
 	};
+
+	handleBeforeInput = () => {
+		const currentContent = this.state.editorState.getCurrentContent();
+		const currentContentLength = currentContent.getPlainText('').length;
+		const selectedTextLength = getCurrentSelectedLength(this.state.editorState);
+		if (currentContentLength - selectedTextLength > this.props.maxLength - 1) {
+			return 'handled';
+		}
+		return 'not_handled';
+	}
+
+	handlePastedText = (pastedText) => {
+		const currentContent = this.state.editorState.getCurrentContent();
+		const currentContentLength = currentContent.getPlainText('').length;
+		const selectedTextLength = getCurrentSelectedLength(this.state.editorState);
+		if ((currentContentLength + pastedText.length) - selectedTextLength > this.props.maxLength) {
+			return 'handled';
+		}
+		return 'not_handled';
+	}
 
 	onSearchChange = (e) => {
 		const { value } = e;
@@ -86,6 +108,8 @@ class MentionInput extends Component {
 					onChange={this.onChange}
 					plugins={plugins}
 					ref={(element) => { this.editor = element; }}
+					handleBeforeInput={this.handleBeforeInput}
+					handlePastedText={this.handlePastedText}
 				/>
 				<MentionSuggestions
 					onSearchChange={this.onSearchChange}
@@ -100,11 +124,11 @@ class MentionInput extends Component {
 MentionInput.defaultProps = {
 	className: '',
 	style: {},
-	disabled: false,
 	placeholder: '',
+	maxLength: 2048,
 	onFocus: () => { }, // noop
 	onBlur: () => { }, // noop
-	onChange: () => { }, // noop
+	onLengthChange: () => { }, // noop
 };
 
 MentionInput.propTypes = {
@@ -112,8 +136,8 @@ MentionInput.propTypes = {
 	className: PropTypes.string,
 	onFocus: PropTypes.func,
 	onBlur: PropTypes.func,
-	onChange: PropTypes.func,
-	disabled: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+	onLengthChange: PropTypes.func,
+	maxLength: PropTypes.number,
 	placeholder: PropTypes.string,
 	style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };

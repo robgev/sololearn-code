@@ -24,9 +24,9 @@ class AddReply extends Component {
 	handleBlur = () => {
 		if (this.state.replyLength <= 1) { this.closeReplyBox(); }
 	}
-	onLengthChange = () => {
+	onLengthChange = (replyLength) => {
 		if (this.mentionInput) {
-			this.setState({ replyLength: this.mentionInput.getLength() });
+			this.setState({ replyLength });
 		}
 	}
 	save = () => {
@@ -45,7 +45,7 @@ class AddReply extends Component {
 						ref={(input) => { this.mentionInput = input; }}
 						onFocus={this.openReplyBox}
 						onBlur={this.handleBlur}
-						onChange={this.onLengthChange}
+						onLengthChange={this.onLengthChange}
 						style={isReplyBoxOpen ? { height: 200 } : { height: 50 }}
 						getUsers={getMentionsList('discuss', { postId: this.props.postId })}
 						submit={this.props.save}
