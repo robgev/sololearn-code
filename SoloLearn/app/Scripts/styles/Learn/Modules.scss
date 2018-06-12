@@ -1,0 +1,115 @@
+.modules-container {
+	.modules-wrapper {
+		.course-selector {
+			.details {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+		}
+		.modules {
+			.modules-chips-container {
+				display: flex;
+				flex-flow: row wrap;
+				.shortcut-content {
+					width: 100%;
+					text-align: center;
+				}
+				.module-line-container {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					width: 100%;
+					.module {
+						padding: 20px 0;
+						text-align: center;
+						.content {
+							display: flex;
+							flex-direction: column;
+							text-decoration: none;
+							justify-content: center;
+							align-items: center;
+							.module-circle {
+								height: 100px;
+								width: 100px;
+								background: #8BC34A !important;
+								transition: all ease-in 150ms;
+								.module-image {
+									margin: 5px;
+									height: 90px;
+									width: 90px;
+									pointer-events: none;
+								}
+								&.active {
+									background: #607D8B !important;
+									&:hover {
+										background: #587583 !important;
+									}
+								}
+								&.disabled {
+									background: #DDDDDD !important;
+									&:hover {
+										background: #D5D5D5 !important;
+									}
+								}
+								&:hover {
+									background: #83BB42 !important;
+									box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px !important;
+								}
+							}
+							.module-name {
+								display: block;
+								font-weight: 300;
+								color: #777;
+								margin: 10px 0 0 0;
+							}
+							&.none {
+								max-width: 100%;
+							}
+						}
+					}
+					&.none {
+						width: 50%;
+					}
+				}
+			}
+			.certificate-container {
+				display: flex;
+				justify-content: center;
+				width: 100%;
+				text-align: center;
+				overflow: hidden;
+				.course-name {
+					display: block;
+					color: #777;
+					font-weight: 300;
+					font-size: 16px;
+					padding-top: 10px;
+				}
+			}
+		}
+	}
+	.no-courses {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 300px;
+		height: 95px;
+		padding: 10px;
+		margin: -57.5px 0 0 -160px;
+		text-align: center;
+		.title {
+			margin: 0 0 5px 0;
+			font-size: 14px;
+			color: #696868;
+		}
+		.sub-title {
+			margin: 0 0 10px 0;
+			font-size: 19px;
+			color: #696868;
+		}
+		.add-button {
+			width: 250px;
+		}
+	}
+}
