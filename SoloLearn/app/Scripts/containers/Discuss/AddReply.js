@@ -55,7 +55,7 @@ class AddReply extends Component {
 				</div>
 				<div style={styles.editorActions}>
 					<RaisedButton
-						disabled={replyLength > 2048}
+						disabled={replyLength > 2048 || replyLength === 0}
 						label="Save"
 						primary
 						onClick={this.save}
