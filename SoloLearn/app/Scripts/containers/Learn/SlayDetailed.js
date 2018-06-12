@@ -37,8 +37,8 @@ class SlayDetailed extends PureComponent {
 		const { params } = this.props;
 		const { startIndex, loadCount } = this.state;
 		const collectionId = parseInt(params.collectionId, 10);
-		await this.props.setSelectedCollection(collectionId);
 		if (collectionId !== 1) { // 1 stands for Default SoloLearn lessons
+			await this.props.setSelectedCollection(collectionId);
 			const length =
 				await this.props.getCollectionItems(collectionId, { index: startIndex, count: loadCount });
 			this.setState({ loading: false, hasMore: length === loadCount });

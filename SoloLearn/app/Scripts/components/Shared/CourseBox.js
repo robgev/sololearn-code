@@ -1,17 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { Circle } from 'react-progressbar.js';
 import { getCourseAliasById } from 'utils';
 import { slayItemTypes } from 'constants/ItemTypes';
 
 import 'styles/courseBox.scss';
 import ViewStats from './ViewStats';
 
+const getProgress = (skills, courseId) => {
+	const skill = skills.find(({ id }) => id === courseId);
+	return skill ? skill.progress : 0;
+};
+
 const CourseCard = ({
 	id,
 	title,
 	name,
 	color,
+	skills,
 	courses,
 	iconUrl,
 	itemType,
@@ -34,6 +41,23 @@ const CourseCard = ({
 			className="course-card-wrapper"
 		>
 			<div className="image-wrapper" style={{ backgroundColor: color }}>
+				{ (itemType === slayItemTypes.course || isCourses) &&
+				<Circle
+					progress={getProgress(skills, id)}
+					options={{
+						color: '#9CCC65',
+						strokeWidth: 4,
+						trailColor: '#DCDCDE',
+						trailWidth: 4,
+					}}
+					containerStyle={{
+						width: '100%',
+						height: '100%',
+						position: 'absolute',
+						top: 0,
+					}}
+				/>
+				}
 				<img
 					src={iconUrl}
 					alt="Course Icon"
@@ -54,6 +78,6 @@ const CourseCard = ({
 	</div>
 );
 
-const mapStateToProps = state => ({ courses: state.courses });
+const mapStateToProps = state => ({ courses: state.courses, skills: state.userProfile.skills });
 
 export default connect(mapStateToProps, null)(CourseCard);
