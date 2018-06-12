@@ -14,7 +14,7 @@ import { getLikesAndDownvotesInternal } from 'actions/likes';
 
 // Utils
 import VoteControls from 'components/Shared/VoteControls';
-import { updateDate, updateMessage, generatePreviews } from 'utils';
+import { updateDate, replaceMention, generatePreviews } from 'utils';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import PreviewItem from 'components/Shared/PreviewItem';
 import { loadRepliesTypes } from './Comments';
@@ -195,7 +195,7 @@ class Comment extends Component {
 				{!isEditing &&
 					<div>
 						<Linkify>
-							<div style={styles.commentMessage}>{this.state.textFieldValue}</div>
+							<div style={styles.commentMessage}>{replaceMention(this.state.textFieldValue)}</div>
 						</Linkify>
 						{previewsData.map(singlePreviewData => (
 							<PreviewItem
