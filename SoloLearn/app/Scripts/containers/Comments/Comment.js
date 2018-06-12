@@ -7,6 +7,8 @@ import { Link } from 'react-router';
 import { TextField, IconMenu, MenuItem, FlatButton, IconButton } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
+import Linkify from 'react-linkify';
+
 // Redux modules
 import { getLikesAndDownvotesInternal } from 'actions/likes';
 
@@ -149,7 +151,7 @@ class Comment extends Component {
 				anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
 				targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 			>
-				{		comment.userID === this.props.userId &&
+				{comment.userID === this.props.userId &&
 					[
 						<MenuItem
 							primaryText={t('common.edit-action-title')}
@@ -163,13 +165,13 @@ class Comment extends Component {
 						/>,
 					]
 				}
-				{ comment.userID !== this.props.userId &&
+				{comment.userID !== this.props.userId &&
 					<MenuItem
 						primaryText={t('common.report-action-title')}
 						onClick={() => toggleReportPopup(comment)}
 					/>
 				}
-				{ comment.userID !== this.props.userId &&
+				{comment.userID !== this.props.userId &&
 					accessLevel > 0 &&
 					<MenuItem
 						onClick={() => toggleRemovalPopup(comment)}
@@ -192,11 +194,10 @@ class Comment extends Component {
 			<div style={styles.commentContent}>
 				{!isEditing &&
 					<div>
-						<div
-							dangerouslySetInnerHTML={{ __html: updateMessage(this.state.textFieldValue) }}
-							style={styles.commentMessage}
-						/>
-						{ previewsData.map(singlePreviewData => (
+						<Linkify>
+							<div style={styles.commentMessage}>{this.state.textFieldValue}</div>
+						</Linkify>
+						{previewsData.map(singlePreviewData => (
 							<PreviewItem
 								{...singlePreviewData}
 								recompute={recompute}
