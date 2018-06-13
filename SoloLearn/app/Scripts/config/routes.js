@@ -60,6 +60,9 @@ import Challenge from 'containers/Challenges/Challenge';
 // Discover
 import DiscoverContainer from 'containers/Profile/DiscoverContainer';
 
+// Quiz factory
+import { QuizFactoryMenu, QuizFactorySuggest, QuizFactoryMySubmissions, QuizFactoryRate } from 'containers/QuizFactory';
+
 export default (
 	[
 		<Route component={MainLayout} key="mainLayoutRoutes">
@@ -99,6 +102,10 @@ export default (
 			<Route path="/challenge/:id" component={redirector(Challenge)} />
 			<Route path="/notifications" component={redirector(Notifications)} />
 			<Route path="/discover(/:query)" component={redirector(DiscoverContainer)} />
+			<Route path="/quiz-factory" component={QuizFactoryMenu} />
+			<Route path="/quiz-factory/suggest" component={QuizFactorySuggest} />
+			<Route path="/quiz-factory/rate" component={QuizFactoryRate} />
+			<Route path="/quiz-factory/my-submissions" component={QuizFactoryMySubmissions} />
 			<Route path="/login" component={Login} />
 		</Route>,
 	]

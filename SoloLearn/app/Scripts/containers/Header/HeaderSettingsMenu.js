@@ -35,6 +35,10 @@ class SettingsMenu extends PureComponent {
 		browserHistory.push('/leaderboards');
 	}
 
+	goToQuizFactory = () => {
+		browserHistory.push('/quiz-factory');
+	}
+
 	render() {
 		const { avatarUrl, userName, userID } = this.props;
 		return (avatarUrl || userName) && (
@@ -43,14 +47,14 @@ class SettingsMenu extends PureComponent {
 				anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
 				iconStyle={{ display: 'flex', alignItems: 'center' }}
 				iconButtonElement={
-					<IconButton style={{ width: 'initial', padding: 0}}>
+					<IconButton style={{ width: 'initial', padding: 0 }}>
 						<div>
 							<ProfileAvatar
 								disabled
 								userID={userID}
 								userName={userName}
 								avatarUrl={avatarUrl}
-								avatarStyle={{ border: '1px solid white'}}
+								avatarStyle={{ border: '1px solid white' }}
 							/>
 							<div>
 								<ArrowDown color="white" />
@@ -68,6 +72,7 @@ class SettingsMenu extends PureComponent {
 				/>
 				<MenuItem
 					primaryText="Quiz Factory"
+					onClick={this.goToQuizFactory}
 				/>
 				<MenuItem
 					primaryText="Settings"

@@ -1,0 +1,18 @@
+.options-card {
+	display: flex;
+	font-size: 18px;
+	padding: 20px;
+	margin-bottom: 20px;
+	cursor: pointer;
+	img {
+		width: 30px;
+		padding: 0 10px;
+	}
+	span {
+		font-weight: 500;
+	}
+	p {
+		font-size: 16px;
+		padding-top: 10px;
+	}
+}
