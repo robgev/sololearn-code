@@ -64,49 +64,47 @@ import DiscoverContainer from 'containers/Profile/DiscoverContainer';
 import { QuizFactoryMenu, QuizFactorySuggest, QuizFactoryMySubmissions, QuizFactoryRate } from 'containers/QuizFactory';
 
 export default (
-	[
-		<Route component={MainLayout} key="mainLayoutRoutes">
-			<Route path="/" onEnter={() => { browserHistory.replace('/feed'); }} />
-			<Route path="/learn" component={SlayHome} />
-			<Route path="/learn/search/:query" component={SlaySearch} />
-			<Route path="/learn/bookmarks" component={SlayBookmarks} />
-			<Route path="/learn/more/author/:userId" component={SlayMoreByAuthor} />
-			<Route path="/learn/more/:collectionId" component={SlayDetailed} />
-			<Route path="/learn/slayLesson/:itemType/:lessonId/:pageNumber(/:language(/:codeID))" component={SlayLesson} />
-			<Route path="/learn/:courseName/:id/shortcut(/:quizNumber)" component={Shortcut}>
-				<Route component={QuizManager}>
-					<IndexRoute component={Quiz} />
-				</Route>
+	<Route component={MainLayout} key="mainLayoutRoutes">
+		<Route path="/" onEnter={() => { browserHistory.replace('/feed'); }} />
+		<Route path="/learn" component={SlayHome} />
+		<Route path="/learn/search/:query" component={SlaySearch} />
+		<Route path="/learn/bookmarks" component={SlayBookmarks} />
+		<Route path="/learn/more/author/:userId" component={SlayMoreByAuthor} />
+		<Route path="/learn/more/:collectionId" component={SlayDetailed} />
+		<Route path="/learn/slayLesson/:itemType/:lessonId/:pageNumber(/:language(/:codeID))" component={SlayLesson} />
+		<Route path="/learn/:courseName/:id/shortcut(/:quizNumber)" component={Shortcut}>
+			<Route component={QuizManager}>
+				<IndexRoute component={Quiz} />
 			</Route>
-			<Redirect path="/courses(/:courseName)" to="/learn(/:courseName)" />
-			<Redirect path="/course(/:courseName)" to="/learn(/:courseName)" />
-			<Route path="/learn(/:courseName)" component={Modules} />
-			<Route path="/learn/:courseName/:moduleId(/:moduleName)" component={Lessons} />
-			<Route path="/learn/:courseName/:moduleId/:moduleName/:lessonId(/:lessonName)" component={QuizManager}>
-				<Route path=":quizNumber(/:primary)(/:secondary)" component={Quiz} />
-			</Route>
-			<Route path="/codes" component={Codes} />
-			<Route path="/settings(/:settingID)" component={Settings} />
-			<Route path="/playground(/:primary)(/:secondary)" component={Playground} />
-			<Route path="/discuss" component={Questions} />
-			<Route path="/discuss/new" component={NewQuestion} />
-			<Route path="/discuss/edit/:id" component={EditQuestion} />
-			<Route path="/discuss/filter/:query" component={Questions} />
-			<Route path="/discuss/:id(/:questionName)(/:replyId)" component={Post} />
-			<Route path="/feed" component={Feed} />
-			<Route path="/profile/:id(/:tab)(/:selected)" component={Profile} />
-			<Route path="/certificate/:id" component={Certificate} />
-			<Route path="/leaderboards(/:userId)(/:mode)(/:range)" component={Leaderboards} />
-			<Route path="/contests" component={redirector(Contests)} />
-			<Route path="/choose-opponent" component={redirector(OpponentSelector)} />
-			<Route path="/challenge/:id" component={redirector(Challenge)} />
-			<Route path="/notifications" component={redirector(Notifications)} />
-			<Route path="/discover(/:query)" component={redirector(DiscoverContainer)} />
-			<Route path="/quiz-factory" component={QuizFactoryMenu} />
-			<Route path="/quiz-factory/suggest" component={QuizFactorySuggest} />
-			<Route path="/quiz-factory/rate" component={QuizFactoryRate} />
-			<Route path="/quiz-factory/my-submissions" component={QuizFactoryMySubmissions} />
-			<Route path="/login" component={Login} />
-		</Route>,
-	]
+		</Route>
+		<Redirect path="/courses(/:courseName)" to="/learn(/:courseName)" />
+		<Redirect path="/course(/:courseName)" to="/learn(/:courseName)" />
+		<Route path="/learn(/:courseName)" component={Modules} />
+		<Route path="/learn/:courseName/:moduleId(/:moduleName)" component={Lessons} />
+		<Route path="/learn/:courseName/:moduleId/:moduleName/:lessonId(/:lessonName)" component={QuizManager}>
+			<Route path=":quizNumber(/:primary)(/:secondary)" component={Quiz} />
+		</Route>
+		<Route path="/codes" component={Codes} />
+		<Route path="/settings(/:settingID)" component={Settings} />
+		<Route path="/playground(/:primary)(/:secondary)" component={Playground} />
+		<Route path="/discuss" component={Questions} />
+		<Route path="/discuss/new" component={NewQuestion} />
+		<Route path="/discuss/edit/:id" component={EditQuestion} />
+		<Route path="/discuss/filter/:query" component={Questions} />
+		<Route path="/discuss/:id(/:questionName)(/:replyId)" component={Post} />
+		<Route path="/feed" component={Feed} />
+		<Route path="/profile/:id(/:tab)(/:selected)" component={Profile} />
+		<Route path="/certificate/:id" component={Certificate} />
+		<Route path="/leaderboards(/:userId)(/:mode)(/:range)" component={Leaderboards} />
+		<Route path="/contests" component={redirector(Contests)} />
+		<Route path="/choose-opponent" component={redirector(OpponentSelector)} />
+		<Route path="/challenge/:id" component={redirector(Challenge)} />
+		<Route path="/notifications" component={redirector(Notifications)} />
+		<Route path="/discover(/:query)" component={redirector(DiscoverContainer)} />
+		<Route path="/quiz-factory" component={QuizFactoryMenu} />
+		<Route path="/quiz-factory/suggest" component={QuizFactorySuggest} />
+		<Route path="/quiz-factory/rate" component={QuizFactoryRate} />
+		<Route path="/quiz-factory/my-submissions" component={QuizFactoryMySubmissions} />
+		<Route path="/login" component={Login} />
+	</Route>
 );
