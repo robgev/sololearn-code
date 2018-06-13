@@ -5,7 +5,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 // Material UI components
-import { Tabs, Tab } from 'material-ui/Tabs';
+import {
+  Step,
+  Stepper,
+  StepLabel,
+} from 'material-ui/Stepper';
+import Paper from 'material-ui/Paper';
 
 // Redux modules
 import { isLoaded } from 'reducers';
@@ -25,6 +30,8 @@ import Service from 'api/service';
 // Additional data and components
 import Comments from 'containers/Comments/CommentsBase';
 import Layout from 'components/Layouts/GeneralLayout';
+
+import StepIcon from './StepIcon';
 
 export const LessonType = {
 	Checkpoint: 0,
@@ -179,15 +186,31 @@ class QuizManager extends Component {
 			});
 		});
 
-		return timeline.map((item, index) => (
-			<Tab
-				value={index}
-				key={item.key}
-				label={item.quizId}
-				className={`${ProgressState.getName(item.state)} timeline-item`}
-				onClick={() => this.loadLessonLink(item.quizId, item.number, item.isText, item.state)}
-			/>
-		));
+		return timeline.map((item, index) => {
+			const quizNumber = (parseInt(this.props.activeQuiz.number, 10) - 1);
+			const isActive =  quizNumber === index;
+			return (
+				<Step
+					value={index}
+					key={item.key}
+					onClick={() => this.loadLessonLink(item.quizId, item.number, item.isText, item.state)}
+				>
+					<StepLabel
+						icon={
+							<StepIcon
+								text={index + 1}
+								active={isActive}
+								completed={quizNumber > index}
+							/>
+						}
+						style={{
+							paddingLeft: index === 0 ? 0 : 14,
+							paddingRight: index === timeline.length - 1 ? 0 : 14,
+						}}
+					/>
+				</Step>
+			)
+		});
 	}
 
 	loadLessonLink = (quizId, number, isText, state) => {
@@ -241,7 +264,13 @@ class QuizManager extends Component {
 	}
 
 	render() {
-		const { isLoaded, activeLesson, activeQuiz } = this.props;
+		const {
+			course,
+			isLoaded,
+			activeQuiz,
+			activeLesson,
+			activeModule,
+		} = this.props;
 
 		if ((!isLoaded && !this.props.isShortcut) ||
 			(this.props.isShortcut && !activeQuiz) ||
@@ -267,19 +296,24 @@ class QuizManager extends Component {
 
 		return (
 			<Layout>
-				<Tabs className="quizTimeline" value={parseInt(this.props.activeQuiz.number, 10) - 1}>
-					{this.generateTimeline(quizzes, activeQuiz)}
-				</Tabs>
-				{childrenWithProps}
-				{(!this.props.isShortcut && this.state.commentsOpened) &&
-					<Comments
-						id={activeQuiz.id}
-						commentsType="lesson"
-						type={activeQuiz.isText ? 1 : 3}
-						closeComments={this.closeComments}
-						commentsOpened={this.state.commentsOpened}
-					/>
-				}
+				<Paper className="quiz-container" style={{ padding: 15 }}>
+					<div className="lesson-breadcrumbs">
+						{ course.name } &gt; { activeModule.name } &gt; { activeLesson.name }
+					</div>
+					<Stepper activeStep={parseInt(this.props.activeQuiz.number, 10) - 1}>
+						{this.generateTimeline(quizzes, activeQuiz)}
+					</Stepper>
+					{childrenWithProps}
+					{(!this.props.isShortcut && this.state.commentsOpened) &&
+						<Comments
+							id={activeQuiz.id}
+							commentsType="lesson"
+							type={activeQuiz.isText ? 1 : 3}
+							closeComments={this.closeComments}
+							commentsOpened={this.state.commentsOpened}
+						/>
+					}
+				</Paper>
 			</Layout>
 		);
 	}

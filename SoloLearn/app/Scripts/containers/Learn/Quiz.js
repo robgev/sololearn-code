@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 
@@ -22,13 +23,12 @@ import QuizText from '../Learn/QuizText';
 import { LessonType } from './QuizManager';
 
 // i18n
-import { translate } from 'react-i18next';
 
 const styles = {
 	wrapper: {
 		position: 'relative',
-		margin: '0 auto',
 		overflow: 'hidden',
+
 	},
 
 	skipText: {

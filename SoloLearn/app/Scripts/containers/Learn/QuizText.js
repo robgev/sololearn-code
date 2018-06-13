@@ -2,10 +2,10 @@
 import React, { Component } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { browserHistory } from 'react-router';
+import { translate } from 'react-i18next';
 import Radium, { Style } from 'radium';
 
 // Marterial UI components
-import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
 
 // Service & others
@@ -23,10 +23,6 @@ const tooltipOpened = (<Style
 		},
 	}}
 />);
-
-// i18n
-import { translate } from 'react-i18next';
-import { log } from 'util';
 
 const tooltipTopPlaced = (<Style
 	scopeSelector=".tooltip-content.top"
@@ -108,7 +104,6 @@ const styles = {
 	textContainer: {
 		width: '100%',
 		marginBottom: 10,
-		padding: '20px 20px 10px 20px',
 		overflow: 'hidden',
 	},
 
@@ -464,7 +459,7 @@ class QuizText extends Component {
 			openComments, withToolbar, userData, date, t,
 		} = this.props;
 		return (
-			<Paper className="text-container" style={styles.textContainer}>
+			<div className="text-container" style={styles.textContainer}>
 				{tooltipOpened}
 				{tooltipTopPlaced}
 				{tooltipRightPlaced}
@@ -488,7 +483,7 @@ class QuizText extends Component {
 						label={`${countLoaded ? this.commentsCount : ''} ${t('common.comments')}`}
 					/>
 				}
-			</Paper>
+			</div>
 		);
 	}
 
@@ -503,7 +498,7 @@ class QuizText extends Component {
 		}
 	}
 
-	componentDidUpdate(prevProps, prevState) {
+	componentDidUpdate(prevProps) {
 		const glossaryItems = document.getElementsByClassName('glossary-item');
 		for (let i = 0; i < glossaryItems.length; i++) {
 			const item = glossaryItems[i];
