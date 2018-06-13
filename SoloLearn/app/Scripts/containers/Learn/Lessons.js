@@ -68,8 +68,9 @@ class Lessons extends Component {
 		this.props.selectQuiz(this.getActiveQuiz(this.props.lessons[lessonId]));
 		browserHistory.push(url);
 	}
+
 	getActiveQuiz = (lesson) => {
-		const quizzes = lesson.quizzes;
+		const { quizzes } = lesson;
 		const currentNumber = this.props.params.quizNumber || 1;
 		const activeQuiz = {};
 		const isCheckpoint = lesson.type == LessonType.Checkpoint;
@@ -88,55 +89,60 @@ class Lessons extends Component {
 
 	render() {
 		const {
-			t, course, modules, activeModule, isLoaded,
+			t, activeModule, isLoaded, course,
 		} = this.props;
 
 		if (!isLoaded || !activeModule) {
 			return <div>Loading...</div>;
 		}
 
-		const { lessons } = activeModule;
+		const { lessons, name } = activeModule;
 
 		return (
 			<Layout>
-				<TransitionGroup
-					appear
-				>
-					{lessons.map((lesson, index) => {
-						const lessonState = Progress.getLessonState(lesson);
-						const isDisabled = lessonState.visualState === ProgressState.Disabled;
+				<Paper className="lessons-container">
+					<div className="lesson-breadcrumbs">
+						{ course.name } &gt; { name }
+					</div>
+					<TransitionGroup
+						appear
+					>
+						{lessons.map((lesson, index) => {
+							const lessonState = Progress.getLessonState(lesson);
+							const isDisabled = lessonState.visualState === ProgressState.Disabled;
 
-						return (
-							<CSSTransition
-								key={lesson.id}
-								classNames="lesssons-in"
-								timeout={150 + (index * 30)}
-							>
-								<div
-									tabIndex={0}
-									role="button"
+							return (
+								<CSSTransition
 									key={lesson.id}
-									style={{ animationDelay: `${index * 30}ms` }}
-									className={`lesson-item ${lessonState.stateClass}`}
-									onClick={() => this.handleClick(lesson.id, lessonState, `/learn/${this.props.params.courseName}/${this.props.params.moduleId}/${this.props.params.moduleName}/${lesson.id}/${toSeoFrendly(lesson.name, 100)}/1`)}
+									classNames="lesssons-in"
+									timeout={150 + (index * 30)}
 								>
-									<Paper
+									<div
+										tabIndex={0}
+										role="button"
 										key={lesson.id}
-										zDepth={isDisabled ? 0 : 1}
-										className={`lesson ${isDisabled ? 'disabled' : ''}`}
+										style={{ animationDelay: `${index * 30}ms` }}
+										className={`lesson-item ${lessonState.stateClass}`}
+										onClick={() => this.handleClick(lesson.id, lessonState, `/learn/${this.props.params.courseName}/${this.props.params.moduleId}/${this.props.params.moduleName}/${lesson.id}/${toSeoFrendly(lesson.name, 100)}/1`)}
 									>
-										<div className="number">{`${index + 1}/${lessons.length}`}</div>
-										<div className="name">{lesson.name}</div>
-										<div className={`info ${lessonState.stateClass}`}>
-											<span>{lesson.quizzes.length} {t('learn.questions-format')}</span>
-										</div>
-									</Paper>
-								</div>
-							</CSSTransition>
-						);
-					})
-					}
-				</TransitionGroup>
+										<Paper
+											key={lesson.id}
+											zDepth={isDisabled ? 0 : 1}
+											className={`lesson ${isDisabled ? 'disabled' : ''}`}
+										>
+											<div className="number">{`${index + 1}/${lessons.length}`}</div>
+											<div className="name">{lesson.name}</div>
+											<div className={`info ${lessonState.stateClass}`}>
+												<span>{lesson.quizzes.length} {t('learn.questions-format')}</span>
+											</div>
+										</Paper>
+									</div>
+								</CSSTransition>
+							);
+						})
+						}
+					</TransitionGroup>
+				</Paper>
 			</Layout>
 		);
 	}

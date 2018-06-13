@@ -149,8 +149,6 @@ class Modules extends Component {
 
 		const { modules, id } = course;
 		const userCourses = this.props.userProfile.skills;
-		const activeCourse = userCourses.find(item => item.id === course.id);
-		const activeCourseProgress = activeCourse ? activeCourse.progress : 0;
 
 		const resetProgressActions = [
 			{

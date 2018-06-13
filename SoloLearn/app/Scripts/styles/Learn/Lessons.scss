@@ -22,63 +22,79 @@
 	}
 }
 
-.lesson-item {
-	display: inline-block;
-	margin: 20px 0 0 0;
-	cursor: pointer;
-	backface-visibility: hidden;
-	transform:translate3d(0,0,0);
-	.lesson {
-		position: relative;
+.lessons-container {
+	padding: 15px;
+	.lesson-breadcrumbs {
+		padding-left: 15px;
+		padding-bottom: 5px;
+	}
+	.lesson-item {
 		display: inline-block;
-		height: 155px;
-		width: 155px;
-		overflow: hidden;
-		margin: 4px;
-		.number {
-			padding: 4px;
-			font-size: 12px;
-			float: right;
-			color: #777;
-		}
-		.name {
-			padding: 20px 10px;
-			text-align: left;
-			height: 115px;
-			color: #565656;
-			font-size: 15px;
-		}
-		.info {
-			position: absolute;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			padding: 10px;
-			font-size: 14px;
-			text-align: left;
-			&.active {
-				background-color: #607d8b;
-				color: #fff;
+		padding: 10px;
+		cursor: pointer;
+		backface-visibility: hidden;
+		transform:translate3d(0,0,0);
+		width: calc(100% / 3 - 20px);
+		.lesson {
+			position: relative;
+			display: inline-block;
+			height: 0;
+			padding-top: 100%;
+			width: 100%;
+			transition: all ease-in 150ms;
+			.number {
+				padding: 4px;
+				font-size: 12px;
+				color: #777;
+				position: absolute;
+				top: 0;
+				right: 0;
 			}
-			&.normal {
-				background-color: #8bc34a;
-				color: #fff;
+			.name {
+				padding: 20px 10px;
+				text-align: left;
+				height: 115px;
+				width: 115px;
+				color: #565656;
+				font-size: 15px;
+				position: absolute;
+				top: 0;
+			}
+			.info {
+				position: absolute;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				padding: 10px;
+				font-size: 14px;
+				text-align: left;
+				&.active {
+					background-color: #607d8b;
+					color: #fff;
+				}
+				&.normal {
+					background-color: #8bc34a;
+					color: #fff;
+				}
+				&.disabled {
+					background-color: inherit;
+					color: #565656;
+				}
 			}
 			&.disabled {
-				background-color: inherit;
-				color: #565656;
+				background-color: #e4e4e4;
+			}
+			&:hover {
+				box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px !important;
 			}
 		}
-		&.disabled {
-			background-color: #e4e4e4;
+		&.initial {
+			transform: translateY(100px);
+			opacity: 0;
 		}
-	}
-	&.initial {
-		transform: translateY(100px);
-		opacity: 0;
-	}
-	&.over {
-		transform: translateY(0);
-		opacity: 1;
+		&.over {
+			transform: translateY(0);
+			opacity: 1;
+		}
 	}
 }
