@@ -5,6 +5,7 @@ import { determineBadge, determineBadgeColor } from 'utils';
 import AvatarColors from 'constants/AvatarColors';
 
 import 'styles/profileAvatar.scss';
+import avatars from './Avatars';
 import ModBadge from './ModBadge';
 
 const DisabledContainer = ({ children, className, style }) => (
@@ -37,17 +38,29 @@ const ProfileAvatar = ({
 		<ConditionalContainer to={`/profile/${userID}`} style={style} className="avatar-container">
 			<div className={`avatar-wrapper ${vertical ? 'vertical' : ''} ${className || ''}`}>
 				<div className="profile-picture-container">
-					<Avatar
-						size={size}
-						style={{
-							margin: '0 5px',
-							backgroundColor: AvatarColors[userID % AvatarColors.length],
-							...(withBorder ? { border: `4px solid ${modBadgeColor}` } : {}),
-							...avatarStyle,
-						}}
-					>{userName.toUpperCase().charAt(0)}
-					</Avatar>
-					{withBorder &&
+					{ avatarUrl ?
+						<Avatar
+							size={size}
+							src={avatars[userID % 5000].picture.large}
+							style={{
+								margin: '0 5px',
+								...(withBorder ? { border: `4px solid ${modBadgeColor}` } : {}),
+								...avatarStyle,
+							}}
+						/>
+						:
+						<Avatar
+							size={size}
+							style={{
+								margin: '0 5px',
+								backgroundColor: AvatarColors[userID % AvatarColors.length],
+								...(withBorder ? { border: `4px solid ${modBadgeColor}` } : {}),
+								...avatarStyle,
+							}}
+						>{userName.toUpperCase().charAt(0)}
+						</Avatar>
+					}
+					{ withBorder &&
 						<ModBadge
 							badge={modBadge}
 							className="big absolute"
