@@ -1,0 +1,56 @@
+.quiz-factory-multiple-choice {
+	.container {
+		margin-bottom: 10px;
+		padding: 12px;
+		.title {
+			font-weight: 500;
+		}
+	}
+	.selected-language {
+		display: flex;
+		justify-content: space-between;
+		cursor: pointer;
+		font-size: 16px;
+		align-items: center;
+		.with-image {
+			display: flex;
+			align-items: center;
+			font-weight: 300;
+		}
+	}
+	.question {
+		display: flex;
+		flex-direction: column;
+		textarea {
+			resize: none;
+			border: 1px solid #888;
+			margin-top: 10px;
+			padding: 10px;
+			height: 20%;
+			font-size: 16px;
+			font-weight: 300;
+		}
+	}
+	.answers {
+		margin-top: 10px;
+		width: 100%;
+		.answer-item {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin: 10px 0;
+			flex: 0 0 auto;
+			.input {
+				flex: 0 0 auto;
+				border: none;
+				// border-bottom: 1px solid black;
+				font-size: 16px;
+				font-weight: 300;
+				height: 20px;
+			}
+			.checkbox {
+				flex: 0 0 auto;
+			}
+		}
+	}
+}
