@@ -47,7 +47,13 @@ class SuggestTypeIn extends Component {
 					<Paper className="container">
 						<span className="title">Answers</span>
 						<div className="answers">
-							<TextField value={answer} onChange={this.onAnswerChange} fullWidth placeholder="Type in the Correct Answer" />
+							<TextField
+								name="answer"
+								value={answer}
+								onChange={this.onAnswerChange}
+								fullWidth
+								placeholder="Type in the Correct Answer"
+							/>
 						</div>
 					</Paper>
 					<RaisedButton label="Preview" fullWidth primary />
