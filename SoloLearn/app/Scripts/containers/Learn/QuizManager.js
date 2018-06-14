@@ -6,9 +6,9 @@ import { bindActionCreators } from 'redux';
 
 // Material UI components
 import {
-  Step,
-  Stepper,
-  StepLabel,
+	Step,
+	Stepper,
+	StepLabel,
 } from 'material-ui/Stepper';
 import Paper from 'material-ui/Paper';
 
@@ -31,7 +31,7 @@ import Service from 'api/service';
 import Comments from 'containers/Comments/CommentsBase';
 import Layout from 'components/Layouts/GeneralLayout';
 
-import StepIcon from './StepIcon';
+// import StepIcon from './StepIcon';
 
 export const LessonType = {
 	Checkpoint: 0,
@@ -188,7 +188,7 @@ class QuizManager extends Component {
 
 		return timeline.map((item, index) => {
 			const quizNumber = (parseInt(this.props.activeQuiz.number, 10) - 1);
-			const isActive =  quizNumber === index;
+			const isActive = quizNumber === index;
 			return (
 				<Step
 					value={index}
@@ -209,7 +209,7 @@ class QuizManager extends Component {
 						}}
 					/>
 				</Step>
-			)
+			);
 		});
 	}
 
@@ -298,7 +298,7 @@ class QuizManager extends Component {
 			<Layout>
 				<Paper className="quiz-container" style={{ padding: 15 }}>
 					<div className="lesson-breadcrumbs">
-						{ course.name } &gt; { activeModule.name } &gt; { activeLesson.name }
+						{course.name} &gt; {activeModule.name} &gt; {activeLesson.name}
 					</div>
 					<Stepper activeStep={parseInt(this.props.activeQuiz.number, 10) - 1}>
 						{this.generateTimeline(quizzes, activeQuiz)}
