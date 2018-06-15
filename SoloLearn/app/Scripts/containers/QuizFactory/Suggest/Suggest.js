@@ -24,7 +24,7 @@ const Suggest = () => (
 					/>
 				</Link>
 				<Divider inset />
-				<Link to="/quiz-factory/suggest/multiple-type-in">
+				<Link to="/quiz-factory/suggest/fill-in">
 					<ListItem
 						primaryText="Fill in the Blank(s)"
 						leftIcon={<img src="/assets/create_multiple_type_in.png" alt="" />}

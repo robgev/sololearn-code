@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Layout from 'components/Layouts/GeneralLayout';
 import { Paper, TextField, RaisedButton } from 'material-ui';
 
-import ChooseLanguage from './ChooseLanguage';
+import ChooseLanguage from '../components/ChooseLanguage';
 
 import './style.scss';
 

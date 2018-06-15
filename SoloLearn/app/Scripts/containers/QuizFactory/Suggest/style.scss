@@ -6,6 +6,33 @@
 			font-weight: 500;
 		}
 	}
+	.editor-box {
+		display: flex;
+		flex-direction: column;
+		.title-with-button {
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		.editor {
+			box-sizing: border-box;
+			border: 1px solid #ddd;
+			cursor: text;
+			padding: 16px;
+			border-radius: 2px;
+			box-shadow: inset 0px 1px 8px -3px #ABABAB;
+			background: #fefefe;
+			height: 20%;
+			margin: 0;
+		}
+		.editor :global(.public-DraftEditor-content) {
+			overflow: auto;
+		}
+		.marked {
+			background-color: lightblue
+		}
+	}
 	.selected-language {
 		display: flex;
 		justify-content: space-between;

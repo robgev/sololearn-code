@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Paper, Checkbox, TextField, RaisedButton } from 'material-ui';
 import Layout from 'components/Layouts/GeneralLayout';
-import ChooseLanguage from './ChooseLanguage';
+import ChooseLanguage from '../components/ChooseLanguage';
 
 import './style.scss';
 
