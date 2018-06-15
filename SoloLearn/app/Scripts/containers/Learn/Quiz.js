@@ -170,6 +170,7 @@ handleCheck = (e, forceTrue = false) => {
 
 handleCheckDialogOpen = async () => {
 	this.setState({ checkOpened: true });
+	this.props.openComments();
 }
 
 handleCheckDialogClose = () => {

@@ -59,6 +59,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 class QuizManager extends Component {
 	state = {
 		commentsCount: 0,
+		commentsOpened: false,
 	}
 
 	async componentWillMount() {
@@ -123,7 +124,7 @@ class QuizManager extends Component {
 			selectQuiz({ id: activeQuiz.id, number: activeQuiz.number, isText: false });
 		}
 		const { count } =
-			await Service.request('Discussion/GetLessonCommentCount', { quizId: this.props.activeQuiz.id, type: 3 });
+			await Service.request('Discussion/GetLessonCommentCount', { quizId: this.props.activeQuiz.id, type: this.props.activeQuiz.isText ? 1 : 3 });
 		this.setState({ commentsCount: count, loading: false });
 		document.title = `${this.props.activeLesson.name}`;
 	}
@@ -219,11 +220,14 @@ class QuizManager extends Component {
 		});
 	}
 
-	loadLessonLink = (quizId, number, isText, state) => {
+	loadLessonLink = async (quizId, number, isText, state) => {
 		if (state === ProgressState.Disabled) {
 			this.setState(this.state);
 			return;
 		}
+		const { count } =
+			await Service.request('Discussion/GetLessonCommentCount', { quizId, type: isText ? 1 : 3 });
+		this.setState({ commentsCount: count, commentsOpened: false });
 		this.props.selectQuiz(Object.assign({}, { id: quizId }, { number }, { isText }));
 
 		if (this.props.isShortcut) {
@@ -261,6 +265,10 @@ class QuizManager extends Component {
 		this.props.selectQuiz(activeQuiz);
 	}
 
+	openComments = () => {
+		this.setState({ commentsOpened: true });
+	}
+
 	render() {
 		const {
 			course,
@@ -269,7 +277,7 @@ class QuizManager extends Component {
 			activeLesson,
 			activeModule,
 		} = this.props;
-		const { loading, commentsCount } = this.state;
+		const { loading, commentsCount, commentsOpened } = this.state;
 
 		if (loading || (!isLoaded && !this.props.isShortcut) ||
 			(this.props.isShortcut && !activeQuiz) ||
@@ -303,9 +311,8 @@ class QuizManager extends Component {
 						{this.generateTimeline(quizzes, activeQuiz)}
 					</Stepper>
 					{childrenWithProps}
-					{!this.props.isShortcut &&
+					{((!this.props.isShortcut && commentsOpened) || activeQuiz.isText) &&
 						<Comments
-							commentsOpened
 							id={activeQuiz.id}
 							commentsType="lesson"
 							type={activeQuiz.isText ? 1 : 3}

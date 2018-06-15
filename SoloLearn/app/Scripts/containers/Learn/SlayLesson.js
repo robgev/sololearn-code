@@ -33,7 +33,6 @@ class SlayLesson extends PureComponent {
 		this.state = {
 			loading: true,
 			commentsCount: 0,
-			commentsOpened: false,
 		};
 	}
 
@@ -93,12 +92,8 @@ class SlayLesson extends PureComponent {
 		await getLessonsByAuthor(id, userID, { index: 0, count: 10 });
 	}
 
-	toggleComments = async () => {
-		this.setState({ commentsOpened: !this.state.commentsOpened });
-	}
-
 	render() {
-		const { loading, commentsOpened, commentsCount } = this.state;
+		const { loading, commentsCount } = this.state;
 		const { lessonsByUser, activeLesson, params } = this.props;
 		const { pageNumber } = params;
 		const {
@@ -140,14 +135,12 @@ class SlayLesson extends PureComponent {
 							courseLanguage={language}
 							commentsCount={comments}
 							isBookmarked={isBookmarked}
-							openComments={this.toggleComments}
 						/>
 						<Comments
 							id={id}
 							type={1}
 							commentsType="userLesson"
 							commentsCount={commentsCount}
-							commentsOpened={commentsOpened}
 							closeComments={this.toggleComments}
 						/>
 						<RelatedLessons
