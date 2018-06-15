@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
+import Paper from 'material-ui/Paper';
 
 import Comments from 'containers/Comments/CommentsBase';
 import LessonLayout from 'components/Layouts/LessonLayout';
 
 import { slayItemTypes } from 'constants/ItemTypes';
+import Service from 'api/service';
 import {
 	getLesson,
 	getCourseLesson,
@@ -123,26 +125,28 @@ class SlayLesson extends PureComponent {
 			<LessonLayout loading={loading}>
 				{ !loading &&
 					<div style={{ width: '100%' }}>
-						<SlayLessonContent
-							date={date}
-							quizId={id}
-							type={type}
-							withToolbar
-							parts={parts}
-							userData={userData}
-							textContent={content}
-							pageNumber={pageNumber}
-							courseLanguage={language}
-							commentsCount={comments}
-							isBookmarked={isBookmarked}
-						/>
-						<Comments
-							id={id}
-							type={1}
-							commentsType="userLesson"
-							commentsCount={commentsCount}
-							closeComments={this.toggleComments}
-						/>
+						<Paper style={{ padding: 15 }}>
+							<SlayLessonContent
+								date={date}
+								quizId={id}
+								type={type}
+								withToolbar
+								parts={parts}
+								userData={userData}
+								textContent={content}
+								pageNumber={pageNumber}
+								courseLanguage={language}
+								commentsCount={comments}
+								isBookmarked={isBookmarked}
+							/>
+							<Comments
+								id={id}
+								type={1}
+								commentsType="userLesson"
+								commentsCount={commentsCount}
+								closeComments={this.toggleComments}
+							/>
+						</Paper>
 						<RelatedLessons
 							id={id}
 							userID={userID}
