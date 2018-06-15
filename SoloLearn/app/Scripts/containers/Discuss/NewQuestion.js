@@ -18,6 +18,7 @@ import { translate } from 'react-i18next';
 import Service from 'api/service';
 
 // Additional components
+import Layout from 'components/Layouts/GeneralLayout';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
 import 'styles/Discuss/NewQuestion.scss';
@@ -115,62 +116,64 @@ class NewQuestion extends Component {
 	render() {
 		const { t } = this.props;
 		return (
-			<Paper className="new-question" id="new-question" style={styles.container}>
-				{this.state.isLoading && <LoadingOverlay />}
-				<h2 style={styles.heading}>{t('question.title')}</h2>
-				<form onSubmit={this.handleSubmit}>
-					<div className="question-data" style={styles.questionData}>
-						<TextField
-							fullWidth
-							value={this.state.title}
-							style={styles.textField}
-							onChange={this.onTitleChange}
-							errorText={this.state.titleErrorText}
-							floatingLabelText={t('question.title-placeholder')}
-						/>
-						<span
-							style={styles.textFieldCoutner}
-						>
-							{this.state.title.length} / {this.maxTitleLength}
-						</span>
-					</div>
-					<div className="question-data" style={styles.questionData}>
-						<TextField
-							multiLine
-							fullWidth
-							rowsMax={4}
-							style={styles.textField}
-							value={this.state.message}
-							onChange={e => this.onMessageChange(e)}
-							floatingLabelText={t('question.message-placeholder')}
-						/>
-						<span
-							style={styles.textFieldCoutner}
-						>
-							{this.state.message.length} / {this.maxQuestionLength}
-						</span>
-					</div>
-					<div className="question-data" style={styles.questionData}>
-						<ChipInput
-							fullWidth
-							fullWidthInput
-							value={this.state.tags}
-							style={styles.textField}
-							onBlur={this.handleBlur}
-							newChipKeyCodes={[ 13, 32 ]}
-							chipRenderer={this.renderChip}
-							dataSource={this.state.suggestions}
-							errorText={this.state.tagsErrorText}
-							onRequestAdd={this.handleTagsChange}
-							onUpdateInput={this.handleUpdateInput}
-							floatingLabelText={t('question.tags-placeholder')}
-						/>
-					</div>
-					<div className="editor-actions" style={styles.editorActions}>
-						<FlatButton type="submit" label={t('common.post-action-title')} primary />
-					</div>
-				</form>
-			</Paper>
+			<Layout>
+				<Paper className="new-question" id="new-question" style={styles.container}>
+					{this.state.isLoading && <LoadingOverlay />}
+					<h2 style={styles.heading}>{t('question.title')}</h2>
+					<form onSubmit={this.handleSubmit}>
+						<div className="question-data" style={styles.questionData}>
+							<TextField
+								fullWidth
+								value={this.state.title}
+								style={styles.textField}
+								onChange={this.onTitleChange}
+								errorText={this.state.titleErrorText}
+								floatingLabelText={t('question.title-placeholder')}
+							/>
+							<span
+								style={styles.textFieldCoutner}
+							>
+								{this.state.title.length} / {this.maxTitleLength}
+							</span>
+						</div>
+						<div className="question-data" style={styles.questionData}>
+							<TextField
+								multiLine
+								fullWidth
+								rowsMax={4}
+								style={styles.textField}
+								value={this.state.message}
+								onChange={e => this.onMessageChange(e)}
+								floatingLabelText={t('question.message-placeholder')}
+							/>
+							<span
+								style={styles.textFieldCoutner}
+							>
+								{this.state.message.length} / {this.maxQuestionLength}
+							</span>
+						</div>
+						<div className="question-data" style={styles.questionData}>
+							<ChipInput
+								fullWidth
+								fullWidthInput
+								value={this.state.tags}
+								style={styles.textField}
+								onBlur={this.handleBlur}
+								newChipKeyCodes={[ 13, 32 ]}
+								chipRenderer={this.renderChip}
+								dataSource={this.state.suggestions}
+								errorText={this.state.tagsErrorText}
+								onRequestAdd={this.handleTagsChange}
+								onUpdateInput={this.handleUpdateInput}
+								floatingLabelText={t('question.tags-placeholder')}
+							/>
+						</div>
+						<div className="editor-actions" style={styles.editorActions}>
+							<FlatButton type="submit" label={t('common.post-action-title')} primary />
+						</div>
+					</form>
+				</Paper>
+			</Layout>
 		);
 	}
 }

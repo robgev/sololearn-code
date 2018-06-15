@@ -92,9 +92,7 @@ export const EditQuestionStyles = {
 
 export const NewQuestionStyles = {
 	container: {
-		width: '1000px',
 		position: 'relative',
-		margin: '20px auto',
 		padding: '10px 20px',
 	},
 	heading: {
