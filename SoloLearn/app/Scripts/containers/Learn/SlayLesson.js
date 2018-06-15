@@ -32,6 +32,7 @@ class SlayLesson extends PureComponent {
 		super();
 		this.state = {
 			loading: true,
+			commentsCount: 0,
 			commentsOpened: false,
 		};
 	}
@@ -49,22 +50,32 @@ class SlayLesson extends PureComponent {
 		}
 	}
 
+	loadCommentsCount = async () => {
+		const { id, type } = this.props.activeLesson;
+		const { count } = await Service.request('Discussion/GetLessonCommentCount', { quizId: id, type });
+		return count;
+	}
+
 	loadLesson = async (lessonId) => {
 		const { params, getCourseLesson, getLesson } = this.props;
 		const { itemType } = params;
 		const parsedItemType = parseInt(itemType, 10);
 		this.setState({ loading: true });
 		switch (parsedItemType) {
-		case slayItemTypes.courseLesson:
+		case slayItemTypes.courseLesson: {
 			await getCourseLesson(lessonId);
 			await this.getLessonsByAuthor();
-			this.setState({ loading: false });
+			const commentsCount = await this.loadCommentsCount();
+			this.setState({ loading: false, commentsCount });
 			break;
-		case slayItemTypes.slayLesson:
+		}
+		case slayItemTypes.slayLesson: {
 			await getLesson(lessonId);
 			await this.getLessonsByAuthor();
-			this.setState({ loading: false });
+			const commentsCount = await this.loadCommentsCount();
+			this.setState({ loading: false, commentsCount });
 			break;
+		}
 		default:
 			break;
 		}
@@ -87,7 +98,7 @@ class SlayLesson extends PureComponent {
 	}
 
 	render() {
-		const { loading, commentsOpened } = this.state;
+		const { loading, commentsOpened, commentsCount } = this.state;
 		const { lessonsByUser, activeLesson, params } = this.props;
 		const { pageNumber } = params;
 		const {
@@ -135,6 +146,7 @@ class SlayLesson extends PureComponent {
 							id={id}
 							type={1}
 							commentsType="userLesson"
+							commentsCount={commentsCount}
 							commentsOpened={commentsOpened}
 							closeComments={this.toggleComments}
 						/>

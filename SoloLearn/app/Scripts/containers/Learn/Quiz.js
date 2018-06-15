@@ -72,7 +72,6 @@ class Quiz extends Component {
 			checkOpened: false,
 			notAvailable: false,
 			isCorrect: false,
-			commentCount: 0,
 		};
 		this.hintPrice = 0;
 		this.skipPrice = 0;
@@ -169,17 +168,8 @@ handleCheck = (e, forceTrue = false) => {
 	this.handleCheckDialogOpen();
 }
 
-loadCommentsCount = async () => {
-	const { activeQuiz: { id } } = this.props;
-	const { count } =
-		await Service.request('Discussion/GetLessonCommentCount', { quizId: id, type: 3 });
-	return count;
-}
-
 handleCheckDialogOpen = async () => {
 	this.setState({ checkOpened: true });
-	const commentCount = await this.loadCommentsCount();
-	this.setState({ commentCount });
 }
 
 handleCheckDialogClose = () => {
@@ -325,10 +315,6 @@ render() {
 		t,
 	} = this.props;
 
-	const {
-		commentCount,
-	} = this.state;
-
 	if (!isLoaded && !this.props.isShortcut) {
 		return <div>Loading...</div>;
 	}
@@ -351,7 +337,6 @@ render() {
 					glossary={this.props.glossary}
 					textContent={quiz.textContent}
 					courseLanguage={course.language}
-					openComments={this.props.openComments}
 				/>
 				<RaisedButton
 					label={t('learn.buttons-continue')}
@@ -453,12 +438,10 @@ render() {
 			}
 			{ this.state.checkOpened && Popup.checkPopup({
 				isCheckpoint,
-				commentCount,
 				isCorrect: this.state.isCorrect,
 				isShortcut: this.props.isShortcut,
 				actionCallback: this.continueQuiz,
 				shortcutLives: this.props.shortcutLives,
-				openComments: this.props.openComments,
 			})}
 		</div>
 	);

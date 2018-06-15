@@ -174,11 +174,18 @@ class CommentsBase extends Component {
 
 	// Render popup heading
 	getPopupTitle = () => {
-		const { t } = this.props;
+		const { t, commentsCount } = this.props;
 		return (
 			<div style={styles.commentsFilterWrapper}>
 				<Toolbar style={styles.commentsFilter.base}>
-					<ToolbarTitle onClick={this.closeReplies} text={t('common.comments')} style={styles.commentsFilter.title} />
+					<ToolbarTitle
+						onClick={this.closeReplies}
+						text={commentsCount === 1 ?
+							t('common.comment-format-one') :
+							`${commentsCount} ${t('common.comments')}`
+						}
+						style={styles.commentsFilter.title}
+					/>
 					<ToolbarGroup lastChild>
 						<DropDownMenu
 							style={styles.filterDropDown.base}

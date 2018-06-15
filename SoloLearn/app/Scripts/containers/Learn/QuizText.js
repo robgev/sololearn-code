@@ -5,9 +5,6 @@ import { browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
 import Radium, { Style } from 'radium';
 
-// Marterial UI components
-import FlatButton from 'material-ui/FlatButton';
-
 // Service & others
 import Service from 'api/service';
 import { getPosition, updateDate } from 'utils';
@@ -107,15 +104,6 @@ const styles = {
 		overflow: 'hidden',
 	},
 
-	commentButton: {
-		float: 'right',
-		margin: '0 20px 0 0',
-	},
-
-	commentButtonLabel: {
-		fontSize: '13px',
-	},
-
 	tooltipWrapper: {
 		position: 'relative',
 		cursor: 'pointer',
@@ -185,15 +173,9 @@ class QuizText extends Component {
 		this.state = {
 			pathname,
 			isBookmarked: props.isBookmarked,
-			countLoaded: !!props.commentsCount,
 		};
 
-		this.commentsCount = props.commentsCount || 0;
 		this.headersPositions = [];
-	}
-
-	loadCommentsCount() {
-		return Service.request('Discussion/GetLessonCommentCount', { quizId: this.props.quizId, type: this.props.type });
 	}
 
 	openTooltip(e, glossaryItem, placement) {
@@ -454,9 +436,9 @@ class QuizText extends Component {
 	}
 
 	render() {
-		const { isBookmarked, countLoaded } = this.state;
+		const { isBookmarked } = this.state;
 		const {
-			openComments, withToolbar, userData, date, t,
+			withToolbar, userData, date,
 		} = this.props;
 		return (
 			<div className="text-container" style={styles.textContainer}>
@@ -466,39 +448,19 @@ class QuizText extends Component {
 				{tooltipLeftPlaced}
 				{tooltipBottomPlaced}
 				<div id="text-content">{this.renderComponentParts()}</div>
-				{ withToolbar ?
+				{ withToolbar &&
 					<SlayLessonToolbar
 						userData={userData}
-						countLoaded={countLoaded}
 						isBookmarked={isBookmarked}
 						timePassed={updateDate(date)}
-						openComments={openComments}
-						commentsCount={this.commentsCount}
 						toggleBookmark={this.toggleBookmark}
-					/> :
-					<FlatButton
-						onClick={openComments}
-						style={styles.commentButton}
-						labelStyle={styles.commentButtonLabel}
-						label={`${countLoaded ? this.commentsCount : ''} ${t('common.comments')}`}
 					/>
 				}
 			</div>
 		);
 	}
 
-	componentWillMount() {
-		if (!this.props.commentsCount) {
-			this.loadCommentsCount().then((response) => {
-				this.commentsCount = response.count;
-				this.setState({ countLoaded: true });
-			}).catch((error) => {
-				console.log(error);
-			});
-		}
-	}
-
-	componentDidUpdate(prevProps) {
+	componentDidUpdate() {
 		const glossaryItems = document.getElementsByClassName('glossary-item');
 		for (let i = 0; i < glossaryItems.length; i++) {
 			const item = glossaryItems[i];

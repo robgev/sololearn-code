@@ -31,7 +31,7 @@ import Service from 'api/service';
 import Comments from 'containers/Comments/CommentsBase';
 import Layout from 'components/Layouts/GeneralLayout';
 
-// import StepIcon from './StepIcon';
+import StepIcon from './StepIcon';
 
 export const LessonType = {
 	Checkpoint: 0,
@@ -58,7 +58,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 @connect(mapStateToProps, mapDispatchToProps)
 class QuizManager extends Component {
 	state = {
-		commentsOpened: false,
+		commentsCount: 0,
 	}
 
 	async componentWillMount() {
@@ -70,6 +70,9 @@ class QuizManager extends Component {
 			shortcutLesson,
 			loadCourseInternal,
 		} = this.props;
+
+		this.setState({ loading: true });
+
 		if (!isShortcut) {
 			Service.request('/AddLessonImpression', { lessonId: params.lessonId });
 		}
@@ -119,6 +122,9 @@ class QuizManager extends Component {
 			const activeQuiz = shortcutLesson.quizzes[0];
 			selectQuiz({ id: activeQuiz.id, number: activeQuiz.number, isText: false });
 		}
+		const { count } =
+			await Service.request('Discussion/GetLessonCommentCount', { quizId: this.props.activeQuiz.id, type: 3 });
+		this.setState({ commentsCount: count, loading: false });
 		document.title = `${this.props.activeLesson.name}`;
 	}
 
@@ -255,14 +261,6 @@ class QuizManager extends Component {
 		this.props.selectQuiz(activeQuiz);
 	}
 
-	openComments = () => {
-		this.setState({ commentsOpened: true });
-	}
-
-	closeComments = () => {
-		this.setState({ commentsOpened: false });
-	}
-
 	render() {
 		const {
 			course,
@@ -271,8 +269,9 @@ class QuizManager extends Component {
 			activeLesson,
 			activeModule,
 		} = this.props;
+		const { loading, commentsCount } = this.state;
 
-		if ((!isLoaded && !this.props.isShortcut) ||
+		if (loading || (!isLoaded && !this.props.isShortcut) ||
 			(this.props.isShortcut && !activeQuiz) ||
 			(this.props.params.quizNumber && !this.props.activeQuiz)) {
 			return <div>Loading...</div>;
@@ -298,19 +297,20 @@ class QuizManager extends Component {
 			<Layout>
 				<Paper className="quiz-container" style={{ padding: 15 }}>
 					<div className="lesson-breadcrumbs">
-						{course.name} &gt; {activeModule.name} &gt; {activeLesson.name}
+						{ course.name } &gt; { activeModule.name } &gt; { activeLesson.name }
 					</div>
 					<Stepper activeStep={parseInt(this.props.activeQuiz.number, 10) - 1}>
 						{this.generateTimeline(quizzes, activeQuiz)}
 					</Stepper>
 					{childrenWithProps}
-					{(!this.props.isShortcut && this.state.commentsOpened) &&
+					{!this.props.isShortcut &&
 						<Comments
+							commentsOpened
 							id={activeQuiz.id}
 							commentsType="lesson"
 							type={activeQuiz.isText ? 1 : 3}
+							commentsCount={commentsCount}
 							closeComments={this.closeComments}
-							commentsOpened={this.state.commentsOpened}
 						/>
 					}
 				</Paper>
