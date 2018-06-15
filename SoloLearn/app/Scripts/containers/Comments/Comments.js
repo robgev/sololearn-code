@@ -241,16 +241,17 @@ class Comments extends Component {
 			selectedComment,
 		} = this.props;
 		return (
-			<div id="comments">
+			<div id="comments" ref={(container) => { this.container = container; }}>
 				{(!isLoaded || !comments.length) && <LoadingOverlay />}
 				<div>
 					<InfiniteVirtualizedList
 						window
-						item={this.renderComment}
 						list={comments}
-						loadMore={this.loadComments}
 						cache={this.state.cache}
+						item={this.renderComment}
 						condition={selectedComment}
+						scrollElement={this.container}
+						loadMore={this.loadComments}
 						ref={(list) => { this._list = list; }}
 					/>
 				</div>

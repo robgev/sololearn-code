@@ -71,6 +71,15 @@ class InfiniteVirtalizedList extends Component {
 		this.props.loadPrevious();
 	}
 
+	calculateScrollTop = (scrollTop) => {
+		const { scrollElement } = this.props;
+		if (scrollElement) {
+			const calculatedScrollTop = document.body.scrollTop - scrollElement.offsetTop;
+			return calculatedScrollTop > 0 ? calculatedScrollTop : 0;
+		}
+		return scrollTop;
+	}
+
 	rowRenderer = ({ key, index, style }) => {
 		const isSelected = index === this.state.index;
 		const className = isSelected ? 'fadeOut' : '';
@@ -99,36 +108,31 @@ class InfiniteVirtalizedList extends Component {
 	render() {
 		if (this.props.window && this.props.cache) {
 			return (
-				<WindowScroller
-					scrollElement={this.props.scrollElement || window}
-				>
-					{({
-						height, registerChild, scrollTop, onChildScroll,
-					}) => (
-						<div style={{ flex: '1 1 auto ' }}>
-							<AutoSizer disableHeight>
-								{({ width }) => (
-									<div ref={registerChild}>
-										<List
-											autoHeight
-											width={width}
-											height={height}
-											scrollTop={scrollTop}
-											onScroll={onChildScroll}
-											rowCount={this.props.list.length}
-											ref={(list) => { this._list = list; }}
-											additional={this.props.additional}
-											rowHeight={this.props.cache.rowHeight}
-											onRowsRendered={this.handleNextFetch}
-											rowRenderer={this.autoSizedRowRenderer}
-											deferredMeasurementCache={this.props.cache}
-										/>
-									</div>
-								)}
-							</AutoSizer>
-						</div>
+				<AutoSizer disableHeight>
+					{({ width }) => (
+						<WindowScroller>
+							{({
+								height, registerChild, scrollTop,
+							}) => (
+								<div ref={registerChild}>
+									<List
+										autoHeight
+										width={width}
+										height={height}
+										rowCount={this.props.list.length}
+										ref={(list) => { this._list = list; }}
+										additional={this.props.additional}
+										rowHeight={this.props.cache.rowHeight}
+										onRowsRendered={this.handleNextFetch}
+										rowRenderer={this.autoSizedRowRenderer}
+										scrollTop={this.calculateScrollTop(scrollTop)}
+										deferredMeasurementCache={this.props.cache}
+									/>
+								</div>
+							)}
+						</WindowScroller>
 					)}
-				</WindowScroller>
+				</AutoSizer>
 			);
 		} else if (this.props.window) {
 			return (
