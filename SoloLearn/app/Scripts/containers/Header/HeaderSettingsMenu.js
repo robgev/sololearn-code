@@ -6,6 +6,7 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import 'styles/Header/HeaderSettingsMenu.scss';
 
 import { logout, imitateLogin } from 'actions/login.action';
 
@@ -42,51 +43,50 @@ class SettingsMenu extends PureComponent {
 	render() {
 		const { avatarUrl, userName, userID } = this.props;
 		return (avatarUrl || userName) && (
-			<IconMenu
-				targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-				anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-				iconStyle={{ display: 'flex', alignItems: 'center' }}
-				iconButtonElement={
-					<IconButton style={{ width: 'initial', padding: 0 }}>
-						<div>
-							<ProfileAvatar
-								disabled
-								userID={userID}
-								userName={userName}
-								avatarUrl={avatarUrl}
-								avatarStyle={{ border: '1px solid white' }}
-							/>
+			<div className="header-settings-menu-container">
+				<ProfileAvatar
+					userID={userID}
+					userName={userName}
+					avatarUrl={avatarUrl}
+					avatarStyle={{ border: '1px solid white' }}
+				/>
+				<IconMenu
+					targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+					anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+					iconStyle={{ display: 'flex', alignItems: 'center' }}
+					iconButtonElement={
+						<IconButton style={{ width: 'initial', padding: 0 }}>
 							<div>
 								<ArrowDown color="white" />
 							</div>
-						</div>
-					</IconButton>
-				}
-			>
-				<MenuItem
-					primaryText="Leaderboards"
-					onClick={this.goToLeaderboards}
-				/>
-				<MenuItem
-					primaryText="Lesson Factory"
-				/>
-				<MenuItem
-					primaryText="Quiz Factory"
-					onClick={this.goToQuizFactory}
-				/>
-				<MenuItem
-					primaryText="Settings"
-					onClick={this.goToSettings}
-				/>
-				<MenuItem
-					primaryText="Imitate logout"
-					onClick={this.props.imitateLogin}
-				/>
-				<MenuItem
-					primaryText="Sign out"
-					onClick={this.singOut}
-				/>
-			</IconMenu>
+						</IconButton>
+					}
+				>
+					<MenuItem
+						primaryText="Leaderboards"
+						onClick={this.goToLeaderboards}
+					/>
+					<MenuItem
+						primaryText="Lesson Factory"
+					/>
+					<MenuItem
+						primaryText="Quiz Factory"
+						onClick={this.goToQuizFactory}
+					/>
+					<MenuItem
+						primaryText="Settings"
+						onClick={this.goToSettings}
+					/>
+					<MenuItem
+						primaryText="Imitate logout"
+						onClick={this.props.imitateLogin}
+					/>
+					<MenuItem
+						primaryText="Sign out"
+						onClick={this.singOut}
+					/>
+				</IconMenu>
+			</div>
 		);
 	}
 }

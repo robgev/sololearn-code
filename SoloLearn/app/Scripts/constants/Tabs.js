@@ -22,7 +22,6 @@ export default [
 		id: 4,
 		name: 'tab.discuss',
 		url: '/discuss',
-		aliasUrl: '/posts',
 		imgUrl: 'tab_discuss.png',
 	},
 ];
