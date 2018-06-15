@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Paper, Checkbox, TextField, RaisedButton } from 'material-ui';
 import Layout from 'components/Layouts/GeneralLayout';
+import QuizSelector from 'containers/Challenges/Challenge/Game/TypeSelector';
 import ChooseLanguage from '../components/ChooseLanguage';
 
 import './style.scss';
@@ -11,11 +12,12 @@ class SuggestMultipleChoice extends Component {
 		language: null,
 		question: '',
 		answers: [
-			{ correct: false, text: '' },
-			{ correct: false, text: '' },
-			{ correct: false, text: '' },
-			{ correct: false, text: '' },
+			{ isCorrect: false, text: '', id: 0 },
+			{ isCorrect: false, text: '', id: 1 },
+			{ isCorrect: false, text: '', id: 2 },
+			{ isCorrect: false, text: '', id: 3 },
 		],
+		preview: false,
 	}
 	toggleLanguageSelector = () => {
 		this.setState(state => ({ isLanguageSelectorOpen: !state.isLanguageSelectorOpen }));
@@ -34,12 +36,19 @@ class SuggestMultipleChoice extends Component {
 	}
 	toggleAnswer = (idx) => {
 		this.setState(state => ({
-			answers: state.answers.map((a, i) => (i === idx ? { ...a, correct: !a.correct } : a)),
+			answers: state.answers.map((a, i) => (i === idx ? { ...a, isCorrect: !a.isCorrect } : a)),
 		}));
+	}
+	makeQuiz = () => {
+		const { answers, question } = this.state;
+		return { type: 1, answers: answers.filter(a => a.text !== ''), question };
+	}
+	preview = () => {
+		this.setState(state => ({ preview: !state.preview }));
 	}
 	render() {
 		const {
-			isLanguageSelectorOpen, language, question, answers,
+			isLanguageSelectorOpen, language, question, answers, preview,
 		} = this.state;
 		return (
 			<Layout>
@@ -72,7 +81,7 @@ class SuggestMultipleChoice extends Component {
 										/>
 										<Checkbox
 											className="checkbox"
-											checked={answer.correct}
+											checked={answer.isCorrect}
 											onCheck={() => this.toggleAnswer(idx)}
 										/>
 									</div>
@@ -85,7 +94,22 @@ class SuggestMultipleChoice extends Component {
 						onClose={this.toggleLanguageSelector}
 						onChoose={this.selectLanguage}
 					/>
-					<RaisedButton label="Preview" fullWidth primary />
+					<RaisedButton
+						className="preview-button"
+						label="Preview"
+						fullWidth
+						primary
+						onClick={this.preview}
+					/>
+					<RaisedButton
+						className="preview-button"
+						label="Submit"
+						fullWidth
+						primary
+					/>
+					{preview
+						? <QuizSelector quiz={this.makeQuiz()} />
+						: null}
 				</div>
 			</Layout>
 		);

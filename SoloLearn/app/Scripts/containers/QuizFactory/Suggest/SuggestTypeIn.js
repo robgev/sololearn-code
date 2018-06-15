@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Layout from 'components/Layouts/GeneralLayout';
 import { Paper, TextField, RaisedButton } from 'material-ui';
-
+import QuizSelector from 'containers/Challenges/Challenge/Game/TypeSelector';
 import ChooseLanguage from '../components/ChooseLanguage';
 
 import './style.scss';
@@ -12,6 +12,7 @@ class SuggestTypeIn extends Component {
 		language: null,
 		question: '',
 		answer: '',
+		preview: false,
 	}
 	toggleLanguageSelector = () => {
 		this.setState(state => ({ isLanguageSelectorOpen: !state.isLanguageSelectorOpen }));
@@ -26,9 +27,22 @@ class SuggestTypeIn extends Component {
 	onAnswerChange = (e) => {
 		this.setState({ answer: e.target.value });
 	}
+	makeQuiz = () => {
+		const { question, answer } = this.state;
+		return {
+			type: 2,
+			question,
+			answers: [ {
+				text: answer, id: 1, properties: { prefix: '', postfix: '' }, isCorrect: true,
+			} ],
+		};
+	}
+	togglePreview = () => {
+		this.setState(state => ({ preview: !state.preview }));
+	}
 	render() {
 		const {
-			isLanguageSelectorOpen, language, question, answer,
+			isLanguageSelectorOpen, language, question, answer, preview,
 		} = this.state;
 		return (
 			<Layout>
@@ -56,7 +70,17 @@ class SuggestTypeIn extends Component {
 							/>
 						</div>
 					</Paper>
-					<RaisedButton label="Preview" fullWidth primary />
+					<RaisedButton
+						label="Preview"
+						fullWidth
+						primary
+						className="preview-button"
+						onClick={this.togglePreview}
+					/>
+					{preview
+						? <QuizSelector quiz={this.makeQuiz()} />
+						: null}
+
 				</div>
 				<ChooseLanguage
 					open={isLanguageSelectorOpen}
