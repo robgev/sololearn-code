@@ -7,18 +7,23 @@ import FeedItem from './FeedItem';
 // Utils and Defaults
 import types from '../../defaults/appTypes';
 
-const FeedItems = (props) => {
-	const renderFeedItems = props.feedItems.map(feedItem => (
+const FeedItems = ({
+	style,
+	feedItems,
+	openPopup,
+	className,
+}) => {
+	const renderFeedItems = feedItems.map(feedItem => (
 		<FeedItem
 			key={feedItem.type === types.mergedChallange ?
 				`feedGroup${feedItem.toId}` :
 				`feedItem${feedItem.id}`}
 			feedItem={feedItem}
-			openPopup={props.openPopup}
+			openPopup={openPopup}
 		/>
 	));
 	return (
-		<div id="feed-items">
+		<div style={style} className={className}>
 			{renderFeedItems}
 		</div>
 	);

@@ -235,11 +235,12 @@ class FeedItem extends Component {
 							votes={this.votes}
 						/>
 					</Paper>
-					{this.state.isOpened &&
-						<FeedItems
-							feedItems={feedItem.groupedItems}
-							openPopup={this.props.openPopup}
-						/>}
+					<FeedItems
+						feedItems={feedItem.groupedItems}
+						openPopup={this.props.openPopup}
+						className={`merged-items-container ${this.state.isOpened ? 'open' : ''}`}
+						style={{ height: this.state.isOpened ? feedItem.groupedItems.length * 143 : 0 }}
+					/>
 				</div>
 			);
 		}

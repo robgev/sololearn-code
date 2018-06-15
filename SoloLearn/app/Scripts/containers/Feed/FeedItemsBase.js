@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import Radium from 'radium';
+import { translate } from 'react-i18next';
 import Scroll from 'react-scroll';
 import { Link } from 'react-router';
 import { Motion, spring } from 'react-motion';
@@ -31,15 +32,14 @@ import { getOffset, numberFormatter } from 'utils';
 import PopupTypes from 'defaults/feedPopupTypes';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import FeedShimmer from 'components/Shared/Shimmers/FeedShimmer';
+
+import 'styles/Feed/FeedItems.scss';
 
 // Additional data and components
 import Header from './Header';
 import FeedPins from './FeedPins';
 import FeedItems from './FeedItems';
-import FeedShimmer from 'components/Shared/Shimmers/FeedShimmer';
-
-// i18next
-import { translate } from 'react-i18next';
 
 const scroll = Scroll.animateScroll;
 
@@ -417,7 +417,7 @@ class FeedItemsBase extends Component {
 			isUserProfile,
 		} = this.props;
 		return (
-			<div className="wrapper">
+			<div className="feed-items-wrapper">
 				{!isUserProfile && <Header profile={userProfile} levels={levels} />}
 				{!isUserProfile && <p className="sub-title" style={styles.subTitle}>{t('feed.title')}</p>}
 				{

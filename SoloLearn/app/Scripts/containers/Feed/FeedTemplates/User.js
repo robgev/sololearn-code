@@ -54,7 +54,6 @@ class User extends Component {
 					size={60}
 					userID={user.id}
 					withUserNameBox
-					badge={user.badge}
 					disabled={disabled}
 					userName={user.name}
 					avatarUrl={user.avatarUrl}
