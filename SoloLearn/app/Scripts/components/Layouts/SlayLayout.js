@@ -16,6 +16,7 @@ const Layout = ({
 	hasMore,
 	loadMore,
 	isCourses,
+	noDisplay,
 	wrapperStyle,
 	cardComponent: CardComponent,
 	loadingComponent: LoadingComponent,
@@ -27,6 +28,7 @@ const Layout = ({
 				paper={paper}
 				isBusy={loading}
 				style={wrapperStyle}
+				noDisplay={noDisplay}
 				loadingComponent={LoadingComponent ?
 					<LoadingComponent /> :
 					<SlayHomeShimmer />

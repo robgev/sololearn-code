@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import Slider from 'react-slick';
 import Paper from 'material-ui/Paper';
 import { translate } from 'react-i18next';
 
@@ -10,6 +11,21 @@ import CourseChip from './CourseChip';
 const collectionTypes = {
 	slayLessons: 1,
 	courses: 2,
+};
+
+const generateBreakpoints = () => {
+	const breakpointValues = [ 1624, 1224, 768, 320 ];
+	const initialNumberOfShownItems = 5;
+	return breakpointValues.map((currentPoint, index) => {
+		const slidesToShow = initialNumberOfShownItems - (index + 1);
+		return {
+			breakpoint: currentPoint,
+			settings: {
+				slidesToShow,
+				infinite: false,
+			},
+		};
+	});
 };
 
 const CollectionCard = ({
@@ -36,7 +52,6 @@ const CollectionCard = ({
 				padding: 15,
 				width: '100%',
 				marginBottom: 10,
-				overflow: 'hidden',
 			}}
 		>
 			<div className={`meta-info ${!description ? 'big-padding-bottom' : ''}`}>
@@ -50,7 +65,17 @@ const CollectionCard = ({
 			{ description &&
 			<p className="course-description">{description}</p>
 			}
-			<div className="courses-list">
+			<Slider
+				arrows
+				infinite
+				draggable
+				dots={false}
+				speed={500}
+				swipeToSlide
+				slidesToShow={5}
+				className="courses-list"
+				responsive={generateBreakpoints(collectionItems)}
+			>
 				{
 					collectionItems.map((lessonItem) => {
 						const foundSkill = isCourses
@@ -73,7 +98,7 @@ const CollectionCard = ({
 						);
 					})
 				}
-			</div>
+			</Slider>
 		</Paper>
 	);
 };

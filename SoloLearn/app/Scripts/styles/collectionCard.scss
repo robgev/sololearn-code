@@ -25,8 +25,7 @@
 	display: flex;
 	margin: 0 auto;
 	color: #333;
-	overflow: hidden;
-	transform: translate3d(0px, 0px, 0px); // Done for hiding svg items
+	width: 100%;
 	.course-chip-wrapper {
 		.collection-card-chip {
 			display: flex;
@@ -38,5 +37,29 @@
 				width: 85px;
 			}
 		}
+	}
+}
+
+.slick-slider {
+	.slick-arrow {
+		z-index: 1;
+	}
+
+	.slick-prev {
+		left: 0;
+		&:before {
+			color: #00558B;
+		}
+	}
+
+	.slick-next {
+		right: 0;
+		&:before {
+			color: #00558B;
+		}
+	}
+
+	.slick-slide {
+		height: initial;
 	}
 }

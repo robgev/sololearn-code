@@ -27,7 +27,7 @@ class SlayHome extends PureComponent {
 		const { startIndex, loadCount } = this.state;
 		const { collections, getLessonCollections } = this.props;
 		if (!collections.length) {
-			const length = await getLessonCollections({ index: startIndex, count: loadCount });
+			const length = await getLessonCollections({ index: startIndex, count: loadCount }) - 1;
 			this.setState({
 				loading: false,
 				hasMore: length === loadCount,
@@ -60,6 +60,7 @@ class SlayHome extends PureComponent {
 		const { loading, hasMore } = this.state;
 		return (
 			<SlayLayout
+				noDisplay={false}
 				loading={loading}
 				hasMore={hasMore}
 				items={collections}

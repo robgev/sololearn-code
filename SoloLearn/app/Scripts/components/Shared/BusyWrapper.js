@@ -16,6 +16,7 @@ const BusyWrapper = ({
 	isBusy,
 	children,
 	className,
+	noDisplay = true,
 	loadingComponent,
 	wrapperClassName = '',
 }) => {
@@ -26,7 +27,8 @@ const BusyWrapper = ({
 				className={`content-wrapper ${wrapperClassName}`}
 				style={{
 					...style,
-					...(isBusy ? { display: 'none' } : {}),
+					...((isBusy && !noDisplay) ? { opacity: 0 } : {}),
+					...((isBusy && noDisplay) ? { display: 'none' } : {}),
 				}}
 			>
 				{!title ?

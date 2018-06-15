@@ -4,7 +4,7 @@
 	display: block;
 	text-decoration: none;
 	color: rgba(0, 0, 0, 0.87);
-	padding-right: 30px;
+	padding: 0 15px;
 	.chip-image {
 		width: 95px;
 		height: 95px;
@@ -24,6 +24,7 @@
 		width: 100%;
 		font-size: 13px;
 		padding-top: 7px;
+		padding-left: 15px;
 		@include multiLineEllipsis($lineHeight: 14px, $lineCount: 2, $bgColor: white);
 	}
 }
