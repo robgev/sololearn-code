@@ -13,10 +13,10 @@ class SuggestMultipleChoice extends Component {
 		language: null,
 		question: '',
 		answers: [
-			{ isCorrect: false, text: '', id: 0 },
-			{ isCorrect: false, text: '', id: 1 },
-			{ isCorrect: false, text: '', id: 2 },
-			{ isCorrect: false, text: '', id: 3 },
+			{ isCorrect: false, text: '' },
+			{ isCorrect: false, text: '' },
+			{ isCorrect: false, text: '' },
+			{ isCorrect: false, text: '' },
 		],
 		preview: false,
 	}
@@ -43,8 +43,8 @@ class SuggestMultipleChoice extends Component {
 	makeQuiz = () => {
 		const { answers, question, language } = this.state;
 		return {
- type: 1, answers: answers.filter(a => a.text !== ''), question, language 
-};
+			type: 1, answers: answers.filter(a => a.text !== ''), question, language: language.id,
+		};
 	}
 	preview = () => {
 		this.setState(state => ({ preview: !state.preview }));
@@ -80,21 +80,21 @@ class SuggestMultipleChoice extends Component {
 						<span className="title">Answers</span>
 						<div className="answers">
 							{
-								answers.map(answer => (
+								answers.map((answer, idx) => (
 									<div
 										className="answer-item"
-										key={`Option${answer.id}`}
+										key={`Option${idx}`} // eslint-disable-line react/no-array-index-key
 									>
 										<TextField
-											name={`Answer field ${answer.id}`}
+											name={`Answer field ${idx}`}
 											className="input"
-											placeholder={`Option ${answer.id + 1}`}
-											onChange={e => this.onAnswerChange(answer.id, e.target.value)}
+											placeholder={`Option ${idx + 1}`}
+											onChange={e => this.onAnswerChange(idx, e.target.value)}
 										/>
 										<Checkbox
 											className="checkbox"
 											checked={answer.isCorrect}
-											onCheck={() => this.toggleAnswer(answer.id)}
+											onCheck={() => this.toggleAnswer(idx)}
 										/>
 									</div>
 								))

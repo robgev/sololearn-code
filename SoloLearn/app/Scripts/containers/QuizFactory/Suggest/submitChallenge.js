@@ -1,3 +1,3 @@
 import Service from 'api/service';
 
-export default quiz => console.log('Waiting for endpoint');
+export default quiz => Service.request('Challenge/SaveChallenge', { challenge: { ...quiz, status: 1 } });
