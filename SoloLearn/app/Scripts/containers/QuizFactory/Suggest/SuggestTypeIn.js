@@ -3,6 +3,7 @@ import Layout from 'components/Layouts/GeneralLayout';
 import { Paper, TextField, RaisedButton } from 'material-ui';
 import QuizSelector from 'containers/Challenges/Challenge/Game/TypeSelector';
 import ChooseLanguage from '../components/ChooseLanguage';
+import submitChallenge from './submitChallenge';
 
 import './style.scss';
 
@@ -28,10 +29,11 @@ class SuggestTypeIn extends Component {
 		this.setState({ answer: e.target.value });
 	}
 	makeQuiz = () => {
-		const { question, answer } = this.state;
+		const { question, answer, language } = this.state;
 		return {
 			type: 2,
 			question,
+			language,
 			answers: [ {
 				text: answer, id: 1, properties: { prefix: '', postfix: '' }, isCorrect: true,
 			} ],
@@ -39,6 +41,14 @@ class SuggestTypeIn extends Component {
 	}
 	togglePreview = () => {
 		this.setState(state => ({ preview: !state.preview }));
+	}
+	submit = () => {
+		const quiz = this.makeQuiz();
+		submitChallenge(quiz);
+	}
+	isSubmitOn = () => {
+		const { question, answer, language } = this.state;
+		return question !== '' && answer !== '' && language !== null;
 	}
 	render() {
 		const {
@@ -76,6 +86,14 @@ class SuggestTypeIn extends Component {
 						primary
 						className="preview-button"
 						onClick={this.togglePreview}
+					/>
+					<RaisedButton
+						className="preview-button"
+						label="Submit"
+						fullWidth
+						primary
+						disabled={!this.isSubmitOn()}
+						onClick={this.submit}
 					/>
 					{preview
 						? <QuizSelector quiz={this.makeQuiz()} />

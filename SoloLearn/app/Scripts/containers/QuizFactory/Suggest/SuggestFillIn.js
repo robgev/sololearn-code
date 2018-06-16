@@ -109,6 +109,12 @@ class SuggestFillIn extends Component {
 						</div>
 					</Paper>
 					<RaisedButton label="Preview" fullWidth primary />
+					<RaisedButton
+						className="preview-button"
+						label="Submit"
+						fullWidth
+						primary
+					/>
 					{
 						isPreviewOpen
 							? <QuizSelector quiz={this.makeQuiz()} />

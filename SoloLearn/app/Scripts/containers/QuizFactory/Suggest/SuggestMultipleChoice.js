@@ -3,6 +3,7 @@ import { Paper, Checkbox, TextField, RaisedButton } from 'material-ui';
 import Layout from 'components/Layouts/GeneralLayout';
 import QuizSelector from 'containers/Challenges/Challenge/Game/TypeSelector';
 import ChooseLanguage from '../components/ChooseLanguage';
+import submitChallenge from './submitChallenge';
 
 import './style.scss';
 
@@ -40,11 +41,22 @@ class SuggestMultipleChoice extends Component {
 		}));
 	}
 	makeQuiz = () => {
-		const { answers, question } = this.state;
-		return { type: 1, answers: answers.filter(a => a.text !== ''), question };
+		const { answers, question, language } = this.state;
+		return {
+ type: 1, answers: answers.filter(a => a.text !== ''), question, language 
+};
 	}
 	preview = () => {
 		this.setState(state => ({ preview: !state.preview }));
+	}
+	submit = () => {
+		const quiz = this.makeQuiz();
+		submitChallenge(quiz);
+	}
+	isSubmitOn = () => {
+		const { question, language } = this.state;
+		const answers = this.state.answers.filter(a => a.text !== '');
+		return question !== '' && answers.length >= 2 && answers.some(a => a.isCorrect) && language !== null;
 	}
 	render() {
 		const {
@@ -68,21 +80,21 @@ class SuggestMultipleChoice extends Component {
 						<span className="title">Answers</span>
 						<div className="answers">
 							{
-								answers.map((answer, idx) => (
+								answers.map(answer => (
 									<div
 										className="answer-item"
-										key={`Option${idx}`} // eslint-disable-line react/no-array-index-key
+										key={`Option${answer.id}`}
 									>
 										<TextField
-											name={`Answer field ${idx}`}
+											name={`Answer field ${answer.id}`}
 											className="input"
-											placeholder={`Option ${idx + 1}`}
-											onChange={e => this.onAnswerChange(idx, e.target.value)}
+											placeholder={`Option ${answer.id + 1}`}
+											onChange={e => this.onAnswerChange(answer.id, e.target.value)}
 										/>
 										<Checkbox
 											className="checkbox"
 											checked={answer.isCorrect}
-											onCheck={() => this.toggleAnswer(idx)}
+											onCheck={() => this.toggleAnswer(answer.id)}
 										/>
 									</div>
 								))
@@ -106,6 +118,8 @@ class SuggestMultipleChoice extends Component {
 						label="Submit"
 						fullWidth
 						primary
+						onClick={this.submit}
+						disabled={!this.isSubmitOn()}
 					/>
 					{preview
 						? <QuizSelector quiz={this.makeQuiz()} />
