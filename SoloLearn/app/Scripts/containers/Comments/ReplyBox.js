@@ -1,48 +1,69 @@
 // React modules
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 // Material UI components
-import { TextField, FlatButton, IconButton } from 'material-ui';
+import { FlatButton, IconButton, TextField } from 'material-ui';
 import { grey600 } from 'material-ui/styles/colors';
 import Close from 'material-ui/svg-icons/content/clear';
 
 // Additional components
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import MentionInput from 'components/Shared/MentionInput';
 
-// Styles
-import { ReplyBoxStyle as styles } from './styles';
+import { getMentionsList } from 'utils';
 
 // i18n
 import { translate } from 'react-i18next';
 
+// Styles
+import { ReplyBoxStyle as styles } from './styles';
+
 class ReplyBox extends Component {
 	state = {
-		isLoading: false,
-	};
-
-	onReplyChange = e => this.props.setReplyText(e.target.value)
-
-	submitReply = async () => {
-		this.setState({ isLoading: true });
-		await this.props.reply();
-		this.setState({ isLoading: false });
+		isReplyOpen: false,
+		replyLength: 0,
 	}
-
+	focus = () => {
+		console.log('should focus');
+		this.mentionInput.focus();
+	}
+	openReply = () => {
+		this.setState({ isReplyOpen: true });
+	}
+	closeReply = () => {
+		this.setState({ isReplyOpen: false });
+	}
+	onLengthChange = (replyLength) => {
+		if (this.mentionInput) {
+			this.setState({ replyLength });
+		}
+	}
+	submitReply = () => {
+		this.props.save(this.mentionInput.popValue());
+	}
+	getMentionFetcher = (type, id) => {
+		switch (type) {
+		case 'lesson':
+			return getMentionsList('lessonComment', { quizId: id });
+		case 'code':
+			return getMentionsList('codeComment', { codeId: id });
+		case 'userLesson':
+			return getMentionsList('userLessonComment', { lessonId: id });
+		default:
+			throw new Error('Comment type is not defined');
+		}
+	}
 	render() {
 		const {
-			isPrimary,
-			userName,
-			profile,
-			t,
+			userName, profile, commentType, t, id,
 		} = this.props;
+		const { replyLength, isReplyOpen } = this.state;
+		const getUsers = this.getMentionFetcher(commentType, id);
 		return (
-			<div
-				style={{ ...styles.replyBox.base, ...(!isPrimary ? styles.replyBox.elevated : {}) }}
-			>
-				{this.state.isLoading && <LoadingOverlay withBackground size={30} />}
+			<div style={styles.replyBox.base}>
 				{
-					!isPrimary &&
+					userName != null &&
 					<div style={styles.replyBoxToolbar}>
 						<p style={styles.replyBoxToolbarText}>
 							Replying to <span style={styles.replyBoxToolbarText.user}>{userName}</span>
@@ -67,23 +88,22 @@ class ReplyBox extends Component {
 						/>
 						<div style={styles.replyBoxDetails}>
 							<span style={styles.userName}>{profile.name}</span>
-							<TextField
-								name="replyText"
-								hintText="Message"
-								multiLine
-								rowsMax={4}
-								fullWidth
-								style={styles.textField}
-								value={this.props.replyText}
-								onChange={this.onReplyChange}
-								ref={this.props.inputRef}
+							<MentionInput
+								ref={(input) => { this.mentionInput = input; }}
+								onFocus={this.openReply}
+								onBlur={this.closeReply}
+								onLengthChange={this.onLengthChange}
+								style={{ minHeight: 160 }}
+								getUsers={getUsers}
+								submit={this.props.save}
+								placeholder={!isReplyOpen && replyLength === 0 ? 'Write a new answer' : ''}
 							/>
 						</div>
 					</div>
 					<div style={styles.replyBoxControls}>
 						<FlatButton
 							label={t('comments.add')}
-							disabled={this.props.disabled}
+							disabled={replyLength === 0}
 							primary
 							onClick={this.submitReply}
 						/>
@@ -94,4 +114,10 @@ class ReplyBox extends Component {
 	}
 }
 
-export default translate()(ReplyBox);
+ReplyBox.propTypes = {
+	save: PropTypes.func.isRequired,
+	commentType: PropTypes.oneOf([ 'lesson', 'code', 'userLesson' ]).isRequired,
+	id: PropTypes.number.isRequired,
+};
+
+export default translate(null, { withRef: true })(ReplyBox);

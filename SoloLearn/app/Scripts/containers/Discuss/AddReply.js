@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 // Material UI components
 import { RaisedButton, Paper } from 'material-ui';
 
-import MentionInput from 'components/Shared/MentionInput/MentionInput';
+import MentionInput from 'components/Shared/MentionInput';
 
 import { getMentionsList } from 'utils';
 

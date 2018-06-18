@@ -78,7 +78,7 @@ class Comment extends Component {
 			<div style={styles.commentControls.right}>
 				{!isReply &&
 					<FlatButton
-						label={comment.replies + (comment.replies === 1 ? t('comments.reply') : t('comments.replies-other'))}
+						label={`${comment.replies} ${comment.replies === 1 ? t('comments.reply') : t('comments.replies-other')}`}
 						primary={hasReplies}
 						disabled={!hasReplies || comment.index === -1}
 						onClick={this.openCloseReplies}

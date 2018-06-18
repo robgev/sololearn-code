@@ -108,7 +108,7 @@ class SuggestFillIn extends Component {
 							/>
 						</div>
 					</Paper>
-					<RaisedButton label="Preview" fullWidth primary />
+					<RaisedButton label="Preview" fullWidth primary className="preview-button" />
 					<RaisedButton
 						className="preview-button"
 						label="Submit"

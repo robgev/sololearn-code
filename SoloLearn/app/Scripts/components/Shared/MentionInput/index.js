@@ -1,1 +1,1 @@
-export MentionInput from './MentionInput';
+export { default } from './MentionInput';
