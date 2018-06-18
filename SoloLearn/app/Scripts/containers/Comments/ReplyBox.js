@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 // Material UI components
-import { FlatButton, IconButton, TextField } from 'material-ui';
+import { FlatButton, IconButton } from 'material-ui';
 import { grey600 } from 'material-ui/styles/colors';
 import Close from 'material-ui/svg-icons/content/clear';
 
@@ -25,7 +25,6 @@ class ReplyBox extends Component {
 		replyLength: 0,
 	}
 	focus = () => {
-		console.log('should focus');
 		this.mentionInput.focus();
 	}
 	openReply = () => {
