@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-
-import { Editor, EditorState, Modifier, convertToRaw, CompositeDecorator } from 'draft-js';
+import { Editor, EditorState, Modifier, CompositeDecorator } from 'draft-js';
 import { Paper, RaisedButton, FlatButton } from 'material-ui';
 import Layout from 'components/Layouts/GeneralLayout';
+import QuizSelector from 'containers/Challenges/Challenge/Game/TypeSelector';
 import ChooseLanugage from '../components/ChooseLanguage';
 
 import './style.scss';
@@ -27,6 +27,7 @@ class SuggestFillIn extends Component {
 		editorState: EditorState.createEmpty(new CompositeDecorator([
 			{ strategy: markedStrategy, component: Marked },
 		])),
+		isPreviewOpen: false,
 	}
 	toggleLanguageSelector = () => {
 		this.setState(state => ({ isLanguageSelectorOpen: !state.isLanguageSelectorOpen }));
@@ -71,7 +72,7 @@ class SuggestFillIn extends Component {
 	}
 	render() {
 		const {
-			isLanguageSelectorOpen, language, question, editorState,
+			isLanguageSelectorOpen, language, question, editorState, isPreviewOpen,
 		} = this.state;
 		return (
 			<Layout>
@@ -107,7 +108,18 @@ class SuggestFillIn extends Component {
 							/>
 						</div>
 					</Paper>
-					<RaisedButton label="Preview" fullWidth primary />
+					<RaisedButton label="Preview" fullWidth primary className="preview-button" />
+					<RaisedButton
+						className="preview-button"
+						label="Submit"
+						fullWidth
+						primary
+					/>
+					{
+						isPreviewOpen
+							? <QuizSelector quiz={this.makeQuiz()} />
+							: null
+					}
 				</div>
 				<ChooseLanugage
 					open={isLanguageSelectorOpen}

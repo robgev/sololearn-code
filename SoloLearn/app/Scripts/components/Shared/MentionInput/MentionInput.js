@@ -18,7 +18,9 @@ class MentionInput extends Component {
 			mentionComponent: ({ children }) => <b>{children}</b>,
 		});
 		this.state = {
-			editorState: EditorState.createEmpty(),
+			editorState: props.initText !== null
+				? EditorState.createEmpty() // TODO add initial state for editing
+				: EditorState.createEmpty(),
 			suggestions: [],
 		};
 	}
@@ -126,6 +128,7 @@ MentionInput.defaultProps = {
 	style: {},
 	placeholder: '',
 	maxLength: 2048,
+	initText: null,
 	onFocus: () => { }, // noop
 	onBlur: () => { }, // noop
 	onLengthChange: () => { }, // noop
@@ -136,6 +139,7 @@ MentionInput.propTypes = {
 	className: PropTypes.string,
 	onFocus: PropTypes.func,
 	onBlur: PropTypes.func,
+	initText: PropTypes.string,
 	onLengthChange: PropTypes.func,
 	maxLength: PropTypes.number,
 	placeholder: PropTypes.string,

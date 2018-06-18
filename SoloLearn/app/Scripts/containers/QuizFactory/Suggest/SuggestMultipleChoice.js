@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Paper, Checkbox, TextField, RaisedButton } from 'material-ui';
 import Layout from 'components/Layouts/GeneralLayout';
+import QuizSelector from 'containers/Challenges/Challenge/Game/TypeSelector';
 import ChooseLanguage from '../components/ChooseLanguage';
+import submitChallenge from './submitChallenge';
 
 import './style.scss';
 
@@ -11,11 +13,12 @@ class SuggestMultipleChoice extends Component {
 		language: null,
 		question: '',
 		answers: [
-			{ correct: false, text: '' },
-			{ correct: false, text: '' },
-			{ correct: false, text: '' },
-			{ correct: false, text: '' },
+			{ isCorrect: false, text: '' },
+			{ isCorrect: false, text: '' },
+			{ isCorrect: false, text: '' },
+			{ isCorrect: false, text: '' },
 		],
+		preview: false,
 	}
 	toggleLanguageSelector = () => {
 		this.setState(state => ({ isLanguageSelectorOpen: !state.isLanguageSelectorOpen }));
@@ -34,12 +37,30 @@ class SuggestMultipleChoice extends Component {
 	}
 	toggleAnswer = (idx) => {
 		this.setState(state => ({
-			answers: state.answers.map((a, i) => (i === idx ? { ...a, correct: !a.correct } : a)),
+			answers: state.answers.map((a, i) => (i === idx ? { ...a, isCorrect: !a.isCorrect } : a)),
 		}));
+	}
+	makeQuiz = () => {
+		const { answers, question, language } = this.state;
+		return {
+			type: 1, answers: answers.filter(a => a.text !== ''), question, language: language.id,
+		};
+	}
+	preview = () => {
+		this.setState(state => ({ preview: !state.preview }));
+	}
+	submit = () => {
+		const quiz = this.makeQuiz();
+		submitChallenge(quiz);
+	}
+	isSubmitOn = () => {
+		const { question, language } = this.state;
+		const answers = this.state.answers.filter(a => a.text !== '');
+		return question !== '' && answers.length >= 2 && answers.some(a => a.isCorrect) && language !== null;
 	}
 	render() {
 		const {
-			isLanguageSelectorOpen, language, question, answers,
+			isLanguageSelectorOpen, language, question, answers, preview,
 		} = this.state;
 		return (
 			<Layout>
@@ -72,7 +93,7 @@ class SuggestMultipleChoice extends Component {
 										/>
 										<Checkbox
 											className="checkbox"
-											checked={answer.correct}
+											checked={answer.isCorrect}
 											onCheck={() => this.toggleAnswer(idx)}
 										/>
 									</div>
@@ -85,7 +106,24 @@ class SuggestMultipleChoice extends Component {
 						onClose={this.toggleLanguageSelector}
 						onChoose={this.selectLanguage}
 					/>
-					<RaisedButton label="Preview" fullWidth primary />
+					<RaisedButton
+						className="preview-button"
+						label="Preview"
+						fullWidth
+						primary
+						onClick={this.preview}
+					/>
+					<RaisedButton
+						className="preview-button"
+						label="Submit"
+						fullWidth
+						primary
+						onClick={this.submit}
+						disabled={!this.isSubmitOn()}
+					/>
+					{preview
+						? <QuizSelector quiz={this.makeQuiz()} />
+						: null}
 				</div>
 			</Layout>
 		);

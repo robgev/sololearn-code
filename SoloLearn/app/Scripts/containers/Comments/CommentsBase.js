@@ -53,9 +53,7 @@ class CommentsBase extends Component {
 			activeComment: {
 				id: null,
 				parentId: null,
-				userName: '',
-				previousId: null, // REFACTOR THIS SHIT
-				previousParentId: null, // REFACTOR THIS SHIT
+				userName: null,
 			},
 		};
 	}
@@ -66,13 +64,10 @@ class CommentsBase extends Component {
 			isEditing: false,
 			isReplying: false,
 			isDeleting: false,
-			replyText: '',
 			activeComment: {
 				id: null,
 				parentId: null,
-				userName: '',
-				previousId: this.state.activeComment.id,
-				previousParentId: this.state.activeComment.parentId,
+				userName: null,
 			},
 			...partialState,
 		}, callback);
@@ -87,8 +82,8 @@ class CommentsBase extends Component {
 				userName,
 			},
 		}, () => {
-			this._comments.getWrappedInstance().recompute();
-			this._comments.getWrappedInstance()._forceUpdate();
+			// this._comments.getWrappedInstance().recompute();
+			// this._comments.getWrappedInstance()._forceUpdate();
 			cb();
 		});
 	}
@@ -106,7 +101,6 @@ class CommentsBase extends Component {
 		this.focusOnReply();
 		this.partialCancel({
 			isReplying: true,
-			replyText: `@${userName}`,
 			activeComment: {
 				id,
 				parentId,
@@ -114,8 +108,6 @@ class CommentsBase extends Component {
 			},
 		});
 	}
-
-	setReplyText = replyText => this.setState({ replyText })
 
 	// Render popup heading
 	deleteComment = async () => {
@@ -135,10 +127,7 @@ class CommentsBase extends Component {
 		});
 	}
 
-	focusOnReply = () => { this._input.focus(); }
-
-	isReplyDisabled = () =>
-		this.state.replyText === '' || this.state.replyText === `@${this.state.userName}`
+	focusOnReply = () => { this.input.getWrappedInstance().focus(); }
 
 	updateComments = () => this._comments.getWrappedInstance().loadCommentsByState();
 
@@ -155,9 +144,7 @@ class CommentsBase extends Component {
 		this.updateComments();
 	}
 
-	addComment = async () => {
-		const { replyText: message } = this.state;
-		this.setReplyText('');
+	addComment = async (message) => {
 		const { activeComment, ordering } = this.state;
 		const {
 			id, type, commentsType, addCommentInternal,
@@ -226,15 +213,13 @@ class CommentsBase extends Component {
 			<div>
 				{this.getPopupTitle()}
 				<ReplyBox
-					inputRef={(input) => { this._input = input; }}
+					ref={(input) => { this.input = input; }}
 					profile={profile}
-					isPrimary={!this.state.isReplying}
-					replyText={this.state.replyText}
-					setReplyText={this.setReplyText}
 					userName={this.state.activeComment.userName}
 					closeToolbar={this.partialCancel}
-					reply={this.addComment}
-					disabled={this.isReplyDisabled()}
+					save={this.addComment}
+					commentType={commentsType}
+					id={id}
 				/>
 				<Comments
 					t={t}
