@@ -322,18 +322,17 @@ class Profile extends Component {
 					}
 					{
 						this.state.activeTab === TabTypes.Posts &&
-						<div className="section" style={styles.section}>
+						<Paper className="section" style={styles.section}>
 							<Questions
 								t={t}
 								questions={profile.posts}
 								isLoaded={profile.posts.length > 0}
 								ordering={7}
 								query=""
-								isUserProfile
 								userId={profile.data.id}
 							/>
 							<AddQuestionButton />
-						</div>
+						</Paper>
 					}
 					{this.state.activeTab === TabTypes.Skills &&
 						<Skills

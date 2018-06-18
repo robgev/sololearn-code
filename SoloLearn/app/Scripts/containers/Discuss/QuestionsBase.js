@@ -5,7 +5,7 @@ import { translate } from 'react-i18next';
 import Radium from 'radium';
 
 // Material UI components
-import { DropDownMenu, MenuItem } from 'material-ui';
+import { DropDownMenu, MenuItem, Paper } from 'material-ui';
 
 // Redux modules
 import { connect } from 'react-redux';
@@ -71,32 +71,34 @@ class QuestionsBase extends Component {
 		const { t } = this.props;
 		return (
 			<Layout>
-				<div className="toolbar" style={styles.toolbar}>
-					<DropDownMenu
-						style={styles.discussFilter}
-						value={this.props.ordering}
-						onChange={this.handleFilterChange}
-						autoWidth={false}
-					>
-						<MenuItem style={styles.discussFilterItem} value={8} primaryText={t('discuss.filter.trending')} />
-						<MenuItem style={styles.discussFilterItem} value={1} primaryText={t('discuss.filter.most-recent')} />
-						<MenuItem style={styles.discussFilterItem} value={2} primaryText={t('discuss.filter.most-popular')} />
-						<MenuItem style={styles.discussFilterItem} value={3} primaryText="Most Answered" />
-						<MenuItem style={styles.discussFilterItem} value={4} primaryText={t('discuss.filter.unanswered')} />
-						<MenuItem style={styles.discussFilterItem} value={5} primaryText={t('discuss.filter.my-questions')} />
-						<MenuItem style={styles.discussFilterItem} value={6} primaryText={t('discuss.filter.my-answers')} />
-					</DropDownMenu>
-				</div>
-				<Questions
-					t={t}
-					questions={this.props.questions}
-					isLoaded={this.props.isLoaded}
-					ordering={this.props.ordering}
-					query={this.props.params.query}
-					isUserProfile={false}
-					ref={(questions) => { this._questions = questions; }}
-				/>
-				<AddQuestionButton />
+				<Paper>
+					<div className="toolbar" style={styles.toolbar}>
+						<DropDownMenu
+							style={styles.discussFilter}
+							value={this.props.ordering}
+							onChange={this.handleFilterChange}
+							autoWidth={false}
+						>
+							<MenuItem style={styles.discussFilterItem} value={8} primaryText={t('discuss.filter.trending')} />
+							<MenuItem style={styles.discussFilterItem} value={1} primaryText={t('discuss.filter.most-recent')} />
+							<MenuItem style={styles.discussFilterItem} value={2} primaryText={t('discuss.filter.most-popular')} />
+							<MenuItem style={styles.discussFilterItem} value={3} primaryText="Most Answered" />
+							<MenuItem style={styles.discussFilterItem} value={4} primaryText={t('discuss.filter.unanswered')} />
+							<MenuItem style={styles.discussFilterItem} value={5} primaryText={t('discuss.filter.my-questions')} />
+							<MenuItem style={styles.discussFilterItem} value={6} primaryText={t('discuss.filter.my-answers')} />
+						</DropDownMenu>
+					</div>
+					<Questions
+						t={t}
+						questions={this.props.questions}
+						isLoaded={this.props.isLoaded}
+						ordering={this.props.ordering}
+						query={this.props.params.query}
+						isUserProfile={false}
+						ref={(questions) => { this._questions = questions; }}
+					/>
+					<AddQuestionButton />
+				</Paper>
 			</Layout>
 		);
 	}
