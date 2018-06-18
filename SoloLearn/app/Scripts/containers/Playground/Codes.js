@@ -11,6 +11,8 @@ import { getCodesInternal, emptyCodes } from 'actions/playground';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
 import CodeShimmer from 'components/Shared/Shimmers/CodeShimmer';
+import 'styles/Playground/Codes.scss';
+
 import CodeItem from './CodeItem';
 
 class Codes extends Component {
@@ -52,7 +54,7 @@ class Codes extends Component {
 	render() {
 		const { isLoading } = this.state;
 		const {
-			isLoaded, codes, isUserProfile, t,
+			isLoaded, codes, t,
 		} = this.props;
 		return (
 			<div className="codes-wrapper">
@@ -66,7 +68,8 @@ class Codes extends Component {
 					/>
 				}
 				{(isLoading && codes.length <= 0)
-					&& <CodeShimmer />}
+					&&
+					<CodeShimmer />}
 				{codes.length === 0 && isLoaded &&
 					<p>{t('code.no-saved-code-title')}</p>
 				}

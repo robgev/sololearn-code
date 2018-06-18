@@ -80,6 +80,7 @@ const styles = {
 
 	section: {
 		position: 'relative',
+		padding: 15,
 	},
 
 	popup: {
@@ -306,7 +307,7 @@ class Profile extends Component {
 					}
 					{
 						this.state.activeTab === TabTypes.Codes &&
-						<div className="section" style={styles.section}>
+						<Paper className="codes-wrapper section" style={styles.section}>
 							<Codes
 								t={t}
 								codes={profile.codes}
@@ -317,7 +318,7 @@ class Profile extends Component {
 								userId={profile.data.id}
 							/>
 							<AddCodeButton />
-						</div>
+						</Paper>
 					}
 					{
 						this.state.activeTab === TabTypes.Posts &&

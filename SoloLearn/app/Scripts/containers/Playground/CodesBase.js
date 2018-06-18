@@ -13,7 +13,7 @@ import { isLoaded } from 'reducers';
 import Layout from 'components/Layouts/GeneralLayout';
 import AddCodeButton from 'components/Shared/AddCodeButton';
 
-import 'styles/Playground/Codes.scss';
+import 'styles/Playground/CodesBase.scss';
 
 // Additional components
 import Codes from './Codes';

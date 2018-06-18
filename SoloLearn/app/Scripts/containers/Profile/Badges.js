@@ -1,12 +1,11 @@
 // React modules
 import React, { PureComponent } from 'react';
 import scrollToElement from 'scroll-to-element';
+import { translate } from 'react-i18next';
+import Paper from 'material-ui/Paper';
 
 // Additional data and components
 import Badge from './Badge';
-
-// i18next
-import { translate } from 'react-i18next';
 
 const styles = {
 	container: {
@@ -32,7 +31,7 @@ class Badges extends PureComponent {
 	render() {
 		const { t, badges, selectedId } = this.props;
 		return (
-			<div id="Badges" style={styles.container}>
+			<Paper id="Badges" style={styles.container}>
 				<p style={styles.title}>{t('profile.tab.badges')}</p>
 				<div className="content" style={styles.content}>
 					{
@@ -51,7 +50,7 @@ class Badges extends PureComponent {
 						})
 					}
 				</div>
-			</div>
+			</Paper>
 		);
 	}
 }
