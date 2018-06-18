@@ -1,67 +1,71 @@
 @import 'shimmer';
 
-.shimmer-wrapper {
+%shimmer-line {
+	background-color: $shimmer-dark-color;
+	height: 10px;
+	margin: 0;
+}
+
+.discuss-shimmer-shimmer {
+	@extend %shimmer-container;
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
+	opacity: 0.5;
+}
 
-	.discuss-shimmer-animation {
-	    @extend %shimmer-container;
-	    width: 100%;
-	    height: 100%;
-	    opacity: 0.5;
-	}
-
+.shimmer-wrapper {
+	width: 100%;
 	.discuss-shimmer-container {
-	    display: flex;
-	    flex-direction: column;
-	    justify-content: space-between;
-			position: absolute;
-	    height: 100px;
-	    width: 610px;
-			.placeholder {
-				background-color: $shimmer-dark-color;
-			}
-			.discuss-content-placeholder {
-				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
-				height: 70%;
-				.post-name {
-					height: 18px;
-					width: 40%;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		padding: 15px;
+		height: 80px;
+		border-bottom: 1px solid #EFEFEF;
+		.discuss-content-placeholder {
+			.post-line {
+				@extend %shimmer-line;
+				margin-bottom: 10px;
+				&.short {
+					width: 200px;
 				}
-				.post-topics {
-					height: 18px;
+				&.medium {
+					width: 260px;
+				}
+			}
+			.post-tags {
+				display: flex;
+				justify-content: space-between;
+				width: 50%;
+				.tag {
+					height: 12px;
+				}
+				.tag1 {
+					width:  40%;
+				}
+				.tag2 {
 					width: 30%;
 				}
-				.post-tags {
-					display: flex;
-					justify-content: space-between;
-					width: 50%;
-					.tag {
-						height: 20px;
-					}
-					.tag1 {
-						width:  25%;
-					}
-					.tag2 {
-						width: 15%;
-					}
-					.tag3 {
-						width: 20%;
-					}
+				.tag3 {
+					width: 25%;
 				}
 			}
-			.discuss-date-placeholder {
-				justify-content: flex-end;
-				height: 16px;
-				width: 10%;
-				margin-left: auto;
+		}
+		.date-container {
+			width: 100%;
+			display: flex;
+			justify-content: flex-end;
+			.discuss-date-post-line {
+				@extend %shimmer-line;
+				width: 15%;
+				margin-bottom: 10px;
 			}
 		}
+	}
 }
 
 // background-color: $shimmer-dark-color;

@@ -1,27 +1,26 @@
 import React from 'react';
 import 'styles/components/Shared/Shimmers/DiscussShimmer.scss';
 
-const DiscussShimmer = () => {
-	const renderContainers = Array(20).fill(0).map((_, i) => (
-		<div className="discuss-shimmer-container" style={{ marginTop: 20 + (i * 120) }} key={i}>
-			<div className="discuss-content-placeholder">
-				<div className="placeholder post-name" />
-				<div className="placeholder post-topics" />
-				<div className="post-tags">
-					<div className="placeholder tag tag1" />
-					<div className="placeholder tag tag2" />
-					<div className="placeholder tag tag3" />
+const DiscussShimmer = () => (
+	<div className="shimmer-wrapper">
+		{Array(20).fill(0).map((_, i) => (
+			<div className="discuss-shimmer-container" key={i}>
+				<div className="discuss-content-placeholder">
+					<div className="post-line medium" />
+					<div className="post-line short" />
+					<div className="post-tags">
+						<div className="post-line tag tag1" />
+						<div className="post-line tag tag2" />
+						<div className="post-line tag tag3" />
+					</div>
 				</div>
+				<div className="date-container">
+					<div className="post-line discuss-date-post-line" />
+				</div>
+				<div className="discuss-shimmer-shimmer" />
 			</div>
-			<div className="placeholder discuss-date-placeholder" />
-		</div>
-	));
-	return (
-		<div className="shimmer-wrapper">
-			{renderContainers}
-			<div className="discuss-shimmer-animation" />
-		</div>
-	);
-};
+		))}
+	</div>
+);
 
 export default DiscussShimmer;
