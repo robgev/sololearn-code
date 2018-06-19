@@ -240,19 +240,22 @@ class Profile extends Component {
 
 	render() {
 		const {
-			profile, userId, levels, t,
+			t,
+			levels,
+			userId,
+			profile,
 		} = this.props;
 
-		if (!this.props.isLoaded) {
-			return (
-				<LoadingOverlay />
-			);
-		}
+		const { loading } = this.state;
 
 		return (
 			<Layout>
-				<div style={styles.profileOverlay}>
-					<Paper className="profile-overlay" style={styles.userInfo}>
+				<Paper className="profile-overlay" style={styles.userInfo}>
+					<BusyWrapper
+						isBusy={loading}
+						style={{ display: 'initial' }}
+						loadingComponent={<ProfileHeaderShimmer />}
+					>
 						<Header
 							profile={profile.data}
 							levels={this.props.levels}
@@ -294,21 +297,22 @@ class Profile extends Component {
 								onClick={() => this.handleTabChange(TabTypes.Badges)}
 							/>
 						</Tabs>
-					</Paper>
-					{
-						this.state.activeTab === TabTypes.Activity &&
+					</BusyWrapper>
+				</Paper>
+				{
+					this.state.activeTab === TabTypes.Activity &&
 						<div className="section" style={styles.section}>
 							<FeedItemsBase
 								isLoaded={profile.feed.length > 0}
 								feed={profile.feed}
 								feedPins={[]}
 								isUserProfile
-								userId={profile.data.id}
+								userId={userId}
 							/>
 						</div>
-					}
-					{
-						this.state.activeTab === TabTypes.Codes &&
+				}
+				{
+					this.state.activeTab === TabTypes.Codes &&
 						<Paper className="codes-wrapper section" style={styles.section}>
 							<Codes
 								t={t}
@@ -321,9 +325,9 @@ class Profile extends Component {
 							/>
 							<AddCodeButton />
 						</Paper>
-					}
-					{
-						this.state.activeTab === TabTypes.Posts &&
+				}
+				{
+					this.state.activeTab === TabTypes.Posts &&
 						<Paper className="section" style={styles.section}>
 							<Questions
 								t={t}
@@ -335,26 +339,25 @@ class Profile extends Component {
 							/>
 							<AddQuestionButton />
 						</Paper>
-					}
-					{this.state.activeTab === TabTypes.Skills &&
-						<Skills
-							levels={levels}
-							profile={profile.data}
-							currentUserId={userId}
-							skills={profile.data.skills}
-						/>}
-					{this.state.activeTab === TabTypes.Badges &&
-						<Badges badges={profile.data.badges} selectedId={this.props.params.selected || null} />}
-					<Dialog
-						modal={false}
-						open={this.state.popupOpened}
-						onRequestClose={this.handlePopupClose}
-						style={styles.popupOverlay}
-						bodyStyle={styles.popup}
-					>
-						<FollowersBase t={t} userId={profile.data.id} closePopup={this.handlePopupClose} />
-					</Dialog>
-				</div>
+				}
+				{this.state.activeTab === TabTypes.Skills &&
+					<Skills
+						levels={levels}
+						profile={profile.data}
+						currentUserId={userId}
+						skills={profile.data.skills}
+					/>}
+				{this.state.activeTab === TabTypes.Badges &&
+					<Badges badges={profile.data.badges} selectedId={this.props.params.selected || null} />}
+				<Dialog
+					modal={false}
+					open={this.state.popupOpened}
+					onRequestClose={this.handlePopupClose}
+					style={styles.popupOverlay}
+					bodyStyle={styles.popup}
+				>
+					<FollowersBase t={t} userId={profile.data.id} closePopup={this.handlePopupClose} />
+				</Dialog>
 			</Layout>
 		);
 	}
