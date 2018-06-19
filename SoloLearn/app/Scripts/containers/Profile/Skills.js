@@ -78,7 +78,7 @@ class Skills extends PureComponent {
 						<Link to={`/leaderboards/${profile.id}`} className="leaderboard-link">
 							{t('leaderboard.rank.placeholder')}
 						</Link>
-						<div className="progress-wrapper">
+						<div className="skills-progress-wrapper">
 							<LinearProgress
 								min={0}
 								max={maxXp}

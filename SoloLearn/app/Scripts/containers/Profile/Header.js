@@ -262,7 +262,7 @@ class Header extends Component {
 						/>
 					</div>
 					<p style={styles.level}>{t('common.user-level')} {profile.level}</p>
-					<div className="progress-wrapper" style={styles.userStats}>
+					<div className="profile-progress-wrapper" style={styles.userStats}>
 						<LinearProgress
 							style={styles.progress}
 							mode="determinate"
