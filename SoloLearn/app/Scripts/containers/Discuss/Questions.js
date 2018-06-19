@@ -8,15 +8,12 @@ import { connect } from 'react-redux';
 import { getQuestionsInternal, emptyQuestions } from 'actions/discuss';
 
 // Additional components
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import BusyWrapper from 'components/Shared/BusyWrapper';
 import DiscussShimmer from 'components/Shared/Shimmers/DiscussShimmer';
 import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
 
 import 'styles/Discuss/Questions.scss';
 import QuestionItem from './QuestionItem';
-
-import { QuestionsStyles as styles } from './styles';
 
 const mapDispatchToProps = { getQuestionsInternal, emptyQuestions };
 
@@ -68,8 +65,8 @@ class Questions extends Component {
 		return (
 			<BusyWrapper
 				isBusy={isLoading}
-				wrapperClassName="discuss-wrapper"
 				className="discuss-busy-container"
+				wrapperClassName="discuss-wrapper"
 				loadingComponent={<DiscussShimmer />}
 			>
 				{(isLoaded && questions.length > 0) && (
@@ -82,7 +79,7 @@ class Questions extends Component {
 						window
 					/>
 				)}
-				{ questions.length === 0 && isLoaded &&
+				{ questions.length === 0 &&
 					<p>{t('common.empty-list-message')}</p>
 				}
 			</BusyWrapper>
