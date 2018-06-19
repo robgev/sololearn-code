@@ -57,7 +57,7 @@ const ProfileAvatar = ({
 								...(withBorder ? { border: `4px solid ${modBadgeColor}` } : {}),
 								...avatarStyle,
 							}}
-						>{userName.toUpperCase().charAt(0)}
+						>{userName ? userName.toUpperCase().charAt(0) : ''}
 						</Avatar>
 					}
 					{ withBorder &&
