@@ -15,8 +15,8 @@ import { connect } from 'react-redux';
 import { getFeedItemsInternal } from 'actions/feed';
 import { getCodesInternal } from 'actions/playground';
 import { getQuestionsInternal } from 'actions/discuss';
-import { getProfileInternal, clearOpenedProfile } from 'actions/defaultActions';
-import { emptyProfileFollowers } from 'actions/profile';
+import { getProfileInternal } from 'actions/defaultActions';
+import { emptyProfileFollowers, emptyProfile } from 'actions/profile';
 import { isLoaded } from 'reducers';
 
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
@@ -100,6 +100,9 @@ class Profile extends Component {
 	async componentWillMount() {
 		const { params } = this.props;
 		const { tab = '' } = params;
+		if (this.props.isLoaded && this.props.profile.data.id.toString() !== params.id) {
+			this.props.clearOpenedProfile();
+		}
 		await this.props.getProfile(params.id);
 		this.selectTab(tab);
 		document.title = `${this.props.profile.data.name}'s Profile`;
@@ -117,10 +120,6 @@ class Profile extends Component {
 		} else if (params.tab !== tab) {
 			this.selectTab(tab, selected);
 		}
-	}
-
-	componentWillUnmount() {
-		this.props.clearOpenedProfile();
 	}
 
 	getLabel = (type) => {
@@ -168,7 +167,6 @@ class Profile extends Component {
 
 	handleTabChange = (value, selected) => {
 		this.setState({ activeTab: value });
-		console.log(this.props.params.selected);
 		switch (value) {
 		case TabTypes.Activity:
 			browserHistory.replace(`/profile/${this.props.params.id}/activity`);
@@ -371,7 +369,7 @@ const mapDispatchToProps = {
 	getProfileQuestions: getQuestionsInternal,
 	getProfile: getProfileInternal,
 	emptyProfileFollowers,
-	clearOpenedProfile,
+	clearOpenedProfile: emptyProfile,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
