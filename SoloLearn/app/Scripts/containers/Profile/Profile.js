@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
+import { translate } from 'react-i18next';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
@@ -19,13 +20,11 @@ import { getProfileInternal } from 'actions/defaultActions';
 import { emptyProfileFollowers, emptyProfile } from 'actions/profile';
 import { isLoaded } from 'reducers';
 
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import Layout from 'components/Layouts/GeneralLayout';
 import AddCodeButton from 'components/Shared/AddCodeButton';
 import AddQuestionButton from 'components/Shared/AddQuestionButton';
-
-// i18n
-import { translate } from 'react-i18next';
+import BusyWrapper from 'components/Shared/BusyWrapper';
+import ProfileHeaderShimmer from 'components/Shared/Shimmers/ProfileHeaderShimmer';
 
 // Utils
 import { EnumNameMapper } from 'utils';
@@ -55,8 +54,8 @@ const styles = {
 	},
 
 	userInfo: {
-		padding: '20px 0 0 0',
 		textAlign: 'center',
+		width: '100%',
 	},
 
 	tabs: {
@@ -94,6 +93,7 @@ class Profile extends Component {
 		this.state = {
 			activeTab: TabTypes.Activity,
 			popupOpened: false,
+			loading: true,
 		};
 	}
 
@@ -105,6 +105,7 @@ class Profile extends Component {
 		}
 		await this.props.getProfile(params.id);
 		this.selectTab(tab);
+		this.setState({ loading: false });
 		document.title = `${this.props.profile.data.name}'s Profile`;
 		ReactGA.ga('send', 'screenView', { screenName: 'Profile Page' });
 	}
@@ -116,41 +117,43 @@ class Profile extends Component {
 			this.props.emptyProfileFollowers();
 			this.setState({ popupOpened: false });
 			this.props.clearOpenedProfile();
+			this.setState({ loading: true });
 			await getProfile(id);
+			this.setState({ loading: false });
 		} else if (params.tab !== tab) {
 			this.selectTab(tab, selected);
 		}
 	}
 
 	getLabel = (type) => {
-		const { t, profile } = this.props;
+		const { t, profile: { data } } = this.props;
 
 		switch (type) {
 		case TabTypes.Codes:
 			return (
 				<div style={styles.label}>
-					<p>{profile.data.codes}</p>
+					<p>{data.codes}</p>
 					<p>{t('profile.tab.codes')}</p>
 				</div>
 			);
 		case TabTypes.Posts:
 			return (
 				<div style={styles.label}>
-					<p>{profile.data.posts}</p>
+					<p>{data.posts}</p>
 					<p>{t('profile.tab.posts')}</p>
 				</div>
 			);
 		case TabTypes.Skills:
 			return (
 				<div style={styles.label}>
-					<p>{profile.data.skills.length}</p>
+					<p>{data.skills ? data.skills.length : 0}</p>
 					<p>{t('profile.tab.skills')}</p>
 				</div>
 			);
 		case TabTypes.Badges:
 			return (
 				<div style={styles.label}>
-					<p>{profile.data.badges.filter(item => item.isUnlocked).length}</p>
+					<p>{data.badges ? data.badges.filter(item => item.isUnlocked).length : 0}</p>
 					<p>{t('profile.tab.badges')}</p>
 				</div>
 			);
@@ -162,6 +165,7 @@ class Profile extends Component {
 				</div>
 			);
 		default:
+			return null;
 		}
 	}
 

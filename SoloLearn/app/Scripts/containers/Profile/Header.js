@@ -198,6 +198,7 @@ class Header extends Component {
 		} = this.props;
 
 		const nextLevel = levels.filter(item => item.maxXp > profile.xp)[0];
+		const maxXp = nextLevel ? nextLevel.maxXp : 0;
 
 		return (
 			<div className="details-wrapper" style={styles.detailsWrapper}>
@@ -267,12 +268,12 @@ class Header extends Component {
 							style={styles.progress}
 							mode="determinate"
 							min={0}
-							max={nextLevel.maxXp}
+							max={maxXp}
 							value={profile.xp}
 							color="#8BC34A"
 						/>
 						<span style={{ ...styles.xp.base, ...styles.xp.left }}>{profile.xp} XP</span>
-						<span style={{ ...styles.xp.base, ...styles.xp.right }}>{nextLevel.maxXp} XP</span>
+						<span style={{ ...styles.xp.base, ...styles.xp.right }}>{maxXp} XP</span>
 					</div>
 				</div>
 				<ReportPopup

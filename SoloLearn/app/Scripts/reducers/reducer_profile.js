@@ -4,7 +4,7 @@ import {
 } from '../constants/ActionTypes';
 
 const initialState = {
-	data: null,
+	data: {},
 	posts: [],
 	feed: [],
 	codes: [],

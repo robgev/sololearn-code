@@ -1,5 +1,6 @@
 // General
 import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { isEmpty } from 'lodash';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
@@ -136,7 +137,7 @@ export const isLoaded = (state, componentName) => {
 	case 'feed':
 		return state.feed.length > 0;
 	case 'profile':
-		return state.profile.data != null;
+		return !isEmpty(state.profile.data);
 	case 'followers':
 		return state.profile.followers.length > 0;
 	case 'following':
