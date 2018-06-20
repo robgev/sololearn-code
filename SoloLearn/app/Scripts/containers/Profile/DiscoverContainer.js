@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import CircularProgress from 'material-ui/CircularProgress';
+import Paper from 'material-ui/Paper';
 
 import { getDiscoverSuggestions } from 'actions/discover';
 import UserCard from 'components/Shared/UserCard';
 import BusyWrapper from 'components/Shared/BusyWrapper';
+import Layout from 'components/Layouts/GeneralLayout';
 
 import 'styles/components/Layouts/DiscoverLayout.scss';
 
@@ -42,10 +44,12 @@ class DiscoverContainer extends PureComponent {
 		const { loading } = this.state;
 		const { discoverSuggestions } = this.props;
 		return (
-			<div className="discover-container">
-				<div className="main-content">
+			<Layout>
+				<Paper className="discover-container">
 					<BusyWrapper
 						isBusy={loading}
+						title="Discover peers"
+						wrapperClassName="discover-busy-wrapper"
 						style={{ minHeight: '60vh' }}
 						loadingComponent={
 							<CircularProgress
@@ -53,19 +57,18 @@ class DiscoverContainer extends PureComponent {
 							/>
 						}
 					>
-						{discoverSuggestions.map(collection => (
-							<UserCard
-								withLink
-								{...collection}
-								key={collection.id}
-							/>
-						))}
+						<div className="discover-wrapper">
+							{discoverSuggestions.map(collection => (
+								<UserCard
+									withLink
+									{...collection}
+									key={collection.id}
+								/>
+							))}
+						</div>
 					</BusyWrapper>
-				</div>
-				<div className="sidebar-placeholder">
-					<div className="sidebar" />
-				</div>
-			</div>
+				</Paper>
+			</Layout>
 		);
 	}
 }

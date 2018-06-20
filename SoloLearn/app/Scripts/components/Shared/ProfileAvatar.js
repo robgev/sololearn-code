@@ -41,7 +41,7 @@ const ProfileAvatar = ({
 					{ avatarUrl ?
 						<Avatar
 							size={size}
-							src={avatars[userID % 5000].picture.large}
+							src={avatars[userID ? userID % 5000 : 0].picture.large}
 							style={{
 								margin: '0 5px',
 								...(withBorder ? { border: `4px solid ${modBadgeColor}` } : {}),

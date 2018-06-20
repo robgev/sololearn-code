@@ -1,9 +1,20 @@
 .discover-container {
-	display: flex;
-	justify-content: center;
-	padding-top: 20px;
-	.main-content {
-		width: 610px;
-		padding-right: 30px;
+	padding: 7px;
+	.discover-busy-wrapper {
+		.card-title {
+			width: 100%;
+			padding-top: 7px;
+			padding-bottom: 7px;
+			text-transform: uppercase;
+			font-size: 14px;
+			line-height: 11px;
+			color: rgb(120, 144, 156);
+		}
+	}
+	.discover-wrapper {
+		display: flex;
+		width: 100%;
+		flex-direction: row;
+		flex-wrap: wrap;
 	}
 }
