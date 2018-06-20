@@ -12,21 +12,18 @@ const FeedItems = ({
 	feedItems,
 	openPopup,
 	className,
-}) => {
-	const renderFeedItems = feedItems.map(feedItem => (
-		<FeedItem
-			key={feedItem.type === types.mergedChallange ?
-				`feedGroup${feedItem.toId}` :
-				`feedItem${feedItem.id}`}
-			feedItem={feedItem}
-			openPopup={openPopup}
-		/>
-	));
-	return (
-		<div style={style} className={className}>
-			{renderFeedItems}
-		</div>
-	);
-};
+}) => (
+	<div id="feed-items" style={style} className={className}>
+		{feedItems.map(feedItem => (
+			<FeedItem
+				key={feedItem.type === types.mergedChallange ?
+					`feedGroup${feedItem.toId}` :
+					`feedItem${feedItem.id}`}
+				feedItem={feedItem}
+				openPopup={openPopup}
+			/>
+		))}
+	</div>
+);
 
 export default FeedItems;
