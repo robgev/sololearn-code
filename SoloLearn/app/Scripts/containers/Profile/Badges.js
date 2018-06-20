@@ -30,6 +30,9 @@ class Badges extends PureComponent {
 	}
 	render() {
 		const { t, badges, selectedId } = this.props;
+		if (!badges) {
+			return null;
+		}
 		return (
 			<Paper id="Badges" style={styles.container}>
 				<p style={styles.title}>{t('profile.tab.badges')}</p>

@@ -100,11 +100,11 @@ class Profile extends Component {
 	async componentWillMount() {
 		const { params } = this.props;
 		const { tab = '' } = params;
+		this.selectTab(tab);
 		if (this.props.isLoaded && this.props.profile.data.id.toString() !== params.id) {
 			this.props.clearOpenedProfile();
 		}
 		await this.props.getProfile(params.id);
-		this.selectTab(tab);
 		this.setState({ loading: false });
 		document.title = `${this.props.profile.data.name}'s Profile`;
 		ReactGA.ga('send', 'screenView', { screenName: 'Profile Page' });
@@ -321,7 +321,7 @@ class Profile extends Component {
 								ordering={3}
 								language=""
 								isUserProfile
-								userId={profile.data.id}
+								userId={userId}
 							/>
 							<AddCodeButton />
 						</Paper>

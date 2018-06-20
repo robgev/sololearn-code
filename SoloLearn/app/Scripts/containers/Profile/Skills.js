@@ -69,6 +69,9 @@ class Skills extends PureComponent {
 			currentUserId,
 		} = this.props;
 		const { maxXp, status } = calculateProgress(levels, profile.level, profile.xp);
+		if (!skills) {
+			return null;
+		}
 		return (
 			<div className="skills-container">
 				<Paper className="skills-group">
