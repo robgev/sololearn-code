@@ -1,7 +1,7 @@
 import React from 'react';
 import Toggle from 'material-ui/Toggle';
 
-const UserCard = ({
+const LanguageToggle = ({
 	iconUrl,
 	onToggle,
 	languageName,
@@ -24,4 +24,4 @@ const UserCard = ({
 	</div>
 );
 
-export default UserCard;
+export default LanguageToggle;

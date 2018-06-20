@@ -2,7 +2,7 @@ import React from 'react';
 import Toggle from 'material-ui/Toggle';
 import texts from 'texts';
 
-const UserCard = ({
+const FeedSettingToggle = ({
 	name,
 	onToggle,
 	isSettingOn,
@@ -17,4 +17,4 @@ const UserCard = ({
 	</div>
 );
 
-export default UserCard;
+export default FeedSettingToggle;
