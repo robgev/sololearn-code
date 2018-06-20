@@ -673,7 +673,7 @@
 		"popups": {
 			"unlock-popup-title": "Unlock Answer",
 			"unlock": {
-				"description": "Use  XP of your  XP to unlock the correct answer."
+				"description": "Use {{price}} XP of your {{total}} XP to unlock the correct answer."
 			},
 			"unlock-popup-ok-action-title": "Unlock",
 			"hint-popup-ok-action-title": "Get Hint",
