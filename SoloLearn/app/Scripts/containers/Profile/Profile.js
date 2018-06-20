@@ -14,8 +14,6 @@ import { grey600 } from 'material-ui/styles/colors';
 // Redux modules
 import { connect } from 'react-redux';
 import { getFeedItemsInternal } from 'actions/feed';
-import { getCodesInternal } from 'actions/playground';
-import { getQuestionsInternal } from 'actions/discuss';
 import { getProfileInternal } from 'actions/defaultActions';
 import { emptyProfileFollowers, emptyProfile } from 'actions/profile';
 import { isLoaded } from 'reducers';
@@ -26,8 +24,7 @@ import AddQuestionButton from 'components/Shared/AddQuestionButton';
 import BusyWrapper from 'components/Shared/BusyWrapper';
 import ProfileHeaderShimmer from 'components/Shared/Shimmers/ProfileHeaderShimmer';
 
-// Utils
-import { EnumNameMapper } from 'utils';
+import 'styles/Profile/index.scss';
 
 // Additional data and components
 import Header from './Header';
@@ -37,61 +34,16 @@ import Questions from '../Discuss/Questions';
 import Skills from './Skills';
 import Badges from './Badges';
 import FollowersBase from './FollowersBase';
+import TabLabel from './ProfileTabLabel';
 
-const TabTypes = {
-	Codes: 1,
-	Posts: 2,
-	Activity: 3,
-	Skills: 4,
-	Badges: 5,
-};
-EnumNameMapper.apply(TabTypes);
+const capitalize = name => name.charAt(0).toUpperCase() + name.substr(1);
 
-const styles = {
-	cover: {
-		height: '200px',
-		backgroundColor: '#607d8b',
-	},
-
-	userInfo: {
-		textAlign: 'center',
-		width: '100%',
-	},
-
-	tabs: {
-		backgroundColor: '#fff',
-	},
-
-	tab: {
-		color: 'rgba(107, 104, 104, 0.8)',
-	},
-
-	tabIcon: {
-	},
-
-	label: {
-		display: 'inline-block',
-	},
-
-	inkBarStyle: {
-		backgroundColor: '#777',
-	},
-
-	section: {
-		position: 'relative',
-		padding: 15,
-	},
-
-	popup: {
-		padding: 0,
-	},
-};
 @translate()
 class Profile extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			activeTab: TabTypes.Activity,
+			activeTab: 'Activity',
 			popupOpened: false,
 			loading: true,
 		};
@@ -99,8 +51,16 @@ class Profile extends Component {
 
 	async componentWillMount() {
 		const { params } = this.props;
-		const { tab = '' } = params;
-		this.selectTab(tab);
+		const { tab = '', selected } = params;
+		// If there is a selected badge then the logic is a
+		// little bit different.
+		if (selected) {
+			this.handleSelectedChange(selected);
+		} else {
+			// Default tab is activity so wee need to
+			// Arrange route and GA accordingly.
+			this.handleTabChange(tab || 'activity');
+		}
 		if (this.props.isLoaded && this.props.profile.data.id.toString() !== params.id) {
 			this.props.clearOpenedProfile();
 		}
@@ -121,80 +81,26 @@ class Profile extends Component {
 			await getProfile(id);
 			this.setState({ loading: false });
 		} else if (params.tab !== tab) {
-			this.selectTab(tab, selected);
+			if (selected && selected !== params.selected) {
+				this.handleSelectedChange(selected);
+			} else {
+				this.handleTabChange(tab);
+			}
 		}
 	}
 
-	getLabel = (type) => {
-		const { t, profile: { data } } = this.props;
-
-		switch (type) {
-		case TabTypes.Codes:
-			return (
-				<div style={styles.label}>
-					<p>{data.codes}</p>
-					<p>{t('profile.tab.codes')}</p>
-				</div>
-			);
-		case TabTypes.Posts:
-			return (
-				<div style={styles.label}>
-					<p>{data.posts}</p>
-					<p>{t('profile.tab.posts')}</p>
-				</div>
-			);
-		case TabTypes.Skills:
-			return (
-				<div style={styles.label}>
-					<p>{data.skills ? data.skills.length : 0}</p>
-					<p>{t('profile.tab.skills')}</p>
-				</div>
-			);
-		case TabTypes.Badges:
-			return (
-				<div style={styles.label}>
-					<p>{data.badges ? data.badges.filter(item => item.isUnlocked).length : 0}</p>
-					<p>{t('profile.tab.badges')}</p>
-				</div>
-			);
-		case TabTypes.Activity:
-			return (
-				<div style={styles.label}>
-					<FeedIcon color={grey600} />
-					<p>{t('profile.tab.activity')}</p>
-				</div>
-			);
-		default:
-			return null;
-		}
+	handleSelectedChange = (selectedOverride) => {
+		const { params: { id, selected } } = this.props;
+		this.setState({ activeTab: 'badges' });
+		browserHistory.replace(`/profile/${id}/badges/${selected || selectedOverride || ''}`);
+		ReactGA.ga('send', 'screenView', { screenName: 'Profile Badges Page' });
 	}
 
-	handleTabChange = (value, selected) => {
-		this.setState({ activeTab: value });
-		switch (value) {
-		case TabTypes.Activity:
-			browserHistory.replace(`/profile/${this.props.params.id}/activity`);
-			ReactGA.ga('send', 'screenView', { screenName: 'Profile Feed Page' });
-			break;
-		case TabTypes.Codes:
-			browserHistory.replace(`/profile/${this.props.params.id}/codes`);
-			ReactGA.ga('send', 'screenView', { screenName: 'Profile Codes Page' });
-			break;
-		case TabTypes.Posts:
-			browserHistory.replace(`/profile/${this.props.params.id}/posts`);
-			ReactGA.ga('send', 'screenView', { screenName: 'Profile Discussion Page' });
-			break;
-		case TabTypes.Skills:
-			browserHistory.replace(`/profile/${this.props.params.id}/skills`);
-			ReactGA.ga('send', 'screenView', { screenName: 'Profile Skills Page' });
-			break;
-		case TabTypes.Badges:
-			browserHistory.replace(`/profile/${this.props.params.id}/badges/${this.props.params.selected || selected || ''}`);
-			ReactGA.ga('send', 'screenView', { screenName: 'Profile Badges Page' });
-			break;
-		default:
-			break;
-		}
+	handleTabChange = (activeTab) => {
+		const { params: { id } } = this.props;
+		this.setState({ activeTab });
+		browserHistory.replace(`/profile/${id}/${activeTab}`);
+		ReactGA.ga('send', 'screenView', { screenName: `Profile ${capitalize(activeTab)} Page` });
 	}
 
 	handlePopupOpen = () => {
@@ -214,95 +120,67 @@ class Profile extends Component {
 		}
 	}
 
-	selectTab = (tab, selected) => {
-		switch (tab.toLowerCase()) {
-		case 'activity':
-			this.handleTabChange(TabTypes.Activity);
-			break;
-		case 'codes':
-			this.handleTabChange(TabTypes.Codes);
-			break;
-		case 'posts':
-			this.handleTabChange(TabTypes.Posts);
-			break;
-		case 'skills':
-			this.handleTabChange(TabTypes.Skills);
-			break;
-		case 'badges':
-			this.handleTabChange(TabTypes.Badges, selected);
-			break;
-		default:
-			browserHistory.replace(`/profile/${this.props.params.id}/activity`);
-			this.handleTabChange(TabTypes.Activity);
-			break;
-		}
-	}
-
 	render() {
 		const {
 			t,
 			levels,
 			userId,
 			profile,
-			params: { id },
+			params: { id, selected },
 		} = this.props;
 
-		const { loading } = this.state;
+		const { loading, popupOpened, activeTab } = this.state;
 
 		return (
-			<Layout>
-				<Paper className="profile-overlay" style={styles.userInfo}>
+			<Layout className="profile-container">
+				<Paper className="profile-overlay">
 					<BusyWrapper
 						isBusy={loading}
 						style={{ display: 'initial' }}
 						loadingComponent={<ProfileHeaderShimmer />}
 					>
 						<Header
+							levels={levels}
 							profile={profile.data}
-							levels={this.props.levels}
 							openPopup={this.handlePopupOpen}
 						/>
 						<Tabs
-							value={this.state.activeTab}
-							tabItemContainerStyle={styles.tabs}
-							inkBarStyle={styles.inkBarStyle}
+							value={activeTab}
+							onChange={this.handleTabChange}
+							inkBarStyle={{ backgroundColor: '#777777' }}
+							tabItemContainerStyle={{ backgroundColor: 'white' }}
 						>
 							<Tab
-								label={this.getLabel(TabTypes.Codes)}
-								value={TabTypes.Codes}
-								style={styles.tab}
-								onClick={() => this.handleTabChange(TabTypes.Codes)}
+								value="codes"
+								style={{ color: '#676667' }}
+								label={<TabLabel data={profile.data.codes} label={t('profile.tab.codes')} />}
 							/>
 							<Tab
-								label={this.getLabel(TabTypes.Posts)}
-								value={TabTypes.Posts}
-								style={styles.tab}
-								onClick={() => this.handleTabChange(TabTypes.Posts)}
+								value="discussion"
+								style={{ color: '#676667' }}
+								label={<TabLabel data={profile.data.posts} label={t('profile.tab.posts')} />}
 							/>
 							<Tab
-								label={this.getLabel(TabTypes.Activity)}
-								value={TabTypes.Activity}
-								style={styles.tab}
-								onClick={() => this.handleTabChange(TabTypes.Activity)}
+								value="activity"
+								style={{ color: '#676667' }}
+								label={<TabLabel icon={<FeedIcon color={grey600} />} label={t('profile.tab.activity')} />}
 							/>
 							<Tab
-								label={this.getLabel(TabTypes.Skills)}
-								value={TabTypes.Skills}
-								style={styles.tab}
-								onClick={() => this.handleTabChange(TabTypes.Skills)}
+								value="skills"
+								style={{ color: '#676667' }}
+								label={<TabLabel data={profile.data.skills ? profile.data.skills.length : 0} label={t('profile.tab.skills')} />}
 							/>
 							<Tab
-								label={this.getLabel(TabTypes.Badges)}
-								value={TabTypes.Badges}
-								style={styles.tab}
-								onClick={() => this.handleTabChange(TabTypes.Badges)}
+								value="badges"
+								style={{ color: '#676667' }}
+								label={<TabLabel data={profile.data.badges ? profile.data.badges.filter(item => item.isUnlocked).length : 0} label={t('profile.tab.badges')} />}
 							/>
 						</Tabs>
 					</BusyWrapper>
 				</Paper>
 				{
-					this.state.activeTab === TabTypes.Activity &&
-						<div className="section" style={styles.section}>
+					activeTab === 'activity' &&
+						<div className="section">
 							<FeedItemsBase
 								isLoaded={profile.feed.length > 0}
 								feed={profile.feed}
@@ -313,8 +191,8 @@ class Profile extends Component {
 						</div>
 				}
 				{
-					this.state.activeTab === TabTypes.Codes &&
-						<Paper className="codes-wrapper section" style={styles.section}>
+					activeTab === 'codes' &&
+						<Paper className="codes-wrapper section">
 							<Codes
 								t={t}
 								codes={profile.codes}
@@ -328,8 +206,8 @@ class Profile extends Component {
 						</Paper>
 				}
 				{
-					this.state.activeTab === TabTypes.Posts &&
-						<Paper className="section" style={styles.section}>
+					activeTab === 'discussion' &&
+						<Paper className="section">
 							<Questions
 								t={t}
 								questions={profile.posts}
@@ -341,21 +219,19 @@ class Profile extends Component {
 							<AddQuestionButton />
 						</Paper>
 				}
-				{this.state.activeTab === TabTypes.Skills &&
+				{activeTab === 'skills' &&
 					<Skills
 						levels={levels}
 						profile={profile.data}
 						currentUserId={userId}
 						skills={profile.data.skills}
 					/>}
-				{this.state.activeTab === TabTypes.Badges &&
-					<Badges badges={profile.data.badges} selectedId={this.props.params.selected || null} />}
+				{activeTab === 'badges' &&
+					<Badges badges={profile.data.badges} selectedId={selected || null} />}
 				<Dialog
 					modal={false}
-					open={this.state.popupOpened}
+					open={popupOpened}
 					onRequestClose={this.handlePopupClose}
-					style={styles.popupOverlay}
-					bodyStyle={styles.popup}
 				>
 					<FollowersBase t={t} userId={profile.data.id} closePopup={this.handlePopupClose} />
 				</Dialog>
@@ -373,8 +249,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
 	getProfileFeedItems: getFeedItemsInternal,
-	getProfileCodes: getCodesInternal,
-	getProfileQuestions: getQuestionsInternal,
 	getProfile: getProfileInternal,
 	emptyProfileFollowers,
 	clearOpenedProfile: emptyProfile,
