@@ -244,6 +244,7 @@ class Profile extends Component {
 			levels,
 			userId,
 			profile,
+			params: { id },
 		} = this.props;
 
 		const { loading } = this.state;
@@ -307,7 +308,7 @@ class Profile extends Component {
 								feed={profile.feed}
 								feedPins={[]}
 								isUserProfile
-								userId={userId}
+								userId={id}
 							/>
 						</div>
 				}
@@ -321,7 +322,7 @@ class Profile extends Component {
 								ordering={3}
 								language=""
 								isUserProfile
-								userId={userId}
+								userId={id}
 							/>
 							<AddCodeButton />
 						</Paper>
@@ -335,7 +336,7 @@ class Profile extends Component {
 								isLoaded={profile.posts.length > 0}
 								ordering={7}
 								query=""
-								userId={profile.data.id}
+								userId={id}
 							/>
 							<AddQuestionButton />
 						</Paper>

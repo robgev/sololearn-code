@@ -229,7 +229,6 @@ class FeedItemsBase extends Component {
 
 	loadFeedItems = async (fromId) => {
 		this.setState({ isLoading: true });
-		console.log(this.props.userId);
 		const count = await this.props.getFeedItems(fromId, this.props.userId);
 		if (count === 0) this.setState({ fullyLoaded: true });
 		this.setState({ isLoading: false });
