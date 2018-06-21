@@ -64,9 +64,7 @@ import DiscoverContainer from 'containers/Profile/DiscoverContainer';
 import {
 	QuizFactoryMenu,
 	QuizFactorySuggest,
-	QuizFactorySuggestMultipleChoice,
-	QuizFactorySuggestTypeIn,
-	QuizFactorySuggestFillIn,
+	QuizFactorySuggestTypeSelector,
 	QuizFactoryMySubmissions,
 	QuizFactoryRate,
 } from 'containers/QuizFactory';
@@ -111,9 +109,7 @@ export default (
 		<Route path="/discover(/:query)" component={redirector(DiscoverContainer)} />
 		<Route path="/quiz-factory" component={QuizFactoryMenu} />
 		<Route path="/quiz-factory/suggest" component={QuizFactorySuggest} />
-		<Route path="/quiz-factory/suggest/multiple-choice" component={QuizFactorySuggestMultipleChoice} />
-		<Route path="/quiz-factory/suggest/type-in" component={QuizFactorySuggestTypeIn} />
-		<Route path="/quiz-factory/suggest/fill-in" component={QuizFactorySuggestFillIn} />
+		<Route path="/quiz-factory/suggest/:type" component={QuizFactorySuggestTypeSelector} />
 		<Route path="/quiz-factory/rate" component={QuizFactoryRate} />
 		<Route path="/quiz-factory/my-submissions" component={QuizFactoryMySubmissions} />
 		<Route path="/login" component={Login} />

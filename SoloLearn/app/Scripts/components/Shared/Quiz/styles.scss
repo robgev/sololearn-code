@@ -1,0 +1,14 @@
+.quiz {
+	.question-container {
+		margin: 10px 0;
+		.question-text {
+			max-height: 50%;
+			overflow: auto;
+			padding: 20px;
+			margin-bottom: 40px;
+		}
+		.placeholder-container {
+			text-align: center;
+		}
+	}
+}

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Editor, EditorState, Modifier, CompositeDecorator } from 'draft-js';
 import { Paper, RaisedButton, FlatButton } from 'material-ui';
-import Layout from 'components/Layouts/GeneralLayout';
 import QuizSelector from 'containers/Challenges/Challenge/Game/TypeSelector';
 import ChooseLanugage from '../components/ChooseLanguage';
 
@@ -75,58 +74,56 @@ class SuggestFillIn extends Component {
 			isLanguageSelectorOpen, language, question, editorState, isPreviewOpen,
 		} = this.state;
 		return (
-			<Layout>
-				<div className="quiz-factory">
-					<Paper onClick={this.toggleLanguageSelector} className="selected-language container">
-						<span className="title">Language</span>
-						<div className="with-image">
-							<span className="language-name">{language === null ? 'Select' : language.languageName}</span>
-							<img src="/assets/keyboard_arrow_right.svg" alt="" />
-						</div>
-					</Paper>
-					<Paper className="question container">
-						<span className="title">Question</span>
-						<textarea value={question} onChange={this.onQuestionChange} placeholder="Type in Your Question" />
-					</Paper>
-					<Paper className="container editor-box">
-						<div className="title-with-button">
-							<span className="title">Code</span>
-							<FlatButton label="Mark" secondary onClick={this.markHighlighted} />
-						</div>
-						<div className="editor" onClick={this.focusEditor} role="button" tabIndex={0}>
-							<Editor
-								ref={(editor) => { this.editor = editor; }}
-								editorState={editorState}
-								onChange={this.onEditorChange}
-								customStyleMap={
-									{
-										MARKED: {
-											backgroundColor: 'blue',
-										},
-									}
+			<div className="quiz-factory">
+				<Paper onClick={this.toggleLanguageSelector} className="selected-language container">
+					<span className="title">Language</span>
+					<div className="with-image">
+						<span className="language-name">{language === null ? 'Select' : language.languageName}</span>
+						<img src="/assets/keyboard_arrow_right.svg" alt="" />
+					</div>
+				</Paper>
+				<Paper className="question container">
+					<span className="title">Question</span>
+					<textarea value={question} onChange={this.onQuestionChange} placeholder="Type in Your Question" />
+				</Paper>
+				<Paper className="container editor-box">
+					<div className="title-with-button">
+						<span className="title">Code</span>
+						<FlatButton label="Mark" secondary onClick={this.markHighlighted} />
+					</div>
+					<div className="editor" onClick={this.focusEditor} role="button" tabIndex={0}>
+						<Editor
+							ref={(editor) => { this.editor = editor; }}
+							editorState={editorState}
+							onChange={this.onEditorChange}
+							customStyleMap={
+								{
+									MARKED: {
+										backgroundColor: 'blue',
+									},
 								}
-							/>
-						</div>
-					</Paper>
-					<RaisedButton label="Preview" fullWidth primary className="preview-button" />
-					<RaisedButton
-						className="preview-button"
-						label="Submit"
-						fullWidth
-						primary
-					/>
-					{
-						isPreviewOpen
-							? <QuizSelector quiz={this.makeQuiz()} />
-							: null
-					}
-				</div>
+							}
+						/>
+					</div>
+				</Paper>
+				<RaisedButton label="Preview" fullWidth primary className="preview-button" />
+				<RaisedButton
+					className="preview-button"
+					label="Submit"
+					fullWidth
+					primary
+				/>
+				{
+					isPreviewOpen
+						? <QuizSelector quiz={this.makeQuiz()} />
+						: null
+				}
 				<ChooseLanugage
 					open={isLanguageSelectorOpen}
 					onClose={this.toggleLanguageSelector}
 					onChoose={this.selectLanguage}
 				/>
-			</Layout>
+			</div>
 		);
 	}
 }
