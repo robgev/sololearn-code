@@ -129,7 +129,7 @@ export const followUser = (userId, fromFollowers, follow) => dispatch =>
 		resolve();
 	});
 
-export const followUserInternal = (userId, fromFollowers) =>
+export const followUserInternal = (userId, fromFollowers = null) =>
 	async (dispatch, getState) => {
 		if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
 		try {
@@ -140,7 +140,7 @@ export const followUserInternal = (userId, fromFollowers) =>
 		}
 	};
 
-export const unfollowUserInternal = (userId, fromFollowers) =>
+export const unfollowUserInternal = (userId, fromFollowers = null) =>
 	async (dispatch, getState) => {
 		if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
 		try {

@@ -28,104 +28,6 @@ import { translate } from 'react-i18next';
 import DeactivationPopup from './DeactivationPopup';
 import BlockPopup from './BlockPopup';
 
-const styles = {
-	detailsWrapper: {
-		position: 'relative',
-	},
-
-	details: {
-		width: '50%',
-		margin: '0 auto 10px',
-		textAlign: 'center',
-	},
-
-	userNameWrapper: {
-		position: 'relative',
-	},
-
-	userName: {
-		fontSize: '17px',
-		fontWeight: 500,
-		margin: '7px 0 3px 0',
-	},
-
-	level: {
-		fontSize: '13px',
-		margin: '0 0 3px 0',
-	},
-
-	userStats: {
-		position: 'relative',
-	},
-
-	xp: {
-		base: {
-			position: 'absolute',
-			top: 0,
-			fontSize: '10px',
-			fontWeight: 500,
-			color: '#fff',
-		},
-
-		left: {
-			left: '2px',
-		},
-
-		right: {
-			right: '2px',
-		},
-	},
-
-	progress: {
-		height: '13px',
-		backgroundColor: '#dedede',
-	},
-
-	followersButton: {
-		base: {
-			position: 'absolute',
-			minWidth: '50px',
-			margin: '0 0 0 5px',
-		},
-
-		button: {
-			height: '30px',
-			lineHeight: '30px',
-		},
-
-		overlay: {
-			height: '30px',
-		},
-	},
-
-	followersIcon: {
-		height: '20px',
-		width: '20px',
-		margin: '0 0 0 10px',
-	},
-
-	actionButton: {
-		base: {
-			position: 'absolute',
-			right: '10px',
-			height: '25px',
-		},
-
-		label: {
-			fontSize: '12px',
-		},
-
-		button: {
-			height: '25px',
-			lineHeight: '25px',
-		},
-
-		overlay: {
-			height: '25px',
-		},
-	},
-};
-
 const mapStateToProps = state => ({
 	userId: state.userProfile.id,
 	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
@@ -147,19 +49,19 @@ class Header extends Component {
 			reportPopupOpen: false,
 			blockPopupOpened: false,
 			deactivationPopupOpen: false,
-			isFollowing: this.props.profile.isFollowing,
+			isFollowing: props.profile.isFollowing,
 		};
-
-		this.handleFollowing = this.handleFollowing.bind(this);
 	}
 
-	handleFollowing(id, follow, fromFollowers) {
-		this.setState({ isFollowing: follow });
+	handleFollowing = () => {
+		const { profile: { id } } = this.props;
+		const { isFollowing } = this.state;
+		this.setState({ isFollowing: !isFollowing });
 
-		if (follow) {
-			this.props.followUser(id, fromFollowers);
+		if (isFollowing) {
+			this.props.unfollowUser(id);
 		} else {
-			this.props.unfollowUser(id, fromFollowers);
+			this.props.followUser(id);
 		}
 	}
 
@@ -189,91 +91,88 @@ class Header extends Component {
 
 	render() {
 		const {
+			isFollowing,
 			reportPopupOpen,
 			blockPopupOpened,
 			deactivationPopupOpen,
 		} = this.state;
 		const {
-			t, profile, levels, userId, accessLevel,
+			t,
+			levels,
+			userId,
+			profile,
+			openPopup,
+			accessLevel,
 		} = this.props;
 
 		const nextLevel = levels.filter(item => item.maxXp > profile.xp)[0];
 		const maxXp = nextLevel ? nextLevel.maxXp : 0;
 
 		return (
-			<div className="details-wrapper" style={styles.detailsWrapper}>
-				{
-					profile.id !== userId &&
-					<div>
-						<RaisedButton
-							label={this.state.isFollowing ? t('common.user-following') : t('common.follow-user')}
-							primary={!this.state.isFollowing}
-							secondary={this.state.isFollowing}
-							style={styles.actionButton.base}
-							labelStyle={styles.actionButton.label}
-							buttonStyle={styles.actionButton.button}
-							overlayStyle={styles.actionButton.overlay}
-							onClick={() => { this.handleFollowing(profile.id, !this.state.isFollowing, null); }}
-						/>
-						<IconMenu
-							iconButtonElement={
-								<IconButton><MoreVertIcon /></IconButton>
-							}
-							anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-							targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-						>
-							<MenuItem
-								primaryText={t('common.report-action-title')}
-								onClick={this.toggleReportPopup}
+			<div className="profile-header-container">
+				<div className="header-top-buttons">
+					<RaisedButton
+						secondary
+						icon={<Person />}
+						onClick={openPopup}
+						label={numberFormatter(profile.followers)}
+					/>
+					{
+						profile.id !== userId &&
+						<div className="action-buttons">
+							<RaisedButton
+								secondary={isFollowing}
+								onClick={this.handleFollowing}
+								label={isFollowing ? t('common.user-following') : t('common.follow-user')}
 							/>
-							<MenuItem
-								primaryText={t('common.block-user')}
-								onClick={this.toggleBlockPopup}
-							/>
-							{ (accessLevel > 0
+							<IconMenu
+								iconButtonElement={
+									<IconButton><MoreVertIcon /></IconButton>
+								}
+								anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+								targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+							>
+								<MenuItem
+									primaryText={t('common.report-action-title')}
+									onClick={this.toggleReportPopup}
+								/>
+								<MenuItem
+									primaryText={t('common.block-user')}
+									onClick={this.toggleBlockPopup}
+								/>
+								{ (accessLevel > 0
 									&& !determineAccessLevel(profile.accessLevel) > 0) &&
 									<MenuItem
 										primaryText={t('common.deactivate-action-title')}
 										onClick={this.toggleDeactivationPopup}
 									/>
-							}
-						</IconMenu>
-					</div>
-				}
-				<div className="details" style={styles.details}>
+								}
+							</IconMenu>
+						</div>
+					}
+				</div>
+				<div className="profile-header-details">
 					<ProfileAvatar
 						size={100}
 						withBorder
 						userID={profile.id}
-						style={styles.avatar}
 						badge={profile.badge}
 						userName={profile.name}
 						avatarUrl={profile.avatarUrl}
 					/>
-					<div style={styles.userNameWrapper}>
-						<span style={styles.userName}>{profile.name}</span>
-						<RaisedButton
-							label={numberFormatter(profile.followers)}
-							secondary
-							icon={<Person style={styles.followersIcon} />}
-							style={styles.followersButton.base}
-							buttonStyle={styles.followersButton.button}
-							overlayStyle={styles.followersButton.overlay}
-							onClick={this.props.openPopup}
-						/>
-					</div>
-					<p style={styles.level}>{t('common.user-level')} {profile.level}</p>
-					<div className="profile-progress-wrapper" style={styles.userStats}>
+					<span className="user-name">{profile.name}</span>
+					<p className="user-level">{t('common.user-level')} {profile.level}</p>
+					<div className="profile-progress-wrapper">
 						<LinearProgress
-							style={styles.progress}
-							mode="determinate"
 							min={0}
 							max={maxXp}
-							value={profile.xp}
 							color="#8BC34A"
+							value={profile.xp}
+							mode="determinate"
+							style={{ height: 13, backgroundColor: '#DEDEDE' }}
 						/>
-						<span style={{ ...styles.xp.base, ...styles.xp.left }}>{profile.xp} XP</span>
-						<span style={{ ...styles.xp.base, ...styles.xp.right }}>{maxXp} XP</span>
+						<span className="xp-number left">{profile.xp} XP</span>
+						<span className="xp-number right">{maxXp} XP</span>
 					</div>
 				</div>
 				<ReportPopup

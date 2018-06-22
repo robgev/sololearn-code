@@ -44,7 +44,7 @@ const ProfileAvatar = ({
 							src={avatars[userID ? userID % 5000 : 0].picture.large}
 							style={{
 								margin: '0 5px',
-								...(withBorder ? { border: `4px solid ${modBadgeColor}` } : {}),
+								...((withBorder && modBadge) ? { border: `4px solid ${modBadgeColor}` } : {}),
 								...avatarStyle,
 							}}
 						/>
@@ -54,13 +54,13 @@ const ProfileAvatar = ({
 							style={{
 								margin: '0 5px',
 								backgroundColor: AvatarColors[userID % AvatarColors.length],
-								...(withBorder ? { border: `4px solid ${modBadgeColor}` } : {}),
+								...((withBorder && modBadge) ? { border: `4px solid ${modBadgeColor}` } : {}),
 								...avatarStyle,
 							}}
 						>{userName ? userName.toUpperCase().charAt(0) : ''}
 						</Avatar>
 					}
-					{ withBorder &&
+					{ (withBorder && modBadge) &&
 						<ModBadge
 							badge={modBadge}
 							className="big absolute"
