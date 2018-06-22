@@ -12,6 +12,13 @@
 	-webkit-box-orient: vertical;
 	text-overflow: -o-ellipsis-lastline;
 }
+
+%title-text {
+	text-transform: uppercase;
+	font-size: 14px;
+	line-height: 11px;
+	color: #78909c;
+}
 	// &:before {
 	// 	content: '...';
 	// 	position: absolute;

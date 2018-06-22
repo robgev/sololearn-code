@@ -1,7 +1,13 @@
+@import '~styles/utils';
+
 .playground-codes-container {
 	padding: 15px;
 	.playground-codes-toolbar {
 		display: flex;
-		justify-content: flex-end;
+		justify-content: space-between;
+		align-items: center;
+		.page-title {
+			@extend %title-text;
+		}
 	}
 }

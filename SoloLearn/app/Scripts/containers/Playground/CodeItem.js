@@ -1,16 +1,15 @@
 // React modules
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import Radium from 'radium';
 
 // Material UI components
 import CommentsIcon from 'material-ui/svg-icons/communication/comment';
 import Thumbs from 'material-ui/svg-icons/action/thumbs-up-down';
 import LockIcon from 'material-ui/svg-icons/action/lock';
-import { grey500, blueGrey500 } from 'material-ui/styles/colors';
+import { grey500 } from 'material-ui/styles/colors';
 
 // Utils
-import { numberFormatter, updateDate } from 'utils';
+import { numberFormatter } from 'utils';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import LanguageIcon from 'components/Shared/LanguageIcon';
 
@@ -20,7 +19,6 @@ class CodeItem extends Component {
 	}
 	render() {
 		const { code } = this.props;
-		const dateModified = updateDate(code.modifiedDate);
 		return (
 			<div className="code-item-wrapper">
 				<div className="author-details">
@@ -29,6 +27,7 @@ class CodeItem extends Component {
 						userID={code.userID}
 						userName={code.userName}
 						avatarUrl={code.avatarUrl}
+						userXP={code.xp}
 					/>
 				</div>
 				<div className="details-wrapper">
@@ -69,4 +68,4 @@ class CodeItem extends Component {
 	}
 }
 
-export default Radium(CodeItem);
+export default CodeItem;

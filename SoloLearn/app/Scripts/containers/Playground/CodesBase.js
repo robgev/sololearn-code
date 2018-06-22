@@ -53,30 +53,33 @@ class CodesBase extends Component {
 			<Layout>
 				<Paper className="playground-codes-container">
 					<div className="playground-codes-toolbar">
-						<DropDownMenu
-							value={language}
-							autoWidth={false}
-							onChange={this.handleLanguageFilterChange}
-						>
-							<MenuItem value="" primaryText={t('code.language-filter.all')} />
-							<MenuItem value="cpp" primaryText="C++" />
-							<MenuItem value="cs" primaryText="C#" />
-							<MenuItem value="java" primaryText="Java" />
-							<MenuItem value="py" primaryText="Python" />
-							<MenuItem value="rb" primaryText="Ruby" />
-							<MenuItem value="php" primaryText="PHP" />
-							<MenuItem value="web" primaryText="Web" />
-						</DropDownMenu>
-						<DropDownMenu
-							value={ordering}
-							autoWidth={false}
-							onChange={this.handleOrderingFilterChange}
-						>
-							<MenuItem value={4} primaryText={t('code.filter.trending')} />
-							<MenuItem value={2} primaryText={t('code.filter.most-popular')} />
-							<MenuItem value={1} primaryText={t('code.filter.most-recent')} />
-							<MenuItem value={3} primaryText={t('code.filter.my-codes')} />
-						</DropDownMenu>
+						<p className="page-title">{t('code_playground.title')}</p>
+						<div>
+							<DropDownMenu
+								value={language}
+								autoWidth={false}
+								onChange={this.handleLanguageFilterChange}
+							>
+								<MenuItem value="" primaryText={t('code.language-filter.all')} />
+								<MenuItem value="cpp" primaryText="C++" />
+								<MenuItem value="cs" primaryText="C#" />
+								<MenuItem value="java" primaryText="Java" />
+								<MenuItem value="py" primaryText="Python" />
+								<MenuItem value="rb" primaryText="Ruby" />
+								<MenuItem value="php" primaryText="PHP" />
+								<MenuItem value="web" primaryText="Web" />
+							</DropDownMenu>
+							<DropDownMenu
+								value={ordering}
+								autoWidth={false}
+								onChange={this.handleOrderingFilterChange}
+							>
+								<MenuItem value={4} primaryText={t('code.filter.trending')} />
+								<MenuItem value={2} primaryText={t('code.filter.most-popular')} />
+								<MenuItem value={1} primaryText={t('code.filter.most-recent')} />
+								<MenuItem value={3} primaryText={t('code.filter.my-codes')} />
+							</DropDownMenu>
+						</div>
 					</div>
 					<Codes
 						t={t}
