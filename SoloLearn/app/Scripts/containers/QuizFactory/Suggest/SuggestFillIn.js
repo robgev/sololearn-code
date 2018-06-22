@@ -28,7 +28,7 @@ const markTextBlock = (raw, ranges, index) => (ranges.length > 0 ? ranges
 		const text = `${acc.text}${currentText}${idx === arr.length - 1 ? raw.substring(curr.offset + curr.length) : ''}`;
 		const answers = [ ...acc.answers, raw.substr(curr.offset, curr.length) ];
 		return { answers, text, index: acc.index + 1 };
-	}, { answers: [], text: '', index }) : raw);
+	}, { answers: [], text: '', index }) : { answers: [], text: raw, index });
 
 class SuggestFillIn extends Component {
 	state = {
@@ -91,7 +91,9 @@ class SuggestFillIn extends Component {
 			const { answers: currAnswers, text: currText, index } =
 				markTextBlock(block.text, block.entityRanges, acc.index);
 			return {
-				answers: [ ...acc.answers, ...currAnswers ], question: acc.question + currText, index,
+				answers: [ ...acc.answers, ...currAnswers ],
+				question: `${acc.question}${currText}\r\n`,
+				index,
 			};
 		}, { answers: [], question: '', index: 0 });
 		return {
@@ -99,7 +101,7 @@ class SuggestFillIn extends Component {
 				text: a, id, isCorrect: true, properties: { prefix: '', postfix: '' },
 			})),
 			language: this.state.language.id,
-			question,
+			question: `${this.state.question}[!html!]${question}`,
 			type: 3,
 		};
 	}

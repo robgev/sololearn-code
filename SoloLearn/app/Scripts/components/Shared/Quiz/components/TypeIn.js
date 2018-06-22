@@ -40,7 +40,7 @@ class TypeIn extends Component {
 				<Paper className="question-container">
 					<p className="question-text">{this.props.quiz.question}</p>
 					<div className="placeholder-container">
-						<span>{this.correctAnswer.properties.prefix}{'<'}</span>
+						<span>{this.correctAnswer.properties.prefix}</span>
 						<TextField
 							name="answer-placeholder"
 							maxLength={this.correctAnswer.text.length}
@@ -50,7 +50,7 @@ class TypeIn extends Component {
 							onChange={this.onChange}
 							disabled={isChecked}
 						/>
-						<span>{this.correctAnswer.properties.postfix}{'/>'}</span>
+						<span>{this.correctAnswer.properties.postfix}</span>
 					</div>
 				</Paper>
 				<div className="check-container">

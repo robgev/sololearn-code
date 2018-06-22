@@ -17,7 +17,6 @@ const selectOne = (answers, id) => answers.map(a => ({ ...a, isSelected: a.id ==
 
 const toggleSelected = (answers, id) => {
 	const res = answers.map(a => (a.id === id ? { ...a, isSelected: !a.isSelected } : a));
-	console.log(res);
 	return res;
 };
 
