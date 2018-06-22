@@ -7,6 +7,7 @@ import { shuffleArray } from 'utils';
 import { quizType } from './types';
 
 import TopBar from './TopBar';
+import CheckIndicator from './CheckIndicator';
 
 // Pure utility functions
 const isSingleAnswer = answers =>
@@ -33,6 +34,7 @@ const getShuffledAnswers = answers => shuffleArray(answers).map(a => ({ ...a, is
 class MultipleChoice extends Component {
 	state = {
 		shuffled: getShuffledAnswers(this.props.quiz.answers),
+		checkResult: null,
 	}
 	isSingleAnswer = isSingleAnswer(this.props.quiz.answers);
 	toggleAnswer = (answerId) => {
@@ -45,14 +47,20 @@ class MultipleChoice extends Component {
 	unlock = () => {
 		this.setState(state =>
 			({ shuffled: state.shuffled.map(a => ({ ...a, isSelected: a.isCorrect })) }));
+		this.check();
 	}
-	check = () => !this.state.shuffled.some(a => a.isCorrect !== a.isSelected);
+	check = () => {
+		this.setState(state => ({
+			checkResult: !state.shuffled.some(a => a.isCorrect !== a.isSelected),
+		}));
+	}
 	render() {
-		const { shuffled } = this.state;
+		const { shuffled, checkResult } = this.state;
+		const isChecked = checkResult !== null;
 		const isRadio = this.isSingleAnswer;
 		return (
 			<div className="quiz">
-				{this.props.unlockable && <TopBar onUnlock={this.unlock} />}
+				{this.props.unlockable && <TopBar disabled={isChecked} onUnlock={this.unlock} />}
 				<Paper className="question-container">
 					<p className="question-text">{this.props.quiz.question}</p>
 					<List>
@@ -66,6 +74,7 @@ class MultipleChoice extends Component {
 												onCheck={() => this.toggleAnswer(answer.id)}
 												isRadio={isRadio}
 												checked={answer.isSelected}
+												disabled={isChecked}
 											/>}
 									>
 										{answer.text}
@@ -76,12 +85,14 @@ class MultipleChoice extends Component {
 						}
 					</List>
 				</Paper>
-				<RaisedButton
-					fullWidth
-					secondary
-					onClick={this.check}
-					label="Check"
-				/>
+				<div className="check-container">
+					<RaisedButton
+						secondary
+						onClick={this.check}
+						label="Check"
+					/>
+					<CheckIndicator status={checkResult} />
+				</div>
 			</div>
 		);
 	}
