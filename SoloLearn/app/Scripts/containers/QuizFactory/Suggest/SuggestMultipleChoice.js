@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { Paper, Checkbox, TextField, RaisedButton } from 'material-ui';
 import ChooseLanguage from '../components/ChooseLanguage';
 
-import './style.scss';
-
 class SuggestMultipleChoice extends Component {
 	state = {
 		isLanguageSelectorOpen: false,

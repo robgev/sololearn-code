@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { Paper, TextField, RaisedButton } from 'material-ui';
 import ChooseLanguage from '../components/ChooseLanguage';
 
-import './style.scss';
-
 class SuggestTypeIn extends Component {
 	state = {
 		isLanguageSelectorOpen: false,

@@ -7,10 +7,7 @@ import { red500, green500 } from 'material-ui/styles/colors';
 import './CheckIndicator.scss';
 
 const CheckIndicator = ({ status }) => (status !== null ? (
-	<Paper
-		className="check-indicator"
-	// style={{ backgroundColor: status ? 'green' : 'red' }}
-	>
+	<Paper className="check-indicator">
 		{status ? <Done color={green500} /> : <Clear color={red500} />}
 		<span>{status ? 'Correct' : 'Wrong'}</span>
 	</Paper>

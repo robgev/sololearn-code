@@ -6,6 +6,8 @@ import SuggestMultipleChoice from './SuggestMultipleChoice';
 import SuggestTypeIn from './SuggestTypeIn';
 import SuggestFillIn from './SuggestFillIn';
 
+import './style.scss';
+
 class SuggestTypeSelector extends Component {
 	state = {
 		previewQuiz: null,
