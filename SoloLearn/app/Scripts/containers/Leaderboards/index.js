@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
 import { translate } from 'react-i18next';
 
+import Paper from 'material-ui/Paper';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
@@ -131,61 +132,62 @@ class Leaderboards extends PureComponent {
 
 		return (
 			<Layout className="leaderboards-container">
-				<div className="leaderboards-topbar">
-					<div className="leaderboard-tabs">
-						<Link
-							to={`/leaderboards/${userId}/1/${range}`}
-							className={`mode-item ${mode === 1 ? 'active' : ''}`}
-						>
-							{texts.following}
-						</Link>
-						<Link
-							to={`/leaderboards/${userId}/2/${range}`}
-							className={`mode-item ${mode === 2 ? 'active' : ''}`}
-						>
-							{texts.local}
-						</Link>
-						<Link
-							to={`/leaderboards/${userId}/0/${range}`}
-							className={`mode-item ${mode === 0 ? 'active' : ''}`}
-						>
-							{texts.global}
-						</Link>
+				<Paper>
+					<div className="leaderboards-topbar">
+						<div className="leaderboard-tabs">
+							<Link
+								to={`/leaderboards/${userId}/1/${range}`}
+								className={`mode-item ${mode === 1 ? 'active' : ''}`}
+							>
+								{texts.following}
+							</Link>
+							<Link
+								to={`/leaderboards/${userId}/2/${range}`}
+								className={`mode-item ${mode === 2 ? 'active' : ''}`}
+							>
+								{texts.local}
+							</Link>
+							<Link
+								to={`/leaderboards/${userId}/0/${range}`}
+								className={`mode-item ${mode === 0 ? 'active' : ''}`}
+							>
+								{texts.global}
+							</Link>
+						</div>
+						<DropDownMenu value={range} onChange={this.handleChange}>
+							<MenuItem value={1} primaryText={texts.today} />
+							<MenuItem value={7} primaryText={texts.thisWeek} />
+							<MenuItem value={30} primaryText={texts.thisMonth} />
+							<MenuItem value={0} primaryText={texts.allTime} />
+						</DropDownMenu>
 					</div>
-					<DropDownMenu value={range} onChange={this.handleChange}>
-						<MenuItem value={1} primaryText={texts.today} />
-						<MenuItem value={7} primaryText={texts.thisWeek} />
-						<MenuItem value={30} primaryText={texts.thisMonth} />
-						<MenuItem value={0} primaryText={texts.allTime} />
-					</DropDownMenu>
-				</div>
-				<BusyWrapper
-					isBusy={loading}
-					style={{ minHeight: '30vh' }}
-					wrapperClassName="leaderboards-body"
-					loadingComponent={
-						<CircularProgress
-							size={100}
-						/>
-					}
-				>
-					{ range === 0 ?
-						<InfiniteLeaderboard
-							mode={mode}
-							userId={userId}
-							leaderboards={leaderboards}
-							scrollToIndex={scrollToIndex}
-							onScrollVisibility={this.onScrollVisibility}
-							ref={(infiniteBoard) => { this.infiniteBoard = infiniteBoard; }}
-						/> :
-						<LeaderboardCard
-							userId={userId}
-							userRank={userRank}
-							leaderboards={leaderboards}
-							onScrollVisibility={this.onScrollVisibility}
-						/>
-					}
-					{ (userRank > 0 && !shouldHideButton) &&
+					<BusyWrapper
+						isBusy={loading}
+						style={{ minHeight: '30vh' }}
+						wrapperClassName="leaderboards-body"
+						loadingComponent={
+							<CircularProgress
+								size={100}
+							/>
+						}
+					>
+						{ range === 0 ?
+							<InfiniteLeaderboard
+								mode={mode}
+								userId={userId}
+								leaderboards={leaderboards}
+								scrollToIndex={scrollToIndex}
+								onScrollVisibility={this.onScrollVisibility}
+								ref={(infiniteBoard) => { this.infiniteBoard = infiniteBoard; }}
+							/> :
+							<LeaderboardCard
+								userId={userId}
+								userRank={userRank}
+								leaderboards={leaderboards}
+								onScrollVisibility={this.onScrollVisibility}
+							/>
+						}
+						{ (userRank > 0 && !shouldHideButton) &&
 						<RaisedButton
 							labelColor="#FFFFFF"
 							onClick={this.scrollTo}
@@ -197,8 +199,9 @@ class Leaderboards extends PureComponent {
 							label={`${t(`leaderboard.action.${userId === this.props.userId ? 'find-me' : 'find-them'}`)} ${userRank}`}
 							icon={<ArrowDown />}
 						/>
-					}
-				</BusyWrapper>
+						}
+					</BusyWrapper>
+				</Paper>
 			</Layout>
 		);
 	}

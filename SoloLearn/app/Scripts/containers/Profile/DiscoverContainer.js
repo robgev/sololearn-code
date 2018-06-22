@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import CircularProgress from 'material-ui/CircularProgress';
 import Paper from 'material-ui/Paper';
 
@@ -15,6 +16,7 @@ const mapStateToProps = ({ discoverSuggestions }) => ({ discoverSuggestions });
 const mapDispatchToProps = { getDiscoverSuggestions };
 
 @connect(mapStateToProps, mapDispatchToProps)
+@translate()
 class DiscoverContainer extends PureComponent {
 	constructor(props) {
 		super(props);
@@ -42,13 +44,13 @@ class DiscoverContainer extends PureComponent {
 
 	render() {
 		const { loading } = this.state;
-		const { discoverSuggestions } = this.props;
+		const { t, discoverSuggestions } = this.props;
 		return (
 			<Layout>
 				<Paper className="discover-container">
 					<BusyWrapper
 						isBusy={loading}
-						title="Discover peers"
+						title={t('discover_peers.title')}
 						wrapperClassName="discover-busy-wrapper"
 						style={{ minHeight: '60vh' }}
 						loadingComponent={
