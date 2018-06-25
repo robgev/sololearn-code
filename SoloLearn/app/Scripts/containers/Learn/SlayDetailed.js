@@ -3,7 +3,7 @@ import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 
 import { getCollectionItems, setSelectedCollection } from 'actions/slay';
-import CourseBox from 'components/Shared/CourseBox';
+import CodePenCard from 'components/Shared/CodePenCard';
 import SlayLayout from 'components/Layouts/SlayLayout';
 import SlayDetailedShimmer from 'components/Shared/Shimmers/SlayDetailedShimmer';
 
@@ -80,13 +80,15 @@ class SlayDetailed extends PureComponent {
 				items={courseItems}
 				isCourses={isCourses}
 				loadMore={this.loadMore}
-				cardComponent={CourseBox}
+				cardComponent={CodePenCard}
 				loadingComponent={SlayDetailedShimmer}
 				title={loading ? '' : selectedCollection.name}
 				wrapperStyle={{
 					alignItems: 'initial',
 				}}
 				style={{
+					width: 'initial',
+					padding: 15,
 					flexDirection: 'row',
 					flexWrap: 'wrap',
 					justifyContent: 'flex-start',
