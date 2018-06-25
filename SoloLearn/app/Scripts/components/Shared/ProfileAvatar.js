@@ -1,41 +1,62 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
+import ToolTip from 'react-portal-tooltip';
 import Avatar from 'material-ui/Avatar';
+
 import { determineBadge, determineBadgeColor } from 'utils';
 import AvatarColors from 'constants/AvatarColors';
 
 import 'styles/profileAvatar.scss';
 import avatars from './Avatars';
 import ModBadge from './ModBadge';
+import UserCard from './UserCard';
 
-const DisabledContainer = ({ children, className, style }) => (
-	<div style={style} className={className}>
-		{children}
-	</div>
+const DisabledContainer = props => (
+	<div {...props} />
 );
 
-const ProfileAvatar = ({
-	style,
-	badge,
-	userID,
-	vertical,
-	disabled,
-	size = 30,
-	userName,
-	avatarUrl,
-	className,
-	withBorder,
-	timePassed,
-	avatarStyle,
-	reversedOrder,
-	sideComponent,
-	withUserNameBox,
-}) => {
+class ProfileAvatar extends PureComponent {
+state = {
+	isTooltipActive: false,
+}
+
+toggleTooltip = () => {
+	this.setState(state => ({ isTooltipActive: !state.isTooltipActive }));
+}
+
+render() {
+	const {
+		style,
+		badge,
+		userID,
+		vertical,
+		disabled,
+		size = 30,
+		userName,
+		avatarUrl,
+		tooltipId,
+		className,
+		withBorder,
+		timePassed,
+		avatarStyle,
+		withTooltip,
+		reversedOrder,
+		sideComponent,
+		withUserNameBox,
+	} = this.props;
+	const { isTooltipActive } = this.state;
 	const ConditionalContainer = disabled ? DisabledContainer : Link;
 	const modBadge = determineBadge(badge);
 	const modBadgeColor = determineBadgeColor(modBadge);
 	return (
-		<ConditionalContainer to={`/profile/${userID}`} style={style} className="avatar-container">
+		<ConditionalContainer
+			style={style}
+			id={tooltipId}
+			to={`/profile/${userID}`}
+			className="avatar-container"
+			onMouseEnter={this.toggleTooltip}
+			onMouseLeave={this.toggleTooltip}
+		>
 			<div className={`avatar-wrapper ${vertical ? 'vertical' : ''} ${className || ''}`}>
 				<div className="profile-picture-container">
 					{ avatarUrl ?
@@ -86,8 +107,24 @@ const ProfileAvatar = ({
 					}
 				</div>
 			</div>
+			{ withTooltip &&
+				<ToolTip
+					align="center"
+					position="top"
+					arrow="left"
+					active={isTooltipActive}
+					parent={`#${tooltipId}`}
+				>
+					<UserCard
+						followers={100}
+						name={userName}
+						id={userID}
+					/>
+				</ToolTip>
+			}
 		</ConditionalContainer>
 	);
-};
+}
+}
 
 export default ProfileAvatar;

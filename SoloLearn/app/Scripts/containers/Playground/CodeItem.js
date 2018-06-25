@@ -24,10 +24,11 @@ class CodeItem extends Component {
 				<div className="author-details">
 					<ProfileAvatar
 						size={50}
+						withTooltip
 						userID={code.userID}
+						tooltipId={code.publicID}
 						userName={code.userName}
 						avatarUrl={code.avatarUrl}
-						userXP={code.xp}
 					/>
 				</div>
 				<div className="details-wrapper">
