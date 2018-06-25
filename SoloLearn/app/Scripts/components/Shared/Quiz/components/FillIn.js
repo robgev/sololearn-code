@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Paper, RaisedButton, TextField } from 'material-ui';
+import { getCommonPrefix } from 'utils';
 import TopBar from './TopBar';
 import CheckIndicator from './CheckIndicator';
 import { quizType } from './types';
@@ -47,8 +48,27 @@ class FillIn extends Component {
 		this.setState(state =>
 			({ inputs: state.inputs.map(i => (i.id === inputId ? { ...i, text } : i)) }));
 	}
-	check = () => {
-		this.setState(state => ({ checkResult: !state.inputs.some(a => a.correct !== a.text) }));
+	check = (force) => {
+		this.setState(state => ({
+			checkResult: force !== undefined
+				? force
+				: !state.inputs.some(a => a.correct !== a.text),
+		}));
+	}
+	unlock = () => {
+		this.setState(state => ({ inputs: state.inputs.map(i => ({ ...i, text: i.correct })) }));
+		this.check(true);
+	}
+	hint = () => {
+		const inputs = this.state.inputs.map((input) => {
+			const prefix = getCommonPrefix(input.text, input.correct);
+			const text = prefix.length < input.correct.length
+				? prefix + input.correct[prefix.length]
+				: prefix;
+			return { ...input, text };
+		});
+		this.setState({ inputs });
+		if (!inputs.some(a => a.correct !== a.text)) { this.check(true); }
 	}
 	isComplete = () => !this.state.inputs.some(a => a.text.length !== a.correct.length)
 	render() {
@@ -56,7 +76,8 @@ class FillIn extends Component {
 		const isChecked = checkResult !== null;
 		return (
 			<div className="quiz">
-				{this.props.unlockable && <TopBar disabled={isChecked} onUnlock={this.unlock} />}
+				{this.props.unlockable &&
+					<TopBar disabled={isChecked} onUnlock={this.unlock} hintable onHint={this.hint} />}
 				<Paper className="question-container">
 					<p className="question-text">{this.question}</p>
 					<div className="fill-in-answers-container">
