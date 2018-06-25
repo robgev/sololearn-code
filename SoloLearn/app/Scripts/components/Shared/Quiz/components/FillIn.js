@@ -48,16 +48,17 @@ class FillIn extends Component {
 		this.setState(state =>
 			({ inputs: state.inputs.map(i => (i.id === inputId ? { ...i, text } : i)) }));
 	}
-	check = (force) => {
+	check = () => {
 		this.setState(state => ({
-			checkResult: force !== undefined
-				? force
-				: !state.inputs.some(a => a.correct !== a.text),
+			checkResult: !state.inputs.some(a => a.correct !== a.text),
 		}));
+	}
+	forceTrue = () => {
+		this.setState({ checkResult: true });
 	}
 	unlock = () => {
 		this.setState(state => ({ inputs: state.inputs.map(i => ({ ...i, text: i.correct })) }));
-		this.check(true);
+		this.forceTrue();
 	}
 	hint = () => {
 		const inputs = this.state.inputs.map((input) => {
@@ -68,7 +69,7 @@ class FillIn extends Component {
 			return { ...input, text };
 		});
 		this.setState({ inputs });
-		if (!inputs.some(a => a.correct !== a.text)) { this.check(true); }
+		if (!inputs.some(a => a.correct !== a.text)) { this.forceTrue(); }
 	}
 	isComplete = () => !this.state.inputs.some(a => a.text.length !== a.correct.length)
 	render() {
