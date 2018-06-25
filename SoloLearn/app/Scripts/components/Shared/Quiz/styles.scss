@@ -1,0 +1,23 @@
+.quiz {
+	.question-container {
+		margin: 10px 0;
+		.question-text {
+			min-height: 20%;
+			max-height: 50%;
+			overflow: auto;
+			padding: 20px;
+			margin-bottom: 40px;
+		}
+		.placeholder-container {
+			text-align: center;
+		}
+		.fill-in-answers-container {
+			margin: 20px;
+		}
+	}
+	.check-container {
+		display: flex;
+		justify-content: space-between;
+		flex-direction: row-reverse;
+	}
+}

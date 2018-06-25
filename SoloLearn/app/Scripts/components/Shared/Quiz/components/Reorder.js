@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { shuffleArray } from 'utils';
 import { List, ListItem } from 'material-ui';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
-import answersType from './answersType';
+import { answersType } from './types';
 
 // Utility components
 

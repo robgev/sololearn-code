@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Paper, Checkbox, TextField, RaisedButton } from 'material-ui';
-import Layout from 'components/Layouts/GeneralLayout';
-import QuizSelector from 'containers/Challenges/Challenge/Game/TypeSelector';
 import ChooseLanguage from '../components/ChooseLanguage';
-import submitChallenge from './submitChallenge';
-
-import './style.scss';
 
 class SuggestMultipleChoice extends Component {
 	state = {
@@ -13,12 +9,11 @@ class SuggestMultipleChoice extends Component {
 		language: null,
 		question: '',
 		answers: [
-			{ isCorrect: false, text: '' },
-			{ isCorrect: false, text: '' },
-			{ isCorrect: false, text: '' },
-			{ isCorrect: false, text: '' },
+			{ isCorrect: false, text: '', id: 0 },
+			{ isCorrect: false, text: '', id: 1 },
+			{ isCorrect: false, text: '', id: 2 },
+			{ isCorrect: false, text: '', id: 3 },
 		],
-		preview: false,
 	}
 	toggleLanguageSelector = () => {
 		this.setState(state => ({ isLanguageSelectorOpen: !state.isLanguageSelectorOpen }));
@@ -43,91 +38,79 @@ class SuggestMultipleChoice extends Component {
 	makeQuiz = () => {
 		const { answers, question, language } = this.state;
 		return {
-			type: 1, answers: answers.filter(a => a.text !== ''), question, language: language.id,
+			type: 1, answers: answers.filter(a => a.text !== ''), question, courseID: language.id,
 		};
 	}
 	preview = () => {
-		this.setState(state => ({ preview: !state.preview }));
+		this.props.setPreview(this.makeQuiz());
 	}
-	submit = () => {
-		const quiz = this.makeQuiz();
-		submitChallenge(quiz);
-	}
-	isSubmitOn = () => {
+	isComplete = () => {
 		const { question, language } = this.state;
 		const answers = this.state.answers.filter(a => a.text !== '');
 		return question !== '' && answers.length >= 2 && answers.some(a => a.isCorrect) && language !== null;
 	}
 	render() {
 		const {
-			isLanguageSelectorOpen, language, question, answers, preview,
+			isLanguageSelectorOpen, language, question, answers,
 		} = this.state;
 		return (
-			<Layout>
-				<div className="quiz-factory">
-					<Paper onClick={this.toggleLanguageSelector} className="selected-language container">
-						<span className="title">Language</span>
-						<div className="with-image">
-							<span className="language-name">{language === null ? 'Select' : language.languageName}</span>
-							<img src="/assets/keyboard_arrow_right.svg" alt="" />
-						</div>
-					</Paper>
-					<Paper className="question container">
-						<span className="title">Question</span>
-						<textarea value={question} onChange={this.onQuestionChange} placeholder="Type in Your Question" />
-					</Paper>
-					<Paper className="container">
-						<span className="title">Answers</span>
-						<div className="answers">
-							{
-								answers.map((answer, idx) => (
-									<div
-										className="answer-item"
-										key={`Option${idx}`} // eslint-disable-line react/no-array-index-key
-									>
-										<TextField
-											name={`Answer field ${idx}`}
-											className="input"
-											placeholder={`Option ${idx + 1}`}
-											onChange={e => this.onAnswerChange(idx, e.target.value)}
-										/>
-										<Checkbox
-											className="checkbox"
-											checked={answer.isCorrect}
-											onCheck={() => this.toggleAnswer(idx)}
-										/>
-									</div>
-								))
-							}
-						</div>
-					</Paper>
-					<ChooseLanguage
-						open={isLanguageSelectorOpen}
-						onClose={this.toggleLanguageSelector}
-						onChoose={this.selectLanguage}
-					/>
-					<RaisedButton
-						className="preview-button"
-						label="Preview"
-						fullWidth
-						primary
-						onClick={this.preview}
-					/>
-					<RaisedButton
-						className="preview-button"
-						label="Submit"
-						fullWidth
-						primary
-						onClick={this.submit}
-						disabled={!this.isSubmitOn()}
-					/>
-					{preview
-						? <QuizSelector quiz={this.makeQuiz()} />
-						: null}
-				</div>
-			</Layout>
+			<div className="quiz-factory">
+				<Paper onClick={this.toggleLanguageSelector} className="selected-language container">
+					<span className="title">Language</span>
+					<div className="with-image">
+						<span className="language-name">{language === null ? 'Select' : language.languageName}</span>
+						<img src="/assets/keyboard_arrow_right.svg" alt="" />
+					</div>
+				</Paper>
+				<Paper className="question container">
+					<span className="title">Question</span>
+					<textarea value={question} onChange={this.onQuestionChange} placeholder="Type in Your Question" />
+				</Paper>
+				<Paper className="container">
+					<span className="title">Answers</span>
+					<div className="answers">
+						{
+							answers.map(answer => (
+								<div
+									className="answer-item"
+									key={`Option${answer.id}`}
+								>
+									<TextField
+										name={`Answer field ${answer.id}`}
+										className="input"
+										placeholder={`Option ${answer.id + 1}`}
+										onChange={e => this.onAnswerChange(answer.id, e.target.value)}
+									/>
+									<Checkbox
+										className="checkbox"
+										checked={answer.isCorrect}
+										onCheck={() => this.toggleAnswer(answer.id)}
+									/>
+								</div>
+							))
+						}
+					</div>
+				</Paper>
+				<ChooseLanguage
+					open={isLanguageSelectorOpen}
+					onClose={this.toggleLanguageSelector}
+					onChoose={this.selectLanguage}
+				/>
+				<RaisedButton
+					className="preview-button"
+					label="Preview"
+					fullWidth
+					primary
+					onClick={this.preview}
+					disabled={!this.isComplete()}
+				/>
+			</div>
 		);
 	}
 }
+
+SuggestMultipleChoice.propTypes = {
+	setPreview: PropTypes.func.isRequired,
+};
 
 export default SuggestMultipleChoice;

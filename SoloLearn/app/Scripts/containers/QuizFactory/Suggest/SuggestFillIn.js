@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Editor, EditorState, Modifier, CompositeDecorator } from 'draft-js';
+import PropTypes from 'prop-types';
+import { Editor, EditorState, Modifier, CompositeDecorator, convertToRaw } from 'draft-js';
 import { Paper, RaisedButton, FlatButton } from 'material-ui';
-import Layout from 'components/Layouts/GeneralLayout';
-import QuizSelector from 'containers/Challenges/Challenge/Game/TypeSelector';
 import ChooseLanugage from '../components/ChooseLanguage';
 
-import './style.scss';
+// Util pure functions
 
 const markedStrategy = (contentBlock, callback, contentState) => {
 	contentBlock.findEntityRanges((character) => {
@@ -19,6 +18,18 @@ const markedStrategy = (contentBlock, callback, contentState) => {
 
 const Marked = ({ children }) => <span className="marked">{children}</span>;
 
+// Change marked text to {index} and get results from blocks
+const markTextBlock = (raw, ranges, index) => (ranges.length > 0 ? ranges
+	.reduce((acc, curr, idx, arr) => {
+		const before = idx === 0
+			? raw.substring(0, curr.offset)
+			: raw.substring(arr[idx - 1].offset + arr[idx - 1].length, curr.offset);
+		const currentText = `${before}{${acc.index}}`;
+		const text = `${acc.text}${currentText}${idx === arr.length - 1 ? raw.substring(curr.offset + curr.length) : ''}`;
+		const answers = [ ...acc.answers, raw.substr(curr.offset, curr.length) ];
+		return { answers, text, index: acc.index + 1 };
+	}, { answers: [], text: '', index }) : { answers: [], text: raw, index });
+
 class SuggestFillIn extends Component {
 	state = {
 		language: null,
@@ -27,7 +38,6 @@ class SuggestFillIn extends Component {
 		editorState: EditorState.createEmpty(new CompositeDecorator([
 			{ strategy: markedStrategy, component: Marked },
 		])),
-		isPreviewOpen: false,
 	}
 	toggleLanguageSelector = () => {
 		this.setState(state => ({ isLanguageSelectorOpen: !state.isLanguageSelectorOpen }));
@@ -70,65 +80,84 @@ class SuggestFillIn extends Component {
 			});
 		}
 	}
+	getEditorContent = () => convertToRaw(this.state.editorState.getCurrentContent());
+	isComplete = () =>
+		this.state.language !== null &&
+		this.state.question.length !== 0 &&
+		this.getEditorContent().blocks.some(block => block.entityRanges.length !== 0);
+	makeQuiz = () => {
+		const { blocks } = this.getEditorContent();
+		const { answers, question } = blocks.reduce((acc, block) => {
+			const { answers: currAnswers, text: currText, index } =
+				markTextBlock(block.text, block.entityRanges, acc.index);
+			return {
+				answers: [ ...acc.answers, ...currAnswers ],
+				question: `${acc.question}${currText}\r\n`,
+				index,
+			};
+		}, { answers: [], question: '', index: 0 });
+		return {
+			answers: answers.map((a, id) => ({
+				text: a, id, isCorrect: true, properties: { prefix: '', postfix: '' },
+			})),
+			courseID: this.state.language.id,
+			question: `${this.state.question}[!raw!]${question}`,
+			type: 3,
+		};
+	}
+	preview = () => {
+		this.props.setPreview(this.makeQuiz());
+	}
 	render() {
 		const {
-			isLanguageSelectorOpen, language, question, editorState, isPreviewOpen,
+			isLanguageSelectorOpen, language, question, editorState,
 		} = this.state;
 		return (
-			<Layout>
-				<div className="quiz-factory">
-					<Paper onClick={this.toggleLanguageSelector} className="selected-language container">
-						<span className="title">Language</span>
-						<div className="with-image">
-							<span className="language-name">{language === null ? 'Select' : language.languageName}</span>
-							<img src="/assets/keyboard_arrow_right.svg" alt="" />
-						</div>
-					</Paper>
-					<Paper className="question container">
-						<span className="title">Question</span>
-						<textarea value={question} onChange={this.onQuestionChange} placeholder="Type in Your Question" />
-					</Paper>
-					<Paper className="container editor-box">
-						<div className="title-with-button">
-							<span className="title">Code</span>
-							<FlatButton label="Mark" secondary onClick={this.markHighlighted} />
-						</div>
-						<div className="editor" onClick={this.focusEditor} role="button" tabIndex={0}>
-							<Editor
-								ref={(editor) => { this.editor = editor; }}
-								editorState={editorState}
-								onChange={this.onEditorChange}
-								customStyleMap={
-									{
-										MARKED: {
-											backgroundColor: 'blue',
-										},
-									}
-								}
-							/>
-						</div>
-					</Paper>
-					<RaisedButton label="Preview" fullWidth primary className="preview-button" />
-					<RaisedButton
-						className="preview-button"
-						label="Submit"
-						fullWidth
-						primary
-					/>
-					{
-						isPreviewOpen
-							? <QuizSelector quiz={this.makeQuiz()} />
-							: null
-					}
-				</div>
+			<div className="quiz-factory">
+				<Paper onClick={this.toggleLanguageSelector} className="selected-language container">
+					<span className="title">Language</span>
+					<div className="with-image">
+						<span className="language-name">{language === null ? 'Select' : language.languageName}</span>
+						<img src="/assets/keyboard_arrow_right.svg" alt="" />
+					</div>
+				</Paper>
+				<Paper className="question container">
+					<span className="title">Question</span>
+					<textarea value={question} onChange={this.onQuestionChange} placeholder="Type in Your Question" />
+				</Paper>
+				<Paper className="container editor-box">
+					<div className="title-with-button">
+						<span className="title">Code</span>
+						<FlatButton label="Mark" secondary onClick={this.markHighlighted} />
+					</div>
+					<div className="editor" onClick={this.focusEditor} role="button" tabIndex={0}>
+						<Editor
+							ref={(editor) => { this.editor = editor; }}
+							editorState={editorState}
+							onChange={this.onEditorChange}
+						/>
+					</div>
+				</Paper>
+				<RaisedButton
+					label="Preview"
+					fullWidth
+					primary
+					className="preview-button"
+					onClick={this.preview}
+					disabled={!this.isComplete()}
+				/>
 				<ChooseLanugage
 					open={isLanguageSelectorOpen}
 					onClose={this.toggleLanguageSelector}
 					onChoose={this.selectLanguage}
 				/>
-			</Layout>
+			</div>
 		);
 	}
 }
+
+SuggestFillIn.propTypes = {
+	setPreview: PropTypes.func.isRequired,
+};
 
 export default SuggestFillIn;
