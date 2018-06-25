@@ -5,6 +5,7 @@ import Quiz from 'components/Shared/Quiz';
 import SuggestMultipleChoice from './SuggestMultipleChoice';
 import SuggestTypeIn from './SuggestTypeIn';
 import SuggestFillIn from './SuggestFillIn';
+import submitChallenge from './submitChallenge';
 
 import './style.scss';
 
@@ -30,6 +31,17 @@ class SuggestTypeSelector extends Component {
 	}
 	closePreview = () => {
 		this.setPreview(null);
+	}
+	handleSubmit = () => {
+		const { previewQuiz } = this.state;
+		const answers = previewQuiz.answers
+			.map(({ text, properties, isCorrect }) => ({ text, properties, isCorrect }));
+		const quiz = {
+			...previewQuiz,
+			answers,
+		};
+		submitChallenge(quiz)
+			.then(console.log);
 	}
 	render() {
 		const { previewQuiz } = this.state;

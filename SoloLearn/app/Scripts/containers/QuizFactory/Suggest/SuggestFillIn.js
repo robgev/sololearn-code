@@ -100,8 +100,8 @@ class SuggestFillIn extends Component {
 			answers: answers.map((a, id) => ({
 				text: a, id, isCorrect: true, properties: { prefix: '', postfix: '' },
 			})),
-			language: this.state.language.id,
-			question: `${this.state.question}[!html!]${question}`,
+			courseID: this.state.language.id,
+			question: `${this.state.question}[!raw!]${question}`,
 			type: 3,
 		};
 	}

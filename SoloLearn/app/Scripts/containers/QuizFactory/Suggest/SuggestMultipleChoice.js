@@ -38,7 +38,7 @@ class SuggestMultipleChoice extends Component {
 	makeQuiz = () => {
 		const { answers, question, language } = this.state;
 		return {
-			type: 1, answers: answers.filter(a => a.text !== ''), question, language: language.id,
+			type: 1, answers: answers.filter(a => a.text !== ''), question, courseID: language.id,
 		};
 	}
 	preview = () => {

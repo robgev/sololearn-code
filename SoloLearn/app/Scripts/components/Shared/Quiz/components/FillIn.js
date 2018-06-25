@@ -42,8 +42,8 @@ class FillIn extends Component {
 				correct: answer.text, id: answer.id, text: '', properties: answer.properties,
 			})),
 	}
-	question = this.props.quiz.question.split('[!html!]')[0];
-	answerText = this.props.quiz.question.split('[!html!]')[1];
+	question = this.props.quiz.question.split('[!raw!]')[0];
+	answerText = this.props.quiz.question.split('[!raw!]')[1];
 	onAnswerChange = (text, inputId) => {
 		this.setState(state =>
 			({ inputs: state.inputs.map(i => (i.id === inputId ? { ...i, text } : i)) }));

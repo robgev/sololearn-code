@@ -28,7 +28,7 @@ class SuggestTypeIn extends Component {
 		return {
 			type: 2,
 			question,
-			language,
+			courseID: language.id,
 			answers: [ {
 				text: answer, id: 1, properties: { prefix: '', postfix: '' }, isCorrect: true,
 			} ],
