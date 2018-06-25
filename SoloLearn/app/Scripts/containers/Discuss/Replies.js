@@ -2,8 +2,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { CellMeasurerCache } from 'react-virtualized';
-import { determineAccessLevel } from 'utils';
 import RaisedButton from 'material-ui/RaisedButton';
+import Paper from 'material-ui/Paper';
+
+import { determineAccessLevel } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
 import ReportPopup from 'components/Shared/ReportPopup';
 import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
@@ -80,7 +82,7 @@ class Replies extends Component {
 		const { accessLevel, scrollElement } = this.props;
 		const { removalPopupOpen, reportPopupOpen, targetItem } = this.state;
 		return (
-			<div style={styles.container}>
+			<Paper style={styles.container}>
 				{this.state.canLoadAbove && this.props.replies.length > 0 &&
 					<RaisedButton
 						label="Load more"
@@ -110,7 +112,7 @@ class Replies extends Component {
 					itemId={targetItem ? targetItem.id : 0}
 					onRequestClose={this.toggleRemovalPopup}
 				/>
-			</div>
+			</Paper>
 		);
 	}
 }

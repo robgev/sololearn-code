@@ -140,21 +140,23 @@ export const PostStyles = {
 	},
 	repliesData: {
 		padding: '5px 25px',
-		overflow: 'hidden',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'space-between',
 	},
 	answersCount: {
 		color: '#777',
-		float: 'left',
 		fontSize: '14px',
-		lineHeight: '25px',
 	},
 	repliesFilterWrapper: {
-		float: 'right',
+		display: 'flex',
+		alignItems: 'center',
 	},
 	filterLabel: {
 		display: 'inline-block',
 		verticalAlign: 'middle',
 		padding: '0 0 0 15px',
+		height: 'initial',
 		lineHeight: 'initial',
 	},
 	filterIcon: {
@@ -172,8 +174,6 @@ export const PostStyles = {
 		fontSize: '14px',
 	},
 	repliesFilter: {
-		display: 'inline-block',
-		verticalAlign: 'middle',
 		height: '25px',
 	},
 	repliesWrapper: {
