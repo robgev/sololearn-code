@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Editor, EditorState, Modifier, CompositeDecorator, convertToRaw } from 'draft-js';
 import { Paper, RaisedButton, FlatButton } from 'material-ui';
-import ChooseLanugage from '../components/ChooseLanguage';
+import { LanguageSelector } from '../components';
 
 // Util pure functions
 
@@ -146,10 +146,11 @@ class SuggestFillIn extends Component {
 					onClick={this.preview}
 					disabled={!this.isComplete()}
 				/>
-				<ChooseLanugage
+				<LanguageSelector
 					open={isLanguageSelectorOpen}
 					onClose={this.toggleLanguageSelector}
 					onChoose={this.selectLanguage}
+					filter={course => course.isQuizFactoryEnabled}
 				/>
 			</div>
 		);

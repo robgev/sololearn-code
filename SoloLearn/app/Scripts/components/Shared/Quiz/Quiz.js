@@ -24,11 +24,15 @@ const Quiz = (props) => {
 
 Quiz.defaultProps = {
 	unlockable: false,
+	canTryAgain: false,
+	onTryAgain: () => { },
 };
 
 Quiz.propTypes = {
 	quiz: quizType.isRequired,
 	unlockable: PropTypes.bool,
+	canTryAgain: PropTypes.bool,
+	onTryAgain: PropTypes.func,
 };
 
 export default Quiz;

@@ -110,7 +110,7 @@ export default (
 		<Route path="/quiz-factory" component={QuizFactoryMenu} />
 		<Route path="/quiz-factory/suggest" component={QuizFactorySuggest} />
 		<Route path="/quiz-factory/suggest/:type" component={QuizFactorySuggestTypeSelector} />
-		<Route path="/quiz-factory/rate" component={QuizFactoryRate} />
+		<Route path="/quiz-factory/rate/:courseId" component={QuizFactoryRate} />
 		<Route path="/quiz-factory/my-submissions" component={QuizFactoryMySubmissions} />
 		<Route path="/login" component={Login} />
 	</Route>

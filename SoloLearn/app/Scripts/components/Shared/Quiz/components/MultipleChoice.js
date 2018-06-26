@@ -36,6 +36,13 @@ class MultipleChoice extends Component {
 		checkResult: null,
 	}
 	isSingleAnswer = isSingleAnswer(this.props.quiz.answers);
+	tryAgain = () => {
+		this.props.onTryAgain();
+		this.setState({
+			shuffled: getShuffledAnswers(this.props.quiz.answers),
+			checkResult: null,
+		});
+	}
 	toggleAnswer = (answerId) => {
 		this.setState(state => ({
 			shuffled: this.isSingleAnswer
@@ -44,17 +51,23 @@ class MultipleChoice extends Component {
 		}));
 	}
 	unlock = () => {
-		this.setState(state =>
-			({ shuffled: state.shuffled.map(a => ({ ...a, isSelected: a.isCorrect })) }));
-		this.check();
+		if (this.props.onUnlock) {
+			this.setState(state =>
+				({ shuffled: state.shuffled.map(a => ({ ...a, isSelected: a.isCorrect })) }));
+			this.check();
+		}
 	}
 	check = () => {
 		this.setState(state => ({
 			checkResult: !state.shuffled.some(a => a.isCorrect !== a.isSelected),
-		}));
+		}), () => {
+			this.props.onCheck(this.state.checkResult);
+		});
 	}
+	isComplete = () => this.state.shuffled.some(a => a.isSelected)
 	render() {
 		const { shuffled, checkResult } = this.state;
+		const { canTryAgain } = this.props;
 		const isChecked = checkResult !== null;
 		const isRadio = this.isSingleAnswer;
 		return (
@@ -87,8 +100,9 @@ class MultipleChoice extends Component {
 				<div className="check-container">
 					<RaisedButton
 						secondary
-						onClick={this.check}
-						label="Check"
+						onClick={isChecked ? this.tryAgain : this.check}
+						disabled={!this.isComplete() || (isChecked && !canTryAgain)}
+						label={isChecked && canTryAgain ? 'Try again' : 'Check'}
 					/>
 					<CheckIndicator status={checkResult} />
 				</div>
@@ -97,9 +111,18 @@ class MultipleChoice extends Component {
 	}
 }
 
+MultipleChoice.defaultProps = {
+	onCheck: () => { },
+	onUnlock: () => false,
+};
+
 MultipleChoice.propTypes = {
 	quiz: quizType.isRequired,
 	unlockable: PropTypes.bool.isRequired,
+	onCheck: PropTypes.func, // handles side effects after checking
+	onUnlock: PropTypes.func, // returns true if can unlock and handles side effects,
+	canTryAgain: PropTypes.bool.isRequired,
+	onTryAgain: PropTypes.func.isRequired,
 };
 
 export default MultipleChoice;

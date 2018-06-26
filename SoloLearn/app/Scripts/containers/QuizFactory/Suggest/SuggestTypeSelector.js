@@ -5,7 +5,7 @@ import Quiz from 'components/Shared/Quiz';
 import SuggestMultipleChoice from './SuggestMultipleChoice';
 import SuggestTypeIn from './SuggestTypeIn';
 import SuggestFillIn from './SuggestFillIn';
-import submitChallenge from './submitChallenge';
+import { submitChallenge } from '../api';
 
 import './style.scss';
 
@@ -40,8 +40,7 @@ class SuggestTypeSelector extends Component {
 			...previewQuiz,
 			answers,
 		};
-		submitChallenge(quiz)
-			.then(console.log);
+		submitChallenge(quiz);
 	}
 	render() {
 		const { previewQuiz } = this.state;

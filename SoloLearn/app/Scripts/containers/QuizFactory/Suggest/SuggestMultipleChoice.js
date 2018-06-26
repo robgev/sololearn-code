@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Paper, Checkbox, TextField, RaisedButton } from 'material-ui';
-import ChooseLanguage from '../components/ChooseLanguage';
+import { LanguageSelector } from '../components';
 
 class SuggestMultipleChoice extends Component {
 	state = {
@@ -91,10 +91,11 @@ class SuggestMultipleChoice extends Component {
 						}
 					</div>
 				</Paper>
-				<ChooseLanguage
+				<LanguageSelector
 					open={isLanguageSelectorOpen}
 					onClose={this.toggleLanguageSelector}
 					onChoose={this.selectLanguage}
+					filter={course => course.isQuizFactoryEnabled}
 				/>
 				<RaisedButton
 					className="preview-button"

@@ -42,8 +42,18 @@ class FillIn extends Component {
 				correct: answer.text, id: answer.id, text: '', properties: answer.properties,
 			})),
 	}
-	question = this.props.quiz.question.split('[!raw!]')[0];
-	answerText = this.props.quiz.question.split('[!raw!]')[1];
+	question = this.props.quiz.question.split(/\[!\w+!]/)[0];
+	answerText = this.props.quiz.question.split(/\[!\w+!]/)[1];
+	tryAgain = () => {
+		this.props.onTryAgain();
+		this.setState({
+			checkResult: null,
+			inputs: this.props.quiz.answers
+				.map(answer => ({
+					correct: answer.text, id: answer.id, text: '', properties: answer.properties,
+				})),
+		});
+	}
 	onAnswerChange = (text, inputId) => {
 		this.setState(state =>
 			({ inputs: state.inputs.map(i => (i.id === inputId ? { ...i, text } : i)) }));
@@ -51,29 +61,34 @@ class FillIn extends Component {
 	check = () => {
 		this.setState(state => ({
 			checkResult: !state.inputs.some(a => a.correct !== a.text),
-		}));
+		}), () => { this.props.onCheck(this.state.checkResult); });
 	}
 	forceTrue = () => {
-		this.setState({ checkResult: true });
+		this.setState({ checkResult: true }, () => { this.props.onCheck(true); });
 	}
 	unlock = () => {
-		this.setState(state => ({ inputs: state.inputs.map(i => ({ ...i, text: i.correct })) }));
-		this.forceTrue();
+		if (this.props.onUnlock()) {
+			this.setState(state => ({ inputs: state.inputs.map(i => ({ ...i, text: i.correct })) }));
+			this.forceTrue();
+		}
 	}
 	hint = () => {
-		const inputs = this.state.inputs.map((input) => {
-			const prefix = getCommonPrefix(input.text, input.correct);
-			const text = prefix.length < input.correct.length
-				? prefix + input.correct[prefix.length]
-				: prefix;
-			return { ...input, text };
-		});
-		this.setState({ inputs });
-		if (!inputs.some(a => a.correct !== a.text)) { this.forceTrue(); }
+		if (this.props.onHint()) {
+			const inputs = this.state.inputs.map((input) => {
+				const prefix = getCommonPrefix(input.text, input.correct);
+				const text = prefix.length < input.correct.length
+					? prefix + input.correct[prefix.length]
+					: prefix;
+				return { ...input, text };
+			});
+			this.setState({ inputs });
+			if (!inputs.some(a => a.correct !== a.text)) { this.forceTrue(); }
+		}
 	}
 	isComplete = () => !this.state.inputs.some(a => a.text.length !== a.correct.length)
 	render() {
 		const { checkResult } = this.state;
+		const { canTryAgain } = this.props;
 		const isChecked = checkResult !== null;
 		return (
 			<div className="quiz">
@@ -88,9 +103,9 @@ class FillIn extends Component {
 				<div className="check-container">
 					<RaisedButton
 						secondary
-						onClick={this.check}
-						label="Check"
-						disabled={!this.isComplete()}
+						onClick={isChecked ? this.tryAgain : this.check}
+						disabled={!this.isComplete() || (isChecked && !canTryAgain)}
+						label={isChecked && canTryAgain ? 'Try again' : 'Check'}
 					/>
 					<CheckIndicator status={checkResult} />
 				</div>
@@ -99,9 +114,20 @@ class FillIn extends Component {
 	}
 }
 
+FillIn.defaultProps = {
+	onCheck: () => { },
+	onUnlock: () => false,
+	onHint: () => false,
+};
+
 FillIn.propTypes = {
 	quiz: quizType.isRequired,
 	unlockable: PropTypes.bool.isRequired,
+	onCheck: PropTypes.func, // handles side effect after check
+	onUnlock: PropTypes.func, // returns true if can unlock and handles side effects
+	onHint: PropTypes.func, // returns true if can hint and handles side effects
+	canTryAgain: PropTypes.bool.isRequired,
+	onTryAgain: PropTypes.func.isRequired,
 };
 
 export default FillIn;

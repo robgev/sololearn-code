@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { shuffleArray } from 'utils';
-import { List, ListItem } from 'material-ui';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
-import { answersType } from './types';
+import { List, ListItem, Paper, RaisedButton } from 'material-ui';
+import { quizType } from './types';
+
+import TopBar from './TopBar';
+import CheckIndicator from './CheckIndicator';
 
 // Utility components
 
@@ -22,7 +26,15 @@ const SortableList = SortableContainer(({ items }) => (
 
 class Reorder extends Component {
 	state = {
-		shuffled: this.getShuffled(this.props.answers),
+		shuffled: this.getShuffled(this.props.quiz.answers),
+		checkResult: null,
+	}
+	tryAgain = () => {
+		this.props.onTryAgain();
+		this.setState({
+			shuffled: this.getShuffled(this.props.quiz.answers),
+			checkResult: null,
+		});
 	}
 	getShuffled = (answers) => {
 		const shuffled = shuffleArray(answers);
@@ -37,19 +49,55 @@ class Reorder extends Component {
 		}));
 	};
 	unlock = () => {
-		this.setState({ shuffled: this.props.answers });
+		if (this.props.onUnlock()) {
+			this.setState({ shuffled: this.props.quiz.answers });
+			this.check();
+		}
 	}
-	check = () => !this.state.shuffled.some((el, i) => el.id !== this.props.answers[i].id)
+	check = () => {
+		this.setState(
+			state =>
+				({ checkResult: !state.shuffled.some((el, i) => el.id !== this.props.quiz.answers[i].id) }),
+			() => { this.props.onCheck(this.state.checkResult); },
+		);
+	}
 	render() {
-		const { shuffled } = this.state;
+		const { shuffled, checkResult } = this.state;
+		const { canTryAgain } = this.props;
+		const isChecked = checkResult !== null;
 		return (
-			<SortableList items={shuffled} onSortEnd={this.onSortEnd} lockAxis="y" />
+			<div className="quiz">
+				{this.props.unlockable && <TopBar disabled={isChecked} onUnlock={this.unlock} />}
+				<Paper className="question-container">
+					<p className="question-text">{this.props.quiz.question}</p>
+					<SortableList items={shuffled} onSortEnd={this.onSortEnd} lockAxis="y" />
+				</Paper>
+				<div className="check-container">
+					<RaisedButton
+						secondary
+						onClick={isChecked ? this.tryAgain : this.check}
+						disabled={isChecked && !canTryAgain}
+						label={isChecked && canTryAgain ? 'Try again' : 'Check'}
+					/>
+					<CheckIndicator status={checkResult} />
+				</div>
+			</div>
 		);
 	}
 }
 
+Reorder.defaultProps = {
+	onCheck: () => { },
+	onUnlock: () => false,
+};
+
 Reorder.propTypes = {
-	answers: answersType.isRequired,
+	quiz: quizType.isRequired,
+	unlockable: PropTypes.bool.isRequired,
+	onCheck: PropTypes.func, // handles side effects after checking
+	onUnlock: PropTypes.func, // returns true if can unlock and handles side effects
+	canTryAgain: PropTypes.bool.isRequired,
+	onTryAgain: PropTypes.func.isRequired,
 };
 
 export default Reorder;

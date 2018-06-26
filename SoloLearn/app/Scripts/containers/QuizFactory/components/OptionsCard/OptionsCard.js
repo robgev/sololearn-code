@@ -7,9 +7,17 @@ import { Paper } from 'material-ui';
 import './OptionsCard.scss';
 
 const OptionsCard = ({
-	image, header, info, to,
+	image, header, info, to, onClick,
 }) => (
-	<Link to={to}>
+	<Link
+		onClick={onClick !== null
+			? (e) => {
+				e.preventDefault();
+				onClick();
+			}
+			: () => { }}
+		to={to}
+	>
 		<Paper className="options-card">
 			<div>
 				<img src={image} alt="" />
@@ -22,11 +30,16 @@ const OptionsCard = ({
 	</Link>
 );
 
+OptionsCard.defaultProps = {
+	onClick: null,
+};
+
 OptionsCard.propTypes = {
 	image: PropTypes.string.isRequired,
 	header: PropTypes.string.isRequired,
 	info: PropTypes.string.isRequired,
 	to: PropTypes.string.isRequired,
+	onClick: PropTypes.func,
 };
 
 export default OptionsCard;
