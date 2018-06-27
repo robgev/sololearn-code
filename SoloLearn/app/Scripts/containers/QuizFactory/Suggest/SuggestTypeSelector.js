@@ -56,7 +56,7 @@ class SuggestTypeSelector extends Component {
 					actions={actions}
 					onRequestClose={this.closePreview}
 				>
-					{previewQuiz !== null ? <Quiz quiz={previewQuiz} /> : null}
+					{previewQuiz !== null ? <Quiz quiz={previewQuiz} canTryAgain /> : null}
 				</Dialog>
 			</Layout>
 		);
