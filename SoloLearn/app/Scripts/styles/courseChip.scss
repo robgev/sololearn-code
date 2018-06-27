@@ -4,27 +4,50 @@
 	display: block;
 	text-decoration: none;
 	color: rgba(0, 0, 0, 0.87);
-	padding: 0 15px;
-	.chip-image {
-		width: 95px;
-		height: 95px;
-	}
-	.language-tag {
-		position: absolute;
-		right: 2px;
-		bottom: 2px;
-		color: white;
-		font-size: 12px;
-		font-weight: 300;
+	.course-chip-image-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+		&.round {
+			border-radius: 100%;
+		}
+		&.with-shadow {
+			box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+		}
+		.chip-image {
+			width: 100%;
+		}
+		.language-tag {
+			position: absolute;
+			right: 2px;
+			bottom: 2px;
+			color: white;
+			font-size: 12px;
+			font-weight: 300;
+		}
 	}
 	.round {
 		border-radius: 100%;
 	}
-	.course-name {
+	.course-chip-info {
 		width: 100%;
-		font-size: 13px;
-		padding-top: 7px;
-		padding-left: 15px;
-		@include multiLineEllipsis($lineHeight: 14px, $lineCount: 2, $bgColor: white);
+		height: 40px;
+		&.round-course-item {
+			text-align: center;
+		}
+		&:not(.round-course-item) {
+			background-color: rgba(0, 0, 0, 0.4);
+			.course-name {
+				padding-left: 7px;
+				color: white;
+			}
+		}
+		.course-name {
+			height: 28px;
+			font-size: 13px;
+			padding-top: 7px;
+			@include multiLineEllipsis($lineHeight: 14px, $lineCount: 2, $bgColor: white);
+		}
 	}
 }

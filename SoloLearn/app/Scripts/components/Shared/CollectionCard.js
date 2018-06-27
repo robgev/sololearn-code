@@ -13,16 +13,15 @@ const collectionTypes = {
 	courses: 2,
 };
 
-const generateBreakpoints = () => {
-	const breakpointValues = [ 1624, 1224, 768, 320 ];
-	const initialNumberOfShownItems = 5;
+const generateBreakpoints = (isCourses) => {
+	const breakpointValues = [ 1224, 768, 320 ];
+	const initialNumberOfShownItems = isCourses ? 4 : 3;
 	return breakpointValues.map((currentPoint, index) => {
 		const slidesToShow = initialNumberOfShownItems - (index + 1);
 		return {
 			breakpoint: currentPoint,
 			settings: {
 				slidesToShow,
-				infinite: false,
 			},
 		};
 	});
@@ -72,9 +71,9 @@ const CollectionCard = ({
 				dots={false}
 				speed={500}
 				swipeToSlide
-				slidesToShow={5}
 				className="courses-list"
-				responsive={generateBreakpoints(collectionItems)}
+				slidesToShow={isCourses ? 4 : 3}
+				responsive={generateBreakpoints(isCourses)}
 			>
 				{
 					collectionItems.map((lessonItem) => {
@@ -92,7 +91,7 @@ const CollectionCard = ({
 									isCourse={isCourses}
 									progress={progress}
 									className="collection-card-chip"
-									paperStyle={{ width: 95, height: 95 }}
+									noBoxShadow={!(round || isCourses)}
 								/>
 							</div>
 						);

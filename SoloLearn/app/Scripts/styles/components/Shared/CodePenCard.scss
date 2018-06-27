@@ -1,17 +1,20 @@
 @import '~styles/utils';
 
 .code-pen-container {
-	width: calc(100% / 2 - 8px);
+	width: calc(100% / 3 - 10px);
 	margin-bottom: 15px;
 	text-decoration: none;
-	transition: box-shadow 150ms ease-out;
-	&:nth-child(2n - 1) {
+	// transition: box-shadow 150ms ease-out;
+	transition: all 150ms ease-out;
+	&:nth-child(3n - 1),
+	&:nth-child(3n - 2) {
 		margin-right: 15px;
 	}
 	&:hover {
 		// .code-pen-wrapper .image-wrapper .info-container {
 		// 	height: 60px;
 		// }
+		transform: translateY(-3px);
 		box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
 	}
 	.code-pen-wrapper {

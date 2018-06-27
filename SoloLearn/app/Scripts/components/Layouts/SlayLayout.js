@@ -17,12 +17,13 @@ const Layout = ({
 	loadMore,
 	isCourses,
 	noDisplay,
+	noSidebar,
 	wrapperStyle,
 	cardComponent: CardComponent,
 	loadingComponent: LoadingComponent,
 }) => (
 	<div className="slay-container">
-		<div className="main-content">
+		<div className={`main-content ${noSidebar ? 'wide' : ''}`}>
 			<BusyWrapper
 				title={title}
 				paper={paper}
@@ -70,9 +71,11 @@ const Layout = ({
 				{children}
 			</BusyWrapper>
 		</div>
-		<div className="sidebar-placeholder">
-			<div className="sidebar" />
-		</div>
+		{!noSidebar &&
+			<div className="sidebar-placeholder">
+				<div className="sidebar" />
+			</div>
+		}
 	</div>
 );
 

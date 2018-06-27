@@ -5,5 +5,8 @@
 	.main-content {
 		width: 610px;
 		padding-right: 30px;
+		&.wide {
+			width: 820px;
+		}
 	}
 }

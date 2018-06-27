@@ -33,21 +33,17 @@ const CourseChip = ({
 	const WrapperComponent = disabled ? CustomWrapper : Link;
 	return (
 		<WrapperComponent
-			style={wrapperStyle}
-			className={`chip-container ${className}`}
+			style={{
+				backgroundColor: color,
+				...wrapperStyle,
+			}}
+			className={`chip-container ${(isCourse || round) ? 'round' : ''} ${className}`}
 			to={customLink || (isCourse ? `/learn/${alias}` : `/learn/slayLesson/${itemType}/${id}/1`)}
 		>
-			<Paper
+			<div
+				className={`course-chip-image-container ${(isCourse || round) ? 'round' : ''} ${noBoxShadow ? '' : 'with-shadow'}`}
 				style={{
-					display: 'flex',
-					justifyContent: 'center',
-					alignItems: 'center',
 					height: size,
-					width: size,
-					position: 'relative',
-					backgroundColor: color,
-					borderRadius: (isCourse || round) ? '100%' : 0,
-					...(noBoxShadow ? { boxShadow: 'none' } : {}),
 					...paperStyle,
 				}}
 			>
@@ -75,9 +71,11 @@ const CourseChip = ({
 				{ (!isCourse && language) &&
 					<span className="language-tag">{language}</span>
 				}
-			</Paper>
+			</div>
 			{!noName &&
-			<p className="course-name">{name}</p>
+			<div className={`course-chip-info ${(isCourse || round) ? 'round-course-item' : ''}`}>
+				<p className="course-name">{name}</p>
+			</div>
 			}
 		</WrapperComponent>
 	);

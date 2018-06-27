@@ -22,16 +22,29 @@
 	font-size: 14px;
 }
 .courses-list {
-	display: flex;
-	margin: 0 auto;
-	color: #333;
-	width: 100%;
 	.course-chip-wrapper {
 		.collection-card-chip {
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
+			margin: 0 5px;
+			margin-top: 3px;
+			transition: all 150ms ease-out;
+			&:not(.round) {
+				&:hover {
+					transform: translateY(-3px);
+					box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
+				}
+			}
+			.course-chip-image-container {
+				&:not(.round) {
+					align-items: flex-start;
+					.chip-image {
+						width: 50%;
+					}
+				}
+			}
 			.round {
 				height: 85px;
 				width: 85px;
@@ -43,18 +56,32 @@
 .slick-slider {
 	.slick-arrow {
 		z-index: 1;
+		width: 25px;
+    height: 25px;
+    border-radius: 100%;
+		background-color: white;
+		box-shadow: 0 0 1px 1px rgba(20,23,28,.1), 0 3px 1px 0 rgba(20,23,28,.1);
+		&:before {
+			display: flex;
+			justify-content: center;
+			color: #00558B;
+			font-size: 30px;
+    	line-height: 29px;
+		}
 	}
 
 	.slick-prev {
-		left: 0;
+		left: -7px;
 		&:before {
+			width: 26px;
 			color: #00558B;
 		}
 	}
 
 	.slick-next {
-		right: 0;
+		right: -8px;
 		&:before {
+			width: 25px;
 			color: #00558B;
 		}
 	}
