@@ -43,14 +43,14 @@ class NotificationManager extends PureComponent {
 				<Badge
 					style={{ padding: 0, paddingRight: 10 }}
 					badgeStyle={{
-						width: 10,
-						height: 10,
-						top: 10,
-						right: 15,
+						top: 11,
+						right: 14,
 						zIndex: 1,
-						padding: 2,
-						fontSize: 8,
+						height: 16,
 						color: '#fff',
+						fontSize: 11,
+						minWidth: 16,
+						width: 'initial',
 						backgroundColor: '#F44336',
 						border: '1px solid #607d8b',
 						visibility: notificationsCount <= 0 ? 'hidden' : 'initial',
