@@ -8,16 +8,19 @@ import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import 'styles/Feed/FeedItemBase.scss';
 
 const FeedItemBase = ({
-	title, user, children,
+	title, user, children, feedItemId,
 }) => (
 	<div className="feed-item-content">
 		<ProfileAvatar
 			size={40}
+			withTooltip
 			userID={user.id}
+			level={user.level}
 			badge={user.badge}
 			userName={user.name}
 			avatarUrl={user.avatarUrl}
 			avatarStyle={{ margin: 0 }}
+			tooltipId={`feedItem-${feedItemId}`}
 		/>
 		<div className="wrapper">
 			<p className="feed-item-title">

@@ -46,11 +46,14 @@ const Opponent = ({ opponent, createContest }) => (
 		<div style={styles.authorDetails}>
 			<ProfileAvatar
 				size={35}
+				withTooltip
 				withUserNameBox
 				userID={opponent.id}
+				level={opponent.level}
 				badge={opponent.badge}
 				userName={opponent.name}
 				avatarUrl={opponent.avatarUrl}
+				tooltipId={`opponent-${opponent.id}`}
 				disabled
 			/>
 		</div>

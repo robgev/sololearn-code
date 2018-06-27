@@ -17,6 +17,8 @@ class CodeItem extends Component {
 	shouldComponentUpdate(nextProps) {
 		return this.props.code !== nextProps.code;
 	}
+
+	// code.badge, code.xp
 	render() {
 		const { code } = this.props;
 		return (
@@ -25,6 +27,7 @@ class CodeItem extends Component {
 					<ProfileAvatar
 						size={50}
 						withTooltip
+						level={code.level}
 						userID={code.userID}
 						tooltipId={code.publicID}
 						userName={code.userName}

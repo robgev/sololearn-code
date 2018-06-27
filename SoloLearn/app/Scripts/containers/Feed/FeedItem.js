@@ -229,6 +229,7 @@ class FeedItem extends Component {
 						onClick={this.handleChallengesOpen}
 					>
 						<FeedItemBase
+							feedItemId={feedItem.id}
 							title={feedItem.title}
 							user={feedItem.user}
 							date={feedItem.date}
@@ -248,6 +249,7 @@ class FeedItem extends Component {
 			<div style={styles.feedItemWrapper}>
 				<Paper zDepth={1} style={styles.feedItem}>
 					<FeedItemBase
+						feedItemId={feedItem.id}
 						title={feedItem.title}
 						user={feedItem.user}
 						votes={this.votes}

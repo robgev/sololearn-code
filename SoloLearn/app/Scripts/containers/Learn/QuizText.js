@@ -438,7 +438,7 @@ class QuizText extends Component {
 	render() {
 		const { isBookmarked } = this.state;
 		const {
-			withToolbar, userData, date,
+			withToolbar, userData, date, quizId,
 		} = this.props;
 		return (
 			<div className="text-container" style={styles.textContainer}>
@@ -450,6 +450,7 @@ class QuizText extends Component {
 				<div id="text-content">{this.renderComponentParts()}</div>
 				{ withToolbar &&
 					<SlayLessonToolbar
+						id={quizId}
 						userData={userData}
 						isBookmarked={isBookmarked}
 						timePassed={updateDate(date)}

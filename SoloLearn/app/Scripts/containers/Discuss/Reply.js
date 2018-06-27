@@ -227,11 +227,14 @@ class Reply extends Component {
 						}
 						<ProfileAvatar
 							withUserNameBox
+							withTooltip
+							level={reply.level}
 							badge={reply.badge}
 							userID={reply.userID}
 							avatarUrl={reply.avatarUrl}
 							userName={reply.userName}
 							date={updateDate(reply.date)}
+							tooltipId={`reply-${reply.id}`}
 						/>
 						<PostedDate date={reply.date} style={{ float: 'right' }} />
 					</div>

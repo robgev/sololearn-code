@@ -234,8 +234,9 @@ class Comment extends Component {
 			comment: {
 				id,
 				date,
-				userID,
+				level,
 				badge,
+				userID,
 				parentID,
 				avatarUrl,
 				userName,
@@ -268,10 +269,13 @@ class Comment extends Component {
 					<div style={styles.commentConent}>
 						<ProfileAvatar
 							size={40}
+							withTooltip
+							level={level}
 							badge={badge}
 							userID={userID}
 							userName={userName}
 							avatarUrl={avatarUrl}
+							tooltipId={`comment-${id}`}
 						/>
 						<div
 							style={{

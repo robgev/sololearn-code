@@ -52,9 +52,16 @@ render() {
 					<div className="profile-name">
 						{name}
 					</div>
+					{ (followers || followers === 0) &&
 					<div className="profile-followers">
 						{numberFormatter(followers)} Followers
 					</div>
+					}
+					{ (level || level === 0) &&
+					<div className="profile-followers">
+						{numberFormatter(level)} Followers
+					</div>
+					}
 					<RaisedButton
 						secondary={following}
 						onClick={this.handleFollow}

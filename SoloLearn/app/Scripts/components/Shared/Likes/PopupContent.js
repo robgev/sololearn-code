@@ -9,11 +9,14 @@ const 	renderOneLike = user => (
 	<div>
 		<div key={user.id} style={{ padding: 5 }}>
 			<ProfileAvatar
+				withTooltip
 				userID={user.id}
 				withUserNameBox
+				level={user.level}
 				badge={user.badge}
 				userName={user.name}
 				avatarUrl={user.avatarUrl}
+				tooltipId={`likes-${user.id}`}
 			/>
 		</div>
 		<Divider />

@@ -93,11 +93,14 @@ class FollowerItem extends PureComponent {
 				<div className="details" style={styles.details}>
 					<ProfileAvatar
 						size={50}
+						withTooltip
 						style={styles.avatar}
 						userID={follower.id}
+						level={follower.level}
 						badge={follower.badge}
 						userName={follower.name}
 						avatarUrl={follower.avatarUrl}
+						tooltipId={`follower-${follower.id}`}
 					/>
 					<Link to={`/profile/${follower.id}`} style={styles.authorDetails}>
 						<p style={styles.name}>{follower.name}</p>

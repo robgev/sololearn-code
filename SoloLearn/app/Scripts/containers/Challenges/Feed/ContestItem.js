@@ -90,6 +90,7 @@ class ContestItemBase extends PureComponent {
 	render() {
 		const { courseName, contest } = this.props;
 		const {
+			id,
 			date,
 			player,
 			opponent,
@@ -109,8 +110,11 @@ class ContestItemBase extends PureComponent {
 			>
 				<ProfileAvatar
 					vertical
-					badge={opponent.badge}
+					withTooltip
 					userID={opponent.id}
+					level={opponent.level}
+					badge={opponent.badge}
+					tooltipId={`contest-${id}`}
 					userName={opponent.name}
 					avatarUrl={opponent.avatarUrl}
 				/>

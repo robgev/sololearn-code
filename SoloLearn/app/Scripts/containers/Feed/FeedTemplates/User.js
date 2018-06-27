@@ -40,7 +40,7 @@ class User extends Component {
 	}
 
 	render() {
-		const { user, disabled } = this.props;
+		const { id, user, disabled } = this.props;
 		const ConditionalContainer = disabled ? DisabledContainer : Link;
 
 		return (
@@ -52,11 +52,14 @@ class User extends Component {
 				<ProfileAvatar
 					vertical
 					size={60}
+					withTooltip
+					level={user.level}
 					userID={user.id}
 					withUserNameBox
 					disabled={disabled}
 					userName={user.name}
 					avatarUrl={user.avatarUrl}
+					tooltipId={`challenge-user-${id}`}
 				/>
 			</ConditionalContainer>
 		);

@@ -14,6 +14,7 @@ const UserCard = ({
 	xp,
 	name,
 	alltime,
+	level,
 	rank,
 	rangeXp,
 	avatarUrl,
@@ -21,10 +22,13 @@ const UserCard = ({
 	<div className="user-card-container">
 		<ProfileAvatar
 			disabled
+			withTooltip
 			userID={id}
+			level={level}
 			userName={name}
 			avatarUrl={avatarUrl}
 			className="user-info"
+			tooltipId={`user-${id}`}
 			sideComponent={
 				<UserData
 					name={name}

@@ -79,12 +79,13 @@ class BottomToolbar extends PureComponent {
 			commentsCount,
 		} = this.props;
 		const {
-			id,
 			vote,
 			votes,
+			level,
 			name,
 			badge,
 			userID,
+			publicID,
 			language,
 			userName,
 			avatarUrl,
@@ -95,10 +96,13 @@ class BottomToolbar extends PureComponent {
 					<div className="user-data">
 						<ProfileAvatar
 							size={40}
+							withTooltip
+							level={level}
 							badge={badge}
 							userID={userID}
 							userName={userName}
 							avatarUrl={avatarUrl}
+							tooltipId={`challenge-user-${publicID}`}
 						/>
 						<div className="user-text-data">
 							<p className="code-name">
