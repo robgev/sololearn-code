@@ -51,8 +51,8 @@ class NotificationManager extends PureComponent {
 						fontSize: 11,
 						minWidth: 16,
 						width: 'initial',
+						borderRadius: 8,
 						backgroundColor: '#F44336',
-						border: '1px solid #607d8b',
 						visibility: notificationsCount <= 0 ? 'hidden' : 'initial',
 					}}
 					badgeContent={notificationsCount}
