@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { List, ListItem, Paper } from 'material-ui';
+import { List, ListItem, Paper, Dialog, FlatButton, RaisedButton } from 'material-ui';
 import Layout from 'components/Layouts/GeneralLayout';
+import Quiz from 'components/Shared/Quiz';
 import { getMySubmissions } from './api';
 
 const getTypeString = (type) => {
@@ -30,32 +31,53 @@ const getStatusString = (status) => {
 };
 
 const ChallengePreview = ({
-	question, status, type, id,
+	onClick, ...quiz
 }) => (
-	<ListItem key={id}>
-		<p>{question}</p>
-		<p>{getTypeString(type)}</p>
-		<p>{getStatusString(status)}</p>
+	<ListItem onClick={() => onClick(quiz)}>
+		<p>{quiz.question}</p>
+		<p>{getTypeString(quiz.type)}</p>
+		<p>{getStatusString(quiz.status)}</p>
 	</ListItem>
 );
 
 class MySubmissions extends Component {
 	state = {
 		challenges: [],
+		previewChallenge: null,
 	}
 	async componentWillMount() {
 		const challenges = await getMySubmissions();
 		this.setState({ challenges });
 	}
+	preview = (challenge) => {
+		this.setState({ previewChallenge: challenge });
+	}
+	closePreview = () => {
+		this.setState({ previewChallenge: null });
+	}
+	handleEdit = () => {
+
+	}
 	render() {
-		const { challenges } = this.state;
+		const { challenges, previewChallenge } = this.state;
+		const actions = [
+			<FlatButton onClick={this.closePreview} label="Cancel" primary />,
+			<RaisedButton onClick={this.handleSubmit} label="Edit" primary />,
+		];
 		return (
 			<Layout>
 				<Paper>
 					<List>
-						{challenges.map(ChallengePreview)}
+						{challenges.map(el => <ChallengePreview key={el.id} {...el} onClick={this.preview} />)}
 					</List>
 				</Paper>
+				<Dialog
+					open={previewChallenge !== null}
+					actions={actions}
+					onRequestClose={this.closePreview}
+				>
+					{previewChallenge !== null ? <Quiz quiz={previewChallenge} canTryAgain /> : null}
+				</Dialog>
 			</Layout>
 		);
 	}
