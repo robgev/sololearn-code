@@ -31,17 +31,18 @@ const CourseChip = ({
 	color = 'white',
 }) => {
 	const WrapperComponent = disabled ? CustomWrapper : Link;
+	const roundItem = isCourse || round;
 	return (
 		<WrapperComponent
 			style={{
-				backgroundColor: color,
+				backgroundColor: roundItem ? 'transparent' : color,
 				...wrapperStyle,
 			}}
-			className={`chip-container ${(isCourse || round) ? 'round' : ''} ${className}`}
+			className={`chip-container ${(roundItem) ? 'round' : ''} ${className}`}
 			to={customLink || (isCourse ? `/learn/${alias}` : `/learn/slayLesson/${itemType}/${id}/1`)}
 		>
 			<div
-				className={`course-chip-image-container ${(isCourse || round) ? 'round' : ''} ${noBoxShadow ? '' : 'with-shadow'}`}
+				className={`course-chip-image-container ${(roundItem) ? 'round' : ''} ${noBoxShadow ? '' : 'with-shadow'}`}
 				style={{
 					height: size,
 					...paperStyle,
@@ -66,14 +67,14 @@ const CourseChip = ({
 				<img
 					src={iconUrl}
 					alt="Course Icon"
-					className={`chip-image ${(isCourse || round) ? 'round' : ''}`}
+					className={`chip-image ${(roundItem) ? 'round' : ''}`}
 				/>
-				{ (!isCourse && language) &&
+				{ (!(roundItem) && language) &&
 					<span className="language-tag">{language}</span>
 				}
 			</div>
 			{!noName &&
-			<div className={`course-chip-info ${(isCourse || round) ? 'round-course-item' : ''}`}>
+			<div className={`course-chip-info ${(roundItem) ? 'round-course-item' : ''}`}>
 				<p className="course-name">{name}</p>
 			</div>
 			}

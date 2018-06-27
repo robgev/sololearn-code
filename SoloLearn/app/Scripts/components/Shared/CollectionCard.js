@@ -13,9 +13,9 @@ const collectionTypes = {
 	courses: 2,
 };
 
-const generateBreakpoints = (isCourses) => {
+const generateBreakpoints = (roundItems) => {
 	const breakpointValues = [ 1224, 768, 320 ];
-	const initialNumberOfShownItems = isCourses ? 4 : 3;
+	const initialNumberOfShownItems = roundItems ? 4 : 3;
 	return breakpointValues.map((currentPoint, index) => {
 		const slidesToShow = initialNumberOfShownItems - (index + 1);
 		return {
@@ -72,8 +72,8 @@ const CollectionCard = ({
 				speed={500}
 				swipeToSlide
 				className="courses-list"
-				slidesToShow={isCourses ? 4 : 3}
-				responsive={generateBreakpoints(isCourses)}
+				slidesToShow={(isCourses || round) ? 4 : 3}
+				responsive={generateBreakpoints(isCourses || round)}
 			>
 				{
 					collectionItems.map((lessonItem) => {
@@ -91,7 +91,7 @@ const CollectionCard = ({
 									isCourse={isCourses}
 									progress={progress}
 									className="collection-card-chip"
-									noBoxShadow={!(round || isCourses)}
+									noBoxShadow={!(isCourses && round)}
 								/>
 							</div>
 						);
