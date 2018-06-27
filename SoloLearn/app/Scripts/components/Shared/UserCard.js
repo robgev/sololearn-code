@@ -59,7 +59,7 @@ render() {
 					}
 					{ (level || level === 0) &&
 					<div className="profile-followers">
-						{numberFormatter(level)} Followers
+						Level {numberFormatter(level)}
 					</div>
 					}
 					<RaisedButton

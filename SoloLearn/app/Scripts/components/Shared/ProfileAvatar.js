@@ -27,6 +27,7 @@ toggleTooltip = () => {
 render() {
 	const {
 		style,
+		level,
 		badge,
 		userID,
 		vertical,
@@ -116,9 +117,9 @@ render() {
 					parent={`#${tooltipId}`}
 				>
 					<UserCard
-						followers={100}
-						name={userName}
 						id={userID}
+						level={level}
+						name={userName}
 					/>
 				</ToolTip>
 			}

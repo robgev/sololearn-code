@@ -103,6 +103,7 @@ class SlayLesson extends PureComponent {
 			date,
 			type,
 			parts,
+			level,
 			badge,
 			userID,
 			content,
@@ -116,6 +117,7 @@ class SlayLesson extends PureComponent {
 			implementations,
 		} = activeLesson || {};
 		const userData = {
+			level,
 			badge,
 			userID,
 			avatarUrl,
