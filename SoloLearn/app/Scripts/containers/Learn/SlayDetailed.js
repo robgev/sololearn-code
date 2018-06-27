@@ -41,7 +41,11 @@ class SlayDetailed extends PureComponent {
 			await this.props.setSelectedCollection(collectionId);
 			const length =
 				await this.props.getCollectionItems(collectionId, { index: startIndex, count: loadCount });
-			this.setState({ loading: false, hasMore: length === loadCount });
+			this.setState({
+				loading: false,
+				hasMore: length === loadCount,
+				startIndex: startIndex + length,
+			});
 			ReactGA.ga('send', 'screenView', { screenName: 'Collection Page' });
 		} else {
 			ReactGA.ga('send', 'screenView', { screenName: 'Lessons Page' });
@@ -53,12 +57,14 @@ class SlayDetailed extends PureComponent {
 		const { startIndex, loadCount } = this.state;
 		const { params } = this.props;
 		const collectionId = parseInt(params.collectionId, 10);
-		const length =
+		if (startIndex !== 0) {
+			const length =
 			await this.props.getCollectionItems(collectionId, { index: startIndex, count: loadCount });
-		this.setState({
-			hasMore: length === loadCount,
-			startIndex: startIndex + loadCount,
-		});
+			this.setState({
+				hasMore: length === loadCount,
+				startIndex: startIndex + loadCount,
+			});
+		}
 	}
 
 	render() {
