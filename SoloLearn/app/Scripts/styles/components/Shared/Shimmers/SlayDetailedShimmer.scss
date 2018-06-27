@@ -35,7 +35,7 @@
 		align-items: center;
 		justify-content: center;
 		.shimmer-chip-container {
-			width: calc(100% / 5 - 30px);
+			width: calc(100% / 3 - 30px);
 			position: relative;
 			padding: 15px;
 			.chip-wrapper {
@@ -45,13 +45,13 @@
 				align-items: center;
 				.chip-body {
 					width: 100%;
-					padding-top: 100%;
-					margin-bottom: 7px;
+					padding-top: 53%;
+					// margin-bottom: 7px;
 					background-color: $shimmer-dark-color;
 				}
 				.chip-name {
 					width: 100%;
-					height: 9px;
+					// height: 9px;
 					background-color: $shimmer-dark-color;
 				}
 			}
