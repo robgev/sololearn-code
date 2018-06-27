@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { List, ListItem, Paper, Dialog, FlatButton, RaisedButton } from 'material-ui';
 import Layout from 'components/Layouts/GeneralLayout';
 import Quiz from 'components/Shared/Quiz';
@@ -62,7 +63,12 @@ class MySubmissions extends Component {
 		const { challenges, previewChallenge } = this.state;
 		const actions = [
 			<FlatButton onClick={this.closePreview} label="Cancel" primary />,
-			<RaisedButton onClick={this.handleSubmit} label="Edit" primary />,
+			<RaisedButton
+				onClick={this.handleSubmit}
+				label="Edit"
+				primary
+				disabled={previewChallenge !== null && previewChallenge.type !== 2}
+			/>,
 		];
 		return (
 			<Layout>
