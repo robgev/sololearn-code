@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { List, ListItem, Paper, Dialog, FlatButton, RaisedButton } from 'material-ui';
 import Layout from 'components/Layouts/GeneralLayout';
 import Quiz from 'components/Shared/Quiz';
-import { getMySubmissions } from './api';
+import { getMySubmissions } from '../api';
+import './mySubmissionsStyles.scss';
 
 const getTypeString = (type) => {
 	switch (type) {
@@ -18,28 +19,18 @@ const getTypeString = (type) => {
 	}
 };
 
-const getStatusString = (status) => {
+const getStatus = (status) => {
 	switch (status) {
 	case 1:
-		return 'Pending';
+		return { text: 'Pending', color: '#BDBDBD' };
 	case 2:
-		return 'Declined';
+		return { text: 'Declined', color: '#D32F2F' };
 	case 3:
-		return 'Approved';
+		return { text: 'Approved', color: '#9CCC65' };
 	default:
 		throw new Error('Can\'t identify status of submitted challenge');
 	}
 };
-
-const ChallengePreview = ({
-	onClick, ...quiz
-}) => (
-	<ListItem onClick={() => onClick(quiz)}>
-		<p>{quiz.question}</p>
-		<p>{getTypeString(quiz.type)}</p>
-		<p>{getStatusString(quiz.status)}</p>
-	</ListItem>
-);
 
 class MySubmissions extends Component {
 	state = {
@@ -71,10 +62,37 @@ class MySubmissions extends Component {
 			/>,
 		];
 		return (
-			<Layout>
+			<Layout className="my-submissions">
 				<Paper>
 					<List>
-						{challenges.map(el => <ChallengePreview key={el.id} {...el} onClick={this.preview} />)}
+						{challenges.map(quiz => (
+							<ListItem
+								onClick={() => this.preview(quiz)}
+								className="preview"
+								leftIcon={
+									<img
+										style={{
+											width: 36,
+											height: 36,
+											margin: '7px 0 0 12px',
+										}}
+										src={`https://api.sololearn.com/uploads/Courses/${quiz.courseID}.png`}
+										alt=""
+									/>
+								}
+								rightIcon={
+									<div
+										className="status"
+										style={{ height: 'initial', width: 80, backgroundColor: getStatus(quiz.status).color }}
+									>
+										{getStatus(quiz.status).text}
+									</div>
+								}
+								primaryText={<div className="primary-text">{quiz.question}</div>}
+								key={quiz.id}
+								secondaryText={getTypeString(quiz.type)}
+							/>
+						))}
 					</List>
 				</Paper>
 				<Dialog

@@ -315,7 +315,7 @@ class FeedItemsBase extends Component {
 				<div className="popup-data">
 					<div style={styles.courseDetails} >
 						<img
-							src={`https://www.sololearn.com/Icons/Courses/${course.id}.png`}
+							src={`https://api.sololearn.com/uploads/Courses/${course.id}.png`}
 							alt={course.name}
 							style={styles.courseIcon}
 						/>
@@ -437,7 +437,7 @@ class FeedItemsBase extends Component {
 											(
 												<div
 													className="new-activity-button"
-													style={[ styles.newActivityButton.wrapper, interpolatingStyle ]}
+													style={[styles.newActivityButton.wrapper, interpolatingStyle]}
 													onClick={this.scrollToFeedItems}
 												>
 													<p style={styles.newActivityButton.title}>{t('feed.new-activity-title')}</p>
@@ -450,36 +450,36 @@ class FeedItemsBase extends Component {
 								{
 									(feedPins.length > 0 && !isUserProfile) &&
 
-								[ <FeedPins pins={feedPins} openPopup={this.handlePopupOpen} key="feedPins" />,
-									<p className="sub-title" style={styles.subTitle} key="separator">{t('feed.most-recent-title')}</p> ]
+									[<FeedPins pins={feedPins} openPopup={this.handlePopupOpen} key="feedPins" />,
+									<p className="sub-title" style={styles.subTitle} key="separator">{t('feed.most-recent-title')}</p>]
 								}
 								{(isLoaded && feed.length > 0) &&
-								<FeedItems feedItems={feed} openPopup={this.handlePopupOpen} />}
+									<FeedItems feedItems={feed} openPopup={this.handlePopupOpen} />}
 								{
 									((isUserProfile || feed.length > 0) && !this.state.fullyLoaded) &&
-								[
-									<div
-										key="loadMore"
-										style={{
-											...styles.loadMore.base,
-											...(!this.state.isLoading ? styles.loadMore.active : {}),
-										}}
-									>
-										<FlatButton
-											label={t('common.loadMore')}
-											onClick={() => { this.loadFeedItems(this.getLastFeedItem().id); }}
-										/>
-									</div>,
-									<div
-										key="loading"
-										style={{
-											...styles.bottomLoading.base,
-											...(this.state.isLoading ? styles.bottomLoading.active : {}),
-										}}
-									>
-										<LoadingOverlay size={30} />
-									</div>,
-								]
+									[
+										<div
+											key="loadMore"
+											style={{
+												...styles.loadMore.base,
+												...(!this.state.isLoading ? styles.loadMore.active : {}),
+											}}
+										>
+											<FlatButton
+												label={t('common.loadMore')}
+												onClick={() => { this.loadFeedItems(this.getLastFeedItem().id); }}
+											/>
+										</div>,
+										<div
+											key="loading"
+											style={{
+												...styles.bottomLoading.base,
+												...(this.state.isLoading ? styles.bottomLoading.active : {}),
+											}}
+										>
+											<LoadingOverlay size={30} />
+										</div>,
+									]
 								}
 								{
 									this.state.popupOpened &&

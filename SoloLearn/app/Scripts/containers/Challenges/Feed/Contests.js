@@ -145,7 +145,7 @@ class Contests extends PureComponent {
 				onKeyDown={e => (e.key === 'Enter' ? this.chooseContestCourse(course.id) : null)}
 			>
 				<img
-					src={`https://www.sololearn.com/Icons/Courses/${course.id}.png`}
+					src={`https://api.sololearn.com/uploads/Courses/${course.id}.png`}
 					alt={course.name}
 					style={styles.courseIcon}
 				/>
@@ -177,27 +177,27 @@ class Contests extends PureComponent {
 				<Paper id="contests">
 					{
 						invited && invited.length > 0 &&
-							<div>
-								<p style={{ ...styles.header.base, ...styles.header.title }}>{t('play.section.invites')}</p>
-								<List style={styles.contests}>{this.renderContests(invited)}</List>
-							</div>
+						<div>
+							<p style={{ ...styles.header.base, ...styles.header.title }}>{t('play.section.invites')}</p>
+							<List style={styles.contests}>{this.renderContests(invited)}</List>
+						</div>
 					}
 					{
 						invited && ongoing.length > 0 &&
-							<div>
-								<p style={{ ...styles.header.base, ...styles.header.title }}>{t('play.section.ongoing')}</p>
-								<List style={styles.contests}>{this.renderContests(ongoing)}</List>
-							</div>
+						<div>
+							<p style={{ ...styles.header.base, ...styles.header.title }}>{t('play.section.ongoing')}</p>
+							<List style={styles.contests}>{this.renderContests(ongoing)}</List>
+						</div>
 					}
 					{
 						invited && completed.length > 0 &&
-							<div>
-								<div style={styles.headerWithAction}>
-									<p style={styles.header.title}>{t('play.section.completed')}</p>
-									<FlatButton label={t('play.clear-challenges-button-title')} style={styles.headerButton} onClick={clearContests} />
-								</div>
-								<List style={styles.contests}>{this.renderContests(completed)}</List>
+						<div>
+							<div style={styles.headerWithAction}>
+								<p style={styles.header.title}>{t('play.section.completed')}</p>
+								<FlatButton label={t('play.clear-challenges-button-title')} style={styles.headerButton} onClick={clearContests} />
 							</div>
+							<List style={styles.contests}>{this.renderContests(completed)}</List>
+						</div>
 					}
 					<Dialog
 						id="courses"

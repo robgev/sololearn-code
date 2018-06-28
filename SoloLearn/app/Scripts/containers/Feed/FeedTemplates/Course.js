@@ -52,7 +52,7 @@ class Course extends Component {
 
 		return (
 			<Link to={`/learn/${course.alias}`} className="course" style={styles.course} onClick={e => this.openCoursePopup(e)}>
-				<img src={`https://www.sololearn.com/Icons/Courses/${course.id}.png`} style={styles.courseIcon} />
+				<img src={`https://api.sololearn.com/uploads/Courses/${course.id}.png`} style={styles.courseIcon} />
 				<p style={styles.courseName}>{course.name}</p>
 			</Link>
 		);
