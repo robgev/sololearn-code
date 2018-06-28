@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { List, ListItem, Paper, Dialog, FlatButton, RaisedButton } from 'material-ui';
 import Layout from 'components/Layouts/GeneralLayout';
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import Quiz from 'components/Shared/Quiz';
 import { getMySubmissions } from '../api';
 import './mySubmissionsStyles.scss';
@@ -34,7 +35,7 @@ const getStatus = (status) => {
 
 class MySubmissions extends Component {
 	state = {
-		challenges: [],
+		challenges: null,
 		previewChallenge: null,
 	}
 	async componentWillMount() {
@@ -63,38 +64,46 @@ class MySubmissions extends Component {
 		];
 		return (
 			<Layout className="my-submissions">
-				<Paper>
-					<List>
-						{challenges.map(quiz => (
-							<ListItem
-								onClick={() => this.preview(quiz)}
-								className="preview"
-								leftIcon={
-									<img
-										style={{
-											width: 36,
-											height: 36,
-											margin: '7px 0 0 12px',
-										}}
-										src={`https://api.sololearn.com/uploads/Courses/${quiz.courseID}.png`}
-										alt=""
-									/>
-								}
-								rightIcon={
-									<div
-										className="status"
-										style={{ height: 'initial', width: 80, backgroundColor: getStatus(quiz.status).color }}
-									>
-										{getStatus(quiz.status).text}
-									</div>
-								}
-								primaryText={<div className="primary-text">{quiz.question}</div>}
-								key={quiz.id}
-								secondaryText={getTypeString(quiz.type)}
-							/>
-						))}
-					</List>
-				</Paper>
+				{
+					challenges === null
+						? <LoadingOverlay />
+						: challenges.length === 0
+							? 'You have no submitted challenges'
+							: (
+								<Paper>
+									<List>
+										{challenges.map(quiz => (
+											<ListItem
+												onClick={() => this.preview(quiz)}
+												className="preview"
+												leftIcon={
+													<img
+														style={{
+															width: 36,
+															height: 36,
+															margin: '7px 0 0 12px',
+														}}
+														src={`https://api.sololearn.com/uploads/Courses/${quiz.courseID}.png`}
+														alt=""
+													/>
+												}
+												rightIcon={
+													<div
+														className="status"
+														style={{ height: 'initial', width: 80, backgroundColor: getStatus(quiz.status).color }}
+													>
+														{getStatus(quiz.status).text}
+													</div>
+												}
+												primaryText={<div className="primary-text">{quiz.question}</div>}
+												key={quiz.id}
+												secondaryText={getTypeString(quiz.type)}
+											/>
+										))}
+									</List>
+								</Paper>
+							)
+				}
 				<Dialog
 					open={previewChallenge !== null}
 					actions={actions}
