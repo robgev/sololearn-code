@@ -17,6 +17,7 @@ import FlatButton from 'material-ui/FlatButton';
 // Redux loaded
 import { isLoaded } from 'reducers';
 import { setCommentsCount } from 'actions/comments';
+import { getCommentsCount } from 'selectors';
 
 // Service
 import Service from 'api/service';
@@ -29,6 +30,7 @@ import { checkWeb } from 'utils';
 
 // Additional components
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import Layout from 'components/Layouts/GeneralLayout';
 import Editor from './Editor';
 import PlaygroundTabs from './PlaygroundTabs';
 import Toolbar from './Toolbar';
@@ -41,7 +43,6 @@ const styles = {
 		base: {
 			width: '100%',
 			maxWidth: '1000px',
-			margin: '20px auto 0',
 			overflo: 'hidden',
 		},
 		hide: {
@@ -52,7 +53,6 @@ const styles = {
 		base: {
 			position: 'relative',
 			width: '100%',
-			minHeight: '200px',
 			margin: '20px auto',
 			display: 'none',
 		},
@@ -60,6 +60,10 @@ const styles = {
 			display: 'block',
 		},
 		defaultOutput: {
+			resize: 'vertical',
+			overflow: 'auto',
+			fontFamily: 'monospace',
+			border: '1px solid transparent',
 			padding: '10px',
 		},
 		outputHeader: {
@@ -73,6 +77,7 @@ const styles = {
 
 const mapStateToProps = state => ({
 	commentSelected: isLoaded(state, 'commentSelected'),
+	commentsCount: getCommentsCount(state),
 });
 
 const mapDispatchToProps = {
@@ -103,7 +108,6 @@ class Playground extends Component {
 			userCodeLanguage: 'web',
 			shouldShowToolbar: false,
 			inputsPopupOpened: false,
-			commentsOpened: props.commentSelected,
 		};
 	}
 
@@ -619,14 +623,6 @@ ${succeedingSubstr}
 		ReactGA.ga('send', 'screenView', { screenName: 'Code Output Page' });
 	}
 
-	closeComments = () => {
-		this.setState({ commentsOpened: false });
-	}
-
-	openComments = () => {
-		this.setState({ commentsOpened: true });
-	}
-
 	handleInputsPopupClose = () => {
 		this.setState({
 			inputsPopupOpened: false,
@@ -662,7 +658,6 @@ ${succeedingSubstr}
 			sourceCode,
 			showOutput,
 			isGettingCode,
-			commentsOpened,
 			languageSelector,
 			userCodeLanguage,
 			shouldShowToolbar,
@@ -671,6 +666,7 @@ ${succeedingSubstr}
 		} = this.state;
 		const {
 			t,
+			commentsCount,
 			withBottomToolbar,
 		} = this.props;
 
@@ -688,100 +684,107 @@ ${succeedingSubstr}
 		return (
 			isGettingCode ?
 				<LoadingOverlay /> :
-				<div id="playground-container" style={styles.playgroundContainer}>
-					<Paper id="playground" style={styles.playground.base}>
-						<PlaygroundTabs
-							type={type}
-							mode={mode}
-							theme={theme}
-							runCode={this.runCode}
-							handleTabChange={this.handleTabChange}
-						/>
-						<Editor
-							code={code}
-							mode={mode}
-							theme={theme}
-							publicID={publicID}
-							showWebOutput={showWebOutput}
-							handleEditorChange={this.handleEditorChange}
-						/>
-						<OutputWindow
-							type={type}
-							showWebOutput={showWebOutput}
-							programRunning={programRunning}
-						/>
-						<Toolbar
-							type={type}
-							mode={mode}
-							theme={theme}
-							jsCode={jsCode}
-							cssCode={cssCode}
-							code={sourceCode}
-							isRunning={isRunning}
-							runCode={this.runCode}
-							language={userCodeLanguage}
-							setNewState={this.setNewState}
-							showToolbar={this.showToolbar}
-							showWebOutput={showWebOutput}
-							insertToHead={this.insertToHead}
-							isUserCode={codeType === 'userCode'}
-							userCodeData={latestSavedCodeData}
-							languageSelector={languageSelector}
-							resetEditorValue={this.resetEditorValue}
-							handleEditorChange={this.handleEditorChange}
-							handleThemeChange={this.handleThemeChange}
-							handleLanguageChange={this.handleLanguageChange}
-						/>
-						{ (withBottomToolbar && shouldShowToolbar) &&
+
+				<Layout
+					sidebarContent={
+						!(withBottomToolbar && shouldShowToolbar) ? null : (
 							<BottomToolbar
 								voteCode={this.voteCode}
 								codeData={latestSavedCodeData}
 								openComments={this.openComments}
 							/>
-						}
-						<Paper
-							className="default-output-container"
-							style={{
-								...styles.defaultOutputContainer.base,
-								...(showOutput && type === 'default' ? styles.defaultOutputContainer.show : {}),
-							}}
-						>
-							{!(isRunning && type === 'default') ? null
-								: <LoadingOverlay size={30} />
-							}
-							<div style={styles.outputHeader}>Output: </div>
-							<pre className="default-output" style={styles.defaultOutput} />
-						</Paper>
-						{ (withBottomToolbar && shouldShowToolbar) &&
+						)
+					}
+				>
+					<div id="playground-container" style={styles.playgroundContainer}>
+						<Paper id="playground" style={styles.playground.base}>
+							<PlaygroundTabs
+								type={type}
+								mode={mode}
+								theme={theme}
+								runCode={this.runCode}
+								handleTabChange={this.handleTabChange}
+							/>
+							<Editor
+								code={code}
+								mode={mode}
+								theme={theme}
+								publicID={publicID}
+								showWebOutput={showWebOutput}
+								handleEditorChange={this.handleEditorChange}
+							/>
+							<OutputWindow
+								type={type}
+								showWebOutput={showWebOutput}
+								programRunning={programRunning}
+							/>
+							<Toolbar
+								type={type}
+								mode={mode}
+								theme={theme}
+								jsCode={jsCode}
+								cssCode={cssCode}
+								code={sourceCode}
+								isRunning={isRunning}
+								runCode={this.runCode}
+								language={userCodeLanguage}
+								setNewState={this.setNewState}
+								showToolbar={this.showToolbar}
+								showWebOutput={showWebOutput}
+								insertToHead={this.insertToHead}
+								isUserCode={codeType === 'userCode'}
+								userCodeData={latestSavedCodeData}
+								languageSelector={languageSelector}
+								resetEditorValue={this.resetEditorValue}
+								handleEditorChange={this.handleEditorChange}
+								handleThemeChange={this.handleThemeChange}
+								handleLanguageChange={this.handleLanguageChange}
+							/>
+							<Paper
+								className="default-output-container"
+								style={{
+									...styles.defaultOutputContainer.base,
+									...(showOutput && type === 'default' ? styles.defaultOutputContainer.show : {}),
+								}}
+							>
+								{!(isRunning && type === 'default') ? null
+									: <LoadingOverlay size={30} />
+								}
+								<div style={styles.outputHeader}>Output: </div>
+								<pre className="default-output" style={styles.defaultOutputContainer.defaultOutput} />
+							</Paper>
+							{ (withBottomToolbar && shouldShowToolbar) &&
 							<Comments
 								id={id}
 								type={1}
+								commentsOpened
 								commentsType="code"
-								commentsOpened={commentsOpened}
+								commentsCount={commentsCount}
 								closeComments={this.closeComments}
 							/>
-						}
-						<Dialog
-							open={inputsPopupOpened}
-							title={texts.inputsPopupTitle}
-							titleStyle={styles.popupTitle}
-							bodyStyle={styles.popupBody}
-							actions={inputsPopupActions}
-							contentStyle={styles.popupContent}
-							onRequestClose={this.handleInputsPopupClose}
-						>
-							<p style={styles.popupSubTitle}>{texts.savePopupSubTitle}</p>
-							<TextField
-								multiLine
-								fullWidth
-								id="inputs"
-								value={inputs}
-								style={styles.inputStyle}
-								onChange={this.handleInputsChange}
-							/>
-						</Dialog>
-					</Paper>
-				</div>
+							}
+							<Dialog
+								open={inputsPopupOpened}
+								title={texts.inputsPopupTitle}
+								titleStyle={styles.popupTitle}
+								bodyStyle={styles.popupBody}
+								actions={inputsPopupActions}
+								contentStyle={styles.popupContent}
+								onRequestClose={this.handleInputsPopupClose}
+							>
+								<p style={styles.popupSubTitle}>{texts.savePopupSubTitle}</p>
+								<TextField
+									multiLine
+									fullWidth
+									id="inputs"
+									value={inputs}
+									style={styles.inputStyle}
+									onChange={this.handleInputsChange}
+								/>
+							</Dialog>
+						</Paper>
+					</div>
+				</Layout>
 		);
 	}
 }

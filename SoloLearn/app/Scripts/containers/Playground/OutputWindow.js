@@ -57,14 +57,14 @@ const styles = {
 	errorMessage: {
 		color: '#424242',
 	},
-}
+};
 
 const OutputWindow = ({
 	type,
 	showWebOutput,
 	programRunning,
 	t,
-}) =>  (
+}) => (
 	<div
 		className="web-output"
 		style={{
@@ -72,15 +72,16 @@ const OutputWindow = ({
 			...(showWebOutput ? styles.webOutput.show : styles.webOutput.hide),
 		}}
 	>
-			{ !programRunning ? null :
-				<LoadingOverlay />
-			}
-			<iframe id="output-frame" frameBorder="0" style={styles.webIframe}></iframe>
-			<div id="js-console" style={type == "web" ? styles.jsConsole.base : styles.jsConsole.hide}>
-					<label style={styles.jsConsoleLabel}>JavaScript {t('code_playground.console.title')}</label>
-					<div className="log-message" style={styles.logMessage}></div>
-					<div className="error-message" style={styles.errorMessage}></div>
-			</div>
+		{ !programRunning ? null : (
+			<LoadingOverlay />
+		)
+		}
+		<iframe title="code-output" id="output-frame" frameBorder="0" style={styles.webIframe} />
+		<div id="js-console" style={type === 'web' ? styles.jsConsole.base : styles.jsConsole.hide}>
+			<span style={styles.jsConsoleLabel}>JavaScript {t('code_playground.console.title')}</span>
+			<div className="log-message" style={styles.logMessage} />
+			<div className="error-message" style={styles.errorMessage} />
+		</div>
 	</div>
 );
 

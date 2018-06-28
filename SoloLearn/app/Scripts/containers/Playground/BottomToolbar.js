@@ -15,14 +15,12 @@ import VoteControls from 'components/Shared/VoteControls';
 import { determineAccessLevel } from 'utils';
 import { removeCode } from 'actions/playground';
 import getLikesAndDownvotesCurried from 'actions/likes';
-import { getCommentsCount } from 'selectors';
 
 import 'styles/Playground/bottomToolbar.scss';
 
 const mapStateToProps = state => ({
 	userId: state.userProfile.id,
 	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
-	commentsCount: getCommentsCount(state),
 });
 
 const mapDispatchToProps = {
@@ -76,9 +74,9 @@ class BottomToolbar extends PureComponent {
 			codeData,
 			accessLevel,
 			openComments,
-			commentsCount,
 		} = this.props;
 		const {
+			id,
 			vote,
 			votes,
 			level,
@@ -142,26 +140,16 @@ class BottomToolbar extends PureComponent {
 						</div>
 					</div>
 					{!!id &&
-						[
-							<VoteControls
-								userVote={vote}
-								totalVotes={votes}
-								key="voteControls"
-								getVotes={this.getVotes}
-								accessLevel={accessLevel}
-								getDownvotes={this.getDownvotes}
-								onUpvote={() => voteCode(codeData, 1)}
-								onDownvote={() => voteCode(codeData, -1)}
-							/>,
-							<FlatButton
-								key="flatButton"
-								onClick={openComments}
-								label={commentsCount === 1 ?
-									t('common.comment-format-one') :
-									`${commentsCount} ${t('common.comments')}`
-								}
-							/>,
-						]
+					<VoteControls
+						userVote={vote}
+						totalVotes={votes}
+						key="voteControls"
+						getVotes={this.getVotes}
+						accessLevel={accessLevel}
+						getDownvotes={this.getDownvotes}
+						onUpvote={() => voteCode(codeData, 1)}
+						onDownvote={() => voteCode(codeData, -1)}
+					/>
 					}
 				</div>
 				<Dialog

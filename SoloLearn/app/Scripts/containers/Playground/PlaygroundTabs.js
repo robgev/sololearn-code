@@ -6,6 +6,7 @@ import { translate } from 'react-i18next';
 
 // Material UI components
 import { Tabs, Tab } from 'material-ui/Tabs';
+import FlatButton from 'material-ui/FlatButton';
 
 // App defaults and utils
 import editorSettings from 'defaults/playgroundEditorSettings';
@@ -24,10 +25,12 @@ const styles = {
 	webTab: {
 		dark: {
 			color: '#fff',
+			borderRight: '1px solid #A8A8A8',
 		},
 
 		light: {
 			color: '#777',
+			borderRight: '1px solid #C1C1C1',
 		},
 	},
 
@@ -66,57 +69,117 @@ const PlaygroundTabs = ({
 
 	if (type === 'web') {
 		return (
-			<Tabs
-				value={mode}
-				tabItemContainerStyle={isDarkTheme ? styles.webTabs.dark : styles.webTabs.light}
-				inkBarStyle={isDarkTheme ? { background: '#dedede' } : { background: '#777' }}
+			<div style={{
+				display: 'flex',
+				borderBottom: `1px solid ${isDarkTheme ? '#A8A8A8' : '#C1C1C1'}`,
+			}}
 			>
-				<Tab
-					label="HTML"
-					style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
-					onClick={() => handleTabChange('html')}
-					value="html"
-				/>
-				<Tab
-					label="CSS"
-					style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
-					onClick={() => handleTabChange('css')}
-					value="css"
-				/>
-				<Tab
-					label="JS"
-					style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
-					onClick={() => handleTabChange('javascript')}
-					value="javascript"
-				/>
-				<Tab
-					label={t('code_playground.output')}
-					style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
-					onClick={runCode}
-					value={null}
-				/>
-			</Tabs>
+				<Tabs
+					value={mode}
+					style={{
+						display: 'flex',
+						flexDirection: 'column',
+						flex: 1,
+						height: 36,
+					}}
+					inkBarStyle={{ height: 0 }}
+					onChange={handleTabChange}
+					tabItemContainerStyle={isDarkTheme ? styles.webTabs.dark : styles.webTabs.light}
+				>
+					<Tab
+						label="HTML"
+						value="html"
+						buttonStyle={{ height: 36 }}
+						style={{
+							...(isDarkTheme ? styles.webTab.dark : styles.webTab.light),
+							...(mode === 'html' ? { backgroundColor: isDarkTheme ? '#494B43' : '#D2D2D2' } : {}),
+						}}
+					/>
+					<Tab
+						label="CSS"
+						value="css"
+						buttonStyle={{ height: 36 }}
+						style={{
+							...(isDarkTheme ? styles.webTab.dark : styles.webTab.light),
+							...(mode === 'css' ? { backgroundColor: isDarkTheme ? '#494B43' : '#D2D2D2' } : {}),
+						}}
+					/>
+					<Tab
+						label="JS"
+						value="javascript"
+						buttonStyle={{ height: 36 }}
+						style={{
+							...(isDarkTheme ? styles.webTab.dark : styles.webTab.light),
+							...(mode === 'javascript' ? { backgroundColor: isDarkTheme ? '#494B43' : '#D2D2D2' } : {}),
+						}}
+					/>
+				</Tabs>
+				<div style={{
+					display: 'flex',
+					flex: 1,
+					justifyContent: 'flex-end',
+					alignItems: 'center',
+					background: isDarkTheme ? '#2F3129' : '#ebebeb',
+				}}
+				>
+					<FlatButton
+						label={t('code_playground.output')}
+						style={{
+							color: isDarkTheme ? '#fff' : '#777',
+							background: isDarkTheme ? '#2F3129' : '#ebebeb',
+						}}
+						onClick={runCode}
+					/>
+				</div>
+			</div>
 		);
 	} else if (type === 'combined') {
 		return (
-			<Tabs
-				value={mode}
-				tabItemContainerStyle={isDarkTheme ? styles.webTabs.dark : styles.webTabs.light}
-				inkBarStyle={isDarkTheme ? { background: '#dedede' } : { background: '#777' }}
+			<div style={{
+				display: 'flex',
+				borderBottom: `1px solid ${isDarkTheme ? '#A8A8A8' : '#C1C1C1'}`,
+			}}
 			>
-				<Tab
-					label="PHP"
-					style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
-					onClick={() => handleTabChange('php')}
-					value="php"
-				/>
-				<Tab
-					label={t('code_playground.output')}
-					style={isDarkTheme ? styles.webTab.dark : styles.webTab.light}
-					onClick={runCode}
-					value={null}
-				/>
-			</Tabs>
+				<Tabs
+					value={mode}
+					style={{
+						display: 'flex',
+						flexDirection: 'column',
+						flex: 1,
+						height: 36,
+					}}
+					inkBarStyle={{ height: 0 }}
+					onChange={handleTabChange}
+					tabItemContainerStyle={isDarkTheme ? styles.webTabs.dark : styles.webTabs.light}
+				>
+					<Tab
+						label="PHP"
+						value="php"
+						buttonStyle={{ height: 36 }}
+						style={{
+							...(isDarkTheme ? styles.webTab.dark : styles.webTab.light),
+							...(mode === 'css' ? { backgroundColor: isDarkTheme ? '#494B43' : '#D2D2D2' } : {}),
+						}}
+					/>
+				</Tabs>
+				<div style={{
+					display: 'flex',
+					flex: 1,
+					justifyContent: 'flex-end',
+					alignItems: 'center',
+					background: isDarkTheme ? '#2F3129' : '#ebebeb',
+				}}
+				>
+					<FlatButton
+						label={t('code_playground.output')}
+						style={{
+							color: isDarkTheme ? '#fff' : '#777',
+							background: isDarkTheme ? '#2F3129' : '#ebebeb',
+						}}
+						onClick={runCode}
+					/>
+				</div>
+			</div>
 		);
 	}
 	return (
@@ -125,6 +188,5 @@ const PlaygroundTabs = ({
 		</div>
 	);
 };
-
 
 export default translate()(PlaygroundTabs);
