@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { List, ListItem, Paper, Dialog, FlatButton, RaisedButton } from 'material-ui';
+import { browserHistory } from 'react-router';
 import Layout from 'components/Layouts/GeneralLayout';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import Quiz from 'components/Shared/Quiz';
+import { setSuggestionChallenge } from 'actions/quizFactory';
 import { getMySubmissions } from '../api';
 import './mySubmissionsStyles.scss';
+
+// Utility funcs
 
 const getTypeString = (type) => {
 	switch (type) {
@@ -33,6 +38,24 @@ const getStatus = (status) => {
 	}
 };
 
+const getStringFromType = (type) => {
+	switch (type) {
+	case 1:
+		return 'multiple-choice';
+	case 2:
+		return 'type-in';
+	case 3:
+		return 'fill-in';
+	default:
+		throw new Error('Can\'t identiry type of submitted challenge');
+	}
+};
+
+const mapDispatchToProps = {
+	setSuggestionChallenge,
+};
+
+@connect(null, mapDispatchToProps)
 class MySubmissions extends Component {
 	state = {
 		challenges: null,
@@ -49,17 +72,19 @@ class MySubmissions extends Component {
 		this.setState({ previewChallenge: null });
 	}
 	handleEdit = () => {
-
+		const { previewChallenge } = this.state;
+		this.props.setSuggestionChallenge(previewChallenge);
+		browserHistory.push(`/quiz-factory/suggest/${getStringFromType(previewChallenge.type)}`);
 	}
 	render() {
 		const { challenges, previewChallenge } = this.state;
 		const actions = [
 			<FlatButton onClick={this.closePreview} label="Cancel" primary />,
 			<RaisedButton
-				onClick={this.handleSubmit}
+				onClick={this.handleEdit}
 				label="Edit"
 				primary
-				disabled={previewChallenge !== null && previewChallenge.type !== 2}
+				disabled={previewChallenge !== null && previewChallenge.status !== 2}
 			/>,
 		];
 		return (

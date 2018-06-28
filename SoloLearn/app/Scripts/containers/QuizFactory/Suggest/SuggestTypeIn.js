@@ -10,6 +10,12 @@ class SuggestTypeIn extends Component {
 		question: '',
 		answer: '',
 	}
+	componentWillMount() {
+		if (this.props.init !== null) {
+			const { language, question, answers } = this.props.init;
+			this.setState({ language, question, answer: answers[0].text });
+		}
+	}
 	toggleLanguageSelector = () => {
 		this.setState(state => ({ isLanguageSelectorOpen: !state.isLanguageSelectorOpen }));
 	}

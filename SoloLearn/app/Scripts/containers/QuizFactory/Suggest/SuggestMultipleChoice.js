@@ -15,6 +15,12 @@ class SuggestMultipleChoice extends Component {
 			{ isCorrect: false, text: '', id: 3 },
 		],
 	}
+	componentWillMount() {
+		if (this.props.init !== null) {
+			const { language, question, answers } = this.props.init;
+			this.setState({ language, question, answers });
+		}
+	}
 	toggleLanguageSelector = () => {
 		this.setState(state => ({ isLanguageSelectorOpen: !state.isLanguageSelectorOpen }));
 	}
@@ -78,6 +84,7 @@ class SuggestMultipleChoice extends Component {
 									<TextField
 										name={`Answer field ${answer.id}`}
 										className="input"
+										value={answer.text}
 										placeholder={`Option ${answer.id + 1}`}
 										onChange={e => this.onAnswerChange(answer.id, e.target.value)}
 									/>

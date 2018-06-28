@@ -65,6 +65,9 @@ import leaderboards from './leaderboards.reducer';
 // Discover
 import discoverSuggestions from './discover.reducer';
 
+// Quiz factory
+import quizSubmission from './quizSubmission.reducer';
+
 const reducers = combineReducers({
 	profile,
 	comments,
@@ -103,7 +106,8 @@ const reducers = combineReducers({
 	feed,
 	feedPins,
 	userSuggestions,
-
+	// Quiz factory
+	quizSubmission,
 });
 
 export const store = createStore(reducers, applyMiddleware(

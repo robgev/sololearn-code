@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Editor, EditorState, Modifier, CompositeDecorator, convertToRaw } from 'draft-js';
+import {
+	Editor,
+	EditorState,
+	Modifier,
+	CompositeDecorator,
+	convertToRaw,
+	ContentState,
+	SelectionState,
+} from 'draft-js';
 import { Paper, RaisedButton, FlatButton } from 'material-ui';
 import { LanguageSelector } from '../components';
 
@@ -30,6 +38,37 @@ const markTextBlock = (raw, ranges, index) => (ranges.length > 0 ? ranges
 		return { answers, text, index: acc.index + 1 };
 	}, { answers: [], text: '', index }) : { answers: [], text: raw, index });
 
+const getSlotNum = slot => parseInt(slot.slice(1, -1), 10);
+
+const makeEditableContent = (answerText, answers) => {
+	let contentState = ContentState.createFromText(answerText);
+	console.log(contentState);
+	const { blocks } = convertToRaw(contentState);
+	const regex = /\{\d+}/g;
+	blocks.forEach((block) => {
+		const slots = block.text.match(regex) || [];
+		slots.forEach((slot) => {
+			const contentStateWithEntity = contentState.createEntity(
+				'MARKED',
+				'MUTABLE',
+			);
+			const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+			const selectionState = SelectionState.createEmpty(block.key).merge({
+				anchorOffset: block.text.indexOf(slot),
+				focusOffset: block.text.indexOf(slot) + slot.length,
+			});
+			contentState = Modifier.replaceText(
+				contentStateWithEntity,
+				selectionState,
+				answers[getSlotNum(slot)].text,
+				null,
+				entityKey,
+			);
+		});
+	});
+	return contentState;
+};
+
 class SuggestFillIn extends Component {
 	state = {
 		language: null,
@@ -38,6 +77,23 @@ class SuggestFillIn extends Component {
 		editorState: EditorState.createEmpty(new CompositeDecorator([
 			{ strategy: markedStrategy, component: Marked },
 		])),
+	}
+	componentWillMount() {
+		if (this.props.init !== null) {
+			const { init } = this.props;
+			const question = init.question.split(/\[!\w+!]/)[0];
+			const answerText = init.question.split(/\[!\w+!]/)[1];
+			this.setState({
+				language: init.language,
+				question,
+				editorState: EditorState.createWithContent(makeEditableContent(
+					answerText,
+					init.answers,
+				), new CompositeDecorator([
+					{ strategy: markedStrategy, component: Marked },
+				])),
+			});
+		}
 	}
 	toggleLanguageSelector = () => {
 		this.setState(state => ({ isLanguageSelectorOpen: !state.isLanguageSelectorOpen }));
@@ -135,6 +191,7 @@ class SuggestFillIn extends Component {
 							ref={(editor) => { this.editor = editor; }}
 							editorState={editorState}
 							onChange={this.onEditorChange}
+							textDirection="LTR"
 						/>
 					</div>
 				</Paper>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import Layout from 'components/Layouts/GeneralLayout';
+import { connect } from 'react-redux';
 import { Dialog, FlatButton, RaisedButton } from 'material-ui';
+import Layout from 'components/Layouts/GeneralLayout';
 import Quiz from 'components/Shared/Quiz';
 import SuggestMultipleChoice from './SuggestMultipleChoice';
 import SuggestTypeIn from './SuggestTypeIn';
@@ -9,12 +10,29 @@ import { submitChallenge } from '../api';
 
 import './style.scss';
 
+const mapStateToProps = ({ quizSubmission, courses }) => ({ quizSubmission, courses });
+
+@connect(mapStateToProps)
 class SuggestTypeSelector extends Component {
 	state = {
 		previewQuiz: null,
 	}
+	format = () => {
+		if (this.props.quizSubmission !== null) {
+			const { quizSubmission, courses } = this.props;
+			const { id, iconUrl, languageName } = courses
+				.find(course => course.id === quizSubmission.courseID);
+			const { question } = quizSubmission;
+			const answers = quizSubmission.answers
+				.map(({ isCorrect, text }, idx) => ({ isCorrect, text, id: idx }));
+			return {
+				language: { id, iconUrl, languageName }, question, answers, id: quizSubmission.id,
+			};
+		}
+		return null;
+	}
 	getSuggestComp = (type) => {
-		const props = { setPreview: this.setPreview };
+		const props = { setPreview: this.setPreview, init: this.format() };
 		switch (type) {
 		case 'multiple-choice':
 			return <SuggestMultipleChoice {...props} />;
