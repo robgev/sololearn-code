@@ -7,7 +7,12 @@
 			overflow: auto;
 			padding: 20px;
 			margin-bottom: 40px;
-			white-space: pre;
+			// https://stackoverflow.com/questions/4413015/browser-compatible-word-wrap-and-whitespace-pre
+			white-space: -moz-pre-wrap; /* Firefox */
+			white-space: -pre-wrap; /* ancient Opera */
+			white-space: -o-pre-wrap; /* newer Opera */
+			white-space: pre-wrap; /* Chrome; W3C standard */
+			word-wrap: break-word; /* IE */
 		}
 		.placeholder-container {
 			text-align: center;
