@@ -1,9 +1,23 @@
-.rate-vote-container {
-	display: flex;
-	justify-content: center;
-	margin: 20px;
-	.button {
-		width: 120px;
-		margin: 10px;
+.rate-container {
+	.vote-container {
+		display: flex;
+		justify-content: center;
+		margin: 20px;
+		.button {
+			width: 120px;
+			margin: 10px;
+		}
+	}
+	.challenge-container {
+		display: flex;
+		flex-direction: column;
+		.challenge {
+			align-self: stretch;
+		}
+		.skip {
+			margin-top: 10px;
+			align-self: flex-end;
+		}
 	}
 }
+

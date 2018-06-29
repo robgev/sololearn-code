@@ -13,7 +13,7 @@ class Rate extends Component {
 		challenge: null,
 		voteOpen: false,
 	}
-	async componentWillMount() {
+	componentWillMount() {
 		this.getChallenge();
 	}
 	like = () => {
@@ -39,12 +39,29 @@ class Rate extends Component {
 	render() {
 		const { challenge, voteOpen } = this.state;
 		return (
-			<Layout>
+			<Layout className="rate-container">
 				{challenge !== null
-					? <Quiz quiz={challenge} onCheck={this.letVote} canTryAgain onTryAgain={this.tryAgain} />
+					? (
+						<div className="challenge-container">
+							<div className="challenge">
+								<Quiz
+									quiz={challenge}
+									onCheck={this.letVote}
+									canTryAgain
+									onTryAgain={this.tryAgain}
+								/>
+							</div>
+							<RaisedButton
+								className="skip"
+								label="Skip"
+								onClick={this.getChallenge}
+								primary
+							/>
+						</div>
+					)
 					: <div><LoadingOverlay /></div>}
 				{voteOpen ?
-					<div className="rate-vote-container">
+					<div className="vote-container">
 						<RaisedButton
 							className="button"
 							label="Like"
