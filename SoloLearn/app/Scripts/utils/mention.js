@@ -38,3 +38,16 @@ export const mentionUsers = (text, mentions, ranges) => (ranges.length > 0 ? ran
 		const currentText = `${before}[user id="${mentions[idx].id}"]${text.substr(curr.offset, curr.length)}[/user]`;
 		return `${acc}${currentText}${idx === arr.length - 1 ? text.substring(curr.offset + curr.length) : ''}`;
 	}, '') : text);
+
+export const getMentionFetcher = (type, id) => {
+	switch (type) {
+	case 'lesson':
+		return getMentionsList('lessonComment', { quizId: id });
+	case 'code':
+		return getMentionsList('codeComment', { codeId: id });
+	case 'userLesson':
+		return getMentionsList('userLessonComment', { lessonId: id });
+	default:
+		throw new Error('Comment type is not defined');
+	}
+};

@@ -14,9 +14,10 @@ import { getLikesAndDownvotesInternal } from 'actions/likes';
 
 // Utils
 import VoteControls from 'components/Shared/VoteControls';
-import { updateDate, replaceMention, generatePreviews } from 'utils';
+import { updateDate, replaceMention, generatePreviews, getMentionFetcher } from 'utils';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import PreviewItem from 'components/Shared/PreviewItem';
+import MentionInput from 'components/Shared/MentionInput';
 import { loadRepliesTypes } from './Comments';
 
 // Style
@@ -31,23 +32,10 @@ const mapDispatchToProps = {
 @connect(mapStateToProps, mapDispatchToProps)
 class Comment extends Component {
 	state = {
-		errorText: '',
-		textFieldValue: this.props.comment.message,
+		// textFieldValue: this.props.comment.message,
+		isReplyOpen: false,
+		replyLength: this.props.comment.message.length,
 	};
-
-	onChange = (e) => {
-		if (e.target.value.length === 0) {
-			this.setState({
-				textFieldValue: e.target.value,
-				errorText: 'This field is required',
-			});
-		} else {
-			this.setState({
-				textFieldValue: e.target.value,
-				errorText: '',
-			});
-		}
-	}
 
 	openCloseReplies = () => {
 		const { comment } = this.props;
@@ -95,17 +83,14 @@ class Comment extends Component {
 
 	openEdit = () => {
 		const { comment } = this.props;
-		this.props.openEdit(comment.id, comment.parentID, comment.userName, () => {
-			setTimeout(() => this._editRef.focus(), 100);
-		});
+		this.props.openEdit(
+			comment.id, comment.parentID, comment.userName,
+			() => setTimeout(() => this.mentionInput.focus(), 200),
+		);
 	}
 
 	closeEdit = () => {
 		this.props.cancelAll();
-		this.setState({
-			errorText: '',
-			textFieldValue: this.props.comment.message,
-		});
 	}
 
 	getVotes = () => {
@@ -118,8 +103,19 @@ class Comment extends Component {
 		getLikes(`${commentType}CommentDownvotes`, comment.id);
 	}
 
+	openReply = () => {
+		this.setState({ isReplyOpen: true });
+	}
+	closeReply = () => {
+		this.setState({ isReplyOpen: false });
+	}
+	onLengthChange = (replyLength) => {
+		if (this.mentionInput) {
+			this.setState({ replyLength });
+		}
+	}
+
 	getEditControls = () => {
-		const saveDisabled = this.state.errorText.length === 0;
 		const { t } = this.props;
 		return (
 			<div className="edit-controls" style={styles.commentControls.right}>
@@ -129,9 +125,9 @@ class Comment extends Component {
 				/>
 				<FlatButton
 					label={t('common.save-action-title')}
-					primary={saveDisabled}
-					disabled={!saveDisabled}
-					onClick={() => { this.props.editComment(this.props.comment, this.state.textFieldValue); }}
+					primary
+					disabled={this.state.replyLength === 0}
+					onClick={() => this.props.editComment(this.props.comment, this.mentionInput.popValue())}
 				/>
 			</div>
 		);
@@ -188,14 +184,15 @@ class Comment extends Component {
 	getEditableArea = (comment) => {
 		const { recompute } = this.props;
 		const isEditing = (this.props.isEditing && this.props.activeComment.id === comment.id);
-		const previewsData = generatePreviews(this.state.textFieldValue);
+		const previewsData = generatePreviews(this.props.comment.message);
+		const { isReplyOpen, replyLength } = this.state;
 
 		return (
 			<div style={styles.commentContent}>
 				{!isEditing &&
 					<div>
 						<Linkify>
-							<div style={styles.commentMessage}>{replaceMention(this.state.textFieldValue)}</div>
+							<div style={styles.commentMessage}>{replaceMention(this.props.comment.message)}</div>
 						</Linkify>
 						{previewsData.map(singlePreviewData => (
 							<PreviewItem
@@ -208,20 +205,18 @@ class Comment extends Component {
 				}
 				{isEditing &&
 					[
-						<TextField
+						<MentionInput
 							key={`commentTextField${comment.id}`}
-							hintText="Message"
-							multiLine
-							maxLength="2048"
-							rowsMax={4}
-							fullWidth
-							ref={(_editRef) => { this._editRef = _editRef; }}
-							defaultValue={this.state.textFieldValue}
-							errorText={this.state.errorText}
-							onChange={e => this.onChange(e)}
-							style={styles.textField}
+							ref={(mentionInput) => { this.mentionInput = mentionInput; }}
+							onFocus={this.openReply}
+							onBlur={this.closeReply}
+							onLengthChange={this.onLengthChange}
+							style={{ minHeight: 160 }}
+							getUsers={getMentionFetcher(this.props.commentType)}
+							placeholder={!isReplyOpen && replyLength === 0 ? 'Message' : ''}
+							initText={this.props.comment.message}
 						/>,
-						<span style={styles.textFieldCoutner} key={`commentCounter${comment.id}`}>{2048 - this.state.textFieldValue.length} characters remaining</span>,
+						<span style={styles.textFieldCoutner} key={`commentCounter${comment.id}`}>{2048 - replyLength} characters remaining</span>,
 					]
 				}
 			</div>
