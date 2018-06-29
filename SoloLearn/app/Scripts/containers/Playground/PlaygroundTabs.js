@@ -7,6 +7,8 @@ import { translate } from 'react-i18next';
 // Material UI components
 import { Tabs, Tab } from 'material-ui/Tabs';
 import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
+import AspectRatio from 'material-ui/svg-icons/action/aspect-ratio';
 
 // App defaults and utils
 import editorSettings from 'defaults/playgroundEditorSettings';
@@ -36,8 +38,10 @@ const styles = {
 
 	defaultTab: {
 		base: {
+			display: 'flex',
+			justifyContent: 'flex-end',
+			alignItems: 'center',
 			lineHeight: '48px',
-			textAlign: 'right',
 			padding: '0 15px 0 0',
 			height: '48px',
 			fontSize: '16px',
@@ -55,19 +59,25 @@ const styles = {
 			color: '#777',
 		},
 	},
+
+	iconButton: {
+		height: 36,
+		padding: 0,
+	},
 };
 
 const PlaygroundTabs = ({
+	t,
 	type,
 	mode,
 	theme,
 	runCode,
+	toggleFullScreen,
 	handleTabChange,
-	t,
 }) => {
 	const isDarkTheme = theme === 'monokai';
 
-	if (type === 'web') {
+	if (type === 'web' || type === 'combined') {
 		return (
 			<div style={{
 				display: 'flex',
@@ -86,33 +96,50 @@ const PlaygroundTabs = ({
 					onChange={handleTabChange}
 					tabItemContainerStyle={isDarkTheme ? styles.webTabs.dark : styles.webTabs.light}
 				>
-					<Tab
-						label="HTML"
-						value="html"
-						buttonStyle={{ height: 36 }}
-						style={{
-							...(isDarkTheme ? styles.webTab.dark : styles.webTab.light),
-							...(mode === 'html' ? { backgroundColor: isDarkTheme ? '#494B43' : '#D2D2D2' } : {}),
-						}}
-					/>
-					<Tab
-						label="CSS"
-						value="css"
-						buttonStyle={{ height: 36 }}
-						style={{
-							...(isDarkTheme ? styles.webTab.dark : styles.webTab.light),
-							...(mode === 'css' ? { backgroundColor: isDarkTheme ? '#494B43' : '#D2D2D2' } : {}),
-						}}
-					/>
-					<Tab
-						label="JS"
-						value="javascript"
-						buttonStyle={{ height: 36 }}
-						style={{
-							...(isDarkTheme ? styles.webTab.dark : styles.webTab.light),
-							...(mode === 'javascript' ? { backgroundColor: isDarkTheme ? '#494B43' : '#D2D2D2' } : {}),
-						}}
-					/>
+					{ type === 'web' ? [
+						<Tab
+							key="html"
+							label="HTML"
+							value="html"
+							buttonStyle={{ height: 36 }}
+							style={{
+								...(isDarkTheme ? styles.webTab.dark : styles.webTab.light),
+								...(mode === 'html' ? { backgroundColor: isDarkTheme ? '#494B43' : '#D2D2D2' } : {}),
+							}}
+						/>,
+						<Tab
+							key="css"
+							label="CSS"
+							value="css"
+							buttonStyle={{ height: 36 }}
+							style={{
+								...(isDarkTheme ? styles.webTab.dark : styles.webTab.light),
+								...(mode === 'css' ? { backgroundColor: isDarkTheme ? '#494B43' : '#D2D2D2' } : {}),
+							}}
+						/>,
+						<Tab
+							key="js"
+							label="JS"
+							value="javascript"
+							buttonStyle={{ height: 36 }}
+							style={{
+								...(isDarkTheme ? styles.webTab.dark : styles.webTab.light),
+								...(mode === 'javascript' ? { backgroundColor: isDarkTheme ? '#494B43' : '#D2D2D2' } : {}),
+							}}
+						/>,
+					] : (
+
+						<Tab
+							label="PHP"
+							value="php"
+							buttonStyle={{ height: 36 }}
+							style={{
+								...(isDarkTheme ? styles.webTab.dark : styles.webTab.light),
+								...(mode === 'php' ? { backgroundColor: isDarkTheme ? '#494B43' : '#D2D2D2' } : {}),
+							}}
+						/>
+					)
+					}
 				</Tabs>
 				<div style={{
 					display: 'flex',
@@ -130,61 +157,36 @@ const PlaygroundTabs = ({
 						}}
 						onClick={runCode}
 					/>
-				</div>
-			</div>
-		);
-	} else if (type === 'combined') {
-		return (
-			<div style={{
-				display: 'flex',
-				borderBottom: `1px solid ${isDarkTheme ? '#A8A8A8' : '#C1C1C1'}`,
-			}}
-			>
-				<Tabs
-					value={mode}
-					style={{
-						display: 'flex',
-						flexDirection: 'column',
-						flex: 1,
-						height: 36,
-					}}
-					inkBarStyle={{ height: 0 }}
-					onChange={handleTabChange}
-					tabItemContainerStyle={isDarkTheme ? styles.webTabs.dark : styles.webTabs.light}
-				>
-					<Tab
-						label="PHP"
-						value="php"
-						buttonStyle={{ height: 36 }}
-						style={{
-							...(isDarkTheme ? styles.webTab.dark : styles.webTab.light),
-							...(mode === 'css' ? { backgroundColor: isDarkTheme ? '#494B43' : '#D2D2D2' } : {}),
-						}}
-					/>
-				</Tabs>
-				<div style={{
-					display: 'flex',
-					flex: 1,
-					justifyContent: 'flex-end',
-					alignItems: 'center',
-					background: isDarkTheme ? '#2F3129' : '#ebebeb',
-				}}
-				>
-					<FlatButton
-						label={t('code_playground.output')}
-						style={{
-							color: isDarkTheme ? '#fff' : '#777',
-							background: isDarkTheme ? '#2F3129' : '#ebebeb',
-						}}
-						onClick={runCode}
-					/>
+					<IconButton
+						style={styles.iconButton}
+						tooltip="Toggle Fullscreen"
+						onClick={toggleFullScreen}
+					>
+						<AspectRatio
+							color={isDarkTheme ? '#fff' : '#777'}
+						/>
+					</IconButton>
 				</div>
 			</div>
 		);
 	}
 	return (
-		<div style={isDarkTheme ? { ...styles.defaultTab.base, ...styles.defaultTab.dark } : { ...styles.defaultTab.base, ...styles.defaultTab.light }} >
+		<div
+			style={{
+				...styles.defaultTab.base,
+				...(isDarkTheme ? styles.defaultTab.dark : styles.defaultTab.light),
+			}}
+		>
 			{editorSettings[mode].name}
+			<IconButton
+				style={styles.iconButton}
+				tooltip="Toggle Fullscreen"
+				onClick={toggleFullScreen}
+			>
+				<AspectRatio
+					color={isDarkTheme ? '#fff' : '#777'}
+				/>
+			</IconButton>
 		</div>
 	);
 };

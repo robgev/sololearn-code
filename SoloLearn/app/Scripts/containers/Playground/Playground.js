@@ -86,30 +86,28 @@ const mapDispatchToProps = {
 
 @connect(mapStateToProps, mapDispatchToProps)
 class Playground extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			id: 0,
-			code: '',
-			jsCode: '',
-			inputs: '',
-			cssCode: '',
-			type: 'web',
-			codeType: '',
-			publicID: '',
-			mode: 'html',
-			sourceCode: '',
-			isRunning: false,
-			theme: 'monokai',
-			showOutput: false,
-			isGettingCode: true,
-			latestSavedCodeData: {},
-			languageSelector: 'web',
-			userCodeLanguage: 'web',
-			shouldShowToolbar: false,
-			inputsPopupOpened: false,
-		};
-	}
+	state = {
+		id: 0,
+		code: '',
+		jsCode: '',
+		inputs: '',
+		cssCode: '',
+		type: 'web',
+		codeType: '',
+		publicID: '',
+		mode: 'html',
+		sourceCode: '',
+		isRunning: false,
+		theme: 'monokai',
+		fullScreen: false,
+		showOutput: false,
+		isGettingCode: true,
+		latestSavedCodeData: {},
+		languageSelector: 'web',
+		userCodeLanguage: 'web',
+		shouldShowToolbar: false,
+		inputsPopupOpened: false,
+	};
 
 	componentDidMount() {
 		const customUserCodeHashLength = 12;
@@ -642,6 +640,10 @@ ${succeedingSubstr}
 		});
 	}
 
+	toggleFullScreen = () => {
+		this.setState(state => ({ fullScreen: !state.fullScreen }));
+	}
+
 	render() {
 		const {
 			id,
@@ -703,6 +705,7 @@ ${succeedingSubstr}
 								mode={mode}
 								theme={theme}
 								runCode={this.runCode}
+								toggleFullScreen={this.toggleFullScreen}
 								handleTabChange={this.handleTabChange}
 							/>
 							<Editor
