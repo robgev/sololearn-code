@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Dialog, FlatButton, RaisedButton } from 'material-ui';
+import { browserHistory } from 'react-router';
+import { setSuggestionChallenge } from 'actions/quizFactory';
 import Layout from 'components/Layouts/GeneralLayout';
 import Quiz from 'components/Shared/Quiz';
 import SuggestMultipleChoice from './SuggestMultipleChoice';
@@ -11,11 +13,15 @@ import { submitChallenge } from '../api';
 import './style.scss';
 
 const mapStateToProps = ({ quizSubmission, courses }) => ({ quizSubmission, courses });
+const mapDispatchToProps = { setSuggestionChallenge };
 
-@connect(mapStateToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 class SuggestTypeSelector extends Component {
 	state = {
 		previewQuiz: null,
+	}
+	componentWillUnmount() {
+		this.props.setSuggestionChallenge(null);
 	}
 	format = () => {
 		if (this.props.quizSubmission !== null) {
@@ -58,7 +64,8 @@ class SuggestTypeSelector extends Component {
 			...previewQuiz,
 			answers,
 		};
-		submitChallenge(quiz);
+		submitChallenge(quiz)
+			.then(() => browserHistory.push('/quiz-factory/my-submissions'));
 	}
 	render() {
 		const { previewQuiz } = this.state;

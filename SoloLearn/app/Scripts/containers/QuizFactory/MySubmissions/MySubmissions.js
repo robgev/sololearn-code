@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { List, ListItem, Paper, Dialog, FlatButton, RaisedButton } from 'material-ui';
 import { browserHistory } from 'react-router';
@@ -80,12 +79,18 @@ class MySubmissions extends Component {
 		const { challenges, previewChallenge } = this.state;
 		const actions = [
 			<FlatButton onClick={this.closePreview} label="Cancel" primary />,
-			<RaisedButton
-				onClick={this.handleEdit}
-				label="Edit"
-				primary
-				disabled={previewChallenge !== null && previewChallenge.status !== 2}
-			/>,
+			previewChallenge !== null && previewChallenge.status === 2
+				? <RaisedButton
+					label="Edit"
+					onClick={this.handleEdit}
+					primary
+				/> : null,
+			previewChallenge !== null && previewChallenge.status === 3
+				? <RaisedButton
+					label="Clone"
+					onClick={this.handleClone}
+					primary
+				/> : null,
 		];
 		return (
 			<Layout className="my-submissions">

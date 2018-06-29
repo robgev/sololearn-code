@@ -42,7 +42,6 @@ const getSlotNum = slot => parseInt(slot.slice(1, -1), 10);
 
 const makeEditableContent = (answerText, answers) => {
 	let contentState = ContentState.createFromText(answerText);
-	console.log(contentState);
 	const { blocks } = convertToRaw(contentState);
 	const regex = /\{\d+}/g;
 	blocks.forEach((block) => {
