@@ -125,7 +125,7 @@ class MySubmissions extends Component {
 														{getStatus(quiz.status).text}
 													</div>
 												}
-												primaryText={<div className="primary-text">{quiz.question}</div>}
+												primaryText={<div className="primary-text">{quiz.question.replace(/\[!\w+!]/, '')}</div>}
 												key={quiz.id}
 												secondaryText={getTypeString(quiz.type)}
 											/>
