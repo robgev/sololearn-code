@@ -4,12 +4,8 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
 // Material UI components
-import Dialog from 'material-ui/Dialog';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
-import { grey600 } from 'material-ui/styles/colors';
-import Close from 'material-ui/svg-icons/content/clear';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 
@@ -49,7 +45,6 @@ class CommentsBase extends Component {
 			isEditing: false,
 			isReplying: false,
 			isDeleting: false,
-			replyText: '',
 			activeComment: {
 				id: null,
 				parentId: null,

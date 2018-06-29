@@ -20,6 +20,7 @@ import { lastNonForcedDownIndex, notForcedDownCount } from 'utils/comments.utils
 import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import ReportPopup from 'components/Shared/ReportPopup';
+import FlatButton from 'material-ui/FlatButton';
 import Comment from './Comment';
 import RemovalPopup from './RemovalPopup';
 
@@ -63,6 +64,7 @@ class Comments extends Component {
 		removalPopupOpen: false,
 		reportPopupOpen: false,
 		targetItem: null,
+		commentsToggled: false,
 	};
 
 	componentDidMount() {
@@ -175,6 +177,10 @@ class Comments extends Component {
 		this.setState({ reportPopupOpen: !reportPopupOpen, targetItem });
 	}
 
+	toggleComments = () => {
+		this.setState({ commentsToggled: true });
+	}
+
 	renderComment = (comment) => {
 		const {
 			props: {
@@ -229,6 +235,7 @@ class Comments extends Component {
 		const {
 			targetItem,
 			reportPopupOpen,
+			commentsToggled,
 			removalPopupOpen,
 		} = this.state;
 		const {
@@ -244,15 +251,22 @@ class Comments extends Component {
 				<div>
 					<InfiniteVirtualizedList
 						window
-						list={comments}
 						cache={this.state.cache}
 						item={this.renderComment}
 						condition={selectedComment}
 						scrollElement={this.container}
 						loadMore={this.loadComments}
 						ref={(list) => { this._list = list; }}
+						list={commentsToggled ? comments : comments.slice(0, 3)}
 					/>
 				</div>
+				{!commentsToggled &&
+					<FlatButton
+						primary
+						label="Load More"
+						onClick={this.toggleComments}
+					/>
+				}
 				{
 					!!comments.length && (
 						<div
