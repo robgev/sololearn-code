@@ -16,10 +16,12 @@ import { translate } from 'react-i18next';
 
 // Service
 import Service from 'api/service';
+import { getMentionsList } from 'utils';
 
 // Additional components
 import Layout from 'components/Layouts/GeneralLayout';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import MentionInput from 'components/Shared/MentionInput';
 
 import 'styles/Discuss/NewQuestion.scss';
 import { NewQuestionStyles as styles } from './styles';
@@ -38,11 +40,13 @@ class NewQuestion extends Component {
 		this.state = {
 			title: '',
 			titleErrorText: '',
-			message: '',
+			// message: '',
 			tags: [],
 			tagsErrorText: '',
 			suggestions: [],
 			isLoading: false,
+			isReplyBoxOpen: false,
+			replyLength: 0,
 		};
 	}
 
@@ -53,12 +57,11 @@ class NewQuestion extends Component {
 		}
 	}
 
-	// Detect title change
-	onMessageChange = (e) => {
-		if (e.target.value.length <= this.maxQuestionLength) {
-			this.setState({ message: e.target.value });
-		}
-	}
+	// onMessageChange = (e) => {
+	// 	if (e.target.value.length <= this.maxQuestionLength) {
+	// 		this.setState({ message: e.target.value });
+	// 	}
+	// }
 
 	// Collect tags into one array
 	handleTagsChange = (newTag) => {
@@ -99,7 +102,7 @@ class NewQuestion extends Component {
 			try {
 				const { id, alias } = await this.props.addQuestion(
 					this.state.title,
-					this.state.message,
+					this.mentionInput.popValue(),
 					this.state.tags,
 				);
 				browserHistory.push(`/discuss/${id}/${alias}`);
@@ -113,8 +116,27 @@ class NewQuestion extends Component {
 		<div key={key} style={styles.tag}>{value}</div>
 	)
 
+	openReplyBox = () => {
+		this.setState({ isReplyBoxOpen: true });
+	}
+	closeReplyBox = () => {
+		this.setState({ isReplyBoxOpen: false });
+	}
+	handleBlur = () => {
+		if (this.state.replyLength <= 1) { this.closeReplyBox(); }
+	}
+	onLengthChange = (replyLength) => {
+		if (this.mentionInput) {
+			this.setState({ replyLength });
+		}
+	}
+	save = () => {
+		this.props.save(this.mentionInput.popValue());
+	}
+
 	render() {
 		const { t } = this.props;
+		const { isReplyBoxOpen, replyLength } = this.state;
 		return (
 			<Layout>
 				<Paper className="new-question" id="new-question" style={styles.container}>
@@ -137,7 +159,17 @@ class NewQuestion extends Component {
 							</span>
 						</div>
 						<div className="question-data" style={styles.questionData}>
-							<TextField
+							<MentionInput
+								ref={(input) => { this.mentionInput = input; }}
+								onFocus={this.openReplyBox}
+								onBlur={this.handleBlur}
+								onLengthChange={this.onLengthChange}
+								getUsers={getMentionsList('discuss', {})}
+								submit={this.props.save}
+								placeholder={!isReplyBoxOpen && replyLength === 0 ? t('question.message-placeholder') : ''}
+								maxLength={this.maxQuestionLength}
+							/>
+							{/* <TextField
 								multiLine
 								fullWidth
 								rowsMax={4}
@@ -145,11 +177,11 @@ class NewQuestion extends Component {
 								value={this.state.message}
 								onChange={e => this.onMessageChange(e)}
 								floatingLabelText={t('question.message-placeholder')}
-							/>
+							/> */}
 							<span
 								style={styles.textFieldCoutner}
 							>
-								{this.state.message.length} / {this.maxQuestionLength}
+								{replyLength} / {this.maxQuestionLength}
 							</span>
 						</div>
 						<div className="question-data" style={styles.questionData}>

@@ -2,9 +2,7 @@
 import React, { Component } from 'react';
 import Radium from 'radium';
 import { connect } from 'react-redux';
-import {
-	CellMeasurerCache,
-} from 'react-virtualized';
+import {CellMeasurerCache,} from 'react-virtualized';
 
 // Redux modules
 import {

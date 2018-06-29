@@ -44,17 +44,18 @@ const makeEditableContent = (answerText, answers) => {
 	let contentState = ContentState.createFromText(answerText);
 	const { blocks } = convertToRaw(contentState);
 	const regex = /\{\d+}/g;
-	blocks.forEach((block) => {
-		const slots = block.text.match(regex) || [];
+	blocks.forEach(({ key: currBlockKey, text: initBlockText }) => {
+		const slots = initBlockText.match(regex) || [];
 		slots.forEach((slot) => {
+			const { text: blockText } = contentState.getBlockForKey(currBlockKey);
 			const contentStateWithEntity = contentState.createEntity(
 				'MARKED',
 				'MUTABLE',
 			);
 			const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-			const selectionState = SelectionState.createEmpty(block.key).merge({
-				anchorOffset: block.text.indexOf(slot),
-				focusOffset: block.text.indexOf(slot) + slot.length,
+			const selectionState = SelectionState.createEmpty(currBlockKey).merge({
+				anchorOffset: blockText.indexOf(slot),
+				focusOffset: blockText.indexOf(slot) + slot.length,
 			});
 			contentState = Modifier.replaceText(
 				contentStateWithEntity,

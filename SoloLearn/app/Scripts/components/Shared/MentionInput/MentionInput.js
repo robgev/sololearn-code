@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw, ContentState, SelectionState, Modifier } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 import createMentionPlugin from 'draft-js-mention-plugin';
 import { mentionUsers } from 'utils';
@@ -11,6 +11,39 @@ import getCurrentSelectedLength from './getCurrentSelectedLength';
 import './editorStyles.scss';
 import './mentionStyles.scss';
 
+const makeEditableContent = (text) => {
+	const allMentionsRegex = /\[user id ?= ?"?(\d+)"?\](.+?)\[\/user\]/g;
+	const singleMentionRegex = /\[user id ?= ?"?(\d+)"?\](.+?)\[\/user\]/;
+	let contentState = ContentState.createFromText(text);
+	const { blocks } = convertToRaw(contentState);
+	blocks.forEach(({ key: currBlockKey, text: initBlockText }) => {
+		const slots = initBlockText.match(allMentionsRegex) || [];
+		slots.forEach((slot) => {
+			// as current block text can change we need to get it each time
+			const { text: blockText } = contentState.getBlockForKey(currBlockKey);
+			const [ , id, name ] = slot.match(singleMentionRegex);
+			const contentStateWithEntity = contentState.createEntity(
+				'mention',
+				'SEGMENTED',
+				{ id, name },
+			);
+			const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+			const selectionState = SelectionState.createEmpty(currBlockKey).merge({
+				anchorOffset: blockText.indexOf(slot),
+				focusOffset: blockText.indexOf(slot) + slot.length,
+			});
+			contentState = Modifier.replaceText(
+				contentStateWithEntity,
+				selectionState,
+				name,
+				null,
+				entityKey,
+			);
+		});
+	});
+	return contentState;
+};
+
 class MentionInput extends Component {
 	constructor(props) {
 		super(props);
@@ -19,7 +52,7 @@ class MentionInput extends Component {
 		});
 		this.state = {
 			editorState: props.initText !== null
-				? EditorState.createEmpty() // TODO add initial state for editing
+				? EditorState.createWithContent(makeEditableContent(props.initText))
 				: EditorState.createEmpty(),
 			suggestions: [],
 		};

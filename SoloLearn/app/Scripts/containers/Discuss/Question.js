@@ -22,7 +22,7 @@ import PreviewItem from 'components/Shared/PreviewItem';
 import ReportPopup from 'components/Shared/ReportPopup';
 import DiscussAuthor from 'components/Shared/ProfileAvatar';
 import ReportItemTypes from 'constants/ReportItemTypes';
-import { removeDups, determineAccessLevel, generatePreviews } from 'utils';
+import { removeDups, determineAccessLevel, generatePreviews, replaceMention } from 'utils';
 
 // Redux modules
 import { questionFollowingInternal } from 'actions/discuss';
@@ -124,10 +124,10 @@ class Question extends Component {
 						</div>
 						<pre className="message" style={styles.message}>
 							<Linkify>
-								{question.message}
+								{replaceMention(question.message)}
 							</Linkify>
 						</pre>
-						{ previewsData.map(singlePreviewData => (
+						{previewsData.map(singlePreviewData => (
 							<PreviewItem
 								{...singlePreviewData}
 								key={singlePreviewData.link}
@@ -139,7 +139,7 @@ class Question extends Component {
 						anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
 						targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 					>
-						{		question.userID === this.props.userId &&
+						{question.userID === this.props.userId &&
 							[
 								<MenuItem
 									primaryText={t('common.edit-action-title')}
@@ -153,7 +153,7 @@ class Question extends Component {
 								/>,
 							]
 						}
-						{ question.userID !== this.props.userId &&
+						{question.userID !== this.props.userId &&
 							accessLevel > 1 &&
 							<MenuItem
 								primaryText={t('common.edit-action-title')}
@@ -161,7 +161,7 @@ class Question extends Component {
 								containerElement={<Link to={`/discuss/edit/${question.id}`} />}
 							/>
 						}
-						{ question.userID !== this.props.userId &&
+						{question.userID !== this.props.userId &&
 							accessLevel > 0 &&
 							<MenuItem
 								onClick={this.toggleRemovalPopup}
@@ -171,7 +171,7 @@ class Question extends Component {
 								}
 							/>
 						}
-						{ question.userID !== this.props.userId &&
+						{question.userID !== this.props.userId &&
 							<MenuItem
 								primaryText={t('common.report-action-title')}
 								onClick={this.toggleReportPopup}
