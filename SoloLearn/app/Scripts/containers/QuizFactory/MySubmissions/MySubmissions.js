@@ -105,7 +105,7 @@ class MySubmissions extends Component {
 			previewChallenge !== null && previewChallenge.status === 3
 				? <RaisedButton
 					label="Clone"
-					onClick={this.handleClone}
+					onClick={this.handleEdit}
 					primary
 				/> : null,
 		];
