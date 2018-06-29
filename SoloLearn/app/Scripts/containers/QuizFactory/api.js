@@ -5,6 +5,9 @@ export const submitChallenge = quiz =>
 		challenge: { ...quiz, status: 1 },
 	});
 
+export const deleteChallenge = id =>
+	Service.request('Challenge/DeleteChallenge', { id });
+
 const getQuizFactoryEnabledCourseIds = courses => courses
 	// .filter(course => course.isQuizFactoryEnabled)
 	.map(({ id }) => id);

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { List, ListItem, Paper, Dialog, FlatButton, RaisedButton } from 'material-ui';
+import { red500 } from 'material-ui/styles/colors';
 import { browserHistory } from 'react-router';
 import Layout from 'components/Layouts/GeneralLayout';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import Quiz from 'components/Shared/Quiz';
 import { setSuggestionChallenge } from 'actions/quizFactory';
-import { getMySubmissions } from '../api';
+import { getMySubmissions, deleteChallenge } from '../api';
 import './mySubmissionsStyles.scss';
 
 // Utility funcs
@@ -60,7 +61,10 @@ class MySubmissions extends Component {
 		challenges: null,
 		previewChallenge: null,
 	}
-	async componentWillMount() {
+	componentWillMount() {
+		this.fetchSubmissions();
+	}
+	fetchSubmissions = async () => {
 		const challenges = await getMySubmissions();
 		this.setState({ challenges });
 	}
@@ -75,6 +79,12 @@ class MySubmissions extends Component {
 		this.props.setSuggestionChallenge(previewChallenge);
 		browserHistory.push(`/quiz-factory/suggest/${getStringFromType(previewChallenge.type)}`);
 	}
+	handleDelete = () => {
+		const { previewChallenge } = this.state;
+		this.setState({ previewChallenge: null });
+		deleteChallenge(previewChallenge.id)
+			.then(this.fetchSubmissions);
+	}
 	render() {
 		const { challenges, previewChallenge } = this.state;
 		const actions = [
@@ -84,6 +94,13 @@ class MySubmissions extends Component {
 					label="Edit"
 					onClick={this.handleEdit}
 					primary
+				/> : null,
+			previewChallenge !== null && previewChallenge.status === 2
+				? <RaisedButton
+					label="Delete"
+					onClick={this.handleDelete}
+					backgroundColor={red500}
+					labelColor="white"
 				/> : null,
 			previewChallenge !== null && previewChallenge.status === 3
 				? <RaisedButton
