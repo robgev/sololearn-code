@@ -16,6 +16,7 @@ import Popup from 'api/popupService';
 import { FlatButton, RaisedButton, Dialog } from 'material-ui';
 
 // Additional data and components
+import QuizComp from 'components/Shared/Quiz';
 import QuizSelector, { QuizType } from '../Learn/QuizSelector';
 import QuizText from '../Learn/QuizText';
 import { LessonType } from './QuizManager';
@@ -67,7 +68,7 @@ class Quiz extends Component {
 		this.state = {
 			hintOpened: false,
 			unlockOpened: false,
-			checkOpened: false,
+			// checkOpened: false,
 			notAvailable: false,
 			isCorrect: false,
 		};
@@ -100,7 +101,7 @@ class Quiz extends Component {
 	handleHint = () => {
 		if (Progress.consumePoints(this.hintPrice)) {
 			Progress.applyHint(this.props.activeQuiz.id, PointExchangeTypes.Hint, this.hintPrice);
-			this._child._quizSelectorChild.hint();
+			this.quiz.hint();
 			this.handleHintDialogClose();
 			const { isCorrect } = this._child._quizSelectorChild;
 			// Do fast with rewriting :D
@@ -123,8 +124,7 @@ class Quiz extends Component {
 	handleUnlock = () => {
 		if (Progress.consumePoints(this.skipPrice)) {
 			Progress.applyHint(this.props.activeQuiz.id, PointExchangeTypes.Skip, this.skipPrice);
-			this._child._quizSelectorChild.unlock();
-			this.handleCheck(null, true); // THIS SMELLS!
+			this.quiz.unlock();
 			this.handleUnlockDialogClose();
 		} else {
 			this.setState({ notAvailable: true });
@@ -143,37 +143,57 @@ class Quiz extends Component {
 		this.setState({ notAvailable: false });
 	}
 
-	handleCheck = (e, forceTrue = false) => {
-		const isCorrect = forceTrue || this._child._quizSelectorChild.check();
-
+	onCheck = (isCorrect) => {
 		if (this.props.isShortcut) {
-			const shortcutLives = this.props.shortcutLives;
-			const isShortcutCorrectCounts = this.props.isShortcutCorrectCounts;
-
-			this.props.updateShorctutData(!isCorrect ? shortcutLives - 1 : shortcutLives, isCorrect ? isShortcutCorrectCounts + 1 : isShortcutCorrectCounts);
-
-			const activeQuizData = this.props.activeQuiz;
-			const quiz = this.props.quizzes[activeQuizData.id];
-			const quizIndex = this.props.shortcutLesson.quizzes.findIndex(item => item.id == quiz.id);
-			if (quizIndex == this.props.shortcutLesson.quizzes.length - 1) {
+			const { shortcutLives, isShortcutCorrectCounts } = this.props;
+			this.props.updateShorctutData(!isCorrect
+				? shortcutLives - 1
+				: shortcutLives, isCorrect
+				? isShortcutCorrectCounts + 1
+				: isShortcutCorrectCounts);
+			const { activeQuiz } = this.props;
+			const quiz = this.props.quizzes[activeQuiz.id];
+			const quizIndex = this.props.shortcutLesson.quizzes.findIndex(item => item.id === quiz.id);
+			if (quizIndex === this.props.shortcutLesson.quizzes.length - 1) {
 				this.finilizeShortcut();
 			}
 		} else {
 			Progress.addResult(this.props.activeLessonId, this.props.activeQuiz.id, isCorrect, 0);
 		}
-
 		this.setState({ isCorrect });
-		this.handleCheckDialogOpen();
-	}
-
-	handleCheckDialogOpen = () => {
-		this.setState({ checkOpened: true });
 		this.props.openComments();
 	}
 
-	handleCheckDialogClose = () => {
-		this.setState({ checkOpened: false });
-	}
+	// handleCheck = (e, forceTrue = false) => {
+	// 	const isCorrect = forceTrue || this._child._quizSelectorChild.check();
+
+	// 	if (this.props.isShortcut) {
+	// 		const shortcutLives = this.props.shortcutLives;
+	// 		const isShortcutCorrectCounts = this.props.isShortcutCorrectCounts;
+
+	// 		this.props.updateShorctutData(!isCorrect ? shortcutLives - 1 : shortcutLives, isCorrect ? isShortcutCorrectCounts + 1 : isShortcutCorrectCounts);
+
+	// 		const activeQuizData = this.props.activeQuiz;
+	// 		const quiz = this.props.quizzes[activeQuizData.id];
+	// 		const quizIndex = this.props.shortcutLesson.quizzes.findIndex(item => item.id == quiz.id);
+	// 		if (quizIndex == this.props.shortcutLesson.quizzes.length - 1) {
+	// 			this.finilizeShortcut();
+	// 		}
+	// 	} else {
+	// 		Progress.addResult(this.props.activeLessonId, this.props.activeQuiz.id, isCorrect, 0);
+	// 	}
+
+	// 	this.setState({ isCorrect });
+	// 	this.handleCheckDialogOpen();
+	// }
+
+	// handleCheckDialogOpen = () => {
+	// 	this.setState({ checkOpened: true });
+	// }
+
+	// handleCheckDialogClose = () => {
+	// 	this.setState({ checkOpened: false });
+	// }
 
 	continueQuiz = () => {
 		const lesson = this.props.activeLesson;
@@ -181,16 +201,16 @@ class Quiz extends Component {
 		const quiz = this.props.quizzes[activeQuizData.id];
 
 		if (this.props.isShortcut) {
-			const quizIndex = this.props.shortcutLesson.quizzes.findIndex(item => item.id == quiz.id);
+			const quizIndex = this.props.shortcutLesson.quizzes.findIndex(item => item.id === quiz.id);
 
 			if (quizIndex < this.props.shortcutLesson.quizzes.length - 1) {
 				const nextQuiz = this.props.shortcutLesson.quizzes[quizIndex + 1];
 				this.props.loadLessonLink(nextQuiz.id, nextQuiz.number, false, 2);
-				this.handleCheckDialogClose();
+				// this.handleCheckDialogClose();
 			}
 		} else {
 			// If lesson is checkpoint then quiz next quiz is text
-			const nextisText = lesson.type == 0;
+			const nextisText = lesson.type === 0;
 
 			if (this.state.isCorrect) {
 				const quizIndex = lesson.quizzes.indexOf(quiz);
@@ -198,19 +218,20 @@ class Quiz extends Component {
 				// If there are more quizzes in lesson, continue lesson
 				if (quizIndex < lesson.quizzes.length - 1) {
 					const nextQuiz = lesson.quizzes[quizIndex + 1];
-					this.props.loadLessonLink(nextQuiz.id, parseInt(activeQuizData.number) + 1, nextisText, 2);
+					this.props
+						.loadLessonLink(nextQuiz.id, parseInt(activeQuizData.number, 10) + 1, nextisText, 2);
 					this.setState({ isCorrect: false });
 				} else {
+					const { lessons } = this.props.activeModule;
 					const module = this.props.activeModule;
-					const lessons = module.lessons;
 
 					// If this was last lesson in module
-					if (lessons[lessons.length - 1] == lesson) {
-						const modules = this.props.course.modules;
+					if (lessons[lessons.length - 1] === lesson) {
+						const { modules } = this.props.course;
 						// If this was last module
-						if (modules[modules.length - 1] == module) {
-							// Show congrats
-							alert('CONGRATS');
+						if (modules[modules.length - 1] === module) {
+							// TODO: Show congrats
+							// alert('CONGRATS');
 						} else {
 							// Go back to module list
 							browserHistory.push('/learn/');
@@ -223,23 +244,24 @@ class Quiz extends Component {
 					// return;
 				}
 
-				this.handleCheckDialogClose();
+				// this.handleCheckDialogClose();
 			} else {
-				const nextQuizNumber = nextisText ? parseInt(activeQuizData.number) - 1 : parseInt(activeQuizData.number);
+				const nextQuizNumber = nextisText
+					? parseInt(activeQuizData.number, 10) - 1
+					: parseInt(activeQuizData.number, 10);
 
 				this.props.loadLessonLink(activeQuizData.id, nextQuizNumber, nextisText, 2);
-				this.handleCheckDialogClose();
+				// this.handleCheckDialogClose();
 			}
 		}
 	}
 
-	tryAgain = () => {
-		this.setState({
-			checkOpened: false,
-			isCorrect: false,
-		});
+	onTryAgain = () => {
+		this.retryIndex = this.retryIndex + 1;
+	}
 
-		this.retryIndex++;
+	tryAgain = () => {
+		this.quiz.tryAgain();
 	}
 
 	finilizeShortcut = () => {
@@ -255,21 +277,21 @@ class Quiz extends Component {
 			points = 3;
 		}
 
-		const modules = this.props.course.modules;
+		const { modules } = this.props.course;
 		const lessons = [];
-		for (let i = 0; i < modules.length; i++) {
-			if (modules[i].id == lesson.moduleId) { break; }
+		for (let i = 0; i < modules.length; i += 1) {
+			if (modules[i].id === lesson.moduleId) { break; }
 
 			const ml = modules[i].lessons;
-			for (let j = 0; j < ml.length; j++) {
-				if (Progress.getLessonState(ml[j]).visualState != ProgressState.Normal) {
+			for (let j = 0; j < ml.length; j += 1) {
+				if (Progress.getLessonState(ml[j]).visualState !== ProgressState.Normal) {
 					lessons.push(ml[j]);
 				}
 			}
 		}
 
 		const lessonsProgress = [];
-		for (let i = 0; i < lessons.length; i++) {
+		for (let i = 0; i < lessons.length; i += 1) {
 			const lessonProgress = {
 				isStarted: false,
 				isCompleted: true,
@@ -282,8 +304,8 @@ class Quiz extends Component {
 			};
 			lessonsProgress.push(lessonProgress);
 
-			const quizzes = lessons[i].quizzes;
-			for (let j = 0; j < quizzes.length; j++) {
+			const { quizzes } = lessons[i];
+			for (let j = 0; j < quizzes.length; j += 1) {
 				const quizProgress = {
 					attempt: 1,
 					isCompleted: true,
@@ -294,19 +316,14 @@ class Quiz extends Component {
 				lessonProgress.quizzes.push(quizProgress);
 			}
 		}
-
-		new Promise((resolve, reject) => {
-			Progress.addShortcut(lessonsProgress);
-			resolve();
-		}).then(() => {
-			this.props.exitShortcut();
-		});
+		Progress.addShortcut(lessonsProgress);
+		this.props.exitShortcut();
 	}
 
 	render() {
 		const {
 			course,
-			params,
+			// params,
 			quizzes,
 			isLoaded,
 			activeQuiz,
@@ -376,13 +393,19 @@ class Quiz extends Component {
 			/>,
 		];
 
-		const isCheckpoint = !this.props.isShortcut ? this.props.activeLesson.type == LessonType.Checkpoint : this.props.shortcutLesson.type == LessonType.Checkpoint;
-		const resultButtonLabel = this.props.isShortcut ? 'Continue' : (this.state.isCorrect ? t('learn.buttons-continue') : t('learn.buttons-try-again'));
-		const resultButtonAction = this.props.isShortcut ? this.continueQuiz : (this.state.isCorrect ? this.continueQuiz : this.tryAgain);
+		const isCheckpoint = !this.props.isShortcut
+			? this.props.activeLesson.type === LessonType.Checkpoint
+			: this.props.shortcutLesson.type === LessonType.Checkpoint;
+		const resultButtonLabel = this.props.isShortcut || this.state.isCorrect
+			? t('learn.buttons-continue')
+			: t('learn.buttons-try-again');
+		const resultButtonAction = this.props.isShortcut || this.state.isCorrect
+			? this.continueQuiz
+			: this.tryAgain;
 		ReactGA.ga('send', 'screenView', { screenName: 'Lesson Quiz Page' });
 		return (
 			<div className="quiz" style={styles.wrapper}>
-				<div className="actions" style={styles.quizActions}>
+				{/* <div className="actions" style={styles.quizActions}>
 					{!this.props.isShortcut &&
 						<div>
 							{(quiz.type == QuizType.TypeIn || quiz.type == QuizType.PlaceholderTypeIn) &&
@@ -391,40 +414,60 @@ class Quiz extends Component {
 										label={t('learn.buttons-hint-answer')}
 										onTouchTap={this.handleHintDialogOpen}
 									/>
-									{this.state.hintOpened && Popup.getPopup(Popup.generatePopupActions(hintActions), this.state.hintOpened, this.handleHintDialogClose, [ { key: 'hintHintConfirmText', replacemant: this.hintPrice } ])}
+									</div>
+								}
+								<div style={styles.quizAction}>
+								<FlatButton
+								label={t('learn.buttons-unlock-answer')}
+								onTouchTap={this.handleUnlockDialogOpen}
+								/>
+								</div>
 								</div>
 							}
-							<div style={styles.quizAction}>
-								<FlatButton
-									label={t('learn.buttons-unlock-answer')}
-									onTouchTap={this.handleUnlockDialogOpen}
-								/>
-								<Dialog
-									title={t('learn.popups.unlock-popup-title')}
-									actions={unlockActions}
-									open={this.state.unlockOpened}
-									onRequestClose={this.handleUnlockDialogClose}
-									style={styles.confirmPopup}
-								>
-									{t('learn.popups.unlock.description', { price: this.skipPrice, total: this.props.userXp })}
-								</Dialog>
-							</div>
-						</div>
-					}
 
-					{this.state.notAvailable && Popup.getPopup(Popup.generatePopupActions([ {
-						componentType: FlatButton, label: 'hintHintConfirmApply', primary: true, actionCallback: that.handleMessageDialogClose,
-					} ]), true, this.handleHintDialogClose, [ { key: 'hintNoEnoughPoints', replacemant: '' } ])}
-				</div>
+							{this.state.notAvailable && Popup.getPopup(Popup.generatePopupActions([ {
+								componentType: FlatButton, label: 'hintHintConfirmApply', primary: true, actionCallback: that.handleMessageDialogClose,
+							} ]), true, this.handleHintDialogClose, [ { key: 'hintNoEnoughPoints', replacemant: '' } ])}
+						</div> */}
 
-				<div dangerouslySetInnerHTML={{ __html: this.genereteQuestion(quiz) }} style={styles.quizQuestion} />
+				{/* <div dangerouslySetInnerHTML={{ __html: this.genereteQuestion(quiz) }} style={styles.quizQuestion} />
 
-				<QuizSelector quiz={quiz} retryIndex={this.retryIndex} ref={(child) => { this._child = child; }} />
+<QuizSelector quiz={quiz} retryIndex={this.retryIndex} ref={(child) => { this.quiz = child; }} /> */}
 
-				{!this.state.checkOpened &&
+				<QuizComp
+					quiz={quiz}
+					isPaper={false}
+					unlockable={!this.props.isShortcut}
+					onUnlock={this.handleUnlockDialogOpen}
+					onHint={this.handleHintDialogOpen}
+					onTryAgain={this.onTryAgain}
+					onCheck={this.onCheck}
+					resButtonLabel={resultButtonLabel}
+					resButtonClick={resultButtonAction}
+					resButtonDisabled={false}
+					ref={(c) => { this.quiz = c; }}
+				/>
+				<Dialog
+					title={t('learn.popups.unlock-popup-title')}
+					actions={unlockActions}
+					open={this.state.unlockOpened}
+					onRequestClose={this.handleUnlockDialogClose}
+					style={styles.confirmPopup}
+				>
+					{t('learn.popups.unlock.description', { price: this.skipPrice, total: this.props.userXp })}
+				</Dialog>
+				{this.state.hintOpened &&
+					Popup.getPopup(
+						Popup.generatePopupActions(hintActions),
+						this.state.hintOpened,
+						this.handleHintDialogClose,
+						[ { key: 'hintHintConfirmText', replacemant: this.hintPrice } ],
+					)}
+
+				{/* {!this.state.checkOpened &&
 					<RaisedButton
-						labelColor="#fff"
-						backgroundColor="#8bc34a"
+					labelColor="#fff"
+					backgroundColor="#8bc34a"
 						label={t('learn.buttons-check')}
 						style={styles.checkButton}
 						onTouchTap={this.handleCheck}
@@ -438,26 +481,26 @@ class Quiz extends Component {
 						backgroundColor="#8bc34a"
 						onTouchTap={resultButtonAction}
 					/>
-				}
-				{this.state.checkOpened && Popup.checkPopup({
+				} */}
+				{/* {this.state.checkOpened && Popup.checkPopup({
 					isCheckpoint,
 					isCorrect: this.state.isCorrect,
 					isShortcut: this.props.isShortcut,
 					actionCallback: this.continueQuiz,
 					shortcutLives: this.props.shortcutLives,
-				})}
+				})} */}
 			</div>
 		);
 	}
 
-	componentWillReceiveProps(newProps) {
-		const { activeQuiz: newQuiz } = newProps;
-		const { activeQuiz } = this.props;
-		const { isCorrect } = this.state;
-		if (isCorrect && newQuiz.id !== activeQuiz.id && newQuiz.number !== activeQuiz.number) {
-			this.setState({ checkOpened: false });
-		}
-	}
+	// componentWillReceiveProps(newProps) {
+	// 	const { activeQuiz: newQuiz } = newProps;
+	// 	const { activeQuiz } = this.props;
+	// 	const { isCorrect } = this.state;
+	// 	if (isCorrect && newQuiz.id !== activeQuiz.id && newQuiz.number !== activeQuiz.number) {
+	// 		this.setState({ checkOpened: false });
+	// 	}
+	// }
 
 	componentWillUnmount() {
 		this.props.selectLesson(null);
@@ -487,5 +530,3 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 const translatedQuiz = translate()(Quiz);
 
 export default connect(mapStateToProps, mapDispatchToProps)(translatedQuiz);
-
-// (this.state.countLoaded ? this.commentsCount : "") + "

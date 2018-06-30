@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextField, Paper, RaisedButton } from 'material-ui';
+import { TextField, RaisedButton } from 'material-ui';
 import { getCommonPrefix } from 'utils';
 import TopBar from './TopBar';
 import CheckIndicator from './CheckIndicator';
 import { quizType } from './types';
+import QuestionContainer from './ConditionalPaper';
 
 class TypeIn extends Component {
 	state = {
@@ -28,33 +29,37 @@ class TypeIn extends Component {
 		);
 	}
 	unlock = () => {
-		if (this.props.onUnlock()) {
-			this.setState({ text: this.correctAnswer.text });
-			this.check();
-		}
+		this.setState({ text: this.correctAnswer.text });
+		this.check();
 	}
 	hint = () => {
-		if (this.props.onHint()) {
-			const prefix = getCommonPrefix(this.state.text, this.correctAnswer.text);
-			const text = prefix.length < this.correctAnswer.text.length
-				? prefix + this.correctAnswer.text[prefix.length]
-				: prefix;
-			this.setState({ text });
-			if (text === this.correctAnswer.text) { this.check(); }
-		}
+		const prefix = getCommonPrefix(this.state.text, this.correctAnswer.text);
+		const text = prefix.length < this.correctAnswer.text.length
+			? prefix + this.correctAnswer.text[prefix.length]
+			: prefix;
+		this.setState({ text });
+		if (text === this.correctAnswer.text) { this.check(); }
 	}
 	isComplete = () => this.state.text.length === this.correctAnswer.text.length
 	render() {
 		const { text, checkResult } = this.state;
-		const { canTryAgain } = this.props;
+		const {
+			canTryAgain, isPaper, resButtonLabel, resButtonClick, resButtonDisabled,
+		} = this.props;
 		const isChecked = checkResult !== null;
 		return (
 			<div className="quiz" >
 				{
 					this.props.unlockable &&
-					<TopBar onUnlock={this.unlock} disabled={isChecked} hintable onHint={this.hint} />
+					<TopBar
+						onUnlock={this.props.onUnlock}
+						disabled={isChecked}
+						hintable
+						onHint={this.props.onHint}
+						isPaper={isPaper}
+					/>
 				}
-				<Paper className="question-container" >
+				<QuestionContainer isPaper={isPaper} className="question-container" >
 					<p className="question-text" style={{ whiteSpace: 'pre' }}>{this.props.quiz.question}</p>
 					<div className="placeholder-container">
 						<span>{this.correctAnswer.properties.prefix}</span>
@@ -69,13 +74,23 @@ class TypeIn extends Component {
 						/>
 						<span>{this.correctAnswer.properties.postfix}</span>
 					</div>
-				</Paper>
+				</QuestionContainer>
 				<div className="check-container">
 					<RaisedButton
 						secondary
-						onClick={isChecked ? this.tryAgain : this.check}
-						disabled={!this.isComplete() || (isChecked && !canTryAgain)}
-						label={isChecked && canTryAgain ? 'Try again' : 'Check'}
+						onClick={!isChecked
+							? this.check
+							: resButtonClick !== null
+								? resButtonClick
+								: this.tryAgain}
+						disabled={resButtonDisabled !== null
+							? resButtonDisabled || !this.isComplete()
+							: (!this.isComplete() || (isChecked && !canTryAgain))}
+						label={!isChecked
+							? 'Check'
+							: resButtonLabel !== null
+								? resButtonLabel
+								: 'Try again'}
 					/>
 					<CheckIndicator status={checkResult} />
 				</div>
@@ -86,8 +101,8 @@ class TypeIn extends Component {
 
 TypeIn.defaultProps = {
 	onCheck: () => { },
-	onHint: () => false,
-	onUnlock: () => false,
+	onHint: () => { },
+	onUnlock: () => { },
 };
 
 TypeIn.propTypes = {
@@ -98,6 +113,9 @@ TypeIn.propTypes = {
 	onUnlock: PropTypes.func, // returns true if can unlock and handles side effects
 	canTryAgain: PropTypes.bool.isRequired,
 	onTryAgain: PropTypes.func.isRequired,
+	resButtonLabel: PropTypes.string, // eslint-disable-line react/require-default-props
+	resButtonClick: PropTypes.func, // eslint-disable-line react/require-default-props
+	resButtonDisabled: PropTypes.bool, // eslint-disable-line react/require-default-props
 };
 
 export default TypeIn;
