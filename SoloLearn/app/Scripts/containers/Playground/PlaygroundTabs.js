@@ -8,7 +8,8 @@ import { translate } from 'react-i18next';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
-import AspectRatio from 'material-ui/svg-icons/action/aspect-ratio';
+import Fullscreen from 'material-ui/svg-icons/navigation/fullscreen';
+import FullscreenExit from 'material-ui/svg-icons/navigation/fullscreen-exit';
 
 // App defaults and utils
 import editorSettings from 'defaults/playgroundEditorSettings';
@@ -42,7 +43,7 @@ const styles = {
 			justifyContent: 'flex-end',
 			alignItems: 'center',
 			lineHeight: '48px',
-			padding: '0 15px 0 0',
+			padding: '0 24px 0 0',
 			height: '48px',
 			fontSize: '16px',
 			fontWeight: 500,
@@ -72,8 +73,9 @@ const PlaygroundTabs = ({
 	mode,
 	theme,
 	runCode,
-	toggleFullScreen,
+	fullScreen,
 	handleTabChange,
+	fullScreenButtonAction,
 }) => {
 	const isDarkTheme = theme === 'monokai';
 
@@ -159,12 +161,18 @@ const PlaygroundTabs = ({
 					/>
 					<IconButton
 						style={styles.iconButton}
-						tooltip="Toggle Fullscreen"
-						onClick={toggleFullScreen}
+						onClick={fullScreenButtonAction}
+						tooltip={inline ? 'Maximize in Playground' : 'Toggle Fullscreen'}
 					>
-						<AspectRatio
-							color={isDarkTheme ? '#fff' : '#777'}
-						/>
+						{ fullScreen ?
+							<FullscreenExit
+								color={isDarkTheme ? '#fff' : '#777'}
+							/> : (
+								<Fullscreen
+									color={isDarkTheme ? '#fff' : '#777'}
+								/>
+							)
+						}
 					</IconButton>
 				</div>
 			</div>
@@ -180,12 +188,18 @@ const PlaygroundTabs = ({
 			{editorSettings[mode].name}
 			<IconButton
 				style={styles.iconButton}
-				tooltip="Toggle Fullscreen"
-				onClick={toggleFullScreen}
+				onClick={fullScreenButtonAction}
+				tooltip={inline ? 'Maximize in Playground' : 'Toggle Fullscreen'}
 			>
-				<AspectRatio
-					color={isDarkTheme ? '#fff' : '#777'}
-				/>
+				{ fullScreen ?
+					<FullscreenExit
+						color={isDarkTheme ? '#fff' : '#777'}
+					/> : (
+						<Fullscreen
+							color={isDarkTheme ? '#fff' : '#777'}
+						/>
+					)
+				}
 			</IconButton>
 		</div>
 	);

@@ -59,12 +59,12 @@ class CodeBlock extends Component {
 
 	render() {
 		const {
+			t,
 			text,
 			codeId,
 			format,
 			basePath,
 			courseLanguage,
-			t
 		} = this.props;
 		const playgroundParams = {
 			primary: courseLanguage,

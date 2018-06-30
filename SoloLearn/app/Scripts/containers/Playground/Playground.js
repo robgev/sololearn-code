@@ -42,7 +42,6 @@ const styles = {
 	playground: {
 		base: {
 			width: '100%',
-			maxWidth: '1000px',
 			overflo: 'hidden',
 		},
 		hide: {
@@ -657,6 +656,7 @@ ${succeedingSubstr}
 			publicID,
 			codeType,
 			isRunning,
+			fullScreen,
 			sourceCode,
 			showOutput,
 			isGettingCode,
@@ -700,63 +700,69 @@ ${succeedingSubstr}
 				>
 					<div id="playground-container" style={styles.playgroundContainer}>
 						<Paper id="playground" style={styles.playground.base}>
-							<PlaygroundTabs
-								type={type}
-								mode={mode}
-								theme={theme}
-								runCode={this.runCode}
-								toggleFullScreen={this.toggleFullScreen}
-								handleTabChange={this.handleTabChange}
-							/>
-							<Editor
-								code={code}
-								mode={mode}
-								theme={theme}
-								publicID={publicID}
-								showWebOutput={showWebOutput}
-								handleEditorChange={this.handleEditorChange}
-							/>
-							<OutputWindow
-								type={type}
-								showWebOutput={showWebOutput}
-								programRunning={programRunning}
-							/>
-							<Toolbar
-								type={type}
-								mode={mode}
-								theme={theme}
-								jsCode={jsCode}
-								cssCode={cssCode}
-								code={sourceCode}
-								isRunning={isRunning}
-								runCode={this.runCode}
-								language={userCodeLanguage}
-								setNewState={this.setNewState}
-								showToolbar={this.showToolbar}
-								showWebOutput={showWebOutput}
-								insertToHead={this.insertToHead}
-								isUserCode={codeType === 'userCode'}
-								userCodeData={latestSavedCodeData}
-								languageSelector={languageSelector}
-								resetEditorValue={this.resetEditorValue}
-								handleEditorChange={this.handleEditorChange}
-								handleThemeChange={this.handleThemeChange}
-								handleLanguageChange={this.handleLanguageChange}
-							/>
-							<Paper
-								className="default-output-container"
-								style={{
-									...styles.defaultOutputContainer.base,
-									...(showOutput && type === 'default' ? styles.defaultOutputContainer.show : {}),
-								}}
-							>
-								{!(isRunning && type === 'default') ? null
-									: <LoadingOverlay size={30} />
-								}
-								<div style={styles.outputHeader}>Output: </div>
-								<pre className="default-output" style={styles.defaultOutputContainer.defaultOutput} />
-							</Paper>
-							{ (withBottomToolbar && shouldShowToolbar) &&
+							<div>
+								<PlaygroundTabs
+									type={type}
+									mode={mode}
+									theme={theme}
+									inline={inline}
+									runCode={this.runCode}
+									fullScreen={fullScreen}
+									handleTabChange={this.handleTabChange}
+									fullScreenButtonAction={inline ? this.maximizeInlineCode : this.toggleFullScreen}
+								/>
+								<Editor
+									inline={inline}
+									code={code}
+									mode={mode}
+									theme={theme}
+									publicID={publicID}
+									showWebOutput={showWebOutput}
+									handleEditorChange={this.handleEditorChange}
+								/>
+								<OutputWindow
+									type={type}
+									showWebOutput={showWebOutput}
+									programRunning={programRunning}
+								/>
+								<Toolbar
+									type={type}
+									mode={mode}
+									theme={theme}
+									inline={inline}
+									jsCode={jsCode}
+									cssCode={cssCode}
+									code={sourceCode}
+									isRunning={isRunning}
+									runCode={this.runCode}
+									language={userCodeLanguage}
+									setNewState={this.setNewState}
+									showToolbar={this.showToolbar}
+									showWebOutput={showWebOutput}
+									insertToHead={this.insertToHead}
+									isUserCode={codeType === 'userCode'}
+									userCodeData={latestSavedCodeData}
+									languageSelector={languageSelector}
+									resetEditorValue={this.resetEditorValue}
+									handleEditorChange={this.handleEditorChange}
+									handleThemeChange={this.handleThemeChange}
+									handleLanguageChange={this.handleLanguageChange}
+								/>
+								<Paper
+									className="default-output-container"
+									style={{
+										...styles.defaultOutputContainer.base,
+										...(showOutput && type === 'default' ? styles.defaultOutputContainer.show : {}),
+									}}
+								>
+									{!(isRunning && type === 'default') ? null
+										: <LoadingOverlay size={30} />
+									}
+									<div style={styles.outputHeader}>Output: </div>
+									<pre className="default-output" style={styles.defaultOutputContainer.defaultOutput} />
+								</Paper>
+							</div>
+							{ (withBottomToolbar && shouldShowToolbar && !fullScreen) &&
 							<Comments
 								id={id}
 								type={1}

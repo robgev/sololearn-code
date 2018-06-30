@@ -24,7 +24,7 @@ import Theme from 'defaults/theme';
 
 const styles = {
 	wrapper: {
-		paddingTop: 60,
+		paddingTop: 50,
 	},
 };
 
