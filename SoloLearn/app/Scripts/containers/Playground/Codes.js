@@ -62,7 +62,7 @@ class Codes extends Component {
 					<InfiniteVirtualizedList
 						window
 						list={codes}
-						rowHeight={71}
+						rowHeight={81}
 						item={this.renderCode}
 						loadMore={this.loadCodes}
 					/>

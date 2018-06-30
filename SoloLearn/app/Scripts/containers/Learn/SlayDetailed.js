@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import { getCollectionItems, setSelectedCollection } from 'actions/slay';
 import CodePenCard from 'components/Shared/CodePenCard';
+import CourseBox from 'components/Shared/CourseBox';
 import SlayLayout from 'components/Layouts/SlayLayout';
 import SlayDetailedShimmer from 'components/Shared/Shimmers/SlayDetailedShimmer';
 
@@ -76,7 +77,7 @@ class SlayDetailed extends PureComponent {
 			selectedCollection,
 		} = this.props;
 		const collectionId = parseInt(params.collectionId, 10);
-		const isCourses = collectionId === -1;
+		const isCourses = collectionId === 1;
 		const courseItems = !isCourses ? collectionCourses : courses;
 		return (
 			<SlayLayout
@@ -87,9 +88,9 @@ class SlayDetailed extends PureComponent {
 				items={courseItems}
 				isCourses={isCourses}
 				loadMore={this.loadMore}
-				cardComponent={CodePenCard}
+				cardComponent={isCourses ? CourseBox : CodePenCard}
 				loadingComponent={SlayDetailedShimmer}
-				title={loading ? '' : selectedCollection.name}
+				title={loading ? '' : (selectedCollection ? selectedCollection.name : 'Learn the Basics')}
 				wrapperStyle={{
 					alignItems: 'initial',
 				}}

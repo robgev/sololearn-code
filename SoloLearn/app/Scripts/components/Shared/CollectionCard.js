@@ -51,6 +51,7 @@ const CollectionCard = ({
 				padding: 15,
 				width: '100%',
 				marginBottom: 10,
+				overflow: 'hidden',
 			}}
 		>
 			<div className={`meta-info ${!description ? 'big-padding-bottom' : ''}`}>
