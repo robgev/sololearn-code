@@ -11,7 +11,7 @@ import Close from 'material-ui/svg-icons/content/clear';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import MentionInput from 'components/Shared/MentionInput';
 
-import { getMentionsList } from 'utils';
+import { getMentionFetcher } from 'utils';
 
 // i18n
 import { translate } from 'react-i18next';
@@ -41,28 +41,16 @@ class ReplyBox extends Component {
 	submitReply = () => {
 		this.props.save(this.mentionInput.popValue());
 	}
-	getMentionFetcher = (type, id) => {
-		switch (type) {
-		case 'lesson':
-			return getMentionsList('lessonComment', { quizId: id });
-		case 'code':
-			return getMentionsList('codeComment', { codeId: id });
-		case 'userLesson':
-			return getMentionsList('userLessonComment', { lessonId: id });
-		default:
-			throw new Error('Comment type is not defined');
-		}
-	}
 	render() {
 		const {
 			userName, profile, commentType, t, id,
 		} = this.props;
 		const { replyLength, isReplyOpen } = this.state;
-		const getUsers = this.getMentionFetcher(commentType, id);
+		const getUsers = getMentionFetcher(commentType, id);
 		return (
 			<div style={styles.replyBox.base}>
 				{
-					userName != null &&
+					userName != null && this.props.isReplying &&
 					<div style={styles.replyBoxToolbar}>
 						<p style={styles.replyBoxToolbarText}>
 							Replying to <span style={styles.replyBoxToolbarText.user}>{userName}</span>
@@ -94,7 +82,6 @@ class ReplyBox extends Component {
 								onLengthChange={this.onLengthChange}
 								style={{ minHeight: 160 }}
 								getUsers={getUsers}
-								submit={this.props.save}
 								placeholder={!isReplyOpen && replyLength === 0 ? 'Write a new answer' : ''}
 							/>
 						</div>
@@ -108,7 +95,7 @@ class ReplyBox extends Component {
 						/>
 					</div>
 				</div>
-			</div>
+			</div >
 		);
 	}
 }

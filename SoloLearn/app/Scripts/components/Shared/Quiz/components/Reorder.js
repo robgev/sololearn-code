@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { shuffleArray } from 'utils';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
-import { List, ListItem, Paper, RaisedButton } from 'material-ui';
+import { List, ListItem, RaisedButton } from 'material-ui';
 import { quizType } from './types';
 
 import TopBar from './TopBar';
 import CheckIndicator from './CheckIndicator';
+import QuestionContainer from './ConditionalPaper';
 
 // Utility components
 
@@ -49,10 +50,8 @@ class Reorder extends Component {
 		}));
 	};
 	unlock = () => {
-		if (this.props.onUnlock()) {
-			this.setState({ shuffled: this.props.quiz.answers });
-			this.check();
-		}
+		this.setState({ shuffled: this.props.quiz.answers });
+		this.check();
 	}
 	check = () => {
 		this.setState(
@@ -63,21 +62,34 @@ class Reorder extends Component {
 	}
 	render() {
 		const { shuffled, checkResult } = this.state;
-		const { canTryAgain } = this.props;
+		const {
+			canTryAgain, isPaper, resButtonLabel, resButtonClick, resButtonDisabled,
+		} = this.props;
 		const isChecked = checkResult !== null;
 		return (
 			<div className="quiz">
-				{this.props.unlockable && <TopBar disabled={isChecked} onUnlock={this.unlock} />}
-				<Paper className="question-container">
+				{this.props.unlockable &&
+					<TopBar isPaper={isPaper} disabled={isChecked} onUnlock={this.props.onUnlock} />}
+				<QuestionContainer isPaper={isPaper} className="question-container">
 					<p className="question-text">{this.props.quiz.question}</p>
 					<SortableList items={shuffled} onSortEnd={this.onSortEnd} lockAxis="y" />
-				</Paper>
+				</QuestionContainer>
 				<div className="check-container">
 					<RaisedButton
 						secondary
-						onClick={isChecked ? this.tryAgain : this.check}
-						disabled={isChecked && !canTryAgain}
-						label={isChecked && canTryAgain ? 'Try again' : 'Check'}
+						onClick={!isChecked
+							? this.check
+							: resButtonClick !== null
+								? resButtonClick
+								: this.tryAgain}
+						disabled={resButtonDisabled !== null
+							? resButtonDisabled || !this.isComplete()
+							: (!this.isComplete() || (isChecked && !canTryAgain))}
+						label={!isChecked
+							? 'Check'
+							: resButtonLabel !== null
+								? resButtonLabel
+								: 'Try again'}
 					/>
 					<CheckIndicator status={checkResult} />
 				</div>
@@ -88,7 +100,7 @@ class Reorder extends Component {
 
 Reorder.defaultProps = {
 	onCheck: () => { },
-	onUnlock: () => false,
+	onUnlock: () => { },
 };
 
 Reorder.propTypes = {
@@ -98,6 +110,9 @@ Reorder.propTypes = {
 	onUnlock: PropTypes.func, // returns true if can unlock and handles side effects
 	canTryAgain: PropTypes.bool.isRequired,
 	onTryAgain: PropTypes.func.isRequired,
+	resButtonLabel: PropTypes.string, // eslint-disable-line react/require-default-props
+	resButtonClick: PropTypes.func, // eslint-disable-line react/require-default-props
+	resButtonDisabled: PropTypes.bool, // eslint-disable-line react/require-default-props
 };
 
 export default Reorder;

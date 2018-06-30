@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { List, ListItem, Checkbox, Paper, Divider, RaisedButton } from 'material-ui';
+import { List, ListItem, Checkbox, Divider, RaisedButton } from 'material-ui';
 import RadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-checked';
 import RadioButtonUnchecked from 'material-ui/svg-icons/toggle/radio-button-unchecked';
 import { shuffleArray } from 'utils';
@@ -8,6 +8,7 @@ import { quizType } from './types';
 
 import TopBar from './TopBar';
 import CheckIndicator from './CheckIndicator';
+import QuestionContainer from './ConditionalPaper';
 
 // Pure utility functions
 const isSingleAnswer = answers =>
@@ -51,11 +52,9 @@ class MultipleChoice extends Component {
 		}));
 	}
 	unlock = () => {
-		if (this.props.onUnlock) {
-			this.setState(state =>
-				({ shuffled: state.shuffled.map(a => ({ ...a, isSelected: a.isCorrect })) }));
-			this.check();
-		}
+		this.setState(state =>
+			({ shuffled: state.shuffled.map(a => ({ ...a, isSelected: a.isCorrect })) }));
+		this.check();
 	}
 	check = () => {
 		this.setState(state => ({
@@ -67,13 +66,16 @@ class MultipleChoice extends Component {
 	isComplete = () => this.state.shuffled.some(a => a.isSelected)
 	render() {
 		const { shuffled, checkResult } = this.state;
-		const { canTryAgain } = this.props;
+		const {
+			canTryAgain, isPaper, resButtonLabel, resButtonClick, resButtonDisabled,
+		} = this.props;
 		const isChecked = checkResult !== null;
 		const isRadio = this.isSingleAnswer;
 		return (
 			<div className="quiz">
-				{this.props.unlockable && <TopBar disabled={isChecked} onUnlock={this.unlock} />}
-				<Paper className="question-container">
+				{this.props.unlockable &&
+					<TopBar isPaper={isPaper} disabled={isChecked} onUnlock={this.props.onUnlock} />}
+				<QuestionContainer isPaper={isPaper} className="question-container">
 					<p className="question-text">{this.props.quiz.question}</p>
 					<List>
 						{
@@ -96,13 +98,23 @@ class MultipleChoice extends Component {
 							))
 						}
 					</List>
-				</Paper>
+				</QuestionContainer>
 				<div className="check-container">
 					<RaisedButton
 						secondary
-						onClick={isChecked ? this.tryAgain : this.check}
-						disabled={!this.isComplete() || (isChecked && !canTryAgain)}
-						label={isChecked && canTryAgain ? 'Try again' : 'Check'}
+						onClick={!isChecked
+							? this.check
+							: resButtonClick !== null
+								? resButtonClick
+								: this.tryAgain}
+						disabled={resButtonDisabled !== null
+							? resButtonDisabled || !this.isComplete()
+							: (!this.isComplete() || (isChecked && !canTryAgain))}
+						label={!isChecked
+							? 'Check'
+							: resButtonLabel !== null
+								? resButtonLabel
+								: 'Try again'}
 					/>
 					<CheckIndicator status={checkResult} />
 				</div>
@@ -113,7 +125,7 @@ class MultipleChoice extends Component {
 
 MultipleChoice.defaultProps = {
 	onCheck: () => { },
-	onUnlock: () => false,
+	onUnlock: () => { },
 };
 
 MultipleChoice.propTypes = {
@@ -123,6 +135,9 @@ MultipleChoice.propTypes = {
 	onUnlock: PropTypes.func, // returns true if can unlock and handles side effects,
 	canTryAgain: PropTypes.bool.isRequired,
 	onTryAgain: PropTypes.func.isRequired,
+	resButtonLabel: PropTypes.string, // eslint-disable-line react/require-default-props
+	resButtonClick: PropTypes.func, // eslint-disable-line react/require-default-props
+	resButtonDisabled: PropTypes.bool, // eslint-disable-line react/require-default-props
 };
 
 export default MultipleChoice;

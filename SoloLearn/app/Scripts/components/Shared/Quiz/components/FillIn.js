@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Paper, RaisedButton, TextField } from 'material-ui';
+import { RaisedButton, TextField } from 'material-ui';
 import { getCommonPrefix } from 'utils';
 import TopBar from './TopBar';
 import CheckIndicator from './CheckIndicator';
 import { quizType } from './types';
+import QuestionContainer from './ConditionalPaper';
 
 // Pure utils
 const formatAnswers = (answerText, inputs, onChange, disabled) => {
@@ -67,45 +68,59 @@ class FillIn extends Component {
 		this.setState({ checkResult: true }, () => { this.props.onCheck(true); });
 	}
 	unlock = () => {
-		if (this.props.onUnlock()) {
-			this.setState(state => ({ inputs: state.inputs.map(i => ({ ...i, text: i.correct })) }));
-			this.forceTrue();
-		}
+		this.setState(state => ({ inputs: state.inputs.map(i => ({ ...i, text: i.correct })) }));
+		this.forceTrue();
 	}
 	hint = () => {
-		if (this.props.onHint()) {
-			const inputs = this.state.inputs.map((input) => {
-				const prefix = getCommonPrefix(input.text, input.correct);
-				const text = prefix.length < input.correct.length
-					? prefix + input.correct[prefix.length]
-					: prefix;
-				return { ...input, text };
-			});
-			this.setState({ inputs });
-			if (!inputs.some(a => a.correct !== a.text)) { this.forceTrue(); }
-		}
+		const inputs = this.state.inputs.map((input) => {
+			const prefix = getCommonPrefix(input.text, input.correct);
+			const text = prefix.length < input.correct.length
+				? prefix + input.correct[prefix.length]
+				: prefix;
+			return { ...input, text };
+		});
+		this.setState({ inputs });
+		if (!inputs.some(a => a.correct !== a.text)) { this.forceTrue(); }
 	}
 	isComplete = () => !this.state.inputs.some(a => a.text.length !== a.correct.length)
 	render() {
 		const { checkResult } = this.state;
-		const { canTryAgain } = this.props;
+		const {
+			canTryAgain, isPaper, resButtonLabel, resButtonClick, resButtonDisabled,
+		} = this.props;
 		const isChecked = checkResult !== null;
 		return (
 			<div className="quiz">
 				{this.props.unlockable &&
-					<TopBar disabled={isChecked} onUnlock={this.unlock} hintable onHint={this.hint} />}
-				<Paper className="question-container">
+					<TopBar
+						disabled={isChecked}
+						onUnlock={this.props.onUnlock}
+						hintable
+						onHint={this.props.onHint}
+						isPaper={isPaper}
+					/>}
+				<QuestionContainer isPaper={isPaper} className="question-container">
 					<p className="question-text">{this.question}</p>
 					<div className="fill-in-answers-container">
 						{formatAnswers(this.answerText, this.state.inputs, this.onAnswerChange, isChecked)}
 					</div>
-				</Paper>
+				</QuestionContainer>
 				<div className="check-container">
 					<RaisedButton
 						secondary
-						onClick={isChecked ? this.tryAgain : this.check}
-						disabled={!this.isComplete() || (isChecked && !canTryAgain)}
-						label={isChecked && canTryAgain ? 'Try again' : 'Check'}
+						onClick={!isChecked
+							? this.check
+							: resButtonClick !== null
+								? resButtonClick
+								: this.tryAgain}
+						disabled={resButtonDisabled !== null
+							? resButtonDisabled || !this.isComplete()
+							: (!this.isComplete() || (isChecked && !canTryAgain))}
+						label={!isChecked
+							? 'Check'
+							: resButtonLabel !== null
+								? resButtonLabel
+								: 'Try again'}
 					/>
 					<CheckIndicator status={checkResult} />
 				</div>
@@ -116,8 +131,8 @@ class FillIn extends Component {
 
 FillIn.defaultProps = {
 	onCheck: () => { },
-	onUnlock: () => false,
-	onHint: () => false,
+	onUnlock: () => { },
+	onHint: () => { },
 };
 
 FillIn.propTypes = {
@@ -128,6 +143,9 @@ FillIn.propTypes = {
 	onHint: PropTypes.func, // returns true if can hint and handles side effects
 	canTryAgain: PropTypes.bool.isRequired,
 	onTryAgain: PropTypes.func.isRequired,
+	resButtonLabel: PropTypes.string, // eslint-disable-line react/require-default-props
+	resButtonClick: PropTypes.func, // eslint-disable-line react/require-default-props
+	resButtonDisabled: PropTypes.bool, // eslint-disable-line react/require-default-props
 };
 
 export default FillIn;

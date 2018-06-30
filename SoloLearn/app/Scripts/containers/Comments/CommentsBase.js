@@ -77,8 +77,8 @@ class CommentsBase extends Component {
 				userName,
 			},
 		}, () => {
-			// this._comments.getWrappedInstance().recompute();
-			// this._comments.getWrappedInstance()._forceUpdate();
+			this._comments.getWrappedInstance().recompute();
+			this._comments.getWrappedInstance()._forceUpdate();
 			cb();
 		});
 	}
@@ -211,6 +211,7 @@ class CommentsBase extends Component {
 					ref={(input) => { this.input = input; }}
 					profile={profile}
 					userName={this.state.activeComment.userName}
+					isReplying={this.state.isReplying}
 					closeToolbar={this.partialCancel}
 					save={this.addComment}
 					commentType={commentsType}
