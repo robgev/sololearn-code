@@ -2,7 +2,7 @@ import React from 'react';
 import 'styles/components/Shared/Shimmers/DiscussShimmer.scss';
 
 const DiscussShimmer = () => (
-	<div className="shimmer-wrapper">
+	<div className="discuss-shimmer-wrapper">
 		{Array(20).fill(0).map((_, i) => (
 			<div className="discuss-shimmer-container" key={i}>
 				<div className="discuss-content-placeholder">

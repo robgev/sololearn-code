@@ -33,7 +33,7 @@ const SlayHomeShimmer = () => {
 		</Paper>
 	));
 	return (
-		<div className="shimmer-wrapper">
+		<div className="slay-home-shimmer-wrapper">
 			{renderContainers}
 		</div>
 	);
