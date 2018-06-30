@@ -78,6 +78,7 @@ class CodeBlock extends Component {
 					{ playgroundOpened ?
 						<div>
 							<Playground
+								inline
 								codeId={codeId}
 								basePath={basePath}
 								params={playgroundParams}

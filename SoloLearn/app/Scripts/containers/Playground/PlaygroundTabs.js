@@ -72,6 +72,7 @@ const PlaygroundTabs = ({
 	type,
 	mode,
 	theme,
+	inline,
 	runCode,
 	fullScreen,
 	handleTabChange,

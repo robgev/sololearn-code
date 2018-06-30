@@ -122,15 +122,15 @@ class Playground extends Component {
 					const { alias, type, language } = editorSettings[foundEditorSettingKey];
 					const { html, css, javascript } = texts;
 					const isWeb = checkWeb(alias);
+					const code = texts[foundEditorSettingKey];
 					const codeData = {
 						language,
-						sourceCode: isWeb ? html : '',
+						sourceCode: isWeb ? html : code,
 						cssCode: isWeb ? css : '',
 						jsCode: isWeb ? javascript : '',
 						codeType: '',
 						userCodeLanguage: isWeb ? 'web' : foundEditorSettingKey,
 					};
-					const code = texts[foundEditorSettingKey];
 
 					this.setState({
 						type,
@@ -162,9 +162,9 @@ class Playground extends Component {
 	setDefaultSettings = () => {
 		const { basePath } = this.props;
 		const codeData = {
-			sourceCode: '',
-			cssCode: '',
-			jsCode: '',
+			sourceCode: texts.html,
+			cssCode: texts.css,
+			jsCode: texts.javascript,
 			codeType: '',
 			language: 'web',
 		};
@@ -390,10 +390,10 @@ class Playground extends Component {
 			codeType,
 			sourceCode,
 		} = latestSavedCodeData;
-		const userCodeOpened = codeType === 'userCode' && language === userCodeLanguage;
-		const computedCssCode = userCodeOpened ? cssCode : texts[mode];
-		const computedJsCode = userCodeOpened ? jsCode : texts[mode];
-		const computedSourceCode = userCodeOpened ? sourceCode : texts[mode];
+		const isPredefined = (codeType === 'userCode' || codeType === 'templateCode') && language === userCodeLanguage;
+		const computedCssCode = isPredefined ? cssCode : texts[mode];
+		const computedJsCode = isPredefined ? jsCode : texts[mode];
+		const computedSourceCode = isPredefined ? sourceCode : texts[mode];
 		switch (mode) {
 		case 'css':
 			this.setState({
@@ -643,6 +643,11 @@ ${succeedingSubstr}
 		this.setState(state => ({ fullScreen: !state.fullScreen }));
 	}
 
+	maximizeInlineCode = () => {
+		const { params: { primary, secondary } } = this.props;
+		browserHistory.replace(`/playground/${primary}/${secondary}`);
+	}
+
 	render() {
 		const {
 			id,
@@ -668,6 +673,7 @@ ${succeedingSubstr}
 		} = this.state;
 		const {
 			t,
+			inline,
 			commentsCount,
 			withBottomToolbar,
 		} = this.props;
@@ -688,6 +694,13 @@ ${succeedingSubstr}
 				<LoadingOverlay /> :
 
 				<Layout
+					noSidebar={fullScreen || inline}
+					style={{
+						...((fullScreen || inline) ? { width: '100%', paddingRight: 0 } : {}),
+					}}
+					rootStyle={{
+						...((fullScreen || inline) ? { paddingTop: 0 } : {}),
+					}}
 					sidebarContent={
 						!(withBottomToolbar && shouldShowToolbar) ? null : (
 							<BottomToolbar

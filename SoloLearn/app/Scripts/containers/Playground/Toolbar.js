@@ -324,6 +324,7 @@ ${this.props.code}
 			t,
 			type,
 			theme,
+			inline,
 			userId,
 			runCode,
 			isRunning,
@@ -344,28 +345,32 @@ ${this.props.code}
 		return (
 			<div id="toolbar" style={{ ...styles.toolbar.base, ...(showWebOutput ? styles.toolbar.hide : {}) }}>
 				<div className="left" style={styles.toolbar.left}>
-					<DropDownMenu
-						value={languageSelector}
-						onChange={handleLanguageChange}
-						style={styles.languageFilter}
-						disabled={isUserCode && userCodeData.userID !== userId}
-					>
-						<MenuItem value="web" primaryText="HTML/CSS/JS" />
-						<MenuItem value="c_cpp" primaryText="C++" />
-						<MenuItem value="csharp" primaryText="C#" />
-						<MenuItem value="java" primaryText="Java" />
-						<MenuItem value="python" primaryText="Python 3" />
-						<MenuItem value="php" primaryText="PHP" />
-						<MenuItem value="ruby" primaryText="Ruby" />
-					</DropDownMenu>
-					<Checkbox
-						label="Dark Theme"
-						labelPosition="left"
-						style={styles.themeToggle}
-						checked={theme === 'monokai'}
-						iconStyle={styles.themeToggleIcon}
-						onCheck={handleThemeChange}
-					/>
+					{ !inline && (
+						<div>
+							<DropDownMenu
+								value={languageSelector}
+								onChange={handleLanguageChange}
+								style={styles.languageFilter}
+								disabled={isUserCode && userCodeData.userID !== userId}
+							>
+								<MenuItem value="web" primaryText="HTML/CSS/JS" />
+								<MenuItem value="c_cpp" primaryText="C++" />
+								<MenuItem value="csharp" primaryText="C#" />
+								<MenuItem value="java" primaryText="Java" />
+								<MenuItem value="python" primaryText="Python 3" />
+								<MenuItem value="php" primaryText="PHP" />
+								<MenuItem value="ruby" primaryText="Ruby" />
+							</DropDownMenu>
+							<Checkbox
+								label="Dark Theme"
+								labelPosition="left"
+								style={styles.themeToggle}
+								checked={theme === 'monokai'}
+								iconStyle={styles.themeToggleIcon}
+								onCheck={handleThemeChange}
+							/>
+						</div>
+					)}
 					{	type === 'web' &&
 						<FlatButton
 							icon={<InsertLink />}
@@ -383,12 +388,14 @@ ${this.props.code}
 						onClick={this.save}
 						style={styles.codeAction.save}
 					/>
-					<FlatButton
-						label={t('code_playground.actions.save-as')}
-						disabled={isSaving}
-						style={styles.codeAction.save}
-						onClick={this.openSavePopup}
-					/>
+					{!inline &&
+						<FlatButton
+							label={t('code_playground.actions.save-as')}
+							disabled={isSaving}
+							style={styles.codeAction.save}
+							onClick={this.openSavePopup}
+						/>
+					}
 					<FlatButton
 						label={t('code_playground.actions.reset-code')}
 						style={styles.codeAction.reset}

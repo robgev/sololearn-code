@@ -21,7 +21,6 @@ const styles = {
 	editor: {
 		base: {
 			width: '100%',
-			height: '500px',
 			transform: 'translateZ(0)',
 		},
 		hide: {
@@ -61,6 +60,7 @@ const Editor = ({
 	code,
 	mode,
 	theme,
+	inline,
 	publicID,
 	showWebOutput,
 	handleEditorChange,
@@ -73,9 +73,9 @@ const Editor = ({
 			value={code}
 			mode={mode}
 			width="100%"
-			height="60vh"
 			theme={theme}
 			showPrintMargin={false}
+			height={inline ? '300px' : '60vh'}
 			setOptions={{
 				enableBasicAutocompletion: true,
 				enableLiveAutocompletion: true,
