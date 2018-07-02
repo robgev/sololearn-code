@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Paper, FlatButton } from 'material-ui';
+import FlatButton from 'material-ui/FlatButton';
 import { translate } from 'react-i18next';
-import ConditionalPaper from '../ConditionalPaper';
 
 import './TopBar.scss';
 
 const TopBar = ({
-	onUnlock, onHint, hintable, t, disabled, isPaper,
+	onUnlock, onHint, hintable, t, disabled,
 }) => (
-	<ConditionalPaper isPaper={isPaper} className="bar">
+	<div className="bar">
 		{hintable && <FlatButton
 			disabled={disabled}
 			onClick={onHint}
@@ -20,20 +19,19 @@ const TopBar = ({
 			onClick={onUnlock}
 			label={t('learn.buttons-unlock-answer')}
 		/>
-	</ConditionalPaper>
+	</div>
 );
 
 TopBar.defaultProps = {
 	onHint: () => { }, // noop
 	hintable: false,
-	disabled: false,
 };
 
 TopBar.propTypes = {
 	onUnlock: PropTypes.func.isRequired,
+	disabled: PropTypes.bool.isRequired,
 	onHint: PropTypes.func,
 	hintable: PropTypes.bool,
-	disabled: PropTypes.bool,
 };
 
 export default translate()(TopBar);

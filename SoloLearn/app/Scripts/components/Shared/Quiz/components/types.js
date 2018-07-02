@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export const answersType = PropTypes.arrayOf(PropTypes.shape({
+const answersType = PropTypes.arrayOf(PropTypes.shape({
 	id: PropTypes.number.isRequired,
 	text: PropTypes.string.isRequired,
 	isCorrect: PropTypes.bool.isRequired,
@@ -10,7 +10,7 @@ export const answersType = PropTypes.arrayOf(PropTypes.shape({
 	}),
 }));
 
-export const quizType = PropTypes.shape({
+export default PropTypes.shape({
 	id: PropTypes.number,
 	answers: answersType.isRequired,
 	question: PropTypes.string.isRequired,

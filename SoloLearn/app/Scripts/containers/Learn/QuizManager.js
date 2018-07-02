@@ -305,7 +305,7 @@ class QuizManager extends Component {
 			<Layout>
 				<Paper className="quiz-container" style={{ padding: 15 }}>
 					<div className="lesson-breadcrumbs">
-						{ course.name } &gt; { activeModule.name } &gt; { activeLesson.name }
+						{course.name} &gt; {activeModule.name} &gt; {activeLesson.name}
 					</div>
 					<Stepper activeStep={parseInt(this.props.activeQuiz.number, 10) - 1}>
 						{this.generateTimeline(quizzes, activeQuiz)}
