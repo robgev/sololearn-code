@@ -7,6 +7,7 @@ import { browserHistory } from 'react-router';
 import Layout from 'components/Layouts/GeneralLayout';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import Quiz, { CheckBar } from 'components/Shared/Quiz';
+import LanguageCard from 'components/Shared/LanguageCard';
 import { setSuggestionChallenge } from 'actions/quizFactory';
 import { getMySubmissions, deleteChallenge } from '../api';
 import './mySubmissionsStyles.scss';
@@ -53,11 +54,13 @@ const getStringFromType = (type) => {
 	}
 };
 
+const mapStateToProps = ({ courses }) => ({ courses });
+
 const mapDispatchToProps = {
 	setSuggestionChallenge,
 };
 
-@connect(null, mapDispatchToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 class MySubmissions extends Component {
 	constructor(props) {
 		super(props);
@@ -126,6 +129,7 @@ class MySubmissions extends Component {
 		const {
 			challenges, previewChallenge, checkResult, isQuizComplete,
 		} = this.state;
+		const { courses } = this.props;
 		const actions = [
 			<FlatButton onClick={this.closePreview} label="Cancel" primary />,
 			previewChallenge !== null && previewChallenge.status === 2
@@ -164,14 +168,8 @@ class MySubmissions extends Component {
 												onClick={() => this.preview(quiz)}
 												className="preview"
 												leftIcon={
-													<img
-														style={{
-															width: 36,
-															height: 36,
-															margin: '7px 0 0 12px',
-														}}
-														src={`https://api.sololearn.com/uploads/Courses/${quiz.courseID}.png`}
-														alt=""
+													<LanguageCard
+														language={courses.find(c => c.id === quiz.courseID).language}
 													/>
 												}
 												rightIcon={

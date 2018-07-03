@@ -1,5 +1,7 @@
 const getLanguageColor = (language) => {
 	switch (language) {
+	case 'js':
+		return '#F0DA50';
 	case 'cpp':
 		return '#076390';
 	case 'cs':

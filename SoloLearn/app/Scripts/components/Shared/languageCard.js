@@ -1,17 +1,25 @@
 import React from 'react';
 import 'styles/languageCard.scss';
-import { Link } from 'react-router';
 import { getLanguageColor } from 'utils';
 
-const LanguageCard = ({ language, alias, linkPrefix }) => (
-	<Link to={`${linkPrefix}/${alias}`} className="language-card-main-container">
-		<div
-			className="colored-box"
-			style={{ backgroundColor: getLanguageColor(language) }}
-		>
-			{language}
-		</div>
-	</Link>
+const languageCardStyle = {
+	display: 'flex',
+	width: 40,
+	height: 40,
+	margin: 4,
+};
+
+const LanguageCard = ({ language, style }) => (
+	<div
+		className="colored-box"
+		style={{
+			...style, // need for mateial ui injection in ListItem
+			...languageCardStyle,
+			backgroundColor: getLanguageColor(language),
+		}}
+	>
+		{language}
+	</div>
 );
 
 export default LanguageCard;
