@@ -25,7 +25,33 @@ export const getCollectionItems = (collectionId, pagingData) => async (dispatch)
 				types.SET_COLLECTION_ITEMS,
 			payload: lessons,
 		});
-		console.log(lessons);
+		return lessons.length;
+	} catch (e) {
+		console.log(e);
+		return 0;
+	}
+};
+
+export const getMoreOnTopic = ({
+	courseId,
+	query = '',
+	index,
+	count,
+}) => async (dispatch) => {
+	try {
+		const { lessons } =
+			await Service.request('/GetCourseAdditionalLessons', {
+				courseId,
+				query,
+				index,
+				count,
+			});
+		dispatch({
+			type: index ?
+				types.APPEND_COLLECTION_ITEMS :
+				types.SET_COLLECTION_ITEMS,
+			payload: lessons,
+		});
 		return lessons.length;
 	} catch (e) {
 		console.log(e);

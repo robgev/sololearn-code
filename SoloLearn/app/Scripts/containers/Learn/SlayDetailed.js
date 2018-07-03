@@ -72,21 +72,19 @@ class SlayDetailed extends PureComponent {
 		const { loading, hasMore } = this.state;
 		const {
 			params,
-			courses,
 			collectionCourses,
 			selectedCollection,
 		} = this.props;
 		const collectionId = parseInt(params.collectionId, 10);
-		const isCourses = collectionId === 1;
-		const courseItems = !isCourses ? collectionCourses : courses;
+		const isCourses = collectionId === -1;
 		return (
 			<SlayLayout
 				paper
 				noSidebar
 				loading={loading}
 				hasMore={hasMore}
-				items={courseItems}
 				isCourses={isCourses}
+				items={collectionCourses}
 				loadMore={this.loadMore}
 				cardComponent={isCourses ? CourseBox : CodePenCard}
 				loadingComponent={SlayDetailedShimmer}

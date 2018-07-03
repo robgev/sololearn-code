@@ -3,6 +3,8 @@ import { toSeoFriendly, EnumNameMapper } from 'utils';
 import { AppDefaults } from 'api/service';
 import Progress, { ProgressState } from 'api/progress';
 
+import ModuleChip from './ModuleChip';
+
 const ModuleAlignment = {
 	None: 0,
 	Center: 1,
@@ -27,28 +29,15 @@ const ModuleChips = ({
 					`${AppDefaults.downloadHost}Modules/${courseId}/${module.id}${moduleState.visualState === ProgressState.Disabled ? '_disabled' : ''}.png`;
 
 			return (
-				<div className={`module-line-container ${alignmentClass}`}>
-					<div
-						className={`module ${alignmentClass}`}
-						key={module.id}
-					>
-						<Link
-							className={`content ${alignmentClass}`}
-							to={`/learn/${courseName}/${courseId}/${itemType}/${module.id}/${toSeoFrendly(module.name, 100)}`}
-							onClick={e => onClick(e, module.id, moduleState)}
-						>
-							<Paper
-								circle
-								zDepth={1}
-								key={module.id}
-								className={`module-circle ${stateClass}`}
-							>
-								<img className="module-image" alt={module.name} src={iconSource} />
-							</Paper>
-							<span className="module-name">{module.name}</span>
-						</Link>
-					</div>
-				</div>
+				<ModuleChip
+					key={module.id}
+					name={module.name}
+					iconSource={iconSource}
+					className={alignmentClass}
+					paperClassName={stateClass}
+					onClick={e => onClick(e, module.id, moduleState)}
+					linkAddress={`/learn/${courseName}/${courseId}/${itemType}/${module.id}/${toSeoFriendly(module.name, 100)}`}
+				/>
 			);
 		})}
 

@@ -1,7 +1,10 @@
 import React, { PureComponent } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
+import { translate } from 'react-i18next';
 import Paper from 'material-ui/Paper';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import Comments from 'containers/Comments/CommentsBase';
 import LessonLayout from 'components/Layouts/LessonLayout';
@@ -29,6 +32,7 @@ const mapDispatchToProps = {
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
+@translate()
 class SlayLesson extends PureComponent {
 	constructor() {
 		super();
@@ -96,7 +100,9 @@ class SlayLesson extends PureComponent {
 
 	render() {
 		const { loading, commentsCount } = this.state;
-		const { lessonsByUser, activeLesson, params } = this.props;
+		const {
+			t, lessonsByUser, activeLesson, params,
+		} = this.props;
 		const { pageNumber } = params;
 		const {
 			id,
@@ -108,6 +114,7 @@ class SlayLesson extends PureComponent {
 			userID,
 			content,
 			language,
+			itemType,
 			comments,
 			userName,
 			avatarUrl,
@@ -141,6 +148,15 @@ class SlayLesson extends PureComponent {
 								commentsCount={comments}
 								isBookmarked={isBookmarked}
 							/>
+							{ nextLesson &&
+							<Link to={`/learn/slayLesson/${itemType}/${nextLesson.id}/1`}>
+								<RaisedButton
+									labelColor="#fff"
+									backgroundColor="#8bc34a"
+									label={t('learn.buttons-continue')}
+								/>
+							</Link>
+							}
 							<Comments
 								id={id}
 								type={1}

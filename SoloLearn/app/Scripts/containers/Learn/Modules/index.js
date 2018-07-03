@@ -27,6 +27,7 @@ import { toSeoFriendly } from 'utils';
 import 'styles/Learn/Modules.scss';
 
 import ModuleChips from './ModuleChips';
+import ModuleChip from './ModuleChip';
 import Certificate from './Certificate';
 
 const mapStateToProps = state => ({
@@ -203,7 +204,15 @@ class Modules extends Component {
 									courseId={id}
 									modules={modules}
 								/>
-							</div>,
+								<ModuleChip
+									onClick={() => {}}
+									className="center"
+									name="More on the Topic"
+									paperClassName="normal"
+									linkAddress={`/learn/more-on/${id}`}
+									iconSource={`https://api.sololearn.com/uploads/Courses/assets/${id ? `${id}_` : ''}more.png`}
+								/>
+							</div>
 						</div>
 						:
 						<div className="no-courses">

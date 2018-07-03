@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Circle } from 'react-progressbar.js';
-import { getCourseNameById } from 'utils';
+import { toSeoFriendly } from 'utils';
 import { slayItemTypes } from 'constants/ItemTypes';
 
 import 'styles/courseBox.scss';
@@ -19,7 +19,6 @@ const CourseCard = ({
 	name,
 	color,
 	skills,
-	courses,
 	iconUrl,
 	itemType,
 	isCourses,
@@ -33,7 +32,7 @@ const CourseCard = ({
 			</div>
 		}
 		<Link
-			to={`/learn/${getCourseNameById(courses, id)}/${id}/1`}
+			to={`/learn/${toSeoFriendly(name, 100)}/${id}/${itemType}`}
 			className="course-card-wrapper"
 		>
 			<div className="image-wrapper" style={{ backgroundColor: color }}>
@@ -57,7 +56,7 @@ const CourseCard = ({
 				<img
 					src={iconUrl}
 					alt="Course Icon"
-					className={`card-image ${itemType === slayItemTypes.course || isCourses ? 'round' : ''}`}
+					className={`card-image ${(itemType === slayItemTypes.course || isCourses) ? 'round' : ''}`}
 				/>
 			</div>
 			<div className="info-container">

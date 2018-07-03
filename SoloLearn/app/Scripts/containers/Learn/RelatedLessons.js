@@ -8,6 +8,7 @@ import 'styles/relatedLessons.scss';
 import { translate } from 'react-i18next';
 
 const RelatedLessons = ({
+	t,
 	id,
 	userID,
 	userName,
@@ -15,7 +16,6 @@ const RelatedLessons = ({
 	lessonsByUser,
 	relevantLessons,
 	implementations,
-	t
 }) => (
 	<div className="related-container">
 		{	(implementations && !!implementations.length) &&

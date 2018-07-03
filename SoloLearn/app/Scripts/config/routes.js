@@ -15,6 +15,7 @@ import SlaySearch from 'containers/Learn/SlaySearch';
 import SlayLesson from 'containers/Learn/SlayLesson';
 import SlayDetailed from 'containers/Learn/SlayDetailed';
 import SlayBookmarks from 'containers/Learn/SlayBookmarks';
+import SlayMoreOnTopic from 'containers/Learn/SlayMoreOnTopic';
 import SlayMoreByAuthor from 'containers/Learn/SlayMoreByAuthor';
 
 // Learn
@@ -74,6 +75,7 @@ export default (
 		<Route path="/learn" component={SlayHome} />
 		<Route path="/learn/search/:query" component={SlaySearch} />
 		<Route path="/learn/bookmarks" component={SlayBookmarks} />
+		<Route path="/learn/more-on/:courseId" component={SlayMoreOnTopic} />
 		<Route path="/learn/more/author/:userId" component={SlayMoreByAuthor} />
 		<Route path="/learn/more/:collectionId" component={SlayDetailed} />
 		<Route path="/learn/slayLesson/:itemType/:lessonId/:pageNumber(/:language(/:codeID))" component={SlayLesson} />
