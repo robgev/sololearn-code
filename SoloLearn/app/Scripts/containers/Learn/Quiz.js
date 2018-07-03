@@ -19,6 +19,7 @@ import Paper from 'material-ui/Paper';
 
 // Additional data and components
 import QuizAnswers, { CheckBar } from 'components/Shared/Quiz';
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import QuizText from '../Learn/QuizText';
 
 // i18n
@@ -63,18 +64,13 @@ const styles = {
 };
 
 class Quiz extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			hintOpened: false,
-			unlockOpened: false,
-			notAvailable: false,
-			checkResult: null,
-			isQuizComplete: false,
-		};
-		this.hintPrice = 0;
-		this.skipPrice = 0;
-	}
+	state = {
+		hintOpened: false,
+		unlockOpened: false,
+		notAvailable: false,
+		checkResult: null,
+		isQuizComplete: false,
+	};
 
 	componentWillUnmount() {
 		this.props.selectLesson(null);
@@ -82,8 +78,12 @@ class Quiz extends Component {
 	}
 
 	handleHint = () => {
-		if (Progress.consumePoints(this.hintPrice)) {
-			Progress.applyHint(this.props.activeQuiz.id, PointExchangeTypes.Hint, this.hintPrice);
+		if (Progress.consumePoints(this.props.activeModule.hintPrice)) {
+			Progress.applyHint(
+				this.props.activeQuiz.id,
+				PointExchangeTypes.Hint,
+				this.props.activeModule.hintPrice,
+			);
 			if (this.quiz.hint()) {
 				this.setState({ checkResult: true });
 			}
@@ -102,8 +102,12 @@ class Quiz extends Component {
 	}
 
 	handleUnlock = () => {
-		if (Progress.consumePoints(this.skipPrice)) {
-			Progress.applyHint(this.props.activeQuiz.id, PointExchangeTypes.Skip, this.skipPrice);
+		if (Progress.consumePoints(this.props.activeModule.skipPrice)) {
+			Progress.applyHint(
+				this.props.activeQuiz.id,
+				PointExchangeTypes.Skip,
+				this.props.activeModule.skipPrice,
+			);
 			this.quiz.unlock();
 			this.setState({ checkResult: true });
 			this.handleUnlockDialogClose();
@@ -136,59 +140,49 @@ class Quiz extends Component {
 		const activeQuizData = this.props.activeQuiz;
 		const quiz = this.props.quizzes[activeQuizData.id];
 
-		if (this.props.isShortcut) {
-			const quizIndex = this.props.shortcutLesson.quizzes.findIndex(item => item.id === quiz.id);
+		// If lesson is checkpoint then quiz next quiz is text
+		const nextisText = lesson.type === 0;
 
-			if (quizIndex < this.props.shortcutLesson.quizzes.length - 1) {
-				const nextQuiz = this.props.shortcutLesson.quizzes[quizIndex + 1];
-				this.props.loadLessonLink(nextQuiz.id, nextQuiz.number, false, 2);
-				// this.handleCheckDialogClose();
-			}
-		} else {
-			// If lesson is checkpoint then quiz next quiz is text
-			const nextisText = lesson.type === 0;
+		if (this.state.checkResult) {
+			const quizIndex = lesson.quizzes.indexOf(quiz);
 
-			if (this.state.checkResult) {
-				const quizIndex = lesson.quizzes.indexOf(quiz);
-
-				// If there are more quizzes in lesson, continue lesson
-				if (quizIndex < lesson.quizzes.length - 1) {
-					const nextQuiz = lesson.quizzes[quizIndex + 1];
-					this.props
-						.loadLessonLink(nextQuiz.id, parseInt(activeQuizData.number, 10) + 1, nextisText, 2);
-					this.setState({ checkResult: null });
-				} else {
-					const { lessons } = this.props.activeModule;
-					const module = this.props.activeModule;
-
-					// If this was last lesson in module
-					if (lessons[lessons.length - 1] === lesson) {
-						const { modules } = this.props.course;
-						// If this was last module
-						if (modules[modules.length - 1] === module) {
-							// TODO: Show congrats
-							// alert('CONGRATS');
-						} else {
-							// Go back to module list
-							browserHistory.push('/learn/');
-						}
-					} else {
-						// Else show lessons
-						this.setState({ checkResult: null });
-						browserHistory.push(`/learn/${this.props.activeModuleId}/${this.props.params.moduleName}/`);
-					}
-					// return;
-				}
-
-				// this.handleCheckDialogClose();
+			// If there are more quizzes in lesson, continue lesson
+			if (quizIndex < lesson.quizzes.length - 1) {
+				const nextQuiz = lesson.quizzes[quizIndex + 1];
+				this.props
+					.loadLessonLink(nextQuiz.id, parseInt(activeQuizData.number, 10) + 1, nextisText, 2);
+				this.setState({ checkResult: null });
 			} else {
-				const nextQuizNumber = nextisText
-					? parseInt(activeQuizData.number, 10) - 1
-					: parseInt(activeQuizData.number, 10);
+				const { lessons } = this.props.activeModule;
+				const module = this.props.activeModule;
 
-				this.props.loadLessonLink(activeQuizData.id, nextQuizNumber, nextisText, 2);
-				// this.handleCheckDialogClose();
+				// If this was last lesson in module
+				if (lessons[lessons.length - 1] === lesson) {
+					const { modules } = this.props.course;
+					// If this was last module
+					if (modules[modules.length - 1] === module) {
+						// TODO: Show congrats
+						// alert('CONGRATS');
+					} else {
+						// Go back to module list
+						browserHistory.push('/learn/');
+					}
+				} else {
+					// Else show lessons
+					this.setState({ checkResult: null });
+					browserHistory.push(`/learn/${this.props.activeModuleId}/${this.props.params.moduleName}/`);
+				}
+				// return;
 			}
+
+			// this.handleCheckDialogClose();
+		} else {
+			const nextQuizNumber = nextisText
+				? parseInt(activeQuizData.number, 10) - 1
+				: parseInt(activeQuizData.number, 10);
+
+			this.props.loadLessonLink(activeQuizData.id, nextQuizNumber, nextisText, 2);
+			// this.handleCheckDialogClose();
 		}
 	}
 	onChange = ({ isComplete }) => {
@@ -225,24 +219,18 @@ class Quiz extends Component {
 			course,
 			// params,
 			quizzes,
-			isLoaded,
 			activeQuiz,
 			activeModule,
 			t,
 		} = this.props;
 		const { checkResult, isQuizComplete } = this.state;
 
-		if (!isLoaded && !this.props.isShortcut) {
-			return <div>Loading...</div>;
+		if (!this.props.isLoaded) {
+			return <LoadingOverlay />;
 		}
 
 		const quiz = quizzes[activeQuiz.id];
-
-		if (!this.props.isShortcut) {
-			this.hintPrice = activeModule.hintPrice;
-			this.skipPrice = activeModule.skipPrice;
-		}
-
+		this.props.activeModule.skipPrice = activeModule.skipPrice;
 		if (activeQuiz.isText) {
 			ReactGA.ga('send', 'screenView', { screenName: 'Lesson Text Page' });
 			return (
@@ -316,7 +304,7 @@ class Quiz extends Component {
 					open={this.state.unlockOpened}
 					onRequestClose={this.handleUnlockDialogClose}
 				>
-					{t('learn.popups.unlock.description', { price: this.skipPrice, total: this.props.userXp })}
+					{t('learn.popups.unlock.description', { price: this.props.activeModule.skipPrice, total: this.props.userXp })}
 				</Dialog>
 				<Dialog
 					title="Get a hint"
@@ -324,7 +312,8 @@ class Quiz extends Component {
 					open={this.state.hintOpened}
 					onRequestClose={this.handleHintDialogClose}
 				>
-					Use {this.hintPrice} XP of you total {this.props.userXp} XP to get a hint
+					Use
+					{this.props.activeModule.hintPrice} XP of you total {this.props.userXp} XP to get a hint
 				</Dialog>
 			</div >
 		);

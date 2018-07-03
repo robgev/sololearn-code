@@ -156,7 +156,7 @@ const TextContent = props => (
 
 const NoteBlock = props => (
 	<div className="note-block" style={styles.noteBlock}>
-		<span className="note" style={styles.note} dangerouslySetInnerHTML={{ __html: props.noteText }} />
+	<span className="note" style={styles.note} dangerouslySetInnerHTML={{ __html: props.noteText }} />
 	</div>
 );
 
@@ -413,8 +413,8 @@ class QuizText extends Component {
 					<CodeBlock
 						key={index}
 						basePath={pathname}
-						text={element.props.codeText}
-						codeId={element.props.codeId}
+	text={element.props.codeText}
+	codeId={element.props.codeId}
 						format={element.props.format}
 						courseLanguage={courseLanguage}
 					/>
@@ -427,50 +427,50 @@ class QuizText extends Component {
 		});
 	}
 
-	toggleBookmark = async () => {
-		const { quizId: id, type } = this.props;
-		const { isBookmarked: bookmark } = this.state;
-		const { isBookmarked } =
-			await Service.request('/BookmarkLesson', { id, type, bookmark: !bookmark });
-		this.setState({ isBookmarked });
-	}
+    toggleBookmark = async () => {
+    	const { quizId: id, type } = this.props;
+    	const { isBookmarked: bookmark } = this.state;
+    	const { isBookmarked } =
+            await Service.request('/BookmarkLesson', { id, type, bookmark: !bookmark });
+    	this.setState({ isBookmarked });
+    }
 
-	render() {
-		const { isBookmarked } = this.state;
-		const {
-			withToolbar, userData, date, quizId,
-		} = this.props;
-		return (
-			<div className="text-container" style={styles.textContainer}>
-				{tooltipOpened}
-				{tooltipTopPlaced}
-				{tooltipRightPlaced}
-				{tooltipLeftPlaced}
-				{tooltipBottomPlaced}
-				<div id="text-content">{this.renderComponentParts()}</div>
-				{ withToolbar &&
-					<SlayLessonToolbar
-						id={quizId}
-						userData={userData}
-						isBookmarked={isBookmarked}
-						timePassed={updateDate(date)}
-						toggleBookmark={this.toggleBookmark}
-					/>
-				}
-			</div>
-		);
-	}
+    render() {
+    	const { isBookmarked } = this.state;
+    	const {
+    		withToolbar, userData, date, quizId,
+    	} = this.props;
+    	return (
+	<div className="text-container" style={styles.textContainer}>
+    			{tooltipOpened}
+    			{tooltipTopPlaced}
+    			{tooltipRightPlaced}
+    			{tooltipLeftPlaced}
+    			{tooltipBottomPlaced}
+    			<div id="text-content">{this.renderComponentParts()}</div>
+    			{withToolbar &&
+                    <SlayLessonToolbar
+                    	id={quizId}
+                    	userData={userData}
+                    	isBookmarked={isBookmarked}
+                    	timePassed={updateDate(date)}
+                    	toggleBookmark={this.toggleBookmark}
+                    />
+    			}
+    		</div>
+    	);
+    }
 
-	componentDidUpdate() {
-		const glossaryItems = document.getElementsByClassName('glossary-item');
-		for (let i = 0; i < glossaryItems.length; i++) {
-			const item = glossaryItems[i];
-			item.addEventListener('mouseleave', e => this.closeTooltip(e, item));
-			item.addEventListener('mouseenter', e => this.openTooltip(e, item, 'right'));
-		}
-	}
+    componentDidUpdate() {
+    	const glossaryItems = document.getElementsByClassName('glossary-item');
+    	for (let i = 0; i < glossaryItems.length; i++) {
+    		const item = glossaryItems[i];
+    		item.addEventListener('mouseleave', e => this.closeTooltip(e, item));
+    		item.addEventListener('mouseenter', e => this.openTooltip(e, item, 'right'));
+    	}
+    }
 
-	// REMOVE EVENT LISTENERS
+    // REMOVE EVENT LISTENERS
 }
 
 export default translate()(Radium(QuizText));

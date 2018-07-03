@@ -22,7 +22,6 @@ import Modules from 'containers/Learn/Modules';
 import Lessons from 'containers/Learn/Lessons';
 import QuizManager from 'containers/Learn/QuizManager';
 import Quiz from 'containers/Learn/Quiz';
-import Shortcut from 'containers/Learn/Shortcut';
 
 // Discuss
 import Questions from 'containers/Discuss/QuestionsBase';

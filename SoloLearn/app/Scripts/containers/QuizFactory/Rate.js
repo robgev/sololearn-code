@@ -76,38 +76,39 @@ class Rate extends Component {
 		} = this.state;
 		return (
 			<Layout className="rate-container">
-				{challenge !== null
-					? (
-						<div className="challenge-container">
-							<Paper className="stretch">
+				<div className="challenge-container">
+					<Paper className="stretch">
+						{
+							challenge !== null ?
 								<Quiz
 									quiz={challenge}
 									onChange={this.onChange}
 									disabled={checkResult !== null}
 									ref={(q) => { this.quiz = q; }}
+								/> : <LoadingOverlay />
+						}
+					</Paper>
+					{challenge !== null ? (
+						<div className="check-container">
+							<div>
+								<FlatButton
+									className="check-container-button"
+									label="Skip"
+									onClick={this.getChallenge}
+									primary
 								/>
-							</Paper>
-							<div className="check-container">
-								<div>
-									<FlatButton
-										className="check-container-button"
-										label="Skip"
-										onClick={this.getChallenge}
-										primary
-									/>
-									<RaisedButton
-										className="check-container-button"
-										label={this.checkBarLabel}
-										onClick={this.checkBarOnClick}
-										secondary
-										disabled={!isQuizComplete}
-									/>
-								</div>
-								<CheckIndicator status={checkResult} />
+								<RaisedButton
+									className="check-container-button"
+									label={this.checkBarLabel}
+									onClick={this.checkBarOnClick}
+									secondary
+									disabled={!isQuizComplete}
+								/>
 							</div>
+							<CheckIndicator status={checkResult} />
 						</div>
-					)
-					: <div><LoadingOverlay /></div>}
+					) : null}
+				</div>
 				{voteOpen ?
 					<div className="vote-container">
 						<RaisedButton
@@ -126,8 +127,8 @@ class Rate extends Component {
 							onClick={this.dislike}
 							primary
 						/>
-					</div>
-					: null}
+					</div> : null
+				}
 			</Layout>
 		);
 	}

@@ -29,6 +29,7 @@ import Service from 'api/service';
 // Additional data and components
 import Comments from 'containers/Comments/CommentsBase';
 import Layout from 'components/Layouts/GeneralLayout';
+import LoadingOverlay from 'components/Shared/LoadingOverlay';
 
 import StepIcon from './StepIcon';
 
@@ -272,7 +273,7 @@ class QuizManager extends Component {
 		if (loading || (!isLoaded) ||
 			(!activeQuiz) ||
 			(this.props.params.quizNumber && !this.props.activeQuiz)) {
-			return <div>Loading...</div>;
+			return <LoadingOverlay />;
 		}
 
 		const { quizzes } = activeLesson;
