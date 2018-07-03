@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import { browserHistory } from 'react-router';
 import { setSuggestionChallenge } from 'actions/quizFactory';
 import Layout from 'components/Layouts/GeneralLayout';
 import Quiz, { CheckBar } from 'components/Shared/Quiz';
+import LoadingButton from 'components/Shared/LoadingButton';
 import SuggestMultipleChoice from './SuggestMultipleChoice';
 import SuggestTypeIn from './SuggestTypeIn';
 import SuggestFillIn from './SuggestFillIn';
@@ -24,6 +24,7 @@ class SuggestTypeSelector extends Component {
 		previewQuiz: null,
 		isQuizComplete: false,
 		checkResult: null,
+		isSubmitting: false,
 	}
 	componentWillUnmount() {
 		this.props.setSuggestionChallenge(null);
@@ -62,6 +63,7 @@ class SuggestTypeSelector extends Component {
 		this.setPreview(null);
 	}
 	handleSubmit = () => {
+		this.setState({ isSubmitting: true });
 		const { previewQuiz } = this.state;
 		const answers = previewQuiz.answers
 			.map(({ text, properties, isCorrect }) => ({ text, properties, isCorrect }));
@@ -103,10 +105,12 @@ class SuggestTypeSelector extends Component {
 		return this.tryAgain;
 	}
 	render() {
-		const { previewQuiz, checkResult, isQuizComplete } = this.state;
+		const {
+			previewQuiz, checkResult, isQuizComplete, isSubmitting,
+		} = this.state;
 		const actions = [
 			<FlatButton onClick={this.closePreview} label="Cancel" primary />,
-			<RaisedButton onClick={this.handleSubmit} label="Submit" primary />,
+			<LoadingButton raised onClick={this.handleSubmit} label="Submit" primary loading={isSubmitting} />,
 		];
 		return (
 			<Layout>
