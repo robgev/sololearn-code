@@ -107,7 +107,6 @@ export default (
 		<Route path="/notifications" component={redirector(Notifications)} />
 		<Route path="/discover(/:query)" component={redirector(DiscoverContainer)} />
 		<Route path="/quiz-factory" component={QuizFactoryMenu} />
-		<Route path="/quiz-factory/suggest" component={QuizFactorySuggest} />
 		<Route path="/quiz-factory/suggest/:type" component={QuizFactorySuggestTypeSelector} />
 		<Route path="/quiz-factory/rate/:courseId" component={QuizFactoryRate} />
 		<Route path="/quiz-factory/my-submissions" component={QuizFactoryMySubmissions} />
