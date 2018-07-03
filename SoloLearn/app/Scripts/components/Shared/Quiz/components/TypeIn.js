@@ -9,6 +9,9 @@ class TypeIn extends Component {
 		text: '',
 	}
 	correctAnswer = this.props.quiz.answers[0];
+	componentDidMount() {
+		this.input.focus();
+	}
 	_onChange = (_, text) => {
 		this.setState({ text });
 		this.props.onChange({ isComplete: this.isComplete(text) });
@@ -41,10 +44,11 @@ class TypeIn extends Component {
 						name="answer-placeholder"
 						maxLength={this.correctAnswer.text.length}
 						style={{ width: `${this.correctAnswer.text.length}em` }}
-						inputStyle={{ textAlign: 'center' }}
+						inputStyle={{ textAlign: 'center', overflow: 'hidden' }}
 						value={text}
 						onChange={this._onChange}
 						disabled={disabled}
+						ref={(i) => { this.input = i; }}
 					/>
 					<span>{this.correctAnswer.properties.postfix}</span>
 				</div>

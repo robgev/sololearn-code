@@ -8,13 +8,14 @@ import quizType from './types';
 const formatAnswers = (answerText, inputs, onChange, disabled) => {
 	const regex = /\{(\d)}/;
 	return answerText
-		.split(regex).reduce((acc, curr) => (acc.isMark
+		.split(regex).reduce((acc, curr, index) => (acc.isMark
 			? ({
 				result: [ ...acc.result,
-					<div key={curr} style={{ display: 'inline-block' }}>
+				// eslint-disable-next-line react/no-array-index-key
+					<div key={index} style={{ display: 'inline-block' }}>
 						<span>{inputs[curr].properties.prefix}</span>
 						<TextField
-							inputStyle={{ textAlign: 'center' }}
+							inputStyle={{ textAlign: 'center', overflow: 'hidden' }}
 							id={inputs[curr].id.toString()}
 							value={inputs[curr].text}
 							style={{ width: `${inputs[curr].correct.length}em` }}
@@ -28,7 +29,8 @@ const formatAnswers = (answerText, inputs, onChange, disabled) => {
 				isMark: false,
 			})
 			: ({
-				result: [ ...acc.result, <span style={{ whiteSpace: 'pre' }} key={curr}>{curr}</span> ], isMark: true,
+				// eslint-disable-next-line react/no-array-index-key
+				result: [ ...acc.result, <span style={{ whiteSpace: 'pre' }} key={index}>{curr}</span> ], isMark: true,
 			})), { result: [], isMark: false }).result;
 };
 
