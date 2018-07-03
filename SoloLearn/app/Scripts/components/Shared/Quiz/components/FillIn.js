@@ -30,7 +30,7 @@ const formatAnswers = (answerText, inputs, onChange, disabled) => {
 			})
 			: ({
 				// eslint-disable-next-line react/no-array-index-key
-				result: [ ...acc.result, <span style={{ whiteSpace: 'pre' }} key={index}>{curr}</span> ], isMark: true,
+				result: [ ...acc.result, <span style={{ whiteSpace: 'pre-wrap' }} key={index}>{curr}</span> ], isMark: true,
 			})), { result: [], isMark: false }).result;
 };
 

@@ -11,6 +11,15 @@
 	.challenge-container {
 		display: flex;
 		flex-direction: column;
+		.challenge {
+			min-height: 60%;
+			align-self: stretch;
+		}
+		.center-loading {
+			align-items: center;
+			margin: auto;
+			min-height: inherit;
+		}
 		.check-container {
 			display: flex;
 			flex-direction: row-reverse;
@@ -20,10 +29,6 @@
 			.check-container-button {
 				width: 120px;
 			}
-		}
-		.stretch {
-			min-height: 60%;
-			align-self: stretch;
 		}
 	}
 }

@@ -3,10 +3,10 @@ import Layout from 'components/Layouts/GeneralLayout';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
+import CircularProgress from 'material-ui/CircularProgress';
 import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
 import Quiz, { CheckIndicator } from 'components/Shared/Quiz';
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import { getReviewChallenge, voteChallenge } from './api';
 import './rateStyles.scss';
 
@@ -20,6 +20,7 @@ class Rate extends Component {
 			checkResult: null,
 		};
 		document.title = 'Sololearn | Rate Quizes';
+		this.preloaded = null;
 	}
 	componentWillMount() {
 		this.getChallenge();
@@ -34,9 +35,18 @@ class Rate extends Component {
 	}
 	getChallenge = async () => {
 		this.closeChallenge();
-		const { courseId } = this.props.params;
-		const challenge = await getReviewChallenge(courseId);
-		this.setState({ challenge });
+		const { preloaded } = this;
+		this.preload();
+		if (preloaded !== null) {
+			this.setState({ challenge: preloaded });
+		} else {
+			const challenge = await getReviewChallenge(this.props.params.courseId);
+			this.setState({ challenge });
+		}
+	}
+	preload = async () => {
+		this.preloaded = null; // need to not repeat preloaded quizes
+		this.preloaded = await getReviewChallenge(this.props.params.courseId);
 	}
 	closeChallenge = () => {
 		this.setState({
@@ -81,15 +91,16 @@ class Rate extends Component {
 		return (
 			<Layout className="rate-container">
 				<div className="challenge-container">
-					<Paper className="stretch">
+					<Paper className="challenge">
 						{
 							challenge !== null ?
 								<Quiz
+									key={challenge.id} // need for remounting if preloaded
 									quiz={challenge}
 									onChange={this.onChange}
 									disabled={checkResult !== null}
 									ref={(q) => { this.quiz = q; }}
-								/> : <LoadingOverlay />
+								/> : <CircularProgress size={40} style={{ display: 'flex' }} className="center-loading" />
 						}
 					</Paper>
 					{challenge !== null ? (

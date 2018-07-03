@@ -21,6 +21,10 @@
 	}
 	.fill-in-answers-container {
 		margin: 20px;
+		* {
+			word-break: break-all;
+			white-space: pre-wrap;
+		}
 	}
 	.answer-input-field {
 		overflow: hidden;

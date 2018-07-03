@@ -37,7 +37,7 @@ class TypeIn extends Component {
 		const { disabled } = this.props;
 		return (
 			<div className="question-container" >
-				<p className="question-text" style={{ whiteSpace: 'pre' }}>{this.props.quiz.question}</p>
+				<p className="question-text">{this.props.quiz.question}</p>
 				<div className="placeholder-container">
 					<span>{this.correctAnswer.properties.prefix}</span>
 					<TextField
