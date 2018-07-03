@@ -25,6 +25,11 @@
 			word-break: break-all;
 			white-space: pre-wrap;
 		}
+		.placeholder-dnd-item {
+			border-bottom: 1px solid black;
+			text-align: center;
+			cursor: pointer;
+		}
 	}
 	.answer-input-field {
 		overflow: hidden;
