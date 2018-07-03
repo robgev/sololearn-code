@@ -71,6 +71,7 @@ const makeEditableContent = (answerText, answers) => {
 
 class SuggestFillIn extends Component {
 	state = {
+		isMarkEnabled: false,
 		language: null,
 		isLanguageSelectorOpen: false,
 		question: 'Fill in the blanks to ',
@@ -106,7 +107,7 @@ class SuggestFillIn extends Component {
 		this.setState({ question: e.target.value });
 	}
 	onEditorChange = (editorState) => {
-		this.setState({ editorState });
+		this.setState({ editorState, isMarkEnabled: this.hasSelection(editorState) });
 	}
 	focusEditor = () => {
 		this.editor.focus();
@@ -166,7 +167,7 @@ class SuggestFillIn extends Component {
 	}
 	render() {
 		const {
-			isLanguageSelectorOpen, language, question, editorState,
+			isLanguageSelectorOpen, language, question, editorState, isMarkEnabled,
 		} = this.state;
 		return (
 			<div className="quiz-factory">
@@ -184,11 +185,12 @@ class SuggestFillIn extends Component {
 				<Paper className="container editor-box">
 					<div className="title-with-button">
 						<span className="title">Code</span>
-						<FlatButton label="Mark" secondary onClick={this.markHighlighted} />
+						<FlatButton label="Mark" secondary onClick={this.markHighlighted} disabled={!isMarkEnabled} />
 					</div>
 					<div className="editor" onClick={this.focusEditor} role="button" tabIndex={0}>
 						<Editor
 							ref={(editor) => { this.editor = editor; }}
+							onSelect={this.onEditorChange}
 							editorState={editorState}
 							onChange={this.onEditorChange}
 							textDirection="LTR"
