@@ -40,8 +40,8 @@ class CodePreview extends PureComponent {
 				<CourseChip
 					disabled
 					noName
-					noBoxShadow
 					size={40}
+					noBoxShadow
 					color={color}
 					iconUrl={iconUrl}
 				/>

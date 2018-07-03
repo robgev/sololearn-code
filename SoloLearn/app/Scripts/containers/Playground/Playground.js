@@ -115,7 +115,7 @@ class Playground extends Component {
 			this.setDefaultSettings();
 		} else if (params.primary.length !== customUserCodeHashLength) {
 			// if first param is not auto-generated id with predefined length
-			const isNumber = params.secondary ? params.secondary.match(/\d+/) : null;
+			const isNumber = params.secondary ? params.secondary.match(/^\d+$/) : null;
 			if (!isNumber) {
 				const foundEditorSettingKey = findKey(editorSettings, { alias: params.primary });
 				if (foundEditorSettingKey) {

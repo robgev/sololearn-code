@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Circle } from 'react-progressbar.js';
-import { getCourseAliasById } from 'utils';
 import { slayItemTypes } from 'constants/ItemTypes';
 
 import 'styles/components/Shared/CodePenCard.scss';
@@ -19,7 +18,6 @@ const CodePenCard = ({
 	name,
 	color,
 	skills,
-	courses,
 	iconUrl,
 	itemType,
 	isCourses,
@@ -33,11 +31,7 @@ const CodePenCard = ({
 			</div>
 		}
 		<Link
-			to={
-				itemType === slayItemTypes.course || isCourses ?
-					`/learn/${getCourseAliasById(courses, id)}` :
-					`/learn/slayLesson/${itemType}/${id}/1`
-			}
+			to={`/learn/slayLesson/${itemType}/${id}/1`}
 			className="code-pen-wrapper"
 		>
 			<div className="image-wrapper" style={{ backgroundColor: color }}>

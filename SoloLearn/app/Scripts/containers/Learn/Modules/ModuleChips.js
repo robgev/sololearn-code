@@ -20,6 +20,7 @@ const ModuleChips = ({
 	onClick,
 	modules,
 	courseId,
+	itemType,
 	courseName,
 }) => (
 	<div className="modules-chips-container">
@@ -49,7 +50,7 @@ const ModuleChips = ({
 						>
 							<Link
 								className={`content ${alignmentClass}`}
-								to={`/learn/${courseName}/${module.id}/${toSeoFrendly(module.name, 100)}`}
+								to={`/learn/${courseName}/${courseId}/${itemType}/${module.id}/${toSeoFrendly(module.name, 100)}`}
 								onClick={e => onClick(e, module.id, moduleState)}
 							>
 								<Paper

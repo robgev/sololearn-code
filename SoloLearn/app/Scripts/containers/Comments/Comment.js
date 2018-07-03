@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 // Material UI components
-import { TextField, IconMenu, MenuItem, FlatButton, IconButton } from 'material-ui';
+import { IconMenu, MenuItem, FlatButton, IconButton } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import Linkify from 'react-linkify';
@@ -70,12 +70,14 @@ class Comment extends Component {
 						primary={hasReplies}
 						disabled={!hasReplies || comment.index === -1}
 						onClick={this.openCloseReplies}
+						style={{ height: 24, lineHeight: '24px' }}
 					/>}
 				<FlatButton
 					label={t('comments.reply')}
 					primary
 					onClick={() =>
 						this.props.openReplyBoxToolbar(comment.id, comment.parentID, comment.userName, isReply)}
+					style={{ height: 24, lineHeight: '24px' }}
 				/>
 			</div>
 		);
@@ -259,7 +261,7 @@ class Comment extends Component {
 		const isEditing = (this.props.isEditing && activeComment.id === id);
 
 		return (
-			<div style={{ ...styles.commentContainer.base, marginLeft: isReply ? 20 : 0 }}>
+			<div style={{ marginLeft: isReply ? 20 : 0 }}>
 				<div style={styles.comment.base}>
 					<div style={styles.commentConent}>
 						<ProfileAvatar
@@ -298,6 +300,7 @@ class Comment extends Component {
 										accessLevel={accessLevel}
 										totalVotes={comment.votes}
 										getDownvotes={this.getDownvotes}
+										buttonStyle={{ height: 32, width: 32, padding: 0 }}
 										onUpvote={() => this.props.voteComment(comment, 1)}
 										onDownvote={() => this.props.voteComment(comment, -1)}
 									/>

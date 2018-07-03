@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import Paper from 'material-ui/Paper';
+import { toSeoFrendly } from 'utils';
 import { Circle } from 'react-progressbar.js';
 import 'styles/courseChip.scss';
 
@@ -12,7 +12,6 @@ const CustomWrapper = ({ children, className }) => (
 
 const CourseChip = ({
 	id,
-	alias,
 	name,
 	round,
 	iconUrl,
@@ -20,12 +19,12 @@ const CourseChip = ({
 	disabled,
 	progress,
 	isCourse,
-	itemType,
 	language,
 	size = 95,
 	className,
 	paperStyle,
 	customLink,
+	itemType = 1,
 	noBoxShadow,
 	wrapperStyle,
 	color = 'white',
@@ -39,7 +38,7 @@ const CourseChip = ({
 				...wrapperStyle,
 			}}
 			className={`chip-container ${(roundItem) ? 'round' : ''} ${className}`}
-			to={customLink || (isCourse ? `/learn/${alias}` : `/learn/slayLesson/${itemType}/${id}/1`)}
+			to={customLink || (isCourse ? `/learn/${toSeoFrendly(name, 100)}/${id}/${itemType}` : `/learn/slayLesson/${itemType}/${id}/1`)}
 		>
 			<div
 				className={`course-chip-image-container ${(roundItem) ? 'round' : ''} ${noBoxShadow ? '' : 'with-shadow'}`}
@@ -67,6 +66,9 @@ const CourseChip = ({
 				<img
 					src={iconUrl}
 					alt="Course Icon"
+					style={{
+						backgroundColor: color,
+					}}
 					className={`chip-image ${(roundItem) ? 'round' : ''}`}
 				/>
 				{ (!(roundItem) && language) &&

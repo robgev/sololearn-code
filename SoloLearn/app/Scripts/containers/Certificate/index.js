@@ -51,8 +51,8 @@ class Certificate extends PureComponent {
 	redirect = () => {
 		const { params: { id }, courses } = this.props;
 		const courseId = parseInt(id, 10);
-		const { alias } = courses.find(singleCourse => singleCourse.id === courseId);
-		browserHistory.replace(`/learn/${alias}`);
+		const { name } = courses.find(singleCourse => singleCourse.id === courseId);
+		browserHistory.replace(`/learn/${name}/${id}/1`);
 	}
 
 	render() {

@@ -18,7 +18,7 @@ import SlayBookmarks from 'containers/Learn/SlayBookmarks';
 import SlayMoreByAuthor from 'containers/Learn/SlayMoreByAuthor';
 
 // Learn
-import Modules from 'containers/Learn/Modules';
+import CourseMore from 'containers/Learn/CourseMore';
 import Lessons from 'containers/Learn/Lessons';
 import QuizManager from 'containers/Learn/QuizManager';
 import Quiz from 'containers/Learn/Quiz';
@@ -83,11 +83,10 @@ export default (
 				<IndexRoute component={Quiz} />
 			</Route>
 		</Route>
-		<Redirect path="/courses(/:courseName)" to="/learn(/:courseName)" />
-		<Redirect path="/course(/:courseName)" to="/learn(/:courseName)" />
-		<Route path="/learn(/:courseName)" component={Modules} />
-		<Route path="/learn/:courseName/:moduleId(/:moduleName)" component={Lessons} />
-		<Route path="/learn/:courseName/:moduleId/:moduleName/:lessonId(/:lessonName)" component={QuizManager}>
+		<Redirect path="/courses/:courseName/:courseId/:itemType" to="/learn/:courseName/:courseId/:itemType" />
+		<Route path="/learn/:courseName/:courseId/:itemType" component={CourseMore} />
+		<Route path="/learn/:courseName/:courseId/:itemType/:moduleId(/:moduleName)" component={Lessons} />
+		<Route path="/learn/:courseName/:courseId/:itemType/:moduleId/:moduleName/:lessonId(/:lessonName)" component={QuizManager}>
 			<Route path=":quizNumber(/:primary)(/:secondary)" component={Quiz} />
 		</Route>
 		<Route path="/codes" component={Codes} />

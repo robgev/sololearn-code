@@ -37,7 +37,14 @@ class Shortcut extends PureComponent {
 	}
 
 backToLearn = () => {
-	browserHistory.push(`/learn/${this.props.params.courseName}`);
+	const {
+		params: {
+			courseName,
+			courseId,
+			itemType,
+		},
+	} = this.props;
+	browserHistory.push(`/learn/${courseName}/${courseId}/${itemType}`);
 }
 
 render() {

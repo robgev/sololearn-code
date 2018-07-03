@@ -86,7 +86,11 @@ class QuizManager extends Component {
 				// 1 - Module is disabled
 				// 2 - Module is active
 				// 3 - Module is finished
-				const { params: { courseName, moduleName } } = this.props;
+				const {
+					params: {
+						courseName, moduleName, courseId, itemType,
+					},
+				} = this.props;
 				const { _visualState: lessonState } = Progress.getLessonStateById(lessonId);
 
 				const { _visualState: moduleState } = Progress.getModuleStateById(moduleId);
@@ -106,12 +110,12 @@ class QuizManager extends Component {
 							localProgress[localProgress.length - 1].lessonID :
 							lessons[0].id;
 						this.setActiveLesson(activeLessonId, activeModuleId);
-						browserHistory.replace(`/learn/${courseName}/${activeModuleId}/${toSeoFrendly(moduleName, 100)}/${activeLessonId}/${toSeoFrendly(this.props.activeLesson.name, 100)}/${this.props.activeQuiz.number}`);
+						browserHistory.replace(`/learn/${courseName}/${courseId}/${itemType}/${activeModuleId}/${toSeoFrendly(moduleName, 100)}/${activeLessonId}/${toSeoFrendly(this.props.activeLesson.name, 100)}/${this.props.activeQuiz.number}`);
 					} else {
 						const { localProgress } = Progress;
 						const activeLessonId = localProgress[localProgress.length - 1].lessonID;
 						this.setActiveLesson(activeLessonId, moduleId);
-						browserHistory.replace(`/learn/${courseName}/${moduleId}/${toSeoFrendly(moduleName, 100)}/${activeLessonId}/${toSeoFrendly(this.props.activeLesson.name, 100)}/${this.props.activeQuiz.number}`);
+						browserHistory.replace(`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${toSeoFrendly(moduleName, 100)}/${activeLessonId}/${toSeoFrendly(this.props.activeLesson.name, 100)}/${this.props.activeQuiz.number}`);
 					}
 				} else {
 					this.setActiveLesson(lessonId, moduleId);
@@ -235,8 +239,17 @@ class QuizManager extends Component {
 			const newPathName = pathName.substr(0, pathName.length - 1) + number;
 			browserHistory.push(newPathName);
 		} else {
+			const {
+				params: {
+					courseName,
+					courseId,
+					itemType,
+					moduleId,
+					moduleName,
+				},
+			} = this.props;
 			const lesson = this.props.activeLesson;
-			browserHistory.push(`/learn/${this.props.params.courseName}/${this.props.params.moduleId}/${this.props.params.moduleName}/${lesson.id}/${toSeoFrendly(lesson.name, 100)}/${number}`);
+			browserHistory.push(`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}/${lesson.id}/${toSeoFrendly(lesson.name, 100)}/${number}`);
 		}
 	}
 

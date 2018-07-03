@@ -22,8 +22,9 @@ class CodePreview extends Component {
 				<CourseChip
 					disabled
 					noName
-					noBoxShadow
 					size={40}
+					noBoxShadow
+					itemType={1}
 					iconUrl={iconUrl}
 				/>
 				<div className="preview-info">

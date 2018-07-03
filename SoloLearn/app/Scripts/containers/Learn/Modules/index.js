@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
-import Radium from 'radium';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
-import Paper from 'material-ui/Paper';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
@@ -24,6 +22,7 @@ import BusyWrapper from 'components/Shared/BusyWrapper';
 import Layout from 'components/Layouts/GeneralLayout';
 
 import Popup from 'api/popupService';
+import { toSeoFrendly } from 'utils';
 
 import 'styles/Learn/Modules.scss';
 
@@ -64,21 +63,20 @@ class Modules extends Component {
 			course,
 			courses,
 			isLoaded,
-			userProfile,
 			selectModule,
 			loadCourseInternal,
 			params: { courseName },
 		} = this.props;
 		this.setState({ loading: true });
-		if (!isLoaded || courseName !== course.alias) {
-			const courseNameIsANumber = courseName.match(/\d+/);
+		if (!isLoaded || courseName !== toSeoFrendly(course.name, 100)) {
+			const courseNameIsANumber = courseName.match(/^\d+$/);
 			// I've added this temporary code to reroute to the slay lessons
 			// The next if statement needs to be removed after reconstructing the routes
 			if (courseNameIsANumber) {
 				browserHistory.replace(`/learn/slayLesson/2/${courseName}/1`);
 			} else {
 				const currentCourse = courses.find(item =>
-					item.alias.toLowerCase() === courseName.toLowerCase());
+					toSeoFrendly(item.name, 100) === courseName);
 				const courseId = currentCourse ? currentCourse.id : null;
 				await loadCourseInternal(courseId);
 			}
@@ -99,18 +97,6 @@ class Modules extends Component {
 
 	toggleCourse(courseId, enable) {
 		this.props.toggleCourseInternal(courseId, enable);
-	}
-
-	async selectCourse(courseId, addToCourses) {
-		const { alias } = this.props.courses.find(item => item.id === courseId);
-		browserHistory.push(`/learn/${alias}`);
-		this.closeCourseSelect();
-		this.setState({ loading: true });
-		if (addToCourses) {
-		 await this.props.toggleCourseInternal(courseId, true);
-		}
-		await this.props.loadCourseInternal(courseId);
-		this.setState({ loading: false });
 	}
 
 	resetProgress = (courseId) => {
@@ -139,7 +125,7 @@ class Modules extends Component {
 		const {
 			t,
 			course,
-			params: { courseName },
+			params: { itemType, courseName },
 			isLoaded: isModuleLoaded,
 		} = this.props;
 		const { loading } = this.state;
@@ -209,6 +195,7 @@ class Modules extends Component {
 								<ModuleChips
 									courseId={id}
 									modules={modules}
+									itemType={itemType}
 									onClick={this.handleClick}
 									courseName={courseName}
 								/>

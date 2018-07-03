@@ -1,9 +1,8 @@
 // React modules
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-
-// Utils and defaults
-import PopupTypes from '../../../defaults/feedPopupTypes';
+import { toSeoFriendly } from 'utils';
+import PopupTypes from 'defaults/feedPopupTypes';
 
 const styles = {
 	course: {
@@ -29,12 +28,8 @@ const styles = {
 };
 
 class Course extends Component {
-	constructor(props) {
-		super(props);
-	}
-
 	openCoursePopup(e) {
-		const course = this.props.course;
+		const { course } = this.props;
 
 		e.stopPropagation();
 		e.preventDefault();
@@ -48,10 +43,10 @@ class Course extends Component {
 	}
 
 	render() {
-		const course = this.props.course;
+		const { course } = this.props;
 
 		return (
-			<Link to={`/learn/${course.alias}`} className="course" style={styles.course} onClick={e => this.openCoursePopup(e)}>
+			<Link to={`/learn/${toSeoFriendly(course.name)}/${course.id}/1`} className="course" style={styles.course} onClick={this.openCoursePopup}>
 				<img src={`https://api.sololearn.com/uploads/Courses/${course.id}.png`} style={styles.courseIcon} />
 				<p style={styles.courseName}>{course.name}</p>
 			</Link>

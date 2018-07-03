@@ -91,7 +91,7 @@ export const toggleCourseInternal = (courseId, enable) => (dispatch, getState) =
 	});
 };
 
-export const loadCourseInternal = courseId => (dispatch, getState) => {
+export const loadCourseInternal = courseId => async (dispatch, getState) => {
 	const localStorage = new Storage(); // Caching course data
 	let selectedCourseId = courseId || localStorage.load('selectedCourseId');
 	const course = localStorage.load(`c${selectedCourseId}`);
@@ -103,42 +103,22 @@ export const loadCourseInternal = courseId => (dispatch, getState) => {
 	}
 	if (course != null) {
 		localStorage.save('selectedCourseId', course.id);
-		return new Promise((resolve) => {
-			Progress.courseId = course.id;
-			Progress.loadCourse(course); // Getting progress of course
-			Progress.sync().then(() => {
-				structurizeCourse(course.modules, dispatch).then(() => {
-					dispatch(loadCourse(course));
-					resolve();
-				}).catch((error) => {
-					console.log(error);
-				});
-			}).catch((error) => {
-				console.log(error);
-			});
-		});
-	}
-	selectedCourseId = selectedCourseId || userCourses[0].id;
-	localStorage.save('selectedCourseId', selectedCourseId);
-	return Service.request('GetCourse', { id: selectedCourseId }).then((response) => {
-		const { course } = response;
 		Progress.courseId = course.id;
 		Progress.loadCourse(course); // Getting progress of course
-		Progress.sync().then(() => {
-			localStorage.save(`c${selectedCourseId}`, course); // Saveing data to localStorage
-			structurizeCourse(course.modules, dispatch).then(() =>
-				new Promise((resolve) => {
-					dispatch(loadCourse(course));
-					resolve();
-				})).catch((error) => {
-				console.log(error);
-			});
-		}).catch((error) => {
-			console.log(error);
-		});
-	}).catch((error) => {
-		console.log(error);
-	});
+		await Progress.sync();
+		await structurizeCourse(course.modules, dispatch);
+		dispatch(loadCourse(course));
+	} else {
+		selectedCourseId = selectedCourseId || userCourses[0].id;
+		localStorage.save('selectedCourseId', selectedCourseId);
+		const { course: fetchedCourse } = await Service.request('GetCourse', { id: selectedCourseId });
+		Progress.courseId = fetchedCourse.id;
+		Progress.loadCourse(fetchedCourse); // Getting progress of course
+		await Progress.sync();
+		localStorage.save(`c${selectedCourseId}`, fetchedCourse); // Saveing data to localStorage
+		await structurizeCourse(fetchedCourse.modules, dispatch);
+		dispatch(loadCourse(fetchedCourse));
+	}
 };
 
 export const selectModule = moduleId => ({

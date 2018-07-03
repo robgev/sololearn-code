@@ -18,7 +18,7 @@ import calculateProgress from './calculateProgress';
 import EnumNameMapper from './enumNameMapper';
 import findCommonPrefix from './findCommonPrefix';
 import getChallengeStatus from './getChallengeStatus';
-import getCourseAliasById from './getCourseAliasById';
+import getCourseNameById from './getCourseNameById';
 import determineAccessLevel from './determineAccessLevel';
 import determineBadge, { determineBadgeColor } from './modBadgeUtils';
 
@@ -57,7 +57,7 @@ export {
 	EnumNameMapper,
 	findCommonPrefix,
 	getChallengeStatus,
-	getCourseAliasById,
+	getCourseNameById,
 	determineBadgeColor,
 	determineAccessLevel,
 };

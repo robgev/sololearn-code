@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
-import { getCourseAliasById } from 'utils';
+import { getCourseNameById } from 'utils';
 import { slayItemTypes } from 'constants/ItemTypes';
 
 import 'styles/courseCard.scss';
@@ -31,7 +31,7 @@ const CourseCard = ({
 		<Link
 			to={
 				itemType === slayItemTypes.course || isCourses ?
-					`/learn/${getCourseAliasById(courses, id)}` :
+					`/learn/${getCourseNameById(courses, id)}/${id}/1` :
 					`/learn/slayLesson/${itemType}/${id}/1`
 			}
 			className="course-card-wrapper"

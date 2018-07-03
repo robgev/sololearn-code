@@ -109,38 +109,11 @@ export const CommentsStyle = {
 };
 
 export const CommentStyle = {
-	commentContainer: {
-		base: {
-			position: 'relative',
-		},
-
-		elevated: {
-			boxShadow: '0 5px 3px rgba(0,0,0,.12), 0 1px 10px rgba(0,0,0,.24)',
-			zIndex: 1000,
-		},
-	},
 
 	comment: {
 		base: {
 			position: 'relative',
-			borderRadius: 0,
-			borderLeftStyle: 'solid',
-			borderLeftWidth: '3px',
-			borderLeftColor: '#fff',
-			borderBottomStyle: 'solid',
-			borderBottomWidth: '1px',
-			borderBottomColor: '#fafafa',
-			borderTopStyle: 'solid',
-			borderTopWidth: '1px',
-			borderTopColor: '#fafafa',
 			transition: 'opacity ease 400ms, transform ease 400ms, -webkit-transform ease 400ms',
-			boxShadow: 'rgba(0, 0, 0, 0.156863) 0px 3px 6px, rgba(0, 0, 0, 0.227451) 0px 3px 6px',
-		},
-
-		elevated: {
-			position: 'relative',
-			boxShadow: '0 5px 3px rgba(0,0,0,.12), 0 1px 10px rgba(0,0,0,.24)',
-			zIndex: 1000,
 		},
 	},
 
@@ -202,7 +175,6 @@ export const CommentStyle = {
 		base: {
 			display: 'flex',
 			justifyContent: 'space-between',
-			margin: '8px 0 0 0',
 			overflow: 'hidden',
 		},
 
@@ -286,10 +258,6 @@ export const ReplyBoxStyle = {
 			width: 'inherit',
 			margin: '0 auto 10px',
 			backgroundColor: '#fff',
-		},
-
-		elevated: {
-			zIndex: 1001,
 		},
 	},
 

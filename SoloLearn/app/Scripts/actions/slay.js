@@ -25,6 +25,7 @@ export const getCollectionItems = (collectionId, pagingData) => async (dispatch)
 				types.SET_COLLECTION_ITEMS,
 			payload: lessons,
 		});
+		console.log(lessons);
 		return lessons.length;
 	} catch (e) {
 		console.log(e);
@@ -34,18 +35,20 @@ export const getCollectionItems = (collectionId, pagingData) => async (dispatch)
 
 export const setSelectedCollection = collectionId => async (dispatch, getState) => {
 	const { slayCollections } = getState().slay;
-	if (slayCollections.length) {
-		const currentCollection = slayCollections.find(c => c.id === collectionId);
-		dispatch({
-			type: types.SET_CURRENT_LESSON_COLLECTION,
-			payload: currentCollection,
-		});
-	} else {
+	const currentCollection = !slayCollections.length ?
+		null :
+		slayCollections.find(c => c.id === collectionId);
+	if (!currentCollection) {
 		const { collection } =
 			await Service.request('/GetCollection', { id: collectionId });
 		dispatch({
 			type: types.SET_CURRENT_LESSON_COLLECTION,
 			payload: collection,
+		});
+	} else {
+		dispatch({
+			type: types.SET_CURRENT_LESSON_COLLECTION,
+			payload: currentCollection,
 		});
 	}
 };

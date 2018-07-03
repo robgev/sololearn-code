@@ -16,11 +16,13 @@ const VoteControls = ({
 	totalVotes,
 	accessLevel,
 	onDownvote,
+	buttonStyle,
 	getDownvotes,
 }) => (
 	<div className={`vote-controls ${absolute ? 'absolute-controls' : ''} ${className}`}>
 		<IconButton
 			className="icon-button up"
+			style={buttonStyle}
 			iconStyle={{
 				width: 16,
 				height: 16,
@@ -37,6 +39,7 @@ const VoteControls = ({
 		/>
 		<IconButton
 			className="icon-button down"
+			style={buttonStyle}
 			iconStyle={{
 				width: 16,
 				height: 16,

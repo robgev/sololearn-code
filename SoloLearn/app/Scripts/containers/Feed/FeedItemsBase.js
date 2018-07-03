@@ -306,7 +306,7 @@ class FeedItemsBase extends Component {
 			let hasProgress = false;
 			const { skills } = this.props.userProfile;
 			const userCourseIndex = skills.findIndex(curr => curr.id === this.popupData.courseId);
-			const { learners, alias } = course;
+			const { learners, name, id } = course;
 			if (userCourseIndex > 0) {
 				course = skills[userCourseIndex];
 				hasProgress = true;
@@ -332,7 +332,7 @@ class FeedItemsBase extends Component {
 						</div>
 					</div>
 					<div className="actions" style={styles.actions}>
-						<Link to={`/learn/${alias}`}>
+						<Link to={`/learn/${name}/${id}/1`}>
 							<FlatButton label={t('learn.open-course-action-tite')} primary />
 						</Link>
 					</div>
@@ -437,7 +437,7 @@ class FeedItemsBase extends Component {
 											(
 												<div
 													className="new-activity-button"
-													style={[styles.newActivityButton.wrapper, interpolatingStyle]}
+													style={[ styles.newActivityButton.wrapper, interpolatingStyle ]}
 													onClick={this.scrollToFeedItems}
 												>
 													<p style={styles.newActivityButton.title}>{t('feed.new-activity-title')}</p>
@@ -450,8 +450,8 @@ class FeedItemsBase extends Component {
 								{
 									(feedPins.length > 0 && !isUserProfile) &&
 
-									[<FeedPins pins={feedPins} openPopup={this.handlePopupOpen} key="feedPins" />,
-									<p className="sub-title" style={styles.subTitle} key="separator">{t('feed.most-recent-title')}</p>]
+									[ <FeedPins pins={feedPins} openPopup={this.handlePopupOpen} key="feedPins" />,
+										<p className="sub-title" style={styles.subTitle} key="separator">{t('feed.most-recent-title')}</p> ]
 								}
 								{(isLoaded && feed.length > 0) &&
 									<FeedItems feedItems={feed} openPopup={this.handlePopupOpen} />}

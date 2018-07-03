@@ -4,14 +4,10 @@ import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import {
-	CSSTransition,
-	TransitionGroup,
-} from 'react-transition-group';
 
 // Marterial UI components
 import Paper from 'material-ui/Paper';
-import Progress, { ProgressState } from 'api/progress';
+import { ProgressState } from 'api/progress';
 
 // Redux modules
 import {
@@ -22,13 +18,13 @@ import {
 } from 'actions/learn';
 import { isLoaded } from 'reducers';
 
-// Utils
 import { toSeoFrendly } from 'utils';
 import Layout from 'components/Layouts/GeneralLayout';
 
 import 'styles/Learn/Lessons.scss';
 
 import { LessonType } from './QuizManager';
+import LessonTiles from './LessonTiles';
 
 const mapStateToProps = state => ({
 	isLoaded: isLoaded(state, 'lessons'),
@@ -60,13 +56,22 @@ class Lessons extends Component {
 		ReactGA.ga('send', 'screenView', { screenName: 'Lessons Page' });
 	}
 
-	handleClick = (lessonId, lessonState, url) => {
+	handleClick = (lessonId, lessonState, lessonName) => {
+		const {
+			params: {
+				courseName,
+				courseId,
+				moduleId,
+				moduleName,
+				itemType,
+			},
+		} = this.props;
 		if (lessonState.visualState == ProgressState.Disabled) {
 			return;
 		}
 		this.props.selectLesson(lessonId, lessonState);
 		this.props.selectQuiz(this.getActiveQuiz(this.props.lessons[lessonId]));
-		browserHistory.push(url);
+		browserHistory.push(`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}/${lessonId}/${toSeoFrendly(lessonName, 100)}/1`);
 	}
 
 	getActiveQuiz = (lesson) => {
@@ -104,44 +109,11 @@ class Lessons extends Component {
 					<div className="lesson-breadcrumbs">
 						{ course.name } &gt; { name }
 					</div>
-					<TransitionGroup
-						appear
-					>
-						{lessons.map((lesson, index) => {
-							const lessonState = Progress.getLessonState(lesson);
-							const isDisabled = lessonState.visualState === ProgressState.Disabled;
-
-							return (
-								<CSSTransition
-									key={lesson.id}
-									classNames="lesssons-in"
-									timeout={150 + (index * 30)}
-								>
-									<div
-										tabIndex={0}
-										role="button"
-										key={lesson.id}
-										style={{ animationDelay: `${index * 30}ms` }}
-										className={`lesson-item ${lessonState.stateClass}`}
-										onClick={() => this.handleClick(lesson.id, lessonState, `/learn/${this.props.params.courseName}/${this.props.params.moduleId}/${this.props.params.moduleName}/${lesson.id}/${toSeoFrendly(lesson.name, 100)}/1`)}
-									>
-										<Paper
-											key={lesson.id}
-											zDepth={isDisabled ? 0 : 1}
-											className={`lesson ${isDisabled ? 'disabled' : ''}`}
-										>
-											<div className="number">{`${index + 1}/${lessons.length}`}</div>
-											<div className="name">{lesson.name}</div>
-											<div className={`info ${lessonState.stateClass}`}>
-												<span>{lesson.quizzes.length} {t('learn.questions-format')}</span>
-											</div>
-										</Paper>
-									</div>
-								</CSSTransition>
-							);
-						})
-						}
-					</TransitionGroup>
+					<LessonTiles
+						t={t}
+						lessons={lessons}
+						onItemClick={this.handleClick}
+					/>
 				</Paper>
 			</Layout>
 		);

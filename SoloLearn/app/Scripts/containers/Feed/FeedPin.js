@@ -8,7 +8,7 @@ import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
 
 // Utils
-import { getLanguageColor } from 'utils';
+import { getLanguageColor, toSeoFriendly } from 'utils';
 
 // Additional data and components
 import Course from './FeedTemplates/Course';
@@ -164,7 +164,7 @@ class FeedPin extends Component {
 		if (pin.action == null || pin.action === '') {
 			if (pin.courses) {
 				const firstCourse = pin.courses[0];
-				url = `/learn/${firstCourse.alias}`;
+				url = `/learn/${toSeoFriendly(firstCourse.name)}/${firstCourse.id}/1`;
 			} else if (pin.users) {
 				const firstUser = pin.users[0];
 				url = `/profile/${firstUser.id}`;
