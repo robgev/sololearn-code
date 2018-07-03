@@ -178,7 +178,7 @@ class MySubmissions extends Component {
 														className="status"
 														style={{ height: 'initial', width: 80, backgroundColor: getStatus(quiz.status).color }}
 													>
-														{getStatus(quiz.status).text}
+														{getStatus(quiz.status).text.toUpperCase()}
 													</div>
 												}
 												primaryText={<div className="primary-text">{quiz.question.replace(/\[!\w+!]/, '')}</div>}
