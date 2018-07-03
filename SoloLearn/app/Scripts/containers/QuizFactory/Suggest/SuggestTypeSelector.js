@@ -20,11 +20,15 @@ const mapDispatchToProps = { setSuggestionChallenge };
 
 @connect(mapStateToProps, mapDispatchToProps)
 class SuggestTypeSelector extends Component {
-	state = {
-		previewQuiz: null,
-		isQuizComplete: false,
-		checkResult: null,
-		isSubmitting: false,
+	constructor(props) {
+		super(props);
+		this.state = {
+			previewQuiz: null,
+			isQuizComplete: false,
+			checkResult: null,
+			isSubmitting: false,
+		};
+		document.title = 'Sololearn | Suggest a Quiz';
 	}
 	componentWillUnmount() {
 		this.props.setSuggestionChallenge(null);

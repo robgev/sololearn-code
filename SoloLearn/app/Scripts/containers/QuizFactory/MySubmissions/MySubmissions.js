@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { List, ListItem, Paper, Dialog, FlatButton, RaisedButton } from 'material-ui';
+import Subheader from 'material-ui/Subheader';
 import { red500 } from 'material-ui/styles/colors';
 import { browserHistory } from 'react-router';
 import Layout from 'components/Layouts/GeneralLayout';
@@ -57,10 +58,14 @@ const mapDispatchToProps = {
 
 @connect(null, mapDispatchToProps)
 class MySubmissions extends Component {
-	state = {
-		challenges: null,
-		previewChallenge: null,
-		checkResult: null,
+	constructor(props) {
+		super(props);
+		this.state = {
+			challenges: null,
+			previewChallenge: null,
+			checkResult: null,
+		};
+		document.title = 'Sololearn | My Submissions';
 	}
 	componentWillMount() {
 		this.fetchSubmissions();
@@ -151,7 +156,8 @@ class MySubmissions extends Component {
 							? 'You have no submitted challenges'
 							: (
 								<Paper>
-									<List>
+									<List style={{ padding: 0 }}>
+										<Subheader>My Submissions</Subheader>
 										{challenges.map(quiz => (
 											<ListItem
 												onClick={() => this.preview(quiz)}

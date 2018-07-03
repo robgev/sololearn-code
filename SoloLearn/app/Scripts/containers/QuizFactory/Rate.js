@@ -11,11 +11,15 @@ import { getReviewChallenge, voteChallenge } from './api';
 import './rateStyles.scss';
 
 class Rate extends Component {
-	state = {
-		challenge: null,
-		voteOpen: false,
-		isQuizComplete: false,
-		checkResult: null,
+	constructor(props) {
+		super(props);
+		this.state = {
+			challenge: null,
+			voteOpen: false,
+			isQuizComplete: false,
+			checkResult: null,
+		};
+		document.title = 'Sololearn | Rate Quizes';
 	}
 	componentWillMount() {
 		this.getChallenge();

@@ -10,10 +10,14 @@ import Suggest from './Suggest/Suggest';
 import { getReviewCourseIds } from './api';
 
 class QuizFactory extends Component {
-	state = {
-		isLanguageSelectorOpen: false,
-		courseIds: [],
-		suggestDialogOpen: false,
+	constructor(props) {
+		super(props);
+		this.state = {
+			isLanguageSelectorOpen: false,
+			courseIds: [],
+			suggestDialogOpen: false,
+		};
+		document.title = 'Sololearn | Quiz Factory';
 	}
 	async componentWillMount() {
 		const courseIds = await getReviewCourseIds();
