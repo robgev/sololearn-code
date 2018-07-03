@@ -13,7 +13,7 @@ const collectionTypes = {
 	courses: 2,
 };
 
-const generateBreakpoints = (roundItems) => {
+const generateBreakpoints = (numberOfItems, roundItems) => {
 	const breakpointValues = [ 1224, 768, 320 ];
 	const initialNumberOfShownItems = roundItems ? 4 : 3;
 	return breakpointValues.map((currentPoint, index) => {
@@ -21,6 +21,7 @@ const generateBreakpoints = (roundItems) => {
 		return {
 			breakpoint: currentPoint,
 			settings: {
+				infinite: numberOfItems > slidesToShow,
 				slidesToShow,
 			},
 		};
@@ -41,6 +42,7 @@ const CollectionCard = ({
 }) => {
 	// lessons are the old Sololearn-created courses, like learn HTML, C# etc.
 	const isCourses = type === collectionTypes.courses;
+	const slidesToShow = (isCourses || round) ? 4 : 3;
 	return (
 		<Paper
 			zDepth={1}
@@ -64,14 +66,14 @@ const CollectionCard = ({
 			}
 			<Slider
 				arrows
-				infinite
 				draggable
 				dots={false}
 				speed={500}
 				swipeToSlide
 				className="courses-list"
-				slidesToShow={(isCourses || round) ? 4 : 3}
-				responsive={generateBreakpoints(isCourses || round)}
+				slidesToShow={slidesToShow}
+				infinite={items.length > slidesToShow}
+				responsive={generateBreakpoints(items.length, isCourses || round)}
 			>
 				{
 					items.map(lessonItem => (
