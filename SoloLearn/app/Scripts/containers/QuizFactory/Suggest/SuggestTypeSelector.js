@@ -1,24 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Dialog, FlatButton, RaisedButton } from 'material-ui';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import Paper from 'material-ui/Paper';
 import { browserHistory } from 'react-router';
 import { setSuggestionChallenge } from 'actions/quizFactory';
 import Layout from 'components/Layouts/GeneralLayout';
-import Quiz from 'components/Shared/Quiz';
+import Quiz, { CheckBar } from 'components/Shared/Quiz';
+import LoadingButton from 'components/Shared/LoadingButton';
 import SuggestMultipleChoice from './SuggestMultipleChoice';
 import SuggestTypeIn from './SuggestTypeIn';
 import SuggestFillIn from './SuggestFillIn';
 import { submitChallenge } from '../api';
 
 import './style.scss';
+import actionContainerStyle from '../components/actionContainerStyle';
 
 const mapStateToProps = ({ quizSubmission, courses }) => ({ quizSubmission, courses });
 const mapDispatchToProps = { setSuggestionChallenge };
 
 @connect(mapStateToProps, mapDispatchToProps)
 class SuggestTypeSelector extends Component {
-	state = {
-		previewQuiz: null,
+	constructor(props) {
+		super(props);
+		this.state = {
+			previewQuiz: null,
+			isQuizComplete: false,
+			checkResult: null,
+			isSubmitting: false,
+		};
+		document.title = 'Sololearn | Suggest a Quiz';
 	}
 	componentWillUnmount() {
 		this.props.setSuggestionChallenge(null);
@@ -57,6 +68,7 @@ class SuggestTypeSelector extends Component {
 		this.setPreview(null);
 	}
 	handleSubmit = () => {
+		this.setState({ isSubmitting: true });
 		const { previewQuiz } = this.state;
 		const answers = previewQuiz.answers
 			.map(({ text, properties, isCorrect }) => ({ text, properties, isCorrect }));
@@ -67,11 +79,43 @@ class SuggestTypeSelector extends Component {
 		submitChallenge(quiz)
 			.then(() => browserHistory.push('/quiz-factory/my-submissions'));
 	}
+	checkComplete = ({ isComplete }) => {
+		this.setState({ isQuizComplete: isComplete });
+	}
+	onQuizButtonClick = () => {
+		const { checkResult } = this.state;
+		if (checkResult === null) {
+			this.setState({ checkResult: this.quiz.check() });
+		}
+	}
+	check = () => {
+		this.setState({ checkResult: this.quiz.check() });
+	}
+	tryAgain = () => {
+		this.quiz.tryAgain();
+		this.setState({ checkResult: null, isQuizComplete: false });
+	}
+	get checkBarLabel() {
+		const { checkResult } = this.state;
+		if (checkResult === null) {
+			return 'Check';
+		}
+		return 'Try again';
+	}
+	get checkBarOnClick() {
+		const { checkResult } = this.state;
+		if (checkResult === null) {
+			return this.check;
+		}
+		return this.tryAgain;
+	}
 	render() {
-		const { previewQuiz } = this.state;
+		const {
+			previewQuiz, checkResult, isQuizComplete, isSubmitting,
+		} = this.state;
 		const actions = [
 			<FlatButton onClick={this.closePreview} label="Cancel" primary />,
-			<RaisedButton onClick={this.handleSubmit} label="Submit" primary />,
+			<LoadingButton raised onClick={this.handleSubmit} label="Submit" primary loading={isSubmitting} />,
 		];
 		return (
 			<Layout>
@@ -80,8 +124,27 @@ class SuggestTypeSelector extends Component {
 					open={previewQuiz !== null}
 					actions={actions}
 					onRequestClose={this.closePreview}
+					actionsContainerStyle={actionContainerStyle}
 				>
-					{previewQuiz !== null ? <Quiz quiz={previewQuiz} canTryAgain /> : null}
+					{previewQuiz !== null ? (
+						<div>
+							<Paper>
+								<Quiz
+									quiz={previewQuiz}
+									onChange={this.checkComplete}
+									disabled={checkResult !== null}
+									ref={(q) => { this.quiz = q; }}
+								/>
+							</Paper>
+							<CheckBar
+								onClick={this.checkBarOnClick}
+								disabled={!isQuizComplete}
+								secondary
+								label={this.checkBarLabel}
+								status={this.state.checkResult}
+							/>
+						</div>
+					) : null}
 				</Dialog>
 			</Layout>
 		);

@@ -11,12 +11,19 @@
 	.challenge-container {
 		display: flex;
 		flex-direction: column;
-		.challenge {
+		.check-container {
+			display: flex;
+			flex-direction: row-reverse;
+			justify-content: space-between;
+			margin: 10px 0;
 			align-self: stretch;
+			.check-container-button {
+				width: 120px;
+			}
 		}
-		.skip {
-			margin-top: 10px;
-			align-self: flex-end;
+		.stretch {
+			min-height: 60%;
+			align-self: stretch;
 		}
 	}
 }

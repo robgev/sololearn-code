@@ -70,12 +70,13 @@ class CodeBlock extends Component {
 			primary: courseLanguage,
 			secondary: codeId,
 		};
+		console.log(text);
 
 		const { playgroundOpened } = this.state;
 		if (codeId !== undefined) {
 			return (
 				<div className="code-container" style={styles.codeContainer}>
-					{ playgroundOpened ?
+					{playgroundOpened ?
 						<div>
 							<Playground
 								inline

@@ -12,7 +12,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
 // Redux modules
-import LanguageCard from 'components/Shared/languageCard';
+import LanguageCard from 'components/Shared/LanguageCard';
 import editorSettings from 'defaults/playgroundEditorSettings';
 
 @translate()

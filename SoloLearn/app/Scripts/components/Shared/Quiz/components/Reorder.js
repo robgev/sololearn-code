@@ -2,18 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { shuffleArray } from 'utils';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
-import { List, ListItem, RaisedButton } from 'material-ui';
-import { quizType } from './types';
-
-import TopBar from './TopBar';
-import CheckIndicator from './CheckIndicator';
-import QuestionContainer from './ConditionalPaper';
+import { List, ListItem } from 'material-ui/List';
+import quizType from './types';
 
 // Utility components
 
 const SortableItem = SortableElement(({ value }) => <ListItem>{value}</ListItem>);
 
-const SortableList = SortableContainer(({ items }) => (
+const SortableList = SortableContainer(({ items, disabled }) => (
 	<List>
 		{items.map((answer, i) =>
 			(<SortableItem
@@ -21,20 +17,27 @@ const SortableList = SortableContainer(({ items }) => (
 				index={i}
 				id={answer.id}
 				value={answer.text}
+				disabled={disabled}
 			/>))}
 	</List>
 ));
 
 class Reorder extends Component {
-	state = {
-		shuffled: this.getShuffled(this.props.quiz.answers),
-		checkResult: null,
+	constructor(props) {
+		super(props);
+		this.state = {
+			shuffled: this.getShuffled(props.quiz.answers),
+		};
+	}
+	componentDidMount() {
+		this.props.onChange({ isComplete: true });
+	}
+	componentDidUpdate() {
+		this.props.onChange({ isComplete: true }); // Reorder type quiz is always complete
 	}
 	tryAgain = () => {
-		this.props.onTryAgain();
 		this.setState({
 			shuffled: this.getShuffled(this.props.quiz.answers),
-			checkResult: null,
 		});
 	}
 	getShuffled = (answers) => {
@@ -46,73 +49,29 @@ class Reorder extends Component {
 	}
 	onSortEnd = ({ oldIndex, newIndex }) => {
 		this.setState(state => ({
-			answers: arrayMove(state.answers, oldIndex, newIndex),
+			shuffled: arrayMove(state.shuffled, oldIndex, newIndex),
 		}));
-	};
+	}
 	unlock = () => {
 		this.setState({ shuffled: this.props.quiz.answers });
-		this.check();
 	}
-	check = () => {
-		this.setState(
-			state =>
-				({ checkResult: !state.shuffled.some((el, i) => el.id !== this.props.quiz.answers[i].id) }),
-			() => { this.props.onCheck(this.state.checkResult); },
-		);
-	}
+	check = () => !this.state.shuffled.some((el, i) => el.id !== this.props.quiz.answers[i].id)
 	render() {
-		const { shuffled, checkResult } = this.state;
-		const {
-			canTryAgain, isPaper, resButtonLabel, resButtonClick, resButtonDisabled,
-		} = this.props;
-		const isChecked = checkResult !== null;
+		const { shuffled } = this.state;
+		const { disabled } = this.props;
 		return (
-			<div className="quiz">
-				{this.props.unlockable &&
-					<TopBar isPaper={isPaper} disabled={isChecked} onUnlock={this.props.onUnlock} />}
-				<QuestionContainer isPaper={isPaper} className="question-container">
-					<p className="question-text">{this.props.quiz.question}</p>
-					<SortableList items={shuffled} onSortEnd={this.onSortEnd} lockAxis="y" />
-				</QuestionContainer>
-				<div className="check-container">
-					<RaisedButton
-						secondary
-						onClick={!isChecked
-							? this.check
-							: resButtonClick !== null
-								? resButtonClick
-								: this.tryAgain}
-						disabled={resButtonDisabled !== null
-							? resButtonDisabled || !this.isComplete()
-							: (!this.isComplete() || (isChecked && !canTryAgain))}
-						label={!isChecked
-							? 'Check'
-							: resButtonLabel !== null
-								? resButtonLabel
-								: 'Try again'}
-					/>
-					<CheckIndicator status={checkResult} />
-				</div>
+			<div className="question-container">
+				<p className="question-text">{this.props.quiz.question}</p>
+				<SortableList items={shuffled} disabled={disabled} onSortEnd={this.onSortEnd} lockAxis="y" />
 			</div>
 		);
 	}
 }
 
-Reorder.defaultProps = {
-	onCheck: () => { },
-	onUnlock: () => { },
-};
-
 Reorder.propTypes = {
 	quiz: quizType.isRequired,
-	unlockable: PropTypes.bool.isRequired,
-	onCheck: PropTypes.func, // handles side effects after checking
-	onUnlock: PropTypes.func, // returns true if can unlock and handles side effects
-	canTryAgain: PropTypes.bool.isRequired,
-	onTryAgain: PropTypes.func.isRequired,
-	resButtonLabel: PropTypes.string, // eslint-disable-line react/require-default-props
-	resButtonClick: PropTypes.func, // eslint-disable-line react/require-default-props
-	resButtonDisabled: PropTypes.bool, // eslint-disable-line react/require-default-props
+	disabled: PropTypes.bool.isRequired,
+	onChange: PropTypes.func.isRequired, // Reorder type quiz is always complete
 };
 
 export default Reorder;

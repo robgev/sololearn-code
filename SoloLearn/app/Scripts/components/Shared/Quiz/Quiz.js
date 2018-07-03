@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { quizType } from './components/types';
+import quizType from './components/types';
 
 import { MultipleChoice, TypeIn, FillIn, PlaceholderDnD, Reorder } from './components';
 import './styles.scss';
@@ -15,6 +15,7 @@ class Quiz extends Component {
 	tryAgain = () => {
 		this.quiz.tryAgain();
 	}
+	check = () => this.quiz.check();
 	render() {
 		const { quiz } = this.props;
 		const forward = { ...this.props, ref: (c) => { this.quiz = c; } };
@@ -35,25 +36,10 @@ class Quiz extends Component {
 	}
 }
 
-Quiz.defaultProps = {
-	unlockable: false,
-	canTryAgain: false,
-	onTryAgain: () => { },
-	isPaper: true,
-	resButtonLabel: null,
-	resButtonClick: null,
-	resButtonDisabled: null,
-};
-
 Quiz.propTypes = {
 	quiz: quizType.isRequired,
-	unlockable: PropTypes.bool,
-	canTryAgain: PropTypes.bool,
-	onTryAgain: PropTypes.func,
-	isPaper: PropTypes.bool,
-	resButtonLabel: PropTypes.string,
-	resButtonClick: PropTypes.func,
-	resButtonDisabled: PropTypes.bool,
+	disabled: PropTypes.bool.isRequired,
+	onChange: PropTypes.func.isRequired,
 };
 
 export default Quiz;

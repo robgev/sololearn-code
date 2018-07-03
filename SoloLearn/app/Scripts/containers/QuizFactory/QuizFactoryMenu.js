@@ -3,13 +3,22 @@ import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 
 import Layout from 'components/Layouts/GeneralLayout';
-import { OptionsCard, LanguageSelector } from './components';
+import LanguageSelector from 'components/Shared/LanguageSelector';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import { OptionsCard } from './components';
+import Suggest from './Suggest/Suggest';
 import { getReviewCourseIds } from './api';
 
 class QuizFactory extends Component {
-	state = {
-		isLanguageSelectorOpen: false,
-		courseIds: [],
+	constructor(props) {
+		super(props);
+		this.state = {
+			isLanguageSelectorOpen: false,
+			courseIds: [],
+			suggestDialogOpen: false,
+		};
+		document.title = 'Sololearn | Quiz Factory';
 	}
 	async componentWillMount() {
 		const courseIds = await getReviewCourseIds();
@@ -21,8 +30,11 @@ class QuizFactory extends Component {
 	selectLanguage = (language) => {
 		browserHistory.push(`/quiz-factory/rate/${language.id}`);
 	}
+	toggleSuggest = () => {
+		this.setState(state => ({ suggestDialogOpen: !state.suggestDialogOpen }));
+	}
 	render() {
-		const { isLanguageSelectorOpen, courseIds } = this.state;
+		const { isLanguageSelectorOpen, courseIds, suggestDialogOpen } = this.state;
 		const { t } = this.props;
 		return (
 			<Layout>
@@ -31,6 +43,7 @@ class QuizFactory extends Component {
 					image="/assets/start_submission.png"
 					info={t('factory.suggest_quiz_description')}
 					to="/quiz-factory/suggest"
+					onClick={this.toggleSuggest}
 				/>
 				<OptionsCard
 					header={t('factory.rate_submissions')}
@@ -51,6 +64,14 @@ class QuizFactory extends Component {
 					onChoose={this.selectLanguage}
 					filter={course => courseIds.includes(course.id)}
 				/>
+				<Dialog
+					open={suggestDialogOpen}
+					title="Choose quiz type"
+					onRequestClose={this.toggleSuggest}
+					actions={[ <FlatButton label="Cancel" onClick={this.toggleSuggest} primary /> ]}
+				>
+					<Suggest />
+				</Dialog>
 			</Layout>
 		);
 	}

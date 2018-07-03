@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Dialog, List, ListItem, Divider } from 'material-ui';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import LanguageCard from 'components/Shared/LanguageCard';
 
 const LanguageSelector = ({
 	courses, open, onChoose, onClose, filter,
@@ -20,7 +21,10 @@ const LanguageSelector = ({
 			<List>
 				{filteredCourses.map((course, idx) => (
 					<div key={course.id} onClick={() => onChoose(course)} tabIndex={0} role="button">
-						<ListItem primaryText={course.languageName} leftIcon={<img src={course.iconUrl} alt="" />} />
+						<ListItem
+							primaryText={course.languageName}
+							leftIcon={<LanguageCard language={course.language} />}
+						/>
 						{idx !== courses.length - 1 ? <Divider inset /> : null}
 					</div>
 				))}

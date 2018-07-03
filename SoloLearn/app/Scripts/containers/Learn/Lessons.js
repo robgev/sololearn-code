@@ -47,7 +47,7 @@ class Lessons extends Component {
 	componentWillMount() {
 		if (!this.props.isLoaded) {
 			this.props.loadCourseInternal().then(() => {
-				this.props.selectModule(parseInt(this.props.params.moduleId));
+				this.props.selectModule(parseInt(this.props.params.moduleId, 10));
 			}).catch((error) => {
 				console.log(error);
 			});
@@ -66,7 +66,7 @@ class Lessons extends Component {
 				itemType,
 			},
 		} = this.props;
-		if (lessonState.visualState == ProgressState.Disabled) {
+		if (lessonState.visualState === ProgressState.Disabled) {
 			return;
 		}
 		this.props.selectLesson(lessonId, lessonState);
@@ -107,7 +107,7 @@ class Lessons extends Component {
 			<Layout>
 				<Paper className="lessons-container">
 					<div className="lesson-breadcrumbs">
-						{ course.name } &gt; { name }
+						{course.name} &gt; {name}
 					</div>
 					<LessonTiles
 						t={t}

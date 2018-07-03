@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { List, ListItem, Paper, Dialog, FlatButton, RaisedButton } from 'material-ui';
+import Subheader from 'material-ui/Subheader';
 import { red500 } from 'material-ui/styles/colors';
 import { browserHistory } from 'react-router';
 import Layout from 'components/Layouts/GeneralLayout';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
-import Quiz from 'components/Shared/Quiz';
+import Quiz, { CheckBar } from 'components/Shared/Quiz';
+import LanguageCard from 'components/Shared/LanguageCard';
 import { setSuggestionChallenge } from 'actions/quizFactory';
 import { getMySubmissions, deleteChallenge } from '../api';
 import './mySubmissionsStyles.scss';
+import actionContainerStyle from '../components/actionContainerStyle';
 
 // Utility funcs
 
@@ -51,15 +54,22 @@ const getStringFromType = (type) => {
 	}
 };
 
+const mapStateToProps = ({ courses }) => ({ courses });
+
 const mapDispatchToProps = {
 	setSuggestionChallenge,
 };
 
-@connect(null, mapDispatchToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 class MySubmissions extends Component {
-	state = {
-		challenges: null,
-		previewChallenge: null,
+	constructor(props) {
+		super(props);
+		this.state = {
+			challenges: null,
+			previewChallenge: null,
+			checkResult: null,
+		};
+		document.title = 'Sololearn | My Submissions';
 	}
 	componentWillMount() {
 		this.fetchSubmissions();
@@ -85,8 +95,41 @@ class MySubmissions extends Component {
 		deleteChallenge(previewChallenge.id)
 			.then(this.fetchSubmissions);
 	}
+	checkComplete = ({ isComplete }) => {
+		this.setState({ isQuizComplete: isComplete });
+	}
+	onQuizButtonClick = () => {
+		const { checkResult } = this.state;
+		if (checkResult === null) {
+			this.setState({ checkResult: this.quiz.check() });
+		}
+	}
+	check = () => {
+		this.setState({ checkResult: this.quiz.check() });
+	}
+	tryAgain = () => {
+		this.quiz.tryAgain();
+		this.setState({ checkResult: null, isQuizComplete: false });
+	}
+	get checkBarLabel() {
+		const { checkResult } = this.state;
+		if (checkResult === null) {
+			return 'Check';
+		}
+		return 'Try again';
+	}
+	get checkBarOnClick() {
+		const { checkResult } = this.state;
+		if (checkResult === null) {
+			return this.check;
+		}
+		return this.tryAgain;
+	}
 	render() {
-		const { challenges, previewChallenge } = this.state;
+		const {
+			challenges, previewChallenge, checkResult, isQuizComplete,
+		} = this.state;
+		const { courses } = this.props;
 		const actions = [
 			<FlatButton onClick={this.closePreview} label="Cancel" primary />,
 			previewChallenge !== null && previewChallenge.status === 2
@@ -118,20 +161,15 @@ class MySubmissions extends Component {
 							? 'You have no submitted challenges'
 							: (
 								<Paper>
-									<List>
+									<List style={{ padding: 0 }}>
+										<Subheader>My Submissions</Subheader>
 										{challenges.map(quiz => (
 											<ListItem
 												onClick={() => this.preview(quiz)}
 												className="preview"
 												leftIcon={
-													<img
-														style={{
-															width: 36,
-															height: 36,
-															margin: '7px 0 0 12px',
-														}}
-														src={`https://api.sololearn.com/uploads/Courses/${quiz.courseID}.png`}
-														alt=""
+													<LanguageCard
+														language={courses.find(c => c.id === quiz.courseID).language}
 													/>
 												}
 												rightIcon={
@@ -139,7 +177,7 @@ class MySubmissions extends Component {
 														className="status"
 														style={{ height: 'initial', width: 80, backgroundColor: getStatus(quiz.status).color }}
 													>
-														{getStatus(quiz.status).text}
+														{getStatus(quiz.status).text.toUpperCase()}
 													</div>
 												}
 												primaryText={<div className="primary-text">{quiz.question.replace(/\[!\w+!]/, '')}</div>}
@@ -155,8 +193,27 @@ class MySubmissions extends Component {
 					open={previewChallenge !== null}
 					actions={actions}
 					onRequestClose={this.closePreview}
+					actionsContainerStyle={actionContainerStyle}
 				>
-					{previewChallenge !== null ? <Quiz quiz={previewChallenge} canTryAgain /> : null}
+					{previewChallenge !== null ? (
+						<div>
+							<Paper>
+								<Quiz
+									quiz={previewChallenge}
+									onChange={this.checkComplete}
+									disabled={checkResult !== null}
+									ref={(q) => { this.quiz = q; }}
+								/>
+							</Paper>
+							<CheckBar
+								onClick={this.checkBarOnClick}
+								disabled={!isQuizComplete}
+								secondary
+								label={this.checkBarLabel}
+								status={this.state.checkResult}
+							/>
+						</div>
+					) : null}
 				</Dialog>
 			</Layout>
 		);

@@ -22,7 +22,6 @@ import CourseMore from 'containers/Learn/CourseMore';
 import Lessons from 'containers/Learn/Lessons';
 import QuizManager from 'containers/Learn/QuizManager';
 import Quiz from 'containers/Learn/Quiz';
-import Shortcut from 'containers/Learn/Shortcut';
 
 // Discuss
 import Questions from 'containers/Discuss/QuestionsBase';
@@ -78,11 +77,11 @@ export default (
 		<Route path="/learn/more/author/:userId" component={SlayMoreByAuthor} />
 		<Route path="/learn/more/:collectionId" component={SlayDetailed} />
 		<Route path="/learn/slayLesson/:itemType/:lessonId/:pageNumber(/:language(/:codeID))" component={SlayLesson} />
-		<Route path="/learn/:courseName/:id/shortcut(/:quizNumber)" component={Shortcut}>
+		{/* <Route path="/learn/:courseName/:id/shortcut(/:quizNumber)" component={Shortcut}>
 			<Route component={QuizManager}>
 				<IndexRoute component={Quiz} />
 			</Route>
-		</Route>
+		</Route> */}
 		<Redirect path="/courses/:courseName/:courseId/:itemType" to="/learn/:courseName/:courseId/:itemType" />
 		<Route path="/learn/:courseName/:courseId/:itemType" component={CourseMore} />
 		<Route path="/learn/:courseName/:courseId/:itemType/:moduleId(/:moduleName)" component={Lessons} />
@@ -107,7 +106,6 @@ export default (
 		<Route path="/notifications" component={redirector(Notifications)} />
 		<Route path="/discover(/:query)" component={redirector(DiscoverContainer)} />
 		<Route path="/quiz-factory" component={QuizFactoryMenu} />
-		<Route path="/quiz-factory/suggest" component={QuizFactorySuggest} />
 		<Route path="/quiz-factory/suggest/:type" component={QuizFactorySuggestTypeSelector} />
 		<Route path="/quiz-factory/rate/:courseId" component={QuizFactoryRate} />
 		<Route path="/quiz-factory/my-submissions" component={QuizFactoryMySubmissions} />
