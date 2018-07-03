@@ -14,6 +14,7 @@ import SuggestFillIn from './SuggestFillIn';
 import { submitChallenge } from '../api';
 
 import './style.scss';
+import actionContainerStyle from '../components/actionContainerStyle';
 
 const mapStateToProps = ({ quizSubmission, courses }) => ({ quizSubmission, courses });
 const mapDispatchToProps = { setSuggestionChallenge };
@@ -123,6 +124,7 @@ class SuggestTypeSelector extends Component {
 					open={previewQuiz !== null}
 					actions={actions}
 					onRequestClose={this.closePreview}
+					actionsContainerStyle={actionContainerStyle}
 				>
 					{previewQuiz !== null ? (
 						<div>

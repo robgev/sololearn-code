@@ -10,6 +10,7 @@ import Quiz, { CheckBar } from 'components/Shared/Quiz';
 import { setSuggestionChallenge } from 'actions/quizFactory';
 import { getMySubmissions, deleteChallenge } from '../api';
 import './mySubmissionsStyles.scss';
+import actionContainerStyle from '../components/actionContainerStyle';
 
 // Utility funcs
 
@@ -194,6 +195,7 @@ class MySubmissions extends Component {
 					open={previewChallenge !== null}
 					actions={actions}
 					onRequestClose={this.closePreview}
+					actionsContainerStyle={actionContainerStyle}
 				>
 					{previewChallenge !== null ? (
 						<div>
