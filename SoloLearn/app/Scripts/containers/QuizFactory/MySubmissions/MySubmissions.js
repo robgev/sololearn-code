@@ -5,7 +5,7 @@ import { red500 } from 'material-ui/styles/colors';
 import { browserHistory } from 'react-router';
 import Layout from 'components/Layouts/GeneralLayout';
 import LoadingOverlay from 'components/Shared/LoadingOverlay';
-import Quiz from 'components/Shared/Quiz';
+import Quiz, { CheckBar } from 'components/Shared/Quiz';
 import { setSuggestionChallenge } from 'actions/quizFactory';
 import { getMySubmissions, deleteChallenge } from '../api';
 import './mySubmissionsStyles.scss';
@@ -60,6 +60,7 @@ class MySubmissions extends Component {
 	state = {
 		challenges: null,
 		previewChallenge: null,
+		checkResult: null,
 	}
 	componentWillMount() {
 		this.fetchSubmissions();
@@ -85,8 +86,40 @@ class MySubmissions extends Component {
 		deleteChallenge(previewChallenge.id)
 			.then(this.fetchSubmissions);
 	}
+	checkComplete = ({ isComplete }) => {
+		this.setState({ isQuizComplete: isComplete });
+	}
+	onQuizButtonClick = () => {
+		const { checkResult } = this.state;
+		if (checkResult === null) {
+			this.setState({ checkResult: this.quiz.check() });
+		}
+	}
+	check = () => {
+		this.setState({ checkResult: this.quiz.check() });
+	}
+	tryAgain = () => {
+		this.quiz.tryAgain();
+		this.setState({ checkResult: null, isQuizComplete: false });
+	}
+	get checkBarLabel() {
+		const { checkResult } = this.state;
+		if (checkResult === null) {
+			return 'Check';
+		}
+		return 'Try again';
+	}
+	get checkBarOnClick() {
+		const { checkResult } = this.state;
+		if (checkResult === null) {
+			return this.check;
+		}
+		return this.tryAgain;
+	}
 	render() {
-		const { challenges, previewChallenge } = this.state;
+		const {
+			challenges, previewChallenge, checkResult, isQuizComplete,
+		} = this.state;
 		const actions = [
 			<FlatButton onClick={this.closePreview} label="Cancel" primary />,
 			previewChallenge !== null && previewChallenge.status === 2
@@ -156,7 +189,25 @@ class MySubmissions extends Component {
 					actions={actions}
 					onRequestClose={this.closePreview}
 				>
-					{previewChallenge !== null ? <Quiz quiz={previewChallenge} canTryAgain /> : null}
+					{previewChallenge !== null ? (
+						<div>
+							<Paper>
+								<Quiz
+									quiz={previewChallenge}
+									onChange={this.checkComplete}
+									disabled={checkResult !== null}
+									ref={(q) => { this.quiz = q; }}
+								/>
+							</Paper>
+							<CheckBar
+								onClick={this.checkBarOnClick}
+								disabled={!isQuizComplete}
+								secondary
+								label={this.checkBarLabel}
+								status={this.state.checkResult}
+							/>
+						</div>
+					) : null}
 				</Dialog>
 			</Layout>
 		);

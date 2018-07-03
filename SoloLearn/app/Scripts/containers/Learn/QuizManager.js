@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 // Material UI components
 import {
@@ -47,13 +46,9 @@ const mapStateToProps = state => ({
 	activeLesson: !state.course ? null : state.lessonsMapping[state.activeLessonId],
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-	loadDefaults,
-	loadCourseInternal,
-	selectLesson,
-	selectModule,
-	selectQuiz,
-}, dispatch);
+const mapDispatchToProps = {
+	loadDefaults, loadCourseInternal, selectLesson, selectModule, selectQuiz,
+};
 
 @connect(mapStateToProps, mapDispatchToProps)
 class QuizManager extends Component {
@@ -66,18 +61,15 @@ class QuizManager extends Component {
 		const {
 			params,
 			isLoaded,
-			isShortcut,
 			selectQuiz,
-			shortcutLesson,
 			loadCourseInternal,
 		} = this.props;
 
 		this.setState({ loading: true });
 
-		if (!isShortcut) {
-			Service.request('/AddLessonImpression', { lessonId: params.lessonId });
-		}
-		if (!isLoaded && !isShortcut) {
+		Service.request('/AddLessonImpression', { lessonId: params.lessonId });
+
+		if (!isLoaded) {
 			try {
 				await loadCourseInternal();
 				const lessonId = parseInt(params.lessonId, 10);
@@ -119,9 +111,6 @@ class QuizManager extends Component {
 			} catch (e) {
 				console.log(e);
 			}
-		} else if (isShortcut) {
-			const activeQuiz = shortcutLesson.quizzes[0];
-			selectQuiz({ id: activeQuiz.id, number: activeQuiz.number, isText: false });
 		}
 		const { count } =
 			await Service.request('Discussion/GetLessonCommentCount', { quizId: this.props.activeQuiz.id, type: this.props.activeQuiz.isText ? 1 : 3 });
@@ -143,7 +132,7 @@ class QuizManager extends Component {
 
 	generateTimeline = (quizzes, activeQuiz) => {
 		const timeline = [];
-		const lesson = !this.props.isShortcut ? this.props.activeLesson : this.props.shortcutLesson;
+		const lesson = this.props.activeLesson;
 		const progress = Progress.getLessonProgress(lesson.id);
 		let activeQuizIndex = 0;
 		let isLessonCompleted = false;
@@ -167,7 +156,7 @@ class QuizManager extends Component {
 		// let currentIndex = 0;
 
 		quizzes.forEach((quiz, index) => {
-			const isCompleted = (isLessonCompleted || index <= activeQuizIndex) && !this.props.isShortcut;
+			const isCompleted = (isLessonCompleted || index <= activeQuizIndex);
 			const isCurrent = quizzes[index].id === activeQuiz.id;
 			// if (isCurrent) currentIndex = (isCheckpoint ? index * 2 : index);
 
@@ -179,7 +168,11 @@ class QuizManager extends Component {
 					isText: true,
 					index,
 					number: (index * 2) + 1,
-					state: (isCurrent ? progressState.Active : (isCompleted ? progressState.Normal : progressState.Disabled)),
+					state: isCurrent
+						? progressState.Active
+						: isCompleted
+							? progressState.Normal
+							: progressState.Disabled,
 				});
 			}
 			timeline.push({
@@ -189,7 +182,11 @@ class QuizManager extends Component {
 				isText: false,
 				index,
 				number: isCheckpoint ? (index + 1) * 2 : index + 1,
-				state: (isCurrent ? progressState.Active : (isCompleted ? progressState.Normal : progressState.Disabled)),
+				state: isCurrent
+					? progressState.Active
+					: isCompleted
+						? progressState.Normal
+						: progressState.Disabled,
 			});
 		});
 
@@ -229,15 +226,8 @@ class QuizManager extends Component {
 			await Service.request('Discussion/GetLessonCommentCount', { quizId, type: isText ? 1 : 3 });
 		this.setState({ commentsCount: count, commentsOpened: false });
 		this.props.selectQuiz(Object.assign({}, { id: quizId }, { number }, { isText }));
-
-		if (this.props.isShortcut) {
-			const pathName = this.props.location.pathname;
-			const newPathName = pathName.substr(0, pathName.length - 1) + number;
-			browserHistory.push(newPathName);
-		} else {
-			const lesson = this.props.activeLesson;
-			browserHistory.push(`/learn/${this.props.params.courseName}/${this.props.params.moduleId}/${this.props.params.moduleName}/${lesson.id}/${toSeoFrendly(lesson.name, 100)}/${number}`);
-		}
+		const lesson = this.props.activeLesson;
+		browserHistory.push(`/learn/${this.props.params.courseName}/${this.props.params.moduleId}/${this.props.params.moduleName}/${lesson.id}/${toSeoFrendly(lesson.name, 100)}/${number}`);
 	}
 
 	getActiveQuiz = (lesson) => {
@@ -245,7 +235,7 @@ class QuizManager extends Component {
 		const currentNumber = parseInt(this.props.params.quizNumber || 1, 10);
 		const activeQuiz = {};
 		const isCheckpoint = lesson.type === LessonType.Checkpoint;
-		for (let i = 0; i < quizzes.length; i++) {
+		for (let i = 0; i < quizzes.length; i += 1) {
 			if (isCheckpoint) {
 				if ((i * 2) + 1 === currentNumber) {
 					Object.assign(
@@ -279,25 +269,19 @@ class QuizManager extends Component {
 		} = this.props;
 		const { loading, commentsCount, commentsOpened } = this.state;
 
-		if (loading || (!isLoaded && !this.props.isShortcut) ||
-			(this.props.isShortcut && !activeQuiz) ||
+		if (loading || (!isLoaded) ||
+			(!activeQuiz) ||
 			(this.props.params.quizNumber && !this.props.activeQuiz)) {
 			return <div>Loading...</div>;
 		}
 
-		const quizzes = !this.props.isShortcut ? activeLesson.quizzes : this.props.shortcutLesson.quizzes;
+		const { quizzes } = activeLesson;
 
 		const childrenWithProps = React.Children.map(
 			this.props.children,
 			child => React.cloneElement(child, {
 				loadLessonLink: this.loadLessonLink,
 				openComments: this.openComments,
-				updateShorctutData: this.props.updateShorctutData,
-				exitShortcut: this.props.exitShortcut,
-				isShortcut: this.props.isShortcut,
-				shortcutLesson: this.props.shortcutLesson,
-				shortcutLives: this.props.shortcutLives,
-				isShortcutCorrectCounts: this.props.isShortcutCorrectCounts,
 			}),
 		);
 
@@ -311,14 +295,14 @@ class QuizManager extends Component {
 						{this.generateTimeline(quizzes, activeQuiz)}
 					</Stepper>
 					{childrenWithProps}
-					{((!this.props.isShortcut && commentsOpened) || activeQuiz.isText) &&
+					{commentsOpened || activeQuiz.isText ?
 						<Comments
 							id={activeQuiz.id}
 							commentsType="lesson"
 							type={activeQuiz.isText ? 1 : 3}
 							commentsCount={commentsCount}
 							closeComments={this.closeComments}
-						/>
+						/> : null
 					}
 				</Paper>
 			</Layout>

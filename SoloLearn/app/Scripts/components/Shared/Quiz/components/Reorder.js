@@ -23,8 +23,14 @@ const SortableList = SortableContainer(({ items, disabled }) => (
 ));
 
 class Reorder extends Component {
-	state = {
-		shuffled: this.getShuffled(this.props.quiz.answers),
+	constructor(props) {
+		super(props);
+		this.state = {
+			shuffled: this.getShuffled(props.quiz.answers),
+		};
+	}
+	componentDidMount() {
+		this.props.onChange({ isComplete: true });
 	}
 	componentDidUpdate() {
 		this.props.onChange({ isComplete: true }); // Reorder type quiz is always complete
@@ -43,9 +49,9 @@ class Reorder extends Component {
 	}
 	onSortEnd = ({ oldIndex, newIndex }) => {
 		this.setState(state => ({
-			answers: arrayMove(state.answers, oldIndex, newIndex),
+			shuffled: arrayMove(state.shuffled, oldIndex, newIndex),
 		}));
-	};
+	}
 	unlock = () => {
 		this.setState({ shuffled: this.props.quiz.answers });
 	}
@@ -65,7 +71,7 @@ class Reorder extends Component {
 Reorder.propTypes = {
 	quiz: quizType.isRequired,
 	disabled: PropTypes.bool.isRequired,
-	// onChange: PropTypes.func.isRequired, * Reorder quiz is always complete *
+	onChange: PropTypes.func.isRequired, // Reorder type quiz is always complete
 };
 
 export default Reorder;

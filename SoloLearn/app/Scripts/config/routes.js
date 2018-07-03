@@ -78,11 +78,11 @@ export default (
 		<Route path="/learn/more/author/:userId" component={SlayMoreByAuthor} />
 		<Route path="/learn/more/:collectionId" component={SlayDetailed} />
 		<Route path="/learn/slayLesson/:itemType/:lessonId/:pageNumber(/:language(/:codeID))" component={SlayLesson} />
-		<Route path="/learn/:courseName/:id/shortcut(/:quizNumber)" component={Shortcut}>
+		{/* <Route path="/learn/:courseName/:id/shortcut(/:quizNumber)" component={Shortcut}>
 			<Route component={QuizManager}>
 				<IndexRoute component={Quiz} />
 			</Route>
-		</Route>
+		</Route> */}
 		<Redirect path="/courses(/:courseName)" to="/learn(/:courseName)" />
 		<Redirect path="/course(/:courseName)" to="/learn(/:courseName)" />
 		<Route path="/learn(/:courseName)" component={Modules} />

@@ -192,7 +192,10 @@ class Quiz extends Component {
 		}
 	}
 	onChange = ({ isComplete }) => {
-		this.setState({ isQuizComplete: isComplete });
+		const { isQuizComplete } = this.state;
+		if (isQuizComplete !== isComplete) {
+			this.setState({ isQuizComplete: isComplete });
+		}
 	}
 	tryAgain = () => {
 		this.quiz.tryAgain();
