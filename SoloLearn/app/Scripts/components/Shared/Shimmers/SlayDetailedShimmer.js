@@ -9,7 +9,7 @@ const SlayDetailedShimmer = () => (
 			<div className="slay-home-shimmer-shimmer" />
 		</div>
 		<div className="course-chips">
-			{ Array(40).fill(0).map((__, idx) => (
+			{ Array(42).fill(0).map((__, idx) => (
 				<div className="shimmer-chip-container" key={idx}>
 					<span className="chip-wrapper">
 						<div className="chip-body" />
