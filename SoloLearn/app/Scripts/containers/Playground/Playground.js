@@ -730,6 +730,7 @@ ${succeedingSubstr}
 									mode={mode}
 									theme={theme}
 									publicID={publicID}
+									fullScreen={fullScreen}
 									showWebOutput={showWebOutput}
 									handleEditorChange={this.handleEditorChange}
 								/>

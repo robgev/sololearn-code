@@ -62,6 +62,7 @@ const Editor = ({
 	theme,
 	inline,
 	publicID,
+	fullScreen,
 	showWebOutput,
 	handleEditorChange,
 }) => (
@@ -75,7 +76,7 @@ const Editor = ({
 			width="100%"
 			theme={theme}
 			showPrintMargin={false}
-			height={inline ? '300px' : '60vh'}
+			height={inline ? '300px' : `${fullScreen ? 100 : 60}vh`}
 			setOptions={{
 				enableBasicAutocompletion: true,
 				enableLiveAutocompletion: true,

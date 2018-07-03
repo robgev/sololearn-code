@@ -162,6 +162,7 @@ const PlaygroundTabs = ({
 					/>
 					<IconButton
 						style={styles.iconButton}
+						tooltipPosition="bottom-left"
 						onClick={fullScreenButtonAction}
 						tooltip={inline ? 'Maximize in Playground' : 'Toggle Fullscreen'}
 					>
@@ -189,6 +190,7 @@ const PlaygroundTabs = ({
 			{editorSettings[mode].name}
 			<IconButton
 				style={styles.iconButton}
+				tooltipPosition="bottom-left"
 				onClick={fullScreenButtonAction}
 				tooltip={inline ? 'Maximize in Playground' : 'Toggle Fullscreen'}
 			>
