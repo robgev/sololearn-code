@@ -24,6 +24,7 @@ class Rate extends Component {
 	}
 	componentWillMount() {
 		this.getChallenge();
+		this.preload();
 	}
 	like = () => {
 		voteChallenge(this.state.challenge.id, 1);
@@ -36,8 +37,8 @@ class Rate extends Component {
 	getChallenge = async () => {
 		this.closeChallenge();
 		const { preloaded } = this;
-		this.preload();
 		if (preloaded !== null) {
+			this.preload();
 			this.setState({ challenge: preloaded });
 		} else {
 			const challenge = await getReviewChallenge(this.props.params.courseId);
