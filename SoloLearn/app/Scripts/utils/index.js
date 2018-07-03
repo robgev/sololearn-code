@@ -7,7 +7,7 @@ import redirector from './redirector';
 import truncate from './textTruncate';
 import getPosition from './getPosition';
 import repliesOfId from './repliesOfId';
-import toSeoFrendly from './linkPrettify';
+import toSeoFriendly from './linkPrettify';
 import updateDate from './dateFormatter';
 import faultGenerator from './faultGenerator';
 import updateMessage from './messageFormatter';
@@ -45,7 +45,7 @@ export {
 	getPosition,
 	removeDups,
 	repliesOfId,
-	toSeoFrendly,
+	toSeoFriendly,
 	shuffleArray,
 	updateMessage,
 	faultGenerator,

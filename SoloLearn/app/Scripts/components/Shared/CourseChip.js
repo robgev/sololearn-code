@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { toSeoFrendly } from 'utils';
+import { toSeoFriendly } from 'utils';
 import { Circle } from 'react-progressbar.js';
 import 'styles/courseChip.scss';
 
@@ -38,7 +38,7 @@ const CourseChip = ({
 				...wrapperStyle,
 			}}
 			className={`chip-container ${(roundItem) ? 'round' : ''} ${className}`}
-			to={customLink || (isCourse ? `/learn/${toSeoFrendly(name, 100)}/${id}/${itemType}` : `/learn/slayLesson/${itemType}/${id}/1`)}
+			to={customLink || (isCourse ? `/learn/${toSeoFriendly(name, 100)}/${id}/${itemType}` : `/learn/slayLesson/${itemType}/${id}/1`)}
 		>
 			<div
 				className={`course-chip-image-container ${(roundItem) ? 'round' : ''} ${noBoxShadow ? '' : 'with-shadow'}`}

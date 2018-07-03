@@ -22,7 +22,7 @@ import {
 } from 'actions/learn';
 
 // Utils
-import { toSeoFrendly } from 'utils';
+import { toSeoFriendly } from 'utils';
 import Progress, { ProgressState } from 'api/progress';
 import Service from 'api/service';
 
@@ -103,12 +103,12 @@ class QuizManager extends Component {
 							localProgress[localProgress.length - 1].lessonID :
 							lessons[0].id;
 						this.setActiveLesson(activeLessonId, activeModuleId);
-						browserHistory.replace(`/learn/${courseName}/${courseId}/${itemType}/${activeModuleId}/${toSeoFrendly(moduleName, 100)}/${activeLessonId}/${toSeoFrendly(this.props.activeLesson.name, 100)}/${this.props.activeQuiz.number}`);
+						browserHistory.replace(`/learn/${courseName}/${courseId}/${itemType}/${activeModuleId}/${toSeoFriendly(moduleName, 100)}/${activeLessonId}/${toSeoFriendly(this.props.activeLesson.name, 100)}/${this.props.activeQuiz.number}`);
 					} else {
 						const { localProgress } = Progress;
 						const activeLessonId = localProgress[localProgress.length - 1].lessonID;
 						this.setActiveLesson(activeLessonId, moduleId);
-						browserHistory.replace(`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${toSeoFrendly(moduleName, 100)}/${activeLessonId}/${toSeoFrendly(this.props.activeLesson.name, 100)}/${this.props.activeQuiz.number}`);
+						browserHistory.replace(`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${toSeoFriendly(moduleName, 100)}/${activeLessonId}/${toSeoFriendly(this.props.activeLesson.name, 100)}/${this.props.activeQuiz.number}`);
 					}
 				} else {
 					this.setActiveLesson(lessonId, moduleId);
@@ -241,7 +241,7 @@ class QuizManager extends Component {
 			},
 		} = this.props;
 		const lesson = this.props.activeLesson;
-		browserHistory.push(`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}/${lesson.id}/${toSeoFrendly(lesson.name, 100)}/${number}`);
+		browserHistory.push(`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}/${lesson.id}/${toSeoFriendly(lesson.name, 100)}/${number}`);
 	}
 
 	getActiveQuiz = (lesson) => {

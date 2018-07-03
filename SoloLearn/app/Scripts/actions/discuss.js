@@ -4,7 +4,7 @@ import * as types from 'constants/ActionTypes';
 import { changeLoginModal } from './login.action';
 
 // Utils
-import { toSeoFrendly } from 'utils';
+import { toSeoFriendly } from 'utils';
 
 export const emptyQuestions = () => dispatch => new Promise((resolve) => {
 	dispatch({
@@ -52,7 +52,7 @@ export const loadPost = post => ({
 export const loadPostInternal = id => async (dispatch) => {
 	try {
 		const { post } = await Service.request('Discussion/GetPost', { id });
-		post.alias = toSeoFrendly(post.title, 100);
+		post.alias = toSeoFriendly(post.title, 100);
 		post.replies = [];
 		dispatch(loadPost(post));
 	} catch (e) {
@@ -203,7 +203,7 @@ export const addQuestion = (title, message, tags) => async (dispatch, getState) 
 		const { post: { id } } = await Service.request('Discussion/CreatePost', { title, message, tags });
 		const { post } = await Service.request('Discussion/GetPost', { id });
 		post.replies = [];
-		post.alias = toSeoFrendly(post.title, 100);
+		post.alias = toSeoFriendly(post.title, 100);
 		dispatch(loadPost(post));
 		return {
 			id: post.id,

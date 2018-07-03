@@ -18,7 +18,7 @@ import {
 } from 'actions/learn';
 import { isLoaded } from 'reducers';
 
-import { toSeoFrendly } from 'utils';
+import { toSeoFriendly } from 'utils';
 import Layout from 'components/Layouts/GeneralLayout';
 
 import 'styles/Learn/Lessons.scss';
@@ -71,7 +71,7 @@ class Lessons extends Component {
 		}
 		this.props.selectLesson(lessonId, lessonState);
 		this.props.selectQuiz(this.getActiveQuiz(this.props.lessons[lessonId]));
-		browserHistory.push(`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}/${lessonId}/${toSeoFrendly(lessonName, 100)}/1`);
+		browserHistory.push(`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}/${lessonId}/${toSeoFriendly(lessonName, 100)}/1`);
 	}
 
 	getActiveQuiz = (lesson) => {

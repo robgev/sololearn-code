@@ -1,4 +1,4 @@
-const toSeoFrendly = (text, maxLength) => {
+const toSeoFriendly = (text, maxLength) => {
 	if (text == null) return '';
 
 	const pattern = /[\w]+/g;
@@ -24,4 +24,4 @@ const toSeoFrendly = (text, maxLength) => {
 	return result;
 };
 
-export default toSeoFrendly;
+export default toSeoFriendly;

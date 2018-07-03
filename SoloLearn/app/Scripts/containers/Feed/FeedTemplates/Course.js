@@ -46,7 +46,7 @@ class Course extends Component {
 		const { course } = this.props;
 
 		return (
-			<Link to={`/learn/${toSeoFriendly(course.name)}/${course.id}/1`} className="course" style={styles.course} onClick={this.openCoursePopup}>
+			<Link to={`/learn/${toSeoFriendly(course.name, 100)}/${course.id}/1`} className="course" style={styles.course} onClick={this.openCoursePopup}>
 				<img src={`https://api.sololearn.com/uploads/Courses/${course.id}.png`} style={styles.courseIcon} />
 				<p style={styles.courseName}>{course.name}</p>
 			</Link>

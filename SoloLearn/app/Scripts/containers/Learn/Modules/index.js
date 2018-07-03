@@ -22,7 +22,7 @@ import BusyWrapper from 'components/Shared/BusyWrapper';
 import Layout from 'components/Layouts/GeneralLayout';
 
 import Popup from 'api/popupService';
-import { toSeoFrendly } from 'utils';
+import { toSeoFriendly } from 'utils';
 
 import 'styles/Learn/Modules.scss';
 
@@ -68,7 +68,7 @@ class Modules extends Component {
 			params: { courseName },
 		} = this.props;
 		this.setState({ loading: true });
-		if (!isLoaded || courseName !== toSeoFrendly(course.name, 100)) {
+		if (!isLoaded || courseName !== toSeoFriendly(course.name, 100)) {
 			const courseNameIsANumber = courseName.match(/^\d+$/);
 			// I've added this temporary code to reroute to the slay lessons
 			// The next if statement needs to be removed after reconstructing the routes
@@ -76,7 +76,7 @@ class Modules extends Component {
 				browserHistory.replace(`/learn/slayLesson/2/${courseName}/1`);
 			} else {
 				const currentCourse = courses.find(item =>
-					toSeoFrendly(item.name, 100) === courseName);
+					toSeoFriendly(item.name, 100) === courseName);
 				const courseId = currentCourse ? currentCourse.id : null;
 				await loadCourseInternal(courseId);
 			}

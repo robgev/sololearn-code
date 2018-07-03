@@ -1,7 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
-import Paper from 'material-ui/Paper';
-import { toSeoFrendly, EnumNameMapper } from 'utils';
+import { toSeoFriendly, EnumNameMapper } from 'utils';
 import { AppDefaults } from 'api/service';
 import Progress, { ProgressState } from 'api/progress';
 
