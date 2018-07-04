@@ -32,3 +32,28 @@
 		}
 	}
 }
+
+.profile-avatar-user-card.profile-avatar-reset {
+	width: initial;
+	margin: 0;
+	border: none;
+	padding: 5px;
+	.profile-container {
+		width: 290px;
+		.profile-avatar-wrapper {
+			display: flex;
+			flex: 1;
+			.profile-avatar {
+				width: 95px;
+				height: 95px;
+			}
+		}
+		.profile-data {
+			flex: 2;
+			.user-card-follow-button {
+				width: 100px;
+				align-self: flex-end;
+			}
+		}
+	}
+}

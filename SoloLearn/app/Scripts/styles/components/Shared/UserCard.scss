@@ -9,8 +9,11 @@
 	.profile-container {
 		display: flex;
 		width: 100%;
-		.profile-avatar {
+		.profile-avatar-wrapper {
 			width: 100%;
+			.profile-avatar {
+				width: 100%;
+			}
 		}
 		.profile-data {
 			display: flex;

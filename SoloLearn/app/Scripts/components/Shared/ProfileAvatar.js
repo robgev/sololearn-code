@@ -120,6 +120,7 @@ render() {
 						id={userID}
 						level={level}
 						name={userName}
+						className="profile-avatar-user-card profile-avatar-reset"
 					/>
 				</ToolTip>
 			}

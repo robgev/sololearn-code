@@ -34,20 +34,22 @@ handleFollow = async () => {
 
 render() {
 	const {
-		avatarUrl,
-		followers,
+		id,
 		level,
 		name,
-		id,
 		withLink,
+		followers,
+		avatarUrl,
+		className = '',
 	} = this.props;
 	const { following } = this.state;
 	const WrapperComponent = withLink ? Link : CustomWrapper;
 	return (
-		<div className="discover-user-card-container">
+		<div className={`discover-user-card-container ${className}`}>
 			<WrapperComponent to={`/profile/${id}`} className="profile-container">
-				<img src={avatars[id ? id % 5000 : 0].picture.large} alt="avatar" className="profile-avatar" />
-
+				<div className="profile-avatar-wrapper">
+					<img src={avatars[id ? id % 5000 : 0].picture.large} alt="avatar" className="profile-avatar" />
+				</div>
 				<div className="profile-data">
 					<div className="profile-name">
 						{name}
@@ -65,6 +67,7 @@ render() {
 					<RaisedButton
 						secondary={following}
 						onClick={this.handleFollow}
+						className="user-card-follow-button"
 						label={following ? 'Following' : 'Follow'}
 					/>
 				</div>
