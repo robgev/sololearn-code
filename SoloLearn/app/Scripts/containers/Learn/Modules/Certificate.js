@@ -9,9 +9,11 @@ const Certificate = ({ modules, courseId }) => {
 	return (
 		<div className="certificate-container">
 			<CourseChip
+				round
 				noBoxShadow
 				name="Certificate"
 				color="transparent"
+				paperStyle={{ width: 95 }}
 				wrapperStyle={{ padding: 0 }}
 				disabled={!isCourseFinished}
 				customLink={`/certificate/${courseId}`}
