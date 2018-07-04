@@ -76,10 +76,13 @@
 				}
 			}
 			&.disabled {
-				background-color: #e4e4e4;
+				background-color: #e4e4e4 !important;
+				cursor: default;
 			}
 			&:hover {
-				box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px !important;
+				&:not(.disabled) {
+					box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px !important;
+				}
 			}
 		}
 		&.initial {
