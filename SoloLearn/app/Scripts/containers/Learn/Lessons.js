@@ -1,7 +1,7 @@
 // React modules
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
-import { browserHistory } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
@@ -94,7 +94,17 @@ class Lessons extends Component {
 
 	render() {
 		const {
-			t, activeModule, isLoaded, course,
+			t,
+			course,
+			isLoaded,
+			activeModule,
+			params: {
+				courseName,
+				courseId,
+				moduleId,
+				moduleName,
+				itemType,
+			},
 		} = this.props;
 
 		if (!isLoaded || !activeModule) {
@@ -107,7 +117,12 @@ class Lessons extends Component {
 			<Layout>
 				<Paper className="lessons-container">
 					<div className="lesson-breadcrumbs">
-						{course.name} &gt; {name}
+						<Link to={`/learn/${courseName}/${courseId}/${itemType}`}>
+							{course.name}
+						</Link> &gt;
+						<Link to={`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}`}>
+							{name}
+						</Link>
 					</div>
 					<LessonTiles
 						t={t}

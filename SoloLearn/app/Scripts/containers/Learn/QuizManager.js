@@ -1,6 +1,6 @@
 // React modules
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 
 // Material UI components
@@ -280,6 +280,13 @@ class QuizManager extends Component {
 			activeQuiz,
 			activeLesson,
 			activeModule,
+			params: {
+				courseName,
+				courseId,
+				itemType,
+				moduleId,
+				moduleName,
+			},
 		} = this.props;
 		const { loading, commentsCount, commentsOpened } = this.state;
 
@@ -303,7 +310,15 @@ class QuizManager extends Component {
 			<Layout>
 				<Paper className="quiz-container" style={{ padding: 15 }}>
 					<div className="lesson-breadcrumbs">
-						{course.name} &gt; {activeModule.name} &gt; {activeLesson.name}
+						<Link to={`/learn/${courseName}/${courseId}/${itemType}`}>
+							{course.name} &gt;
+						</Link>
+						<Link to={`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}`}>
+							{activeModule.name} &gt;
+						</Link>
+						<Link to={`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}/${activeLesson.id}/${toSeoFriendly(activeLesson.name, 100)}/1`}>
+							{activeLesson.name}
+						</Link>
 					</div>
 					<Stepper activeStep={parseInt(this.props.activeQuiz.number, 10) - 1}>
 						{this.generateTimeline(quizzes, activeQuiz)}
