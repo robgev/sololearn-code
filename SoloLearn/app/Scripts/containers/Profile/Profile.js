@@ -202,7 +202,9 @@ class Profile extends Component {
 								isUserProfile
 								userId={id}
 							/>
-							<AddCodeButton />
+							{ profile.data.id === userId &&
+								<AddCodeButton />
+							}
 						</Paper>
 				}
 				{
@@ -216,7 +218,9 @@ class Profile extends Component {
 								query=""
 								userId={id}
 							/>
-							<AddQuestionButton />
+							{ profile.data.id === userId &&
+								<AddQuestionButton />
+							}
 						</Paper>
 				}
 				{activeTab === 'skills' &&
