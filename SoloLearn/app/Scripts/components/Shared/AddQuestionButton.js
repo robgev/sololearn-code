@@ -4,19 +4,28 @@ import { FloatingActionButton } from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
 const AddQuestionButton = () => (
-	<Link style={{ textDecoration: 'none' }} to="/discuss/new">
-		<FloatingActionButton
-			style={{
-				position: 'fixed',
-				bottom: 20,
-				right: 20,
-			}}
-			zDepth={3}
-			secondary
-		>
-			<ContentAdd />
-		</FloatingActionButton>
-	</Link>
+	<div style={{
+		position: 'absolute',
+		width: 56,
+		top: 0,
+		bottom: 0,
+		right: 5,
+		zIndex: 1,
+	}}
+	>
+		<Link style={{ textDecoration: 'none' }} to="/discuss/new">
+			<FloatingActionButton
+				style={{
+					position: 'fixed',
+					bottom: 5,
+				}}
+				zDepth={3}
+				secondary
+			>
+				<ContentAdd />
+			</FloatingActionButton>
+		</Link>
+	</div>
 );
 
 export default AddQuestionButton;

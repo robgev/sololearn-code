@@ -71,7 +71,7 @@ class QuestionsBase extends Component {
 		const { t } = this.props;
 		return (
 			<Layout>
-				<Paper>
+				<Paper style={{ position: 'relative' }}>
 					<div className="toolbar" style={styles.toolbar}>
 						<DropDownMenu
 							style={styles.discussFilter}
