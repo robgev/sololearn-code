@@ -40,10 +40,10 @@ const styles = {
 	defaultTab: {
 		base: {
 			display: 'flex',
-			justifyContent: 'flex-end',
+			justifyContent: 'space-between',
 			alignItems: 'center',
 			lineHeight: '48px',
-			padding: '0 24px 0 0',
+			padding: '0 24px',
 			height: '48px',
 			fontSize: '16px',
 			fontWeight: 500,
@@ -62,7 +62,8 @@ const styles = {
 	},
 
 	iconButton: {
-		height: 36,
+		width: 24,
+		height: 24,
 		padding: 0,
 	},
 };
