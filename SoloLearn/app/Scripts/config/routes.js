@@ -1,6 +1,6 @@
 // React modules
 import React from 'react';
-import { Route, Redirect, IndexRoute, browserHistory } from 'react-router';
+import { Route, Redirect, browserHistory } from 'react-router';
 import { redirector } from 'utils';
 
 // Layouts
@@ -60,6 +60,8 @@ import Challenge from 'containers/Challenges/Challenge';
 // Discover
 import DiscoverContainer from 'containers/Profile/DiscoverContainer';
 
+import NotFound from 'components/Shared/NotFound';
+
 // Quiz factory
 import {
 	QuizFactoryMenu,
@@ -112,5 +114,6 @@ export default (
 		<Route path="/quiz-factory/rate/:courseId" component={QuizFactoryRate} />
 		<Route path="/quiz-factory/my-submissions" component={QuizFactoryMySubmissions} />
 		<Route path="/login" component={Login} />
+		<Route path="*" exact component={NotFound} />
 	</Route>
 );
