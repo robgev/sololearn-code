@@ -17,7 +17,7 @@ import editorSettings from 'defaults/playgroundEditorSettings';
 const styles = {
 	webTabs: {
 		dark: {
-			backgroundColor: '#2f3129',
+			backgroundColor: '#414339',
 		},
 
 		light: {
@@ -28,7 +28,7 @@ const styles = {
 	webTab: {
 		dark: {
 			color: '#fff',
-			borderRight: '1px solid #A8A8A8',
+			borderRight: '1px solid #1E1F1C',
 		},
 
 		light: {
@@ -51,7 +51,7 @@ const styles = {
 		},
 
 		dark: {
-			backgroundColor: '#2f3129',
+			backgroundColor: '#272822',
 			color: '#fff',
 		},
 
@@ -85,7 +85,7 @@ const PlaygroundTabs = ({
 		return (
 			<div style={{
 				display: 'flex',
-				borderBottom: `1px solid ${isDarkTheme ? '#A8A8A8' : '#C1C1C1'}`,
+				borderBottom: `1px solid ${isDarkTheme ? '#1E1F1C' : '#C1C1C1'}`,
 			}}
 			>
 				<Tabs
@@ -93,7 +93,7 @@ const PlaygroundTabs = ({
 					style={{
 						display: 'flex',
 						flexDirection: 'column',
-						flex: 1,
+						flex: '1 1 auto',
 						height: 36,
 					}}
 					inkBarStyle={{ height: 0 }}
@@ -108,7 +108,7 @@ const PlaygroundTabs = ({
 							buttonStyle={{ height: 36 }}
 							style={{
 								...(isDarkTheme ? styles.webTab.dark : styles.webTab.light),
-								...(mode === 'html' ? { backgroundColor: isDarkTheme ? '#494B43' : '#D2D2D2' } : {}),
+								...(mode === 'html' ? { backgroundColor: isDarkTheme ? '#272822' : '#D2D2D2' } : {}),
 							}}
 						/>,
 						<Tab
@@ -118,7 +118,7 @@ const PlaygroundTabs = ({
 							buttonStyle={{ height: 36 }}
 							style={{
 								...(isDarkTheme ? styles.webTab.dark : styles.webTab.light),
-								...(mode === 'css' ? { backgroundColor: isDarkTheme ? '#494B43' : '#D2D2D2' } : {}),
+								...(mode === 'css' ? { backgroundColor: isDarkTheme ? '#272822' : '#D2D2D2' } : {}),
 							}}
 						/>,
 						<Tab
@@ -128,7 +128,7 @@ const PlaygroundTabs = ({
 							buttonStyle={{ height: 36 }}
 							style={{
 								...(isDarkTheme ? styles.webTab.dark : styles.webTab.light),
-								...(mode === 'javascript' ? { backgroundColor: isDarkTheme ? '#494B43' : '#D2D2D2' } : {}),
+								...(mode === 'javascript' ? { backgroundColor: isDarkTheme ? '``#272822``' : '#D2D2D2' } : {}),
 							}}
 						/>,
 					] : (
@@ -139,7 +139,7 @@ const PlaygroundTabs = ({
 							buttonStyle={{ height: 36 }}
 							style={{
 								...(isDarkTheme ? styles.webTab.dark : styles.webTab.light),
-								...(mode === 'php' ? { backgroundColor: isDarkTheme ? '#494B43' : '#D2D2D2' } : {}),
+								...(mode === 'php' ? { backgroundColor: isDarkTheme ? '#272822' : '#D2D2D2' } : {}),
 							}}
 						/>
 					)
@@ -150,14 +150,14 @@ const PlaygroundTabs = ({
 					flex: 1,
 					justifyContent: 'flex-end',
 					alignItems: 'center',
-					background: isDarkTheme ? '#2F3129' : '#ebebeb',
+					background: isDarkTheme ? '#272822' : '#ebebeb',
 				}}
 				>
 					<FlatButton
 						label={t('code_playground.output')}
 						style={{
 							color: isDarkTheme ? '#fff' : '#777',
-							background: isDarkTheme ? '#2F3129' : '#ebebeb',
+							background: isDarkTheme ? '#272822' : '#ebebeb',
 						}}
 						onClick={runCode}
 					/>
