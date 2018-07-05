@@ -7,6 +7,7 @@ import 'styles/lessonLayout.scss';
 const LessonLayout = ({
 	loading,
 	children,
+	sidebarContent,
 }) => (
 	<div className="slay-container">
 		<div className="main-content">
@@ -24,7 +25,9 @@ const LessonLayout = ({
 			</BusyWrapper>
 		</div>
 		<div className="sidebar-placeholder">
-			<div className="sidebar" />
+			<div className="sidebar">
+				{sidebarContent}
+			</div>
 		</div>
 	</div>
 );

@@ -131,7 +131,19 @@ class SlayLesson extends PureComponent {
 			userName,
 		};
 		return (
-			<LessonLayout loading={loading}>
+			<LessonLayout
+				loading={loading}
+				sidebarContent={
+					<RelatedLessons
+						id={id}
+						userID={userID}
+						userName={userName}
+						nextLesson={nextLesson}
+						lessonsByUser={lessonsByUser}
+						relevantLessons={relevantLessons}
+					/>
+				}
+			>
 				{ !loading &&
 					<div style={{ width: '100%' }}>
 						<Paper style={{ padding: 15 }}>
@@ -169,9 +181,6 @@ class SlayLesson extends PureComponent {
 							id={id}
 							userID={userID}
 							userName={userName}
-							nextLesson={nextLesson}
-							lessonsByUser={lessonsByUser}
-							relevantLessons={relevantLessons}
 							implementations={implementations}
 						/>
 					</div>
