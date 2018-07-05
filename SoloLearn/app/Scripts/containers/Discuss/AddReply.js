@@ -30,6 +30,7 @@ class AddReply extends Component {
 		}
 	}
 	save = () => {
+		this.setState({ isReplyBoxOpen: false });
 		this.props.save(this.mentionInput.popValue());
 	}
 	render() {

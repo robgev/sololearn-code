@@ -164,10 +164,12 @@ class Post extends Component {
 
 	remove = () => {
 		const isPrimary = this.deletingPost.parentID == null;
-		if (isPrimary) {
-			browserHistory.push('/discuss/');
-		}
-		this.props.deletePostInternal(this.deletingPost);
+		this.props.deletePostInternal(this.deletingPost)
+			.then(() => {
+				if (isPrimary) {
+					browserHistory.push('/discuss');
+				}
+			});
 		this.closeDeletePopup();
 	}
 

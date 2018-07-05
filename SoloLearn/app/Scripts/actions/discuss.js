@@ -178,19 +178,15 @@ export const deletePostInternal = (post) => {
 	const isPrimary = post.parentID === null;
 	return (dispatch, getState) => {
 		if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
+		dispatch(emptyQuestions());
 		if (!isPrimary) {
-			dispatch(deletePost(post.id, isPrimary)).then(() => {
+			return dispatch(deletePost(post.id, isPrimary)).then(() => {
 				Service.request('Discussion/DeletePost', { id: post.id });
-			}).catch((error) => {
-				console.log(error);
-			});
-		} else {
-			return Service.request('Discussion/DeletePost', { id: post.id }).then(() => {
-				dispatch(loadPost(null));
-			}).catch((error) => {
-				console.log(error);
 			});
 		}
+		return Service.request('Discussion/DeletePost', { id: post.id }).then(() => {
+			dispatch(loadPost(null));
+		});
 	};
 };
 
