@@ -52,11 +52,6 @@ import Profile from 'containers/Profile/Profile';
 // Leaderboards
 import Leaderboards from 'containers/Leaderboards';
 
-// Chalenges
-import Contests from 'containers/Challenges/Feed/Contests';
-import OpponentSelector from 'containers/Challenges/Users/OpponentSelector';
-import Challenge from 'containers/Challenges/Challenge';
-
 // Discover
 import DiscoverContainer from 'containers/Profile/DiscoverContainer';
 
@@ -65,7 +60,6 @@ import NotFound from 'components/Shared/NotFound';
 // Quiz factory
 import {
 	QuizFactoryMenu,
-	QuizFactorySuggest,
 	QuizFactorySuggestTypeSelector,
 	QuizFactoryMySubmissions,
 	QuizFactoryRate,
@@ -81,11 +75,6 @@ export default (
 		<Route path="/learn/more/author/:userId" component={SlayMoreByAuthor} />
 		<Route path="/learn/more/:collectionId" component={SlayDetailed} />
 		<Route path="/learn/slayLesson/:itemType/:lessonId/:pageNumber(/:language(/:codeID))" component={SlayLesson} />
-		{/* <Route path="/learn/:courseName/:id/shortcut(/:quizNumber)" component={Shortcut}>
-			<Route component={QuizManager}>
-				<IndexRoute component={Quiz} />
-			</Route>
-		</Route> */}
 		<Redirect path="/courses/:courseName/:courseId/:itemType" to="/learn/:courseName/:courseId/:itemType" />
 		<Route path="/learn/:courseName/:courseId/:itemType" component={CourseMore} />
 		<Route path="/learn/:courseName/:courseId/:itemType/:moduleId(/:moduleName)" component={Lessons} />
@@ -104,9 +93,6 @@ export default (
 		<Route path="/profile/:id(/:tab)(/:selected)" component={Profile} />
 		<Route path="/certificate/:id" component={Certificate} />
 		<Route path="/leaderboards(/:userId)(/:mode)(/:range)" component={Leaderboards} />
-		<Route path="/contests" component={redirector(Contests)} />
-		<Route path="/choose-opponent" component={redirector(OpponentSelector)} />
-		<Route path="/challenge/:id" component={redirector(Challenge)} />
 		<Route path="/notifications" component={redirector(Notifications)} />
 		<Route path="/discover(/:query)" component={redirector(DiscoverContainer)} />
 		<Route path="/quiz-factory" component={QuizFactoryMenu} />
