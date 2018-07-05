@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-import { CHANGE_DISCUSS_QUERY, CHANGE_DISCUSS_ORDERING } from '../constants/ActionTypes';
+import { CHANGE_DISCUSS_QUERY, CHANGE_DISCUSS_ORDERING, CHANGE_DISCUSS_HAS_MORE } from '../constants/ActionTypes';
 
-const discussQuery = (state = '', action) => {
+const tag = (state = '', action) => {
 	switch (action.type) {
 	case CHANGE_DISCUSS_QUERY:
 		return action.payload;
@@ -10,7 +10,7 @@ const discussQuery = (state = '', action) => {
 	}
 };
 
-const discussOrdering = (state = 8, action) => {
+const order = (state = 8, action) => {
 	switch (action.type) {
 	case CHANGE_DISCUSS_ORDERING:
 		return action.payload;
@@ -19,4 +19,13 @@ const discussOrdering = (state = 8, action) => {
 	}
 };
 
-export default combineReducers({ discussQuery, discussOrdering });
+const hasMore = (state = true, action) => {
+	switch (action.type) {
+	case CHANGE_DISCUSS_HAS_MORE:
+		return action.payload;
+	default:
+		return state;
+	}
+};
+
+export default combineReducers({ tag, order, hasMore });

@@ -19,29 +19,26 @@ export const getQuestions = questions => ({
 	payload: questions,
 });
 
-export const getProfileQuestions = questions => ({
-	type: types.GET_PROFILE_QUESTIONS,
-	payload: questions,
-});
+export const changeDiscussHasMore = hasMore =>
+	({ type: types.CHANGE_DISCUSS_HAS_MORE, payload: hasMore });
 
 export const getQuestionsInternal = ({
-	index, profileId = null, count = 20, query = '', ordering,
-}) => async (dispatch) => {
-	const orderBy = profileId != null ? 7 : ordering;
+	index, query, orderBy,
+}) => async (dispatch, getState) => {
 	const settings = {
 		index,
-		count,
+		count: 20,
 		orderBy,
-		profileId,
 		query,
 	};
-	const { posts: questions } = await Service.request('Discussion/Search', settings);
-	if (profileId != null) {
-		dispatch(getProfileQuestions(questions));
-	} else {
-		dispatch(getQuestions(questions));
+	const { posts } = await Service.request('Discussion/Search', settings);
+	const { order, tag } = getState().discussFilters;
+	if (order === orderBy && tag === query) {
+		dispatch(getQuestions(posts));
+		if (posts.length === 0) {
+			dispatch(changeDiscussHasMore(false));
+		}
 	}
-	return questions.length;
 };
 
 export const loadPost = post => ({

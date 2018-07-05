@@ -76,6 +76,29 @@ export const markReadInternal = ids => (dispatch) => {
 	}
 };
 
+export const getProfileQuestions = questions => ({
+	type: types.GET_PROFILE_QUESTIONS,
+	payload: questions,
+});
+
+export const setProfileHasMoreQuestions = hasMore =>
+	({ type: types.SET_PROFILE_HAS_MORE_QUESTIONS, payload: hasMore });
+
+export const getProfileQuestionsInternal = ({ index, profileId }) => async (dispatch) => {
+	const settings = {
+		index,
+		profileId,
+		query: '',
+		orderBy: 7,
+		count: 20,
+	};
+	const { posts } = await Service.request('Discussion/Search', settings);
+	dispatch(getProfileQuestions(posts));
+	if (posts.length === 0) {
+		dispatch(setProfileHasMoreQuestions(false));
+	}
+};
+
 export const emptyProfile = () => ({
 	type: types.EMPTY_PROFILE,
 });

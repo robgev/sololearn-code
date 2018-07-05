@@ -15,7 +15,7 @@ import { grey600 } from 'material-ui/styles/colors';
 import { connect } from 'react-redux';
 import { getFeedItemsInternal } from 'actions/feed';
 import { getProfileInternal } from 'actions/defaultActions';
-import { emptyProfileFollowers, emptyProfile } from 'actions/profile';
+import { emptyProfileFollowers, emptyProfile, getProfileQuestionsInternal } from 'actions/profile';
 import { isLoaded } from 'reducers';
 
 import Layout from 'components/Layouts/GeneralLayout';
@@ -27,10 +27,10 @@ import ProfileHeaderShimmer from 'components/Shared/Shimmers/ProfileHeaderShimme
 import 'styles/Profile/index.scss';
 
 // Additional data and components
+import { QuestionList } from 'components/Shared/Questions';
 import Header from './Header';
 import FeedItemsBase from '../Feed/FeedItemsBase';
 import Codes from '../Playground/Codes';
-import Questions from '../Discuss/Questions';
 import Skills from './Skills';
 import Badges from './Badges';
 import FollowersBase from './FollowersBase';
@@ -120,6 +120,17 @@ class Profile extends Component {
 		}
 	}
 
+	loadMoreQuestions = () => {
+		const { profile } = this.props;
+		// if (profile.data.id != null) {
+		const index = profile.posts.questions !== null ? profile.posts.questions.length : 0;
+		this.props.getQuestions({
+			index,
+			profileId: profile.data.id,
+		});
+		// }
+	}
+
 	render() {
 		const {
 			t,
@@ -180,48 +191,46 @@ class Profile extends Component {
 				</Paper>
 				{
 					activeTab === 'activity' &&
-						<div className="section">
-							<FeedItemsBase
-								isLoaded={profile.feed.length > 0}
-								feed={profile.feed}
-								feedPins={[]}
-								isUserProfile
-								userId={id}
-							/>
-						</div>
+					<div className="section">
+						<FeedItemsBase
+							isLoaded={profile.feed.length > 0}
+							feed={profile.feed}
+							feedPins={[]}
+							isUserProfile
+							userId={id}
+						/>
+					</div>
 				}
 				{
 					activeTab === 'codes' &&
-						<Paper className="codes-wrapper section">
-							<Codes
-								t={t}
-								codes={profile.codes}
-								isLoaded={profile.codes.length > 0}
-								ordering={3}
-								language=""
-								isUserProfile
-								userId={id}
-							/>
-							{ profile.data.id === userId &&
-								<AddCodeButton />
-							}
-						</Paper>
+
+					<Paper className="codes-wrapper section">
+						<Codes
+							t={t}
+							codes={profile.codes}
+							isLoaded={profile.codes.length > 0}
+							ordering={3}
+							language=""
+							isUserProfile
+							userId={id}
+						/>
+						{profile.data.id === userId &&
+							<AddCodeButton />
+						}
+					</Paper>
 				}
 				{
 					activeTab === 'discussion' &&
-						<Paper className="discussion-wrapper section">
-							<Questions
-								t={t}
-								questions={profile.posts}
-								isLoaded={profile.posts.length > 0}
-								ordering={7}
-								query=""
-								userId={id}
-							/>
-							{ profile.data.id === userId &&
-								<AddQuestionButton />
-							}
-						</Paper>
+					<Paper className="section">
+						<QuestionList
+							questions={profile.posts.questions}
+							hasMore={profile.posts.hasMore}
+							loadMore={this.loadMoreQuestions}
+						/>
+						{profile.data.id === userId &&
+							<AddQuestionButton />
+						}
+					</Paper>
 				}
 				{activeTab === 'skills' &&
 					<Skills
@@ -256,6 +265,7 @@ const mapDispatchToProps = {
 	getProfile: getProfileInternal,
 	emptyProfileFollowers,
 	clearOpenedProfile: emptyProfile,
+	getQuestions: getProfileQuestionsInternal,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

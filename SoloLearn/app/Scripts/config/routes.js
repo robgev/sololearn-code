@@ -25,7 +25,7 @@ import QuizManager from 'containers/Learn/QuizManager';
 import Quiz from 'containers/Learn/Quiz';
 
 // Discuss
-import Questions from 'containers/Discuss/QuestionsBase';
+import Questions from 'containers/Discuss/Questions';
 import Post from 'containers/Discuss/Post';
 import NewQuestion from 'containers/Discuss/NewQuestion';
 import EditQuestion from 'containers/Discuss/EditQuestion';

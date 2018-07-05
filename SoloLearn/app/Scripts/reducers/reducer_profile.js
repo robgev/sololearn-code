@@ -1,11 +1,26 @@
+import { uniqBy } from 'lodash';
 import {
-	GET_PROFILE, GET_PROFILE_FEED_ITEMS, GET_PROFILE_NEW_FEED_ITEMS, GET_PROFILE_CODES, GET_PROFILE_QUESTIONS,
-	GET_PROFILE_FOLLOWERS, GET_PROFILE_FOLLOWING, FOLLOW_USER, EMPTY_PROFILE_FOLLOWERS, EMPTY_PROFILE, CLEAR_PROFILE_FEED_ITEMS, REMOVE_CODE,
+	GET_PROFILE,
+	GET_PROFILE_FEED_ITEMS,
+	GET_PROFILE_NEW_FEED_ITEMS,
+	GET_PROFILE_CODES,
+	GET_PROFILE_QUESTIONS,
+	SET_PROFILE_HAS_MORE_QUESTIONS,
+	GET_PROFILE_FOLLOWERS,
+	GET_PROFILE_FOLLOWING,
+	FOLLOW_USER,
+	EMPTY_PROFILE_FOLLOWERS,
+	EMPTY_PROFILE,
+	CLEAR_PROFILE_FEED_ITEMS,
+	REMOVE_CODE,
 } from '../constants/ActionTypes';
 
 const initialState = {
 	data: {},
-	posts: [],
+	posts: {
+		questions: null,
+		hasMore: true,
+	},
 	feed: [],
 	codes: [],
 	followers: [],
@@ -34,9 +49,23 @@ export default function (state = initialState, action) {
 	case REMOVE_CODE:
 		return { ...state, codes: state.codes.filter(code => code.id !== action.payload) };
 	case GET_PROFILE_QUESTIONS:
-		return Object.assign({}, state, {
-			posts: state.posts.concat(action.payload),
-		});
+		return {
+			...state,
+			posts: {
+				...state.posts,
+				questions: state.posts.questions === null
+					? action.payload
+					: uniqBy([ ...state.posts.questions, ...action.payload ], 'id'),
+			},
+		};
+	case SET_PROFILE_HAS_MORE_QUESTIONS: {
+		return {
+			...state,
+			posts: {
+				...state.posts, hasMore: action.payload,
+			},
+		};
+	}
 	case GET_PROFILE_FOLLOWERS:
 		return Object.assign({}, state, {
 			followers: state.followers.concat(action.payload),

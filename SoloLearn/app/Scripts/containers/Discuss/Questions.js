@@ -1,88 +1,122 @@
-// React modules
 import React, { Component } from 'react';
-import ReactGA from 'react-ga';
-import Radium from 'radium';
-
-// Redux modules
 import { connect } from 'react-redux';
-import { getQuestionsInternal, emptyQuestions } from 'actions/discuss';
+import { translate } from 'react-i18next';
+import { browserHistory } from 'react-router';
+import {
+	changeDiscussQuery,
+	changeDiscussOrdering,
+	getQuestionsInternal,
+	emptyQuestions,
+	changeDiscussHasMore,
+} from 'actions/discuss';
+import Layout from 'components/Layouts/GeneralLayout';
+import Paper from 'material-ui/Paper';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
+import Chip from 'material-ui/Chip';
+import { QuestionList } from 'components/Shared/Questions';
 
-// Additional components
-import BusyWrapper from 'components/Shared/BusyWrapper';
-import DiscussShimmer from 'components/Shared/Shimmers/DiscussShimmer';
-import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
+const mapStateToProps = state => ({
+	order: state.discussFilters.order,
+	tag: state.discussFilters.tag,
+	hasMore: state.discussFilters.hasMore,
+	questions: state.questions,
+});
 
-import 'styles/Discuss/Questions.scss';
-import QuestionItem from './QuestionItem';
+const mapDispatchToProps = {
+	changeTag: changeDiscussQuery,
+	changeOrder: changeDiscussOrdering,
+	getQuestions: getQuestionsInternal,
+	emptyQuestions,
+	changeHasMore: changeDiscussHasMore,
+};
 
-const mapDispatchToProps = { getQuestionsInternal, emptyQuestions };
-
-@connect(null, mapDispatchToProps, null, { withRef: true })
-@Radium
+@connect(mapStateToProps, mapDispatchToProps)
+@translate()
 class Questions extends Component {
-	state = { isLoading: false }
 	componentWillMount() {
-		this.loadQuestions();
-		document.title = 'Sololearn | Discuss';
-		ReactGA.ga('send', 'screenView', { screenName: 'Discussion Page' });
+		this.matchQueryWithProps();
 	}
-	componentDidUpdate(prevProps) {
-		if (prevProps.query !== this.props.query ||
-			prevProps.ordering !== this.props.ordering) {
-			this.loadQuestionByState();
+	shouldComponentUpdate() {
+		return this.props.location.query.order != null;
+	}
+	componentWillUpdate(nextProps) {
+		const { query: currQuery } = this.props.location;
+		const { query: nextQuery } = nextProps.location;
+		const orderChanged = currQuery.order !== nextQuery.order;
+		const tagChanged = currQuery.tag !== nextQuery.tag;
+		if (orderChanged) {
+			this.props.changeOrder(parseInt(nextQuery.order, 10));
+		}
+		if (tagChanged) {
+			this.props.changeTag(nextQuery.tag);
+		}
+		if (orderChanged || tagChanged) {
+			this.props.emptyQuestions();
+			this.props.changeHasMore(true);
 		}
 	}
-	componentWillUnmount() {
-		this.props.emptyQuestions();
+	matchQueryWithProps = () => {
+		const { location } = this.props;
+		const { tag, order } = location.query;
+		const query = {};
+		if (tag != null) {
+			this.props.changeTag(tag);
+		} else if (this.props.tag !== '') {
+			query.tag = this.props.tag;
+		}
+		if (order != null) {
+			this.props.changeOrder(parseInt(order, 10));
+		} else {
+			query.order = this.props.order;
+		}
+		browserHistory.replace({ ...location, query: { ...location.query, ...query } });
 	}
-	loadQuestions = async () => {
+	loadMore = () => {
 		const {
-			questions, userId: profileId, query, ordering,
+			questions, tag, order,
 		} = this.props;
-		this.setState({ isLoading: true }); // if (this.props.questions.length > 0)
-		const index = questions ? questions.length : 0;
-		await this.props.getQuestionsInternal({
-			index, profileId, query, ordering,
+		this.props.getQuestions({
+			index: questions !== null ? questions.length : 0, query: tag, orderBy: order,
 		});
-		this.setState({ isLoading: false });
 	}
-	// Load questions when condition changes
-	loadQuestionByState = async () => {
-		try {
-			await this.props.emptyQuestions();
-			this.loadQuestions();
-		} catch (e) {
-			console.log(e);
-		}
+	handleFilterChange = (_, __, order) => {
+		const { location } = this.props;
+		browserHistory.push({ ...location, query: { ...location.query, order } });
 	}
-	renderQuestion = question => (<QuestionItem question={question} />)
+	removeTag = () => {
+		const { location } = this.props;
+		const { tag, ...query } = location.query; // remove tag from query
+		browserHistory.push({ ...location, query });
+	}
 	render() {
-		const { isLoading } = this.state;
 		const {
-			isLoaded, questions, t,
+			questions, t, order, hasMore, tag,
 		} = this.props;
-
 		return (
-			<BusyWrapper
-				isBusy={isLoading}
-				className="discuss-busy-container"
-				wrapperClassName="discuss-wrapper"
-				loadingComponent={<DiscussShimmer />}
-			>
-				{(isLoaded && questions.length > 0) && (
-					<InfiniteVirtualizedList
-						rowHeight={100}
-						item={this.renderQuestion}
-						list={this.props.questions}
-						loadMore={this.loadQuestions}
-						width={950}
-						window
-					/>
-				)}
-				{ questions.length === 0 &&
-					<p>{t('common.empty-list-message')}</p>
-				}
-			</BusyWrapper>
+			<Layout>
+				<Paper style={{ marginBottom: 10, display: 'flex', justifyContent: 'space-between' }}>
+					<div style={{ display: 'flex', alignItems: 'center', marginLeft: 15 }}>
+						{tag !== '' &&
+							<Chip onRequestDelete={this.removeTag}>{tag}</Chip>}
+					</div>
+					<DropDownMenu
+						value={order}
+						onChange={this.handleFilterChange}
+					>
+						<MenuItem value={8} primaryText={t('discuss.filter.trending')} />
+						<MenuItem value={1} primaryText={t('discuss.filter.most-recent')} />
+						<MenuItem value={2} primaryText={t('discuss.filter.most-popular')} />
+						<MenuItem value={3} primaryText="Most Answered" />
+						<MenuItem value={4} primaryText={t('discuss.filter.unanswered')} />
+						<MenuItem value={5} primaryText={t('discuss.filter.my-questions')} />
+						<MenuItem value={6} primaryText={t('discuss.filter.my-answers')} />
+					</DropDownMenu>
+				</Paper>
+				<Paper>
+					<QuestionList questions={questions} hasMore={hasMore} loadMore={this.loadMore} />
+				</Paper>
+			</Layout>
 		);
 	}
 }

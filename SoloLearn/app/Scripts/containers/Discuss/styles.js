@@ -385,38 +385,6 @@ export const QuestionsStyles = {
 	},
 };
 
-export const QuestionsBaseStyles = {
-	toolbar: {
-		overflow: 'hidden',
-		padding: '5px',
-		boxShadow: '0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2)',
-	},
-	search: {
-		float: 'left',
-		margin: '0 0 0 15px',
-	},
-	searchIcon: {
-		display: 'inline-block',
-		verticalAlign: 'middle',
-	},
-	searchInput: {
-		display: 'inline-block',
-		verticalAlign: 'middle',
-		margin: '0 5px',
-	},
-	searchSuggestionsList: {
-		height: '200px',
-	},
-	clearIcon: {
-		display: 'inline-block',
-		verticalAlign: 'middle',
-		cursor: 'pointer',
-	},
-	discussFilter: {
-		float: 'right',
-	},
-};
-
 export const ReplyStyles = {
 	reply: {
 		base: {
