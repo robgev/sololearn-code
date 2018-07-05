@@ -10,7 +10,7 @@ const Layout = ({
 	sidebarContent,
 }) => (
 	<div className="layout-container" style={rootStyle}>
-		<div className={`main-content ${className}`} style={style}>
+		<div className={`main-content ${noSidebar ? 'wide' : ''} ${className}`} style={style}>
 			{children}
 		</div>
 		{!noSidebar &&

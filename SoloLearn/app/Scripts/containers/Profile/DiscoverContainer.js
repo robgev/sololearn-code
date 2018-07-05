@@ -46,7 +46,7 @@ class DiscoverContainer extends PureComponent {
 		const { loading } = this.state;
 		const { t, discoverSuggestions } = this.props;
 		return (
-			<Layout>
+			<Layout noSidebar>
 				<Paper className="discover-container">
 					<BusyWrapper
 						isBusy={loading}
