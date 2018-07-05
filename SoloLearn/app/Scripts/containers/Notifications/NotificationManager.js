@@ -52,10 +52,12 @@ class NotificationManager extends PureComponent {
 						minWidth: 16,
 						width: 'initial',
 						borderRadius: 8,
+						cursor: 'pointer',
 						backgroundColor: '#F44336',
 						visibility: notificationsCount <= 0 ? 'hidden' : 'initial',
 					}}
 					badgeContent={notificationsCount}
+					onClick={this.toggleNotificationsOpen}
 				>
 					<IconButton
 						className="notification-button"
