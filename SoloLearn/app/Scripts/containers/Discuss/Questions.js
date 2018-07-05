@@ -34,6 +34,10 @@ const mapDispatchToProps = {
 @connect(mapStateToProps, mapDispatchToProps)
 @translate()
 class Questions extends Component {
+	constructor() {
+		super();
+		document.title = 'Sololearn | Discuss';
+	}
 	componentWillMount() {
 		this.matchQueryWithProps();
 	}
