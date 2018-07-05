@@ -5103,9 +5103,9 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-material-ui-chip-input@^0.13.6:
-  version "0.13.6"
-  resolved "https://registry.yarnpkg.com/material-ui-chip-input/-/material-ui-chip-input-0.13.6.tgz#ca5f50c85da1f7a3e02532513f95cc471fd15d30"
+material-ui-chip-input@^0.19.0:
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/material-ui-chip-input/-/material-ui-chip-input-0.19.0.tgz#f837f93557f4369522d8446e8a4aeb94d36e90fa"
   dependencies:
     prop-types "^15.5.7"
 

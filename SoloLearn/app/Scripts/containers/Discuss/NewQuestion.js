@@ -30,7 +30,6 @@ const mapDispatchToProps = { addQuestion };
 
 @connect(null, mapDispatchToProps)
 @translate()
-@Radium
 class NewQuestion extends Component {
 	constructor() {
 		super();
@@ -40,7 +39,6 @@ class NewQuestion extends Component {
 		this.state = {
 			title: '',
 			titleErrorText: '',
-			// message: '',
 			tags: [],
 			tagsErrorText: '',
 			suggestions: [],
@@ -51,17 +49,12 @@ class NewQuestion extends Component {
 	}
 
 	// Detect title change
-	onTitleChange = (e) => {
-		if (e.target.value.length <= this.maxTitleLength) {
-			this.setState({ title: e.target.value });
+	onTitleChange = (_, title) => {
+		this.setState({ title });
+		if (title.length > 0 && this.state.titleErrorText !== '') {
+			this.setState({ titleErrorText: '' });
 		}
 	}
-
-	// onMessageChange = (e) => {
-	// 	if (e.target.value.length <= this.maxQuestionLength) {
-	// 		this.setState({ message: e.target.value });
-	// 	}
-	// }
 
 	// Collect tags into one array
 	handleTagsChange = (newTag) => {
@@ -69,14 +62,20 @@ class NewQuestion extends Component {
 		this.setState({ tags: [ ...tags, newTag ] });
 	}
 
+	handleDeleteTag = (tag) => {
+		this.setState(s => ({ tags: s.tags.filter(t => t !== tag) }));
+	}
+
 	// Get search suggestions
 	handleUpdateInput = async (query) => {
-		if (query.length < 2) return;
-		try {
+		if (query.length > 0) {
+			this.setState({ tagsErrorText: '' });
+		}
+		if (query.length < 2) {
+			this.setState({ suggestions: [] });
+		} else {
 			const { tags: suggestions } = await Service.request('Discussion/getTags', { query });
 			this.setState({ suggestions });
-		} catch (e) {
-			console.log(e);
 		}
 	}
 
@@ -151,6 +150,7 @@ class NewQuestion extends Component {
 								onChange={this.onTitleChange}
 								errorText={this.state.titleErrorText}
 								floatingLabelText={t('question.title-placeholder')}
+								maxLength={this.maxTitleLength}
 							/>
 							<span
 								style={styles.textFieldCoutner}
@@ -169,15 +169,6 @@ class NewQuestion extends Component {
 								placeholder={!isReplyBoxOpen && replyLength === 0 ? t('question.message-placeholder') : ''}
 								maxLength={this.maxQuestionLength}
 							/>
-							{/* <TextField
-								multiLine
-								fullWidth
-								rowsMax={4}
-								style={styles.textField}
-								value={this.state.message}
-								onChange={e => this.onMessageChange(e)}
-								floatingLabelText={t('question.message-placeholder')}
-							/> */}
 							<span
 								style={styles.textFieldCoutner}
 							>
@@ -187,7 +178,7 @@ class NewQuestion extends Component {
 						<div className="question-data" style={styles.questionData}>
 							<ChipInput
 								fullWidth
-								fullWidthInput
+								// fullWidthInput
 								value={this.state.tags}
 								style={styles.textField}
 								onBlur={this.handleBlur}
@@ -197,6 +188,7 @@ class NewQuestion extends Component {
 								errorText={this.state.tagsErrorText}
 								onRequestAdd={this.handleTagsChange}
 								onUpdateInput={this.handleUpdateInput}
+								onRequestDelete={this.handleDeleteTag}
 								floatingLabelText={t('question.tags-placeholder')}
 							/>
 						</div>
