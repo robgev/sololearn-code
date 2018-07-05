@@ -25,7 +25,7 @@ const makeEditableContent = (text) => {
 			const contentStateWithEntity = contentState.createEntity(
 				'mention',
 				'SEGMENTED',
-				{ id, name },
+				{ mention: { id, name } },
 			);
 			const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 			const selectionState = SelectionState.createEmpty(currBlockKey).merge({
