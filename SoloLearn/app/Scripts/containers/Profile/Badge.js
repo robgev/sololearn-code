@@ -12,8 +12,9 @@ const styles = {
 
 	badge: {
 		base: {
-			height: '40px',
-			width: '40px',
+			height: '60px',
+			width: '60px',
+			flexShrink: 0,
 			borderRadius: '50%',
 			display: 'inline-flex',
 			alignItems: 'center',
