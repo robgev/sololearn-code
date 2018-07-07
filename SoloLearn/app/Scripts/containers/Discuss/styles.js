@@ -1,13 +1,10 @@
 export const AddReplyStyles = {
 	container: {
-		zIndex: 5,
 		width: 'inherit',
 		padding: '10px 20px',
 		background: '#fff',
 		boxSizing: 'border-box',
 		boxShadow: 'rgba(0, 0, 0, 0.156863) 0px 3px 10px, rgba(0, 0, 0, 0.227451) 0px 3px 10px',
-		position: 'fixed',
-		bottom: 0,
 	},
 	editor: {
 		position: 'relative',

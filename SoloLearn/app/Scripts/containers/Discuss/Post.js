@@ -217,6 +217,7 @@ class Post extends Component {
 						</div>
 					</div>
 				</div>
+				<AddReply save={this.addReply} postId={this.props.post.id} />
 				<div
 					style={styles.repliesWrapper}
 					ref={(repliesWrapper) => { this.repliesWrapper = repliesWrapper; }}
@@ -248,7 +249,6 @@ class Post extends Component {
 						</div>
 					}
 				</div>
-				<AddReply save={this.addReply} postId={this.props.post.id} />
 
 				{
 					this.state.deletePopupOpened &&
