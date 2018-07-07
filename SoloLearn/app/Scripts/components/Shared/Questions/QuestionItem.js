@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import ToolTip from 'react-portal-tooltip';
 
 // Material UI components
 import ChatBubble from 'material-ui/svg-icons/communication/chat-bubble-outline';
@@ -11,6 +12,7 @@ import { green500 } from 'material-ui/styles/colors';
 import { removeDups, updateDate, determineAccessLevel } from 'utils';
 
 import Likes from 'components/Shared/Likes';
+import UserCard from 'components/Shared/UserCard';
 import getLikesAndDownvotesCurried from 'actions/likes';
 import DiscussTag from './DiscussTag';
 
@@ -29,13 +31,21 @@ const mapDispatchToProps = {
 
 @connect(mapStateToProps, mapDispatchToProps)
 class QuestionItem extends PureComponent {
+	state = {
+		isTooltipActive: false,
+	}
 	getLikes = () => {
 		this.props.getLikes(this.props.question.id);
 	}
 	getDownvotes = () => {
 		this.props.getDownvotes(this.props.question.id);
 	}
+	toggleTooltip = () => {
+		console.log('Here');
+		this.setState(state => ({ isTooltipActive: !state.isTooltipActive }));
+	}
 	render() {
+		const { isTooltipActive } = this.state;
 		const { question, accessLevel } = this.props;
 		return (
 			<div style={styles.question}>
@@ -71,11 +81,31 @@ class QuestionItem extends PureComponent {
 					</div>
 					<div style={styles.authorDetails}>
 						<span style={styles.date}>
-							{updateDate(question.date)} by
+							{updateDate(question.date)} by {' '}
 						</span>
-						<span> {question.userName}</span>
+						<span
+							id={`question-item-${question.id}`}
+							onMouseEnter={this.toggleTooltip}
+							onMouseLeave={this.toggleTooltip}
+						>
+							{question.userName}
+						</span>
 					</div>
 				</div>
+				<ToolTip
+					align="center"
+					position="top"
+					arrow="left"
+					active={isTooltipActive}
+					parent={`#question-item-${question.id}`}
+				>
+					<UserCard
+						id={question.userID}
+						level={question.level}
+						name={question.userName}
+						className="profile-avatar-user-card profile-avatar-reset"
+					/>
+				</ToolTip>
 			</div>
 		);
 	}
