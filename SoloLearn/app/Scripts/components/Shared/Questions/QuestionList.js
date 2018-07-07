@@ -17,7 +17,11 @@ export default ({ questions, loadMore, hasMore }) =>
 			<InfiniteScroll
 				loadMore={loadMore}
 				hasMore={hasMore}
-				style={{ display: 'flex', flexDirection: 'column', selfAlign: 'stretch' }}
+				style={{
+					display: 'flex',
+					width: '100%',
+					flexDirection: 'column',
+				}}
 				loader={<CircularProgress
 					style={{ display: 'flex', alignItems: 'center', margin: 'auto' }}
 					key="circular-progress"
