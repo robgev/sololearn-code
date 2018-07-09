@@ -9,18 +9,19 @@ import tabs from 'constants/Tabs';
 // url and aliasUrl
 const TabList = ({ pathname, t }) => (
 	<div className="tabs">
-		{	tabs.map(tab => (
+		{tabs.map(tab => (
 			<Link
 				key={tab.id}
 				to={tab.url}
+				onClick={pathname === '/discuss' && tab.url === '/discuss' ? e => e.preventDefault() : () => { }}
 				className={`tab-item ${(!pathname.includes('/profile') && (pathname.includes(tab.url) || pathname.includes(tab.aliasUrl))) ? 'active' : ''}`}
 			>
 				<img className="tab-icon" alt="Tab icon" src={`assets/${tab.imgUrl}`} />
-				{ t(tab.name) }
+				{t(tab.name)}
 			</Link>
 		))
 		}
-	</div>
+	</div >
 );
 
 export default translate()(TabList);
