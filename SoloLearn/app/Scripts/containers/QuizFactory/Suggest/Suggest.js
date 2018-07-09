@@ -28,6 +28,7 @@ const Suggest = () => (
 				rightIcon={<img src="/assets/keyboard_arrow_right.svg" alt="" />}
 			/>
 		</Link>
+		<Divider inset />
 	</List>
 );
 

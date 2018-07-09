@@ -66,7 +66,7 @@ class QuizFactory extends Component {
 				/>
 				<Dialog
 					open={suggestDialogOpen}
-					title="Choose quiz type"
+					title="Submit a New Quiz"
 					onRequestClose={this.toggleSuggest}
 					actions={[ <FlatButton label="Cancel" onClick={this.toggleSuggest} primary /> ]}
 				>
