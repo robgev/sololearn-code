@@ -98,8 +98,10 @@ export const getFeedItemsInternal = (fromId, profileId) => async (dispatch, getS
 		// We will send another GetFeed request
 		if (feedItemsCount < requestLimitCount / 2) {
 			const lastItem = feedItems[feedItems.length - 1];
-			const startId = lastItem.type === 444 ? lastItem.toId : lastItem.id;
-			dispatch(getFeedItemsInternal(startId, profileId));
+			if (lastItem !== undefined) {
+				const startId = lastItem.type === 444 ? lastItem.toId : lastItem.id;
+				dispatch(getFeedItemsInternal(startId, profileId));
+			}
 		}
 		return length;
 	} catch (e) {

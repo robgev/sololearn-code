@@ -19,6 +19,11 @@ export const getProfileInternal = userId => async (dispatch) => {
 		const profile = new Storage().load('profile');
 		if (profile != null) {
 			dispatch(getUserProfile(profile));
+			Service.request('Profile/GetProfile', { userId })
+				.then(({ profile: updated }) => {
+					new Storage().save('profile', updated);
+					dispatch(getUserProfile(updated));
+				});
 		} else {
 			browserHistory.replace('/login');
 		}
