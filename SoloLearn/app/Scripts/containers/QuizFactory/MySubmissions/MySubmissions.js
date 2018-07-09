@@ -82,7 +82,7 @@ class MySubmissions extends Component {
 		this.setState({ previewChallenge: challenge });
 	}
 	closePreview = () => {
-		this.setState({ previewChallenge: null });
+		this.setState({ previewChallenge: null, checkResult: null });
 	}
 	handleEdit = () => {
 		const { previewChallenge } = this.state;
