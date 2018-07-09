@@ -15,6 +15,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Chip from 'material-ui/Chip';
 import { QuestionList } from 'components/Shared/Questions';
+import AddQuestionButton from 'components/Shared/AddQuestionButton';
 
 const mapStateToProps = state => ({
 	order: state.discussFilters.order,
@@ -117,8 +118,9 @@ class Questions extends Component {
 						<MenuItem value={6} primaryText={t('discuss.filter.my-answers')} />
 					</DropDownMenu>
 				</Paper>
-				<Paper>
+				<Paper style={{ position: 'relative' }}>
 					<QuestionList questions={questions} hasMore={hasMore} loadMore={this.loadMore} />
+					<AddQuestionButton />
 				</Paper>
 			</Layout>
 		);

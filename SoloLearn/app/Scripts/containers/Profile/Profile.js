@@ -221,7 +221,7 @@ class Profile extends Component {
 				}
 				{
 					activeTab === 'discussion' &&
-					<Paper className="section">
+					<Paper className="discussion-wrapper section">
 						<QuestionList
 							questions={profile.posts.questions}
 							hasMore={profile.posts.hasMore}
