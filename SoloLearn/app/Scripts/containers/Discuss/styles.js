@@ -442,6 +442,7 @@ export const ReplyStyles = {
 	message: {
 		fontSize: '14px',
 		color: '#827e7e',
+		wordBreak: 'break-word',
 		margin: '5px 0 10px 0',
 		whiteSpace: 'pre-line',
 	},
