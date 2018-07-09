@@ -5,7 +5,7 @@ import { getCommonPrefix } from 'utils';
 import quizType from './types';
 
 // Pure utils
-const formatAnswers = (answerText, inputs, onChange, disabled) => {
+const formatAnswers = (answerText, inputs, onChange, disabled, addRefOnIndex, focusNext) => {
 	const regex = /\{(\d)}/;
 	return answerText
 		.split(regex).reduce((acc, curr, index) => (acc.isMark
@@ -15,11 +15,18 @@ const formatAnswers = (answerText, inputs, onChange, disabled) => {
 					<div key={index} style={{ display: 'inline-block' }}>
 						<span>{inputs[curr].properties.prefix}</span>
 						<TextField
+							ref={i => addRefOnIndex(i, parseInt(curr, 10))}
 							inputStyle={{ textAlign: 'center', overflow: 'hidden' }}
 							id={inputs[curr].id.toString()}
 							value={inputs[curr].text}
 							style={{ width: `${inputs[curr].correct.length}em` }}
-							onChange={(_, text) => onChange(text, inputs[curr].id)}
+							onChange={(_, text) => {
+								onChange(text, inputs[curr].id);
+								if (text.length === inputs[curr].correct.length) {
+									focusNext(parseInt(curr, 10));
+								}
+							}
+							}
 							maxLength={inputs[curr].correct.length}
 							disabled={disabled}
 						/>
@@ -41,8 +48,17 @@ class FillIn extends Component {
 				correct: answer.text, id: answer.id, text: '', properties: answer.properties,
 			})),
 	}
+	inputRefs = new Array(this.props.quiz.answers.length);
 	question = this.props.quiz.question.split(/\[!\w+!]/)[0];
 	answerText = this.props.quiz.question.split(/\[!\w+!]/)[1];
+	addRefOnIndex = (input, index) => {
+		this.inputRefs[index] = input;
+	}
+	focusNext = (index) => {
+		if (this.inputRefs[index + 1] != null) {
+			this.inputRefs[index + 1].focus();
+		}
+	}
 	_onAnswerChange = (text, inputId) => {
 		const inputs = this.state.inputs.map(i => (i.id === inputId ? { ...i, text } : i));
 		this.setState({ inputs });
@@ -78,7 +94,14 @@ class FillIn extends Component {
 			<div className="question-container">
 				<p className="question-text">{this.question}</p>
 				<div className="fill-in-answers-container">
-					{formatAnswers(this.answerText, this.state.inputs, this._onAnswerChange, disabled)}
+					{formatAnswers(
+						this.answerText,
+						this.state.inputs,
+						this._onAnswerChange,
+						disabled,
+						this.addRefOnIndex,
+						this.focusNext,
+					)}
 				</div>
 			</div>
 		);
