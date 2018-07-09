@@ -28,8 +28,8 @@ import { removeDups, determineAccessLevel, generatePreviews, replaceMention } fr
 import { questionFollowingInternal } from 'actions/discuss';
 import getLikesAndDownvotesCurried from 'actions/likes';
 
+import DiscussTag from 'components/Shared/Questions/DiscussTag';
 import RemovalPopup from './RemovalPopup';
-import DiscussTag from './DiscussTag';
 
 import { QuestionStyles as styles } from './styles';
 
