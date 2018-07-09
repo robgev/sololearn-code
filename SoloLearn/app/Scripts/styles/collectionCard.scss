@@ -56,33 +56,33 @@
 .slick-slider {
 	.slick-arrow {
 		z-index: 1;
-		width: 25px;
-    height: 25px;
-    border-radius: 100%;
-		background-color: white;
-		box-shadow: 0 0 1px 1px rgba(20,23,28,.1), 0 3px 1px 0 rgba(20,23,28,.1);
 		&:before {
-			display: flex;
-			justify-content: center;
-			color: #00558B;
+			transition: opacity .2s;
+			font-family: 'Material Icons';
 			font-size: 30px;
-    	line-height: 29px;
+			line-height: 30px;
+			opacity: .5;
+		}
+		&:hover {
+			&:before {
+				opacity: 1;
+			}
 		}
 	}
 
 	.slick-prev {
-		left: -7px;
+		left: -20px;
 		&:before {
-			width: 26px;
-			color: #00558B;
+			content: 'chevron_left';
+			color: #333333;
 		}
 	}
 
 	.slick-next {
-		right: -8px;
+		right: -11px;
 		&:before {
-			width: 25px;
-			color: #00558B;
+			content: 'chevron_right';
+			color: #333333;
 		}
 	}
 
