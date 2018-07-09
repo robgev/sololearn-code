@@ -263,6 +263,9 @@ export const QuestionStyles = {
 	},
 	additionalDetails: {
 		overflow: 'hidden',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'space-between',
 	},
 	followButton: {
 		base: {
@@ -439,11 +442,15 @@ export const ReplyStyles = {
 	message: {
 		fontSize: '14px',
 		color: '#827e7e',
+		wordBreak: 'break-word',
 		margin: '5px 0 10px 0',
 		whiteSpace: 'pre-line',
 	},
 	additionalDetails: {
 		overflow: 'hidden',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'space-between',
 	},
 	bestAnswerButton: {
 		base: {

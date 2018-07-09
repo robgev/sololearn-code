@@ -17,12 +17,17 @@ import { grey500, blueGrey500 } from 'material-ui/styles/colors';
 
 // Utils
 import Likes from 'components/Shared/Likes';
-import PostedDate from 'components/Shared/PostedDate';
 import PreviewItem from 'components/Shared/PreviewItem';
 import ReportPopup from 'components/Shared/ReportPopup';
 import DiscussAuthor from 'components/Shared/ProfileAvatar';
 import ReportItemTypes from 'constants/ReportItemTypes';
-import { removeDups, determineAccessLevel, generatePreviews, replaceMention } from 'utils';
+import {
+	updateDate,
+	removeDups,
+	replaceMention,
+	generatePreviews,
+	determineAccessLevel,
+} from 'utils';
 
 // Redux modules
 import { questionFollowingInternal } from 'actions/discuss';
@@ -189,13 +194,17 @@ class Question extends Component {
 						<FollowIcon color={question.isFollowing ? blueGrey500 : grey500} />
 					</IconButton>
 					<DiscussAuthor
+						withTooltip
+						reversedOrder
 						withUserNameBox
-						date={question.date}
+						level={question.level}
+						badge={question.badge}
 						userID={question.userID}
 						avatarUrl={question.avatarUrl}
 						userName={question.userName}
+						tooltipId={`question-${question.id}`}
+						timePassed={updateDate(question.date)}
 					/>
-					<PostedDate date={question.date} style={{ float: 'right' }} />
 				</div>
 				<ReportPopup
 					itemId={question.id}

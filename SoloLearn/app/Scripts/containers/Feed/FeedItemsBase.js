@@ -416,6 +416,7 @@ class FeedItemsBase extends Component {
 			isLoaded,
 			isUserProfile,
 		} = this.props;
+		console.log(feed);
 		return (
 			<div className="feed-items-wrapper">
 				{!isUserProfile && <Header profile={userProfile} levels={levels} />}
@@ -455,6 +456,9 @@ class FeedItemsBase extends Component {
 								}
 								{(isLoaded && feed.length > 0) &&
 									<FeedItems feedItems={feed} openPopup={this.handlePopupOpen} />}
+								{(feed.length === 0) &&
+									<p style={{ textAlign: 'center', height: 120 }}>No Activity</p>
+								}
 								{
 									((isUserProfile || feed.length > 0) && !this.state.fullyLoaded) &&
 									[

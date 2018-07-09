@@ -19,8 +19,6 @@ import getLikesAndDownvotesCurried from 'actions/likes';
 import Likes from 'components/Shared/Likes';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import PreviewItem from 'components/Shared/PreviewItem';
-import PostedDate from 'components/Shared/PostedDate';
-
 import { updateDate, determineAccessLevel, generatePreviews, replaceMention } from 'utils';
 
 import { ReplyStyles as styles } from './styles';
@@ -226,17 +224,18 @@ class Reply extends Component {
 								/>
 						}
 						<ProfileAvatar
-							withUserNameBox
 							withTooltip
+							reversedOrder
+							withUserNameBox
 							level={reply.level}
 							badge={reply.badge}
 							userID={reply.userID}
 							avatarUrl={reply.avatarUrl}
 							userName={reply.userName}
-							date={updateDate(reply.date)}
+							style={{ marginLeft: 'auto' }}
 							tooltipId={`reply-${reply.id}`}
+							timePassed={updateDate(reply.date)}
 						/>
-						<PostedDate date={reply.date} style={{ float: 'right' }} />
 					</div>
 				}
 			</div>

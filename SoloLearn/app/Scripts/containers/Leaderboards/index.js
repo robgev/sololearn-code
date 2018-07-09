@@ -15,6 +15,7 @@ import { getLeaderboard } from 'actions/leaderboards';
 
 import Layout from 'components/Layouts/GeneralLayout';
 import BusyWrapper from 'components/Shared/BusyWrapper';
+import LeaderboardShimmer from 'components/Shared/Shimmers/LeaderboardShimmer';
 import texts from 'texts';
 
 import 'styles/Leaderboards/index.scss';
@@ -165,11 +166,7 @@ class Leaderboards extends PureComponent {
 						isBusy={loading}
 						style={{ minHeight: '30vh' }}
 						wrapperClassName="leaderboards-body"
-						loadingComponent={
-							<CircularProgress
-								size={100}
-							/>
-						}
+						loadingComponent={<LeaderboardShimmer />}
 					>
 						{ range === 0 ?
 							<InfiniteLeaderboard
