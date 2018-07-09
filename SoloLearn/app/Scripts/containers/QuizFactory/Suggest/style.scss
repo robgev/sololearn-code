@@ -15,6 +15,11 @@
 	.editor-box {
 		display: flex;
 		flex-direction: column;
+		.editor .public-DraftEditor-content {
+			overflow: auto;
+			height: 400px;
+		}
+		
 		.title-with-button {
 			width: 100%;
 			display: flex;
