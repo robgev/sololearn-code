@@ -92,7 +92,7 @@ class MySubmissions extends Component {
 	}
 	handleDelete = () => {
 		const { previewChallenge } = this.state;
-		this.setState({ previewChallenge: null });
+		this.setState({ previewChallenge: null, isDeletePopupOpen: null });
 		deleteChallenge(previewChallenge.id)
 			.then(this.fetchSubmissions);
 	}
@@ -139,7 +139,7 @@ class MySubmissions extends Component {
 			previewChallenge !== null && previewChallenge.status === 2
 				? <FlatButton
 					label="Delete"
-					onClick={this.handleDelete}
+					onClick={this.toggleDeletePopup}
 					labelStyle={{ color: red500 }}
 				/> : null,
 			previewChallenge !== null && previewChallenge.status === 2
@@ -215,6 +215,18 @@ class MySubmissions extends Component {
 								label={this.checkBarLabel}
 								status={this.state.checkResult}
 							/>
+							<Dialog
+								title="Delete Submission"
+								contentStyle={{ width: '50%' }}
+								open={this.state.isDeletePopupOpen}
+								actions={[
+									<FlatButton label="cancel" onClick={this.toggleDeletePopup} primary />,
+									<FlatButton label="delete" onClick={this.handleDelete} labelStyle={{ color: red500 }} />,
+								]}
+								onRequestClose={this.toggleDeletePopup}
+							>
+								Are you sure?
+							</Dialog>
 						</div>
 					) : null}
 				</Dialog>
