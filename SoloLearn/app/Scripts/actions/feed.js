@@ -80,8 +80,10 @@ export const getFeedItemsInternal = (fromId, profileId) => async (dispatch, getS
 			dispatch(getProfileFeedItems(feedItems));
 			if (profileFeedItemsCount < requestLimitCount / 2) {
 				const lastItem = feedItems[feedItems.length - 1];
-				const startId = lastItem.type === 444 ? lastItem.toId : lastItem.id;
-				await dispatch(getFeedItemsInternal(startId, profileId));
+				if (lastItem !== undefined) {
+					const startId = lastItem.type === 444 ? lastItem.toId : lastItem.id;
+					await dispatch(getFeedItemsInternal(startId, profileId));
+				}
 			}
 			return length;
 		} else if (feedItemsCount >= requestLimitCount * (1 + suggestionsBatch) &&
