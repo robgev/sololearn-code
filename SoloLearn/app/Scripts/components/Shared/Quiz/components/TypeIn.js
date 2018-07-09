@@ -58,7 +58,7 @@ class TypeIn extends Component {
 								name="answer-placeholder"
 								maxLength={this.correctAnswer.text.length}
 								style={{ width: `${this.correctAnswer.text.length}em` }}
-								inputStyle={{ textAlign: 'center', overflow: 'hidden' }}
+								inputStyle={{ textAlign: 'center', overflow: 'hidden', fontFamily: 'monospace' }}
 								value={text}
 								onChange={this._onChange}
 								ref={(i) => { this.input = i; }}

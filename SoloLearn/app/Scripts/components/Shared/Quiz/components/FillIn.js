@@ -18,10 +18,10 @@ const formatAnswers = (answerText, inputs, onChange, disabled, addRefOnIndex, fo
 							disabled
 								? (
 									<span>
-										<span style={{ color: 'green' }}>
+										<span className="fill-in-item" style={{ color: 'green' }}>
 											{getCommonPrefix(inputs[curr].text, inputs[curr].correct)}
 										</span>
-										<span style={{ color: 'red' }}>
+										<span className="fill-in-item" style={{ color: 'red' }}>
 											{inputs[curr].text
 												.slice(getCommonPrefix(inputs[curr].text, inputs[curr].correct).length)}
 										</span>
@@ -29,7 +29,7 @@ const formatAnswers = (answerText, inputs, onChange, disabled, addRefOnIndex, fo
 								)
 								: <TextField
 									ref={i => addRefOnIndex(i, parseInt(curr, 10))}
-									inputStyle={{ textAlign: 'center', overflow: 'hidden' }}
+									inputStyle={{ textAlign: 'center', overflow: 'hidden', fontFamily: 'monospace' }}
 									id={inputs[curr].id.toString()}
 									value={inputs[curr].text}
 									style={{ width: `${inputs[curr].correct.length}em` }}
@@ -43,14 +43,14 @@ const formatAnswers = (answerText, inputs, onChange, disabled, addRefOnIndex, fo
 									maxLength={inputs[curr].correct.length}
 								/>
 						}
-						<span>{inputs[curr].properties.postfix}</span>
+						<span className="fill-in-item">{inputs[curr].properties.postfix}</span>
 					</div>,
 				],
 				isMark: false,
 			})
 			: ({
 				// eslint-disable-next-line react/no-array-index-key
-				result: [ ...acc.result, <span style={{ whiteSpace: 'pre-wrap' }} key={index}>{curr}</span> ], isMark: true,
+				result: [ ...acc.result, <span className="fill-in-item" style={{ whiteSpace: 'pre-wrap' }} key={index}>{curr}</span> ], isMark: true,
 			})), { result: [], isMark: false }).result;
 };
 
