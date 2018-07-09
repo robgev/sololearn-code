@@ -51,12 +51,19 @@ class FillIn extends Component {
 	inputRefs = new Array(this.props.quiz.answers.length);
 	question = this.props.quiz.question.split(/\[!\w+!]/)[0];
 	answerText = this.props.quiz.question.split(/\[!\w+!]/)[1];
+	componentDidMount() {
+		if (this.inputRefs[0] != null) {
+			this.inputRefs[0].focus();
+		}
+	}
 	addRefOnIndex = (input, index) => {
 		this.inputRefs[index] = input;
 	}
 	focusNext = (index) => {
 		if (this.inputRefs[index + 1] != null) {
 			this.inputRefs[index + 1].focus();
+		} else {
+			this.inputRefs[index].blur();
 		}
 	}
 	_onAnswerChange = (text, inputId) => {

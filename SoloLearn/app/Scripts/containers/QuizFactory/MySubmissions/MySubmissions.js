@@ -68,6 +68,7 @@ class MySubmissions extends Component {
 			challenges: null,
 			previewChallenge: null,
 			checkResult: null,
+			isDeletePopupOpen: false,
 		};
 		document.title = 'Sololearn | My Submissions';
 	}
@@ -94,6 +95,9 @@ class MySubmissions extends Component {
 		this.setState({ previewChallenge: null });
 		deleteChallenge(previewChallenge.id)
 			.then(this.fetchSubmissions);
+	}
+	toggleDeletePopup = () => {
+		this.setState(s => ({ isDeletePopupOpen: !s.isDeletePopupOpen }));
 	}
 	checkComplete = ({ isComplete }) => {
 		this.setState({ isQuizComplete: isComplete });
@@ -133,17 +137,16 @@ class MySubmissions extends Component {
 		const actions = [
 			<FlatButton onClick={this.closePreview} label="Cancel" primary />,
 			previewChallenge !== null && previewChallenge.status === 2
+				? <FlatButton
+					label="Delete"
+					onClick={this.handleDelete}
+					labelStyle={{ color: red500 }}
+				/> : null,
+			previewChallenge !== null && previewChallenge.status === 2
 				? <RaisedButton
 					label="Edit"
 					onClick={this.handleEdit}
 					primary
-				/> : null,
-			previewChallenge !== null && previewChallenge.status === 2
-				? <RaisedButton
-					label="Delete"
-					onClick={this.handleDelete}
-					backgroundColor={red500}
-					labelColor="#FFFFFF"
 				/> : null,
 			previewChallenge !== null && previewChallenge.status === 3
 				? <RaisedButton

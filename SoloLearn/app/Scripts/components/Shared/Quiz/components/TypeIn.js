@@ -15,6 +15,9 @@ class TypeIn extends Component {
 	_onChange = (_, text) => {
 		this.setState({ text });
 		this.props.onChange({ isComplete: this.isComplete(text) });
+		if (text.length === this.correctAnswer.text.length) {
+			this.input.blur();
+		}
 	}
 	isComplete = text => text.length === this.correctAnswer.text.length
 	tryAgain = () => {

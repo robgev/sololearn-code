@@ -4,6 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
+import { red500 } from 'material-ui/styles/colors';
 import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
 import Quiz, { CheckIndicator } from 'components/Shared/Quiz';
@@ -141,7 +142,8 @@ class Rate extends Component {
 							labelPosition="before"
 							icon={<ThumbDown />}
 							onClick={this.dislike}
-							primary
+							backgroundColor={red500}
+							labelColor="#FFFFFF"
 						/>
 					</div> : null
 				}
