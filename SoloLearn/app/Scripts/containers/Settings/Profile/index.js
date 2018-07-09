@@ -8,6 +8,7 @@ import { translate } from 'react-i18next';
 import Avatar from 'material-ui/Avatar';
 import TextField from 'material-ui/TextField';
 import EditIcon from 'material-ui/svg-icons/image/edit';
+import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
 import CropPopup from './CropPopup';
 
@@ -16,10 +17,11 @@ const mapStateToProps = ({ userProfile }) => ({
 });
 
 @connect(mapStateToProps)
+@translate()
 class Profile extends PureComponent {
 	constructor(props) {
 		super(props);
-		const { name = '', email } = props.userProfile;
+		const { name = '', email, avatarUrl } = props.userProfile;
 		this.state = {
 			oldPass: '',
 			newPass: '',
@@ -27,7 +29,7 @@ class Profile extends PureComponent {
 			retypePass: '',
 			name: name || '',
 			email: email || '',
-			image: 'https://www.gorillacircuits.com/wp-content/uploads/2016/01/avatar_placeholder.png',
+			image: avatarUrl,
 		};
 	}
 
@@ -68,18 +70,17 @@ class Profile extends PureComponent {
 			newPass,
 			retypePass,
 		} = this.state;
-		const { t } = this.props;
+		const { t, userProfile } = this.props;
 		return (
 			<div className="profile-settings-container">
 				<div className="image-group">
 					<div className="profile-image-container">
-						<Avatar
-							size={300}
-							alt="My Pic"
-							className="profile-image"
-							onClick={this.handleInputOpen}
-							src="https://www.gorillacircuits.com/wp-content/uploads/2016/01/avatar_placeholder.png"
-							// src={userProfile.avatarUrl}
+						<ProfileAvatar
+							disabled
+							size={200}
+							userID={userProfile.id}
+							userName={userProfile.name}
+							avatarUrl={userProfile.avatarUrl}
 						/>
 						<Avatar
 							icon={<EditIcon />}
@@ -148,4 +149,4 @@ class Profile extends PureComponent {
 	}
 }
 
-export default translate()(Profile);
+export default Profile;
