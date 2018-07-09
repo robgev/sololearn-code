@@ -143,7 +143,7 @@ class MySubmissions extends Component {
 					label="Delete"
 					onClick={this.handleDelete}
 					backgroundColor={red500}
-					labelColor="white"
+					labelColor="#FFFFFF"
 				/> : null,
 			previewChallenge !== null && previewChallenge.status === 3
 				? <RaisedButton
