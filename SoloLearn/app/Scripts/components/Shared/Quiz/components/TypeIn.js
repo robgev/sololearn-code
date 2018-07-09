@@ -43,16 +43,27 @@ class TypeIn extends Component {
 				<p className="question-text">{this.props.quiz.question}</p>
 				<div className="placeholder-container">
 					<span>{this.correctAnswer.properties.prefix}</span>
-					<TextField
-						name="answer-placeholder"
-						maxLength={this.correctAnswer.text.length}
-						style={{ width: `${this.correctAnswer.text.length}em` }}
-						inputStyle={{ textAlign: 'center', overflow: 'hidden' }}
-						value={text}
-						onChange={this._onChange}
-						disabled={disabled}
-						ref={(i) => { this.input = i; }}
-					/>
+					{
+						disabled
+							? (
+								<div style={{ margin: 10 }}>
+									<span style={{ color: 'green' }}>
+										{getCommonPrefix(text, this.correctAnswer.text)}
+									</span>
+									<span style={{ color: 'red' }}>
+										{text.slice(getCommonPrefix(text, this.correctAnswer.text).length)}
+									</span>
+								</div>
+							) : <TextField
+								name="answer-placeholder"
+								maxLength={this.correctAnswer.text.length}
+								style={{ width: `${this.correctAnswer.text.length}em` }}
+								inputStyle={{ textAlign: 'center', overflow: 'hidden' }}
+								value={text}
+								onChange={this._onChange}
+								ref={(i) => { this.input = i; }}
+							/>
+					}
 					<span>{this.correctAnswer.properties.postfix}</span>
 				</div>
 			</div>
