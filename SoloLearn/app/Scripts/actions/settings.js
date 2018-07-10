@@ -1,4 +1,5 @@
 import Service from 'api/service';
+import omit from 'lodash/omit';
 import * as types from 'constants/ActionTypes';
 
 export const getSettings = () => async (dispatch) => {
@@ -43,7 +44,7 @@ export const updateProfile = newProfileData => async (dispatch) => {
 	await Service.request('UpdateProfile', newProfileData);
 	dispatch({
 		type: types.UPDATE_PROFILE_DATA,
-		payload: newProfileData,
+		payload: omit(newProfileData, [ 'oldPassword', 'newPassword' ]),
 	});
 };
 

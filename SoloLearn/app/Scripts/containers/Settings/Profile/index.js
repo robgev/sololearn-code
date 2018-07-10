@@ -1,12 +1,14 @@
 import React, { PureComponent } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
-
-// i18n
 import { translate } from 'react-i18next';
+import omit from 'lodash/omit';
+
+import { updateProfile } from 'actions/settings';
 
 import Avatar from 'material-ui/Avatar';
 import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
 import EditIcon from 'material-ui/svg-icons/image/edit';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
@@ -16,17 +18,18 @@ const mapStateToProps = ({ userProfile }) => ({
 	userProfile,
 });
 
-@connect(mapStateToProps)
+@connect(mapStateToProps, { updateProfile })
 @translate()
 class Profile extends PureComponent {
 	constructor(props) {
 		super(props);
 		const { name = '', email, avatarUrl } = props.userProfile;
 		this.state = {
-			oldPass: '',
-			newPass: '',
 			open: false,
+			errorText: '',
 			retypePass: '',
+			oldPassword: '',
+			newPassword: '',
 			name: name || '',
 			email: email || '',
 			image: avatarUrl,
@@ -60,15 +63,38 @@ class Profile extends PureComponent {
 		});
 	}
 
+	submitSettings = () => {
+		const {
+			name,
+			email,
+			retypePass,
+			countryCode,
+			oldPassword,
+			newPassword,
+		} = this.state;
+		if (retypePass === newPassword) {
+			this.props.updateProfile({
+				name,
+				email,
+				oldPassword,
+				countryCode,
+				newPassword,
+			});
+		} else {
+			this.setState({ errorText: 'Values should match' });
+		}
+	}
+
 	render() {
 		const {
 			open,
 			name,
 			email,
 			image,
-			oldPass,
-			newPass,
+			errorText,
 			retypePass,
+			oldPassword,
+			newPassword,
 		} = this.state;
 		const { t, userProfile } = this.props;
 		return (
@@ -115,16 +141,17 @@ class Profile extends PureComponent {
 				<div className="settings-group">
 					<TextField
 						type="password"
-						name="oldPass"
-						value={oldPass}
+						name="oldPassword"
+						value={oldPassword}
 						style={{ width: '100%' }}
 						floatingLabelText="Old Password"
 						onChange={this.handleChange}
 					/>
 					<TextField
 						type="password"
-						name="newPass"
-						value={newPass}
+						name="newPassword"
+						value={newPassword}
+						errorText={errorText}
 						style={{ width: '100%', textTransform: 'capitalize' }}
 						floatingLabelText={t('chnage_password.new-password-placeholder')}
 						onChange={this.handleChange}
@@ -133,6 +160,7 @@ class Profile extends PureComponent {
 						type="password"
 						name="retypePass"
 						value={retypePass}
+						errorText={errorText}
 						style={{ width: '100%', textTransform: 'capitalize' }}
 						floatingLabelText={t('chnage_password.confirm-password-placeholder')}
 						onChange={this.handleChange}
@@ -142,6 +170,13 @@ class Profile extends PureComponent {
 						open={open}
 						image={image}
 						onRequestClose={this.handlePopupClose}
+					/>
+				</div>
+				<div className="settings-button">
+					<FlatButton
+						primary
+						onClick={this.submitSettings}
+						label={t('common.save-action-title')}
 					/>
 				</div>
 			</div>
