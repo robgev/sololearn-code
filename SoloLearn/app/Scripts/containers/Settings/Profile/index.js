@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import omit from 'lodash/omit';
 
 import { updateProfile } from 'actions/settings';
 
 import Avatar from 'material-ui/Avatar';
+import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import EditIcon from 'material-ui/svg-icons/image/edit';
@@ -29,10 +29,12 @@ class Profile extends PureComponent {
 			errorText: '',
 			retypePass: '',
 			oldPassword: '',
+			isSaving: false,
 			newPassword: '',
 			name: name || '',
 			email: email || '',
 			image: avatarUrl,
+			snackbarOpen: false,
 		};
 	}
 
@@ -63,7 +65,7 @@ class Profile extends PureComponent {
 		});
 	}
 
-	submitSettings = () => {
+	submitSettings = async () => {
 		const {
 			name,
 			email,
@@ -73,15 +75,23 @@ class Profile extends PureComponent {
 			newPassword,
 		} = this.state;
 		if (retypePass === newPassword) {
-			this.props.updateProfile({
+			this.setState({ snackbarOpen: true, isSaving: true });
+			await this.props.updateProfile({
 				name,
 				email,
 				oldPassword,
 				countryCode,
 				newPassword,
 			});
+			this.setState({ isSaving: false });
 		} else {
 			this.setState({ errorText: 'Values should match' });
+		}
+	}
+
+	handleSnackBarClose = (reason) => {
+		if (reason !== 'clickaway') {
+			this.setState({ snackbarOpen: false });
 		}
 	}
 
@@ -91,10 +101,12 @@ class Profile extends PureComponent {
 			name,
 			email,
 			image,
+			isSaving,
 			errorText,
 			retypePass,
 			oldPassword,
 			newPassword,
+			snackbarOpen,
 		} = this.state;
 		const { t, userProfile } = this.props;
 		return (
@@ -179,6 +191,12 @@ class Profile extends PureComponent {
 						label={t('common.save-action-title')}
 					/>
 				</div>
+				<Snackbar
+					open={snackbarOpen}
+					autoHideDuration={isSaving ? 5000 : 1000}
+					onRequestClose={this.handleSnackBarClose}
+					message={isSaving ? 'Saving New Settings' : t('code_playground.alert.saved-title')}
+				/>
 			</div>
 		);
 	}
