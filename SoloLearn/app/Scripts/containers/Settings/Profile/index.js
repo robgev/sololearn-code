@@ -125,7 +125,7 @@ class Profile extends PureComponent {
 						type="password"
 						name="newPass"
 						value={newPass}
-						style={{ width: '100%' }}
+						style={{ width: '100%', textTransform: 'capitalize' }}
 						floatingLabelText={t('chnage_password.new-password-placeholder')}
 						onChange={this.handleChange}
 					/>
@@ -133,7 +133,7 @@ class Profile extends PureComponent {
 						type="password"
 						name="retypePass"
 						value={retypePass}
-						style={{ width: '100%' }}
+						style={{ width: '100%', textTransform: 'capitalize' }}
 						floatingLabelText={t('chnage_password.confirm-password-placeholder')}
 						onChange={this.handleChange}
 					/>
