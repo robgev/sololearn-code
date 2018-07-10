@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using React.AspNet;
 
-
+using Microsoft.Extensions.Options;
 
 namespace SoloLearn
 {
@@ -25,7 +25,8 @@ namespace SoloLearn
             services.AddMvc();
             services.AddReact();
 
-            services.AddDataProtection()
+
+			services.AddDataProtection()
 								.PersistKeysToFileSystem(new DirectoryInfo(@"C:\DataProtection"))
 								.SetDefaultKeyLifetime(TimeSpan.FromDays(365 * 10))
 								.UseCryptographicAlgorithms(new AuthenticatedEncryptionSettings
@@ -45,6 +46,12 @@ namespace SoloLearn
             {
                 app.UseDeveloperExceptionPage();
             }
+
+			app.UseMiddleware<ServiceProxyMiddleware>(Options.Create(new ProxyOptions
+			{
+				Scheme = "http",
+				Host = "api.sololearn.com"
+			}));
 
             // Initialise ReactJS.NET. Must be before static files.
             app.UseReact(config =>
