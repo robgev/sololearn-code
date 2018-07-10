@@ -17,6 +17,10 @@
 			&.round {
 				border-radius: 100%;
 			}
+			&.minimal {
+				width: 50px;
+				height: 50px;
+			}
 		}
 		.info-container {
 			display: flex;

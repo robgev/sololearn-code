@@ -416,7 +416,6 @@ class FeedItemsBase extends Component {
 			isLoaded,
 			isUserProfile,
 		} = this.props;
-		console.log(feed);
 		return (
 			<div className="feed-items-wrapper">
 				{!isUserProfile && <Header profile={userProfile} levels={levels} />}

@@ -17,6 +17,7 @@ const CourseCard = ({
 	courses,
 	iconUrl,
 	itemType,
+	minimal,
 	userName,
 	isCourses,
 	viewCount,
@@ -40,7 +41,7 @@ const CourseCard = ({
 				<img
 					src={iconUrl}
 					alt="Course Icon"
-					className={`card-image ${itemType === slayItemTypes.course || isCourses ? 'round' : ''}`}
+					className={`card-image ${minimal ? 'minimal' : ''} ${itemType === slayItemTypes.course || isCourses ? 'round' : ''}`}
 				/>
 			</div>
 			<div className="info-container">
@@ -51,7 +52,7 @@ const CourseCard = ({
 				>
 					{userName}
 				</Link>
-				{ (Number.isInteger(viewCount) && Number.isInteger(comments)) &&
+				{ (!minimal && (Number.isInteger(viewCount) && Number.isInteger(comments))) &&
 					<ViewStats
 						views={viewCount}
 						comments={comments}

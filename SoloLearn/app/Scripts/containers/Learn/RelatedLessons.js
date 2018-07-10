@@ -1,6 +1,7 @@
 import React from 'react';
 import CourseCard from 'components/Shared/CourseCard';
 import CollectionCard from 'components/Shared/CollectionCard';
+import SidebarCollectionCard from 'components/Shared/SidebarCollectionCard';
 
 import 'styles/relatedLessons.scss';
 
@@ -36,10 +37,10 @@ const RelatedLessons = ({
 		}
 		{	(relevantLessons && !!relevantLessons.length) &&
 			(relevantLessons.length > 1 ?
-				<CollectionCard
+				<SidebarCollectionCard
 					id={id}
 					noViewMore
-					name={t('lesson.see-also')}
+					title={t('lesson.see-also')}
 					items={relevantLessons}
 				/> :
 				<CourseCard
@@ -50,9 +51,9 @@ const RelatedLessons = ({
 		}
 		{	(lessonsByUser && !!lessonsByUser.length) &&
 			(lessonsByUser.length > 1 ?
-				<CollectionCard
+				<SidebarCollectionCard
 					userID={userID}
-					name={`${t('lesson.view-more-by-author')} ${userName}`}
+					title={`${t('lesson.view-more-by-author')} ${userName}`}
 					items={lessonsByUser}
 				/> :
 				<CourseCard
