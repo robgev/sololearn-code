@@ -50,12 +50,11 @@ class WS {
 			this.appSessionID = null;
 			this.isFirstRequest = true;
 			this.initHandle = null;
-			this.storage = new Storage();
-		  this.user = null;
+			this.storage = Storage;
+			this.user = null;
 
-
-		  this.accessToken = null;
-		  this.accessTokenExpireTime = null;
+			this.accessToken = null;
+			this.accessTokenExpireTime = null;
 		}
 
 		this.authenticatePromise = null;
@@ -63,12 +62,12 @@ class WS {
 		return WS.instance;
 	}
 
-  setAccessToken(accessToken, expiresIn) {
-	this.accessToken = accessToken;
-	this.accessTokenExpireTime = Date.now() + expiresIn;
-	this.storage.save('accessToken', accessToken);
-	this.storage.save('accessTokenExpireTime', accessTokenExpireTime);
-  }
+	setAccessToken(accessToken, expiresIn) {
+		this.accessToken = accessToken;
+		this.accessTokenExpireTime = Date.now() + expiresIn;
+		this.storage.save('accessToken', accessToken);
+		this.storage.save('accessTokenExpireTime', this.accessTokenExpireTime);
+	}
 
 	// Saving deviceUniqueId to storage(localStorage)
 	setUniqueID(uniqueID) {
@@ -89,190 +88,190 @@ class WS {
 		return this.authenticate();
 	}
 
-// Service authentication
-authenticate = function () {
-	const that = this;
-	const url = '/Ajax/GetSession';
+	// Service authentication
+	authenticate = function () {
+		const that = this;
+		const url = '/Ajax/GetSession';
 
-	const data = {
-		clientID: this.App.clientID,
-		deviceID: this.deviceUniqueID,
-		sessionID: this.appSessionID,
-		appVersion: '0.0.0.1',
-	};
+		const data = {
+			clientID: this.App.clientID,
+			deviceID: this.deviceUniqueID,
+			sessionID: this.appSessionID,
+			appVersion: '0.0.0.1',
+		};
 
-	const formData = new FormData();
+		const formData = new FormData();
 
-	for (const key in data) {
-		formData.append(key, data[key]);
+		for (const key in data) {
+			formData.append(key, data[key]);
+		}
+
+		return this.authenticatePromise || (this.authenticatePromise = new Promise((resolve, reject) => {
+			axios({
+				method: 'POST',
+				url,
+				data: formData,
+			})
+				.then((response) => {
+					const respData = response.data;
+
+					that.setAccessToken(respData.accessToken, respData.expiresIn);
+
+					if (typeof respData.sessionId === 'string') {
+						that.setSessionID(respData.sessionId);
+					}
+					if (typeof respData.uniqueId === 'string') {
+						that.setUniqueID(respData.uniqueId);
+					}
+
+					const rawUser = respData.user;
+					const user = {};
+					for (const prop in rawUser) {
+						let camelCase = '';
+						if (prop.length <= 2) {
+							camelCase = prop.toLowerCase();
+						} else {
+							camelCase = prop.substr(0, 1).toLowerCase() + prop.substr(1);
+						}
+						user[camelCase] = rawUser[prop];
+					}
+					that.onUserUpdate(user);
+
+					resolve();
+					this.authenticatePromise = null;
+					return true;
+				})
+				.catch((error) => {
+					const respData = error.data;
+
+					alert('Session error');
+
+					if (that.appSessionID) {
+						that.setSessionID('');
+					}
+
+					resolve();
+					this.authenticatePromise = null;
+					return false;
+				});
+		}));
 	}
 
-	return this.authenticatePromise || (this.authenticatePromise = new Promise((resolve, reject) => {
-		axios({
+	// Making AJAX call to service function with specific data
+	requestRaw(action, data, dontAuthenticate) {
+		const that = this;
+		const url = this.App.host + action;
+		const emptyObject = {};
+
+		return document.getElementById('service-frame').contentWindow.window.axios({
 			method: 'POST',
 			url,
-			data: formData,
+			data: JSON.stringify(data || emptyObject),
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: `Bearer ${this.accessToken}`,
+				// ClientID: AppDefaults.clientID,
+				// DeviceID: this.deviceUniqueID,
+				// SessionID: this.appSessionID,
+				// Version: '8',
+			},
 		})
 			.then((response) => {
 				const respData = response.data;
 
-			  that.setAccessToken(respData.accessToken, respData.expiresIn);
+				respData.isSuccessful = true;
+				respData.fault = Faults.None;
 
-				if (typeof respData.sessionId === 'string') {
-					that.setSessionID(respData.sessionId);
-				}
-				if (typeof respData.uniqueId === 'string') {
-					that.setUniqueID(respData.uniqueId);
-				}
-
-				const rawUser = respData.user;
-				const user = {};
-				for (const prop in rawUser) {
-					let camelCase = '';
-					if (prop.length <= 2) {
-						camelCase = prop.toLowerCase();
-					} else {
-						camelCase = prop.substr(0, 1).toLowerCase() + prop.substr(1);
+				if (typeof respData.error === 'object') {
+					const error = respData.error;
+					respData.isSuccessful = false;
+					error.isOperationFault = (error.code == that.Errors.OperationFault);
+					if (error.isOperationFault) {
+						respData.fault = error.data;
 					}
-					user[camelCase] = rawUser[prop];
+					return { error };
 				}
-				that.onUserUpdate(user);
 
-				resolve();
-				this.authenticatePromise = null;
-				return true;
+				return respData;
 			})
 			.catch((error) => {
-				const respData = error.data;
+				alert('Request error');
 
-				alert('Session error');
-
-				if (that.appSessionID) {
-					that.setSessionID('');
-				}
-
-				resolve();
-				this.authenticatePromise = null;
 				return false;
 			});
-	}));
-}
-
-// Making AJAX call to service function with specific data
-requestRaw(action, data, dontAuthenticate) {
-	const that = this;
-	const url = this.App.host + action;
-	const emptyObject = {};
-
-	return document.getElementById('service-frame').contentWindow.window.axios({
-		method: 'POST',
-		url,
-		data: JSON.stringify(data || emptyObject),
-		headers: {
-		  'Content-type': 'application/json',
-		  'Authorization': `Bearer ${this.accessToken}`
-			//ClientID: AppDefaults.clientID,
-			//DeviceID: this.deviceUniqueID,
-			//SessionID: this.appSessionID,
-			//Version: '8',
-		},
-	})
-		.then((response) => {
-			const respData = response.data;
-
-			respData.isSuccessful = true;
-			respData.fault = Faults.None;
-
-			if (typeof respData.error === 'object') {
-				const error = respData.error;
-				respData.isSuccessful = false;
-				error.isOperationFault = (error.code == that.Errors.OperationFault);
-				if (error.isOperationFault) {
-					respData.fault = error.data;
-				}
-				return { error };
-			}
-
-			return respData;
-		})
-		.catch((error) => {
-			alert('Request error');
-
-			return false;
-		});
-}
-
-fileRequest = async (action, data = {}) => {
-	const response = await document.getElementById('service-frame').contentWindow.window.axios({
-		url: `${this.App.host}${action}`,
-		method: 'POST',
-		headers: {
-			'Content-type': 'application/octet-stream',
-			ClientID: AppDefaults.clientID,
-			DeviceID: this.deviceUniqueID,
-			SessionID: this.appSessionID,
-			Version: '8',
-		},
-		data,
-	});
-	return response.data;
-}
-
-fetchRequest = async (action, data = {}) => {
-	const response = await document.getElementById('service-frame').contentWindow.window.axios({
-		url: `${this.App.host}${action}`,
-		method: 'POST',
-		headers: {
-			'Content-type': 'application/json',
-			ClientID: AppDefaults.clientID,
-			DeviceID: this.deviceUniqueID,
-			SessionID: this.appSessionID,
-			Version: '8',
-		},
-		data: JSON.stringify(data),
-	});
-	// I am leaving fetch version here fot the future
-	// const request = await fetch(`${this.App.host}${action}`, {
-	// 	method: 'POST',
-	// 	headers: {
-	// 		'Content-type': 'application/json',
-	// 		ClientID: AppDefaults.clientID,
-	// 		DeviceID: this.deviceUniqueID,
-	// 		SessionID: this.appSessionID,
-	// 		Version: '8',
-	// 		'Access-Control-Allow-Origin': '*',
-	// 	},
-	// 	body: JSON.stringify(data),
-	// });
-	// console.log(request);
-	// const response = await request.json();
-	return response.data;
-}
-
-request = (action, data) => {
-	const that = this;
-
-	// console.log(that);
-
-	if (that.isFirstRequest) {
-		return this.initialize().then(
-			() => {
-				that.isFirstRequest = false;
-				return that.requestRaw(action, data, false);
-			},
-			() => {
-				// TODO Error Popup
-			},
-		);
 	}
 
-	return that.requestRaw(action, data, false);
-}
+	fileRequest = async (action, data = {}) => {
+		const response = await document.getElementById('service-frame').contentWindow.window.axios({
+			url: `${this.App.host}${action}`,
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/octet-stream',
+				ClientID: AppDefaults.clientID,
+				DeviceID: this.deviceUniqueID,
+				SessionID: this.appSessionID,
+				Version: '8',
+			},
+			data,
+		});
+		return response.data;
+	}
 
-onUserUpdate = (user) => {
-// console.log(user);
-	this.user = user;
-};
+	fetchRequest = async (action, data = {}) => {
+		const response = await document.getElementById('service-frame').contentWindow.window.axios({
+			url: `${this.App.host}${action}`,
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/json',
+				ClientID: AppDefaults.clientID,
+				DeviceID: this.deviceUniqueID,
+				SessionID: this.appSessionID,
+				Version: '8',
+			},
+			data: JSON.stringify(data),
+		});
+		// I am leaving fetch version here fot the future
+		// const request = await fetch(`${this.App.host}${action}`, {
+		// 	method: 'POST',
+		// 	headers: {
+		// 		'Content-type': 'application/json',
+		// 		ClientID: AppDefaults.clientID,
+		// 		DeviceID: this.deviceUniqueID,
+		// 		SessionID: this.appSessionID,
+		// 		Version: '8',
+		// 		'Access-Control-Allow-Origin': '*',
+		// 	},
+		// 	body: JSON.stringify(data),
+		// });
+		// console.log(request);
+		// const response = await request.json();
+		return response.data;
+	}
+
+	request = (action, data) => {
+		const that = this;
+
+		// console.log(that);
+
+		if (that.isFirstRequest) {
+			return this.initialize().then(
+				() => {
+					that.isFirstRequest = false;
+					return that.requestRaw(action, data, false);
+				},
+				() => {
+					// TODO Error Popup
+				},
+			);
+		}
+
+		return that.requestRaw(action, data, false);
+	}
+
+	onUserUpdate = (user) => {
+		// console.log(user);
+		this.user = user;
+	};
 }
 
 const Service = new WS();

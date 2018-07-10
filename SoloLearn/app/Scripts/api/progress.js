@@ -137,7 +137,7 @@ class ProgressManager {
 			this.isPushing = false;
 			this.isPushQueued = false;
 
-			this.storage = new Storage();
+			this.storage = Storage;
 		}
 
 		return ProgressManager.instance;
@@ -191,10 +191,10 @@ class ProgressManager {
 
 		state.totalItems = Object.keys(module.lessons).length;
 		state.totalLessons =
-		Object.keys(module.lessons).filter(lessonId => module.lessons[lessonId].type === 0).length;
+			Object.keys(module.lessons).filter(lessonId => module.lessons[lessonId].type === 0).length;
 		const passedItems =
-		Object.keys(module.lessons).filter(lessonId =>
-			that.getLessonStateById(module.lessons[lessonId].id).visualState === ProgressState.Normal);
+			Object.keys(module.lessons).filter(lessonId =>
+				that.getLessonStateById(module.lessons[lessonId].id).visualState === ProgressState.Normal);
 		state.passedItems = passedItems.length;
 		state.passedLessons = passedItems.filter(l => l.type === 0).length;
 

@@ -1,37 +1,36 @@
-export default class Storage {
-    save = function (key, value) {
-    	try {
-    		localStorage.setItem(key, JSON.stringify({ data: value }));
-    	} catch (e) {
-    		console.log(`LocalStorageWriteFault: ${e.message} D: ${e.description}`);
-    	}
-    }
+class Storage {
+	save = (key, value) => {
+		try {
+			localStorage.setItem(key, JSON.stringify({ data: value }));
+		} catch (e) {
+			throw new Error(`LocalStorageWriteFault: ${e.message} D: ${e.description}`);
+		}
+	}
 
-    load = function (key) {
-    	let item = null;
-    	try {
-    		item = localStorage.getItem(key);
-    	} catch (e) {
-    		console.log(`LocalStorageReadFault: ${e.message} D: ${e.description}`);
-    	}
-    	if (!item) return null;
+	load = (key) => {
+		try {
+			const item = localStorage.getItem(key);
+			return item === null ? null : JSON.parse(item).data;
+		} catch (e) {
+			throw new Error(`LocalStorageReadFault: ${e.message} D: ${e.description}`);
+		}
+	}
 
-    	return JSON.parse(item).data;
-    }
+	remove = (key) => {
+		try {
+			localStorage.removeItem(key);
+		} catch (e) {
+			throw new Error(`LocalStorageRemoveFault: ${e.message} D: ${e.description}`);
+		}
+	}
 
-    remove = function (key) {
-    	try {
-    		localStorage.removeItem(key);
-    	} catch (e) {
-    		console.log(`LocalStorageRemoveFault: ${e.message} D: ${e.description}`);
-    	}
-    }
-
-    clear = function (keepCredentials) {
-    	try {
-    		localStorage.clear();
-    	} catch (e) {
-    		console.log(`LocalStorageClearFault: ${e.message} D: ${e.description}`);
-    	}
-    }
+	clear = () => {
+		try {
+			localStorage.clear();
+		} catch (e) {
+			throw new Error(`LocalStorageClearFault: ${e.message} D: ${e.description}`);
+		}
+	}
 }
+
+export default new Storage();

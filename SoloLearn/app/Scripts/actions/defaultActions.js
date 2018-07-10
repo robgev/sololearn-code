@@ -16,12 +16,12 @@ const loadCourses = payload => ({ type: types.LOAD_COURSES, payload });
 
 export const getProfileInternal = userId => async (dispatch) => {
 	if (!userId) {
-		const profile = new Storage().load('profile');
+		const profile = Storage.load('profile');
 		if (profile != null) {
 			dispatch(getUserProfile(profile));
 			Service.request('Profile/GetProfile', { userId })
 				.then(({ profile: updated }) => {
-					new Storage().save('profile', updated);
+					Storage.save('profile', updated);
 					dispatch(getUserProfile(updated));
 				});
 		} else {
@@ -35,9 +35,8 @@ export const getProfileInternal = userId => async (dispatch) => {
 };
 
 export const loadCoursesInternal = () => {
-	const localStorage = new Storage(); // Caching course data
-	const courses = localStorage.load('courses');
-	const levels = localStorage.load('levels');
+	const courses = Storage.load('courses');
+	const levels = Storage.load('levels');
 
 	if (courses != null || levels != null) {
 		return dispatch => new Promise((resolve) => {
@@ -48,8 +47,8 @@ export const loadCoursesInternal = () => {
 	}
 
 	return dispatch => Service.request('GetCourses', null).then((response) => {
-		localStorage.save('courses', response.courses); // Saveing data to localStorage
-		localStorage.save('levels', response.levels); // Saveing data to localStorage
+		Storage.save('courses', response.courses); // Saveing data to Storage
+		Storage.save('levels', response.levels); // Saveing data to localStorage
 
 		dispatch(loadCourses(response.courses));
 		dispatch(loadLevels(response.levels));

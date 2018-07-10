@@ -1,5 +1,3 @@
-import { browserHistory } from 'react-router';
-
 import Service from 'api/service';
 import Progress from 'api/progress';
 import Storage from 'api/storage';
@@ -92,9 +90,8 @@ export const toggleCourseInternal = (courseId, enable) => (dispatch, getState) =
 };
 
 export const loadCourseInternal = courseId => async (dispatch, getState) => {
-	const localStorage = new Storage(); // Caching course data
-	let selectedCourseId = courseId || localStorage.load('selectedCourseId');
-	const course = localStorage.load(`c${selectedCourseId}`);
+	let selectedCourseId = courseId || Storage.load('selectedCourseId');
+	const course = Storage.load(`c${selectedCourseId}`);
 	const store = getState();
 	const userCourses = store.userProfile.skills;
 
@@ -102,7 +99,7 @@ export const loadCourseInternal = courseId => async (dispatch, getState) => {
 		dispatch(toggleCourseInternal(selectedCourseId, true));
 	}
 	if (course != null) {
-		localStorage.save('selectedCourseId', course.id);
+		Storage.save('selectedCourseId', course.id);
 		Progress.courseId = course.id;
 		Progress.loadCourse(course); // Getting progress of course
 		await Progress.sync();
@@ -110,12 +107,12 @@ export const loadCourseInternal = courseId => async (dispatch, getState) => {
 		dispatch(loadCourse(course));
 	} else {
 		selectedCourseId = selectedCourseId || userCourses[0].id;
-		localStorage.save('selectedCourseId', selectedCourseId);
+		Storage.save('selectedCourseId', selectedCourseId);
 		const { course: fetchedCourse } = await Service.request('GetCourse', { id: selectedCourseId });
 		Progress.courseId = fetchedCourse.id;
 		Progress.loadCourse(fetchedCourse); // Getting progress of course
 		await Progress.sync();
-		localStorage.save(`c${selectedCourseId}`, fetchedCourse); // Saveing data to localStorage
+		Storage.save(`c${selectedCourseId}`, fetchedCourse); // Saveing data to localStorage
 		await structurizeCourse(fetchedCourse.modules, dispatch);
 		dispatch(loadCourse(fetchedCourse));
 	}
