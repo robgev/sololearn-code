@@ -207,7 +207,8 @@ class MySubmissions extends Component {
 		];
 		return (
 			<Layout className="my-submissions">
-				<Paper style={{ marginBottom: 10, display: 'flex', justifyContent: 'space-between' }}>
+				<Paper className="status-bar">
+					<span style={{ marginTop: 5 }}>Status:</span>
 					<DropDownMenu
 						value={this.state.filters.status}
 						onChange={this.hanldeStatusFilterChange}

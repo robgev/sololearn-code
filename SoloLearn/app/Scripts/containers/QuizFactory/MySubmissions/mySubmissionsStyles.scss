@@ -1,4 +1,10 @@
 .my-submissions {
+	.status-bar {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		margin-bottom: 10px;
+	}
 	.preview {
 		.primary-text {
 			text-overflow: ellipsis;
