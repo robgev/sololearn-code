@@ -117,6 +117,15 @@ namespace Services.WebService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Services.WebService.AccessLevel AccessLevelField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string AvatarUrlField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string BadgeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string EmailField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -126,7 +135,13 @@ namespace Services.WebService {
         private int IdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int LevelField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int XpField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -135,6 +150,45 @@ namespace Services.WebService {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Services.WebService.AccessLevel AccessLevel {
+            get {
+                return this.AccessLevelField;
+            }
+            set {
+                if ((this.AccessLevelField.Equals(value) != true)) {
+                    this.AccessLevelField = value;
+                    this.RaisePropertyChanged("AccessLevel");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AvatarUrl {
+            get {
+                return this.AvatarUrlField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AvatarUrlField, value) != true)) {
+                    this.AvatarUrlField = value;
+                    this.RaisePropertyChanged("AvatarUrl");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Badge {
+            get {
+                return this.BadgeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.BadgeField, value) != true)) {
+                    this.BadgeField = value;
+                    this.RaisePropertyChanged("Badge");
+                }
             }
         }
         
@@ -178,6 +232,19 @@ namespace Services.WebService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Level {
+            get {
+                return this.LevelField;
+            }
+            set {
+                if ((this.LevelField.Equals(value) != true)) {
+                    this.LevelField = value;
+                    this.RaisePropertyChanged("Level");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string Name {
             get {
                 return this.NameField;
@@ -186,6 +253,19 @@ namespace Services.WebService {
                 if ((object.ReferenceEquals(this.NameField, value) != true)) {
                     this.NameField = value;
                     this.RaisePropertyChanged("Name");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Xp {
+            get {
+                return this.XpField;
+            }
+            set {
+                if ((this.XpField.Equals(value) != true)) {
+                    this.XpField = value;
+                    this.RaisePropertyChanged("Xp");
                 }
             }
         }
@@ -221,6 +301,42 @@ namespace Services.WebService {
                 }
             }
         }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.FlagsAttribute()]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AccessLevel", Namespace="http://schemas.datacontract.org/2004/07/SoloLearn.Entities")]
+    public enum AccessLevel : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        None = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Basic = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        MonitorUsers = 16,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        ManageClients = 32,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        ManageUsers = 64,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        PushServices = 128,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Admin = 65520,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Moderator = 2,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        GoldModerator = 4,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        PlatinumModerator = 8,
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -346,7 +462,106 @@ namespace Services.WebService {
         SocialConflict = 128,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        InsufficientPermissions = 256,
+        AccessDenied = 256,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        ObjectNotFound = 512,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        LimitReached = 1024,
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="TokenAuthenticationResult", Namespace="http://schemas.datacontract.org/2004/07/SoloLearn.Entities")]
+    [System.SerializableAttribute()]
+    public partial class TokenAuthenticationResult : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string AccessTokenField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int ExpiresInField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string RefreshTokenField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Services.WebService.UserBase UserField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AccessToken {
+            get {
+                return this.AccessTokenField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AccessTokenField, value) != true)) {
+                    this.AccessTokenField = value;
+                    this.RaisePropertyChanged("AccessToken");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ExpiresIn {
+            get {
+                return this.ExpiresInField;
+            }
+            set {
+                if ((this.ExpiresInField.Equals(value) != true)) {
+                    this.ExpiresInField = value;
+                    this.RaisePropertyChanged("ExpiresIn");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string RefreshToken {
+            get {
+                return this.RefreshTokenField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.RefreshTokenField, value) != true)) {
+                    this.RefreshTokenField = value;
+                    this.RaisePropertyChanged("RefreshToken");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Services.WebService.UserBase User {
+            get {
+                return this.UserField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UserField, value) != true)) {
+                    this.UserField = value;
+                    this.RaisePropertyChanged("User");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -369,6 +584,9 @@ namespace Services.WebService {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsPublicField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsPublicBlockedField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string JsCodeField;
@@ -452,6 +670,19 @@ namespace Services.WebService {
                 if ((this.IsPublicField.Equals(value) != true)) {
                     this.IsPublicField = value;
                     this.RaisePropertyChanged("IsPublic");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsPublicBlocked {
+            get {
+                return this.IsPublicBlockedField;
+            }
+            set {
+                if ((this.IsPublicBlockedField.Equals(value) != true)) {
+                    this.IsPublicBlockedField = value;
+                    this.RaisePropertyChanged("IsPublicBlocked");
                 }
             }
         }
@@ -576,10 +807,17 @@ namespace Services.WebService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebsiteService/Authenticate", ReplyAction="http://tempuri.org/IWebsiteService/AuthenticateResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(Services.WebService.ServiceExceptionDetail), Action="http://tempuri.org/IWebsiteService/AuthenticateServiceExceptionDetailFault", Name="ServiceExceptionDetail", Namespace="http://schemas.datacontract.org/2004/07/SoloLearn")]
-        Services.WebService.WebAuthenticationResult Authenticate(int userID, string os, string browser, string browserVersion, string appVersion);
+        Services.WebService.WebAuthenticationResult Authenticate(int userID, string os, string browser, string browserVersion, string appVersion, string ipAddress);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebsiteService/Authenticate", ReplyAction="http://tempuri.org/IWebsiteService/AuthenticateResponse")]
-        System.Threading.Tasks.Task<Services.WebService.WebAuthenticationResult> AuthenticateAsync(int userID, string os, string browser, string browserVersion, string appVersion);
+        System.Threading.Tasks.Task<Services.WebService.WebAuthenticationResult> AuthenticateAsync(int userID, string os, string browser, string browserVersion, string appVersion, string ipAddress);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebsiteService/AuthenticateBearer", ReplyAction="http://tempuri.org/IWebsiteService/AuthenticateBearerResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Services.WebService.ServiceExceptionDetail), Action="http://tempuri.org/IWebsiteService/AuthenticateBearerServiceExceptionDetailFault", Name="ServiceExceptionDetail", Namespace="http://schemas.datacontract.org/2004/07/SoloLearn")]
+        Services.WebService.TokenAuthenticationResult AuthenticateBearer(string refreshToken, string os, string browser, string browserVersion, string appVersion, string ipAddress);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebsiteService/AuthenticateBearer", ReplyAction="http://tempuri.org/IWebsiteService/AuthenticateBearerResponse")]
+        System.Threading.Tasks.Task<Services.WebService.TokenAuthenticationResult> AuthenticateBearerAsync(string refreshToken, string os, string browser, string browserVersion, string appVersion, string ipAddress);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebsiteService/Register", ReplyAction="http://tempuri.org/IWebsiteService/RegisterResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(Services.WebService.ServiceExceptionDetail), Action="http://tempuri.org/IWebsiteService/RegisterServiceExceptionDetailFault", Name="ServiceExceptionDetail", Namespace="http://schemas.datacontract.org/2004/07/SoloLearn")]
@@ -703,12 +941,20 @@ namespace Services.WebService {
                 base(binding, remoteAddress) {
         }
         
-        public Services.WebService.WebAuthenticationResult Authenticate(int userID, string os, string browser, string browserVersion, string appVersion) {
-            return base.Channel.Authenticate(userID, os, browser, browserVersion, appVersion);
+        public Services.WebService.WebAuthenticationResult Authenticate(int userID, string os, string browser, string browserVersion, string appVersion, string ipAddress) {
+            return base.Channel.Authenticate(userID, os, browser, browserVersion, appVersion, ipAddress);
         }
         
-        public System.Threading.Tasks.Task<Services.WebService.WebAuthenticationResult> AuthenticateAsync(int userID, string os, string browser, string browserVersion, string appVersion) {
-            return base.Channel.AuthenticateAsync(userID, os, browser, browserVersion, appVersion);
+        public System.Threading.Tasks.Task<Services.WebService.WebAuthenticationResult> AuthenticateAsync(int userID, string os, string browser, string browserVersion, string appVersion, string ipAddress) {
+            return base.Channel.AuthenticateAsync(userID, os, browser, browserVersion, appVersion, ipAddress);
+        }
+        
+        public Services.WebService.TokenAuthenticationResult AuthenticateBearer(string refreshToken, string os, string browser, string browserVersion, string appVersion, string ipAddress) {
+            return base.Channel.AuthenticateBearer(refreshToken, os, browser, browserVersion, appVersion, ipAddress);
+        }
+        
+        public System.Threading.Tasks.Task<Services.WebService.TokenAuthenticationResult> AuthenticateBearerAsync(string refreshToken, string os, string browser, string browserVersion, string appVersion, string ipAddress) {
+            return base.Channel.AuthenticateBearerAsync(refreshToken, os, browser, browserVersion, appVersion, ipAddress);
         }
         
         public Services.WebService.UserBase Register(string email, string name, string password) {

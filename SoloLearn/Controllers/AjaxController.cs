@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Services.WebService;
 
@@ -9,21 +10,50 @@ namespace SoloLearn.Controllers
 {
     public class AjaxController : Controller
     {
-        [HttpPost]
-        public JsonResult GetSession(string clientID, string deviceID, Guid? sessionID, string appVersion)
+        private static readonly string CookieKey = "M31542";
+        private readonly IDataProtector _protector;
+
+        public AjaxController(IDataProtectionProvider provider)
         {
-            using (var service = WebsiteServiceClient.ForClient(clientID))
+            _protector = provider.CreateProtector(GetType().FullName);
+        }
+
+        [HttpPost]
+        public JsonResult GetSession()
+        {
+            using (var service = WebsiteServiceClient.ForWeb())
             {
-                if (sessionID != null)
-                {
-                    service.SessionID = sessionID.Value.ToString();
-                }
+                //if (sessionID != null)
+                //{
+                //    service.SessionID = sessionID.Value.ToString();
+                //}
 
                 try
                 {
-		  //var auth = service.Authenticate(this, appVersion);
-		  var auth = service.Authenticate("beta");// appVersion);
-                    return Json(auth);
+                    string refreshToken = null;
+
+                    var token = Request.Cookies[CookieKey];
+
+                    if (token != null)
+                    {
+                        try
+                        {
+                            refreshToken = _protector.Unprotect(token);
+                        }
+                        catch { }
+                    }
+
+//var auth = service.Authenticate(this, appVersion);
+										var auth = service.Authenticate(refreshToken, "beta", this.Request.Headers["User-Agent"], this.HttpContext.Connection.RemoteIpAddress.ToString());// appVersion);
+
+
+                    Response.Cookies.Append(CookieKey, _protector.Protect(auth.RefreshToken), new Microsoft.AspNetCore.Http.CookieOptions() { HttpOnly = true });
+                    return Json(new
+										{
+											auth.AccessToken,
+											auth.ExpiresIn,
+											auth.User
+										});
                 }
                 catch (Exception e)
                 {

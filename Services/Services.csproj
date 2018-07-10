@@ -42,6 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Browser\ClientBrowser.cs" />
+    <Compile Include="Browser\ClientOS.cs" />
+    <Compile Include="Browser\MatchExpression.cs" />
+    <Compile Include="Browser\UserAgent.cs" />
     <Compile Include="CustomHeaderEndpointBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\WebService\Reference.cs">
@@ -56,6 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Service References\WebService\Services.WebService.TokenAuthenticationResult1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\WebService\Services.WebService.UserBase.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

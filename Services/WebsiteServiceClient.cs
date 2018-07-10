@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SoloLearn.Utils.Browser;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
@@ -12,7 +13,7 @@ namespace Services.WebService
         private Dictionary<string, string> CustomHeaders { get; set; }
 
         public string ClientID { get { return CustomHeaders["ClientID"]; } set { CustomHeaders["ClientID"] = value; } }
-        public string SessionID { get { return CustomHeaders["SessionID"]; } set { CustomHeaders["SessionID"] = value; } }
+        //public string SessionID { get { return CustomHeaders["SessionID"]; } set { CustomHeaders["SessionID"] = value; } }
 
         public static WebsiteServiceClient ForClient(string clientID)
         {
@@ -34,23 +35,23 @@ namespace Services.WebService
             return serviceClient;
         }
 
-        public WebAuthenticationResult Authenticate(string appVersion = "0.0.0.0") //Controller controller,
+        public TokenAuthenticationResult Authenticate(string refreshToken, string appVersion, string userAgent, string ipAddress) //Controller controller,
         {
-            int userID = 2253447; // 8800161;// 2259519; //1042 //24379
-            //if (controller.User != null) userID = controller.User.Id;
-            var browser = "Chrome";//controller.Request.Browser;
-            var os = "Windows NT 6.3; WOW64";//Regex.Match(controller.Request.UserAgent, @"(?<=\().*?(?=\))").Value;
-            var browserVersion = "54";
+            UserAgent ua = new UserAgent(userAgent);
+
+            var browser = ua.Browser.Name;
+            var browserVersion = ua.Browser.Version;
+            var os = ua.OS.Name + " " + ua.OS.Version;
 
             //var result = Authenticate(userID, os, browser.Browser, browser.Version, appVersion);
-            var result = Authenticate(userID, os, browser, browserVersion, appVersion);
-            SessionID = result.SessionId.ToString();
+            var result = AuthenticateBearer(refreshToken, os, browser, browserVersion, appVersion, ipAddress);
+            //SessionID = result.SessionId.ToString();
             return result;
         }
 
         public static WebsiteServiceClient ForWeb()
         {
-            return ForClient("Web.SoloLearn.Html");
+            return ForClient("Web.SoloLearn");
         }
     }
 }
