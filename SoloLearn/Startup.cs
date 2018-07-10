@@ -1,8 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +24,16 @@ namespace SoloLearn
         {
             services.AddMvc();
             services.AddReact();
+
+            services.AddDataProtection()
+								.PersistKeysToFileSystem(new DirectoryInfo(@"C:\DataProtection"))
+								.SetDefaultKeyLifetime(TimeSpan.FromDays(365 * 10))
+								.UseCryptographicAlgorithms(new AuthenticatedEncryptionSettings
+								{
+														
+										EncryptionAlgorithm = EncryptionAlgorithm.AES_256_GCM,
+										ValidationAlgorithm = ValidationAlgorithm.HMACSHA512
+								});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

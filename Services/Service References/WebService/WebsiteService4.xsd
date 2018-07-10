@@ -10,6 +10,7 @@
         <xs:element minOccurs="0" name="browser" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="browserVersion" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="appVersion" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="ipAddress" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -17,6 +18,25 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/SoloLearn.Entities" minOccurs="0" name="AuthenticateResult" nillable="true" type="q1:WebAuthenticationResult" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AuthenticateBearer">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="refreshToken" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="os" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="browser" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="browserVersion" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="appVersion" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="ipAddress" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AuthenticateBearerResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/SoloLearn.Entities" minOccurs="0" name="AuthenticateBearerResult" nillable="true" type="q2:TokenAuthenticationResult" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -32,7 +52,7 @@
   <xs:element name="RegisterResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/SoloLearn.Entities" minOccurs="0" name="RegisterResult" nillable="true" type="q2:UserBase" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/SoloLearn.Entities" minOccurs="0" name="RegisterResult" nillable="true" type="q3:UserBase" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -52,7 +72,7 @@
   <xs:element name="SocialAuthenticationResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/SoloLearn.Entities" minOccurs="0" name="SocialAuthenticationResult" nillable="true" type="q3:UserBase" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/SoloLearn.Entities" minOccurs="0" name="SocialAuthenticationResult" nillable="true" type="q4:UserBase" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -99,7 +119,7 @@
   <xs:element name="UpdateAvatar">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.microsoft.com/Message" name="file" type="q4:StreamBody" />
+        <xs:element xmlns:q5="http://schemas.microsoft.com/Message" name="file" type="q5:StreamBody" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -201,7 +221,7 @@
   <xs:element name="SaveCodeResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/SoloLearn.Entities" minOccurs="0" name="SaveCodeResult" nillable="true" type="q5:UserCode" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/SoloLearn.Entities" minOccurs="0" name="SaveCodeResult" nillable="true" type="q6:UserCode" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

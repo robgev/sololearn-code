@@ -51,13 +51,24 @@ class WS {
 			this.isFirstRequest = true;
 			this.initHandle = null;
 			this.storage = new Storage();
-			this.user = null;
+		  this.user = null;
+
+
+		  this.accessToken = null;
+		  this.accessTokenExpireTime = null;
 		}
 
 		this.authenticatePromise = null;
 
 		return WS.instance;
 	}
+
+  setAccessToken(accessToken, expiresIn) {
+	this.accessToken = accessToken;
+	this.accessTokenExpireTime = Date.now() + expiresIn;
+	this.storage.save('accessToken', accessToken);
+	this.storage.save('accessTokenExpireTime', accessTokenExpireTime);
+  }
 
 	// Saving deviceUniqueId to storage(localStorage)
 	setUniqueID(uniqueID) {
@@ -104,6 +115,8 @@ authenticate = function () {
 		})
 			.then((response) => {
 				const respData = response.data;
+
+			  that.setAccessToken(respData.accessToken, respData.expiresIn);
 
 				if (typeof respData.sessionId === 'string') {
 					that.setSessionID(respData.sessionId);
@@ -156,11 +169,12 @@ requestRaw(action, data, dontAuthenticate) {
 		url,
 		data: JSON.stringify(data || emptyObject),
 		headers: {
-			'Content-type': 'application/json',
-			ClientID: AppDefaults.clientID,
-			DeviceID: this.deviceUniqueID,
-			SessionID: this.appSessionID,
-			Version: '8',
+		  'Content-type': 'application/json',
+		  'Authorization': `Bearer ${this.accessToken}`
+			//ClientID: AppDefaults.clientID,
+			//DeviceID: this.deviceUniqueID,
+			//SessionID: this.appSessionID,
+			//Version: '8',
 		},
 	})
 		.then((response) => {

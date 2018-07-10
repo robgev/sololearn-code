@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { List, ListItem, Paper, Dialog, FlatButton, RaisedButton } from 'material-ui';
+import { uniqBy } from 'lodash';
+import {
+	List, ListItem, Paper, Dialog,
+	FlatButton, RaisedButton, CircularProgress,
+	DropDownMenu, MenuItem, Menu,
+} from 'material-ui';
 import Subheader from 'material-ui/Subheader';
 import { red500 } from 'material-ui/styles/colors';
 import { browserHistory } from 'react-router';
 import Layout from 'components/Layouts/GeneralLayout';
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
 import Quiz, { CheckBar } from 'components/Shared/Quiz';
 import LanguageCard from 'components/Shared/LanguageCard';
 import { setSuggestionChallenge } from 'actions/quizFactory';
@@ -69,15 +73,53 @@ class MySubmissions extends Component {
 			previewChallenge: null,
 			checkResult: null,
 			isDeletePopupOpen: false,
+			filters: {
+				courseId: null,
+				status: null,
+			},
 		};
 		document.title = 'Sololearn | My Submissions';
 	}
 	componentWillMount() {
-		this.fetchSubmissions();
+		const { status = null, courseId = null } = this.props.location.query;
+		this.setState({
+			filters: {
+				status: status === null ? null : parseInt(status, 10),
+				courseId: courseId === null ? null : parseInt(courseId, 10),
+			},
+		});
+		this.fetchSubmissions({ status, courseId }, null);
 	}
-	fetchSubmissions = async () => {
-		const challenges = await getMySubmissions();
-		this.setState({ challenges });
+	componentDidUpdate(nextProps) {
+		const { filters } = this.state;
+		const { query: currQuery } = this.props.location;
+		const { query: nextQuery } = nextProps.location;
+		const statusChanged = currQuery.status !== nextQuery.status;
+		const courseIdChanged = currQuery.courseId !== nextQuery.courseId;
+		if (courseIdChanged) {
+			filters.courseId = currQuery.courseId === null ? null : parseInt(currQuery.courseId, 10);
+		}
+		if (statusChanged) {
+			filters.status = currQuery.status === null ? null : parseInt(currQuery.status, 10);
+		}
+		if (statusChanged || courseIdChanged) {
+			// eslint-disable-next-line
+			this.setState({ filters, challenges: null });
+			this.fetchSubmissions(filters, null);
+		}
+	}
+	_fetchSubmissions = () => {
+		const { filters, challenges } = this.state;
+		this.fetchSubmissions(filters, challenges);
+	}
+	fetchSubmissions = async (filters, challenges) => {
+		const index = challenges !== null ? challenges.length : 0;
+		const newChallenges = await getMySubmissions({ ...filters, index });
+		this.setState(s => ({
+			challenges: s.challenges === null
+				? newChallenges
+				: uniqBy([ ...s.challenges, ...newChallenges ], 'id'),
+		}));
 	}
 	preview = (challenge) => {
 		this.setState({ previewChallenge: challenge });
@@ -92,9 +134,17 @@ class MySubmissions extends Component {
 	}
 	handleDelete = () => {
 		const { previewChallenge } = this.state;
-		this.setState({ previewChallenge: null });
+		this.setState({ previewChallenge: null, isDeletePopupOpen: null });
 		deleteChallenge(previewChallenge.id)
 			.then(this.fetchSubmissions);
+	}
+	hanldeStatusFilterChange = (_, __, status) => {
+		const { location } = this.props;
+		browserHistory.push({ ...location, query: { ...location.query, status } });
+	}
+	handleCourseIdFilterChange = (_, __, courseId) => {
+		const { location } = this.props;
+		browserHistory.push({ ...location, query: { ...location.query, courseId } });
 	}
 	toggleDeletePopup = () => {
 		this.setState(s => ({ isDeletePopupOpen: !s.isDeletePopupOpen }));
@@ -139,7 +189,7 @@ class MySubmissions extends Component {
 			previewChallenge !== null && previewChallenge.status === 2
 				? <FlatButton
 					label="Delete"
-					onClick={this.handleDelete}
+					onClick={this.toggleDeletePopup}
 					labelStyle={{ color: red500 }}
 				/> : null,
 			previewChallenge !== null && previewChallenge.status === 2
@@ -157,11 +207,35 @@ class MySubmissions extends Component {
 		];
 		return (
 			<Layout className="my-submissions">
+				<Paper className="status-bar">
+					<span style={{ marginTop: 5 }}>Status:</span>
+					<DropDownMenu
+						value={this.state.filters.status}
+						onChange={this.hanldeStatusFilterChange}
+					>
+						<MenuItem value={null} primaryText="All" />
+						<MenuItem value={1} primaryText="Pending" />
+						<MenuItem value={2} primaryText="Declined" />
+						<MenuItem value={3} primaryText="Approved" />
+					</DropDownMenu>
+					<DropDownMenu
+						value={this.state.filters.courseId}
+						onChange={this.handleCourseIdFilterChange}
+					>
+						<MenuItem value={null} primaryText="All" />
+						{
+							this.props.courses
+								.filter(course => course.isQuizFactoryEnabled)
+								.map(course =>
+									<MenuItem key={course.id} value={course.id} primaryText={course.language} />)
+						}
+					</DropDownMenu>
+				</Paper>
 				{
 					challenges === null
-						? <LoadingOverlay />
+						? <CircularProgress style={{ display: 'flex', alignItems: 'center', margin: 'auto' }} />
 						: challenges.length === 0
-							? 'You have no submitted challenges'
+							? <Paper>Nothing found</Paper>
 							: (
 								<Paper>
 									<List style={{ padding: 0 }}>
@@ -215,10 +289,22 @@ class MySubmissions extends Component {
 								label={this.checkBarLabel}
 								status={this.state.checkResult}
 							/>
+							<Dialog
+								title="Delete Submission"
+								contentStyle={{ width: '50%' }}
+								open={this.state.isDeletePopupOpen}
+								actions={[
+									<FlatButton label="cancel" onClick={this.toggleDeletePopup} primary />,
+									<FlatButton label="delete" onClick={this.handleDelete} labelStyle={{ color: red500 }} />,
+								]}
+								onRequestClose={this.toggleDeletePopup}
+							>
+								Are you sure?
+							</Dialog>
 						</div>
 					) : null}
 				</Dialog>
-			</Layout>
+			</Layout >
 		);
 	}
 }

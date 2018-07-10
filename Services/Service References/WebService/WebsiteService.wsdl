@@ -47,6 +47,15 @@
   <wsdl:message name="IWebsiteService_Authenticate_ServiceExceptionDetailFault_FaultMessage">
     <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q1:ServiceExceptionDetail" />
   </wsdl:message>
+  <wsdl:message name="IWebsiteService_AuthenticateBearer_InputMessage">
+    <wsdl:part name="parameters" element="tns:AuthenticateBearer" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_AuthenticateBearer_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AuthenticateBearerResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWebsiteService_AuthenticateBearer_ServiceExceptionDetailFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q2:ServiceExceptionDetail" />
+  </wsdl:message>
   <wsdl:message name="IWebsiteService_Register_InputMessage">
     <wsdl:part name="parameters" element="tns:Register" />
   </wsdl:message>
@@ -54,7 +63,7 @@
     <wsdl:part name="parameters" element="tns:RegisterResponse" />
   </wsdl:message>
   <wsdl:message name="IWebsiteService_Register_ServiceExceptionDetailFault_FaultMessage">
-    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q2:ServiceExceptionDetail" />
+    <wsdl:part xmlns:q3="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q3:ServiceExceptionDetail" />
   </wsdl:message>
   <wsdl:message name="IWebsiteService_SocialAuthentication_InputMessage">
     <wsdl:part name="parameters" element="tns:SocialAuthentication" />
@@ -63,7 +72,7 @@
     <wsdl:part name="parameters" element="tns:SocialAuthenticationResponse" />
   </wsdl:message>
   <wsdl:message name="IWebsiteService_SocialAuthentication_ServiceExceptionDetailFault_FaultMessage">
-    <wsdl:part xmlns:q3="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q3:ServiceExceptionDetail" />
+    <wsdl:part xmlns:q4="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q4:ServiceExceptionDetail" />
   </wsdl:message>
   <wsdl:message name="IWebsiteService_DisconnectService_InputMessage">
     <wsdl:part name="parameters" element="tns:DisconnectService" />
@@ -72,7 +81,7 @@
     <wsdl:part name="parameters" element="tns:DisconnectServiceResponse" />
   </wsdl:message>
   <wsdl:message name="IWebsiteService_DisconnectService_ServiceExceptionDetailFault_FaultMessage">
-    <wsdl:part xmlns:q4="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q4:ServiceExceptionDetail" />
+    <wsdl:part xmlns:q5="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q5:ServiceExceptionDetail" />
   </wsdl:message>
   <wsdl:message name="IWebsiteService_UpdateProfileAndPassword_InputMessage">
     <wsdl:part name="parameters" element="tns:UpdateProfileAndPassword" />
@@ -81,7 +90,7 @@
     <wsdl:part name="parameters" element="tns:UpdateProfileAndPasswordResponse" />
   </wsdl:message>
   <wsdl:message name="IWebsiteService_UpdateProfileAndPassword_ServiceExceptionDetailFault_FaultMessage">
-    <wsdl:part xmlns:q5="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q5:ServiceExceptionDetail" />
+    <wsdl:part xmlns:q6="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q6:ServiceExceptionDetail" />
   </wsdl:message>
   <wsdl:message name="IWebsiteService_UpdateProfile_InputMessage">
     <wsdl:part name="parameters" element="tns:UpdateProfile" />
@@ -90,7 +99,7 @@
     <wsdl:part name="parameters" element="tns:UpdateProfileResponse" />
   </wsdl:message>
   <wsdl:message name="IWebsiteService_UpdateProfile_ServiceExceptionDetailFault_FaultMessage">
-    <wsdl:part xmlns:q6="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q6:ServiceExceptionDetail" />
+    <wsdl:part xmlns:q7="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q7:ServiceExceptionDetail" />
   </wsdl:message>
   <wsdl:message name="IWebsiteService_UpdateAvatar_InputMessage">
     <wsdl:part name="parameters" element="tns:UpdateAvatar" />
@@ -99,7 +108,7 @@
     <wsdl:part name="parameters" element="tns:UpdateAvatarResponse" />
   </wsdl:message>
   <wsdl:message name="IWebsiteService_UpdateAvatar_ServiceExceptionDetailFault_FaultMessage">
-    <wsdl:part xmlns:q7="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q7:ServiceExceptionDetail" />
+    <wsdl:part xmlns:q8="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q8:ServiceExceptionDetail" />
   </wsdl:message>
   <wsdl:message name="IWebsiteService_RemoveAvatar_InputMessage">
     <wsdl:part name="parameters" element="tns:RemoveAvatar" />
@@ -108,7 +117,7 @@
     <wsdl:part name="parameters" element="tns:RemoveAvatarResponse" />
   </wsdl:message>
   <wsdl:message name="IWebsiteService_RemoveAvatar_ServiceExceptionDetailFault_FaultMessage">
-    <wsdl:part xmlns:q8="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q8:ServiceExceptionDetail" />
+    <wsdl:part xmlns:q9="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q9:ServiceExceptionDetail" />
   </wsdl:message>
   <wsdl:message name="IWebsiteService_SendEmail_InputMessage">
     <wsdl:part name="parameters" element="tns:SendEmail" />
@@ -123,7 +132,7 @@
     <wsdl:part name="parameters" element="tns:ForgotPasswordResponse" />
   </wsdl:message>
   <wsdl:message name="IWebsiteService_ForgotPassword_ServiceExceptionDetailFault_FaultMessage">
-    <wsdl:part xmlns:q9="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q9:ServiceExceptionDetail" />
+    <wsdl:part xmlns:q10="http://schemas.datacontract.org/2004/07/SoloLearn" name="detail" element="q10:ServiceExceptionDetail" />
   </wsdl:message>
   <wsdl:message name="IWebsiteService_ResetPassword_InputMessage">
     <wsdl:part name="parameters" element="tns:ResetPassword" />
@@ -160,6 +169,11 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/Authenticate" message="tns:IWebsiteService_Authenticate_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IWebsiteService/AuthenticateResponse" message="tns:IWebsiteService_Authenticate_OutputMessage" />
       <wsdl:fault wsaw:Action="http://tempuri.org/IWebsiteService/AuthenticateServiceExceptionDetailFault" name="ServiceExceptionDetailFault" message="tns:IWebsiteService_Authenticate_ServiceExceptionDetailFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AuthenticateBearer">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/AuthenticateBearer" message="tns:IWebsiteService_AuthenticateBearer_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWebsiteService/AuthenticateBearerResponse" message="tns:IWebsiteService_AuthenticateBearer_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IWebsiteService/AuthenticateBearerServiceExceptionDetailFault" name="ServiceExceptionDetailFault" message="tns:IWebsiteService_AuthenticateBearer_ServiceExceptionDetailFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="Register">
       <wsdl:input wsaw:Action="http://tempuri.org/IWebsiteService/Register" message="tns:IWebsiteService_Register_InputMessage" />
@@ -231,6 +245,18 @@
     <soap12:binding transport="http://schemas.microsoft.com/soap/named-pipe" />
     <wsdl:operation name="Authenticate">
       <soap12:operation soapAction="http://tempuri.org/IWebsiteService/Authenticate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ServiceExceptionDetailFault">
+        <soap12:fault use="literal" name="ServiceExceptionDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AuthenticateBearer">
+      <soap12:operation soapAction="http://tempuri.org/IWebsiteService/AuthenticateBearer" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -394,11 +420,11 @@
   </wsdl:binding>
   <wsdl:service name="WebsiteService">
     <wsdl:port name="NetNamedPipeBinding_IWebsiteService" binding="tns:NetNamedPipeBinding_IWebsiteService">
-      <soap12:address location="net.pipe://desktop-c8nles5/services/WebsiteService.svc" />
+      <soap12:address location="net.pipe://david-pc/services/WebsiteService.svc" />
       <wsa10:EndpointReference>
-        <wsa10:Address>net.pipe://desktop-c8nles5/services/WebsiteService.svc</wsa10:Address>
+        <wsa10:Address>net.pipe://david-pc/services/WebsiteService.svc</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
-          <Spn>host/DESKTOP-C8NLES5</Spn>
+          <Spn>host/David-PC</Spn>
         </Identity>
       </wsa10:EndpointReference>
     </wsdl:port>
