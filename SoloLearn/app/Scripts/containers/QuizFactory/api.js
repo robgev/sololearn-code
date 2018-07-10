@@ -23,6 +23,12 @@ export const getReviewChallenge = courseId =>
 export const voteChallenge = (challengeId, vote) =>
 	Service.request('Challenge/VoteChallenge', { challengeId, vote });
 
-export const getMySubmissions = (options = {}) =>
-	Service.request('Challenge/GetChallenges', options)
+export const getMySubmissions = ({ courseId, status, index }) => {
+	const options = {
+		...(courseId === null ? {} : { courseId }),
+		...(status === null ? {} : { status }),
+		index,
+	};
+	return Service.request('Challenge/GetChallenges', options)
 		.then(res => res.challenges);
+};

@@ -14,30 +14,43 @@ const formatAnswers = (answerText, inputs, onChange, disabled, addRefOnIndex, fo
 				// eslint-disable-next-line react/no-array-index-key
 					<div key={index} style={{ display: 'inline-block' }}>
 						<span>{inputs[curr].properties.prefix}</span>
-						<TextField
-							ref={i => addRefOnIndex(i, parseInt(curr, 10))}
-							inputStyle={{ textAlign: 'center', overflow: 'hidden' }}
-							id={inputs[curr].id.toString()}
-							value={inputs[curr].text}
-							style={{ width: `${inputs[curr].correct.length}em` }}
-							onChange={(_, text) => {
-								onChange(text, inputs[curr].id);
-								if (text.length === inputs[curr].correct.length) {
-									focusNext(parseInt(curr, 10));
-								}
-							}
-							}
-							maxLength={inputs[curr].correct.length}
-							disabled={disabled}
-						/>
-						<span>{inputs[curr].properties.postfix}</span>
+						{
+							disabled
+								? (
+									<span>
+										<span className="fill-in-item" style={{ color: 'green' }}>
+											{getCommonPrefix(inputs[curr].text, inputs[curr].correct)}
+										</span>
+										<span className="fill-in-item" style={{ color: 'red' }}>
+											{inputs[curr].text
+												.slice(getCommonPrefix(inputs[curr].text, inputs[curr].correct).length)}
+										</span>
+									</span>
+								)
+								: <TextField
+									ref={i => addRefOnIndex(i, parseInt(curr, 10))}
+									inputStyle={{ textAlign: 'center', overflow: 'hidden', fontFamily: 'monospace' }}
+									id={inputs[curr].id.toString()}
+									value={inputs[curr].text}
+									style={{ width: `${inputs[curr].correct.length}em` }}
+									onChange={(_, text) => {
+										onChange(text, inputs[curr].id);
+										if (text.length === inputs[curr].correct.length) {
+											focusNext(parseInt(curr, 10));
+										}
+									}
+									}
+									maxLength={inputs[curr].correct.length}
+								/>
+						}
+						<span className="fill-in-item">{inputs[curr].properties.postfix}</span>
 					</div>,
 				],
 				isMark: false,
 			})
 			: ({
 				// eslint-disable-next-line react/no-array-index-key
-				result: [ ...acc.result, <span style={{ whiteSpace: 'pre-wrap' }} key={index}>{curr}</span> ], isMark: true,
+				result: [ ...acc.result, <span className="fill-in-item" style={{ whiteSpace: 'pre-wrap' }} key={index}>{curr}</span> ], isMark: true,
 			})), { result: [], isMark: false }).result;
 };
 

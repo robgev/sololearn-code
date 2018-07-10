@@ -190,6 +190,7 @@ class SuggestFillIn extends Component {
 					<div className="editor" onClick={this.focusEditor} role="button" tabIndex={0}>
 						<Editor
 							ref={(editor) => { this.editor = editor; }}
+							style={{ height: 400 }}
 							onSelect={this.onEditorChange}
 							editorState={editorState}
 							onChange={this.onEditorChange}

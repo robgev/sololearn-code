@@ -21,6 +21,9 @@
 	}
 	.fill-in-answers-container {
 		margin: 20px;
+		.fill-in-item {
+			font-family: monospace;
+		}
 		* {
 			word-break: break-all;
 			white-space: pre-wrap;

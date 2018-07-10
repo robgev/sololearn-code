@@ -15,7 +15,7 @@ const formatAnswers = (answerText, selected, width, disabled, onClick) => {
 					<div key={index} style={{ display: 'inline-block' }}>
 						<div
 							onClick={() => onClick(selected[curr].id)}
-							className="placeholder-dnd-item"
+							className="placeholder-dnd-item fill-in-item"
 							role="button"
 							tabIndex={0}
 							style={{
@@ -30,7 +30,7 @@ const formatAnswers = (answerText, selected, width, disabled, onClick) => {
 			})
 			: ({
 				// eslint-disable-next-line react/no-array-index-key
-				result: [ ...acc.result, <span style={{ whiteSpace: 'pre-wrap' }} key={index}>{curr}</span> ], isMark: true,
+				result: [ ...acc.result, <span className="fill-in-item" style={{ whiteSpace: 'pre-wrap' }} key={index}>{curr}</span> ], isMark: true,
 			})), { result: [], isMark: false }).result;
 };
 
