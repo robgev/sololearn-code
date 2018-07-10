@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -50,7 +50,7 @@ namespace SoloLearn
 			app.UseMiddleware<ServiceProxyMiddleware>(Options.Create(new ProxyOptions
 			{
 				Scheme = "http",
-				Host = "api.sololearn.com"
+				Host = "localhost"
 			}));
 
             // Initialise ReactJS.NET. Must be before static files.

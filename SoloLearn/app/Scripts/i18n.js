@@ -20,10 +20,10 @@ i18n
 			// returning a path:
 			// function(lngs, namespaces) { return customPath; }
 			// the returned path will interpolate lng, ns if provided like giving a static path
-			loadPath: 'http://www.sololearn.com:2525/assets/{{ns}}/{{lng}}.json',
+			loadPath: '/assets/{{ns}}/{{lng}}.json',
 
 			// path to post missing resources
-			addPath: 'http://www.sololearn.com:2525/assets/{{ns}}/{{lng}}',
+			addPath: '/assets/{{ns}}/{{lng}}',
 		},
 		interpolation: {
 			escapeValue: false, // not needed for react!!

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,7 +47,7 @@ namespace SoloLearn.Controllers
 										var auth = service.Authenticate(refreshToken, "beta", this.Request.Headers["User-Agent"], this.HttpContext.Connection.RemoteIpAddress.ToString());// appVersion);
 
 
-                    Response.Cookies.Append(CookieKey, _protector.Protect(auth.RefreshToken), new Microsoft.AspNetCore.Http.CookieOptions() { HttpOnly = true });
+                    Response.Cookies.Append(CookieKey, _protector.Protect(auth.RefreshToken), new Microsoft.AspNetCore.Http.CookieOptions() { HttpOnly = true, Expires = DateTimeOffset.UtcNow.AddMonths(9) });
                     return Json(new
 										{
 											auth.AccessToken,

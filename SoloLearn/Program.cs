@@ -13,7 +13,7 @@ namespace SoloLearn
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
-                .UseUrls("http://www.sololearn.com:2525")
+                .UseUrls("http://localhost:2525")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()

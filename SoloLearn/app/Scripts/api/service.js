@@ -2,7 +2,7 @@ import axios from 'axios';
 import Storage from './storage';
 
 export const AppDefaults = {
-	host: 'http://api.sololearn.com/',
+	host: '/api/',
 	// host: 'http://192.168.88.231:88/web/',
 	downloadHost: 'https://api.sololearn.com/uploads/',
 	clientID: 'Web.SoloLearn',
@@ -163,7 +163,7 @@ class WS {
 		const url = this.App.host + action;
 		const emptyObject = {};
 
-		return document.getElementById('service-frame').contentWindow.window.axios({
+		return axios({
 			method: 'POST',
 			url,
 			data: JSON.stringify(data || emptyObject),
