@@ -26,8 +26,8 @@ export const login = ({ email, password }) => async (dispatch, getState) => {
 		const res = await Service.request('Login', { email, password: hash(password) });
 		if (res.error) return { err: faultGenerator(res.error.data) };
 		const { profile } = await Service.request('Profile/GetProfile', { id: res.user.id });
-		Storage.save('profile', profile);
-		dispatch(getUserProfile(profile));
+		Storage.save('profile', { ...profile, email: res.user.email });
+		dispatch(getUserProfile({ ...profile, email: res.user.email }));
 		if (!imitLoggedin) {
 			dispatch(imitateLogin());
 			dispatch(changeLoginModal(false));

@@ -21,8 +21,8 @@ export const getProfileInternal = userId => async (dispatch) => {
 			dispatch(getUserProfile(profile));
 			Service.request('Profile/GetProfile', { userId })
 				.then(({ profile: updated }) => {
-					Storage.save('profile', updated);
-					dispatch(getUserProfile(updated));
+					Storage.save('profile', { ...updated, email: profile.email });
+					dispatch(getUserProfile({ ...updated, email: profile.email }));
 				});
 		} else {
 			browserHistory.replace('/login');
