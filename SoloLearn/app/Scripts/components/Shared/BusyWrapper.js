@@ -39,8 +39,8 @@ const BusyWrapper = ({
 				}
 				{children}
 			</ContentContainer>
-			{	isBusy &&
-			loadingComponent
+			{isBusy &&
+				loadingComponent
 			}
 		</div>
 	);

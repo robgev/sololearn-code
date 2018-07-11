@@ -1,4 +1,11 @@
 .my-submissions {
+	.submissions-busy-container {
+		position: relative;
+		.submissions-wrapper {
+			flex-direction: row;
+			justify-content: flex-start;
+		}
+	}
 	.status-bar {
 		display: flex;
 		justify-content: flex-end;

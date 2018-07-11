@@ -19,10 +19,16 @@ class QuizFactory extends Component {
 			suggestDialogOpen: false,
 		};
 		document.title = 'Sololearn | Quiz Factory';
+		this._isMounted = true;
 	}
 	async componentWillMount() {
 		const courseIds = await getReviewCourseIds();
-		this.setState({ courseIds });
+		if (this._isMounted) {
+			this.setState({ courseIds });
+		}
+	}
+	componentWillUnmount() {
+		this._isMounted = false;
 	}
 	toggleLanguageSelector = () => {
 		this.setState(state => ({ isLanguageSelectorOpen: !state.isLanguageSelectorOpen }));

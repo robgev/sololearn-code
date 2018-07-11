@@ -28,8 +28,7 @@ export default ({ questions, loadMore, hasMore }) =>
 					size={40}
 				/>}
 			>
-				{questions !== null &&
-					questions.map(el => <QuestionItem key={el.id} question={el} />)}
+				{questions !== null && questions.map(el => <QuestionItem key={el.id} question={el} />)}
 			</InfiniteScroll>
 		</BusyWrapper >
 	));

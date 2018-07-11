@@ -2,48 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { uniqBy } from 'lodash';
 import {
-	List, ListItem, Paper, Dialog,
-	FlatButton, RaisedButton, CircularProgress,
-	DropDownMenu, MenuItem, Menu,
+	Paper, Dialog,
+	FlatButton, RaisedButton,
+	DropDownMenu, MenuItem,
 } from 'material-ui';
-import Subheader from 'material-ui/Subheader';
 import { red500 } from 'material-ui/styles/colors';
 import { browserHistory } from 'react-router';
 import Layout from 'components/Layouts/GeneralLayout';
 import Quiz, { CheckBar } from 'components/Shared/Quiz';
-import LanguageCard from 'components/Shared/LanguageCard';
 import { setSuggestionChallenge } from 'actions/quizFactory';
+import ChallengesList from './ChallengesList';
 import { getMySubmissions, deleteChallenge } from '../api';
 import './mySubmissionsStyles.scss';
 import actionContainerStyle from '../components/actionContainerStyle';
 
 // Utility funcs
-
-const getTypeString = (type) => {
-	switch (type) {
-	case 1:
-		return 'Multiple Choice';
-	case 2:
-		return 'Guess the Output';
-	case 3:
-		return 'Fill in the Blank(s)';
-	default:
-		throw new Error('Can\'t identify type of submitted challenge');
-	}
-};
-
-const getStatus = (status) => {
-	switch (status) {
-	case 1:
-		return { text: 'Pending', color: '#BDBDBD' };
-	case 2:
-		return { text: 'Declined', color: '#D32F2F' };
-	case 3:
-		return { text: 'Approved', color: '#9CCC65' };
-	default:
-		throw new Error('Can\'t identify status of submitted challenge');
-	}
-};
 
 const getStringFromType = (type) => {
 	switch (type) {
@@ -70,6 +43,7 @@ class MySubmissions extends Component {
 		super(props);
 		this.state = {
 			challenges: null,
+			hasMore: true,
 			previewChallenge: null,
 			checkResult: null,
 			isDeletePopupOpen: false,
@@ -108,13 +82,12 @@ class MySubmissions extends Component {
 			this.fetchSubmissions(filters, null);
 		}
 	}
-	_fetchSubmissions = () => {
-		const { filters, challenges } = this.state;
-		this.fetchSubmissions(filters, challenges);
-	}
-	fetchSubmissions = async (filters, challenges) => {
+	fetchSubmissions = async (filters = this.state.filters, challenges = this.state.challenges) => {
 		const index = challenges !== null ? challenges.length : 0;
 		const newChallenges = await getMySubmissions({ ...filters, index });
+		if (newChallenges.length === 0) {
+			this.setState({ hasMore: false });
+		}
 		this.setState(s => ({
 			challenges: s.challenges === null
 				? newChallenges
@@ -133,10 +106,13 @@ class MySubmissions extends Component {
 		browserHistory.push(`/quiz-factory/suggest/${getStringFromType(previewChallenge.type)}`);
 	}
 	handleDelete = () => {
-		const { previewChallenge } = this.state;
-		this.setState({ previewChallenge: null, isDeletePopupOpen: null });
-		deleteChallenge(previewChallenge.id)
-			.then(this.fetchSubmissions);
+		const { id } = this.state.previewChallenge;
+		this.setState(s => ({
+			previewChallenge: null,
+			isDeletePopupOpen: false,
+			challenges: s.challenges.filter(challenge => challenge.id !== id),
+		}));
+		deleteChallenge(id);
 	}
 	hanldeStatusFilterChange = (_, __, status) => {
 		const { location } = this.props;
@@ -181,7 +157,7 @@ class MySubmissions extends Component {
 	}
 	render() {
 		const {
-			challenges, previewChallenge, checkResult, isQuizComplete,
+			challenges, previewChallenge, checkResult, isQuizComplete, hasMore,
 		} = this.state;
 		const { courses } = this.props;
 		const actions = [
@@ -231,41 +207,13 @@ class MySubmissions extends Component {
 						}
 					</DropDownMenu>
 				</Paper>
-				{
-					challenges === null
-						? <CircularProgress style={{ display: 'flex', alignItems: 'center', margin: 'auto' }} />
-						: challenges.length === 0
-							? <Paper>Nothing found</Paper>
-							: (
-								<Paper>
-									<List style={{ padding: 0 }}>
-										<Subheader>My Submissions</Subheader>
-										{challenges.map(quiz => (
-											<ListItem
-												onClick={() => this.preview(quiz)}
-												className="preview"
-												leftIcon={
-													<LanguageCard
-														language={courses.find(c => c.id === quiz.courseID).language}
-													/>
-												}
-												rightIcon={
-													<div
-														className="status"
-														style={{ height: 'initial', width: 80, backgroundColor: getStatus(quiz.status).color }}
-													>
-														{getStatus(quiz.status).text.toUpperCase()}
-													</div>
-												}
-												primaryText={<div className="primary-text">{quiz.question.replace(/\[!\w+!]/, '')}</div>}
-												key={quiz.id}
-												secondaryText={getTypeString(quiz.type)}
-											/>
-										))}
-									</List>
-								</Paper>
-							)
-				}
+				<ChallengesList
+					challenges={challenges}
+					courses={courses}
+					loadMore={this.fetchSubmissions}
+					hasMore={hasMore}
+					preview={this.preview}
+				/>
 				<Dialog
 					open={previewChallenge !== null}
 					actions={actions}
