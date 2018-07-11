@@ -60,11 +60,11 @@ class DiscoverContainer extends PureComponent {
 						}
 					>
 						<div className="discover-wrapper">
-							{discoverSuggestions.map(collection => (
+							{discoverSuggestions.map(suggestion => (
 								<UserCard
 									withLink
-									{...collection}
-									key={collection.id}
+									{...suggestion}
+									key={suggestion.id}
 								/>
 							))}
 						</div>

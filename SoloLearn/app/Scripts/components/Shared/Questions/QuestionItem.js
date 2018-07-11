@@ -103,6 +103,7 @@ class QuestionItem extends PureComponent {
 						id={question.userID}
 						level={question.level}
 						name={question.userName}
+						avatarUrl={question.avatarUrl}
 						className="profile-avatar-user-card profile-avatar-reset"
 					/>
 				</ToolTip>

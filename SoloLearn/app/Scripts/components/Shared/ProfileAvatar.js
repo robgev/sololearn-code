@@ -7,7 +7,6 @@ import { determineBadge, determineBadgeColor } from 'utils';
 import AvatarColors from 'constants/AvatarColors';
 
 import 'styles/profileAvatar.scss';
-import avatars from './Avatars';
 import ModBadge from './ModBadge';
 import UserCard from './UserCard';
 
@@ -63,7 +62,7 @@ render() {
 					{ avatarUrl ?
 						<Avatar
 							size={size}
-							src={avatars[userID ? userID % 5000 : 0].picture.large}
+							src={avatarUrl}
 							style={{
 								margin: '0 5px',
 								...((withBorder && modBadge) ? { border: `4px solid ${modBadgeColor}` } : {}),
@@ -120,6 +119,7 @@ render() {
 						id={userID}
 						level={level}
 						name={userName}
+						avatarUrl={avatarUrl}
 						className="profile-avatar-user-card profile-avatar-reset"
 					/>
 				</ToolTip>

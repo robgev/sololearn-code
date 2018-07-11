@@ -35,7 +35,7 @@ namespace Services.WebService
             return serviceClient;
         }
 
-        public TokenAuthenticationResult Authenticate(string refreshToken, string appVersion, string userAgent, string ipAddress) //Controller controller,
+        public TokenAuthenticationResult Authenticate(string refreshToken, string appVersion, string userAgent, string ipAddress, string locale) //Controller controller,
         {
             UserAgent ua = new UserAgent(userAgent);
 
@@ -44,7 +44,7 @@ namespace Services.WebService
             var os = ua.OS.Name + " " + ua.OS.Version;
 
             //var result = Authenticate(userID, os, browser.Browser, browser.Version, appVersion);
-            var result = AuthenticateBearer(refreshToken, os, browser, browserVersion, appVersion, ipAddress);
+            var result = AuthenticateBearer(refreshToken, os, browser, browserVersion, appVersion, ipAddress, locale);
             //SessionID = result.SessionId.ToString();
             return result;
         }

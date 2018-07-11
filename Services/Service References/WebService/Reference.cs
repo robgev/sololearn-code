@@ -814,10 +814,10 @@ namespace Services.WebService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebsiteService/AuthenticateBearer", ReplyAction="http://tempuri.org/IWebsiteService/AuthenticateBearerResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(Services.WebService.ServiceExceptionDetail), Action="http://tempuri.org/IWebsiteService/AuthenticateBearerServiceExceptionDetailFault", Name="ServiceExceptionDetail", Namespace="http://schemas.datacontract.org/2004/07/SoloLearn")]
-        Services.WebService.TokenAuthenticationResult AuthenticateBearer(string refreshToken, string os, string browser, string browserVersion, string appVersion, string ipAddress);
+        Services.WebService.TokenAuthenticationResult AuthenticateBearer(string refreshToken, string os, string browser, string browserVersion, string appVersion, string ipAddress, string locale);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebsiteService/AuthenticateBearer", ReplyAction="http://tempuri.org/IWebsiteService/AuthenticateBearerResponse")]
-        System.Threading.Tasks.Task<Services.WebService.TokenAuthenticationResult> AuthenticateBearerAsync(string refreshToken, string os, string browser, string browserVersion, string appVersion, string ipAddress);
+        System.Threading.Tasks.Task<Services.WebService.TokenAuthenticationResult> AuthenticateBearerAsync(string refreshToken, string os, string browser, string browserVersion, string appVersion, string ipAddress, string locale);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWebsiteService/Register", ReplyAction="http://tempuri.org/IWebsiteService/RegisterResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(Services.WebService.ServiceExceptionDetail), Action="http://tempuri.org/IWebsiteService/RegisterServiceExceptionDetailFault", Name="ServiceExceptionDetail", Namespace="http://schemas.datacontract.org/2004/07/SoloLearn")]
@@ -949,12 +949,12 @@ namespace Services.WebService {
             return base.Channel.AuthenticateAsync(userID, os, browser, browserVersion, appVersion, ipAddress);
         }
         
-        public Services.WebService.TokenAuthenticationResult AuthenticateBearer(string refreshToken, string os, string browser, string browserVersion, string appVersion, string ipAddress) {
-            return base.Channel.AuthenticateBearer(refreshToken, os, browser, browserVersion, appVersion, ipAddress);
+        public Services.WebService.TokenAuthenticationResult AuthenticateBearer(string refreshToken, string os, string browser, string browserVersion, string appVersion, string ipAddress, string locale) {
+            return base.Channel.AuthenticateBearer(refreshToken, os, browser, browserVersion, appVersion, ipAddress, locale);
         }
         
-        public System.Threading.Tasks.Task<Services.WebService.TokenAuthenticationResult> AuthenticateBearerAsync(string refreshToken, string os, string browser, string browserVersion, string appVersion, string ipAddress) {
-            return base.Channel.AuthenticateBearerAsync(refreshToken, os, browser, browserVersion, appVersion, ipAddress);
+        public System.Threading.Tasks.Task<Services.WebService.TokenAuthenticationResult> AuthenticateBearerAsync(string refreshToken, string os, string browser, string browserVersion, string appVersion, string ipAddress, string locale) {
+            return base.Channel.AuthenticateBearerAsync(refreshToken, os, browser, browserVersion, appVersion, ipAddress, locale);
         }
         
         public Services.WebService.UserBase Register(string email, string name, string password) {
