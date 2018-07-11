@@ -119,6 +119,7 @@ render() {
 						id={userID}
 						level={level}
 						name={userName}
+						avatarUrl={avatarUrl}
 						className="profile-avatar-user-card profile-avatar-reset"
 					/>
 				</ToolTip>
