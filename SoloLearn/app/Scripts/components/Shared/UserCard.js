@@ -4,7 +4,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import Service from 'api/service';
 import { numberFormatter } from 'utils';
-import avatars from 'components/Shared/Avatars';
 import 'styles/components/Shared/UserCard.scss';
 
 const CustomWrapper = ({ children, className }) => (
@@ -48,7 +47,7 @@ render() {
 		<div className={`discover-user-card-container ${className}`}>
 			<WrapperComponent to={`/profile/${id}`} className="profile-container">
 				<div className="profile-avatar-wrapper">
-					<img src={avatars[id ? id % 5000 : 0].picture.large} alt="avatar" className="profile-avatar" />
+					<img src={avatarUrl} alt="avatar" className="profile-avatar" />
 				</div>
 				<div className="profile-data">
 					<div className="profile-name">
