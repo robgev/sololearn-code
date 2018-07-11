@@ -256,7 +256,7 @@ class FeedPin extends Component {
 						<img
 							alt="Pinned item"
 							style={styles.pinImage}
-							src="../../../assets/kaleid.jpg"
+							src={pin.imageUrl}
 						/>
 					}
 					{pin.courses && <div className="courses" style={styles.courses}>{this.generateCourses()}</div>}
