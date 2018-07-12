@@ -2,11 +2,8 @@ import React, { PureComponent } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import i18n from 'i18next';
 
-import { updateProfile, resetLocaleData } from 'actions/settings';
-import Service from 'api/service';
-import Storage from 'api/storage';
+import { updateProfile } from 'actions/settings';
 
 import Avatar from 'material-ui/Avatar';
 import Snackbar from 'material-ui/Snackbar';
@@ -17,13 +14,12 @@ import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
 import CropPopup from './CropPopup';
 import CountrySelector from './CountrySelector';
-import LanguageSelector from './LanguageSelector';
 
 const mapStateToProps = ({ userProfile }) => ({
 	userProfile,
 });
 
-@connect(mapStateToProps, { updateProfile, resetLocaleData })
+@connect(mapStateToProps, { updateProfile })
 @translate()
 class Profile extends PureComponent {
 	constructor(props) {
@@ -34,9 +30,7 @@ class Profile extends PureComponent {
 			avatarUrl,
 			countryCode,
 		} = props.userProfile;
-		const locale = Storage.load('locale') || 'en';
 		this.state = {
-			locale,
 			open: false,
 			errorText: '',
 			retypePass: '',
@@ -62,16 +56,6 @@ class Profile extends PureComponent {
 
 	handleSelectionChange = (_, __, countryCode) => {
 		this.setState({ countryCode });
-	}
-
-	handleLocaleChange = (_, __, locale) => {
-		this.setState({ locale });
-		Storage.save('locale', locale);
-		Service.getSession(locale);
-		i18n.changeLanguage(locale, (err) => {
-			if (err) { console.log('something went wrong loading', err); }
-		});
-		this.props.resetLocaleData();
 	}
 
 	handleInputOpen = () => {
@@ -128,7 +112,6 @@ class Profile extends PureComponent {
 			name,
 			email,
 			image,
-			locale,
 			isSaving,
 			errorText,
 			retypePass,
@@ -211,11 +194,6 @@ class Profile extends PureComponent {
 					t={t}
 					value={countryCode}
 					onChange={this.handleSelectionChange}
-				/>
-				<LanguageSelector
-					t={t}
-					value={locale}
-					onChange={this.handleLocaleChange}
 				/>
 				<CropPopup
 					t={t}

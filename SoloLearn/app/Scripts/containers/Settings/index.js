@@ -12,12 +12,14 @@ import Main from './Profile';
 import Blocked from './Blocked';
 import Arsenal from './Arsenal';
 import ContentSettings from './Content';
+import Localization from './Localization';
 
 const SettingsMapping = {
 	profile: Main,
 	blocking: Blocked,
 	weapons: Arsenal,
 	content: ContentSettings,
+	localization: Localization,
 };
 
 const Settings = ({ t, params: { settingID = 'profile' } }) => {
@@ -31,6 +33,7 @@ const Settings = ({ t, params: { settingID = 'profile' } }) => {
 				<Link to="/settings/blocking">{t('settings.blocked-accounts')}</Link>
 				<Link to="/settings/weapons">{t('settings.manage-weapons')}</Link>
 				<Link to="/settings/content">{t('settings.activity-feed')}</Link>
+				<Link to="/settings/localization">{t('settings.language')}</Link>
 			</div>
 			<div className="settings-main">
 				<SettingsComponent />
