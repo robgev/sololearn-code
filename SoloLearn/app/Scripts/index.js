@@ -23,7 +23,7 @@ ReactGA.ga('require', 'displayfeatures');
 @connect(null, { getCourses })
 class App extends PureComponent {
 	componentWillMount() {
-		Service.authenticate()
+		Service.getSession()
 			.then((user) => {
 				if (user === null) {
 					browserHistory.replace('/login');

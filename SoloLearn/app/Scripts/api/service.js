@@ -1,3 +1,5 @@
+import Storage from './storage';
+
 export const AppDefaults = {
 	downloadHost: 'https://api.sololearn.com/uploads/',
 };
@@ -5,7 +7,7 @@ export const AppDefaults = {
 class Service {
 	constructor() {
 		this.accessToken = null;
-		this.authPromise = null;
+		this.getSessionPromise = null;
 		this.accessToken = null;
 		this.accessTokenExpireTime = 0;
 	}
@@ -19,10 +21,12 @@ class Service {
 			.then(res => res.json())
 			.catch(console.error)
 
-	_authenticate = async () => {
+	_getSession = async (locale) => {
 		const { accessToken, expiresIn, user } = await this._request(
-			'/Ajax/GetSession',
-			{ method: 'POST' },
+			`/Ajax/GetSession?locale=${locale}`,
+			{
+				method: 'POST',
+			},
 		);
 		this.setAccessToken(accessToken, expiresIn);
 		return user;
@@ -32,7 +36,7 @@ class Service {
 		if (
 			this.accessToken === null
 			|| Date.now() > this.accessTokenExpireTime) {
-			await this.authenticate();
+			await this.getSession();
 		}
 		return this._request(`/api/${url}`, {
 			method: 'POST',
@@ -44,15 +48,15 @@ class Service {
 		});
 	}
 
-	authenticate = async () => {
-		if (this.authPromise === null) {
-			this.authPromise = this._authenticate()
+	getSession = async (locale = Storage.load('locale') || 'en') => {
+		if (this.getSessionPromise === null) {
+			this.getSessionPromise = this._getSession(locale)
 				.then((res) => {
-					this.authPromise = null;
-					return res; // Need to read in index.js file to see if authenticate returned a user
+					this.getSessionPromise = null;
+					return res; // Need to read in index.js file to see if getSession returned a user
 				});
 		}
-		return this.authPromise;
+		return this.getSessionPromise;
 	}
 }
 
