@@ -46,10 +46,6 @@ import comments from './reducer_comments';
 // Play
 import challenges from './reducer_challenges';
 
-// Login
-import imitLoggedin from './login.reducer';
-import loginModal from './loginModal.reducer';
-
 // Likes
 import likes from './likes.reducer';
 
@@ -72,8 +68,6 @@ const reducers = combineReducers({
 	profile,
 	comments,
 	challenges,
-	imitLoggedin,
-	loginModal,
 	likes,
 	slay,
 	settings,
@@ -119,7 +113,7 @@ export const store = createStore(reducers, applyMiddleware(
 export const isLoaded = (state, componentName) => {
 	switch (componentName) {
 	case 'loggedin':
-		return state.userProfile != null;
+		return state.userProfile !== null && state.userProfile.id !== undefined;
 	case 'modules':
 		return state.course != null;
 	case 'lessons':

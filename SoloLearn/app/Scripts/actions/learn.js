@@ -2,7 +2,36 @@ import Service from 'api/service';
 import Progress from 'api/progress';
 import Storage from 'api/storage';
 import * as types from 'constants/ActionTypes';
-import { getProfileInternal } from 'actions/defaultActions';
+import { getProfileInternal } from 'actions/profile';
+
+const setLevels = payload => ({ type: types.LOAD_LEVELS, payload });
+const setCourses = payload => ({ type: types.LOAD_COURSES, payload });
+
+const getCoursesSync = () => (dispatch) => {
+	const courses = Storage.load('courses');
+	const levels = Storage.load('levels');
+	if (courses !== null && levels !== null) {
+		dispatch(setCourses(courses));
+		dispatch(setLevels(levels));
+		return true;
+	}
+	return false;
+};
+
+const getCoursesAsync = () => async (dispatch) => {
+	const { courses, levels } = await Service.request('GetCourses');
+	if (courses && levels) {
+		Storage.save('courses', courses);
+		Storage.save('levels', levels);
+		dispatch(setCourses(courses));
+		dispatch(setLevels(levels));
+	}
+};
+
+export const getCourses = () => (dispatch) => {
+	dispatch(getCoursesAsync());
+	return dispatch(getCoursesSync());
+};
 
 // Identifying keys of modules, lessons and quizzes objects
 const structurizeCourse = (modules, dispatch) => {

@@ -8,7 +8,7 @@ import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import 'styles/Header/HeaderSettingsMenu.scss';
 
-import { logout, imitateLogin } from 'actions/login.action';
+import { logout } from 'actions/login.action';
 
 const mapStateToProps = ({ userProfile }) => ({
 	avatarUrl: userProfile ? userProfile.avatarUrl : null,
@@ -18,7 +18,6 @@ const mapStateToProps = ({ userProfile }) => ({
 
 const mapDispatchToProps = {
 	logout,
-	imitateLogin,
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -42,7 +41,7 @@ class SettingsMenu extends PureComponent {
 
 	render() {
 		const { avatarUrl, userName, userID } = this.props;
-		return (avatarUrl || userName) && (
+		return !(avatarUrl || userName) ? null : (
 			<div className="header-settings-menu-container">
 				<ProfileAvatar
 					userID={userID}
@@ -76,10 +75,6 @@ class SettingsMenu extends PureComponent {
 					<MenuItem
 						primaryText="Settings"
 						onClick={this.goToSettings}
-					/>
-					<MenuItem
-						primaryText="Imitate logout"
-						onClick={this.props.imitateLogin}
 					/>
 					<MenuItem
 						primaryText="Sign out"

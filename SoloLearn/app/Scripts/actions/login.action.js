@@ -2,39 +2,31 @@ import * as types from 'constants/ActionTypes';
 import Service from 'api/service';
 import Storage from 'api/storage';
 import { hash, faultGenerator } from 'utils';
-import { getUserProfile } from './defaultActions';
-
-export const imitateLogin = () => ({ type: types.IMITATE_LOGIN });
-
-export const changeLoginModal = isOpen => ({ type: types.CHANGE_LOGIN_MODAL, payload: isOpen });
+import { setUserProfile } from './profile';
 
 export const logout = () => (dispatch) => {
 	const deviceID = Storage.load('DeviceUniqueID');
 	Storage.clear();
 	Storage.save('DeviceUniqueID', deviceID);
-	dispatch(getUserProfile(null));
+	dispatch(setUserProfile(null));
 	dispatch({ type: types.CLEAR_FEED });
 	return Service.request('Logout')
 		.catch(e => console.log(e));
 };
 
 export const login = ({ email, password }) => async (dispatch, getState) => {
-	const { userProfile, imitLoggedin } = getState();
+	const { userProfile } = getState();
 	try {
 		if (userProfile != null) await dispatch(logout());
 		Service.isFirstRequest = true;
 		const res = await Service.request('Login', { email, password: hash(password) });
 		if (res.error) return { err: faultGenerator(res.error.data) };
-		const { profile } = await Service.request('Profile/GetProfile', { id: res.user.id });
-		Storage.save('profile', { ...profile, email: res.user.email });
-		dispatch(getUserProfile({ ...profile, email: res.user.email }));
-		if (!imitLoggedin) {
-			dispatch(imitateLogin());
-			dispatch(changeLoginModal(false));
-		}
+		const { profile } = await Service.request('Profile/GetProfile');
+		Storage.save('profile', profile);
+		dispatch(setUserProfile(profile));
 		return { err: false };
 	} catch (e) {
-		console.log(e);
+		throw new Error(`Something went wrong when trying to login M: ${e.message}`);
 	}
 };
 
@@ -45,7 +37,7 @@ export const signup = ({ name, email, pass }) => async (dispatch) => {
 		dispatch(login({ email, pass }));
 		return { err: false };
 	} catch (e) {
-		console.log(e);
+		throw new Error(`Something went wrong when trying to signup M: ${e.message}`);
 	}
 };
 

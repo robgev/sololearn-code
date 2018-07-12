@@ -13,7 +13,6 @@ import Paper from 'material-ui/Paper';
 
 // Redux modules
 import { isLoaded } from 'reducers';
-import { loadDefaults } from 'actions/defaultActions';
 import {
 	selectQuiz,
 	selectLesson,
@@ -48,7 +47,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-	loadDefaults, loadCourseInternal, selectLesson, selectModule, selectQuiz,
+	loadCourseInternal, selectLesson, selectModule, selectQuiz,
 };
 
 @connect(mapStateToProps, mapDispatchToProps)

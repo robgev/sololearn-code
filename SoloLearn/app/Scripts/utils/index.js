@@ -1,9 +1,7 @@
 import hmacsha1 from 'hmacsha1';
 
-import Auth from './protected';
 import Optional from './optional';
 import getOffset from './getOffset';
-import redirector from './redirector';
 import truncate from './textTruncate';
 import getPosition from './getPosition';
 import repliesOfId from './repliesOfId';
@@ -34,14 +32,12 @@ const shuffleArray = arr =>
 
 export {
 	hash,
-	Auth,
 	truncate,
 	Optional,
 	checkWeb,
 	getOffset,
 	updateDate,
 	mandatory,
-	redirector,
 	getPosition,
 	removeDups,
 	repliesOfId,

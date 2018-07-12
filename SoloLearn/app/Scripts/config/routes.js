@@ -1,7 +1,6 @@
 // React modules
 import React from 'react';
-import { Route, Redirect, browserHistory } from 'react-router';
-import { redirector } from 'utils';
+import { Route, Redirect } from 'react-router';
 
 // Layouts
 import MainLayout from 'components/Layouts/MainLayout';
@@ -57,6 +56,8 @@ import DiscoverContainer from 'containers/Profile/DiscoverContainer';
 
 import NotFound from 'components/Shared/NotFound';
 
+import redirector from 'utils/redirector';
+
 // Quiz factory
 import {
 	QuizFactoryMenu,
@@ -65,9 +66,10 @@ import {
 	QuizFactoryRate,
 } from 'containers/QuizFactory';
 
-export default (
-	<Route component={MainLayout} key="mainLayoutRoutes">
-		<Route path="/" onEnter={() => { browserHistory.replace('/feed'); }} />
+export default ([
+	<Route path="/login" component={Login} />,
+	<Route component={redirector(MainLayout)} key="mainLayoutRoutes">
+		<Redirect exact path="/" to="/feed" />
 		<Route path="/learn" component={SlayHome} />
 		<Route path="/learn/search/:query" component={SlaySearch} />
 		<Route path="/learn/bookmarks" component={SlayBookmarks} />
@@ -93,13 +95,12 @@ export default (
 		<Route path="/profile/:id(/:tab)(/:selected)" component={Profile} />
 		<Route path="/certificate/:id" component={Certificate} />
 		<Route path="/leaderboards(/:userId)(/:mode)(/:range)" component={Leaderboards} />
-		<Route path="/notifications" component={redirector(Notifications)} />
-		<Route path="/discover(/:query)" component={redirector(DiscoverContainer)} />
+		<Route path="/notifications" component={Notifications} />
+		<Route path="/discover(/:query)" component={DiscoverContainer} />
 		<Route path="/quiz-factory" component={QuizFactoryMenu} />
 		<Route path="/quiz-factory/suggest/:type" component={QuizFactorySuggestTypeSelector} />
 		<Route path="/quiz-factory/rate/:courseId" component={QuizFactoryRate} />
 		<Route path="/quiz-factory/my-submissions" component={QuizFactoryMySubmissions} />
-		<Route path="/login" component={Login} />
 		<Route path="*" exact component={NotFound} />
-	</Route>
-);
+	</Route>,
+]);

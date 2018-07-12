@@ -14,8 +14,7 @@ import { grey600 } from 'material-ui/styles/colors';
 // Redux modules
 import { connect } from 'react-redux';
 import { getFeedItemsInternal } from 'actions/feed';
-import { getProfileInternal } from 'actions/defaultActions';
-import { emptyProfileFollowers, emptyProfile, getProfileQuestionsInternal } from 'actions/profile';
+import { emptyProfileFollowers, emptyProfile, getProfileQuestionsInternal, getProfileInternal } from 'actions/profile';
 import { isLoaded } from 'reducers';
 
 import Layout from 'components/Layouts/GeneralLayout';

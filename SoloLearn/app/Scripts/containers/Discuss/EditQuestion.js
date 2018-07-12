@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 
 import { connect } from 'react-redux';
-import { loadDefaults } from 'actions/defaultActions';
 import { editQuestion, loadPostInternal } from 'actions/discuss';
 import { isLoaded, defaultsLoaded } from 'reducers';
 
@@ -22,7 +21,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
 	loadPostInternal,
 	editQuestion,
-	loadDefaults,
 };
 
 @connect(mapStateToProps, mapDispatchToProps)

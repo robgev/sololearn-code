@@ -21,7 +21,7 @@ const StepIcon = ({ active, completed, text }) => {
 
 	return (
 		<SvgIcon
-			color={ active ? "#607D8B" : "#9E9E9E"}
+			color={active ? '#607D8B' : '#9E9E9E'}
 			style={iconStyle}
 		>
 			<circle cx="12" cy="12" r={active ? 12 : 10} />

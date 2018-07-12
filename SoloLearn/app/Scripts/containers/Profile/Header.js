@@ -140,7 +140,7 @@ class Header extends Component {
 									primaryText={t('common.block-user')}
 									onClick={this.toggleBlockPopup}
 								/>
-								{ (accessLevel > 0
+								{(accessLevel > 0
 									&& !determineAccessLevel(profile.accessLevel) > 0) &&
 									<MenuItem
 										primaryText={t('common.deactivate-action-title')}

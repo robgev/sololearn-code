@@ -1,14 +1,43 @@
 import Service from 'api/service';
+import Storage from 'api/storage';
 import * as types from 'constants/ActionTypes';
-import { changeLoginModal } from './login.action';
+
+export const setUserProfile = payload => ({ type: types.GET_USER_PROFILE, payload });
+
+const getProfile = payload => ({ type: types.GET_PROFILE, payload });
+
+export const clearOpenedProfile = () => getProfile(null);
+
+export const getUserProfileSync = () => (dispatch) => {
+	const profile = Storage.load('profile');
+	if (profile !== null) {
+		dispatch(setUserProfile(profile));
+		return true;
+	}
+	return false;
+};
+
+export const getUserProfileAsync = () => async (dispatch) => {
+	const response = await Service.request('Profile/GetProfile');
+	if (!response.error) {
+		Storage.save('profile', response.profile);
+		dispatch(setUserProfile(response.profile));
+		return true;
+	}
+	return false;
+};
+
+export const getProfileInternal = userId => async (dispatch) => {
+	const { profile } = await Service.request('Profile/GetProfile', { id: userId });
+	dispatch(getProfile(profile));
+};
 
 export const setNotificationCount = count => ({
 	type: types.SET_NOTIFICATION_COUNT,
 	payload: count,
 });
 
-export const getNotificationCountInternal = () => async (dispatch, getState) => {
-	if (!getState().imitLoggedin) return;
+export const getNotificationCountInternal = () => async (dispatch) => {
 	try {
 		const { count } = await Service.request('Profile/GetUnseenNotificationCount');
 		dispatch(setNotificationCount(count));
@@ -46,8 +75,7 @@ const groupNotificationItems = (notifications) => {
 };
 
 export const getNotificationsInternal = (fromId, toId) =>
-	async (dispatch, getState) => {
-		if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
+	async (dispatch) => {
 		try {
 			const { notifications } = await Service.request('Profile/GetNotifications', { fromId, toId, count: 20 });
 			const { length } = notifications;
@@ -109,15 +137,13 @@ export const getFollowers = (followers, fromChallenges) => {
 };
 
 export const getFollowersInternal = (index, userId, count = 20, fromChallenges = false) =>
-	async (dispatch, getState) => {
-		if (getState().imitLoggedin) {
-			try {
-				const { users: followers } = await Service.request('Profile/GetFollowers', { id: userId, index, count });
-				dispatch(getFollowers(followers, fromChallenges));
-				return followers.length;
-			} catch (e) {
-				console.log(e);
-			}
+	async (dispatch) => {
+		try {
+			const { users: followers } = await Service.request('Profile/GetFollowers', { id: userId, index, count });
+			dispatch(getFollowers(followers, fromChallenges));
+			return followers.length;
+		} catch (e) {
+			console.log(e);
 		}
 	};
 
@@ -128,14 +154,12 @@ export const getFollowing = (following, fromChallenges) => {
 
 export const getFollowingInternal = (index, userId, count = 20, fromChallenges = false) =>
 	async (dispatch, getState) => {
-		if (getState().imitLoggedin) {
-			try {
-				const { users: following } = await Service.request('Profile/GetFollowing', { id: userId, index, count });
-				dispatch(getFollowing(following, fromChallenges));
-				return following.length;
-			} catch (e) {
-				console.log(e);
-			}
+		try {
+			const { users: following } = await Service.request('Profile/GetFollowing', { id: userId, index, count });
+			dispatch(getFollowing(following, fromChallenges));
+			return following.length;
+		} catch (e) {
+			console.log(e);
 		}
 	};
 
@@ -153,8 +177,7 @@ export const followUser = (userId, fromFollowers, follow) => dispatch =>
 	});
 
 export const followUserInternal = (userId, fromFollowers = null) =>
-	async (dispatch, getState) => {
-		if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
+	async (dispatch) => {
 		try {
 			await dispatch(followUser(userId, fromFollowers, true));
 			return Service.request('Profile/Follow', { id: userId });
@@ -164,8 +187,7 @@ export const followUserInternal = (userId, fromFollowers = null) =>
 	};
 
 export const unfollowUserInternal = (userId, fromFollowers = null) =>
-	async (dispatch, getState) => {
-		if (!getState().imitLoggedin) return dispatch(changeLoginModal(true));
+	async (dispatch) => {
 		try {
 			await dispatch(followUser(userId, fromFollowers, false));
 			return Service.request('Profile/Unfollow', { id: userId });

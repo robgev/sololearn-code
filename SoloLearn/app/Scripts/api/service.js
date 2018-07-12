@@ -1,279 +1,59 @@
-import axios from 'axios';
-import Storage from './storage';
-
 export const AppDefaults = {
-	host: '/api/',
-	// host: 'http://192.168.88.231:88/web/',
 	downloadHost: 'https://api.sololearn.com/uploads/',
-	clientID: 'Web.SoloLearn',
-	courseClientID: '',
-	version: '1.0.0.0',
-	isMobile: false,
-	width: 800,
 };
 
-const Errors = {
-	Unknown: 0,
-	AuthenticationFailed: 1,
-	DeviceRequired: 2,
-	UserRequired: 3,
-	InsufficientRights: 4,
-	OperationFault: 5,
-	ArgumentMissing: 6,
-	EndpointNotFound: 7,
-	NoConnection: {
-		code: 0, name: 'NoConnection', data: null, isOperationFault: false,
-	},
-};
-
-const Faults = {
-	None: 0,
-	WrongCredentials: 1,
-	NotActivated: 2,
-	IncorrectEmail: 4,
-	IncorrectName: 8,
-	ExistingEmail: 16,
-	IncorrectPassword: 32,
-	DeviceNotFound: 64,
-	SocialConflict: 128,
-};
-
-class WS {
+class Service {
 	constructor() {
-		if (!WS.instance) {
-			WS.instance = this;
-			this.Errors = Errors;
-			this.Faults = Faults;
-			this.App = AppDefaults;
-
-			this.deviceUniqueID = null;
-			this.appSessionID = null;
-			this.isFirstRequest = true;
-			this.initHandle = null;
-			this.storage = Storage;
-			this.user = null;
-
-			this.accessToken = null;
-			this.accessTokenExpireTime = null;
-		}
-
-		this.authenticatePromise = null;
-
-		return WS.instance;
+		this.accessToken = null;
+		this.authPromise = null;
+		this.accessToken = null;
+		this.accessTokenExpireTime = 0;
 	}
-
-	setAccessToken(accessToken, expiresIn) {
+	setAccessToken = (accessToken, expiresIn) => {
 		this.accessToken = accessToken;
-		this.accessTokenExpireTime = Date.now() + expiresIn;
-		this.storage.save('accessToken', accessToken);
-		this.storage.save('accessTokenExpireTime', this.accessTokenExpireTime);
+		// Date.now() returns timestamp in miliseconds
+		this.accessTokenExpireTime = Date.now() + (expiresIn * 1000);
+	}
+	_request = (url, options) =>
+		fetch(url, { ...options, credentials: 'same-origin' })
+			.then(res => res.json())
+			.catch(console.error)
+
+	_authenticate = async () => {
+		const { accessToken, expiresIn, user } = await this._request(
+			'/Ajax/GetSession',
+			{ method: 'POST' },
+		);
+		this.setAccessToken(accessToken, expiresIn);
+		return user;
 	}
 
-	// Saving deviceUniqueId to storage(localStorage)
-	setUniqueID(uniqueID) {
-		this.deviceUniqueID = uniqueID;
-		this.storage.save('DeviceUniqueID', uniqueID);
-	}
-
-	// Saving sessionId to storage(localStorage)
-	setSessionID(sessionID) {
-		this.appSessionID = sessionID;
-		this.storage.save(`${AppDefaults.clientID}SessionID`, sessionID);
-	}
-
-	// Preparing for authentication
-	initialize() {
-		this.deviceUniqueID = this.storage.load('DeviceUniqueID');
-		this.appSessionID = this.storage.load(`${AppDefaults.clientID}SessionID`);
-		return this.authenticate();
-	}
-
-	// Service authentication
-	authenticate = function () {
-		const that = this;
-		const url = '/Ajax/GetSession';
-
-		const data = {
-			clientID: this.App.clientID,
-			deviceID: this.deviceUniqueID,
-			sessionID: this.appSessionID,
-			appVersion: '0.0.0.1',
-		};
-
-		const formData = new FormData();
-
-		for (const key in data) {
-			formData.append(key, data[key]);
+	request = async (url, body = {}) => {
+		if (
+			this.accessToken === null
+			|| Date.now() > this.accessTokenExpireTime) {
+			await this.authenticate();
 		}
-
-		return this.authenticatePromise || (this.authenticatePromise = new Promise((resolve, reject) => {
-			axios({
-				method: 'POST',
-				url,
-				data: formData,
-			})
-				.then((response) => {
-					const respData = response.data;
-
-					that.setAccessToken(respData.accessToken, respData.expiresIn);
-
-					if (typeof respData.sessionId === 'string') {
-						that.setSessionID(respData.sessionId);
-					}
-					if (typeof respData.uniqueId === 'string') {
-						that.setUniqueID(respData.uniqueId);
-					}
-
-					const rawUser = respData.user;
-					const user = {};
-					for (const prop in rawUser) {
-						let camelCase = '';
-						if (prop.length <= 2) {
-							camelCase = prop.toLowerCase();
-						} else {
-							camelCase = prop.substr(0, 1).toLowerCase() + prop.substr(1);
-						}
-						user[camelCase] = rawUser[prop];
-					}
-					that.onUserUpdate(user);
-
-					resolve();
-					this.authenticatePromise = null;
-					return true;
-				})
-				.catch((error) => {
-					const respData = error.data;
-
-					alert('Session error');
-
-					if (that.appSessionID) {
-						that.setSessionID('');
-					}
-
-					resolve();
-					this.authenticatePromise = null;
-					return false;
-				});
-		}));
-	}
-
-	// Making AJAX call to service function with specific data
-	requestRaw(action, data, dontAuthenticate) {
-		const that = this;
-		const url = this.App.host + action;
-		const emptyObject = {};
-
-		return axios({
+		return this._request(`/api/${url}`, {
 			method: 'POST',
-			url,
-			data: JSON.stringify(data || emptyObject),
+			body: JSON.stringify(body),
 			headers: {
 				'Content-type': 'application/json',
 				Authorization: `Bearer ${this.accessToken}`,
-				// ClientID: AppDefaults.clientID,
-				// DeviceID: this.deviceUniqueID,
-				// SessionID: this.appSessionID,
-				// Version: '8',
 			},
-		})
-			.then((response) => {
-				const respData = response.data;
-
-				respData.isSuccessful = true;
-				respData.fault = Faults.None;
-
-				if (typeof respData.error === 'object') {
-					const error = respData.error;
-					respData.isSuccessful = false;
-					error.isOperationFault = (error.code == that.Errors.OperationFault);
-					if (error.isOperationFault) {
-						respData.fault = error.data;
-					}
-					return { error };
-				}
-
-				return respData;
-			})
-			.catch((error) => {
-				alert('Request error');
-
-				return false;
-			});
-	}
-
-	fileRequest = async (action, data = {}) => {
-		const response = await document.getElementById('service-frame').contentWindow.window.axios({
-			url: `${this.App.host}${action}`,
-			method: 'POST',
-			headers: {
-				'Content-type': 'application/octet-stream',
-				ClientID: AppDefaults.clientID,
-				DeviceID: this.deviceUniqueID,
-				SessionID: this.appSessionID,
-				Version: '8',
-			},
-			data,
 		});
-		return response.data;
 	}
 
-	fetchRequest = async (action, data = {}) => {
-		const response = await document.getElementById('service-frame').contentWindow.window.axios({
-			url: `${this.App.host}${action}`,
-			method: 'POST',
-			headers: {
-				'Content-type': 'application/json',
-				ClientID: AppDefaults.clientID,
-				DeviceID: this.deviceUniqueID,
-				SessionID: this.appSessionID,
-				Version: '8',
-			},
-			data: JSON.stringify(data),
-		});
-		// I am leaving fetch version here fot the future
-		// const request = await fetch(`${this.App.host}${action}`, {
-		// 	method: 'POST',
-		// 	headers: {
-		// 		'Content-type': 'application/json',
-		// 		ClientID: AppDefaults.clientID,
-		// 		DeviceID: this.deviceUniqueID,
-		// 		SessionID: this.appSessionID,
-		// 		Version: '8',
-		// 		'Access-Control-Allow-Origin': '*',
-		// 	},
-		// 	body: JSON.stringify(data),
-		// });
-		// console.log(request);
-		// const response = await request.json();
-		return response.data;
-	}
-
-	request = (action, data) => {
-		const that = this;
-
-		// console.log(that);
-
-		if (that.isFirstRequest) {
-			return this.initialize().then(
-				() => {
-					that.isFirstRequest = false;
-					return that.requestRaw(action, data, false);
-				},
-				() => {
-					// TODO Error Popup
-				},
-			);
+	authenticate = async () => {
+		if (this.authPromise === null) {
+			this.authPromise = this._authenticate()
+				.then((res) => {
+					this.authPromise = null;
+					return res; // Need to read in index.js file to see if authenticate returned a user
+				});
 		}
-
-		return that.requestRaw(action, data, false);
+		return this.authPromise;
 	}
-
-	onUserUpdate = (user) => {
-		// console.log(user);
-		this.user = user;
-	};
 }
 
-const Service = new WS();
-
-export default Service;
+export default new Service();

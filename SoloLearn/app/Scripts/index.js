@@ -5,10 +5,13 @@ import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Theme from 'defaults/theme';
+import { store } from 'reducers';
+import { getCourses } from 'actions/learn';
+import Service from 'api/service';
 import 'styles/root.scss';
-import { loadDefaults } from 'actions/defaultActions';
-import { store, defaultsLoaded } from 'reducers';
 import routes from './config/routes';
 import './i18n';
 
@@ -17,22 +20,16 @@ ReactGA.initialize('UA-42641357-240');
 ReactGA.set({ appName: 'SoloLearn', appVersion: '0.1' });
 ReactGA.ga('require', 'displayfeatures');
 
-const mapStateToProps = state => ({
-	defaultsLoaded: defaultsLoaded(state),
-});
-
-// browserHistory.listen((location) => {
-// 	console.log('HERE');
-// 	ReactGA.ga('send', 'screenView', { screenName: location.pathname + location.search });
-// });
-
-@connect(mapStateToProps, { loadDefaults })
+@connect(null, { getCourses })
 class App extends PureComponent {
 	componentWillMount() {
-		const { defaultsLoaded, loadDefaults } = this.props;
-		if (!defaultsLoaded) {
-			loadDefaults();
-		}
+		Service.authenticate()
+			.then((user) => {
+				if (user === null) {
+					browserHistory.replace('/login');
+				}
+			});
+		this.props.getCourses();
 	}
 	render() {
 		return (
@@ -43,7 +40,9 @@ class App extends PureComponent {
 
 ReactDOM.render(
 	<Provider store={store}>
-		<App />
+		<MuiThemeProvider muiTheme={getMuiTheme(Theme)}>
+			<App />
+		</MuiThemeProvider>
 	</Provider>,
 	document.getElementById('app'),
 );

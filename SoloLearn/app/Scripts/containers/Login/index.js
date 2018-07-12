@@ -3,20 +3,17 @@ import { browserHistory } from 'react-router';
 import AlertContainer from 'react-alert';
 
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import Paper from 'material-ui/Paper';
-import { logout, login, signup, forgotPassword } from 'actions/login.action';
+import { login, signup, forgotPassword, logout } from 'actions/login.action';
 
 import Login from './Login';
 
-const mapStateToProps = ({ loggedin }) => ({ loggedin });
-
 const mapDispatchToProps = {
-	logout, login, signup, forgotPassword,
+	login, signup, forgotPassword, logout,
 };
 
-@connect(mapStateToProps, mapDispatchToProps)
-class Index extends PureComponent {
+@connect(null, mapDispatchToProps)
+class LoginContainer extends PureComponent {
 	alertOptions = {
 		offset: 14,
 		position: 'top right',
@@ -26,10 +23,8 @@ class Index extends PureComponent {
 	}
 
 	componentWillMount() {
-		if (this.props.loggedin != null) {
-			this.props.logout();
-		}
 		document.title = 'Please log in';
+		this.props.logout();
 	}
 
 	checkToFeed = (err) => {
@@ -75,7 +70,7 @@ class Index extends PureComponent {
 					padding: 10,
 				}}
 			>
-				<AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
+				<AlertContainer ref={(a) => { this.msg = a; }} {...this.alertOptions} />
 				<Login
 					alert={this.alert}
 					login={this.login}
@@ -87,4 +82,4 @@ class Index extends PureComponent {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Index);
+export default LoginContainer;

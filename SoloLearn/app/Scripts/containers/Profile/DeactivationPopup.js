@@ -112,7 +112,7 @@ class ReportPopup extends PureComponent {
 						label={t('deactivate.deactivate-option-5')}
 					/>
 				</RadioButtonGroup>
-				{ reportReason === 0 &&
+				{reportReason === 0 &&
 					<div>
 						<TextField
 							value={customReason}

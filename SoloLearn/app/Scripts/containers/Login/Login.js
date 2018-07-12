@@ -23,27 +23,27 @@ class LoginPage extends PureComponent {
 	forgot = () => {
 		const { email } = this.state;
 		if (email === '') {
-			return this.props.alert('Fields can\'t be empty', 'info');
+			this.props.alert('Fields can\'t be empty', 'info');
 		}
-		return this.props.forgot(email);
+		this.props.forgot(email);
 	}
 	login = () => {
 		const { email, password } = this.state;
 		if (email === '' || password === '') {
-			return this.props.alert('Fields can\'t be empty', 'info');
+			this.props.alert('Fields can\'t be empty', 'info');
 		}
 		this.props.login({ email, password });
 	}
 	signup = () => {
 		Object.values(this.state).forEach((value) => {
 			if (value === '') {
-				return this.props.alert('Fields can\'t be empty', 'info');
+				this.props.alert('Fields can\'t be empty', 'info');
 			}
 		});
 		if (this.state.password.length < 6) {
-			return this.props.alert('Password should be at least 6 characters long', 'info');
+			this.props.alert('Password should be at least 6 characters long', 'info');
 		} else if (this.state.password !== this.state.passwordRepeat) {
-			return this.props.alert('Passwords don\'t match', 'info');
+			this.props.alert('Passwords don\'t match', 'info');
 		}
 		const { name, email, password: pass } = this.state;
 		this.props.signup({ name, email, pass });
