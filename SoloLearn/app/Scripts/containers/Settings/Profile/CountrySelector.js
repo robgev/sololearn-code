@@ -49,15 +49,3 @@ const CountrySelector = ({ t, value, onChange }) => (
 );
 
 export default CountrySelector;
-
-// selectionRenderer={(_, { type: PseudoMenuItem, props }) =>
-// (<PseudoMenuItem
-// 	{...props}
-// 	disabled
-// 	style={{
-// 		fontSize: 15,
-// 		lineHeight: 32,
-// 		minHeight: 32,
-// 	}}
-// />)
-// }
