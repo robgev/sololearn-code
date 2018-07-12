@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Linkify from 'react-linkify';
 
 // Material UI components
-import { TextField, IconMenu, MenuItem, FlatButton, IconButton } from 'material-ui';
+import { IconMenu, MenuItem, FlatButton, IconButton } from 'material-ui';
 import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import AcceptedIcon from 'material-ui/svg-icons/navigation/check';
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
@@ -19,7 +19,8 @@ import getLikesAndDownvotesCurried from 'actions/likes';
 import Likes from 'components/Shared/Likes';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 import PreviewItem from 'components/Shared/PreviewItem';
-import { updateDate, determineAccessLevel, generatePreviews, replaceMention } from 'utils';
+import { updateDate, determineAccessLevel, generatePreviews, replaceMention, getMentionsList } from 'utils';
+import MentionInput from 'components/Shared/MentionInput';
 
 import { ReplyStyles as styles } from './styles';
 
@@ -40,8 +41,7 @@ const mapDispatchToProps = {
 class Reply extends Component {
 	state = {
 		isEditing: false,
-		textFieldValue: this.props.reply.message,
-		errorText: '',
+		replyLength: 0,
 	};
 
 	getLikes = () => {
@@ -52,16 +52,25 @@ class Reply extends Component {
 		this.props.getDownvotes(this.props.reply.id);
 	}
 
+	handleBlur = () => {
+		if (this.state.replyLength <= 1) { this.closeReplyBox(); }
+	}
+	onLengthChange = (replyLength) => {
+		if (this.mentionInput) {
+			this.setState({ replyLength });
+		}
+	}
+
 	getEditableArea = () => {
 		const { reply, t, recompute } = this.props;
-		const previewsData = generatePreviews(this.state.textFieldValue);
+		const previewsData = generatePreviews(this.props.reply.message);
 
 		if (!this.state.isEditing) {
 			return (
 				<div>
 					<pre className="message" style={styles.message}>
 						<Linkify>
-							{replaceMention(this.state.textFieldValue)}
+							{replaceMention(this.props.reply.message)}
 						</Linkify>
 					</pre>
 					{previewsData.map(singlePreviewData => (
@@ -75,29 +84,25 @@ class Reply extends Component {
 			);
 		}
 
-		const saveDisabled = this.state.errorText.length === 0;
+		const { replyLength } = this.state;
+		const saveDisabled = replyLength === 0;
 
 		return (
 			[
 				<div key={`editor${reply.id}`} style={styles.editor}>
-					<TextField
-						key={`replyTextField${reply.id}`}
-						hintText={t('common.input_message_hint')}
-						multiLine
-						maxLength="2048"
-						rowsMax={4}
-						fullWidth
-						defaultValue={this.state.textFieldValue}
-						errorText={this.state.errorText}
-						onChange={this.onChange}
-						ref={(_editRef) => { this._editRef = _editRef; }}
-						style={styles.textField}
+					<MentionInput
+						ref={(input) => { this.mentionInput = input; }}
+						initText={this.props.reply.message}
+						onFocus={this.openReplyBox}
+						onBlur={this.handleBlur}
+						onLengthChange={this.onLengthChange}
+						getUsers={getMentionsList('discuss', {})}
 					/>
-					<span style={styles.textFieldCoutner} key={`replyTextCounter${reply.id}`}>{2048 - this.state.textFieldValue.length}</span>
+					<span style={styles.textFieldCoutner} key={`replyTextCounter${reply.id}`}>{2048 - this.state.replyLength}</span>
 				</div>,
 				<div key={`editorActions${reply.id}`} style={styles.editorActions}>
 					<FlatButton label={t('common.cancel-title')} onClick={() => this.closeEdit()} />
-					<FlatButton label={t('common.save-action-title')} primary={saveDisabled} disabled={!saveDisabled} onClick={this.save} />
+					<FlatButton label={t('common.save-action-title')} primary disabled={saveDisabled} onClick={this.save} />
 				</div>,
 			]
 		);
@@ -105,38 +110,21 @@ class Reply extends Component {
 
 	// Open answer text editor
 	openEdit = () => {
-		this.setState({ isEditing: true }, () => this._editRef.focus());
+		this.setState({ isEditing: true });
 	}
 
 	// Close answer text editor
 	closeEdit = () => {
 		this.setState({
 			isEditing: false,
-			textFieldValue: this.props.reply.message,
-			errorText: '',
 		});
-	}
-
-	// Controll answer text change
-	onChange = (e) => {
-		if (e.target.value.length === 0) {
-			this.setState({
-				textFieldValue: e.target.value,
-				errorText: 'This field is required',
-			});
-		} else {
-			this.setState({
-				textFieldValue: e.target.value,
-				errorText: '',
-			});
-		}
 	}
 
 	// Save edited answer text
 	save = () => {
 		const { reply } = this.props;
 		this.setState({ isEditing: false });
-		this.props.editPostInternal(reply, this.state.textFieldValue);
+		this.props.editPostInternal(reply, this.mentionInput.popValue());
 	}
 
 	render() {

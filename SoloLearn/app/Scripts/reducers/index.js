@@ -26,7 +26,7 @@ import codes from './reducer_codes';
 // Discuss
 import questions from './reducer_questions';
 import discussPost from './reducer_post';
-import discussFilters from './reducer_discuss_filers';
+import discussFilters from './reducer_discuss_filters';
 
 // Notifications
 import notifications from './reducer_notifications';

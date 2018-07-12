@@ -98,6 +98,7 @@ class QuestionEditor extends Component {
 		<div key={key} style={styles.tag}>{value}</div>
 	)
 
+	/* Mention input functions */
 	openReplyBox = () => {
 		this.setState({ isReplyBoxOpen: true });
 	}
@@ -112,6 +113,8 @@ class QuestionEditor extends Component {
 			this.setState({ replyLength });
 		}
 	}
+	/* End mention input functions */
+
 	render() {
 		const { t } = this.props;
 		const { isReplyBoxOpen, replyLength } = this.state;

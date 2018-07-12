@@ -143,23 +143,15 @@ export const votePostInternal = (post, vote) => {
 	};
 };
 
-export const editPost = (id, isPrimary, message) => dispatch => new Promise((resolve) => {
-	dispatch({
-		type: types.EDIT_POST,
-		payload: { id, isPrimary, message },
-	});
-	resolve();
+export const editPost = (id, isPrimary, message) => ({
+	type: types.EDIT_POST,
+	payload: { id, isPrimary, message },
 });
 
 export const editPostInternal = (post, message) => {
 	const isPrimary = post.parentID === null;
-	return (dispatch) => {
-		dispatch(editPost(post.id, isPrimary, message)).then(() => {
-			Service.request('Discussion/EditPost', { id: post.id, message });
-		}).catch((error) => {
-			console.log(error);
-		});
-	};
+	Service.request('Discussion/EditPost', { id: post.id, message });
+	return editPost(post.id, isPrimary, message);
 };
 
 export const deletePost = (id, isPrimary) => dispatch => new Promise((resolve) => {
@@ -186,19 +178,15 @@ export const deletePostInternal = (post) => {
 };
 
 export const addQuestion = (title, message, tags) => async (dispatch) => {
-	try {
-		const { post: { id } } = await Service.request('Discussion/CreatePost', { title, message, tags });
-		const { post } = await Service.request('Discussion/GetPost', { id });
-		post.replies = [];
-		post.alias = toSeoFriendly(post.title, 100);
-		dispatch(loadPost(post));
-		return {
-			id: post.id,
-			alias: post.alias,
-		};
-	} catch (e) {
-		console.log(e);
-	}
+	const { post: { id } } = await Service.request('Discussion/CreatePost', { title, message, tags });
+	const { post } = await Service.request('Discussion/GetPost', { id });
+	post.replies = [];
+	post.alias = toSeoFriendly(post.title, 100);
+	dispatch(loadPost(post));
+	return {
+		id: post.id,
+		alias: post.alias,
+	};
 };
 
 export const editQuestion = (id, title, message, tags) => (dispatch, getState) => {

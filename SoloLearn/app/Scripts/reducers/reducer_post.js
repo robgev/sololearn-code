@@ -24,6 +24,7 @@ const editPost = (state, { message, isPrimary, id }) => {
 	if (isPrimary) {
 		return { ...state, message };
 	}
+	console.log(id, message);
 	return {
 		...state,
 		replies: state.replies.map(reply => (reply.id === id ?
