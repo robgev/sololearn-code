@@ -115,7 +115,7 @@ module.exports = {
 		// }),
 
 		new CopyWebpackPlugin([
-			{ from: './app/images/*.*', to: 'assets/', flatten: true },
+			{ from: './app/images', to: 'assets/', flatten: false },
 			{ from: './app/translations/*.*', to: 'assets/translations', flatten: true },
 		]),
 	],

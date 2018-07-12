@@ -13,6 +13,7 @@ import EditIcon from 'material-ui/svg-icons/image/edit';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
 
 import CropPopup from './CropPopup';
+import CountrySelector from './CountrySelector';
 
 const mapStateToProps = ({ userProfile }) => ({
 	userProfile,
@@ -23,7 +24,12 @@ const mapStateToProps = ({ userProfile }) => ({
 class Profile extends PureComponent {
 	constructor(props) {
 		super(props);
-		const { name = '', email, avatarUrl } = props.userProfile;
+		const {
+			name = '',
+			email,
+			avatarUrl,
+			countryCode,
+		} = props.userProfile;
 		this.state = {
 			open: false,
 			errorText: '',
@@ -35,6 +41,7 @@ class Profile extends PureComponent {
 			email: email || '',
 			image: avatarUrl,
 			snackbarOpen: false,
+			countryCode: countryCode === '' ? 'NST' : countryCode,
 		};
 	}
 
@@ -45,6 +52,10 @@ class Profile extends PureComponent {
 	handleChange = (e) => {
 		const { name, value } = e.target;
 		this.setState({ [name]: value });
+	}
+
+	handleSelectionChange = (_, __, countryCode) => {
+		this.setState({ countryCode });
 	}
 
 	handleInputOpen = () => {
@@ -80,8 +91,8 @@ class Profile extends PureComponent {
 				name,
 				email,
 				oldPassword,
-				countryCode,
 				newPassword,
+				countryCode: countryCode !== 'NST' ? countryCode : '', // Not set value is NST. This is done to fix the cosmetic bug with material-ui
 			});
 			this.setState({ isSaving: false });
 		} else {
@@ -105,6 +116,7 @@ class Profile extends PureComponent {
 			errorText,
 			retypePass,
 			oldPassword,
+			countryCode,
 			newPassword,
 			snackbarOpen,
 		} = this.state;
@@ -177,13 +189,18 @@ class Profile extends PureComponent {
 						floatingLabelText={t('chnage_password.confirm-password-placeholder')}
 						onChange={this.handleChange}
 					/>
-					<CropPopup
-						t={t}
-						open={open}
-						image={image}
-						onRequestClose={this.handlePopupClose}
-					/>
 				</div>
+				<CountrySelector
+					t={t}
+					value={countryCode}
+					onChange={this.handleSelectionChange}
+				/>
+				<CropPopup
+					t={t}
+					open={open}
+					image={image}
+					onRequestClose={this.handlePopupClose}
+				/>
 				<div className="settings-button">
 					<FlatButton
 						primary
