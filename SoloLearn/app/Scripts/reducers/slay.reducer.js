@@ -1,5 +1,6 @@
 import {
 	SET_ACTIVE_LESSON,
+	RESET_LOCALE_DATA,
 	SET_LESSONS_BY_USER,
 	SET_COLLECTION_ITEMS,
 	SET_LESSON_COLLECTIONS,
@@ -19,6 +20,8 @@ const slayCollections = (state = [], action) => {
 	switch (action.type) {
 	case SET_LESSON_COLLECTIONS:
 		return safeAdd(state, action.payload);
+	case RESET_LOCALE_DATA:
+		return [];
 	default:
 		return state;
 	}
@@ -28,6 +31,8 @@ const selectedCollection = (state = null, action) => {
 	switch (action.type) {
 	case SET_CURRENT_LESSON_COLLECTION:
 		return action.payload;
+	case RESET_LOCALE_DATA:
+		return null;
 	default:
 		return state;
 	}
@@ -39,6 +44,8 @@ const filteredCollectionItems = (state = [], action) => {
 		return action.payload;
 	case APPEND_COLLECTION_ITEMS:
 		return safeAdd(state, action.payload);
+	case RESET_LOCALE_DATA:
+		return [];
 	default:
 		return state;
 	}
@@ -48,6 +55,8 @@ const activeLesson = (state = null, action) => {
 	switch (action.type) {
 	case SET_ACTIVE_LESSON:
 		return action.payload;
+	case RESET_LOCALE_DATA:
+		return null;
 	default:
 		return state;
 	}
@@ -59,6 +68,8 @@ const lessonsByUser = (state = [], action) => {
 		return action.payload;
 	case APPEND_LESSONS_BY_USER:
 		return safeAdd(state, action.payload);
+	case RESET_LOCALE_DATA:
+		return [];
 	default:
 		return state;
 	}

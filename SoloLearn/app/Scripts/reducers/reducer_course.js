@@ -1,9 +1,11 @@
-import { LOAD_COURSE } from '../constants/ActionTypes';
+import { LOAD_COURSE, RESET_LOCALE_DATA } from '../constants/ActionTypes';
 
 export default function (state = null, action) {
 	switch (action.type) {
 	case LOAD_COURSE:
 		return action.payload;
+	case RESET_LOCALE_DATA:
+		return null;
 	default:
 		return state;
 	}

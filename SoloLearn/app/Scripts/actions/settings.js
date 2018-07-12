@@ -2,6 +2,10 @@ import Service from 'api/service';
 import omit from 'lodash/omit';
 import * as types from 'constants/ActionTypes';
 
+export const resetLocaleData = () => ({
+	type: types.RESET_LOCALE_DATA,
+});
+
 export const getSettings = () => async (dispatch) => {
 	const { settings } = await Service.request('GetSettings');
 	dispatch({

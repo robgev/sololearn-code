@@ -1,18 +1,19 @@
 import { uniqBy } from 'lodash';
 import {
 	GET_PROFILE,
-	GET_PROFILE_FEED_ITEMS,
-	GET_PROFILE_NEW_FEED_ITEMS,
+	FOLLOW_USER,
+	REMOVE_CODE,
+	EMPTY_PROFILE,
+	RESET_LOCALE_DATA,
 	GET_PROFILE_CODES,
 	GET_PROFILE_QUESTIONS,
-	SET_PROFILE_HAS_MORE_QUESTIONS,
 	GET_PROFILE_FOLLOWERS,
 	GET_PROFILE_FOLLOWING,
-	FOLLOW_USER,
+	GET_PROFILE_FEED_ITEMS,
 	EMPTY_PROFILE_FOLLOWERS,
-	EMPTY_PROFILE,
 	CLEAR_PROFILE_FEED_ITEMS,
-	REMOVE_CODE,
+	GET_PROFILE_NEW_FEED_ITEMS,
+	SET_PROFILE_HAS_MORE_QUESTIONS,
 } from '../constants/ActionTypes';
 
 const initialState = {
@@ -99,6 +100,7 @@ export default function (state = initialState, action) {
 			following: [],
 		});
 	case EMPTY_PROFILE:
+	case RESET_LOCALE_DATA:
 		return initialState;
 	default:
 		return state;

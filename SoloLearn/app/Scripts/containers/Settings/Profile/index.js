@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import i18n from 'i18next';
 
-import { updateProfile } from 'actions/settings';
+import { updateProfile, resetLocaleData } from 'actions/settings';
 import Service from 'api/service';
 import Storage from 'api/storage';
 
@@ -23,7 +23,7 @@ const mapStateToProps = ({ userProfile }) => ({
 	userProfile,
 });
 
-@connect(mapStateToProps, { updateProfile })
+@connect(mapStateToProps, { updateProfile, resetLocaleData })
 @translate()
 class Profile extends PureComponent {
 	constructor(props) {
@@ -71,6 +71,7 @@ class Profile extends PureComponent {
 		i18n.changeLanguage(locale, (err) => {
 			if (err) { console.log('something went wrong loading', err); }
 		});
+		this.props.resetLocaleData();
 	}
 
 	handleInputOpen = () => {

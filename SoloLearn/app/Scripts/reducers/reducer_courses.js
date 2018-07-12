@@ -1,4 +1,4 @@
-import { LOAD_COURSES } from '../constants/ActionTypes';
+import { LOAD_COURSES, RESET_LOCALE_DATA } from '../constants/ActionTypes';
 
 const addIconLinks = courses => courses.map(singleCourse => ({
 	...singleCourse,
@@ -9,6 +9,8 @@ export default (state = null, action) => {
 	switch (action.type) {
 	case LOAD_COURSES:
 		return addIconLinks(action.payload);
+	case RESET_LOCALE_DATA:
+		return null;
 	default:
 		return state;
 	}

@@ -1,5 +1,6 @@
 import {
 	CLEAR_FEED,
+	RESET_LOCALE_DATA,
 	GET_FEED_ITEMS,
 	GET_NEW_FEED_ITEMS,
 	SET_FEED_ITEM_VOTE_DATA,
@@ -25,6 +26,7 @@ export default (state = [], action) => {
 	case GET_NEW_FEED_ITEMS:
 		return [ ...action.payload, ...state ];
 	case CLEAR_FEED:
+	case RESET_LOCALE_DATA:
 		return [];
 	default:
 		return state;
