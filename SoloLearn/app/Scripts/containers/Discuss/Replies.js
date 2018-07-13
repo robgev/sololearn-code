@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import { CellMeasurerCache } from 'react-virtualized';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
+import CircularProgress from 'material-ui/CircularProgress';
+import InfiniteScroll from 'react-infinite-scroller';
 
 import { determineAccessLevel } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
 import ReportPopup from 'components/Shared/ReportPopup';
-import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
+// import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
 
 // Additional components
 import Reply from './Reply';
@@ -20,36 +22,25 @@ const mapStateToProps = state => ({
 	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
 });
 
-const cache = new CellMeasurerCache({
-	defaultWidth: 1000,
-	minWidth: 75,
-	fixedWidth: true,
-});
-
 @connect(mapStateToProps, null, null, { withRef: true })
 class Replies extends Component {
 	constructor(props) {
 		super(props);
+		this.replyRefs = {};
 		this.state = {
 			canLoadAbove: !!props.replies[0] && props.replies[0].index === 0,
 			removalPopupOpen: false,
 			reportPopupOpen: false,
 			targetItem: null,
+			canLoadMore: true,
 		};
 	}
 	componentWillReceiveProps(nextProps) {
-		if (this.props.orderBy !== nextProps.orderBy ||
-			(this.props.replies.length && this.props.replies[0] !== nextProps.replies[0])) {
-			this.recompute();
-		}
 		if (nextProps.replies.length > 0 &&
 			nextProps.replies[0].index === 0 &&
 			this.state.canLoadAbove) {
 			this.setState({ canLoadAbove: false });
 		}
-	}
-	componentWillUnmount() {
-		cache.clearAll();
 	}
 	toggleRemovalPopup = (targetItem = null) => {
 		const { removalPopupOpen } = this.state;
@@ -60,44 +51,56 @@ class Replies extends Component {
 		const { reportPopupOpen } = this.state;
 		this.setState({ reportPopupOpen: !reportPopupOpen, targetItem });
 	}
-	recompute = (index) => { this._list.recomputeRowHeights(index); }
-	scrollTo = (id) => { this._list._scrollTo(id); }
-	renderReply = reply => (
-		<Reply
-			key={reply.id}
-			reply={reply}
-			t={this.props.t}
-			recompute={this.recompute}
-			votePost={this.props.votePost}
-			remove={this.props.openDeletePopup}
-			toggleReportPopup={this.toggleReportPopup}
-			isUsersQuestion={this.props.isUsersQuestion}
-			toggleRemovalPopup={this.toggleRemovalPopup}
-		/>
-	)
-
-	_forceUpdate = () => this._list._forceUpdate();
+	loadReplies = async () => {
+		const length = await this.props.loadReplies();
+		if (length === 0) {
+			this.setState({ canLoadMore: false });
+		}
+	}
+	scrollToId = (id) => {
+		this.replyRefs[id].scrollIntoView({ block: 'center', behavior: 'smooth' });
+	}
 
 	render() {
-		const { accessLevel, scrollElement } = this.props;
-		const { removalPopupOpen, reportPopupOpen, targetItem } = this.state;
+		const {
+			accessLevel, replies,
+		} = this.props;
+		const {
+			removalPopupOpen, reportPopupOpen, targetItem, canLoadMore, canLoadAbove,
+		} = this.state;
+		if (replies.length === 0 && !canLoadMore && !canLoadAbove) {
+			return <div style={{ marginTop: 10 }}>No replies</div>;
+		}
 		return (
 			<Paper style={styles.container}>
-				{this.state.canLoadAbove && this.props.replies.length > 0 &&
+				{canLoadAbove && replies.length > 0 &&
 					<RaisedButton
 						label="Load more"
 						onClick={this.props.loadPreviousReplies}
 					/>}
-				<InfiniteVirtualizedList
-					additional={this.props.orderBy}
-					item={this.renderReply}
-					list={this.props.replies}
-					loadMore={this.props.loadReplies}
-					cache={cache}
-					window
-					scrollElement={scrollElement}
-					ref={(list) => { this._list = list; }}
-				/>
+				<InfiniteScroll
+					loadMore={this.loadReplies}
+					hasMore={canLoadMore}
+					loader={<CircularProgress
+						style={{ display: 'flex', alignItems: 'center', margin: 'auto' }}
+						key="circular-progress"
+						size={40}
+					/>}
+				>
+					{replies.map(reply => (
+						<Reply
+							key={reply.id}
+							replyRef={(node) => { this.replyRefs[reply.id] = node; }}
+							reply={reply}
+							t={this.props.t}
+							votePost={this.props.votePost}
+							remove={this.props.openDeletePopup}
+							toggleReportPopup={this.toggleReportPopup}
+							isUsersQuestion={this.props.isUsersQuestion}
+							toggleRemovalPopup={this.toggleRemovalPopup}
+						/>
+					))}
+				</InfiniteScroll>
 				<ReportPopup
 					open={reportPopupOpen}
 					itemType={ReportItemTypes.post}

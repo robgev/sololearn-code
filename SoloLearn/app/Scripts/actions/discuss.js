@@ -113,6 +113,7 @@ export const loadRepliesInternal = (orderBy, findPostId = null) => async (dispat
 		postId: post.id, orderBy, index, findPostId,
 	});
 	dispatch(loadReplies(posts));
+	return posts.length;
 };
 
 export const emptyReplies = () => ({
@@ -232,10 +233,11 @@ export const toggleAcceptedAnswerInternal = (id, isAccepted) => (dispatch) => {
 };
 
 export const addReply = (postId, message, byVotes) => async (dispatch, getState) => {
-	const { userProfile: { name } } = getState();
+	const { userProfile: { name, avatarUrl } } = getState();
 	const { post } = await Service.request('Discussion/CreateReply', { postId, message });
 	post.userName = name;
 	post.vote = 0;
+	post.avatarUrl = avatarUrl;
 	dispatch(addNewReply(post, byVotes));
 	return post.id;
 };

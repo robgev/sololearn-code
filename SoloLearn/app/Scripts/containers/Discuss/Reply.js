@@ -36,7 +36,7 @@ const mapDispatchToProps = {
 	getDownvotes: getLikesAndDownvotesCurried('postDownvotes'),
 };
 
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })
 @Radium
 class Reply extends Component {
 	state = {
@@ -52,9 +52,6 @@ class Reply extends Component {
 		this.props.getDownvotes(this.props.reply.id);
 	}
 
-	handleBlur = () => {
-		if (this.state.replyLength <= 1) { this.closeReplyBox(); }
-	}
 	onLengthChange = (replyLength) => {
 		if (this.mentionInput) {
 			this.setState({ replyLength });
@@ -93,8 +90,6 @@ class Reply extends Component {
 					<MentionInput
 						ref={(input) => { this.mentionInput = input; }}
 						initText={this.props.reply.message}
-						onFocus={this.openReplyBox}
-						onBlur={this.handleBlur}
 						onLengthChange={this.onLengthChange}
 						getUsers={getMentionsList('discuss', {})}
 					/>
@@ -129,10 +124,10 @@ class Reply extends Component {
 
 	render() {
 		const {
-			t, reply, accessLevel, toggleReportPopup, toggleRemovalPopup,
+			t, reply, accessLevel, toggleReportPopup, toggleRemovalPopup, replyRef,
 		} = this.props;
 		return (
-			<div className="reply" key={reply.id} style={(reply.isAccepted && !this.state.isEditing) ? [ styles.reply.base, styles.reply.accepted ] : styles.reply.base}>
+			<div ref={replyRef} className="reply" key={reply.id} style={(reply.isAccepted && !this.state.isEditing) ? [ styles.reply.base, styles.reply.accepted ] : styles.reply.base}>
 				<div className="details-wrapper" style={styles.detailsWrapper}>
 					<div className="stats" style={styles.stats}>
 						<IconButton className="upvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(reply, 1); }}>

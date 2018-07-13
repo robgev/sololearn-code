@@ -1,4 +1,4 @@
-import { find } from 'lodash';
+import { find, uniqBy } from 'lodash';
 import {
 	LOAD_DISCUSS_POST, LOAD_DISCUSS_POST_REPLIES,
 	LOAD_DISCUSS_POST_PREVIOUS_REPLIES, EMPTY_DISCUSS_POST_REPLIES,
@@ -24,7 +24,6 @@ const editPost = (state, { message, isPrimary, id }) => {
 	if (isPrimary) {
 		return { ...state, message };
 	}
-	console.log(id, message);
 	return {
 		...state,
 		replies: state.replies.map(reply => (reply.id === id ?
@@ -44,7 +43,7 @@ const loadReplies = (oldReplies, newReplies) => {
 	const forcedDowns = oldReplies.filter(r => r.isForcedDown);
 	const notForcedDowns = oldReplies.filter(r => !r.isForcedDown);
 	const updatedForcedDowns = forcedDowns.filter(fd => !find(newReplies, nr => nr.id === fd.id));
-	return [ ...notForcedDowns, ...newReplies, ...updatedForcedDowns ];
+	return uniqBy([ ...notForcedDowns, ...newReplies, ...updatedForcedDowns ], 'id');
 };
 
 export default (state = null, action) => {

@@ -55,8 +55,6 @@ class Post extends Component {
 
 		this.state = {
 			ordering: 1,
-			isLoading: true,
-			fullyLoaded: false,
 			deletePopupOpened: false,
 		};
 
@@ -77,7 +75,7 @@ class Post extends Component {
 		} else if (newParams.replyId != null && newParams.replyId !== oldParams.replyId) {
 			this.props.emptyReplies();
 			await this.getReplies(newParams.replyId);
-			this._replies.getWrappedInstance().scrollTo(newParams.replyId);
+			this._replies.getWrappedInstance().scrollToId(newParams.replyId);
 		}
 	}
 
@@ -91,17 +89,15 @@ class Post extends Component {
 		await this.props.loadPostInternal(params.id);
 		await this.getReplies(params.replyId);
 		if (params.replyId) {
-			this._replies.getWrappedInstance().scrollTo(params.replyId);
+			this._replies.getWrappedInstance().scrollToId(params.replyId);
 		}
 		this.checkAlias(params.questionName);
 	}
 
 	// Get post answers
-	getReplies = async (replyId) => {
+	getReplies = (replyId) => {
 		const { ordering } = this.state;
-		this.setState({ isLoading: true });
-		await this.props.loadRepliesInternal(ordering, replyId);
-		this.setState({ isLoading: false });
+		return this.props.loadRepliesInternal(ordering, replyId);
 	}
 
 	getPreviousReplies = async () => {
@@ -111,9 +107,7 @@ class Post extends Component {
 
 	addReply = async (message) => {
 		const id = await this.props.addReply(this.props.post.id, message, this.state.ordering === 1);
-		this._replies.getWrappedInstance()
-			.recompute(this.props.post.replies.findIndex(r => r.id === id));
-		this._replies.getWrappedInstance().scrollTo(id);
+		this._replies.getWrappedInstance().scrollToId(id);
 	}
 
 	// Check alias of post
@@ -145,7 +139,6 @@ class Post extends Component {
 
 	votePost = (post, voteValue) => {
 		this.props.votePostInternal(post, voteValue);
-		this._replies.getWrappedInstance()._forceUpdate();
 	}
 
 	// Open deleting confimation dialog
@@ -159,7 +152,6 @@ class Post extends Component {
 		const index = this.props.post.replies.findIndex(r => r.id === this.deletingPost.id) - 1;
 		this.setState({ deletePopupOpened: false });
 		this.deletingPost = null;
-		this._replies.getWrappedInstance().recompute(index);
 	}
 
 	remove = () => {
@@ -222,7 +214,6 @@ class Post extends Component {
 					style={styles.repliesWrapper}
 					ref={(repliesWrapper) => { this.repliesWrapper = repliesWrapper; }}
 				>
-					{(this.state.isLoading && post.replies.length === 0) && <LoadingOverlay size={30} />}
 					{
 						this.props.isLoaded &&
 						<Replies
@@ -237,16 +228,6 @@ class Post extends Component {
 							orderBy={this.state.ordering}
 							ref={(replies) => { this._replies = replies; }}
 						/>
-					}
-					{
-						(post.replies.length > 0 && !this.state.fullyLoaded) &&
-						<div
-							style={!this.state.isLoading ?
-								styles.bottomLoading.base :
-								[ styles.bottomLoading.base, styles.bottomLoading.active ]}
-						>
-							<LoadingOverlay size={30} />
-						</div>
 					}
 				</div>
 
