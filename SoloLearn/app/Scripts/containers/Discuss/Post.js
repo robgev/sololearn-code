@@ -121,19 +121,12 @@ class Post extends Component {
 	}
 
 	// Change ordering of replies
-	handleFilterChange = (e, index, value) => {
-		const { post } = this.props;
-		this.setState({ ordering: value }, this.loadRepliesByState);
-		browserHistory.replace(`/discuss/${post.id}/${post.alias}`);
-	}
-
-	// Load questions when condition changes
-	loadRepliesByState = async () => {
-		try {
+	handleFilterChange = (_, __, value) => {
+		if (value !== this.state.ordering) {
+			const { post } = this.props;
+			this.setState({ ordering: value });
 			this.props.emptyReplies();
-			await this.getReplies();
-		} catch (e) {
-			console.log(e);
+			browserHistory.replace(`/discuss/${post.id}/${post.alias}`);
 		}
 	}
 
@@ -181,6 +174,7 @@ class Post extends Component {
 
 	render() {
 		const { post, t } = this.props;
+		console.log(this.state.ordering);
 		if (!this.props.isLoaded) {
 			return <LoadingOverlay />;
 		}
@@ -216,6 +210,7 @@ class Post extends Component {
 					{
 						this.props.isLoaded &&
 						<Replies
+							key={this.state.ordering}
 							t={t}
 							replies={post.replies}
 							votePost={this.votePost}
