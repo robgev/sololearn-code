@@ -149,7 +149,6 @@ class Post extends Component {
 
 	// Close deleting confimation dialog
 	closeDeletePopup = () => {
-		const index = this.props.post.replies.findIndex(r => r.id === this.deletingPost.id) - 1;
 		this.setState({ deletePopupOpened: false });
 		this.deletingPost = null;
 	}

@@ -511,6 +511,5 @@ export const ReplyStyles = {
 export const RepliesStyles = {
 	container: {
 		overflowY: 'hidden',
-		paddingBottom: 150,
 	},
 };
