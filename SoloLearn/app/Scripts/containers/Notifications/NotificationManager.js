@@ -26,7 +26,7 @@ const mapDispatchToProps = { getNotificationCount, setNotificationCount };
 class NotificationManager extends PureComponent {
 	state = { isOpened: false };
 
-	componentWillMount() {
+	componentDidMount() {
 		this.props.getNotificationCount();
 	}
 
