@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { browserHistory } from 'react-router';
 import AlertContainer from 'react-alert';
+import FacebookLogin from 'react-facebook-login';
 
 import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
@@ -24,7 +25,6 @@ class LoginContainer extends PureComponent {
 
 	componentWillMount() {
 		document.title = 'Please log in';
-		this.props.logout();
 	}
 
 	checkToFeed = (err) => {
@@ -76,6 +76,9 @@ class LoginContainer extends PureComponent {
 					login={this.login}
 					signup={this.signup}
 					forgot={this.forgot}
+				/>
+				<FacebookLogin
+					appId="153040644900826"
 				/>
 			</Paper>
 		);
