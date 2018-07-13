@@ -3,15 +3,14 @@ import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 
 import Dialog from 'material-ui/Dialog';
-import CircularProgress from 'material-ui/CircularProgress';
 
-import { setLikesList } from 'actions/likes';
+import { emptyLikesList } from 'actions/likes';
 import { numberFormatter } from 'utils';
 
 import PopupContent from './PopupContent';
 
 const mapStateToProps = state => ({ likes: state.likes });
-const mapDispatchToProps = { setLikesList };
+const mapDispatchToProps = { emptyLikesList };
 
 @connect(mapStateToProps, mapDispatchToProps)
 class Likes extends PureComponent {
@@ -29,41 +28,36 @@ class Likes extends PureComponent {
 	}
 
 	changeTab = (tabIndex) => {
-		this.setState({ tabIndex }, this.openList);
+		this.props.emptyLikesList();
+		this.setState({ tabIndex });
+	}
+
+	loadMore = () => {
+		const { getLikes, getDownvotes } = this.props;
+		const { tabIndex } = this.state;
+		if (tabIndex === 1) {
+			return getDownvotes();
+		}
+		return getLikes();
 	}
 
 	openList = () => {
-		const {
-			likes,
-			getLikes,
-			setLikesList,
-			getDownvotes,
-		} = this.props;
-		const { tabIndex } = this.state;
-		if (likes != null) {
-			setLikesList(null);
-		}
+		this.props.emptyLikesList();
 		this.setState({ open: true });
-		if (tabIndex) {
-			getDownvotes();
-		} else {
-			getLikes();
-		}
 	}
 
 	closeList = () => {
 		this.setState({ open: false });
-		this.props.setLikesList(null);
+		this.props.emptyLikesList();
 	}
 
 	render() {
 		const {
 			likes,
 			votes,
-			getLikes,
 			accessLevel,
-			getDownvotes,
 		} = this.props;
+		const { tabIndex } = this.state;
 		return (
 			<div
 				onClick={this.openList}
@@ -75,7 +69,7 @@ class Likes extends PureComponent {
 					cursor: 'pointer',
 					fontSize: 14,
 					fontWeight: 600,
-					color: '#607D8B'
+					color: '#607D8B',
 				}}
 			>
 				{votes > 0 && '+'}{numberFormatter(votes)}
@@ -85,18 +79,14 @@ class Likes extends PureComponent {
 					style={{ paddingTop: 0 }}
 				>
 					<div style={{ height: 300 }}>
-						{
-							likes == null ?
-								<CircularProgress /> :
-								<PopupContent
-									likes={likes}
-									getLikes={getLikes}
-									accessLevel={accessLevel}
-									getDownvotes={getDownvotes}
-									onTabChange={this.changeTab}
-									tabIndex={this.state.tabIndex}
-								/>
-						}
+						<PopupContent
+							key={tabIndex}
+							loadMore={this.loadMore}
+							likes={likes}
+							accessLevel={accessLevel}
+							onTabChange={this.changeTab}
+							tabIndex={tabIndex}
+						/>
 					</div>
 				</Dialog>
 			</div>

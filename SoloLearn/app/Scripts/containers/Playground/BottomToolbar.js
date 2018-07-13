@@ -53,13 +53,9 @@ class BottomToolbar extends PureComponent {
 		browserHistory.goBack();
 	}
 
-	getVotes = () => {
-		this.props.getLikes(this.props.codeData.id);
-	}
+	getVotes = () => this.props.getLikes(this.props.codeData.id)
 
-	getDownvotes = () => {
-		this.props.getDownvotes(this.props.codeData.id);
-	}
+	getDownvotes = () => this.props.getDownvotes(this.props.codeData.id)
 
 	toggleDeleteModal = () => {
 		this.setState(state => ({ isDeleteModalOpen: !state.isDeleteModalOpen }));
@@ -140,16 +136,16 @@ class BottomToolbar extends PureComponent {
 						</div>
 					</div>
 					{!!id &&
-					<VoteControls
-						userVote={vote}
-						totalVotes={votes}
-						key="voteControls"
-						getVotes={this.getVotes}
-						accessLevel={accessLevel}
-						getDownvotes={this.getDownvotes}
-						onUpvote={() => voteCode(codeData, 1)}
-						onDownvote={() => voteCode(codeData, -1)}
-					/>
+						<VoteControls
+							userVote={vote}
+							totalVotes={votes}
+							key="voteControls"
+							getVotes={this.getVotes}
+							accessLevel={accessLevel}
+							getDownvotes={this.getDownvotes}
+							onUpvote={() => voteCode(codeData, 1)}
+							onDownvote={() => voteCode(codeData, -1)}
+						/>
 					}
 				</div>
 				<Dialog

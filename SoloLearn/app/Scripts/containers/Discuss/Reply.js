@@ -46,13 +46,9 @@ class Reply extends Component {
 		animate: false,
 	};
 
-	getLikes = () => {
-		this.props.getLikes(this.props.reply.id);
-	}
+	getLikes = () => this.props.getLikes(this.props.reply.id);
 
-	getDownvotes = () => {
-		this.props.getDownvotes(this.props.reply.id);
-	}
+	getDownvotes = () => this.props.getDownvotes(this.props.reply.id);
 
 	onLengthChange = (replyLength) => {
 		if (this.mentionInput) {

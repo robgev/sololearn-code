@@ -97,12 +97,12 @@ class Comment extends Component {
 
 	getVotes = () => {
 		const { comment, commentType, getLikes } = this.props;
-		getLikes(`${commentType}CommentLikes`, comment.id);
+		return getLikes(`${commentType}CommentLikes`, comment.id);
 	}
 
 	getDownvotes = () => {
 		const { comment, commentType, getLikes } = this.props;
-		getLikes(`${commentType}CommentDownvotes`, comment.id);
+		return getLikes(`${commentType}CommentDownvotes`, comment.id);
 	}
 
 	openReply = () => {
