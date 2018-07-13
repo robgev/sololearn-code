@@ -1,7 +1,6 @@
 // React modules
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { CellMeasurerCache } from 'react-virtualized';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
