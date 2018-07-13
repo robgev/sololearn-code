@@ -23,6 +23,7 @@ import { updateDate, determineAccessLevel, generatePreviews, replaceMention, get
 import MentionInput from 'components/Shared/MentionInput';
 
 import { ReplyStyles as styles } from './styles';
+import './reply.scss';
 
 const mapStateToProps = state => ({
 	userId: state.userProfile.id,
@@ -42,6 +43,7 @@ class Reply extends Component {
 	state = {
 		isEditing: false,
 		replyLength: 0,
+		animate: false,
 	};
 
 	getLikes = () => {
@@ -122,12 +124,29 @@ class Reply extends Component {
 		this.props.editPostInternal(reply, this.mentionInput.popValue());
 	}
 
+	scrollIntoView = () => {
+		this.node.scrollIntoView({ block: 'center', behavior: 'smooth' });
+		this.highlight();
+	}
+
+	highlight = () => {
+		this.setState({ animate: true }, () =>
+			setTimeout(() => this.setState({ animate: false }), 3000));
+	}
+
 	render() {
 		const {
-			t, reply, accessLevel, toggleReportPopup, toggleRemovalPopup, replyRef,
+			t, reply, accessLevel, toggleReportPopup, toggleRemovalPopup,
 		} = this.props;
 		return (
-			<div ref={replyRef} className="reply" key={reply.id} style={(reply.isAccepted && !this.state.isEditing) ? [ styles.reply.base, styles.reply.accepted ] : styles.reply.base}>
+			<div
+				ref={(node) => { this.node = node; }}
+				className={`reply ${this.state.animate ? 'animate' : ''}`}
+				key={reply.id}
+				style={(reply.isAccepted && !this.state.isEditing)
+					? [ styles.reply.base, styles.reply.accepted ]
+					: styles.reply.base}
+			>
 				<div className="details-wrapper" style={styles.detailsWrapper}>
 					<div className="stats" style={styles.stats}>
 						<IconButton className="upvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(reply, 1); }}>

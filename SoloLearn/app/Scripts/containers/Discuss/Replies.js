@@ -58,7 +58,7 @@ class Replies extends Component {
 		}
 	}
 	scrollToId = (id) => {
-		this.replyRefs[id].scrollIntoView({ block: 'center', behavior: 'smooth' });
+		this.replyRefs[id].getWrappedInstance().scrollIntoView();
 	}
 
 	render() {
@@ -90,7 +90,7 @@ class Replies extends Component {
 					{replies.map(reply => (
 						<Reply
 							key={reply.id}
-							replyRef={(node) => { this.replyRefs[reply.id] = node; }}
+							ref={(node) => { this.replyRefs[reply.id] = node; }}
 							reply={reply}
 							t={this.props.t}
 							votePost={this.props.votePost}
