@@ -3,6 +3,11 @@ import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import tabs from 'constants/Tabs';
 
+const isActiveRoute = (pathName, tab) => {
+	const sectionName = `/${pathName.split('/')[1]}`;
+	return sectionName === tab.url || sectionName === tab.aliasUrl;
+};
+
 // We check if profile is in the url
 // If it is menu tabs should not be highlighted at all
 // If it is not, we check for possible matches with
@@ -14,7 +19,7 @@ const TabList = ({ pathname, t }) => (
 				key={tab.id}
 				to={tab.url}
 				onClick={pathname === '/discuss' && tab.url === '/discuss' ? e => e.preventDefault() : () => { }}
-				className={`tab-item ${(!pathname.includes('/profile') && (pathname.includes(tab.url) || pathname.includes(tab.aliasUrl))) ? 'active' : ''}`}
+				className={`tab-item ${(!pathname.includes('/profile') && isActiveRoute(pathname, tab)) ? 'active' : ''}`}
 			>
 				<img className="tab-icon" alt="Tab icon" src={`assets/${tab.imgUrl}`} />
 				{t(tab.name)}
