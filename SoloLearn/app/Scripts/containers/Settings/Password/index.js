@@ -21,6 +21,8 @@ class Password extends PureComponent {
 		errorText: '',
 		retypePass: '',
 		oldPassword: '',
+		newPassword: '',
+		focusedName: '',
 		isSaving: false,
 		snackbarOpen: false,
 	}
@@ -59,6 +61,11 @@ class Password extends PureComponent {
 		}
 	}
 
+	handleFocus = (e) => {
+		const { name } = e.target;
+		setTimeout(() => this.setState({ focusedName: name }), 0); // Done for material-ui transition
+	}
+
 	render() {
 		const {
 			isSaving,
@@ -67,6 +74,7 @@ class Password extends PureComponent {
 			oldPassword,
 			newPassword,
 			snackbarOpen,
+			focusedName,
 		} = this.state;
 		const { t } = this.props;
 		return (
@@ -76,27 +84,37 @@ class Password extends PureComponent {
 						type="password"
 						name="oldPassword"
 						value={oldPassword}
+						autoComplete={false}
 						style={{ width: '100%' }}
-						floatingLabelText="Old Password"
+						onFocus={this.handleFocus}
 						onChange={this.handleChange}
+						floatingLabelText="Old Password"
+						readOnly={focusedName !== 'oldPassword'}
 					/>
 					<TextField
 						type="password"
 						name="newPassword"
 						value={newPassword}
 						errorText={errorText}
+						autoComplete={false}
+						onFocus={this.handleFocus}
+						onChange={this.handleChange}
+						readOnly={focusedName !== 'newPassword'}
 						style={{ width: '100%', textTransform: 'capitalize' }}
 						floatingLabelText={t('chnage_password.new-password-placeholder')}
-						onChange={this.handleChange}
 					/>
 					<TextField
+						id="retypePass"
 						type="password"
 						name="retypePass"
 						value={retypePass}
+						autoComplete={false}
 						errorText={errorText}
+						onFocus={this.handleFocus}
+						onChange={this.handleChange}
+						readOnly={focusedName !== 'retypePass'}
 						style={{ width: '100%', textTransform: 'capitalize' }}
 						floatingLabelText={t('chnage_password.confirm-password-placeholder')}
-						onChange={this.handleChange}
 					/>
 				</div>
 				<div className="settings-button">
@@ -104,6 +122,7 @@ class Password extends PureComponent {
 						primary
 						onClick={this.submitSettings}
 						label={t('common.save-action-title')}
+						disabled={!(oldPassword.trim() && newPassword.trim() && retypePass.trim())}
 					/>
 				</div>
 				<Snackbar

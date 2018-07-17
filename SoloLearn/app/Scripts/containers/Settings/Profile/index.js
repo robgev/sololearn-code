@@ -72,6 +72,20 @@ class Profile extends PureComponent {
 		});
 	}
 
+	requiresUpdate() {
+		const {
+			name,
+			email,
+			countryCode,
+		} = this.state;
+		const {
+			name: oldName,
+			email: oldEmail,
+			countryCode: oldCountryCode,
+		} = this.props.userProfile;
+		return name.trim() !== oldName || email.trim() !== oldEmail || countryCode !== oldCountryCode;
+	}
+
 	submitSettings = async () => {
 		const {
 			name,
@@ -160,6 +174,7 @@ class Profile extends PureComponent {
 					<FlatButton
 						primary
 						onClick={this.submitSettings}
+						disabled={!this.requiresUpdate()}
 						label={t('common.save-action-title')}
 					/>
 				</div>
