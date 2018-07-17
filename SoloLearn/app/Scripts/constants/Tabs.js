@@ -8,7 +8,7 @@ export default [
 	{
 		id: 2,
 		name: 'tab.play',
-		url: '/contests',
+		url: '/play',
 		imgUrl: 'tab_play.png',
 	},
 	{

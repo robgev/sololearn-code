@@ -54,6 +54,8 @@ import Leaderboards from 'containers/Leaderboards';
 // Discover
 import DiscoverContainer from 'containers/Profile/DiscoverContainer';
 
+import Play from 'containers/Play';
+
 import NotFound from 'components/Shared/NotFound';
 
 import redirector from 'utils/redirector';
@@ -83,6 +85,7 @@ export default ([
 		<Route path="/learn/:courseName/:courseId/:itemType/:moduleId/:moduleName/:lessonId(/:lessonName)" component={QuizManager}>
 			<Route path=":quizNumber(/:primary)(/:secondary)" component={Quiz} />
 		</Route>
+		<Route path="/play" component={Play} />
 		<Route path="/codes" component={Codes} />
 		<Route path="/settings(/:settingID)" component={Settings} />
 		<Route path="/playground(/:primary)(/:secondary)" component={Playground} />
