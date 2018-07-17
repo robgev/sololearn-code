@@ -50,6 +50,7 @@ const Layout = ({
 					loader={loading ?
 						null :
 						<CircularProgress
+							key={items[0].name}
 							style={{
 								width: '100%',
 								paddingBottom: 15,

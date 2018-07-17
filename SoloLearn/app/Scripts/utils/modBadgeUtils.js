@@ -3,7 +3,7 @@ export default (rawBadge) => {
 		return null;
 	}
 	const splittedBadge = rawBadge.split('|');
-	return splittedBadge.length > 1 ? splittedBadge[1] : null;
+	return (splittedBadge.length > 1 && splittedBadge[1].includes('mod')) ? splittedBadge[1] : null;
 };
 
 export const determineBadgeColor = (badge) => {
