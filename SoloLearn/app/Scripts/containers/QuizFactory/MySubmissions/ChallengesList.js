@@ -62,6 +62,7 @@ export default ({
 						width: '100%',
 						flexDirection: 'column',
 					}}
+					initialLoad={false}
 				>
 					<List style={{ padding: 0 }}>
 						{challenges !== null && challenges.map(quiz => (

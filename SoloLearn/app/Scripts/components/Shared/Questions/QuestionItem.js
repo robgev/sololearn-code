@@ -34,14 +34,9 @@ class QuestionItem extends PureComponent {
 	state = {
 		isTooltipActive: false,
 	}
-	getLikes = () => {
-		this.props.getLikes(this.props.question.id);
-	}
-	getDownvotes = () => {
-		this.props.getDownvotes(this.props.question.id);
-	}
+	getLikes = () => this.props.getLikes(this.props.question.id);
+	getDownvotes = () => this.props.getDownvotes(this.props.question.id);
 	toggleTooltip = () => {
-		console.log('Here');
 		this.setState(state => ({ isTooltipActive: !state.isTooltipActive }));
 	}
 	render() {

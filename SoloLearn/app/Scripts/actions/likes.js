@@ -1,6 +1,6 @@
 import { curry } from 'lodash';
 import Service from 'api/service';
-import { SET_LIKES_LIST } from 'constants/ActionTypes';
+import { SET_LIKES_LIST, EMPTY_LIKES_LIST } from 'constants/ActionTypes';
 
 const commentTypes = {
 	codeLikes: 'Playground/GetCodeLikes',
@@ -15,7 +15,8 @@ const commentTypes = {
 	userLessonCommentDownvotes: 'Discussion/GetUserLessonCommentDownvotes',
 };
 
-export const setLikesList = likes => ({ type: SET_LIKES_LIST, payload: likes });
+const setLikesList = likes => ({ type: SET_LIKES_LIST, payload: likes });
+export const emptyLikesList = () => ({ type: EMPTY_LIKES_LIST });
 
 const getParamsWithIdType = ({
 	type, index, id,
@@ -43,11 +44,12 @@ const getParamsWithIdType = ({
 export const getLikesAndDownvotesInternal = (type, id) => async (dispatch, getState) => {
 	try {
 		const { likes } = getState();
-		const index = likes ? likes.length : 0;
+		const index = likes.length;
 		const response = await Service.request(commentTypes[type], getParamsWithIdType({
 			type, index, id,
 		}));
 		dispatch(setLikesList(response.users));
+		return response.users.length;
 	} catch (e) {
 		console.log(e);
 	}

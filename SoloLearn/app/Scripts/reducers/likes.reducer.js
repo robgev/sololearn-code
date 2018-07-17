@@ -1,17 +1,12 @@
-import { SET_LIKES_LIST } from 'constants/ActionTypes';
-import { removeDups } from 'utils';
+import uniqBy from 'lodash/uniqBy';
+import { SET_LIKES_LIST, EMPTY_LIKES_LIST } from 'constants/ActionTypes';
 
-const nextState = (oldLikes, newLikes) => {
-	if (newLikes == null) {
-		return null;
-	}
-	return oldLikes == null ? newLikes : removeDups([ ...oldLikes, ...newLikes ]);
-};
-
-export default (state = null, action) => {
+export default (state = [], action) => {
 	switch (action.type) {
 	case SET_LIKES_LIST:
-		return nextState(state, action.payload);
+		return uniqBy([ ...state, ...action.payload ], 'id');
+	case EMPTY_LIKES_LIST:
+		return [];
 	default:
 		return state;
 	}

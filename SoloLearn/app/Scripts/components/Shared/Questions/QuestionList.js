@@ -1,19 +1,20 @@
 import React from 'react';
-import InfiniteScroll from 'react-infinite-scroller';
-import CircularProgress from 'material-ui/CircularProgress';
-import BusyWrapper from 'components/Shared/BusyWrapper';
+import InfiniteScroll from 'components/Shared/InfiniteScroll';
+import Paper from 'material-ui/Paper';
+// import BusyWrapper from 'components/Shared/BusyWrapper'; TODO: Put component in BusyWrapper
 import DiscussShimmer from 'components/Shared/Shimmers/DiscussShimmer';
 import 'styles/Discuss/Questions.scss';
 import QuestionItem from './QuestionItem';
 
 export default ({ questions, loadMore, hasMore }) =>
 	(questions !== null && questions.length === 0 ? <div>No questions found</div> : (
-		<BusyWrapper
-			isBusy={questions === null}
-			className="discuss-busy-container"
-			wrapperClassName="discuss-wrapper"
-			loadingComponent={<DiscussShimmer />}
-		>
+		<div>
+			{questions === null &&
+				(
+					<Paper style={{ height: '100vh', overflow: 'hidden' }}>
+						<DiscussShimmer />
+					</Paper>
+				)}
 			<InfiniteScroll
 				loadMore={loadMore}
 				hasMore={hasMore}
@@ -22,13 +23,8 @@ export default ({ questions, loadMore, hasMore }) =>
 					width: '100%',
 					flexDirection: 'column',
 				}}
-				loader={<CircularProgress
-					style={{ display: 'flex', alignItems: 'center', margin: 'auto' }}
-					key="circular-progress"
-					size={40}
-				/>}
 			>
 				{questions !== null && questions.map(el => <QuestionItem key={el.id} question={el} />)}
 			</InfiniteScroll>
-		</BusyWrapper >
+		</div>
 	));

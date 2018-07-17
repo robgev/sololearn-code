@@ -33,7 +33,7 @@ class App extends PureComponent {
 	}
 	render() {
 		return (
-			<Router history={browserHistory} routes={routes} />
+			<Router onUpdate={() => window.scrollTo(0, 0)} history={browserHistory} routes={routes} />
 		);
 	}
 }

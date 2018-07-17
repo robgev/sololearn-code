@@ -59,13 +59,9 @@ class Question extends Component {
 		followSnackbarOpen: false,
 	}
 
-	getLikes = () => {
-		this.props.getLikes(this.props.question.id);
-	}
+	getLikes = () => this.props.getLikes(this.props.question.id);
 
-	getDownvotes = () => {
-		this.props.getDownvotes(this.props.question.id);
-	}
+	getDownvotes = () => this.props.getDownvotes(this.props.question.id);
 
 	toggleRemovalPopup = () => {
 		const { removalPopupOpen } = this.state;
