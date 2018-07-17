@@ -118,10 +118,10 @@ class Questions extends Component {
 						<MenuItem value={6} primaryText={t('discuss.filter.my-answers')} />
 					</DropDownMenu>
 				</Paper>
-				<Paper style={{ position: 'relative' }}>
+				<div>
 					<QuestionList questions={questions} hasMore={hasMore} loadMore={this.loadMore} />
 					<AddQuestionButton />
-				</Paper>
+				</div>
 			</Layout>
 		);
 	}

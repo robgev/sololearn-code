@@ -1,6 +1,6 @@
 import React from 'react';
-import InfiniteScroll from 'react-infinite-scroller';
-import CircularProgress from 'material-ui/CircularProgress';
+import InfiniteScroll from 'components/Shared/InfiniteScroll';
+import Paper from 'material-ui/Paper';
 import BusyWrapper from 'components/Shared/BusyWrapper';
 import DiscussShimmer from 'components/Shared/Shimmers/DiscussShimmer';
 import 'styles/Discuss/Questions.scss';
@@ -12,7 +12,7 @@ export default ({ questions, loadMore, hasMore }) =>
 			isBusy={questions === null}
 			className="discuss-busy-container"
 			wrapperClassName="discuss-wrapper"
-			loadingComponent={<DiscussShimmer />}
+			loadingComponent={<Paper><DiscussShimmer /></Paper>}
 		>
 			<InfiniteScroll
 				loadMore={loadMore}
@@ -22,11 +22,6 @@ export default ({ questions, loadMore, hasMore }) =>
 					width: '100%',
 					flexDirection: 'column',
 				}}
-				loader={<CircularProgress
-					style={{ display: 'flex', alignItems: 'center', margin: 'auto' }}
-					key="circular-progress"
-					size={40}
-				/>}
 			>
 				{questions !== null && questions.map(el => <QuestionItem key={el.id} question={el} />)}
 			</InfiniteScroll>
