@@ -5,7 +5,6 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 class InfiniteScrollWrapper extends React.Component {
 	static defaultProps = {
-		useWindow: true,
 		element: Paper,
 	}
 	componentDidMount() {
@@ -15,22 +14,20 @@ class InfiniteScrollWrapper extends React.Component {
 	}
 	render() {
 		const {
-			loadMore, hasMore, children, useWindow, element: Element,
+			children, element: Element, ...rest
 		} = this.props;
 		return (
 			<div>
 				<Element>
 					<InfiniteScroll
-						loadMore={loadMore}
-						hasMore={hasMore}
+						{...rest}
 						loader={null}
-						useWindow={useWindow}
 					>
 						{children}
 					</InfiniteScroll>
 				</Element>
 				{
-					hasMore &&
+					rest.hasMore &&
 					<CircularProgress
 						size={40}
 						style={{ display: 'flex', alignItems: 'center', margin: '10px auto' }}
