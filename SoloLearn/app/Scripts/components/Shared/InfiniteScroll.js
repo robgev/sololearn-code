@@ -7,11 +7,6 @@ class InfiniteScrollWrapper extends React.Component {
 	static defaultProps = {
 		element: Paper,
 	}
-	componentDidMount() {
-		if (this.props.initialLoad) {
-			this.props.loadMore();
-		}
-	}
 	render() {
 		const {
 			children, element: Element, ...rest

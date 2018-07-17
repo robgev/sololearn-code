@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+﻿import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
@@ -118,7 +118,7 @@ class Questions extends Component {
 						<MenuItem value={6} primaryText={t('discuss.filter.my-answers')} />
 					</DropDownMenu>
 				</Paper>
-				<div>
+				<div style={{ position: 'relative' }}>
 					<QuestionList questions={questions} hasMore={hasMore} loadMore={this.loadMore} />
 					<AddQuestionButton />
 				</div>
