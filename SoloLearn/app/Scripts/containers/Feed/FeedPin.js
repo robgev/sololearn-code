@@ -34,18 +34,18 @@ const styles = {
 	},
 
 	heading: {
-		padding: '7px 7px 5px 7px',
+		padding: '15px 15px 10px 15px',
 	},
 
 	title: {
 		fontWeight: '500',
-		fontSize: '16px',
+		marginBottom: 5,
+		fontSize: '18px',
 	},
 
 	subTitle: {
-		fontSize: '13px',
+		fontSize: '14px',
 		color: '#777',
-		paddingLeft: 5,
 	},
 
 	pinImage: {

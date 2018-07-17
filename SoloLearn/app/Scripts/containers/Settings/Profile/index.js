@@ -32,11 +32,7 @@ class Profile extends PureComponent {
 		} = props.userProfile;
 		this.state = {
 			open: false,
-			errorText: '',
-			retypePass: '',
-			oldPassword: '',
 			isSaving: false,
-			newPassword: '',
 			name: name || '',
 			email: email || '',
 			image: avatarUrl,
@@ -76,28 +72,33 @@ class Profile extends PureComponent {
 		});
 	}
 
+	requiresUpdate() {
+		const {
+			name,
+			email,
+			countryCode,
+		} = this.state;
+		const {
+			name: oldName,
+			email: oldEmail,
+			countryCode: oldCountryCode,
+		} = this.props.userProfile;
+		return name.trim() !== oldName || email.trim() !== oldEmail || countryCode !== oldCountryCode;
+	}
+
 	submitSettings = async () => {
 		const {
 			name,
 			email,
-			retypePass,
 			countryCode,
-			oldPassword,
-			newPassword,
 		} = this.state;
-		if (retypePass === newPassword) {
-			this.setState({ snackbarOpen: true, isSaving: true });
-			await this.props.updateProfile({
-				name,
-				email,
-				oldPassword,
-				newPassword,
-				countryCode: countryCode !== 'NST' ? countryCode : '', // Not set value is NST. This is done to fix the cosmetic bug with material-ui
-			});
-			this.setState({ isSaving: false });
-		} else {
-			this.setState({ errorText: 'Values should match' });
-		}
+		this.setState({ snackbarOpen: true, isSaving: true });
+		await this.props.updateProfile({
+			name,
+			email,
+			countryCode: countryCode !== 'NST' ? countryCode : '', // Not set value is NST. This is done to fix the cosmetic bug with material-ui
+		});
+		this.setState({ isSaving: false });
 	}
 
 	handleSnackBarClose = (reason) => {
@@ -113,11 +114,7 @@ class Profile extends PureComponent {
 			email,
 			image,
 			isSaving,
-			errorText,
-			retypePass,
-			oldPassword,
 			countryCode,
-			newPassword,
 			snackbarOpen,
 		} = this.state;
 		const { t, userProfile } = this.props;
@@ -162,34 +159,6 @@ class Profile extends PureComponent {
 						onChange={this.handleChange}
 					/>
 				</div>
-				<div className="settings-group">
-					<TextField
-						type="password"
-						name="oldPassword"
-						value={oldPassword}
-						style={{ width: '100%' }}
-						floatingLabelText="Old Password"
-						onChange={this.handleChange}
-					/>
-					<TextField
-						type="password"
-						name="newPassword"
-						value={newPassword}
-						errorText={errorText}
-						style={{ width: '100%', textTransform: 'capitalize' }}
-						floatingLabelText={t('chnage_password.new-password-placeholder')}
-						onChange={this.handleChange}
-					/>
-					<TextField
-						type="password"
-						name="retypePass"
-						value={retypePass}
-						errorText={errorText}
-						style={{ width: '100%', textTransform: 'capitalize' }}
-						floatingLabelText={t('chnage_password.confirm-password-placeholder')}
-						onChange={this.handleChange}
-					/>
-				</div>
 				<CountrySelector
 					t={t}
 					value={countryCode}
@@ -205,6 +174,7 @@ class Profile extends PureComponent {
 					<FlatButton
 						primary
 						onClick={this.submitSettings}
+						disabled={!this.requiresUpdate()}
 						label={t('common.save-action-title')}
 					/>
 				</div>
