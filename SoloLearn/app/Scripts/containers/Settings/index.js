@@ -13,6 +13,7 @@ import Blocked from './Blocked';
 import Arsenal from './Arsenal';
 import ContentSettings from './Content';
 import Localization from './Localization';
+import Password from './Password';
 
 const SettingsMapping = {
 	profile: Main,
@@ -20,6 +21,7 @@ const SettingsMapping = {
 	weapons: Arsenal,
 	content: ContentSettings,
 	localization: Localization,
+	password: Password,
 };
 
 const Settings = ({ t, params: { settingID = 'profile' } }) => {
@@ -30,6 +32,7 @@ const Settings = ({ t, params: { settingID = 'profile' } }) => {
 		<Layout className="settings-container">
 			<div className="settings-sections">
 				<Link to="/settings/profile">{t('settings.edit-profile')}</Link>
+				<Link to="/settings/password">{t('settings.change-password')}</Link>
 				<Link to="/settings/blocking">{t('settings.blocked-accounts')}</Link>
 				<Link to="/settings/weapons">{t('settings.manage-weapons')}</Link>
 				<Link to="/settings/content">{t('settings.activity-feed')}</Link>
