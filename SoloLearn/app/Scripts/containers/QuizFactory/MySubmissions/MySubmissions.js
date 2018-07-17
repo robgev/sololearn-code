@@ -18,6 +18,8 @@ import actionContainerStyle from '../components/actionContainerStyle';
 
 // Utility funcs
 
+const equal = (obj1, obj2) => !Object.keys(obj1).some(key => obj1[key] !== obj2[key]);
+
 const getStringFromType = (type) => {
 	switch (type) {
 	case 1:
@@ -55,6 +57,7 @@ class MySubmissions extends Component {
 		document.title = 'Sololearn | My Submissions';
 	}
 	componentWillMount() {
+		this._isMounted = true;
 		const { status = null, courseId = null } = this.props.location.query;
 		this.setState({
 			filters: {
@@ -85,14 +88,16 @@ class MySubmissions extends Component {
 	fetchSubmissions = async (filters = this.state.filters, challenges = this.state.challenges) => {
 		const index = challenges !== null ? challenges.length : 0;
 		const newChallenges = await getMySubmissions({ ...filters, index });
-		if (newChallenges.length === 0) {
-			this.setState({ hasMore: false });
+		if (this._isMounted) {
+			if (newChallenges.length === 0) {
+				this.setState({ hasMore: false });
+			}
+			this.setState(s => ({
+				challenges: s.challenges === null
+					? newChallenges
+					: uniqBy([ ...s.challenges, ...newChallenges ], 'id'),
+			}));
 		}
-		this.setState(s => ({
-			challenges: s.challenges === null
-				? newChallenges
-				: uniqBy([ ...s.challenges, ...newChallenges ], 'id'),
-		}));
 	}
 	preview = (challenge) => {
 		this.setState({ previewChallenge: challenge });
