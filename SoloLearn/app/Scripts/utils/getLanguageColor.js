@@ -14,8 +14,12 @@ const getLanguageColor = (language) => {
 		return '#E14E40';
 	case 'php':
 		return '#5F83BB';
+	case 'css':
+		return '#24ABE2';
 	case 'web':
 		return '#E54D26';
+	case 'html':
+		return '#F26525';
 	default:
 		return '';
 	}

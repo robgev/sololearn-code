@@ -1,43 +1,42 @@
 // React modules
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
-import { map, uniqBy } from 'lodash';
 
 // i18n
 import { translate } from 'react-i18next';
 
 // Material UI components
-import Dialog from 'material-ui/Dialog';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
 // Redux modules
-import LanguageCard from 'components/Shared/LanguageCard';
-import editorSettings from 'defaults/playgroundEditorSettings';
+import LanguageSelector from 'components/Shared/LanguageSelector';
+import { browserHistory } from 'react-router';
 
 @translate()
 class AddCodeButton extends Component {
-	constructor() {
-		super();
-		const languagesArray = map(editorSettings, item => item);
-		const languages = uniqBy(languagesArray, 'language');
-		this.state = {
-			languages,
-			isLanguagePopupOpen: false,
-		};
-	}
+	state = {
+		isLanguageSelectorOpen: false,
+	};
 
 	toggleLanguagePopup = () => {
-		const { isLanguagePopupOpen } = this.state;
-		if (!isLanguagePopupOpen) {
+		const { isLanguageSelectorOpen } = this.state;
+		if (!isLanguageSelectorOpen) {
 			ReactGA.ga('send', 'screenView', { screenName: 'Code Picker Page' });
 		}
-		this.setState({ isLanguagePopupOpen: !isLanguagePopupOpen });
+		this.setState({ isLanguageSelectorOpen: !isLanguageSelectorOpen });
+	}
+
+	toggleLanguageSelector = () => {
+		this.setState(state => ({ isLanguageSelectorOpen: !state.isLanguageSelectorOpen }));
+	}
+	selectLanguage = (courseItem) => {
+		this.toggleLanguagePopup();
+		browserHistory.push(`/playground/${courseItem.language}`);
 	}
 
 	render() {
-		const { isLanguagePopupOpen, languages } = this.state;
-		const { t } = this.props;
+		const { isLanguageSelectorOpen } = this.state;
 		return (
 			<div style={{
 				position: 'absolute',
@@ -59,20 +58,12 @@ class AddCodeButton extends Component {
 				>
 					<ContentAdd />
 				</FloatingActionButton>
-				<Dialog
-					title={t('code.language-picker-title')}
-					open={isLanguagePopupOpen}
-					onRequestClose={this.toggleLanguagePopup}
-				>
-					{
-						languages.map(currentElement => (
-							<LanguageCard
-								{...currentElement}
-								linkPrefix="/playground"
-							/>
-						))
-					}
-				</Dialog>
+				<LanguageSelector
+					open={isLanguageSelectorOpen}
+					onChoose={this.selectLanguage}
+					onClose={this.toggleLanguageSelector}
+					filter={course => course.isPlaygroundEnabled}
+				/>
 			</div>
 		);
 	}
