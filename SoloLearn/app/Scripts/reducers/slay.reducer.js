@@ -51,6 +51,19 @@ const filteredCollectionItems = (state = [], action) => {
 	}
 };
 
+const bookmarks = (state = [], action) => {
+	switch (action.type) {
+	case SET_COLLECTION_ITEMS:
+		return action.payload;
+	case APPEND_COLLECTION_ITEMS:
+		return safeAdd(state, action.payload);
+	case RESET_LOCALE_DATA:
+		return [];
+	default:
+		return state;
+	}
+};
+
 const activeLesson = (state = null, action) => {
 	switch (action.type) {
 	case SET_ACTIVE_LESSON:
@@ -76,6 +89,7 @@ const lessonsByUser = (state = [], action) => {
 };
 
 export default combineReducers({
+	bookmarks,
 	activeLesson,
 	lessonsByUser,
 	slayCollections,

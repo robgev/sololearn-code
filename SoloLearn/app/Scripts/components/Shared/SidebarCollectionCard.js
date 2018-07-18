@@ -10,6 +10,7 @@ const SidebarCollection = ({
 	title,
 	items,
 	userID,
+	bookmarks,
 	noViewMore = false,
 }) => (
 	<Paper
@@ -25,7 +26,7 @@ const SidebarCollection = ({
 		<div className="meta-info">
 			<p>{ title }</p>
 			{ !noViewMore &&
-				<Link to={`/learn/more/author/${userID}`} >
+				<Link to={bookmarks ? 'learn/bookmarks' : `/learn/more/author/${userID}`} >
 					{t('common.loadMore')}
 				</Link>
 			}

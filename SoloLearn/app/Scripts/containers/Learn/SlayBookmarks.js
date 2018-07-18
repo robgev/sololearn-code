@@ -3,27 +3,28 @@ import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 
 import { getBookmarkLessons } from 'actions/slay';
-import CourseCard from 'components/Shared/CourseCard';
+import CodePenCard from 'components/Shared/CodePenCard';
 import SlayLayout from 'components/Layouts/SlayLayout';
+import SlayDetailedShimmer from 'components/Shared/Shimmers/SlayDetailedShimmer';
 
 // i18n
 import { translate } from 'react-i18next';
 
-const mapStateToProps = state => ({ lessons: state.slay.filteredCollectionItems });
+const mapStateToProps = state => ({ lessons: state.slay.bookmarks });
 
 const mapDispatchToProps = { getBookmarkLessons };
 
 @connect(mapStateToProps, mapDispatchToProps)
 class SlayHome extends PureComponent {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
-			startIndex: 0,
+			startIndex: props.lessons.length,
 			loadCount: 10,
 			loading: true,
 			hasMore: true,
 		};
-		document.title = 'Sololearn | Slay Bookmarks';
+		document.title = 'Sololearn | Bookmarks';
 	}
 
 	async componentWillMount() {
@@ -53,14 +54,26 @@ class SlayHome extends PureComponent {
 		const { lessons, t } = this.props;
 		return (
 			<SlayLayout
-				items={lessons}
+				paper
+				noSidebar
 				loading={loading}
 				hasMore={hasMore}
-				cardComponent={CourseCard}
+				items={lessons}
+				loadMore={this.loadMore}
+				cardComponent={CodePenCard}
+				loadingComponent={SlayDetailedShimmer}
+				wrapperStyle={{
+					alignItems: 'initial',
+				}}
+				style={{
+					width: 'initial',
+					padding: 15,
+					flexDirection: 'row',
+					flexWrap: 'wrap',
+					justifyContent: 'flex-start',
+				}}
 			>
-				{lessons.length ||
-					<p>{t('common.empty-list-message')}</p>
-				}
+				{lessons.length ? null : <p>{t('common.empty-list-message')}</p>}
 			</SlayLayout>
 		);
 	}

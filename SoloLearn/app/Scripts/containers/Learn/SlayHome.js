@@ -1,16 +1,22 @@
 import React, { PureComponent } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 
-import { getLessonCollections } from 'actions/slay';
+import { getLessonCollections, getBookmarkLessons } from 'actions/slay';
 import SlayLayout from 'components/Layouts/SlayLayout';
 import CollectionCard from 'components/Shared/CollectionCard';
+import SidebarCollectionCard from 'components/Shared/SidebarCollectionCard';
 
-const mapStateToProps = state => ({ collections: state.slay.slayCollections });
+const mapStateToProps = state => ({
+	bookmarks: state.slay.bookmarks,
+	collections: state.slay.slayCollections,
+});
 
-const mapDispatchToProps = { getLessonCollections };
+const mapDispatchToProps = { getLessonCollections, getBookmarkLessons };
 
 @connect(mapStateToProps, mapDispatchToProps)
+@translate()
 class SlayHome extends PureComponent {
 	constructor() {
 		super();
@@ -27,6 +33,7 @@ class SlayHome extends PureComponent {
 		const { startIndex, loadCount } = this.state;
 		const { collections, getLessonCollections } = this.props;
 		if (!collections.length) {
+			await this.props.getBookmarkLessons({ index: startIndex, count: loadCount });
 			const length = await getLessonCollections({ index: startIndex, count: loadCount }) - 1;
 			this.setState({
 				loading: false,
@@ -56,7 +63,7 @@ class SlayHome extends PureComponent {
 	}
 
 	render() {
-		const { collections } = this.props;
+		const { t, collections, bookmarks } = this.props;
 		const { loading, hasMore } = this.state;
 		return (
 			<SlayLayout
@@ -66,6 +73,13 @@ class SlayHome extends PureComponent {
 				items={collections}
 				loadMore={this.loadMore}
 				cardComponent={CollectionCard}
+				sidebarContent={
+					<SidebarCollectionCard
+						bookmarks
+						items={bookmarks}
+						title={t('store.bookmarks.title')}
+					/>
+				}
 			/>
 		);
 	}

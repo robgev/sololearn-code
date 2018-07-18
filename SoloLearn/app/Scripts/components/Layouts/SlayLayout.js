@@ -19,6 +19,7 @@ const Layout = ({
 	noDisplay,
 	noSidebar,
 	wrapperStyle,
+	sidebarContent,
 	cardComponent: CardComponent,
 	loadingComponent: LoadingComponent,
 }) => (
@@ -50,12 +51,12 @@ const Layout = ({
 					loader={loading ?
 						null :
 						<CircularProgress
-							key={items[0].name}
 							style={{
 								width: '100%',
 								paddingBottom: 15,
 								textAlign: 'center',
 							}}
+							key={items.length ? items[0].name : 'progress'}
 						/>
 					}
 					// Loading specifies initial load.
@@ -74,7 +75,9 @@ const Layout = ({
 		</div>
 		{!noSidebar &&
 			<div className="sidebar-placeholder">
-				<div className="sidebar" />
+				<div className="sidebar">
+					{sidebarContent}
+				</div>
 			</div>
 		}
 	</div>
