@@ -14,27 +14,37 @@ import { translate } from 'react-i18next';
 import 'styles/Feed/Header.scss';
 
 class Header extends PureComponent {
-	render() {
-		const { levels, profile, t } = this.props;
-		const { level: userLevel, xp: currentXp } = profile;
-		let maxXp = null;
-		let status = '';
-		const levelsWithStatus = levels.filter(item => item.status != null);
-		// TODO Write a comment
-		if (userLevel >= levelsWithStatus[levelsWithStatus.length - 1].number) {
-			maxXp = currentXp;
-			status = levelsWithStatus[levelsWithStatus.length - 1].status;
+	constructor(props) {
+		super(props);
+		const { levels, profile } = props;
+		const { level: userLevel, xp: currentXp, badge } = profile;
+		// Starting from user level we try to find a level
+		// That has a status which is not null
+		// This means we need to get maxXp of the previous level of that
+		// specific status level to get that status
+		// That's why we find the index and then set as maxXp
+		// the previous level's maxXp
+		// If there is no such level, this means the
+		// user already has the highest status, so we just
+		// show his xp as maxXp, which means no more progress to make
+		console.log(userLevel, levels.slice(userLevel + 1));
+		const nextMilestoneLevelIndex =
+			levels.slice(userLevel + 1).findIndex(lvl => lvl.status !== null);
+		[ this.currentBadge ] = badge.split('|');
+		if (nextMilestoneLevelIndex !== -1) {
+			console.log(levels, nextMilestoneLevelIndex);
+			// Restore index after slice
+			this.maxXp = levels[userLevel + nextMilestoneLevelIndex].maxXp;
+			this.nextMilestone = levels[userLevel + 1 + nextMilestoneLevelIndex].status;
 		} else {
-			for (let i = userLevel; i < levels.length - 1; i++) {
-				const currentLevel = levels[i];
-
-				if (currentLevel.status != null) {
-					maxXp = levels[i - 1].maxXp;
-					status = currentLevel.status;
-					break;
-				}
-			}
+			this.maxXp = currentXp;
+			[ this.nextMilestone ] = badge.split('|');
 		}
+	}
+
+	render() {
+		const { profile, t } = this.props;
+		const { xp: currentXp } = profile;
 
 		return (
 			<Paper className="feed-header">
@@ -48,22 +58,25 @@ class Header extends PureComponent {
 						avatarStyle={{ margin: 0 }}
 					/>
 					<div className="details">
-						<Link to={`/profile/${this.props.profile.id}`}>
+						<Link to={`/profile/${profile.id}`}>
 							<p className="user-name hoverable">{profile.name}</p>
 						</Link>
 						<Link to="/leaderboards" className="leaderboard-link hoverable">
 							{t('leaderboard.rank.placeholder')}
 						</Link>
-						<div className="progress-wrapper">
+						<div className="profile-progress-wrapper">
 							<LinearProgress
 								min={0}
-								max={maxXp}
 								color="#8BC34A"
+								max={this.maxXp}
 								value={currentXp}
 								mode="determinate"
 								style={{ backgroundColor: '#dedede' }}
 							/>
-							<span className="user-status">{status}</span>
+							<div className="user-status-wrapper">
+								<span className="user-status">{this.currentBadge}</span>
+								<span className="user-status">{this.nextMilestone}</span>
+							</div>
 						</div>
 					</div>
 				</div>

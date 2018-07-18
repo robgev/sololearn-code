@@ -21,9 +21,13 @@
 			}
 			.profile-progress-wrapper {
 				text-align: right;
-				.user-status {
-					font-size: 11px;
-					color: #777;
+				.user-status-wrapper {
+					display: flex;
+    			justify-content: space-between;
+					.user-status {
+						font-size: 11px;
+						color: #777;
+					}
 				}
 			}
 		}
