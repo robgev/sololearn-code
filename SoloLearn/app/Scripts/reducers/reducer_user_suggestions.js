@@ -1,13 +1,10 @@
-import { GET_USER_SUGESSTIONS } from '../constants/ActionTypes';
+import { GET_USER_SUGGESTIONS } from '../constants/ActionTypes';
 
-export default function (state = [], action) {
+export default (state = [], action) => {
 	switch (action.type) {
-	case GET_USER_SUGESSTIONS:
-		const newArr = [];
-		while (action.payload.length) newArr.push(action.payload.splice(0, 10));
-
-		return newArr;
+	case GET_USER_SUGGESTIONS:
+		return action.payload;
 	default:
 		return state;
 	}
-}
+};

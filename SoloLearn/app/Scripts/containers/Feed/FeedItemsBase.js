@@ -210,16 +210,6 @@ class FeedItemsBase extends Component {
 		window.addEventListener('scroll', this.handleScroll);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		return (this.props.feed !== nextProps.feed
-			|| this.props.feedPins !== nextProps.feedPins
-			|| this.state.hasNewItems !== nextState.hasNewItems
-			|| this.state.isLoading !== nextState.isLoading
-			|| this.state.popupOpened !== nextState.popupOpened
-			|| this.state.totalWins !== nextState.totalWins
-			|| this.state.totalLoses !== nextState.totalLoses);
-	}
-
 	componentWillUnmount() {
 		if (this.props.isUserProfile) {
 			this.props.clearProfileFeedItems([]);

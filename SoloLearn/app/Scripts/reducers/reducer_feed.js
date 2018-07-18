@@ -4,6 +4,7 @@ import {
 	GET_FEED_ITEMS,
 	GET_NEW_FEED_ITEMS,
 	SET_FEED_ITEM_VOTE_DATA,
+	FOLLOW_USER_SUGGESTION,
 } from '../constants/ActionTypes';
 
 const changeFeedItemVote = (feedItems, { votes, vote, id }) => {
@@ -25,6 +26,18 @@ export default (state = [], action) => {
 		return changeFeedItemVote(state, action.payload);
 	case GET_NEW_FEED_ITEMS:
 		return [ ...action.payload, ...state ];
+	case FOLLOW_USER_SUGGESTION:
+		return state.map(feedItem =>
+			(feedItem.id !== action.payload.feedId
+				? feedItem
+				: {
+					...feedItem,
+					suggestions: feedItem.suggestions.map(sugg =>
+						(sugg.id !== action.payload.id
+							? sugg
+							: { ...sugg, isFollowing: action.payload.follow })),
+				}
+			));
 	case CLEAR_FEED:
 	case RESET_LOCALE_DATA:
 		return [];

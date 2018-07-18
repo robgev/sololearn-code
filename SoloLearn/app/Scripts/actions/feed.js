@@ -89,7 +89,7 @@ export const getFeedItemsInternal = (fromId, profileId) => async (dispatch, getS
 		} else if (feedItemsCount >= requestLimitCount * (1 + suggestionsBatch) &&
 			suggestionsBatch < userSuggestions.length) {
 			const suggestionsObj = {
-				suggestions: userSuggestions[suggestionsBatch],
+				suggestions: userSuggestions.slice(suggestionsBatch * 10, (suggestionsBatch * 10) + 10),
 				type: feedTypes.suggestions,
 				id: suggestionsBatch,
 			};
@@ -150,9 +150,22 @@ export const getPinnedFeedItemsInternal = () => (dispatch) => {
 };
 
 export const getUserSuggestions = users => ({
-	type: types.GET_USER_SUGESSTIONS,
+	type: types.GET_USER_SUGGESTIONS,
 	payload: users,
 });
+
+export const followUserSuggestion = ({ id, feedId, follow }) => {
+	const endpoint = follow ? 'Profile/Follow' : 'Profile/Unfollow';
+	Service.request(endpoint, { id });
+	return {
+		type: types.FOLLOW_USER_SUGGESTION,
+		payload: {
+			id,
+			follow,
+			feedId,
+		},
+	};
+};
 
 export const getUserSuggestionsInternal = () => dispatch => Service.request('Profile/SearchUsers').then((response) => {
 	dispatch(getUserSuggestions(response.users));

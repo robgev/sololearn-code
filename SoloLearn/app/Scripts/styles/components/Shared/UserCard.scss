@@ -23,6 +23,7 @@
 			padding: 5px 10px;
 			width: 100%;
 			.profile-name {
+				color: #1E1E1E;
 				@include multiLineEllipsis($lineHeight: 16px, $lineCount: 2, $bgColor: white);
 			}
 			.profile-followers {

@@ -68,11 +68,6 @@ class FeedItem extends Component {
 		this.url = '';
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		return (this.props.feedItem !== nextProps.feedItem ||
-			this.state.isOpened !== nextState.isOpened);
-	}
-
 	handleChallengesOpen = () => {
 		this.setState({ isOpened: !this.state.isOpened });
 	}
@@ -144,7 +139,7 @@ class FeedItem extends Component {
 			this.url = `/profile/${feedItem.contest.player.id}`;
 			return <Challenge contest={feedItem.contest} openPopup={this.props.openPopup} />;
 		case types.suggestions:
-			return <FeedSuggestions suggestions={feedItem.suggestions} />;
+			return <FeedSuggestions feedItem={feedItem} />;
 		case types.postedLessonComment:
 		case types.postedLessonCommentReply:
 			// this.url = `/learn/${feedItem.course.alias}/${feedItem.course.id}`;

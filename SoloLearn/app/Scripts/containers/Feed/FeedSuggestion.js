@@ -5,7 +5,7 @@ import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import { blueGrey900 } from 'material-ui/styles/colors';
 import ProfileAvatar from 'components/Shared/ProfileAvatar';
-import { followUserInternal, unfollowUserInternal } from 'actions/profile';
+import { followUserSuggestion } from 'actions/feed';
 
 const styles = {
 	user: {
@@ -53,57 +53,42 @@ const styles = {
 };
 
 const mapDispatchToProps = {
-	followUser: followUserInternal,
-	unfollowUser: unfollowUserInternal,
+	followUser: followUserSuggestion,
 };
 
-@connect(null, mapDispatchToProps)
-class FeedSuggestion extends Component {
-	state = {
-		following: false,
-	}
+const FeedSuggestion = ({ suggestion, followUser, feedId }) => {
+	const {
+		id,
+		name,
+		followers,
+		avatarUrl,
+		isFollowing,
+	} = suggestion;
 
-	handleFollow = () => {
-		const { suggestion: { id }, followUser, unfollowUser } = this.props;
-		const newFollowingValue = !this.state.following;
-		this.setState({ following: newFollowingValue });
+	return (
+		<Paper className="user" style={styles.user}>
+			<ProfileAvatar
+				vertical
+				size={50}
+				withUserNameBox
+				style={styles.avatar}
+				userID={id}
+				userName={name}
+				avatarUrl={avatarUrl}
+			/>
+			<p style={styles.followers}>Followers {followers}</p>
+			<RaisedButton
+				labelColor="#fff"
+				secondary={isFollowing}
+				backgroundColor={blueGrey900}
+				style={styles.followButton.base}
+				labelStyle={styles.followButton.label}
+				label={isFollowing ? 'Following' : 'Follow'}
+				buttonStyle={styles.followButton.button}
+				onClick={() => followUser({ feedId, id, follow: !isFollowing })}
+			/>
+		</Paper>
+	);
+};
 
-		if (newFollowingValue) {
-			followUser(id, null);
-		} else {
-			unfollowUser(id, null);
-		}
-	}
-
-	render() {
-		const { following } = this.state;
-		const { suggestion } = this.props;
-
-		return (
-			<Paper className="user" style={styles.user}>
-				<ProfileAvatar
-					vertical
-					size={50}
-					withUserNameBox
-					style={styles.avatar}
-					userID={suggestion.id}
-					userName={suggestion.name}
-					avatarUrl={suggestion.avatarUrl}
-				/>
-				<p style={styles.followers}>Followers {suggestion.followers}</p>
-				<RaisedButton
-					labelColor="#fff"
-					secondary={following}
-					onClick={this.handleFollow}
-					backgroundColor={blueGrey900}
-					style={styles.followButton.base}
-					labelStyle={styles.followButton.label}
-					label={following ? 'Following' : 'Follow'}
-					buttonStyle={styles.followButton.button}
-				/>
-			</Paper>
-		);
-	}
-}
-
-export default FeedSuggestion;
+export default connect(null, mapDispatchToProps)(FeedSuggestion);

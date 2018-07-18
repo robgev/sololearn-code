@@ -274,10 +274,6 @@ class FeedPin extends Component {
 			</div>
 		);
 	}
-
-	shouldComponentUpdate(nextProps) {
-		return this.props.pin !== nextProps.pin;
-	}
 }
 
 export default Radium(FeedPin);

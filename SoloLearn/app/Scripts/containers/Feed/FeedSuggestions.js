@@ -1,5 +1,5 @@
 // React modules
-import React, { Component } from 'react';
+import React from 'react';
 
 // Additional data and components
 import FeedSuggestion from './FeedSuggestion';
@@ -20,41 +20,24 @@ const styles = {
 	},
 };
 
-class FeedSuggestions extends Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-		};
-	}
-
-	renderSuggestions() {
-		return (
-			<GridList
-				style={styles.gridList}
-				cols={2}
-				cellHeight={150}
-				padding={8}
-			>
-				{this.props.suggestions.map((suggestion, index) => (
-					<GridTile
-						key={`suggestion${suggestion.id}`}
-						style={styles.tileStyle}
-					>
-						<FeedSuggestion className="suggestion-wrapper" suggestion={suggestion} />
-					</GridTile>
-				))}
-			</GridList>
-		);
-	}
-
-	render() {
-		return (
-			<div className="feed-suggestions">
-				{this.renderSuggestions()}
-			</div>
-		);
-	}
-}
+const FeedSuggestions = ({ feedItem }) => (
+	<div className="feed-suggestions">
+		<GridList
+			style={styles.gridList}
+			cols={2}
+			cellHeight={150}
+			padding={8}
+		>
+			{feedItem.suggestions.map(suggestion => (
+				<GridTile
+					key={`suggestion${suggestion.id}`}
+					style={styles.tileStyle}
+				>
+					<FeedSuggestion className="suggestion-wrapper" feedId={feedItem.id} suggestion={suggestion} />
+				</GridTile>
+			))}
+		</GridList>
+	</div>
+);
 
 export default FeedSuggestions;
