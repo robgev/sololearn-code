@@ -6,16 +6,20 @@ import DiscussShimmer from 'components/Shared/Shimmers/DiscussShimmer';
 import 'styles/Discuss/Questions.scss';
 import QuestionItem from './QuestionItem';
 
-export default ({ questions, loadMore, hasMore }) =>
+export default ({
+	questions, loadMore, hasMore, header,
+}) =>
 	(questions !== null && questions.length === 0 ? <div>No questions found</div> : (
 		<div>
 			{questions === null &&
 				(
 					<Paper style={{ height: '100vh', overflow: 'hidden' }}>
+						{header}
 						<DiscussShimmer />
 					</Paper>
 				)}
 			<InfiniteScroll
+				header={header}
 				loadMore={loadMore}
 				hasMore={hasMore}
 				style={{
