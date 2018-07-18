@@ -10,7 +10,6 @@ import {
 	changeDiscussHasMore,
 } from 'actions/discuss';
 import Layout from 'components/Layouts/GeneralLayout';
-import Paper from 'material-ui/Paper';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Chip from 'material-ui/Chip';
