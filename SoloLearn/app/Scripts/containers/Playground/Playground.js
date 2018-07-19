@@ -361,18 +361,29 @@ class Playground extends Component {
 	}
 
 	handleLanguageChange = (e, index, selectedLanguage) => {
+		const { basePath } = this.props;
+		const {
+			codeType,
+			publicID,
+			userCodeLanguage,
+			latestSavedCodeData,
+		} = this.state;
+		const isUserCode = codeType === 'userCode';
+		const link = isUserCode ? `${basePath}/${publicID}/` : `${basePath}/`;
 		const mode = selectedLanguage === 'web' ? 'html' : selectedLanguage;
-		const { type, language } = editorSettings[mode];
-		const { latestSavedCodeData, userCodeLanguage } = this.state;
+		const { alias, type, language } = editorSettings[mode];
 		const isUserWritten =
 			latestSavedCodeData.codeType === 'userCode' && language === userCodeLanguage;
 		const code = isUserWritten ? latestSavedCodeData.sourceCode : texts[mode];
+		browserHistory.replace(`${link}${alias}`);
 		this.setState({
 			code,
 			type,
 			mode,
+			sourceCode: code,
 			showOutput: false,
 			languageSelector: mode,
+			latestSavedCodeData: { ...latestSavedCodeData, language, code },
 		});
 	}
 

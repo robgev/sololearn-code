@@ -13,6 +13,8 @@ import 'brace/mode/php';
 import 'brace/mode/python';
 import 'brace/mode/csharp';
 import 'brace/mode/ruby';
+import 'brace/mode/kotlin';
+import 'brace/mode/swift';
 import 'brace/theme/chrome'; // Editor light theme
 import 'brace/theme/monokai'; // Editor dark theme
 import 'brace/ext/language_tools';
@@ -72,10 +74,10 @@ const Editor = ({
 		<AceEditor
 			wrapEnabled
 			value={code}
-			mode={mode}
 			width="100%"
 			theme={theme}
 			showPrintMargin={false}
+			mode={mode !== 'c' ? mode : 'c_cpp'}
 			height={inline ? '300px' : `${fullScreen ? 100 : 60}vh`}
 			setOptions={{
 				enableBasicAutocompletion: true,

@@ -1,17 +1,14 @@
-// React modules
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
-
-// i18n
+import uniqBy from 'lodash/uniqBy';
+import { browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
 
-// Material UI components
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
-// Redux modules
 import LanguageSelector from 'components/Shared/LanguageSelector';
-import { browserHistory } from 'react-router';
+import languages from 'defaults/playgroundEditorSettings';
 
 @translate()
 class AddCodeButton extends Component {
@@ -61,8 +58,8 @@ class AddCodeButton extends Component {
 				<LanguageSelector
 					open={isLanguageSelectorOpen}
 					onChoose={this.selectLanguage}
+					courses={uniqBy(Object.values(languages), 'languageName')}
 					onClose={this.toggleLanguageSelector}
-					filter={course => course.isPlaygroundEnabled}
 				/>
 			</div>
 		);

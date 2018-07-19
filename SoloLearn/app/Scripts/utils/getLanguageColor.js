@@ -20,6 +20,12 @@ const getLanguageColor = (language) => {
 		return '#E54D26';
 	case 'html':
 		return '#F26525';
+	case 'c':
+		return '#1482B7';
+	case 'kt':
+		return '#3495D8';
+	case 'swift':
+		return '#F57B38';
 	default:
 		return '';
 	}

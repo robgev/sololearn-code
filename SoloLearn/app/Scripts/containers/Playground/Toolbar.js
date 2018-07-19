@@ -355,11 +355,14 @@ ${this.props.code}
 							>
 								<MenuItem value="web" primaryText="HTML/CSS/JS" />
 								<MenuItem value="c_cpp" primaryText="C++" />
+								<MenuItem value="c" primaryText="C" />
 								<MenuItem value="csharp" primaryText="C#" />
 								<MenuItem value="java" primaryText="Java" />
 								<MenuItem value="python" primaryText="Python 3" />
 								<MenuItem value="php" primaryText="PHP" />
 								<MenuItem value="ruby" primaryText="Ruby" />
+								<MenuItem value="kotlin" primaryText="Kotlin" />
+								<MenuItem value="swift" primaryText="Swift" />
 							</DropDownMenu>
 							<Checkbox
 								label="Dark Theme"

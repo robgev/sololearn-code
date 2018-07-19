@@ -89,7 +89,9 @@ const texts = {
 	python: '',
 	csharp: 'using System;\nusing System.Collections.Generic;\nusing System.Linq;\nusing System.Text;\nusing System.Threading.Tasks;\n\n\nnamespace SoloLearn\n{\n\tclass Program\n\t{\n\t\tstatic void Main(string[] args)\n\t\t{\n\t\t\t\n\t\t}\n\t}\n}\n',
 	ruby: '',
-
+	swift: '',
+	kotlin: 'fun main(args: Array<String>) {\n\n}',
+	c: '#include <stdio.h>\n\nint main() {\n\t\treturn 0;\n}',
 	get inputsPopupTitle() {
 		return i18n.t('code_playground.alert.input-needs-title');
 	},

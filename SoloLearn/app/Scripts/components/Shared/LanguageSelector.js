@@ -50,6 +50,6 @@ LanguageSelector.propTypes = {
 	filter: PropTypes.func,
 };
 
-const mapStateToProps = state => ({ courses: state.courses });
+const mapStateToProps = (state, ownProps) => ({ courses: ownProps.courses || state.courses });
 
 export default connect(mapStateToProps)(LanguageSelector);
