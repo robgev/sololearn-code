@@ -4,7 +4,6 @@
 /Services/obj/
 /SoloLearn/node_modules
 /SoloLearn/obj/
-/SoloLearn/wwwroot/
 /.vs
 /.vscode
 SoloLearn/.eslintrc
