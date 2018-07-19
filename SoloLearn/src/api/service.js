@@ -1,6 +1,7 @@
 import Storage from './storage';
 
 export const AppDefaults = {
+	baseUrl: 'http://localhost:2525',
 	downloadHost: 'https://api.sololearn.com/uploads/',
 };
 
@@ -17,13 +18,13 @@ class Service {
 		this.accessTokenExpireTime = Date.now() + (expiresIn * 1000);
 	}
 	_request = (url, options) =>
-		fetch(url, { ...options, credentials: 'same-origin' })
+		fetch(url, { ...options, credentials: 'include' })
 			.then(res => res.json())
 			.catch(console.error)
 
 	_getSession = async (locale) => {
 		const { accessToken, expiresIn, user } = await this._request(
-			`/Ajax/GetSession?locale=${locale}`,
+			`${AppDefaults.baseUrl}/Ajax/GetSession?locale=${locale}`,
 			{
 				method: 'POST',
 			},
@@ -38,7 +39,7 @@ class Service {
 			|| Date.now() > this.accessTokenExpireTime) {
 			await this.getSession();
 		}
-		return this._request(`/api/${url}`, {
+		return this._request(`${AppDefaults.baseUrl}/api/${url}`, {
 			method: 'POST',
 			body: JSON.stringify(body),
 			headers: {

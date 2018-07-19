@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace SoloLearn
         {
             services.AddMvc();
             services.AddReact();
-
+	  services.AddCors();
 
 			services.AddDataProtection()
 								.PersistKeysToFileSystem(new DirectoryInfo(@"C:\DataProtection"))
@@ -46,8 +46,11 @@ namespace SoloLearn
             {
                 app.UseDeveloperExceptionPage();
             }
-
-			app.UseMiddleware<ServiceProxyMiddleware>(Options.Create(new ProxyOptions
+	  app.UseCors(builder =>
+builder.WithOrigins("http://localhost:3000")
+.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials().SetPreflightMaxAge(TimeSpan.FromDays(356))
+);
+	  app.UseMiddleware<ServiceProxyMiddleware>(Options.Create(new ProxyOptions
 			{
 				Scheme = "http",
 				Host = "localhost"

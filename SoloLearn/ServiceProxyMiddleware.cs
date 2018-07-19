@@ -59,7 +59,7 @@ namespace SoloLearn
 
         public async Task Invoke(HttpContext context)
         {
-            if (!context.Request.Path.StartsWithSegments(new PathString("/api")))
+            if (context.Request.Method == HttpMethods.Options || !context.Request.Path.StartsWithSegments(new PathString("/api")))
             {
                 await _next.Invoke(context);
                 return;
