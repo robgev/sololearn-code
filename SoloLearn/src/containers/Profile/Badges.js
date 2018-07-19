@@ -1,6 +1,5 @@
 // React modules
 import React, { PureComponent } from 'react';
-import scrollToElement from 'scroll-to-element';
 import { translate } from 'react-i18next';
 import Paper from 'material-ui/Paper';
 
@@ -26,7 +25,9 @@ const styles = {
 @translate()
 class Badges extends PureComponent {
 	componentDidMount() {
-		scrollToElement(this._selected, { offset: -100 });
+		this._selected.scrollIntoView({
+			behaviour: 'smooth'
+		});
 	}
 	render() {
 		const { t, badges, selectedId } = this.props;
