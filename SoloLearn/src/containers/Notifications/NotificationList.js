@@ -16,7 +16,7 @@ import { isLoaded } from 'reducers';
 import { getNotificationsInternal, emptyNotifications } from 'actions/profile';
 
 // Additional components
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/LoadingOverlay';
 import NotificationItem from './NotificationItem';
 
 import { NotificationListStyles as styles } from './styles';

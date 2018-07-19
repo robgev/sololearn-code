@@ -9,7 +9,7 @@ import { ListItem } from 'material-ui/List';
 // App defaults and utils
 import { updateDate, getChallengeStatus } from 'utils';
 import contestTypes from 'defaults/contestTypes';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import ProfileAvatar from 'components/ProfileAvatar';
 
 // i18n
 import { translate } from 'react-i18next';

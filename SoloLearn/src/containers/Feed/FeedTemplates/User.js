@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 
 // Utils and defaults
 import PopupTypes from 'defaults/feedPopupTypes';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import ProfileAvatar from 'components/ProfileAvatar';
 
 import 'styles/Feed/FeedTemplates/User.scss';
 

@@ -10,8 +10,8 @@ import { grey500 } from 'material-ui/styles/colors';
 
 // Utils
 import { numberFormatter } from 'utils';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
-import LanguageIcon from 'components/Shared/LanguageIcon';
+import ProfileAvatar from 'components/ProfileAvatar';
+import LanguageIcon from 'components/LanguageIcon';
 
 class CodeItem extends Component {
 	shouldComponentUpdate(nextProps) {

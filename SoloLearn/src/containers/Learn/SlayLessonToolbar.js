@@ -1,5 +1,5 @@
 import React from 'react';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import ProfileAvatar from 'components/ProfileAvatar';
 
 import IconButton from 'material-ui/IconButton';
 import { grey500 } from 'material-ui/styles/colors';

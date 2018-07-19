@@ -1,6 +1,6 @@
 // React modules
 import React from 'react';
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/LoadingOverlay';
 
 // i18n
 import { translate } from 'react-i18next';

@@ -19,8 +19,8 @@ import { blockUser } from 'actions/settings';
 import { numberFormatter, determineAccessLevel } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
 
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
-import ReportPopup from 'components/Shared/ReportPopup';
+import ProfileAvatar from 'components/ProfileAvatar';
+import ReportPopup from 'components/ReportPopup';
 
 // i18next
 import { translate } from 'react-i18next';

@@ -21,7 +21,7 @@ import { isLoaded } from 'reducers';
 import Popup from 'api/popupService';
 
 // Additional components
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/LoadingOverlay';
 import Layout from 'components/Layouts/GeneralLayout';
 import Question from './Question';
 import Replies from './Replies';

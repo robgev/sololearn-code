@@ -28,7 +28,7 @@ import Service from 'api/service';
 // Additional data and components
 import Comments from 'containers/Comments/CommentsBase';
 import Layout from 'components/Layouts/GeneralLayout';
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/LoadingOverlay';
 
 import StepIcon from './StepIcon';
 

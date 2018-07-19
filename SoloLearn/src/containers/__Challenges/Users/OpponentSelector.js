@@ -15,7 +15,7 @@ import { chooseContestCourse } from 'actions/challenges';
 import { isLoaded } from 'reducers';
 
 // Additional data and components
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/LoadingOverlay';
 import Layout from 'components/Layouts/GeneralLayout';
 
 // Utils

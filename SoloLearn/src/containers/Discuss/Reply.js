@@ -16,11 +16,11 @@ import { grey500, blueGrey500, lightGreen500 } from 'material-ui/styles/colors';
 import { editPostInternal, toggleAcceptedAnswerInternal } from 'actions/discuss';
 import getLikesAndDownvotesCurried from 'actions/likes';
 
-import Likes from 'components/Shared/Likes';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
-import PreviewItem from 'components/Shared/PreviewItem';
+import Likes from 'components/Likes';
+import ProfileAvatar from 'components/ProfileAvatar';
+import PreviewItem from 'components/PreviewItem';
 import { updateDate, determineAccessLevel, generatePreviews, replaceMention, getMentionsList } from 'utils';
-import MentionInput from 'components/Shared/MentionInput';
+import MentionInput from 'components/MentionInput';
 
 import { ReplyStyles as styles } from './styles';
 import './reply.scss';

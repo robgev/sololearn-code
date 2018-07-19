@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { getLessonsByAuthor } from 'actions/slay';
-import CourseCard from 'components/Shared/CourseCard';
+import CourseCard from 'components/CourseCard';
 import SlayLayout from 'components/Layouts/SlayLayout';
 
 // import 'styles/slayHome.scss';

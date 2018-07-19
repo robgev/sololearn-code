@@ -21,7 +21,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import 'styles/Challenges/Challenge/Game/ViewCorrectAnswers.scss';
 import Service from 'api/service';
 import { QuizComponents, QuizType } from 'containers/Learn/QuizSelector';
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/LoadingOverlay';
 import TypeSelector from './TypeSelector';
 import { createAnswerUI } from './gameUtil';
 

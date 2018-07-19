@@ -5,8 +5,8 @@ import CircularProgress from 'material-ui/CircularProgress';
 import Paper from 'material-ui/Paper';
 
 import { getDiscoverSuggestions } from 'actions/discover';
-import UserCard from 'components/Shared/UserCard';
-import BusyWrapper from 'components/Shared/BusyWrapper';
+import UserCard from 'components/UserCard';
+import BusyWrapper from 'components/BusyWrapper';
 import Layout from 'components/Layouts/GeneralLayout';
 
 import 'styles/components/Layouts/DiscoverLayout.scss';

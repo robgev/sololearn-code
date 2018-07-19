@@ -8,7 +8,7 @@ import { isLoaded } from 'reducers';
 import { getFollowersInternal } from 'actions/profile';
 
 // Additional data and components
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/LoadingOverlay';
 import Follower from './FollowerItem';
 
 const styles = {

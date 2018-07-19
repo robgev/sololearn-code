@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import { blueGrey900 } from 'material-ui/styles/colors';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import ProfileAvatar from 'components/ProfileAvatar';
 import { followUserSuggestion } from 'actions/feed';
 
 const styles = {

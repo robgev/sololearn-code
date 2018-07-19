@@ -18,7 +18,7 @@ import { isLoaded } from 'reducers';
 import Service from 'api/service';
 import Progress, { ProgressState } from 'api/progress';
 
-import BusyWrapper from 'components/Shared/BusyWrapper';
+import BusyWrapper from 'components/BusyWrapper';
 import Layout from 'components/Layouts/GeneralLayout';
 
 import Popup from 'api/popupService';

@@ -56,7 +56,7 @@ import DiscoverContainer from 'containers/Profile/DiscoverContainer';
 
 import Play from 'containers/Play';
 
-import NotFound from 'components/Shared/NotFound';
+import NotFound from 'components/NotFound';
 
 import redirector from 'utils/redirector';
 

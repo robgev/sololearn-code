@@ -8,7 +8,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 // Redux modules
 import { followUserInternal, unfollowUserInternal } from 'actions/profile';
 
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import ProfileAvatar from 'components/ProfileAvatar';
 
 // i18next
 import { translate } from 'react-i18next';

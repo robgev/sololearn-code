@@ -29,7 +29,7 @@ import editorSettings from 'defaults/playgroundEditorSettings';
 import { checkWeb } from 'utils';
 
 // Additional components
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/LoadingOverlay';
 import Layout from 'components/Layouts/GeneralLayout';
 import Editor from './Editor';
 import PlaygroundTabs from './PlaygroundTabs';

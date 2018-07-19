@@ -1,7 +1,7 @@
 // React modules
 import React, { PureComponent } from 'react';
 import { Link, browserHistory } from 'react-router';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import ProfileAvatar from 'components/ProfileAvatar';
 
 // Material UI components
 import Paper from 'material-ui/Paper';

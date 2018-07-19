@@ -8,9 +8,9 @@ import { connect } from 'react-redux';
 import { getCodesInternal, emptyCodes } from 'actions/playground';
 
 // Additional components
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
-import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
-import CodeShimmer from 'components/Shared/Shimmers/CodeShimmer';
+import LoadingOverlay from 'components/LoadingOverlay';
+import InfiniteVirtualizedList from 'components/InfiniteVirtualizedList';
+import CodeShimmer from 'components/Shimmers/CodeShimmer';
 import 'styles/Playground/Codes.scss';
 
 import CodeItem from './CodeItem';

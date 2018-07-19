@@ -3,9 +3,9 @@ import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 
 import { getMoreOnTopic, setSelectedCollection } from 'actions/slay';
-import CodePenCard from 'components/Shared/CodePenCard';
+import CodePenCard from 'components/CodePenCard';
 import SlayLayout from 'components/Layouts/SlayLayout';
-import SlayDetailedShimmer from 'components/Shared/Shimmers/SlayDetailedShimmer';
+import SlayDetailedShimmer from 'components/Shimmers/SlayDetailedShimmer';
 
 const mapStateToProps = state => ({
 	courses: state.courses,

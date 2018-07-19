@@ -7,7 +7,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import Progress from 'api/progress';
 import Service from 'api/service';
 import { loadCourseInternal } from 'actions/learn';
-import BusyWrapper from 'components/Shared/BusyWrapper';
+import BusyWrapper from 'components/BusyWrapper';
 
 const mapStateToProps = state => ({
 	courses: state.courses,

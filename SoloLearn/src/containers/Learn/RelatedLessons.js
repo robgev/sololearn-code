@@ -1,7 +1,7 @@
 import React from 'react';
-import CourseCard from 'components/Shared/CourseCard';
-import CollectionCard from 'components/Shared/CollectionCard';
-import SidebarCollectionCard from 'components/Shared/SidebarCollectionCard';
+import CourseCard from 'components/CourseCard';
+import CollectionCard from 'components/CollectionCard';
+import SidebarCollectionCard from 'components/SidebarCollectionCard';
 
 import 'styles/relatedLessons.scss';
 

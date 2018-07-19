@@ -17,9 +17,9 @@ import ReportItemTypes from 'constants/ReportItemTypes';
 import { lastNonForcedDownIndex, notForcedDownCount } from 'utils/comments.utils';
 
 // Additional components
-import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
-import ReportPopup from 'components/Shared/ReportPopup';
+import InfiniteVirtualizedList from 'components/InfiniteVirtualizedList';
+import LoadingOverlay from 'components/LoadingOverlay';
+import ReportPopup from 'components/ReportPopup';
 import FlatButton from 'material-ui/FlatButton';
 import Comment from './Comment';
 import RemovalPopup from './RemovalPopup';

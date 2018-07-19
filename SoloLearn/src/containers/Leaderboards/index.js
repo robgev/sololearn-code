@@ -14,8 +14,8 @@ import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import { getLeaderboard } from 'actions/leaderboards';
 
 import Layout from 'components/Layouts/GeneralLayout';
-import BusyWrapper from 'components/Shared/BusyWrapper';
-import LeaderboardShimmer from 'components/Shared/Shimmers/LeaderboardShimmer';
+import BusyWrapper from 'components/BusyWrapper';
+import LeaderboardShimmer from 'components/Shimmers/LeaderboardShimmer';
 import texts from 'texts';
 
 import 'styles/Leaderboards/index.scss';

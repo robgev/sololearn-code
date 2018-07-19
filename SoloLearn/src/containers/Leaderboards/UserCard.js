@@ -1,5 +1,5 @@
 import React from 'react';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import ProfileAvatar from 'components/ProfileAvatar';
 import 'styles/userCard.scss';
 
 const UserData = ({ name, xp }) => (

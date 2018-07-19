@@ -22,9 +22,9 @@ import { isLoaded } from 'reducers';
 
 // Additional components
 import Layout from 'components/Layouts/GeneralLayout';
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/LoadingOverlay';
 import ContestItem from './ContestItem';
-import PlayShimmer from 'components/Shared/Shimmers/PlayShimmer';
+import PlayShimmer from 'components/Shimmers/PlayShimmer';
 
 // i18next
 import { translate } from 'react-i18next';

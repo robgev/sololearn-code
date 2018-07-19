@@ -16,10 +16,10 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { grey500, blueGrey500 } from 'material-ui/styles/colors';
 
 // Utils
-import Likes from 'components/Shared/Likes';
-import PreviewItem from 'components/Shared/PreviewItem';
-import ReportPopup from 'components/Shared/ReportPopup';
-import DiscussAuthor from 'components/Shared/ProfileAvatar';
+import Likes from 'components/Likes';
+import PreviewItem from 'components/PreviewItem';
+import ReportPopup from 'components/ReportPopup';
+import DiscussAuthor from 'components/ProfileAvatar';
 import ReportItemTypes from 'constants/ReportItemTypes';
 import {
 	updateDate,
@@ -33,7 +33,7 @@ import {
 import { questionFollowingInternal } from 'actions/discuss';
 import getLikesAndDownvotesCurried from 'actions/likes';
 
-import DiscussTag from 'components/Shared/Questions/DiscussTag';
+import DiscussTag from 'components/Questions/DiscussTag';
 import RemovalPopup from './RemovalPopup';
 
 import { QuestionStyles as styles } from './styles';

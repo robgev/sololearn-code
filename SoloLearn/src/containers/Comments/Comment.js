@@ -13,11 +13,11 @@ import Linkify from 'react-linkify';
 import { getLikesAndDownvotesInternal } from 'actions/likes';
 
 // Utils
-import VoteControls from 'components/Shared/VoteControls';
+import VoteControls from 'components/VoteControls';
 import { updateDate, replaceMention, generatePreviews, getMentionFetcher } from 'utils';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
-import PreviewItem from 'components/Shared/PreviewItem';
-import MentionInput from 'components/Shared/MentionInput';
+import ProfileAvatar from 'components/ProfileAvatar';
+import PreviewItem from 'components/PreviewItem';
+import MentionInput from 'components/MentionInput';
 import { loadRepliesTypes } from './Comments';
 
 // Style

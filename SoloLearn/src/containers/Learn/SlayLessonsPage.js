@@ -2,7 +2,7 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import CircularProgress from 'material-ui/CircularProgress';
 import Layout from 'components/Layouts/GeneralLayout';
-import BusyWrapper from 'components/Shared/BusyWrapper';
+import BusyWrapper from 'components/BusyWrapper';
 
 import 'styles/Learn/Lessons.scss';
 import LessonTiles from './LessonTiles';

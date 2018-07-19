@@ -10,7 +10,7 @@ import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import EditIcon from 'material-ui/svg-icons/image/edit';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import ProfileAvatar from 'components/ProfileAvatar';
 
 import CropPopup from './CropPopup';
 import CountrySelector from './CountrySelector';

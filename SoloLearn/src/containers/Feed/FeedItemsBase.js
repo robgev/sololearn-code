@@ -30,9 +30,9 @@ import Service from 'api/service';
 // Utils and defaults
 import { getOffset, numberFormatter } from 'utils';
 import PopupTypes from 'defaults/feedPopupTypes';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
-import FeedShimmer from 'components/Shared/Shimmers/FeedShimmer';
+import ProfileAvatar from 'components/ProfileAvatar';
+import LoadingOverlay from 'components/LoadingOverlay';
+import FeedShimmer from 'components/Shimmers/FeedShimmer';
 
 import 'styles/Feed/FeedItems.scss';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import VoteControls from 'components/Shared/VoteControls';
+import VoteControls from 'components/VoteControls';
 import { updateDate } from 'utils';
 
 import 'styles/Feed/FeedBottomToolbar.scss';

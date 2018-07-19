@@ -4,7 +4,7 @@ import React from 'react';
 // Redux modules
 import { connect } from 'react-redux';
 import { createContestInternal } from 'actions/challenges';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import ProfileAvatar from 'components/ProfileAvatar';
 
 const styles = {
 	opponent: {

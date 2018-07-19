@@ -11,7 +11,7 @@ import Paper from 'material-ui/Paper';
 import { toSeoFriendly } from 'utils';
 import { setSelectedComment } from 'actions/comments';
 import { voteFeedPostItem, voteFeedCommentItem, voteFeedCodeItem } from 'actions/feed';
-import CourseCard from 'components/Shared/CourseCard';
+import CourseCard from 'components/CourseCard';
 import FeedItems from './FeedItems';
 import FeedItemBase from './FeedItemBase';
 import Badge from './FeedTemplates/Badge';

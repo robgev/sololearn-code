@@ -4,7 +4,7 @@ import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from 'material-ui/CircularProgress';
-import BusyWrapper from 'components/Shared/BusyWrapper';
+import BusyWrapper from 'components/BusyWrapper';
 import { blockUser, getBlockedUsers } from 'actions/settings';
 import UserCard from './UserCard';
 

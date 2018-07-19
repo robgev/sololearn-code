@@ -1,5 +1,5 @@
 import React from 'react';
-import BusyWrapper from 'components/Shared/BusyWrapper';
+import BusyWrapper from 'components/BusyWrapper';
 import CircularProgress from 'material-ui/CircularProgress';
 
 import 'styles/lessonLayout.scss';

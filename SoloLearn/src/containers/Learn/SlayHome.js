@@ -5,8 +5,8 @@ import { translate } from 'react-i18next';
 
 import { getLessonCollections, getBookmarkLessons } from 'actions/slay';
 import SlayLayout from 'components/Layouts/SlayLayout';
-import CollectionCard from 'components/Shared/CollectionCard';
-import SidebarCollectionCard from 'components/Shared/SidebarCollectionCard';
+import CollectionCard from 'components/CollectionCard';
+import SidebarCollectionCard from 'components/SidebarCollectionCard';
 
 const mapStateToProps = state => ({
 	bookmarks: state.slay.bookmarks,

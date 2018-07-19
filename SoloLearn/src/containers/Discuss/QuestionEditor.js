@@ -15,7 +15,7 @@ import Service from 'api/service';
 import { getMentionsList } from 'utils';
 
 // Additional components
-import MentionInput from 'components/Shared/MentionInput';
+import MentionInput from 'components/MentionInput';
 
 import 'styles/Discuss/NewQuestion.scss';
 import { NewQuestionStyles as styles } from './styles';

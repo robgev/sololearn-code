@@ -13,8 +13,8 @@ import Layout from 'components/Layouts/GeneralLayout';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Chip from 'material-ui/Chip';
-import { QuestionList } from 'components/Shared/Questions';
-import AddQuestionButton from 'components/Shared/AddQuestionButton';
+import { QuestionList } from 'components/Questions';
+import AddQuestionButton from 'components/AddQuestionButton';
 
 const mapStateToProps = state => ({
 	order: state.discussFilters.order,

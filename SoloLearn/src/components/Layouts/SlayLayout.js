@@ -1,8 +1,8 @@
 import React from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-import BusyWrapper from 'components/Shared/BusyWrapper';
+import BusyWrapper from 'components/BusyWrapper';
 import CircularProgress from 'material-ui/CircularProgress';
-import SlayHomeShimmer from 'components/Shared/Shimmers/SlayHomeShimmer';
+import SlayHomeShimmer from 'components/Shimmers/SlayHomeShimmer';
 
 import 'styles/slayBase.scss';
 

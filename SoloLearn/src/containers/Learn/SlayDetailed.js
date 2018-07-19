@@ -3,10 +3,10 @@ import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 
 import { getCollectionItems, setSelectedCollection } from 'actions/slay';
-import CodePenCard from 'components/Shared/CodePenCard';
-import CourseBox from 'components/Shared/CourseBox';
+import CodePenCard from 'components/CodePenCard';
+import CourseBox from 'components/CourseBox';
 import SlayLayout from 'components/Layouts/SlayLayout';
-import SlayDetailedShimmer from 'components/Shared/Shimmers/SlayDetailedShimmer';
+import SlayDetailedShimmer from 'components/Shimmers/SlayDetailedShimmer';
 
 // import 'styles/slayHome.scss';
 

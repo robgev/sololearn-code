@@ -2,8 +2,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { determineBadge } from 'utils';
-import ModBadge from 'components/Shared/ModBadge';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import ModBadge from 'components/ModBadge';
+import ProfileAvatar from 'components/ProfileAvatar';
 
 import 'styles/Feed/FeedItemBase.scss';
 

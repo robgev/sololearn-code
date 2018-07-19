@@ -18,8 +18,8 @@ import Dialog from 'material-ui/Dialog';
 import Paper from 'material-ui/Paper';
 
 // Additional data and components
-import QuizAnswers, { CheckBar } from 'components/Shared/Quiz';
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import QuizAnswers, { CheckBar } from 'components/Quiz';
+import LoadingOverlay from 'components/LoadingOverlay';
 import QuizText from '../Learn/QuizText';
 
 // i18n

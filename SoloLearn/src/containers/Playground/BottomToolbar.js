@@ -9,8 +9,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import { red500 } from 'material-ui/styles/colors';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
-import VoteControls from 'components/Shared/VoteControls';
+import ProfileAvatar from 'components/ProfileAvatar';
+import VoteControls from 'components/VoteControls';
 
 import { determineAccessLevel } from 'utils';
 import { removeCode } from 'actions/playground';

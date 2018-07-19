@@ -11,7 +11,7 @@ import Paper from 'material-ui/Paper';
 // Redux modules
 import { isLoaded } from 'reducers';
 import Layout from 'components/Layouts/GeneralLayout';
-import AddCodeButton from 'components/Shared/AddCodeButton';
+import AddCodeButton from 'components/AddCodeButton';
 
 import 'styles/Playground/CodesBase.scss';
 

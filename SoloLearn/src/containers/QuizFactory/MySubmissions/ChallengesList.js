@@ -2,8 +2,8 @@ import React from 'react';
 import { List, ListItem } from 'material-ui/List';
 import CircularProgress from 'material-ui/CircularProgress';
 import InfiniteScroll from 'react-infinite-scroller';
-import BusyWrapper from 'components/Shared/BusyWrapper';
-import LanguageCard from 'components/Shared/LanguageCard';
+import BusyWrapper from 'components/BusyWrapper';
+import LanguageCard from 'components/LanguageCard';
 
 // Utils
 

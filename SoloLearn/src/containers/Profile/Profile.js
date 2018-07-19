@@ -18,15 +18,15 @@ import { emptyProfileFollowers, emptyProfile, getProfileQuestionsInternal, getPr
 import { isLoaded } from 'reducers';
 
 import Layout from 'components/Layouts/GeneralLayout';
-import AddCodeButton from 'components/Shared/AddCodeButton';
-import AddQuestionButton from 'components/Shared/AddQuestionButton';
-import BusyWrapper from 'components/Shared/BusyWrapper';
-import ProfileHeaderShimmer from 'components/Shared/Shimmers/ProfileHeaderShimmer';
+import AddCodeButton from 'components/AddCodeButton';
+import AddQuestionButton from 'components/AddQuestionButton';
+import BusyWrapper from 'components/BusyWrapper';
+import ProfileHeaderShimmer from 'components/Shimmers/ProfileHeaderShimmer';
 
 import 'styles/Profile/index.scss';
 
 // Additional data and components
-import { QuestionList } from 'components/Shared/Questions';
+import { QuestionList } from 'components/Questions';
 import Header from './Header';
 import FeedItemsBase from '../Feed/FeedItemsBase';
 import Codes from '../Playground/Codes';

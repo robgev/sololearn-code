@@ -8,8 +8,8 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 import { determineAccessLevel } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
-import ReportPopup from 'components/Shared/ReportPopup';
-// import InfiniteVirtualizedList from 'components/Shared/InfiniteVirtualizedList';
+import ReportPopup from 'components/ReportPopup';
+// import InfiniteVirtualizedList from 'components/InfiniteVirtualizedList';
 
 // Additional components
 import Reply from './Reply';

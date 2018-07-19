@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 // Additional components
 import Opponent from './Opponent';
-import LoadingOverlay from '../../../components/Shared/LoadingOverlay';
+import LoadingOverlay from '../../../components/LoadingOverlay';
 
 const styles = {
 	opponents: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { translate } from 'react-i18next';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import ProfileAvatar from 'components/ProfileAvatar';
 
 import 'styles/Challenges/Challenge/Game/Scoreboard.scss';
 

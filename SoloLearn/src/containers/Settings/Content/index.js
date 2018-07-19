@@ -3,7 +3,7 @@ import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import CircularProgress from 'material-ui/CircularProgress';
 import texts from 'texts';
-import BusyWrapper from 'components/Shared/BusyWrapper';
+import BusyWrapper from 'components/BusyWrapper';
 import { updateSetting, getSettings } from 'actions/settings';
 import FeedSettingToggle from './FeedSettingToggle';
 

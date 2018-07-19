@@ -14,7 +14,7 @@ import { markReadInternal } from 'actions/profile';
 // Utils And Defaults
 import types from 'defaults/appTypes';
 import { updateDate } from 'utils';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import ProfileAvatar from 'components/ProfileAvatar';
 
 import { NotificationItemStyles as styles } from './styles';
 

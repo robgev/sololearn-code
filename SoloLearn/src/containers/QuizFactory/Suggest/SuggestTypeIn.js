@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Paper, TextField, RaisedButton } from 'material-ui';
-import LanguageSelector from 'components/Shared/LanguageSelector';
+import LanguageSelector from 'components/LanguageSelector';
 
 class SuggestTypeIn extends Component {
 	state = {

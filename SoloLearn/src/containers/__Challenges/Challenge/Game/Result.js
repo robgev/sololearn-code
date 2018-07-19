@@ -13,15 +13,15 @@ import {
 
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
-import ResultPie from 'components/Shared/ChallengeGraphs/ResultPie';
-import AnimatedNumber from 'components/Shared/AnimatedNumber';
+import ResultPie from 'components/ChallengeGraphs/ResultPie';
+import AnimatedNumber from 'components/AnimatedNumber';
 import { green500, red500, blue500 } from 'material-ui/styles/colors';
 import 'styles/Challenges/Challenge/Game/Result';
 import { createAnswerUI } from './gameUtil';
 // Material UI components
 import { getChallengeStatus } from 'utils';
 import contestTypes from 'defaults/contestTypes';
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/LoadingOverlay';
 
 import Profile from './Profile';
 import Comment from '../../../Comments/Comment';

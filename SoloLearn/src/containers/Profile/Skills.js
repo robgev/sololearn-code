@@ -5,8 +5,8 @@ import Paper from 'material-ui/Paper';
 import MenuItem from 'material-ui/MenuItem';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import LinearProgress from 'material-ui/LinearProgress';
-import PolarChart from 'components/Shared/PolarChart';
-import ChallengeGraphs from 'components/Shared/ChallengeGraphs';
+import PolarChart from 'components/PolarChart';
+import ChallengeGraphs from 'components/ChallengeGraphs';
 
 // i18next
 import i18n from 'i18n';

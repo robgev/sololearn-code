@@ -3,7 +3,7 @@ import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 
 import Layout from 'components/Layouts/GeneralLayout';
-import LanguageSelector from 'components/Shared/LanguageSelector';
+import LanguageSelector from 'components/LanguageSelector';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { OptionsCard } from './components';

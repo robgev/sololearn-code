@@ -7,7 +7,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import { red500 } from 'material-ui/styles/colors';
 import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
-import Quiz, { CheckIndicator } from 'components/Shared/Quiz';
+import Quiz, { CheckIndicator } from 'components/Quiz';
 import { getReviewChallenge, voteChallenge } from './api';
 import './rateStyles.scss';
 

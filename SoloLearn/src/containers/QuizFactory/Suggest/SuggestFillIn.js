@@ -10,7 +10,7 @@ import {
 	SelectionState,
 } from 'draft-js';
 import { Paper, RaisedButton, FlatButton } from 'material-ui';
-import LanguageSelector from 'components/Shared/LanguageSelector';
+import LanguageSelector from 'components/LanguageSelector';
 
 // Util pure functions
 

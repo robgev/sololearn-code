@@ -8,8 +8,8 @@ import { grey600 } from 'material-ui/styles/colors';
 import Close from 'material-ui/svg-icons/content/clear';
 
 // Additional components
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
-import MentionInput from 'components/Shared/MentionInput';
+import ProfileAvatar from 'components/ProfileAvatar';
+import MentionInput from 'components/MentionInput';
 
 import { getMentionFetcher } from 'utils';
 

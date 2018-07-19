@@ -8,7 +8,7 @@ import Paper from 'material-ui/Paper';
 import { getContest, setContest } from 'actions/challenges';
 import { isLoaded } from 'reducers';
 // Additional components
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/LoadingOverlay';
 import Layout from 'components/Layouts/GeneralLayout';
 import Game from './Game';
 

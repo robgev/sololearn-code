@@ -8,7 +8,7 @@ import { getFollowingInternal } from 'actions/profile';
 import { isLoaded } from 'reducers';
 
 // Additional data and components
-import LoadingOverlay from 'components/Shared/LoadingOverlay';
+import LoadingOverlay from 'components/LoadingOverlay';
 import Follower from './FollowerItem';
 
 // i18next

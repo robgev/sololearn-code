@@ -1,6 +1,6 @@
 import React from 'react';
 import Progress from 'api/progress';
-import CourseChip from 'components/Shared/CourseChip';
+import CourseChip from 'components/CourseChip';
 
 const Certificate = ({ modules, courseId }) => {
 	const lastModule = modules[modules.length - 1];

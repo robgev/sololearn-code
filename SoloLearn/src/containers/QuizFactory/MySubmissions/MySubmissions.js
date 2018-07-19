@@ -9,7 +9,7 @@ import {
 import { red500 } from 'material-ui/styles/colors';
 import { browserHistory } from 'react-router';
 import Layout from 'components/Layouts/GeneralLayout';
-import Quiz, { CheckBar } from 'components/Shared/Quiz';
+import Quiz, { CheckBar } from 'components/Quiz';
 import { setSuggestionChallenge } from 'actions/quizFactory';
 import ChallengesList from './ChallengesList';
 import { getMySubmissions, deleteChallenge } from '../api';

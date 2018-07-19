@@ -5,7 +5,7 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
-import ProfileAvatar from 'components/Shared/ProfileAvatar';
+import ProfileAvatar from 'components/ProfileAvatar';
 import 'styles/Header/HeaderSettingsMenu.scss';
 
 import { logout } from 'actions/login.action';
