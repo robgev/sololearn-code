@@ -2,6 +2,7 @@
 	"parser":
 		"babel-eslint",
 	"env": {
+		"node": true,
 		"browser": true,
 		"es6": true
 	},
@@ -59,7 +60,10 @@
 		"no-nested-ternary": 0
 	},
 	"settings": {
-		"import/resolver":
-			"webpack"
+		"import/resolver": {
+				"webpack": {
+						"config": "config/webpack.config.dev.js"
+				}
+		}
 	}
 }
