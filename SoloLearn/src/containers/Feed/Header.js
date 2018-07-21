@@ -1,18 +1,24 @@
 // React modules
 import React, { PureComponent } from 'react';
-import { Link, browserHistory } from 'react-router';
-import ProfileAvatar from 'components/ProfileAvatar';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 
-// Material UI components
 import Paper from 'material-ui/Paper';
 import LinearProgress from 'material-ui/LinearProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 
-// i18next
-import { translate } from 'react-i18next';
+import ProfileAvatar from 'components/ProfileAvatar';
+import { findBestRank } from 'utils';
+import countries from 'constants/Countries.json';
 
 import 'styles/Feed/Header.scss';
 
+const mapStateToProps = state => ({
+	ranks: state.userProfile.rank,
+});
+
+@connect(mapStateToProps)
 class Header extends PureComponent {
 	constructor(props) {
 		super(props);
@@ -40,6 +46,41 @@ class Header extends PureComponent {
 		}
 	}
 
+	getRightLocaleFormat = (key) => {
+		switch (key.substring(0, 2)) {
+		case 'mt':
+			return 'month';
+		case 'wt':
+			return 'week';
+		case 'mc':
+			return 'country-month';
+		case 'wc':
+			return 'country-week';
+		default:
+			return '';
+		}
+	}
+
+	getCountryName = (countryCode) => {
+		const foundCountry = countries.find(c => c.code === countryCode);
+		return foundCountry ? foundCountry.name : '';
+	}
+
+	getLeaderboardString = () => {
+		const { ranks, t } = this.props;
+		const localePrefix = 'leaderboard.rank';
+		const { key, rank } = findBestRank(ranks);
+		if (key !== null) {
+			const localeFormat = this.getRightLocaleFormat(key);
+			const numberFormat = key.endsWith('p') ? 'percent-format' : 'default-format';
+			return t(`${localePrefix}.${localeFormat}`, {
+				rank: t(`${localePrefix}.${numberFormat}`, { number: +rank.toFixed(2) }),
+				country: this.getCountryName(ranks.countryCode),
+			});
+		}
+		return t('leaderboard.rank.placeholder');
+	}
+
 	render() {
 		const { profile, t } = this.props;
 		const { xp: currentXp } = profile;
@@ -60,7 +101,7 @@ class Header extends PureComponent {
 							<p className="user-name hoverable">{profile.name}</p>
 						</Link>
 						<Link to="/leaderboards" className="leaderboard-link hoverable">
-							{t('leaderboard.rank.placeholder')}
+							{this.getLeaderboardString()}
 						</Link>
 						<div className="profile-progress-wrapper">
 							<LinearProgress

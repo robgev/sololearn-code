@@ -376,13 +376,13 @@
     },
     "rank": {
       "placeholder": "Открыть список лидеров",
-      "month": "в этом месяце",
-      "week": "на этой неделе",
-      "country": "в",
-      "country-month": "в  в этом месяце",
-      "country-week": "в  на этой неделе",
-      "percent-format": "Топ",
-      "default-format": "#"
+      "month": "{{rank}} в этом месяце",
+      "week": "{{rank}} на этой неделе",
+      "country": "{{rank}} в {{country}}",
+      "country-month": "{{rank}} в {{country}} в этом месяце",
+      "country-week": "{{rank}} в {{country}} на этой неделе",
+      "percent-format": "Топ {{number}}%",
+      "default-format": "#{{number}}"
     },
     "no-country-specified-title": "Местоположение не задано",
     "no-country-specified-message": "Выберите местоположение, чтобы увидеть свой рейтинг.",

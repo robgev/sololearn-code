@@ -376,13 +376,13 @@
     },
     "rank": {
       "placeholder": "Revisa la Tabla de Clasificación",
-      "month": "este mes",
-      "week": "esta semana",
-      "country": "en",
-      "country-month": "en  este mes",
-      "country-week": "en  esta semana",
-      "percent-format": "Top",
-      "default-format": "#"
+      "month": "{{rank}} este mes",
+      "week": "{{rank}} esta semana",
+      "country": "{{rank}} en {{country}}",
+      "country-month": "{{rank}} en {{country}} este mes",
+      "country-week": "{{rank}} en {{country}} esta semana",
+      "percent-format": "Top {{number}}%",
+      "default-format": "#{{number}}"
     },
     "no-country-specified-title": "No se ha especificado el ubicación",
     "no-country-specified-message": "Selecciona tu ubicación para ver tu rango",

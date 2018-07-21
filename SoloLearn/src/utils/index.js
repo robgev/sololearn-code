@@ -6,6 +6,7 @@ import truncate from './textTruncate';
 import getPosition from './getPosition';
 import repliesOfId from './repliesOfId';
 import toSeoFriendly from './linkPrettify';
+import findBestRank from './findBestRank';
 import updateDate from './dateFormatter';
 import faultGenerator from './faultGenerator';
 import updateMessage from './messageFormatter';
@@ -41,6 +42,7 @@ export {
 	getPosition,
 	removeDups,
 	repliesOfId,
+	findBestRank,
 	toSeoFriendly,
 	shuffleArray,
 	updateMessage,
