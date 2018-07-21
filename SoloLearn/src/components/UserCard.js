@@ -37,6 +37,7 @@ render() {
 		followers,
 		avatarUrl,
 		className = '',
+		withFollowButton,
 	} = this.props;
 	const { following } = this.state;
 	const WrapperComponent = withLink ? Link : CustomWrapper;
@@ -60,12 +61,20 @@ render() {
 						Level {numberFormatter(level)}
 					</div>
 					}
-					<RaisedButton
-						secondary={following}
-						onClick={this.handleFollow}
-						className="user-card-follow-button"
-						label={following ? 'Following' : 'Follow'}
-					/>
+					{withFollowButton ?
+						<RaisedButton
+							secondary={following}
+							onClick={this.handleFollow}
+							className="user-card-follow-button"
+							label={following ? 'Following' : 'Follow'}
+						/> : (
+							<Link to={`/profile/${id}`} className="user-card-follow-button">
+								<RaisedButton
+									label="View Profile"
+								/>
+							</Link>
+						)
+					}
 				</div>
 			</WrapperComponent>
 
