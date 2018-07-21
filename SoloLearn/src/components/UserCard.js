@@ -25,10 +25,7 @@ handleFollow = async () => {
 	const { id } = this.props;
 	const endpoint = following ? 'Profile/Unfollow' : 'Profile/Follow';
 	this.setState({ following: !following });
-	const response = await Service.request(endpoint, { id });
-	if (!response.isSuccessful) {
-		this.setState({ following }); // revert the following state, if there was a server error
-	}
+	await Service.request(endpoint, { id });
 }
 
 render() {

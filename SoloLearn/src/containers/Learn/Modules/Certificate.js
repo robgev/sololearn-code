@@ -17,7 +17,7 @@ const Certificate = ({ modules, courseId }) => {
 				wrapperStyle={{ padding: 0 }}
 				disabled={!isCourseFinished}
 				customLink={`/certificate/${courseId}`}
-				iconUrl={`https://api.sololearn.com/uploads/Modules/certificate${isCourseFinished ? '' : '_disabled'}.png`}
+				iconUrl={`/assets/certificate${isCourseFinished ? '' : '_disabled'}.png`}
 			/>
 		</div>
 	);
