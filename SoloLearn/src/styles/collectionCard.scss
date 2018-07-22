@@ -50,6 +50,9 @@
 				height: 85px;
 				width: 85px;
 			}
+			.course-chip-info.round-course-item {
+				height: 21px;
+			}
 		}
 	}
 }
@@ -89,5 +92,11 @@
 
 	.slick-slide {
 		height: initial;
+	}
+
+	&.round {
+		.slick-arrow {
+			top: 40%;
+		}
 	}
 }
