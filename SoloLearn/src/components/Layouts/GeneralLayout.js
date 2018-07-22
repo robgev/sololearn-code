@@ -1,5 +1,6 @@
 import React from 'react';
 import 'styles/generalLayout.scss';
+import Sidebar from 'components/Sidebar';
 
 const Layout = ({
 	style,
@@ -14,11 +15,9 @@ const Layout = ({
 			{children}
 		</div>
 		{!noSidebar &&
-		<div className="sidebar-placeholder">
-			<div className="sidebar">
-				{sidebarContent}
-			</div>
-		</div>
+		<Sidebar>
+			{sidebarContent}
+		</Sidebar>
 		}
 	</div>
 );

@@ -1,4 +1,5 @@
 import React from 'react';
+import Sidebar from 'components/Sidebar';
 import BusyWrapper from 'components/BusyWrapper';
 import CircularProgress from 'material-ui/CircularProgress';
 
@@ -24,11 +25,9 @@ const LessonLayout = ({
 				{children}
 			</BusyWrapper>
 		</div>
-		<div className="sidebar-placeholder">
-			<div className="sidebar">
-				{sidebarContent}
-			</div>
-		</div>
+		<Sidebar>
+			{sidebarContent}
+		</Sidebar>
 	</div>
 );
 
