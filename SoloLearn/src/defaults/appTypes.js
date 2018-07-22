@@ -13,6 +13,7 @@ const types = {
 	courseCompleted: 103,
 	lessonCreated: 111,
 	postedUserLessonComment: 113,
+	postedUserLessonCommentReply: 114,
 
 	postedQuestion: 201,
 	postedAnswer: 202,

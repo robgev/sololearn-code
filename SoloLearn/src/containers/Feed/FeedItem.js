@@ -158,6 +158,7 @@ class FeedItem extends Component {
 				</div>
 			);
 		case types.postedUserLessonComment:
+		case types.postedUserLessonCommentReply:
 			this.url = `/learn/slayLesson/2/${feedItem.userLesson.id}/1`;
 			return (
 				<div onClick={() => this.props.setSelectedComment(feedItem.comment.id)}>
