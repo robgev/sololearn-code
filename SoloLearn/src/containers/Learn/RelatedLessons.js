@@ -33,6 +33,7 @@ const RelatedLessons = ({
 			<CourseCard
 				{...nextLesson}
 				title={t('lesson.up-next')}
+				className="up-next-course-card-container"
 				style={{
 					padding: 15,
 					marginBottom: 0,
@@ -53,7 +54,7 @@ const RelatedLessons = ({
 		<SidebarCollectionCard
 			userID={userID}
 			title={`${t('lesson.view-more-by-author')} ${userName}`}
-			items={lessonsByUser.slice(0, 5)}
+			items={lessonsByUser.slice(0, 10)}
 		/>
 		}
 	</div>

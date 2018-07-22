@@ -23,8 +23,10 @@ const CourseCard = ({
 	isCourses,
 	viewCount,
 	comments,
+	className,
+	wrapperStyle,
 }) => (
-	<Paper style={style} className="course-card-container">
+	<Paper style={style} className={`course-card-container ${className || ''}`}>
 		{title &&
 			<div className="meta-info">
 				<p>{ title }</p>
@@ -36,13 +38,17 @@ const CourseCard = ({
 					`/learn/${getCourseNameById(courses, id)}/${id}/1` :
 					`/learn/slayLesson/${itemType}/${id}/1`
 			}
+			style={wrapperStyle}
 			className="course-card-wrapper"
 		>
-			<div className="course-card-image-container" style={{ backgroundColor: color }}>
+			<div
+				style={{ backgroundColor: color }}
+				className={`course-card-image-container ${minimal ? 'minimal' : ''} ${itemType === slayItemTypes.course || isCourses ? 'round' : ''}`}
+			>
 				<img
 					src={iconUrl}
 					alt="Course Icon"
-					className={`card-image ${minimal ? 'minimal' : ''} ${itemType === slayItemTypes.course || isCourses ? 'round' : ''}`}
+					className="card-image"
 				/>
 			</div>
 			<div className="info-container">

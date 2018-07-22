@@ -34,6 +34,7 @@ const SidebarCollection = ({
 				<CourseCard
 					minimal
 					{...lessonItem}
+					wrapperStyle={{ padding: 0 }}
 					className="collection-card-chip"
 					style={{ padding: 0, boxShadow: 'none' }}
 					key={`${lessonItem.name}-${lessonItem.id}`}
