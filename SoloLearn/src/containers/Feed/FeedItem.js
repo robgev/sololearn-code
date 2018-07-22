@@ -137,7 +137,7 @@ class FeedItem extends Component {
 			);
 		case types.completedChallange:
 			this.url = `/profile/${feedItem.contest.player.id}`;
-			return <Challenge contest={feedItem.contest} openPopup={this.props.openPopup} />;
+			return <Challenge contest={feedItem.contest} />;
 		case types.suggestions:
 			return <FeedSuggestions feedItem={feedItem} />;
 		case types.postedLessonComment:
@@ -235,7 +235,6 @@ class FeedItem extends Component {
 					</Paper>
 					<FeedItems
 						feedItems={feedItem.groupedItems}
-						openPopup={this.props.openPopup}
 						className={`merged-items-container ${this.state.isOpened ? 'open' : ''}`}
 						style={{ height: this.state.isOpened ? feedItem.groupedItems.length * 143 : 0 }}
 					/>
