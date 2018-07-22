@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-import Paper from 'material-ui/Paper';
 import { translate } from 'react-i18next';
 
 import CourseCard from './CourseCard';
@@ -13,17 +12,16 @@ const SidebarCollection = ({
 	bookmarks,
 	noViewMore = false,
 }) => (
-	<Paper
-		zDepth={1}
+	<div
 		style={{
 			padding: 15,
 			width: '100%',
-			marginBottom: 10,
-			overflow: 'hidden',
+			paddingBottom: 0,
+			boxSizing: 'border-box',
 		}}
 		className="sidebar-collection-card"
 	>
-		<div className="meta-info">
+		<div style={{ color: 'rgba(0, 0, 0, .87)' }} className="meta-info">
 			<p>{ title }</p>
 			{ !noViewMore &&
 				<Link to={bookmarks ? 'learn/bookmarks' : `/learn/more/author/${userID}`} >
@@ -33,16 +31,16 @@ const SidebarCollection = ({
 		</div>
 		{
 			items.map(lessonItem => (
-				<div className="course-chip-wrapper" key={`${lessonItem.name}-${lessonItem.id}`}>
-					<CourseCard
-						minimal
-						{...lessonItem}
-						className="collection-card-chip"
-					/>
-				</div>
+				<CourseCard
+					minimal
+					{...lessonItem}
+					className="collection-card-chip"
+					style={{ padding: 0, boxShadow: 'none' }}
+					key={`${lessonItem.name}-${lessonItem.id}`}
+				/>
 			))
 		}
-	</Paper>
+	</div>
 );
 
 export default translate()(SidebarCollection);

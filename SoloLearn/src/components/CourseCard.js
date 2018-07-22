@@ -12,6 +12,7 @@ const CourseCard = ({
 	id,
 	title,
 	name,
+	style,
 	color,
 	userID,
 	courses,
@@ -23,7 +24,7 @@ const CourseCard = ({
 	viewCount,
 	comments,
 }) => (
-	<Paper className="course-card-container">
+	<Paper style={style} className="course-card-container">
 		{title &&
 			<div className="meta-info">
 				<p>{ title }</p>
@@ -37,7 +38,7 @@ const CourseCard = ({
 			}
 			className="course-card-wrapper"
 		>
-			<div style={{ backgroundColor: color }}>
+			<div className="course-card-image-container" style={{ backgroundColor: color }}>
 				<img
 					src={iconUrl}
 					alt="Course Icon"
