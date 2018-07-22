@@ -36,18 +36,12 @@ const RelatedLessons = ({
 			/>
 		}
 		{	(relevantLessons && !!relevantLessons.length) &&
-			(relevantLessons.length > 1 ?
-				<SidebarCollectionCard
-					id={id}
-					noViewMore
-					title={t('lesson.see-also')}
-					items={relevantLessons}
-				/> :
-				<CourseCard
-					title={t('lesson.see-also')}
-					{...relevantLessons[0]}
-				/>
-			)
+			<SidebarCollectionCard
+				id={id}
+				noViewMore
+				title={t('lesson.see-also')}
+				items={relevantLessons}
+			/>
 		}
 		{	(lessonsByUser && !!lessonsByUser.length) &&
 			(lessonsByUser.length > 1 ?
