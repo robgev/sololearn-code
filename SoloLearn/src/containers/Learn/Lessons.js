@@ -115,7 +115,7 @@ class Lessons extends Component {
 
 		return (
 			<Layout>
-				<Paper className="lessons-container">
+				<div className="lessons-container">
 					<div className="lesson-breadcrumbs">
 						<Link to={`/learn/${courseName}/${courseId}/${itemType}`}>
 							{course.name}
@@ -129,7 +129,7 @@ class Lessons extends Component {
 						lessons={lessons}
 						onItemClick={this.handleClick}
 					/>
-				</Paper>
+				</div>
 			</Layout>
 		);
 	}
