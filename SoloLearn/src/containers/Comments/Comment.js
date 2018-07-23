@@ -1,316 +1,225 @@
-// React modules
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
-
-// Material UI components
-import { IconMenu, MenuItem, FlatButton, IconButton } from 'material-ui';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-
-import Linkify from 'react-linkify';
-
-// Redux modules
-import { getLikesAndDownvotesInternal } from 'actions/likes';
-
-// Utils
-import VoteControls from 'components/VoteControls';
-import { updateDate, replaceMention, generatePreviews, getMentionFetcher } from 'utils';
-import ProfileAvatar from 'components/ProfileAvatar';
-import PreviewItem from 'components/PreviewItem';
+import { action, observable } from 'mobx';
+import { observer } from 'mobx-react';
+import FlatButton from 'material-ui/FlatButton';
+import Divider from 'material-ui/Divider';
+import CircularProgress from 'material-ui/CircularProgress';
 import MentionInput from 'components/MentionInput';
-import { loadRepliesTypes } from './Comments';
+import { replaceMention } from 'utils';
+import CommentList from './CommentList';
+import CommentView from './CommentView';
 
-// Style
-import { CommentStyle as styles } from './styles';
+import IComment from './IComment';
 
-const mapStateToProps = state => ({ userId: state.userProfile.id });
+const mapStateToProps = ({ userProfile }) => ({ userProfile });
 
-const mapDispatchToProps = {
-	getLikes: getLikesAndDownvotesInternal,
-};
-
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(mapStateToProps, null, null, { withRef: true })
+@observer
 class Comment extends Component {
-	state = {
-		// textFieldValue: this.props.comment.message,
-		isReplyOpen: false,
-		replyLength: this.props.comment.message.length,
-	};
-
-	openCloseReplies = () => {
-		const { comment } = this.props;
-		const willLoadReplies = comment.repliesArray && comment.repliesArray.length === 0;
-		const type = willLoadReplies ? loadRepliesTypes.LOAD_REPLIES : loadRepliesTypes.CLOSE_REPLIES;
-		this.props.loadReplies(comment.parentID || comment.id, type);
-	}
-
-	// TODO: IMPORTANT:
-	// Move this function to Comments.js, do this stuff inside InfiniteVirtualizedList's
-	// One item rendering function. This way we can conditionally render comments
-	// And avoid unnecessary checks on all the items of the comment
-	// E.G AvatarURL, getEditableArea and unnecessary load button.
-	loadMore = () => {
-		const { comment } = this.props;
-		if (comment.loadAbove) {
-			this.props.loadCommentsAbove(comment.parentId);
+	@observable isReplyInputOpen = false;
+	@observable isReplyLoading = false;
+	@observable initText = null;
+	@action toggleReplyBox = async ({ id, userID, userName }) => {
+		if (this.props.toggleReplyBox) {
+			// Reply case
+			this.props.toggleReplyBox({ id, userID, userName });
 		} else {
-			this.props.loadReplies(comment.parentId || comment.id, loadRepliesTypes.LOAD_REPLIES);
+			this.isReplyInputOpen = !this.isReplyInputOpen;
+			if (this.isReplyInputOpen) {
+				if (id !== this.props.comment.id) {
+					this.initText = `[user id="${userID}"]${userName}[/user]`;
+				}
+				setTimeout(() => {
+					if (this.mentionInput) {
+						this.mentionInput.focus();
+					}
+				}, 150);
+			} else {
+				this.initText = null;
+			}
 		}
 	}
-
-	getPrimaryControls = (comment) => {
-		const isReply = comment.parentID != null;
-		const hasReplies = !!comment.replies;
-		const { t } = this.props;
-		return (
-			<div style={styles.commentControls.right}>
-				{!isReply &&
-					<FlatButton
-						label={`${comment.replies} ${comment.replies === 1 ? t('comments.reply') : t('comments.replies-other')}`}
-						primary={hasReplies}
-						disabled={!hasReplies || comment.index === -1}
-						onClick={this.openCloseReplies}
-						style={{ height: 24, lineHeight: '24px' }}
-					/>}
-				<FlatButton
-					label={t('comments.reply')}
-					primary
-					onClick={() =>
-						this.props.openReplyBoxToolbar(comment.id, comment.parentID, comment.userName, isReply)}
-					style={{ height: 24, lineHeight: '24px' }}
-				/>
-			</div>
-		);
+	commentsRefs = {};
+	addReplyRef = id => (node) => {
+		this.commentsRefs[id] = node;
 	}
-
-	openEdit = () => {
+	onRepliesButtonClick = () => {
+		const c = this.props.comment;
+		if (c.repliesArray.length === 0) {
+			this.getRepliesBelow();
+		} else {
+			c.repliesArray = [];
+		}
+	}
+	selfDestruct = () => {
+		this.props.delete(this.props.comment.id);
+	}
+	@action deleteReply = (id) => {
 		const { comment } = this.props;
-		this.props.openEdit(
-			comment.id, comment.parentID, comment.userName,
-			() => setTimeout(() => this.mentionInput.focus(), 200),
-		);
+		comment.repliesArray.splice(comment.repliesArray.findIndex(i => i.id === id), 1);
+		comment.replies -= 1;
+		this.props.commentsAPI.deleteComment({ id });
 	}
-
-	closeEdit = () => {
-		this.props.cancelAll();
-	}
-
-	getVotes = () => {
-		const { comment, commentType, getLikes } = this.props;
-		return getLikes(`${commentType}CommentLikes`, comment.id);
-	}
-
-	getDownvotes = () => {
-		const { comment, commentType, getLikes } = this.props;
-		return getLikes(`${commentType}CommentDownvotes`, comment.id);
-	}
-
-	openReply = () => {
-		this.setState({ isReplyOpen: true });
-	}
-	closeReply = () => {
-		this.setState({ isReplyOpen: false });
-	}
-	onLengthChange = (replyLength) => {
-		if (this.mentionInput) {
-			this.setState({ replyLength });
+	scrollIntoView = (replyId = null) => {
+		if (replyId === null) {
+			this.commentRef.getWrappedInstance().scrollIntoView();
+		} else {
+			this.commentsRefs[replyId].getWrappedInstance().scrollIntoView();
 		}
 	}
-
-	getEditControls = () => {
-		const { t } = this.props;
-		return (
-			<div className="edit-controls" style={styles.commentControls.right}>
-				<FlatButton
-					label={t('common.cancel-title')}
-					onClick={this.closeEdit}
-				/>
-				<FlatButton
-					label={t('common.save-action-title')}
-					primary
-					disabled={this.state.replyLength === 0}
-					onClick={() => this.props.editComment(this.props.comment, this.mentionInput.popValue())}
-				/>
-			</div>
-		);
+	@action addReply = async () => {
+		try {
+			const message = this.mentionInput.popValue();
+			this.isReplyInputOpen = false;
+			this.isReplyLoading = true;
+			await this.reply({ message });
+			this.isReplyLoading = false;
+		} catch (e) {
+			this.isReplyLoading = false;
+		}
 	}
-
-	getMenuControls = (comment) => {
-		const {
-			t,
-			accessLevel,
-			commentType,
-			toggleReportPopup,
-			toggleRemovalPopup,
-		} = this.props;
-		return (
-			<IconMenu
-				iconButtonElement={<IconButton style={styles.iconMenu.icon}><MoreVertIcon /></IconButton>}
-				anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-				targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-			>
-				{comment.userID === this.props.userId &&
-					[
-						<MenuItem
-							primaryText={t('common.edit-action-title')}
-							key={`edit${comment.id}`}
-							onClick={this.openEdit}
-						/>,
-						<MenuItem
-							primaryText={t('common.delete-title')}
-							key={`remove${comment.id}`}
-							onClick={() => { this.props.deleteComment(comment); }}
-						/>,
-					]
-				}
-				{comment.userID !== this.props.userId &&
-					<MenuItem
-						primaryText={t('common.report-action-title')}
-						onClick={() => toggleReportPopup(comment)}
-					/>
-				}
-				{comment.userID !== this.props.userId &&
-					accessLevel > 0 &&
-					<MenuItem
-						onClick={() => toggleRemovalPopup(comment)}
-						primaryText={(accessLevel === 1 && commentType !== 'lesson') ?
-							t('discuss.forum_request_removal_prompt_title') :
-							t('discuss.forum_remove_prompt_title')
-						}
-					/>
-				}
-			</IconMenu>
-		);
+	@action getRepliesBelow = async () => {
+		const { repliesArray, id } = this.props.comment;
+		const newComments = await this.props.commentsAPI
+			.getComments({ parentID: id, index: repliesArray.length });
+		const { comment } = this.props;
+		const replyIds = comment.repliesArray.map(rep => rep.id);
+		const filtered = newComments.filter(com => !replyIds.includes(com.id));
+		const nulledReplies = filtered.map(com => new IComment({ ...com, repliesArray: null }));
+		comment.repliesArray.push(...nulledReplies);
+		comment.repliesArray = this.props.commentsAPI.orderComments(comment.repliesArray);
 	}
-
-	getEditableArea = (comment) => {
-		const { recompute } = this.props;
-		const isEditing = (this.props.isEditing && this.props.activeComment.id === comment.id);
-		const previewsData = generatePreviews(this.props.comment.message);
-		const { isReplyOpen, replyLength } = this.state;
-
-		return (
-			<div style={styles.commentContent}>
-				{!isEditing &&
-					<div>
-						<Linkify>
-							<div style={styles.commentMessage}>{replaceMention(this.props.comment.message)}</div>
-						</Linkify>
-						{previewsData.map(singlePreviewData => (
-							<PreviewItem
-								{...singlePreviewData}
-								recompute={recompute}
-								key={singlePreviewData.link}
-							/>
-						))}
-					</div>
-				}
-				{isEditing &&
-					[
-						<MentionInput
-							key={`commentTextField${comment.id}`}
-							ref={(mentionInput) => { this.mentionInput = mentionInput; }}
-							onFocus={this.openReply}
-							onBlur={this.closeReply}
-							onLengthChange={this.onLengthChange}
-							style={{ minHeight: 160 }}
-							getUsers={getMentionFetcher(this.props.commentType)}
-							placeholder={!isReplyOpen && replyLength === 0 ? 'Message' : ''}
-							initText={this.props.comment.message}
-						/>,
-						<span style={styles.textFieldCoutner} key={`commentCounter${comment.id}`}>{2048 - replyLength} characters remaining</span>,
-					]
-				}
-			</div>
-		);
+	@action vote = (vote) => {
+		const { comment } = this.props;
+		const newVote = comment.vote === vote ? 0 : vote;
+		const oldVote = comment.vote;
+		comment.votes += (newVote - oldVote);
+		comment.vote = newVote;
+		this.props.commentsAPI.voteComment({ id: comment.id, vote: comment.vote })
+			.catch(() => {
+				comment.vote = oldVote;
+				comment.votes -= (newVote - oldVote);
+			});
 	}
-
+	@action reply = async ({ message }) => {
+		const { userProfile, commentsAPI } = this.props;
+		const { comment: { id, date } } = await commentsAPI
+			.addComment({ message, parentID: this.props.comment.id });
+		const newComment = new IComment({
+			replies: 0,
+			vote: 0,
+			message,
+			votes: 0,
+			repliesArray: [],
+			parentID: this.props.comment.id,
+			id,
+			isForced: true,
+			level: userProfile.level,
+			userName: userProfile.name,
+			userID: userProfile.id,
+			avatarUrl: userProfile.avatarUrl,
+			badge: userProfile.badge,
+			date,
+		});
+		const { comment } = this.props;
+		comment.repliesArray.push(newComment);
+		comment.replies += 1;
+		comment.repliesArray = this.props.commentsAPI.orderComments(comment.repliesArray);
+		this.scrollIntoView(id);
+	}
+	@action editComment = ({ message, id }) => {
+		this.props.comment.message = message;
+		this.props.commentsAPI.editComment({ message, id });
+	}
+	getVotes = (voteType) => {
+		const { dispatch, commentsAPI, comment } = this.props;
+		return dispatch(commentsAPI.getVotesList({ id: comment.id, type: voteType }));
+	}
+	getUpvotes = () => this.getVotes('Likes');
+	getDownvotes = () => this.getVotes('Downvotes');
+	upvote = () => this.vote(1);
+	downvote = () => this.vote(-1);
 	render() {
+		const { userProfile } = this.props;
 		const {
-			comment,
-			comment: {
-				id,
-				date,
-				level,
-				badge,
-				userID,
-				parentID,
-				avatarUrl,
-				userName,
-			},
-			comments,
-			accessLevel,
-			activeComment,
-			t,
-		} = this.props;
-
-		if (comment.type === 'LOAD_MORE') {
-			const hasParentId = comment.parentId !== null;
-			const filteredCommentsLength = hasParentId ?
-				comments.filter(c => (c.type !== 'LOAD_MORE' && comment.parentId === c.parentID)) :
-				comments.filter(c => c.type !== 'LOAD_MORE');
-			// Shitty temporary solution
-			return filteredCommentsLength.length <= 1 ? null : (
-				<FlatButton
-					label={t('common.loadMore')}
-					onClick={this.loadMore}
-				/>);
-		}
-
-		const isReply = parentID != null;
-		const isEditing = (this.props.isEditing && activeComment.id === id);
-
+			replies,
+			repliesArray,
+		} = this.props.comment;
 		return (
-			<div style={{ marginLeft: isReply ? 20 : 0 }}>
-				<div style={styles.comment.base}>
-					<div style={styles.commentConent}>
-						<ProfileAvatar
-							size={40}
-							withTooltip
-							level={level}
-							badge={badge}
-							userID={userID}
-							userName={userName}
-							avatarUrl={avatarUrl}
-							tooltipId={`comment-${id}`}
-						/>
-						<div
-							style={{
-								...styles.commentDetailsWrapper.base,
-								...(isEditing ? styles.commentDetailsWrapper.editing : {}),
-							}}
-						>
-							<div style={styles.commentDetails}>
-								<div style={styles.heading}>
-									<Link to={`/profile/${userID}`} style={styles.noStyle}>
-										<span style={styles.userName}>{userName}</span>
-									</Link>
-									<div style={styles.heading}>
-										<p style={styles.commentDate}>{updateDate(date)}</p>
-										{!isEditing && this.getMenuControls(comment)}
-									</div>
-								</div>
-								{this.getEditableArea(comment)}
-							</div>
-							<div style={styles.commentControls.base}>
-								{!isEditing &&
-									<VoteControls
-										getVotes={this.getVotes}
-										userVote={comment.vote}
-										accessLevel={accessLevel}
-										totalVotes={comment.votes}
-										getDownvotes={this.getDownvotes}
-										buttonStyle={{ height: 32, width: 32, padding: 0 }}
-										onUpvote={() => this.props.voteComment(comment, 1)}
-										onDownvote={() => this.props.voteComment(comment, -1)}
+			<div>
+				<CommentView
+					comment={this.props.comment}
+					getUpvotes={this.getUpvotes}
+					getDownvotes={this.getDownvotes}
+					upvote={this.upvote}
+					downvote={this.downvote}
+					userProfile={userProfile}
+					onRepliesButtonClick={this.onRepliesButtonClick}
+					selfDestruct={this.selfDestruct}
+					onReply={this.toggleReplyBox}
+					ref={(node) => { this.commentRef = node; }}
+				>
+					{({ isEditing, message, toggleEdit, id }) => {
+						return isEditing
+							? (
+								<div>
+									<MentionInput
+										ref={(i) => { this.editMentionInput = i; }}
+										getUsers={() => Promise.resolve([])}
+										initText={message}
 									/>
-								}
-								{isEditing && this.getEditControls()}
-								{!isEditing && this.getPrimaryControls(comment)}
-							</div>
+									<FlatButton
+										label="Edit"
+										onClick={() => {
+											this.editComment({ message: this.editMentionInput.popValue(), id });
+											toggleEdit();
+										}}
+									/>
+								</div>
+							)
+							: <p>{replaceMention(message)}</p>;
+					}}
+				</CommentView>
+				<Divider />
+				{
+					repliesArray !== null && (
+						<div style={{ marginLeft: 30 }}>
+							<CommentList
+								comments={repliesArray}
+								delete={this.deleteReply}
+								commentsRef={this.addReplyRef}
+								commentsAPI={this.props.commentsAPI}
+								toggleReplyBox={this.toggleReplyBox}
+							/>
+							{
+								repliesArray.length > 0 && repliesArray.length < replies &&
+								<FlatButton
+									label="Load more"
+									onClick={this.getRepliesBelow}
+								/>
+							}
 						</div>
-					</div>
-				</div>
+					)
+				}
+				{
+					this.isReplyInputOpen
+					&& (
+						<div>
+							<MentionInput
+								ref={(i) => { this.mentionInput = i; }}
+								initText={this.initText}
+								getUsers={() => Promise.resolve([])}
+							/>
+							<FlatButton label="Reply" onClick={this.addReply} />
+							<Divider />
+						</div>
+					)
+				}
+				{
+					this.isReplyLoading
+					&& <CircularProgress style={{ display: 'flex', alignItems: 'center', margin: 'auto' }} />
+				}
 			</div>
 		);
 	}
