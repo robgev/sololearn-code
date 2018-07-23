@@ -18,7 +18,6 @@ import User from './FeedTemplates/User';
 const styles = {
 	feedPinWrapper: {
 		position: 'relative',
-		margin: '10px 0',
 	},
 
 	linkStyle: {

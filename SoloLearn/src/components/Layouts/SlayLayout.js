@@ -1,7 +1,8 @@
 import React from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-import BusyWrapper from 'components/BusyWrapper';
 import CircularProgress from 'material-ui/CircularProgress';
+import Sidebar from 'components/Sidebar';
+import BusyWrapper from 'components/BusyWrapper';
 import SlayHomeShimmer from 'components/Shimmers/SlayHomeShimmer';
 
 import 'styles/slayBase.scss';
@@ -74,11 +75,9 @@ const Layout = ({
 			</BusyWrapper>
 		</div>
 		{!noSidebar &&
-			<div className="sidebar-placeholder">
-				<div className="sidebar">
-					{sidebarContent}
-				</div>
-			</div>
+			<Sidebar>
+				{sidebarContent}
+			</Sidebar>
 		}
 	</div>
 );

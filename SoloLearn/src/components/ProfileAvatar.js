@@ -43,6 +43,7 @@ render() {
 		reversedOrder,
 		sideComponent,
 		withUserNameBox,
+		withFollowButton,
 	} = this.props;
 	const { isTooltipActive } = this.state;
 	const ConditionalContainer = disabled ? DisabledContainer : Link;
@@ -120,6 +121,7 @@ render() {
 						level={level}
 						name={userName}
 						avatarUrl={avatarUrl}
+						withFollowButton={withFollowButton}
 						className="profile-avatar-user-card profile-avatar-reset"
 					/>
 				</ToolTip>

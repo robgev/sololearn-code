@@ -31,36 +31,31 @@ const RelatedLessons = ({
 		}
 		{ nextLesson &&
 			<CourseCard
-				title={t('lesson.up-next')}
 				{...nextLesson}
+				title={t('lesson.up-next')}
+				className="up-next-course-card-container"
+				style={{
+					padding: 15,
+					marginBottom: 0,
+					paddingBottom: 0,
+					boxShadow: 'none',
+				}}
 			/>
 		}
 		{	(relevantLessons && !!relevantLessons.length) &&
-			(relevantLessons.length > 1 ?
-				<SidebarCollectionCard
-					id={id}
-					noViewMore
-					title={t('lesson.see-also')}
-					items={relevantLessons}
-				/> :
-				<CourseCard
-					title={t('lesson.see-also')}
-					{...relevantLessons[0]}
-				/>
-			)
+			<SidebarCollectionCard
+				id={id}
+				noViewMore
+				title={t('lesson.see-also')}
+				items={relevantLessons}
+			/>
 		}
 		{	(lessonsByUser && !!lessonsByUser.length) &&
-			(lessonsByUser.length > 1 ?
-				<SidebarCollectionCard
-					userID={userID}
-					title={`${t('lesson.view-more-by-author')} ${userName}`}
-					items={lessonsByUser}
-				/> :
-				<CourseCard
-					title={`${t('lesson.view-more-by-author')} ${userName}`}
-					{...lessonsByUser[0]}
-				/>
-			)
+		<SidebarCollectionCard
+			userID={userID}
+			title={`${t('lesson.view-more-by-author')} ${userName}`}
+			items={lessonsByUser.slice(0, 10)}
+		/>
 		}
 	</div>
 );

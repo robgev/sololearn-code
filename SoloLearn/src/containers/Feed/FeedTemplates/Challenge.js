@@ -20,7 +20,6 @@ const styles = {
 };
 
 const Challenge = ({
-	openPopup,
 	contest: {
 		id, courseID, player, opponent,
 	},
@@ -31,7 +30,6 @@ const Challenge = ({
 			disabled
 			user={player}
 			courseId={courseID}
-			openPopup={openPopup}
 		/>
 		<div className="score" style={styles.score}>
 			<span>{player.score}</span>
@@ -43,7 +41,6 @@ const Challenge = ({
 			disabled
 			user={opponent}
 			courseId={courseID}
-			openPopup={openPopup}
 		/>
 	</div>
 );

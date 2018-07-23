@@ -376,13 +376,13 @@
 		},
 		"rank": {
 			"placeholder": "Check out the Leaderboards",
-			"month": "this month",
-			"week": "this week",
-			"country": "in",
-			"country-month": "in  this month",
-			"country-week": "in  this week",
-			"percent-format": "Top",
-			"default-format": "#"
+			"month": "{{rank}} this month",
+			"week": "{{rank}} this week",
+			"country": "{{rank}} in {{country}}",
+			"country-month": "{{rank}} in {{country}} this month",
+			"country-week": "{{rank}} in {{country}} this week",
+			"percent-format": "Top {{number}}%",
+			"default-format": "#{{number}}"
 		},
 		"no-country-specified-title": "No Location specified",
 		"no-country-specified-message": "Select your location to see your rank.",

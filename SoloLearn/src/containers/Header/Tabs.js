@@ -21,7 +21,7 @@ const TabList = ({ pathname, t }) => (
 				onClick={pathname === '/discuss' && tab.url === '/discuss' ? e => e.preventDefault() : () => { }}
 				className={`tab-item ${(!pathname.includes('/profile') && isActiveRoute(pathname, tab)) ? 'active' : ''}`}
 			>
-				<img className="tab-icon" alt="Tab icon" src={`assets/${tab.imgUrl}`} />
+				<img className="tab-icon" alt="Tab icon" src={`/assets/${tab.imgUrl}`} />
 				{t(tab.name)}
 			</Link>
 		))

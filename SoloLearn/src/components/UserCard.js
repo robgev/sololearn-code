@@ -25,10 +25,7 @@ handleFollow = async () => {
 	const { id } = this.props;
 	const endpoint = following ? 'Profile/Unfollow' : 'Profile/Follow';
 	this.setState({ following: !following });
-	const response = await Service.request(endpoint, { id });
-	if (!response.isSuccessful) {
-		this.setState({ following }); // revert the following state, if there was a server error
-	}
+	await Service.request(endpoint, { id });
 }
 
 render() {
@@ -40,6 +37,7 @@ render() {
 		followers,
 		avatarUrl,
 		className = '',
+		withFollowButton,
 	} = this.props;
 	const { following } = this.state;
 	const WrapperComponent = withLink ? Link : CustomWrapper;
@@ -63,12 +61,20 @@ render() {
 						Level {numberFormatter(level)}
 					</div>
 					}
-					<RaisedButton
-						secondary={following}
-						onClick={this.handleFollow}
-						className="user-card-follow-button"
-						label={following ? 'Following' : 'Follow'}
-					/>
+					{withFollowButton ?
+						<RaisedButton
+							secondary={following}
+							onClick={this.handleFollow}
+							className="user-card-follow-button"
+							label={following ? 'Following' : 'Follow'}
+						/> : (
+							<Link to={`/profile/${id}`} className="user-card-follow-button">
+								<RaisedButton
+									label="View Profile"
+								/>
+							</Link>
+						)
+					}
 				</div>
 			</WrapperComponent>
 

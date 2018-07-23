@@ -28,17 +28,13 @@ const styles = {
 };
 
 class Course extends Component {
-	openCoursePopup(e) {
+	openCoursePopup = () => {
 		const { course } = this.props;
-
-		e.stopPropagation();
-		e.preventDefault();
-
 		const data = {
 			type: PopupTypes.course,
 			courseId: course.id,
+			courseName: course.name,
 		};
-
 		this.props.openPopup(data);
 	}
 
@@ -46,10 +42,20 @@ class Course extends Component {
 		const { course } = this.props;
 
 		return (
-			<Link to={`/learn/${toSeoFriendly(course.name, 100)}/${course.id}/1`} className="course" style={styles.course} onClick={this.openCoursePopup}>
-				<img src={`https://api.sololearn.com/uploads/Courses/${course.id}.png`} style={styles.courseIcon} />
+			<div
+				tabIndex={0}
+				role="button"
+				className="course"
+				style={styles.course}
+				onClick={this.openCoursePopup}
+			>
+				<img
+					alt="course icon"
+					src={`https://api.sololearn.com/uploads/Courses/${course.id}.png`}
+					style={styles.courseIcon}
+				/>
 				<p style={styles.courseName}>{course.name}</p>
-			</Link>
+			</div>
 		);
 	}
 }

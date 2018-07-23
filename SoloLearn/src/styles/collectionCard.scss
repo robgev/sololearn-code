@@ -38,6 +38,7 @@
 				}
 			}
 			.course-chip-image-container {
+				width: 100%;
 				&:not(.round) {
 					align-items: flex-start;
 					.chip-image {
@@ -48,6 +49,9 @@
 			.round {
 				height: 85px;
 				width: 85px;
+			}
+			.course-chip-info.round-course-item {
+				height: 21px;
 			}
 		}
 	}
@@ -88,5 +92,11 @@
 
 	.slick-slide {
 		height: initial;
+	}
+
+	&.round {
+		.slick-arrow {
+			top: 40%;
+		}
 	}
 }

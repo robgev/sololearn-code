@@ -6,14 +6,19 @@
 	.course-card-wrapper {
 		display: flex;
 		justify-content: flex-start;
+		align-items: center;
 		width: 100%;
 		padding: 10px;
 		color: rgba(0, 0, 0, 0.87);
 		text-decoration: none;
 		margin-bottom: 10px;
-		.card-image {
+		.course-card-image-container {
 			width: 100px;
 			height: 100px;
+			flex-shrink: 0;
+			.card-image {
+				width: 100%;
+			}
 			&.round {
 				border-radius: 100%;
 			}

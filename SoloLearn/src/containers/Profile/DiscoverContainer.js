@@ -64,6 +64,7 @@ class DiscoverContainer extends PureComponent {
 								<UserCard
 									withLink
 									{...suggestion}
+									withFollowButton
 									key={suggestion.id}
 								/>
 							))}
