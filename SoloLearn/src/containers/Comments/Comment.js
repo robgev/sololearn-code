@@ -125,7 +125,7 @@ class Comment extends Component {
 		const filtered = filterExisting(comment.repliesArray, comments);
 		const nulledReplies = filtered.map(c => new IComment({ ...c, repliesArray: null }));
 		comment.repliesArray.unshift(...nulledReplies);
-		comment.repliesArray = this.commentsAPI.orderComments(comment.repliesArray);
+		comment.repliesArray = this.props.commentsAPI.orderComments(comment.repliesArray);
 	}
 
 	@action vote = (vote) => {
