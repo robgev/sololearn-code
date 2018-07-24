@@ -6,8 +6,6 @@ import { RaisedButton, Paper } from 'material-ui';
 
 import MentionInput from 'components/MentionInput';
 
-import { getMentionsList } from 'utils';
-
 import { AddReplyStyles as styles } from './styles';
 
 class AddReply extends Component {
@@ -48,7 +46,7 @@ class AddReply extends Component {
 						onBlur={this.handleBlur}
 						onLengthChange={this.onLengthChange}
 						style={isReplyBoxOpen ? { height: 200 } : { height: 50 }}
-						getUsers={getMentionsList('discuss', { postId: this.props.postId })}
+						getUsers={{ type: 'discuss', params: { postId: this.props.postId } }}
 						submit={this.props.save}
 						placeholder={!isReplyBoxOpen && replyLength === 0 ? 'Write a new answer' : ''}
 					/>

@@ -192,7 +192,7 @@ class Comments extends Component {
 				<CommentsToolbar value={this.orderBy} onChange={this.changeOrder} />
 				<MentionInput
 					ref={(i) => { this.mentionInput = i; }}
-					getUsers={() => Promise.resolve([])}
+					getUsers={this.commentsAPI.getMentionUsers}
 				/>
 				<FlatButton
 					label="Comment"

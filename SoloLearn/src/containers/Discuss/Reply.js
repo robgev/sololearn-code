@@ -19,7 +19,7 @@ import getLikesAndDownvotesCurried from 'actions/likes';
 import Likes from 'components/Likes';
 import ProfileAvatar from 'components/ProfileAvatar';
 import PreviewItem from 'components/PreviewItem';
-import { updateDate, determineAccessLevel, generatePreviews, replaceMention, getMentionsList } from 'utils';
+import { updateDate, determineAccessLevel, generatePreviews, replaceMention } from 'utils';
 import MentionInput from 'components/MentionInput';
 
 import { ReplyStyles as styles } from './styles';
@@ -89,7 +89,7 @@ class Reply extends Component {
 						ref={(input) => { this.mentionInput = input; }}
 						initText={this.props.reply.message}
 						onLengthChange={this.onLengthChange}
-						getUsers={getMentionsList('discuss', {})}
+						getUsers={{ type: 'discuss' }}
 					/>
 					<span style={styles.textFieldCoutner} key={`replyTextCounter${reply.id}`}>{2048 - this.state.replyLength}</span>
 				</div>,
@@ -140,7 +140,7 @@ class Reply extends Component {
 				className={`reply ${this.state.animate ? 'animate' : ''}`}
 				key={reply.id}
 				style={(reply.isAccepted && !this.state.isEditing)
-					? [ styles.reply.base, styles.reply.accepted ]
+					? [styles.reply.base, styles.reply.accepted]
 					: styles.reply.base}
 			>
 				<div className="details-wrapper" style={styles.detailsWrapper}>
@@ -158,7 +158,7 @@ class Reply extends Component {
 							<ThumbDown color={reply.vote === -1 ? blueGrey500 : grey500} />
 						</IconButton>
 					</div>
-					<div className="details" style={!this.state.isEditing ? styles.details.base : [ styles.details.base, styles.details.editing ]}>{this.getEditableArea()}</div>
+					<div className="details" style={!this.state.isEditing ? styles.details.base : [styles.details.base, styles.details.editing]}>{this.getEditableArea()}</div>
 					{
 						!this.state.isEditing &&
 						<IconMenu

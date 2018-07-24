@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { EditorState, convertToRaw, ContentState, SelectionState, Modifier } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 import createMentionPlugin from 'draft-js-mention-plugin';
-import { mentionUsers } from 'utils';
+import { mentionUsers, getMentionsList } from 'utils';
 import 'draft-js-mention-plugin/lib/plugin.css';
 
 import Entry from './Entry';
@@ -21,7 +21,7 @@ const makeEditableContent = (text) => {
 		slots.forEach((slot) => {
 			// as current block text can change we need to get it each time
 			const { text: blockText } = contentState.getBlockForKey(currBlockKey);
-			const [ , id, name ] = slot.match(singleMentionRegex);
+			const [, id, name] = slot.match(singleMentionRegex);
 			const contentStateWithEntity = contentState.createEntity(
 				'mention',
 				'SEGMENTED',
@@ -84,9 +84,13 @@ class MentionInput extends Component {
 		return 'not_handled';
 	}
 
+	get getUsers() {
+		return getMentionsList(this.props.getUsers);
+	}
+
 	onSearchChange = (e) => {
 		const { value } = e;
-		this.props.getUsers(value)
+		this.getUsers(value)
 			.then((users) => {
 				const mentions = this.getMentions();
 				if (mentions.length < 10) {
@@ -125,7 +129,7 @@ class MentionInput extends Component {
 
 	render() {
 		const { MentionSuggestions } = this.mentionPlugin;
-		const plugins = [ this.mentionPlugin ];
+		const plugins = [this.mentionPlugin];
 
 		return (
 			<div
@@ -168,7 +172,10 @@ MentionInput.defaultProps = {
 };
 
 MentionInput.propTypes = {
-	getUsers: PropTypes.func.isRequired,
+	getUsers: PropTypes.shape({
+		type: PropTypes.string.isRequired,
+		params: PropTypes.object,
+	}),
 	className: PropTypes.string,
 	onFocus: PropTypes.func,
 	onBlur: PropTypes.func,

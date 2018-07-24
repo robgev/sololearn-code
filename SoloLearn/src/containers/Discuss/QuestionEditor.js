@@ -12,7 +12,6 @@ import { translate } from 'react-i18next';
 
 // Service
 import Service from 'api/service';
-import { getMentionsList } from 'utils';
 
 // Additional components
 import MentionInput from 'components/MentionInput';
@@ -49,7 +48,7 @@ class QuestionEditor extends Component {
 	// Collect tags into one array
 	addTag = (newTag) => {
 		const { tags } = this.state;
-		this.setState({ tags: [ ...tags, newTag ] });
+		this.setState({ tags: [...tags, newTag] });
 	}
 
 	handleDeleteTag = (tag) => {
@@ -71,7 +70,7 @@ class QuestionEditor extends Component {
 
 	hanldeChipBlur = ({ target: { value } }) => {
 		if (value) {
-			this.setState(s => ({ tags: [ ...s.tags, value ] }));
+			this.setState(s => ({ tags: [...s.tags, value] }));
 		}
 	}
 
@@ -145,7 +144,7 @@ class QuestionEditor extends Component {
 							onFocus={this.openReplyBox}
 							onBlur={this.handleBlur}
 							onLengthChange={this.onLengthChange}
-							getUsers={getMentionsList('discuss', {})}
+							getUsers={{ type: 'discuss' }}
 							placeholder={!isReplyBoxOpen && replyLength === 0 ? t('question.message-placeholder') : ''}
 							maxLength={this.maxQuestionLength}
 						/>
@@ -161,7 +160,7 @@ class QuestionEditor extends Component {
 							value={this.state.tags}
 							style={styles.textField}
 							onBlur={this.handleChipBlur}
-							newChipKeyCodes={[ 13, 32 ]}
+							newChipKeyCodes={[13, 32]}
 							chipRenderer={this.renderChip}
 							dataSource={this.state.suggestions}
 							errorText={this.state.tagsErrorText}

@@ -6,7 +6,6 @@ import ProfileAvatar from 'components/ProfileAvatar';
 import VoteControls from 'components/VoteControls';
 import { IconMenu, MenuItem, FlatButton, IconButton, Dialog } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import MentionInput from 'components/MentionInput';
 import { replaceMention } from 'utils';
 import './comment.scss';
 

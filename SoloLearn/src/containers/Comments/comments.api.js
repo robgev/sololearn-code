@@ -80,4 +80,8 @@ export default
 				throw new Error('Unknown comment ordering');
 		}
 	}
+
+	get getMentionUsers() {
+		return { type: `${this.commentsType}Comment`, params: this.params };
+	}
 }

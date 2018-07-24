@@ -208,7 +208,7 @@ class Comment extends Component {
 								<div>
 									<MentionInput
 										ref={(i) => { this.editMentionInput = i; }}
-										getUsers={() => Promise.resolve([])}
+										getUsers={this.props.commentsAPI.getMentionUsers}
 										initText={message}
 									/>
 									<FlatButton
@@ -255,7 +255,7 @@ class Comment extends Component {
 							<MentionInput
 								ref={(i) => { this.mentionInput = i; }}
 								initText={this.initText}
-								getUsers={() => Promise.resolve([])}
+								getUsers={this.props.commentsAPI.getMentionUsers}
 							/>
 							<FlatButton label="Reply" onClick={this.addReply} />
 							<Divider />
