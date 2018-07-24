@@ -329,7 +329,6 @@ class QuizManager extends Component {
 							commentsType="lesson"
 							type={activeQuiz.isText ? 1 : 3}
 							commentsCount={commentsCount}
-							closeComments={this.closeComments}
 						/> : null
 					}
 				</Paper>

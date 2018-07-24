@@ -67,22 +67,22 @@ class SlayLesson extends PureComponent {
 		const parsedItemType = parseInt(itemType, 10);
 		this.setState({ loading: true });
 		switch (parsedItemType) {
-		case slayItemTypes.courseLesson: {
-			await getCourseLesson(lessonId);
-			await this.getLessonsByAuthor();
-			const commentsCount = await this.loadCommentsCount();
-			this.setState({ loading: false, commentsCount });
-			break;
-		}
-		case slayItemTypes.slayLesson: {
-			await getLesson(lessonId);
-			await this.getLessonsByAuthor();
-			const commentsCount = await this.loadCommentsCount();
-			this.setState({ loading: false, commentsCount });
-			break;
-		}
-		default:
-			break;
+			case slayItemTypes.courseLesson: {
+				await getCourseLesson(lessonId);
+				await this.getLessonsByAuthor();
+				const commentsCount = await this.loadCommentsCount();
+				this.setState({ loading: false, commentsCount });
+				break;
+			}
+			case slayItemTypes.slayLesson: {
+				await getLesson(lessonId);
+				await this.getLessonsByAuthor();
+				const commentsCount = await this.loadCommentsCount();
+				this.setState({ loading: false, commentsCount });
+				break;
+			}
+			default:
+				break;
 		}
 		document.title = `${this.props.activeLesson.name}`;
 		if (this.props.activeLesson.parts) {
@@ -144,7 +144,7 @@ class SlayLesson extends PureComponent {
 					/>
 				}
 			>
-				{ !loading &&
+				{!loading &&
 					<div style={{ width: '100%' }}>
 						<Paper style={{ padding: 15 }}>
 							<SlayLessonContent
@@ -160,21 +160,20 @@ class SlayLesson extends PureComponent {
 								commentsCount={comments}
 								isBookmarked={isBookmarked}
 							/>
-							{ nextLesson &&
-							<Link to={`/learn/slayLesson/${itemType}/${nextLesson.id}/1`}>
-								<RaisedButton
-									labelColor="#fff"
-									backgroundColor="#8bc34a"
-									label={t('learn.buttons-continue')}
-								/>
-							</Link>
+							{nextLesson &&
+								<Link to={`/learn/slayLesson/${itemType}/${nextLesson.id}/1`}>
+									<RaisedButton
+										labelColor="#fff"
+										backgroundColor="#8bc34a"
+										label={t('learn.buttons-continue')}
+									/>
+								</Link>
 							}
 							<Comments
 								id={id}
 								type={1}
 								commentsType="userLesson"
 								commentsCount={commentsCount}
-								closeComments={this.toggleComments}
 							/>
 						</Paper>
 						<RelatedLessons

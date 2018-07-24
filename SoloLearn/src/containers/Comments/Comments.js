@@ -1,19 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { observable, action, autorun } from 'mobx';
+import { observable, action, autorun, computed } from 'mobx';
 import { observer } from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
+import { withRouter } from 'react-router';
+import uniqBy from 'lodash/uniqBy';
 import InfiniteScroll from 'components/InfiniteScroll';
 import MentionInput from 'components/MentionInput';
 import FlatButton from 'material-ui/FlatButton';
+
 import CommentsAPI from './comments.api';
 import CommentList from './CommentList';
-
 import IComment from './IComment';
 import CommentsToolbar from './CommentsToolbar';
+import { filterExisting } from './comments.utils';
 
 const mapStateToProps = ({ userProfile }) => ({ userProfile });
 
+@withRouter
 @connect(mapStateToProps)
 @observer
 class Comments extends Component {
@@ -22,6 +26,7 @@ class Comments extends Component {
 		id: this.props.id,
 		commentsType: this.props.commentsType,
 		orderBy: 2,
+		findPostId: this.props.location.query.commentID,
 	})
 
 	commentsRefs = {};
@@ -31,17 +36,38 @@ class Comments extends Component {
 
 	@observable orderBy = 2;
 
-	@observable comments = []
-	@observable commentsCount = this.props.commentsCount
+	@observable comments = [];
+	@observable commentsCount = this.props.commentsCount;
 	@observable hasMore = true;
 	@observable initial = true;
+
+	@computed get hasMoreAbove() {
+		return this.firstIndex > 0;
+	}
+
+	@computed get firstIndex() {
+		// Created replies index is undefined, so skip over those
+		for (let i = 0; i < this.comments.length; i += 1) {
+			const { index } = this.comments[i];
+			// Not your created comment
+			if (index !== undefined) {
+				return index;
+			}
+		}
+		// All your created comments or not yet fetched
+		return 0;
+	}
+
+	@computed get isOnReply() {
+		return this.comments.length > 0 && this.comments[0].index === -1;
+	}
 
 	componentDidMount() {
 		this.dispose = autorun(() => {
 			// Need to keep commentsAPI orderBy in sync with view
 			this.commentsAPI.orderBy = this.orderBy;
 		});
-		this.getCommentsBelow(3);
+		this.initialRequest();
 	}
 
 	componentWillUnmount() {
@@ -58,19 +84,67 @@ class Comments extends Component {
 	@action unlockInitial = () => {
 		this.initial = false;
 	}
+	@action initialRequest = async () => {
+		const { findPostId } = this.commentsAPI;
+		const comments = await this.commentsAPI.getComments({
+			index: this.comments.length, count: 3,
+		});
+		let withReplies;
+		const isFindingReply = comments[0].index === -1;
+		if (isFindingReply) {
+			// FindPostId is a reply id, have to format the replies
+			withReplies = [ new IComment({
+				...comments[0],
+				repliesArray: comments.slice(1).map(c => new IComment({ ...c, repliesArray: null }))
+			}) ];
+		} else {
+			withReplies = comments.map(comment =>
+				new IComment({ ...comment, repliesArray: [] }));
+		}
+		this.comments.push(...withReplies);
+		if (isFindingReply) {
+			this.highlight(this.comments[0].id, findPostId);
+		} else {
+			this.highlight(findPostId);
+		}
+		this.commentsAPI.findPostId = null;
+	}
 
-	loadMore = () => this.getCommentsBelow(); // need to ignore default "page" arg by InfinteScroll
+	// need to ignore default "page" arg by InfinteScroll, so can't pass getCommentsBelow
+	loadMore = () => this.getCommentsBelow();
 
-	@action getCommentsBelow = async (count = 20) => {
+	@action reset = () => {
+		this.comments = [];
+		this.initial = false;
+		this.hasMore = true;
+	}
+
+	@action getCommentsBelow = async () => {
+		const count = 20;
 		const comments = await this.commentsAPI.getComments({
 			index: this.comments.length, count,
 		});
 		if (comments.length < count) {
 			this.hasMore = false;
 		}
-		const withReplies = comments.map(comment =>
+		const filtered = filterExisting(this.comments, comments);
+		const withReplies = filtered.map(comment =>
 			new IComment({ ...comment, repliesArray: [] }));
 		this.comments.push(...withReplies);
+		this.comments = this.commentsAPI.orderComments(this.comments);
+	}
+
+	@action getCommentsAbove = async () => {
+		const firstIndex = this.firstIndex;
+		const index = firstIndex > 20 ? firstIndex - 20 : 0;
+		const count = firstIndex - index;
+		const comments = await this.commentsAPI.getComments({
+			index, count,
+		});
+		const filtered = filterExisting(this.comments, comments);
+		const withReplies = filtered.map(comment =>
+			new IComment({ ...comment, repliesArray: [] }));
+		this.comments.unshift(...withReplies);
 		this.comments = this.commentsAPI.orderComments(this.comments);
 	}
 
@@ -97,7 +171,13 @@ class Comments extends Component {
 		});
 		this.comments.push(newComment);
 		this.comments = this.commentsAPI.orderComments(this.comments);
-		this.commentsRefs[comment.id].getWrappedInstance().scrollIntoView();
+		this.highlight(comment.id);
+	}
+
+	highlight = (id, replyId) => {
+		if (id !== null) {
+			this.commentsRefs[id].getWrappedInstance().scrollIntoView(replyId);
+		}
 	}
 
 	@action deleteComment = (id) => {
@@ -118,6 +198,14 @@ class Comments extends Component {
 					label="Comment"
 					onClick={this.addComment}
 				/>
+				{
+					this.isOnReply &&
+					<FlatButton label="Back" onClick={this.reset} />
+				}
+				{
+					this.hasMoreAbove &&
+					<FlatButton label="Load more" onClick={this.getCommentsAbove} />
+				}
 				<CommentList
 					commentsRef={this.addRef}
 					delete={this.deleteComment}

@@ -5,11 +5,12 @@ export default
 	class CommentsAPI {
 
 	constructor({
-		commentsType, type = null, id, orderBy,
+		commentsType, type = null, id, orderBy, findPostId = null,
 	}) {
 		this.commentsType = commentsType;
 		this.params = CommentsAPI.getParamsByType({ id, type, commentsType });
 		this.orderBy = orderBy;
+		this.findPostId = findPostId;
 		this.getCommentsPromise = null;
 	}
 
@@ -29,12 +30,12 @@ export default
 	};
 
 	getComments = ({
-		index, count = 20, parentID = null, findPostId = null,
+		index, count = 20, parentID = null,
 	}) => {
 		// Block fetching twice with the same properties
 		if (this.getCommentsPromise === null) {
 			const params = {
-				...this.params, index, orderBy: this.orderBy, count, parentID, findPostId,
+				...this.params, index, orderBy: this.orderBy, count, parentID, findPostId: this.findPostId,
 			};
 			this.getCommentsPromise = Service
 				.request(`Discussion/Get${this.commentsType}Comments`, params)
