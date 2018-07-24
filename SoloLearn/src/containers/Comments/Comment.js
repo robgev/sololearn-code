@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { action, observable } from 'mobx';
+import { action, observable, computed } from 'mobx';
 import { observer } from 'mobx-react';
 import FlatButton from 'material-ui/FlatButton';
 import Divider from 'material-ui/Divider';
@@ -9,8 +9,8 @@ import MentionInput from 'components/MentionInput';
 import { replaceMention } from 'utils';
 import CommentList from './CommentList';
 import CommentView from './CommentView';
-
 import IComment from './IComment';
+import { filterExisting } from './comments.utils';
 
 const mapStateToProps = ({ userProfile }) => ({ userProfile });
 
@@ -55,12 +55,34 @@ class Comment extends Component {
 	selfDestruct = () => {
 		this.props.delete(this.props.comment.id);
 	}
+
+	@computed get firstIndex() {
+		const { repliesArray } = this.props.comment;
+		if(repliesArray !== null) {
+			// Created replies index is undefined, so skip over those
+			for (let i = 0; i < repliesArray.length; i += 1) {
+				const { index } = repliesArray[i];
+				// Not your created comment
+				if (index !== undefined) {
+					return index;
+				}
+			}
+			// All your created comments or not yet fetched
+		}
+		return 0;
+	}
+	
+	@computed get hasRepliesAbove() {
+		return this.firstIndex > 0;
+	}
+
 	@action deleteReply = (id) => {
 		const { comment } = this.props;
 		comment.repliesArray.splice(comment.repliesArray.findIndex(i => i.id === id), 1);
 		comment.replies -= 1;
 		this.props.commentsAPI.deleteComment({ id });
 	}
+
 	scrollIntoView = (replyId = null) => {
 		if (replyId === null) {
 			this.commentRef.getWrappedInstance().scrollIntoView();
@@ -68,6 +90,7 @@ class Comment extends Component {
 			this.commentsRefs[replyId].getWrappedInstance().scrollIntoView();
 		}
 	}
+
 	@action addReply = async () => {
 		try {
 			const message = this.mentionInput.popValue();
@@ -79,17 +102,32 @@ class Comment extends Component {
 			this.isReplyLoading = false;
 		}
 	}
+
 	@action getRepliesBelow = async () => {
 		const { repliesArray, id } = this.props.comment;
 		const newComments = await this.props.commentsAPI
 			.getComments({ parentID: id, index: repliesArray.length });
 		const { comment } = this.props;
-		const replyIds = comment.repliesArray.map(rep => rep.id);
-		const filtered = newComments.filter(com => !replyIds.includes(com.id));
-		const nulledReplies = filtered.map(com => new IComment({ ...com, repliesArray: null }));
+		const filtered = filterExisting(comment.repliesArray, newComments);
+		const nulledReplies = filtered.map(c => new IComment({ ...c, repliesArray: null }));
 		comment.repliesArray.push(...nulledReplies);
 		comment.repliesArray = this.props.commentsAPI.orderComments(comment.repliesArray);
 	}
+
+	@action getRepliesAbove = async () => {
+		const firstIndex = this.firstIndex;
+		const index = firstIndex > 20 ? firstIndex - 20 : 0;
+		const count = firstIndex - index;
+		const comments = await this.props.commentsAPI.getComments({
+			index, count, parentID: this.props.comment.id,
+		});
+		const { comment } = this.props;
+		const filtered = filterExisting(comment.repliesArray, comments);
+		const nulledReplies = filtered.map(c => new IComment({ ...c, repliesArray: null }));
+		comment.repliesArray.unshift(...nulledReplies);
+		comment.repliesArray = this.commentsAPI.orderComments(comment.repliesArray);
+	}
+
 	@action vote = (vote) => {
 		const { comment } = this.props;
 		const newVote = comment.vote === vote ? 0 : vote;
@@ -102,6 +140,7 @@ class Comment extends Component {
 				comment.votes -= (newVote - oldVote);
 			});
 	}
+
 	@action reply = async ({ message }) => {
 		const { userProfile, commentsAPI } = this.props;
 		const { comment: { id, date } } = await commentsAPI
@@ -128,10 +167,12 @@ class Comment extends Component {
 		comment.repliesArray = this.props.commentsAPI.orderComments(comment.repliesArray);
 		this.scrollIntoView(id);
 	}
+
 	@action editComment = ({ message, id }) => {
 		this.props.comment.message = message;
 		this.props.commentsAPI.editComment({ message, id });
 	}
+
 	getVotes = (voteType) => {
 		const { dispatch, commentsAPI, comment } = this.props;
 		return dispatch(commentsAPI.getVotesList({ id: comment.id, type: voteType }));
@@ -140,6 +181,7 @@ class Comment extends Component {
 	getDownvotes = () => this.getVotes('Downvotes');
 	upvote = () => this.vote(1);
 	downvote = () => this.vote(-1);
+
 	render() {
 		const { userProfile } = this.props;
 		const {
@@ -185,6 +227,10 @@ class Comment extends Component {
 				{
 					repliesArray !== null && (
 						<div style={{ marginLeft: 30 }}>
+							{
+								this.hasRepliesAbove &&
+								<FlatButton label="Load more" onClick={this.getRepliesAbove} />
+							}
 							<CommentList
 								comments={repliesArray}
 								delete={this.deleteReply}

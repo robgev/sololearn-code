@@ -211,12 +211,12 @@ class Comments extends Component {
 					delete={this.deleteComment}
 					comments={this.comments}
 					loadMore={this.loadMore}
-					hasMore={this.hasMore && !this.initial}
+					hasMore={this.hasMore && !this.initial && !this.isOnReply}
 					infinite
 					commentsAPI={this.commentsAPI}
 				/>
 				{
-					this.initial && this.comments.length > 0 && this.hasMore
+					this.initial && this.comments.length > 0 && this.hasMore && !this.isOnReply
 					&& (
 						<FlatButton
 							label="Load more"
