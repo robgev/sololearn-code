@@ -50,4 +50,15 @@
 			}
 		}
 	}
+	&.small {
+		.course-card-wrapper {
+			padding: 0;
+			margin: 0;
+			align-items: center;
+		.course-card-image-container {
+				height: 70px;
+				width: 70px;
+			}
+		}
+	}
 }

@@ -31,9 +31,9 @@ const RelatedLessons = ({
 		}
 		{ nextLesson &&
 			<CourseCard
+				small
 				{...nextLesson}
 				title={t('lesson.up-next')}
-				className="up-next-course-card-container"
 				style={{
 					padding: 15,
 					marginBottom: 0,

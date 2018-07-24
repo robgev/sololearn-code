@@ -1,7 +1,5 @@
 // React modules
 import React, { Component } from 'react';
-import { Link } from 'react-router';
-import { toSeoFriendly } from 'utils';
 import PopupTypes from 'defaults/feedPopupTypes';
 
 const styles = {

@@ -28,7 +28,7 @@ import { createContestInternal } from 'actions/challenges';
 import Service from 'api/service';
 
 // Utils and defaults
-import { getOffset, numberFormatter } from 'utils';
+import { getOffset, numberFormatter, toSeoFriendly } from 'utils';
 import PopupTypes from 'defaults/feedPopupTypes';
 import ProfileAvatar from 'components/ProfileAvatar';
 import LoadingOverlay from 'components/LoadingOverlay';
@@ -295,10 +295,10 @@ class FeedItemsBase extends Component {
 		if (this.popupData.type === PopupTypes.course) {
 			let hasProgress = false;
 			const { skills } = this.props.userProfile;
-			const userCourseIndex = skills.findIndex(curr => curr.id === this.popupData.courseId);
+			const userCourse = skills.find(curr => curr.id === this.popupData.courseId);
 			const { learners, name, id } = course;
-			if (userCourseIndex > 0) {
-				course = skills[userCourseIndex];
+			if (userCourse) {
+				course = userCourse;
 				hasProgress = true;
 			}
 			return (
@@ -322,7 +322,7 @@ class FeedItemsBase extends Component {
 						</div>
 					</div>
 					<div className="actions" style={styles.actions}>
-						<Link to={`/learn/${name}/${id}/1`}>
+						<Link to={`/learn/${toSeoFriendly(name, 100)}/${id}/1`}>
 							<FlatButton label={t('learn.open-course-action-tite')} primary />
 						</Link>
 					</div>

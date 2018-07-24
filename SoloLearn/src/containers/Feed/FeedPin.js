@@ -8,7 +8,9 @@ import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
 
 // Utils
-import { getLanguageColor, toSeoFriendly } from 'utils';
+import { getLanguageColor } from 'utils';
+import PopupTypes from 'defaults/feedPopupTypes';
+import CourseCard from 'components/CourseCard';
 
 // Additional data and components
 import Course from './FeedTemplates/Course';
@@ -30,6 +32,7 @@ const styles = {
 		top: 0,
 		bottom: 0,
 		zIndex: 1,
+		cursor: 'pointer',
 	},
 
 	heading: {
@@ -156,15 +159,42 @@ class FeedPin extends Component {
 		));
 	}
 
+	generateLessons() {
+		const { pin } = this.props;
+
+		return pin.lessons.map(lesson => (
+			<CourseCard
+				small
+				{...lesson}
+				key={lesson.name}
+				style={{
+					padding: 15,
+					marginBottom: 0,
+					paddingBottom: 0,
+					boxShadow: 'none',
+				}}
+			/>
+		));
+	}
+
+	openCoursePopup = () => {
+		const { pin } = this.props;
+		const firstCourse = pin.courses[0];
+		console.log(firstCourse.id, firstCourse.name);
+		const data = {
+			type: PopupTypes.course,
+			courseId: firstCourse.id,
+			courseName: firstCourse.name,
+		};
+		this.props.openPopup(data);
+	}
+
 	getPinUrl() {
 		const { pin } = this.props;
 		let url = pin.action;
 
 		if (pin.action == null || pin.action === '') {
-			if (pin.courses) {
-				const firstCourse = pin.courses[0];
-				url = `/learn/${toSeoFriendly(firstCourse.name)}/${firstCourse.id}/1`;
-			} else if (pin.users) {
+			if (pin.users) {
 				const firstUser = pin.users[0];
 				url = `/profile/${firstUser.id}`;
 			} else if (pin.codes) {
@@ -173,6 +203,12 @@ class FeedPin extends Component {
 			} else if (pin.posts) {
 				const firstPost = pin.posts[0];
 				url = `/discuss/${firstPost.id}`;
+			} else if (pin.lessons) {
+				const firstLesson = pin.lessons[0];
+				url = `/learn/slayLesson/2/${firstLesson.id}/1`;
+			} else if (pin.userPosts) {
+				const firstPost = pin.userPosts[0];
+				url = `/userPost/${firstPost.id}`;
 			}
 		} else {
 			const parts = url.split('/');
@@ -233,6 +269,9 @@ class FeedPin extends Component {
 			case 'quiz-factory':
 				url = '/quiz-factory';
 				break;
+			case 'collection':
+				url = `/learn/more/${parts[2]}`;
+				break;
 			default:
 				break;
 			}
@@ -261,15 +300,28 @@ class FeedPin extends Component {
 					{pin.courses && <div className="courses" style={styles.courses}>{this.generateCourses()}</div>}
 					{pin.users && <div className="users" style={styles.users}>{this.generateUsers()}</div>}
 					{pin.codes && <div className="codes" style={styles.codes}>{this.generateCodes()}</div>}
+					{pin.lessons && <div className="lessons" style={styles.lessons}>{this.generateLessons()}</div>}
 					{pin.posts && <div className="posts" style={styles.posts}>{this.generatePosts()}</div>}
 					{
 						(pin.actionName && pin.actionName !== '') &&
-						<Link to={this.getPinUrl()} className="actions" style={styles.actions}>
-							<FlatButton label={pin.actionName} primary style={styles.pinButton} />
-						</Link>
+						pin.courses ?
+							<div style={styles.actions}>
+								<FlatButton
+									primary
+									label={pin.actionName}
+									style={styles.pinButton}
+									onClick={this.openCoursePopup}
+								/>
+							</div> :
+							<Link to={this.getPinUrl()} className="actions" style={styles.actions}>
+								<FlatButton label={pin.actionName} primary style={styles.pinButton} />
+							</Link>
 					}
 				</Paper>
-				<Link className="feed-pin" to={this.getPinUrl()} style={styles.linkStyle} />
+				{pin.courses ?
+					<span className="feed-pin" onClick={this.openCoursePopup} style={styles.linkStyle} /> :
+					<Link className="feed-pin" to={this.getPinUrl()} style={styles.linkStyle} />
+				}
 			</div>
 		);
 	}

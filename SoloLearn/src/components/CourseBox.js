@@ -13,7 +13,7 @@ const getProgress = (skills, courseId) => {
 	return skill ? skill.progress : 0;
 };
 
-const CourseCard = ({
+const CourseBox = ({
 	id,
 	title,
 	name,
@@ -75,4 +75,4 @@ const CourseCard = ({
 
 const mapStateToProps = state => ({ courses: state.courses, skills: state.userProfile.skills });
 
-export default connect(mapStateToProps, null)(CourseCard);
+export default connect(mapStateToProps, null)(CourseBox);

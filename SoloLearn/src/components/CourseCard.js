@@ -14,6 +14,7 @@ const CourseCard = ({
 	name,
 	style,
 	color,
+	small,
 	userID,
 	courses,
 	iconUrl,
@@ -26,7 +27,7 @@ const CourseCard = ({
 	className,
 	wrapperStyle,
 }) => (
-	<Paper style={style} className={`course-card-container ${className || ''}`}>
+	<Paper style={style} className={`course-card-container ${small ? 'small' : ''} ${className || ''}`}>
 		{title &&
 			<div className="meta-info">
 				<p>{ title }</p>
