@@ -8,7 +8,6 @@ import { ListItem } from 'material-ui/List';
 import Snackbar from 'material-ui/Snackbar';
 
 // Redux modules
-import { setSelectedComment } from 'actions/comments';
 import { markReadInternal } from 'actions/profile';
 
 // Utils And Defaults
@@ -20,7 +19,6 @@ import { NotificationItemStyles as styles } from './styles';
 
 const mapDispatchToProps = {
 	markRead: markReadInternal,
-	setSelectedComment,
 };
 
 @connect(null, mapDispatchToProps)
@@ -74,12 +72,11 @@ class NotificationItem extends Component {
 		case types.postedCodeComment:
 		case types.postedCodeCommentReply:
 		case types.upvoteCodeComment:
-			this.props.setSelectedComment(notification.codeComment.id);
-			browserHistory.push(`/playground/${notification.code.publicID}`);
+			browserHistory.push(`/playground/${notification.code.publicID}?commentID=${notification.codeComment.id}`);
 			break;
 		case types.postedLessonComment:
 		case types.postedLessonCommentReply:
-			this.props.setSelectedComment(notification.codeComment.id);
+			// TODO: goto this lesson page with ?commentID=${notification.codeComment.id}
 			break;
 		default:
 			break;

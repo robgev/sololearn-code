@@ -40,9 +40,6 @@ import userSuggestions from './reducer_user_suggestions';
 // Profile
 import profile from './reducer_profile';
 
-// Comments
-import comments from './reducer_comments';
-
 // Play
 import challenges from './reducer_challenges';
 
@@ -66,7 +63,6 @@ import quizSubmission from './quizSubmission.reducer';
 
 const reducers = combineReducers({
 	profile,
-	comments,
 	challenges,
 	likes,
 	slay,

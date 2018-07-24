@@ -9,7 +9,6 @@ import Paper from 'material-ui/Paper';
 
 // Additional data and components
 import { toSeoFriendly } from 'utils';
-import { setSelectedComment } from 'actions/comments';
 import { voteFeedPostItem, voteFeedCommentItem, voteFeedCodeItem } from 'actions/feed';
 import CourseCard from 'components/CourseCard';
 import FeedItems from './FeedItems';
@@ -51,7 +50,6 @@ const styles = {
 
 const mapDispatchToProps = {
 	voteFeedCommentItem,
-	setSelectedComment,
 	voteFeedPostItem,
 	voteFeedCodeItem,
 };
@@ -143,8 +141,7 @@ class FeedItem extends Component {
 		case types.postedLessonComment:
 		case types.postedLessonCommentReply:
 			// this.url = `/learn/${feedItem.course.alias}/${feedItem.course.id}`;
-			// <div onClick={() => this.props.setSelectedComment(feedItem.comment.id)}>
-			this.url = `/learn/${toSeoFriendly(feedItem.course.name, 100)}/${feedItem.course.id}`;
+			this.url = `/learn/${toSeoFriendly(feedItem.course.name, 100)}/${feedItem.course.id}?commentID=${feedItem.comment.id}`;
 			return (
 				<div>
 					<Comment url={this.url} comment={feedItem.comment} />
@@ -159,9 +156,9 @@ class FeedItem extends Component {
 			);
 		case types.postedUserLessonComment:
 		case types.postedUserLessonCommentReply:
-			this.url = `/learn/slayLesson/2/${feedItem.userLesson.id}/1`;
+			this.url = `/learn/slayLesson/2/${feedItem.userLesson.id}/1?commentID=${feedItem.comment.id}`;
 			return (
-				<div onClick={() => this.props.setSelectedComment(feedItem.comment.id)}>
+				<div>
 					<Comment url={this.url} comment={feedItem.comment} />
 					<BottomToolbar
 						date={feedItem.date}
@@ -175,9 +172,9 @@ class FeedItem extends Component {
 		case types.postedCodeComment:
 		case types.postedCodeCommentReply:
 		case types.upvoteCodeComment:
-			this.url = `/playground/${feedItem.code.publicID}`;
+			this.url = `/playground/${feedItem.code.publicID}?commentID=${feedItem.comment.id}`;
 			return (
-				<div onClick={() => this.props.setSelectedComment(feedItem.comment.id)}>
+				<div>
 					<Comment url={this.url} comment={feedItem.comment} />
 					<BottomToolbar
 						date={feedItem.date}

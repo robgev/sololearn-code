@@ -16,8 +16,6 @@ import FlatButton from 'material-ui/FlatButton';
 
 // Redux loaded
 import { isLoaded } from 'reducers';
-import { setCommentsCount } from 'actions/comments';
-import { getCommentsCount } from 'selectors';
 
 // Service
 import Service from 'api/service';
@@ -74,16 +72,6 @@ const styles = {
 	},
 };
 
-const mapStateToProps = state => ({
-	commentSelected: isLoaded(state, 'commentSelected'),
-	commentsCount: getCommentsCount(state),
-});
-
-const mapDispatchToProps = {
-	setCommentsCount,
-};
-
-@connect(mapStateToProps, mapDispatchToProps)
 class Playground extends Component {
 	state = {
 		id: 0,
@@ -152,10 +140,6 @@ class Playground extends Component {
 		} else {
 			this.getUserCode();
 		}
-	}
-
-	componentWillReceiveProps(newProps) {
-		if (newProps.commentSelected) this.openComments();
 	}
 
 	// Default settings
@@ -234,7 +218,7 @@ class Playground extends Component {
 
 	// Get user saved code
 	getUserCode = async () => {
-		const { params, basePath, setCommentsCount } = this.props;
+		const { params, basePath } = this.props;
 		this.setState({ isGettingCode: true });
 
 		// Link requires saved code
@@ -248,7 +232,6 @@ class Playground extends Component {
 				language,
 				sourceCode,
 			} = code;
-			setCommentsCount(code.comments);
 			// Check language of user code for setting up correct link
 			const foundEditorSettingKey = params.secondary ?
 				findKey(editorSettings, { language, alias: params.secondary }) :
@@ -685,7 +668,6 @@ ${succeedingSubstr}
 		const {
 			t,
 			inline,
-			commentsCount,
 			withBottomToolbar,
 		} = this.props;
 
@@ -792,7 +774,7 @@ ${succeedingSubstr}
 									id={id}
 									type={1}
 									commentsType="code"
-									commentsCount={commentsCount}
+									commentsCount={code.comments}
 								/>
 							}
 							<Dialog
