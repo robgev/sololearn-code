@@ -74,9 +74,6 @@ export default
 				return comments.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
 			case 2:
 				return comments.slice().sort((a, b) => {
-					if (b.votes === a.votes) {
-						return new Date(b.date) - new Date(a.date);
-					}
 					return b.votes - a.votes;
 				});
 			default:
