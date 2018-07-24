@@ -57,6 +57,9 @@ import DiscoverContainer from 'containers/Profile/DiscoverContainer';
 import Play from 'containers/Play';
 
 import NotFound from 'components/NotFound';
+import Privacy from 'components/StaticPages/Privacy';
+import Faq from 'components/StaticPages/Faq';
+import Contact from 'components/StaticPages/Contact';
 
 import redirector from 'utils/redirector';
 
@@ -104,6 +107,9 @@ export default ([
 		<Route path="/quiz-factory/suggest/:type" component={QuizFactorySuggestTypeSelector} />
 		<Route path="/quiz-factory/rate/:courseId" component={QuizFactoryRate} />
 		<Route path="/quiz-factory/my-submissions" component={QuizFactoryMySubmissions} />
+		<Route path="/privacy" component={Privacy} />
+		<Route path="/faq" component={Faq} />
+		<Route path="/contact" component={Contact} />
 		<Route path="*" exact component={NotFound} />
 	</Route>,
 ]);

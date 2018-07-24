@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { Link } from 'react-router';
 
 class Sidebar extends PureComponent {
 	state = {
@@ -30,8 +31,11 @@ class Sidebar extends PureComponent {
 		// this.isScrollable - in some pages sidebars can be too small for this logic
 		// So we check if we need that logic or not
 		// if not, we just make the sidebar sticky at start
-		const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-		this.threshold = (this.sidebarElem.scrollHeight - document.body.clientHeight) + this.sidebarVisibleSize; // "Cut" only bottom 300 px of the sidebar
+		const scrollTop =
+			window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+		// "Cut" only bottom 300 px of the sidebar
+		this.threshold =
+			(this.sidebarElem.scrollHeight - document.body.clientHeight) + this.sidebarVisibleSize;
 		this.isScrollable = this.sidebarElem.scrollHeight > document.body.clientHeight;
 		this.setState({ scrollTop });
 	}
@@ -44,12 +48,25 @@ class Sidebar extends PureComponent {
 			<div className="sidebar-placeholder">
 				<div
 					ref={(sidebarElem) => { this.sidebarElem = sidebarElem; }}
-					className={`sidebar ${reachedThreshold || !this.isScrollable ? 'sticky' : ''}`}
+					className={`sidebar-wrapper ${reachedThreshold || !this.isScrollable ? 'sticky' : ''}`}
 					style={{
 						bottom: (reachedThreshold && this.isScrollable) ? this.sidebarOffset : 'initial',
 					}}
 				>
-					{children}
+					<div className="sidebar-main-content">
+						{children}
+					</div>
+					<div className="sidebar-static-pages">
+						<Link className="static-link hoverable" to="/privacy">
+							Privacy
+						</Link>
+						<Link className="static-link hoverable" to="/faq">
+							FAQ
+						</Link>
+						<Link className="static-link hoverable" to="/contact">
+							Contact
+						</Link>
+					</div>
 				</div>
 			</div>
 		);

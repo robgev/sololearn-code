@@ -36,13 +36,27 @@ html, body {
 .sidebar-placeholder {
 	position: relative;
 	width: 300px;
-	.sidebar {
+	.sidebar-wrapper {
 		position: absolute;
 		width: 300px;
-		background-color: white;
-		box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px,
-													rgba(0, 0, 0, 0.12) 0px 1px 4px;
-		border-radius: 2px;
+		.sidebar-main-content {
+			min-height: 20px;
+			background-color: white;
+			box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px,
+			rgba(0, 0, 0, 0.12) 0px 1px 4px;
+			border-radius: 2px;
+		}
+		.sidebar-static-pages {
+			padding: 10px;
+			.static-link {
+				display: inline-block;
+				color: #90948F;
+				padding: 0 3px;
+				&:not(:last-child) {
+					border-right: 1px solid #CCCCCC;
+				}
+			}
+		}
 		&.sticky {
 			position: fixed;
 		}
