@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import ReactGA from 'react-ga';
 import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 import { Router, browserHistory } from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -12,6 +13,7 @@ import { store } from 'reducers';
 import { getCourses } from 'actions/learn';
 import Service from 'api/service';
 import 'styles/root.scss';
+import 'react-toastify/dist/ReactToastify.min.css';
 import routes from './config/routes';
 import './i18n';
 
@@ -33,7 +35,19 @@ class App extends PureComponent {
 	}
 	render() {
 		return (
-			<Router onUpdate={() => window.scrollTo(0, 0)} history={browserHistory} routes={routes} />
+			<div>
+				<Router onUpdate={() => window.scrollTo(0, 0)} history={browserHistory} routes={routes} />
+				<ToastContainer
+					draggable
+					newestOnTop
+					closeOnClick
+					pauseOnHover
+					hideProgressBar
+					pauseOnVisibilityChange
+					position="bottom-right"
+					autoClose={2000}
+				/>
+			</div>
 		);
 	}
 }

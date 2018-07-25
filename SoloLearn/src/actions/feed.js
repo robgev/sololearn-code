@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+import { showError } from 'utils';
 import Service from 'api/service';
 import * as types from 'constants/ActionTypes';
 import feedTypes from 'defaults/appTypes';
@@ -155,16 +157,23 @@ export const getUserSuggestions = users => ({
 });
 
 export const followUserSuggestion = ({ id, feedId, follow }) => {
-	const endpoint = follow ? 'Profile/Follow' : 'Profile/Unfollow';
-	Service.request(endpoint, { id });
-	return {
-		type: types.FOLLOW_USER_SUGGESTION,
-		payload: {
-			id,
-			follow,
-			feedId,
-		},
-	};
+	try {
+		const endpoint = follow ? 'Profile/Follow' : 'Profile/Unfollow';
+		const res = Service.request(endpoint, { id });
+		if (res.error) {
+			showError(res.error.data);
+		}
+		return {
+			type: types.FOLLOW_USER_SUGGESTION,
+			payload: {
+				id,
+				follow,
+				feedId,
+			},
+		};
+	} catch (e) {
+		toast.error(`❌Something went wrong when trying to ${follow ? 'unfollow' : 'follow'}: ${e.message}`);
+	}
 };
 
 export const getUserSuggestionsInternal = () => dispatch => Service.request('Profile/SearchUsers').then((response) => {

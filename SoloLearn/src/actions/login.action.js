@@ -20,7 +20,7 @@ export const login = ({ email, password }) => async (dispatch, getState) => {
 		dispatch(getUserProfileAsync());
 		return { err: false };
 	} catch (e) {
-		throw new Error(`Something went wrong when trying to login M: ${e.message}`);
+		throw new Error(`Something went wrong when trying to login: ${e.message}`);
 	}
 };
 
@@ -31,7 +31,7 @@ export const signup = ({ name, email, pass }) => async (dispatch) => {
 		dispatch(login({ email, pass }));
 		return { err: false };
 	} catch (e) {
-		throw new Error(`Something went wrong when trying to signup M: ${e.message}`);
+		throw new Error(`Something went wrong when trying to signup: ${e.message}`);
 	}
 };
 

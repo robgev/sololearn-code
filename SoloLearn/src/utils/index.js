@@ -2,6 +2,7 @@ import hmacsha1 from 'hmacsha1';
 
 import Optional from './optional';
 import getOffset from './getOffset';
+import showError from './showError';
 import truncate from './textTruncate';
 import getPosition from './getPosition';
 import repliesOfId from './repliesOfId';
@@ -37,6 +38,7 @@ export {
 	Optional,
 	checkWeb,
 	getOffset,
+	showError,
 	updateDate,
 	mandatory,
 	getPosition,

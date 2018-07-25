@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+import { showError } from 'utils';
 import Service from 'api/service';
 import Storage from 'api/storage';
 import * as types from 'constants/ActionTypes';
@@ -180,9 +182,12 @@ export const followUserInternal = (userId, fromFollowers = null) =>
 	async (dispatch) => {
 		try {
 			await dispatch(followUser(userId, fromFollowers, true));
-			return Service.request('Profile/Follow', { id: userId });
+			const res = Service.request('Profile/Follow', { id: userId });
+			if (res.error) {
+				showError(res.error.data);
+			}
 		} catch (e) {
-			console.log(e);
+			toast.error(`❌Something went wrong when trying to follow: ${e.message}`);
 		}
 	};
 
@@ -190,9 +195,12 @@ export const unfollowUserInternal = (userId, fromFollowers = null) =>
 	async (dispatch) => {
 		try {
 			await dispatch(followUser(userId, fromFollowers, false));
-			return Service.request('Profile/Unfollow', { id: userId });
+			const res = Service.request('Profile/Unfollow', { id: userId });
+			if (res.error) {
+				showError(res.error.data);
+			}
 		} catch (e) {
-			console.log(e);
+			toast.error(`❌Something went wrong when trying to unfollow: ${e.message}`);
 		}
 	};
 

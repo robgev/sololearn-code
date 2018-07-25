@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import { browserHistory } from 'react-router';
-import AlertContainer from 'react-alert';
 import FacebookLogin from 'react-facebook-login';
-
+import { toast, Bounce } from 'react-toastify';
 import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 import { login, signup, forgotPassword, logout } from 'actions/login.action';
@@ -15,12 +14,10 @@ const mapDispatchToProps = {
 
 @connect(null, mapDispatchToProps)
 class LoginContainer extends PureComponent {
-	alertOptions = {
-		offset: 14,
-		position: 'top right',
-		theme: 'dark',
-		time: 2000,
-		transition: 'fade',
+	toastId = 0;
+	toastOptions = {
+		transition: Bounce,
+		autoClose: 2000,
 	}
 
 	componentWillMount() {
@@ -36,20 +33,28 @@ class LoginContainer extends PureComponent {
 		return this.fault(err);
 	}
 
-	fault = err => err.map(curr => this.alert(curr.split(/(?=[A-Z])/).join(' '), 'info'))
+	fault = err => err.map(curr => this.alert(curr.split(/(?=[A-Z])/).join(' '), 'warn'))
 
 	alert = (msg, type = 'error') => {
-		this.msg.show(msg, {
-			time: 2000, type,
-		});
+		if (!toast.isActive(this.toastId)) {
+			this.toastId = toast[type](`⚠️${msg}`);
+		}
 	}
 
 	login = async (data) => {
-		this.checkToFeed((await this.props.login(data)).err);
+		try {
+			this.checkToFeed((await this.props.login(data)).err);
+		} catch (e) {
+			toast.error(`❌${e.message}`);
+		}
 	}
 
 	signup = async (data) => {
-		this.checkToFeed((await this.props.signup(data).err));
+		try {
+			this.checkToFeed((await this.props.signup(data).err));
+		} catch (e) {
+			toast.error(`❌${e.message}`);
+		}
 	}
 
 	forgot = async (email) => {
@@ -70,7 +75,6 @@ class LoginContainer extends PureComponent {
 					padding: 10,
 				}}
 			>
-				<AlertContainer ref={(a) => { this.msg = a; }} {...this.alertOptions} />
 				<Login
 					alert={this.alert}
 					login={this.login}

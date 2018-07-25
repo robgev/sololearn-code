@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import { toast } from 'react-toastify';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import Service from 'api/service';
-import { numberFormatter } from 'utils';
+import { numberFormatter, showError } from 'utils';
 import 'styles/components/UserCard.scss';
 
 const CustomWrapper = ({ children, className }) => (
@@ -24,8 +25,15 @@ handleFollow = async () => {
 	const { following } = this.state;
 	const { id } = this.props;
 	const endpoint = following ? 'Profile/Unfollow' : 'Profile/Follow';
-	this.setState({ following: !following });
-	await Service.request(endpoint, { id });
+	try {
+		this.setState({ following: !following });
+		const res = await Service.request(endpoint, { id });
+		if (res.error) {
+			showError(res.error.data);
+		}
+	} catch (e) {
+		toast.error(`❌Something went wrong when trying to ${following ? 'unfollow' : 'follow'}: ${e.message}`);
+	}
 }
 
 render() {
