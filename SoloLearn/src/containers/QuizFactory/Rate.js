@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { toast } from 'react-toastify';
 import Layout from 'components/Layouts/GeneralLayout';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -8,6 +9,7 @@ import { red500 } from 'material-ui/styles/colors';
 import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
 import Quiz, { CheckIndicator } from 'components/Quiz';
+import { showError } from 'utils';
 import { getReviewChallenge, voteChallenge } from './api';
 import './rateStyles.scss';
 
@@ -28,11 +30,27 @@ class Rate extends Component {
 		this.preload();
 	}
 	like = () => {
-		voteChallenge(this.state.challenge.id, 1);
+		voteChallenge(this.state.challenge.id, 1)
+			.then((res) => {
+				if (res && res.error) {
+					showError(res.error.data);
+				}
+			})
+			.catch((e) => {
+				toast.error(`❌Something went wrong when trying to vote: ${e.message}`);
+			});
 		this.getChallenge();
 	}
 	dislike = () => {
-		voteChallenge(this.state.challenge.id, -1);
+		voteChallenge(this.state.challenge.id, -1)
+			.then((res) => {
+				if (res && res.error) {
+					showError(res.error.data);
+				}
+			})
+			.catch((e) => {
+				toast.error(`❌Something went wrong when trying to vote: ${e.message}`);
+			});
 		this.getChallenge();
 	}
 	getChallenge = async () => {

@@ -20,7 +20,10 @@ class Service {
 	_request = (url, options) =>
 		fetch(url, { ...options, credentials: 'include' })
 			.then(res => res.json())
-			.catch(console.error)
+			.catch((e) => {
+				console.error(e);
+				throw e;
+			})
 
 	_getSession = async (locale) => {
 		const { accessToken, expiresIn, user } = await this._request(

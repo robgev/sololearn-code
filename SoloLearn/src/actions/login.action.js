@@ -16,7 +16,7 @@ export const login = ({ email, password }) => async (dispatch, getState) => {
 	try {
 		if (userProfile != null) await dispatch(logout());
 		const res = await Service.request('Login', { email, password: hash(password) });
-		if (res.error) return { err: faultGenerator(res.error.data) };
+		if (res && res.error) return { err: faultGenerator(res.error.data) };
 		dispatch(getUserProfileAsync());
 		return { err: false };
 	} catch (e) {
@@ -27,7 +27,7 @@ export const login = ({ email, password }) => async (dispatch, getState) => {
 export const signup = ({ name, email, pass }) => async (dispatch) => {
 	try {
 		const res = await Service.request('Register', { name, email, password: hash(pass) });
-		if (res.error) return { err: faultGenerator(res.error.data) };
+		if (res && res.error) return { err: faultGenerator(res.error.data) };
 		dispatch(login({ email, pass }));
 		return { err: false };
 	} catch (e) {
@@ -37,7 +37,7 @@ export const signup = ({ name, email, pass }) => async (dispatch) => {
 
 export const forgotPassword = email => () => Service.request('ForgotPassword', { email })
 	.then((res) => {
-		if (res.error) {
+		if (res && res.error) {
 			return { err: faultGenerator(res.error.data) };
 		}
 		return { err: false };

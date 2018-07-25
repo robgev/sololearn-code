@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 import { action, observable, computed } from 'mobx';
 import { observer } from 'mobx-react';
 import FlatButton from 'material-ui/FlatButton';
 import Divider from 'material-ui/Divider';
 import CircularProgress from 'material-ui/CircularProgress';
 import MentionInput from 'components/MentionInput';
-import { replaceMention } from 'utils';
+import { replaceMention, showError } from 'utils';
 import CommentList from './CommentList';
 import CommentView from './CommentView';
 import IComment from './IComment';
@@ -58,7 +59,7 @@ class Comment extends Component {
 
 	@computed get firstIndex() {
 		const { repliesArray } = this.props.comment;
-		if(repliesArray !== null) {
+		if (repliesArray !== null) {
 			// Created replies index is undefined, so skip over those
 			for (let i = 0; i < repliesArray.length; i += 1) {
 				const { index } = repliesArray[i];
@@ -71,7 +72,7 @@ class Comment extends Component {
 		}
 		return 0;
 	}
-	
+
 	@computed get hasRepliesAbove() {
 		return this.firstIndex > 0;
 	}
@@ -135,9 +136,15 @@ class Comment extends Component {
 		comment.votes += (newVote - oldVote);
 		comment.vote = newVote;
 		this.props.commentsAPI.voteComment({ id: comment.id, vote: comment.vote })
-			.catch(() => {
+			.then((res) => {
+				if (res && res.error) {
+					showError(res.error.data);
+				}
+			})
+			.catch((e) => {
 				comment.vote = oldVote;
 				comment.votes -= (newVote - oldVote);
+				toast.error(`❌Something went wrong when trying to vote: ${e.message}`);
 			});
 	}
 
@@ -202,26 +209,26 @@ class Comment extends Component {
 					onReply={this.toggleReplyBox}
 					ref={(node) => { this.commentRef = node; }}
 				>
-					{({ isEditing, message, toggleEdit, id }) => {
-						return isEditing
-							? (
-								<div>
-									<MentionInput
-										ref={(i) => { this.editMentionInput = i; }}
-										getUsers={this.props.commentsAPI.getMentionUsers}
-										initText={message}
-									/>
-									<FlatButton
-										label="Edit"
-										onClick={() => {
-											this.editComment({ message: this.editMentionInput.popValue(), id });
-											toggleEdit();
-										}}
-									/>
-								</div>
-							)
-							: <p>{replaceMention(message)}</p>;
-					}}
+					{({
+						isEditing, message, toggleEdit, id,
+					}) => (isEditing
+						? (
+							<div>
+								<MentionInput
+									ref={(i) => { this.editMentionInput = i; }}
+									getUsers={this.props.commentsAPI.getMentionUsers}
+									initText={message}
+								/>
+								<FlatButton
+									label="Edit"
+									onClick={() => {
+										this.editComment({ message: this.editMentionInput.popValue(), id });
+										toggleEdit();
+									}}
+								/>
+							</div>
+						)
+						: <p>{replaceMention(message)}</p>)}
 				</CommentView>
 				<Divider />
 				{

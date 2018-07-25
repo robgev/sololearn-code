@@ -160,7 +160,7 @@ export const followUserSuggestion = ({ id, feedId, follow }) => {
 	try {
 		const endpoint = follow ? 'Profile/Follow' : 'Profile/Unfollow';
 		const res = Service.request(endpoint, { id });
-		if (res.error) {
+		if (res && res.error) {
 			showError(res.error.data);
 		}
 		return {
@@ -198,7 +198,14 @@ export const voteFeedPostItem = ({
 			id: feedItemId,
 		},
 	});
-	await Service.request('Discussion/VotePost', { id: postId, vote: userVote });
+	try {
+		const res = await Service.request('Discussion/VotePost', { id: postId, vote: userVote });
+		if (res && res.error) {
+			showError(res.error.data);
+		}
+	} catch (e) {
+		toast.error(`❌Something went wrong when trying to vote: ${e.message}`);
+	}
 };
 
 export const voteFeedCommentItem = ({
@@ -240,5 +247,12 @@ export const voteFeedCodeItem = ({
 			id: feedItemId,
 		},
 	});
-	await Service.request('Playground/VoteCode', { id: codeId, vote: userVote });
+	try {
+		const res = await Service.request('Playground/VoteCode', { id: codeId, vote: userVote });
+		if (res && res.error) {
+			showError(res.error.data);
+		}
+	} catch (e) {
+		toast.error(`❌Something went wrong when trying to vote: ${e.message}`);
+	}
 };

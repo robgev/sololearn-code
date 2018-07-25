@@ -2,8 +2,7 @@ import Service from 'api/service';
 import getLikes from 'actions/likes';
 
 export default
-	class CommentsAPI {
-
+class CommentsAPI {
 	constructor({
 		commentsType, type = null, id, orderBy, findPostId = null,
 	}) {
@@ -18,14 +17,14 @@ export default
 		id, type, commentsType,
 	}) => {
 		switch (commentsType) {
-			case 'lesson':
-				return { quizId: id, type };
-			case 'code':
-				return { codeId: id };
-			case 'userLesson':
-				return { lessonId: id };
-			default:
-				return null;
+		case 'lesson':
+			return { quizId: id, type };
+		case 'code':
+			return { codeId: id };
+		case 'userLesson':
+			return { lessonId: id };
+		default:
+			return null;
 		}
 	};
 
@@ -70,14 +69,12 @@ export default
 
 	orderComments = (comments) => {
 		switch (this.orderBy) {
-			case 1: // Sort by date
-				return comments.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
-			case 2:
-				return comments.slice().sort((a, b) => {
-					return b.votes - a.votes;
-				});
-			default:
-				throw new Error('Unknown comment ordering');
+		case 1: // Sort by date
+			return comments.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+		case 2:
+			return comments.slice().sort((a, b) => b.votes - a.votes);
+		default:
+			throw new Error('Unknown comment ordering');
 		}
 	}
 

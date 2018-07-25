@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
-import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 import { findKey } from 'lodash';
 
 // i18n
@@ -24,7 +24,7 @@ import Service from 'api/service';
 import texts from 'defaults/texts';
 import inputRegexes from 'defaults/inputRegexes';
 import editorSettings from 'defaults/playgroundEditorSettings';
-import { checkWeb } from 'utils';
+import { checkWeb, showError } from 'utils';
 
 // Additional components
 import LoadingOverlay from 'components/LoadingOverlay';
@@ -279,16 +279,16 @@ class Playground extends Component {
 	getTabCodeData = (mode, codes) => {
 		const { sourceCode, cssCode, jsCode } = codes || this.state;
 		switch (mode) {
-			case 'html':
-			case 'php':
-				return sourceCode;
-			case 'css':
-				return cssCode;
-			case 'js':
-			case 'javascript':
-				return jsCode;
-			default:
-				return sourceCode;
+		case 'html':
+		case 'php':
+			return sourceCode;
+		case 'css':
+			return cssCode;
+		case 'js':
+		case 'javascript':
+			return jsCode;
+		default:
+			return sourceCode;
 		}
 	}
 
@@ -305,7 +305,14 @@ class Playground extends Component {
 			votes,
 		};
 		this.setState({ latestSavedCodeData });
-		await Service.request('Playground/VoteCode', { id: codeId, vote: userVote });
+		try {
+			const res = await Service.request('Playground/VoteCode', { id: codeId, vote: userVote });
+			if (res && res.error) {
+				showError(res.error.data);
+			}
+		} catch (e) {
+			toast.error(`❌Something went wrong when trying to vote: ${e.message}`);
+		}
 	};
 
 	// Change web tabs
@@ -331,15 +338,15 @@ class Playground extends Component {
 	handleEditorChange = (editorValue) => {
 		const { mode } = this.state;
 		switch (mode) {
-			case 'css':
-				this.setState({ code: editorValue, cssCode: editorValue });
-				break;
-			case 'javascript':
-				this.setState({ code: editorValue, jsCode: editorValue });
-				break;
-			default:
-				this.setState({ code: editorValue, sourceCode: editorValue });
-				break;
+		case 'css':
+			this.setState({ code: editorValue, cssCode: editorValue });
+			break;
+		case 'javascript':
+			this.setState({ code: editorValue, jsCode: editorValue });
+			break;
+		default:
+			this.setState({ code: editorValue, sourceCode: editorValue });
+			break;
 		}
 	}
 
@@ -389,24 +396,24 @@ class Playground extends Component {
 		const computedJsCode = isPredefined ? jsCode : texts[mode];
 		const computedSourceCode = isPredefined ? sourceCode : texts[mode];
 		switch (mode) {
-			case 'css':
-				this.setState({
-					code: computedCssCode,
-					cssCode: computedCssCode,
-				});
-				break;
-			case 'javascript':
-				this.setState({
-					code: computedJsCode,
-					jsCode: computedJsCode,
-				});
-				break;
-			default:
-				this.setState({
-					code: computedSourceCode,
-					sourceCode: computedSourceCode,
-				});
-				break;
+		case 'css':
+			this.setState({
+				code: computedCssCode,
+				cssCode: computedCssCode,
+			});
+			break;
+		case 'javascript':
+			this.setState({
+				code: computedJsCode,
+				jsCode: computedJsCode,
+			});
+			break;
+		default:
+			this.setState({
+				code: computedSourceCode,
+				sourceCode: computedSourceCode,
+			});
+			break;
 		}
 	}
 

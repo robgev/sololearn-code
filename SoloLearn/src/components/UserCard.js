@@ -28,7 +28,7 @@ handleFollow = async () => {
 	try {
 		this.setState({ following: !following });
 		const res = await Service.request(endpoint, { id });
-		if (res.error) {
+		if (res && res.error) {
 			showError(res.error.data);
 		}
 	} catch (e) {

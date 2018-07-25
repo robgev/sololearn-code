@@ -1,9 +1,10 @@
+import { toast } from 'react-toastify';
 import { last } from 'lodash';
 import Service from 'api/service';
 import * as types from 'constants/ActionTypes';
 
 // Utils
-import { toSeoFriendly } from 'utils';
+import { toSeoFriendly, showError } from 'utils';
 
 export const emptyQuestions = () => dispatch => new Promise((resolve) => {
 	dispatch({
@@ -135,12 +136,16 @@ export const votePostInternal = (post, vote) => {
 	const votes = (post.votes + userVote) - post.vote;
 	const isPrimary = post.parentID === null;
 
-	return (dispatch) => {
-		dispatch(votePost(post.id, isPrimary, userVote, votes)).then(() => {
-			Service.request('Discussion/VotePost', { id: post.id, vote: userVote });
-		}).catch((error) => {
-			console.log(error);
-		});
+	return async (dispatch) => {
+		try {
+			await dispatch(votePost(post.id, isPrimary, userVote, votes));
+			const res = Service.request('Discussion/VotePost', { id: post.id, vote: userVote });
+			if (res && res.error) {
+				showError(res.error.data);
+			}
+		} catch (e) {
+			toast.error(`❌Something went wrong when trying to vote: ${e.message}`);
+		}
 	};
 };
 

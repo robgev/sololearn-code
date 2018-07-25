@@ -183,7 +183,7 @@ export const followUserInternal = (userId, fromFollowers = null) =>
 		try {
 			await dispatch(followUser(userId, fromFollowers, true));
 			const res = Service.request('Profile/Follow', { id: userId });
-			if (res.error) {
+			if (res && res.error) {
 				showError(res.error.data);
 			}
 		} catch (e) {
@@ -196,7 +196,7 @@ export const unfollowUserInternal = (userId, fromFollowers = null) =>
 		try {
 			await dispatch(followUser(userId, fromFollowers, false));
 			const res = Service.request('Profile/Unfollow', { id: userId });
-			if (res.error) {
+			if (res && res.error) {
 				showError(res.error.data);
 			}
 		} catch (e) {
