@@ -29,7 +29,7 @@ import 'styles/Profile/index.scss';
 import { QuestionList } from 'components/Questions';
 import Header from './Header';
 import FeedItemsBase from '../Feed/FeedItemsBase';
-import Codes from '../Playground/Codes';
+import CodesList from '../Playground/CodesList';
 import Skills from './Skills';
 import Badges from './Badges';
 import FollowersBase from './FollowersBase';
@@ -204,14 +204,9 @@ class Profile extends Component {
 					activeTab === 'codes' &&
 
 					<Paper className="codes-wrapper section">
-						<Codes
-							t={t}
+						<CodesList
 							codes={profile.codes}
-							isLoaded={profile.codes.length > 0}
-							ordering={3}
-							language=""
-							isUserProfile
-							userId={id}
+							hasMore
 						/>
 						{profile.data.id === userId &&
 							<AddCodeButton />

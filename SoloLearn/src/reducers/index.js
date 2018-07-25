@@ -21,7 +21,7 @@ import activeQuiz from './reducer_active_quiz';
 import shortcutLesson from './reducer_shortcut';
 
 // Playground
-import codes from './reducer_codes';
+import codes from './codes.reducer';
 
 // Discuss
 import questions from './reducer_questions';
@@ -39,9 +39,6 @@ import userSuggestions from './reducer_user_suggestions';
 
 // Profile
 import profile from './reducer_profile';
-
-// Play
-import challenges from './reducer_challenges';
 
 // Likes
 import likes from './likes.reducer';
@@ -63,7 +60,6 @@ import quizSubmission from './quizSubmission.reducer';
 
 const reducers = combineReducers({
 	profile,
-	challenges,
 	likes,
 	slay,
 	settings,
@@ -118,14 +114,10 @@ export const isLoaded = (state, componentName) => {
 	case 'quizzes':
 		return (state.course && state.modulesMapping &&
 				state.lessonsMapping && state.quizzesMapping && state.activeModuleId) != null;
-	case 'shortcut':
-		return (state.course && state.shortcutLesson) != null;
 	case 'discuss':
 		return state.questions.length > 0;
 	case 'discussPost':
 		return state.discussPost != null;
-	case 'playground':
-		return state.codes.length > 0;
 	case 'notifications':
 		return state.notifications.length > 0;
 	case 'feed':
@@ -136,26 +128,8 @@ export const isLoaded = (state, componentName) => {
 		return state.profile.followers.length > 0;
 	case 'following':
 		return state.profile.following.length > 0;
-	case 'comments':
-		return state.comments.data.length > 0;
-	case 'contests':
-		return state.challenges.contests != null;
-	case 'opponentSelector':
-		return state.challenges.courseId != null;
-	case 'allPlayers':
-		return state.challenges.allPlayers.length > 0;
-	case 'challengesFollowers':
-		return state.challenges.followers.length > 0;
-	case 'challengesFollowing':
-		return state.challenges.following.length > 0;
-	case 'activeContest':
-		return state.challenges.activeContest != null;
-	case 'initallyLoaded':
-		return state.courses != null && state.levels != null;
-	case 'commentSelected':
-		return state.comments.selected != null;
 	default:
-		return null;
+		throw new Error('Couldn\'t find the selector');
 	}
 };
 

@@ -1,5 +1,5 @@
 // React modules
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
 
 // Material UI components
@@ -13,63 +13,53 @@ import { numberFormatter } from 'utils';
 import ProfileAvatar from 'components/ProfileAvatar';
 import LanguageIcon from 'components/LanguageIcon';
 
-class CodeItem extends Component {
-	shouldComponentUpdate(nextProps) {
-		return this.props.code !== nextProps.code;
-	}
-
-	// code.badge, code.xp
-	render() {
-		const { code } = this.props;
-		return (
-			<div className="code-item-wrapper">
-				<div className="author-details">
-					<ProfileAvatar
-						size={50}
-						withTooltip
-						level={code.level}
-						userID={code.userID}
-						tooltipId={code.publicID}
-						userName={code.userName}
-						avatarUrl={code.avatarUrl}
+const CodeItem = ({ code }) => (
+	<div className="code-item-wrapper">
+		<div className="author-details">
+			<ProfileAvatar
+				size={50}
+				withTooltip
+				level={code.level}
+				userID={code.userID}
+				tooltipId={code.publicID}
+				userName={code.userName}
+				avatarUrl={code.avatarUrl}
+			/>
+		</div>
+		<div className="details-wrapper">
+			<Link className="code-title" to={`/playground/${code.publicID}`}>
+				{code.name}
+			</Link>
+			<div className="stats">
+				<LanguageIcon className="code-language-icon" language={code.language} />
+				<div className="votes">
+					<Thumbs
+						color={grey500}
+						className="votes-icon"
+						style={{ width: 16, height: 16 }}
 					/>
+					<span className="votes-text">{code.votes > 0 ? `+${numberFormatter(code.votes)}` : numberFormatter(code.votes)}</span>
 				</div>
-				<div className="details-wrapper">
-					<Link className="code-title" to={`/playground/${code.publicID}`}>
-						{code.name}
-					</Link>
-					<div className="stats">
-						<LanguageIcon className="code-language-icon" language={code.language} />
-						<div className="votes">
-							<Thumbs
-								color={grey500}
-								className="votes-icon"
-								style={{ width: 16, height: 16 }}
-							/>
-							<span className="votes-text">{code.votes > 0 ? `+${numberFormatter(code.votes)}` : numberFormatter(code.votes)}</span>
-						</div>
-						<div className="comments">
-							<CommentsIcon
-								color={grey500}
-								className="comments-icon"
-								style={{ width: 16, height: 16 }}
-							/>
-							<span className="comments-text">{code.comments}</span>
-						</div>
-						<div>
-							{ !code.isPublic &&
-								<LockIcon
-									color={grey500}
-									className="lock-icon"
-									style={{ width: 16, height: 16 }}
-								/>
-							}
-						</div>
-					</div>
+				<div className="comments">
+					<CommentsIcon
+						color={grey500}
+						className="comments-icon"
+						style={{ width: 16, height: 16 }}
+					/>
+					<span className="comments-text">{code.comments}</span>
+				</div>
+				<div>
+					{!code.isPublic &&
+						<LockIcon
+							color={grey500}
+							className="lock-icon"
+							style={{ width: 16, height: 16 }}
+						/>
+					}
 				</div>
 			</div>
-		);
-	}
-}
+		</div>
+	</div>
+);
 
 export default CodeItem;

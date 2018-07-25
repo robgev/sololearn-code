@@ -10,6 +10,7 @@ const InfiniteScrollWrapper = ({
 		<Element>
 			{header}
 			<InfiniteScroll
+				threshold={500}
 				{...rest}
 				loader={null}
 			>

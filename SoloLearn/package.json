@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js"
+    "build": "node scripts/build.js",
+    "lint": "eslint src/components/ProfileAvatar.js"
   },
   "dependencies": {
     "babel-eslint": "^8.2.6",

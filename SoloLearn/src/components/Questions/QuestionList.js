@@ -19,7 +19,7 @@ export default ({
 					</Paper>
 				)}
 			<InfiniteScroll
-				header={header}
+				header={questions === null ? null : header}
 				loadMore={loadMore}
 				hasMore={hasMore}
 				style={{
