@@ -1,10 +1,12 @@
 // React modules
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
+import { toast } from 'react-toastify';
 
 import { connect } from 'react-redux';
 import { editQuestion, loadPostInternal } from 'actions/discuss';
 import { isLoaded, defaultsLoaded } from 'reducers';
+import { showError } from 'utils';
 
 // Additional components
 import Layout from 'components/Layouts/GeneralLayout';
@@ -35,9 +37,17 @@ class NewQuestion extends Component {
 	async componentWillMount() {
 		const { params } = this.props;
 		if (!this.props.isLoaded) {
-			await this.props.loadPostInternal(params.id);
-			if (!this._isUnmounted) {
-				this.setState({ loading: false });
+			try {
+				await this.props.loadPostInternal(params.id);
+				if (!this._isUnmounted) {
+					this.setState({ loading: false });
+				}
+			} catch (e) {
+				if (e.data) {
+					showError(e.data);
+				} else {
+					toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+				}
 			}
 		}
 	}
@@ -52,6 +62,13 @@ class NewQuestion extends Component {
 			.then(({ id, alias }) => {
 				if (!this._isUnmounted) {
 					browserHistory.push(`/discuss/${id}/${alias}`);
+				}
+			})
+			.catch((e) => {
+				if (e.data) {
+					showError(e.data);
+				} else {
+					toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
 				}
 			});
 	}

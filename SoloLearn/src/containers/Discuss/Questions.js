@@ -2,6 +2,8 @@
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
+import { toast } from 'react-toastify';
+import { showError } from 'utils';
 import {
 	changeDiscussQuery,
 	changeDiscussOrdering,
@@ -76,13 +78,20 @@ class Questions extends Component {
 		}
 		browserHistory.replace({ ...location, query: { ...location.query, ...query } });
 	}
-	loadMore = () => {
+	loadMore = async () => {
 		const {
 			questions, tag, order,
 		} = this.props;
-		this.props.getQuestions({
-			index: questions !== null ? questions.length : 0, query: tag, orderBy: order,
-		});
+		try {
+			const res = await this.props.getQuestions({
+				index: questions !== null ? questions.length : 0, query: tag, orderBy: order,
+			});
+			if (res && res.error) {
+				showError(res.error.data);
+			}
+		} catch (e) {
+			toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+		}
 	}
 	handleFilterChange = (_, __, order) => {
 		const { location } = this.props;

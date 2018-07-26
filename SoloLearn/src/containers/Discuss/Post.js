@@ -2,20 +2,21 @@
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
+import { toast } from 'react-toastify';
 import Radium from 'radium';
-
 // Material UI components
 import { DropDownMenu, MenuItem, FlatButton } from 'material-ui';
 
 // Redux modules
-import { connect } from 'react-redux';
 import {
 	loadPostInternal, loadRepliesInternal, loadPreviousRepliesInternal,
 	emptyReplies, votePostInternal, deletePostInternal, loadPost,
 	addReply,
 } from 'actions/discuss';
 import { isLoaded } from 'reducers';
+import { showError } from 'utils';
 
 // Popups
 import Popup from 'api/popupService';
@@ -84,30 +85,62 @@ class Post extends Component {
 	}
 
 	initialize = async () => {
-		const { params } = this.props;
-		this.props.loadPost(null);
-		await this.props.loadPostInternal(params.id);
-		await this.getReplies(params.replyId);
-		if (params.replyId) {
-			this._replies.getWrappedInstance().scrollToId(params.replyId);
+		try {
+			const { params } = this.props;
+			this.props.loadPost(null);
+			await this.props.loadPostInternal(params.id);
+			await this.getReplies(params.replyId);
+			if (params.replyId) {
+				this._replies.getWrappedInstance().scrollToId(params.replyId);
+			}
+			this.checkAlias(params.questionName);
+		} catch (e) {
+			if (e.data) {
+				showError(e.data);
+			} else {
+				toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+			}
 		}
-		this.checkAlias(params.questionName);
 	}
 
 	// Get post answers
 	getReplies = (replyId) => {
-		const { ordering } = this.state;
-		return this.props.loadRepliesInternal(ordering, replyId);
+		try {
+			const { ordering } = this.state;
+			return this.props.loadRepliesInternal(ordering, replyId);
+		} catch (e) {
+			if (e.data) {
+				showError(e.data);
+			} else {
+				toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+			}
+		}
 	}
 
 	getPreviousReplies = async () => {
-		const { ordering } = this.state;
-		await this.props.loadPreviousRepliesInternal(ordering);
+		try {
+			const { ordering } = this.state;
+			await this.props.loadPreviousRepliesInternal(ordering);
+		} catch (e) {
+			if (e.data) {
+				showError(e.data);
+			} else {
+				toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+			}
+		}
 	}
 
 	addReply = async (message) => {
-		const id = await this.props.addReply(this.props.post.id, message, this.state.ordering === 1);
-		this._replies.getWrappedInstance().scrollToId(id);
+		try {
+			const id = await this.props.addReply(this.props.post.id, message, this.state.ordering === 1);
+			this._replies.getWrappedInstance().scrollToId(id);
+		} catch (e) {
+			if (e.data) {
+				showError(e.data);
+			} else {
+				toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+			}
+		}
 	}
 
 	// Check alias of post
@@ -152,6 +185,13 @@ class Post extends Component {
 			.then(() => {
 				if (isPrimary) {
 					browserHistory.push('/discuss');
+				}
+			})
+			.catch((e) => {
+				if (e.data) {
+					showError(e.data);
+				} else {
+					toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
 				}
 			});
 		this.closeDeletePopup();

@@ -47,14 +47,13 @@ export const loadPost = post => ({
 });
 
 export const loadPostInternal = id => async (dispatch) => {
-	try {
-		const { post } = await Service.request('Discussion/GetPost', { id });
-		post.alias = toSeoFriendly(post.title, 100);
-		post.replies = [];
-		dispatch(loadPost(post));
-	} catch (e) {
-		console.log(e);
+	const { post, error } = await Service.request('Discussion/GetPost', { id });
+	if (error) {
+		throw error;
 	}
+	post.alias = toSeoFriendly(post.title, 100);
+	post.replies = [];
+	dispatch(loadPost(post));
 };
 
 const loadReplies = posts => ({
@@ -75,19 +74,18 @@ const loadPreviousReplies = posts => ({
 const fetchReplies = async ({
 	postId, orderBy, index, findPostId, count = 20,
 }) => {
-	try {
-		const settings = findPostId ?
-			{
-				postId, orderBy: 7, findPostId, count,
-			} :
-			{
-				postId, orderBy, index, count,
-			};
-		const { posts } = await Service.request('Discussion/GetReplies', settings);
-		return posts;
-	} catch (e) {
-		return console.log(e);
+	const settings = findPostId ?
+		{
+			postId, orderBy: 7, findPostId, count,
+		} :
+		{
+			postId, orderBy, index, count,
+		};
+	const { posts, error } = await Service.request('Discussion/GetReplies', settings);
+	if (error) {
+		throw error;
 	}
+	return posts;
 };
 
 export const loadPreviousRepliesInternal = orderBy => async (dispatch, getState) => {
@@ -177,15 +175,21 @@ export const deletePostInternal = (post) => {
 				Service.request('Discussion/DeletePost', { id: post.id });
 			});
 		}
-		return Service.request('Discussion/DeletePost', { id: post.id }).then(() => {
+		return Service.request('Discussion/DeletePost', { id: post.id }).then((res) => {
+			if (res.error) {
+				throw res.error;
+			}
 			dispatch(loadPost(null));
 		});
 	};
 };
 
 export const addQuestion = (title, message, tags) => async (dispatch) => {
-	const { post: { id } } = await Service.request('Discussion/CreatePost', { title, message, tags });
-	const { post } = await Service.request('Discussion/GetPost', { id });
+	const res = await Service.request('Discussion/CreatePost', { title, message, tags });
+	if (res.error) {
+		throw res.error;
+	}
+	const { post } = await Service.request('Discussion/GetPost', { id: res.post.id });
 	post.replies = [];
 	post.alias = toSeoFriendly(post.title, 100);
 	dispatch(loadPost(post));
@@ -201,7 +205,10 @@ export const editQuestion = (id, title, message, tags) => (dispatch, getState) =
 
 	return Service.request('Discussion/EditPost', {
 		id, title, message, tags,
-	}).then(() => {
+	}).then((res) => {
+		if (res.error) {
+			throw res.error;
+		}
 		post.title = title;
 		post.message = message;
 		post.tags = tags;
@@ -239,7 +246,10 @@ export const toggleAcceptedAnswerInternal = (id, isAccepted) => (dispatch) => {
 
 export const addReply = (postId, message, byVotes) => async (dispatch, getState) => {
 	const { userProfile: { name, avatarUrl } } = getState();
-	const { post } = await Service.request('Discussion/CreateReply', { postId, message });
+	const { post, error } = await Service.request('Discussion/CreateReply', { postId, message });
+	if (error) {
+		throw error;
+	}
 	post.userName = name;
 	post.vote = 0;
 	post.avatarUrl = avatarUrl;

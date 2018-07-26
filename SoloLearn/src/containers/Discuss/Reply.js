@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Radium from 'radium';
 import { connect } from 'react-redux';
 import Linkify from 'react-linkify';
+import { toast } from 'react-toastify';
 
 // Material UI components
 import { IconMenu, MenuItem, FlatButton, IconButton } from 'material-ui';
@@ -19,7 +20,7 @@ import getLikesAndDownvotesCurried from 'actions/likes';
 import Likes from 'components/Likes';
 import ProfileAvatar from 'components/ProfileAvatar';
 import PreviewItem from 'components/PreviewItem';
-import { updateDate, determineAccessLevel, generatePreviews, replaceMention } from 'utils';
+import { showError, updateDate, determineAccessLevel, generatePreviews, replaceMention } from 'utils';
 import MentionInput from 'components/MentionInput';
 
 import { ReplyStyles as styles } from './styles';
@@ -114,10 +115,17 @@ class Reply extends Component {
 	}
 
 	// Save edited answer text
-	save = () => {
+	save = async () => {
 		const { reply } = this.props;
 		this.setState({ isEditing: false });
-		this.props.editPostInternal(reply, this.mentionInput.popValue());
+		try {
+			const res = await this.props.editPostInternal(reply, this.mentionInput.popValue());
+			if (res && res.error) {
+				showError(res.error.data);
+			}
+		} catch (e) {
+			toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+		}
 	}
 
 	scrollIntoView = () => {
@@ -140,7 +148,7 @@ class Reply extends Component {
 				className={`reply ${this.state.animate ? 'animate' : ''}`}
 				key={reply.id}
 				style={(reply.isAccepted && !this.state.isEditing)
-					? [styles.reply.base, styles.reply.accepted]
+					? [ styles.reply.base, styles.reply.accepted ]
 					: styles.reply.base}
 			>
 				<div className="details-wrapper" style={styles.detailsWrapper}>
@@ -158,7 +166,7 @@ class Reply extends Component {
 							<ThumbDown color={reply.vote === -1 ? blueGrey500 : grey500} />
 						</IconButton>
 					</div>
-					<div className="details" style={!this.state.isEditing ? styles.details.base : [styles.details.base, styles.details.editing]}>{this.getEditableArea()}</div>
+					<div className="details" style={!this.state.isEditing ? styles.details.base : [ styles.details.base, styles.details.editing ]}>{this.getEditableArea()}</div>
 					{
 						!this.state.isEditing &&
 						<IconMenu

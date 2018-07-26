@@ -1,8 +1,10 @@
 // React modules
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
-
+import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
+
+import { showError } from 'utils';
 import { addQuestion } from 'actions/discuss';
 
 // Additional components
@@ -29,6 +31,13 @@ class NewQuestion extends Component {
 			.then(({ id, alias }) => {
 				if (!this._isUnmounted) {
 					browserHistory.push(`/discuss/${id}/${alias}`);
+				}
+			})
+			.catch((e) => {
+				if (e.data) {
+					showError(e.data);
+				} else {
+					toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
 				}
 			});
 	}
