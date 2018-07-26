@@ -77,11 +77,18 @@ class Comment extends Component {
 		return this.firstIndex > 0;
 	}
 
-	@action deleteReply = (id) => {
-		const { comment } = this.props;
-		comment.repliesArray.splice(comment.repliesArray.findIndex(i => i.id === id), 1);
-		comment.replies -= 1;
-		this.props.commentsAPI.deleteComment({ id });
+	@action deleteReply = async (id) => {
+		try {
+			const { comment } = this.props;
+			comment.repliesArray.splice(comment.repliesArray.findIndex(i => i.id === id), 1);
+			comment.replies -= 1;
+			const res = await this.props.commentsAPI.deleteComment({ id });
+			if (res && res.error) {
+				showError(res.error.data);
+			}
+		} catch (e) {
+			toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+		}
 	}
 
 	scrollIntoView = (replyId = null) => {
@@ -101,32 +108,49 @@ class Comment extends Component {
 			this.isReplyLoading = false;
 		} catch (e) {
 			this.isReplyLoading = false;
+			toast.error(`❌Something went wrong when trying to reply: ${e.message}`);
 		}
 	}
 
 	@action getRepliesBelow = async () => {
-		const { repliesArray, id } = this.props.comment;
-		const newComments = await this.props.commentsAPI
-			.getComments({ parentID: id, index: repliesArray.length });
-		const { comment } = this.props;
-		const filtered = filterExisting(comment.repliesArray, newComments);
-		const nulledReplies = filtered.map(c => new IComment({ ...c, repliesArray: null }));
-		comment.repliesArray.push(...nulledReplies);
-		comment.repliesArray = this.props.commentsAPI.orderComments(comment.repliesArray);
+		try {
+			const { repliesArray, id } = this.props.comment;
+			const newComments = await this.props.commentsAPI
+				.getComments({ parentID: id, index: repliesArray.length });
+			const { comment } = this.props;
+			const filtered = filterExisting(comment.repliesArray, newComments);
+			const nulledReplies = filtered.map(c => new IComment({ ...c, repliesArray: null }));
+			comment.repliesArray.push(...nulledReplies);
+			comment.repliesArray = this.props.commentsAPI.orderComments(comment.repliesArray);
+		} catch (e) {
+			if (e.data) {
+				showError(e.data);
+			} else {
+				toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+			}
+		}
 	}
 
 	@action getRepliesAbove = async () => {
-		const firstIndex = this.firstIndex;
-		const index = firstIndex > 20 ? firstIndex - 20 : 0;
-		const count = firstIndex - index;
-		const comments = await this.props.commentsAPI.getComments({
-			index, count, parentID: this.props.comment.id,
-		});
-		const { comment } = this.props;
-		const filtered = filterExisting(comment.repliesArray, comments);
-		const nulledReplies = filtered.map(c => new IComment({ ...c, repliesArray: null }));
-		comment.repliesArray.unshift(...nulledReplies);
-		comment.repliesArray = this.props.commentsAPI.orderComments(comment.repliesArray);
+		try {
+			const firstIndex = this.firstIndex;
+			const index = firstIndex > 20 ? firstIndex - 20 : 0;
+			const count = firstIndex - index;
+			const comments = await this.props.commentsAPI.getComments({
+				index, count, parentID: this.props.comment.id,
+			});
+			const { comment } = this.props;
+			const filtered = filterExisting(comment.repliesArray, comments);
+			const nulledReplies = filtered.map(c => new IComment({ ...c, repliesArray: null }));
+			comment.repliesArray.unshift(...nulledReplies);
+			comment.repliesArray = this.props.commentsAPI.orderComments(comment.repliesArray);
+		} catch (e) {
+			if (e.data) {
+				showError(e.data);
+			} else {
+				toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+			}
+		}
 	}
 
 	@action vote = (vote) => {
@@ -150,8 +174,12 @@ class Comment extends Component {
 
 	@action reply = async ({ message }) => {
 		const { userProfile, commentsAPI } = this.props;
-		const { comment: { id, date } } = await commentsAPI
+		const res = await commentsAPI
 			.addComment({ message, parentID: this.props.comment.id });
+		if (res && res.error) {
+			showError(res.error.data);
+		}
+		const { comment: { id, date } } = res;
 		const newComment = new IComment({
 			replies: 0,
 			vote: 0,
@@ -175,9 +203,16 @@ class Comment extends Component {
 		this.scrollIntoView(id);
 	}
 
-	@action editComment = ({ message, id }) => {
-		this.props.comment.message = message;
-		this.props.commentsAPI.editComment({ message, id });
+	@action editComment = async ({ message, id }) => {
+		try {
+			this.props.comment.message = message;
+			const res = await this.props.commentsAPI.editComment({ message, id });
+			if (res && res.error) {
+				showError(res.error.data);
+			}
+		} catch (e) {
+			toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+		}
 	}
 
 	getVotes = (voteType) => {
