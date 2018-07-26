@@ -20,9 +20,12 @@ export const getCodes = ({
 	const stateBefore = getState();
 	const filters = codesFiltersSelector(stateBefore);
 	const { length } = codesSelector(stateBefore);
-	const { codes } = await Service.request('Playground/GetPublicCodes', {
+	const { codes, error } = await Service.request('Playground/GetPublicCodes', {
 		index: length, query, count, orderBy: filters.orderBy, language: filters.language,
 	});
+	if (error) {
+		throw error;
+	}
 	// Ignore action if filters changed
 	if (filters === codesFiltersSelector(getState())) {
 		dispatch({ type: types.SET_CODES, payload: codes });

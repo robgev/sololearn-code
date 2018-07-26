@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
+import { showError } from 'utils';
 import { omit } from 'lodash';
 
 // i18n
@@ -22,6 +23,7 @@ import InsertLink from 'material-ui/svg-icons/editor/insert-link';
 // Defaults
 import texts from 'defaults/texts';
 import externalResources from 'defaults/externalResources';
+import { toast } from 'react-toastify';
 
 // Components
 import OverlaySaveActions from './OverlaySaveActions';
@@ -222,19 +224,22 @@ ${this.props.code}
 				snackBarOpened: true,
 			});
 			try {
-				const { code } = await this.saveCodeInternal(userCodeData.id);
+				const res = await this.saveCodeInternal(userCodeData.id);
+				if (res && res.error) {
+					showError(res.error.data);
+				}
 				this.setState({
 					isSaving: false,
 				}, () => {
 					setNewState({
 						latestSavedCodeData: {
-							...code,
+							...res.code,
 							codeType: 'userCode',
 						},
 					});
 				});
-			} catch (error) {
-				console.log(error);
+			} catch (e) {
+				toast.error(`❌Something went wrong when trying to save: ${e.message}`);
 			}
 		} else {
 			this.openSavePopup();
@@ -246,18 +251,25 @@ ${this.props.code}
 			setNewState, avatarUrl, userName, showToolbar,
 		} = this.props;
 		if (this.state.codeName.trim()) {
-			const { code } = await this.saveCodeInternal(0);
-			setNewState({
-				latestSavedCodeData: { ...code, avatarUrl, userName },
-				id: code.id,
-			}, () => {
-				const { publicID, language } = code;
-				const codeLanguage = language === 'web' ? 'html' : language; // Simple validation for the case, when the code is web.
-				// this.handleInputsPopupClose();
-				browserHistory.replace(`/playground/${publicID}/${codeLanguage}`);
-				this.handleSavePopupClose();
-				showToolbar();
-			});
+			try {
+				const res = await this.saveCodeInternal(0);
+				if (res && res.error) {
+					showError(res.error.data);
+				}
+				setNewState({
+					latestSavedCodeData: { ...res.code, avatarUrl, userName },
+					id: res.code.id,
+				}, () => {
+					const { publicID, language } = res.code;
+					const codeLanguage = language === 'web' ? 'html' : language; // Simple validation for the case, when the code is web.
+					// this.handleInputsPopupClose();
+					browserHistory.replace(`/playground/${publicID}/${codeLanguage}`);
+					this.handleSavePopupClose();
+					showToolbar();
+				});
+			} catch (e) {
+				toast.error(`❌Something went wrong when trying to save: ${e.message}`);
+			}
 		} else {
 			this.setState({ errorText: texts.codeNameError });
 		}

@@ -40,6 +40,9 @@ class CommentsAPI {
 				.request(`Discussion/Get${this.commentsType}Comments`, params)
 				.then((resp) => {
 					this.getCommentsPromise = null;
+					if (resp.error) {
+						throw resp.error;
+					}
 					return resp.comments;
 				});
 		}

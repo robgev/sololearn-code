@@ -2,10 +2,10 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
+import { toast, Slide } from 'react-toastify';
 
 // Material UI components
 import { ListItem } from 'material-ui/List';
-import Snackbar from 'material-ui/Snackbar';
 
 // Redux modules
 import { markReadInternal } from 'actions/profile';
@@ -23,13 +23,20 @@ const mapDispatchToProps = {
 
 @connect(null, mapDispatchToProps)
 class NotificationItem extends Component {
-	state = {
-		snackbarOpened: false,
-	}
-
-	toggleSnackBar = () => {
-		this.setState(state => ({ snackbarOpened: !state.snackbarOpened }));
-	}
+	toggleToast = () => toast(() => (
+		<div
+			role="button"
+			tabIndex="0"
+			onClick={this.handleClick}
+			className="notification-snackbar"
+		>
+			{this.generateContent()}
+		</div>
+	), {
+		position: 'bottom-left',
+		transition: Slide,
+		autoClose: 2000,
+	})
 
 	handleClick = () => {
 		const { notification } = this.props;
@@ -142,34 +149,16 @@ class NotificationItem extends Component {
 	}
 
 	render() {
-		const { snackbarOpened } = this.state;
 		const generatedContent = this.generateContent();
 		return (
-			<ListItem className="notification-item" containerElement="div" innerDivStyle={styles.notificationItemInner} style={styles.notificationItem} onClick={this.toggleSnackBar}>
+			<ListItem
+				containerElement="div"
+				onClick={this.toggleToast}
+				className="notification-item"
+				style={styles.notificationItem}
+				innerDivStyle={styles.notificationItemInner}
+			>
 				{generatedContent}
-				<Snackbar
-					open={snackbarOpened}
-					autoHideDuration={4000}
-					onClick={this.handleClick}
-					message={generatedContent}
-					className="notification-snackbar"
-					onRequestClose={this.toggleSnackBar}
-					contentStyle={{
-						height: 100,
-					}}
-					bodyStyle={{
-						height: 100,
-						lineHeight: 'initial',
-					}}
-					style={{
-						bottom: 10,
-						left: 'initial',
-						right: -150,
-						transform: snackbarOpened
-							? 'translate(-170px, 0px)'
-							: 'translate(-170px, 110px)',
-					}}
-				/>
 			</ListItem>
 
 		);
