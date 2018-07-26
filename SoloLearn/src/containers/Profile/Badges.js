@@ -25,9 +25,12 @@ const styles = {
 @translate()
 class Badges extends PureComponent {
 	componentDidMount() {
-		this._selected.scrollIntoView({
-			behaviour: 'smooth'
-		});
+		if (this._selected) {
+			this._selected.scrollIntoView({
+				behavior: 'smooth',
+				block: 'center',
+			});
+		}
 	}
 	render() {
 		const { t, badges, selectedId } = this.props;
@@ -40,7 +43,7 @@ class Badges extends PureComponent {
 				<div className="content" style={styles.content}>
 					{
 						badges.map((badge) => {
-							const isSelected = !!selectedId && badge.id.toString() === selectedId.toString();
+							const isSelected = badge.id.toString() === selectedId.toString();
 							return (
 								<Badge
 									{...{

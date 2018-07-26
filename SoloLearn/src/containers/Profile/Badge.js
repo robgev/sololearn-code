@@ -1,5 +1,8 @@
 // React modules
 import React, { PureComponent } from 'react';
+import { observable, action } from 'mobx';
+import { observer } from 'mobx-react';
+import './badge.scss';
 
 const styles = {
 	achievement: {
@@ -49,13 +52,25 @@ const styles = {
 	},
 };
 
+@observer
 class Badge extends PureComponent {
+	@observable highlighted = this.props.isSelected
+	componentDidMount() {
+		setTimeout(() => {
+			this.setHighlighted(false);
+		}, 2000);
+	}
+	@action setHighlighted = (val) => {
+		if (this.highlighted !== val) {
+			this.highlighted = val;
+		}
+	}
 	render() {
 		const { achievement, isSelected, selectedRef } = this.props;
 		return (
 			<div
-				className={isSelected && 'fadeOut'}
-				style={styles.achievement}
+				className={`badge-item ${this.highlighted ? 'animate' : ''}`}
+				style={{ ...styles.achievement }}
 				ref={isSelected && selectedRef}
 			>
 				<div

@@ -98,7 +98,7 @@ export default ([
 		<Route path="/discuss/filter/:query" component={Questions} />
 		<Route path="/discuss/:id(/:questionName)(/:replyId)" component={Post} />
 		<Route path="/feed" component={Feed} />
-		<Route path="/profile/:id(/:tab)(/:selected)" component={Profile} />
+		<Route path="/profile/:id(/:tab)" component={Profile} />
 		<Route path="/certificate/:id" component={Certificate} />
 		<Route path="/leaderboards(/:userId)(/:mode)(/:range)" component={Leaderboards} />
 		<Route path="/notifications" component={Notifications} />

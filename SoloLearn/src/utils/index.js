@@ -24,13 +24,14 @@ import determineBadge, { determineBadgeColor } from './modBadgeUtils';
 
 export { replaceMention, getMentionsList, mentionUsers } from './mention';
 export { default as getCommonPrefix } from './getCommonPrefix';
+export { default as filterExisting } from './filterExisting';
 
 const hash = pass => hmacsha1('password', pass).slice(0, -1);
-const checkWeb = alias => ['html', 'css', 'js'].includes(alias);
-const removeDups = array => [...new Set(array)];
+const checkWeb = alias => [ 'html', 'css', 'js' ].includes(alias);
+const removeDups = array => [ ...new Set(array) ];
 const mandatory = () => { throw new Error('Missing parameter'); };
 const shuffleArray = arr =>
-	arr.map(a => [Math.random(), a]).sort((a, b) => a[0] - b[0]).map(a => a[1]);
+	arr.map(a => [ Math.random(), a ]).sort((a, b) => a[0] - b[0]).map(a => a[1]);
 
 export {
 	hash,

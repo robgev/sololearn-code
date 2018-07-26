@@ -6,12 +6,8 @@ import * as types from 'constants/ActionTypes';
 // Utils
 import { toSeoFriendly, showError } from 'utils';
 
-export const emptyQuestions = () => dispatch => new Promise((resolve) => {
-	dispatch({
-		type: types.EMPTY_QUESTIONS,
-		payload: [],
-	});
-	resolve();
+export const emptyQuestions = () => ({
+	type: types.EMPTY_QUESTIONS,
 });
 
 export const getQuestions = questions => ({

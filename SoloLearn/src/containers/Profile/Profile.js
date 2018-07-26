@@ -1,5 +1,7 @@
 // React modules
 import React, { Component } from 'react';
+import { observable, action } from 'mobx';
+import { observer } from 'mobx-react';
 import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
@@ -13,149 +15,89 @@ import { grey600 } from 'material-ui/styles/colors';
 
 // Redux modules
 import { connect } from 'react-redux';
-import { getFeedItemsInternal } from 'actions/feed';
-import { emptyProfileFollowers, emptyProfile, getProfileQuestionsInternal, getProfileInternal } from 'actions/profile';
-import { isLoaded } from 'reducers';
 
 import Layout from 'components/Layouts/GeneralLayout';
 import AddCodeButton from 'components/AddCodeButton';
 import AddQuestionButton from 'components/AddQuestionButton';
 import BusyWrapper from 'components/BusyWrapper';
 import ProfileHeaderShimmer from 'components/Shimmers/ProfileHeaderShimmer';
+import CodesList from 'containers/Playground/CodesList';
 
 import 'styles/Profile/index.scss';
 
 // Additional data and components
 import { QuestionList } from 'components/Questions';
 import Header from './Header';
-import FeedItemsBase from '../Feed/FeedItemsBase';
-import CodesList from '../Playground/CodesList';
 import Skills from './Skills';
 import Badges from './Badges';
-import FollowersBase from './FollowersBase';
 import TabLabel from './ProfileTabLabel';
+import FollowersBase from './FollowersBase';
 
-const capitalize = name => name.charAt(0).toUpperCase() + name.substr(1);
+import IProfile from './IProfile';
+
+const capitalize = str => str.charAt(0).toUpperCase() + str.substr(1);
 
 @translate()
+@observer
 class Profile extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			activeTab: 'Activity',
-			popupOpened: false,
-			loading: true,
-		};
-	}
+	@observable activeTab = 'activity';
+	@observable profile = new IProfile({ id: this.props.params.id });
 
-	async componentWillMount() {
-		const { params } = this.props;
-		const { tab = '', selected } = params;
-		// If there is a selected badge then the logic is a
-		// little bit different.
-		if (selected) {
-			this.handleSelectedChange(selected);
-		} else {
-			// Default tab is activity so wee need to
-			// Arrange route and GA accordingly.
-			this.handleTabChange(tab || 'activity');
-		}
-		if (this.props.isLoaded && this.props.profile.data.id.toString() !== params.id) {
-			this.props.clearOpenedProfile();
-		}
-		await this.props.getProfile(params.id);
-		this.setState({ loading: false });
-		document.title = `${this.props.profile.data.name}'s Profile`;
+	@observable followerPopupOpen = false;
+
+	componentWillMount() {
+		const { tab } = this.props.params;
+		this.handleTabChange(tab || 'activity');
 		ReactGA.ga('send', 'screenView', { screenName: 'Profile Page' });
 	}
 
-	async componentWillReceiveProps(newProps) {
-		const { getProfile, params } = this.props;
-		const { params: { id, tab, selected } } = newProps;
-		if (params.id !== id) {
-			this.props.emptyProfileFollowers();
-			this.setState({ popupOpened: false });
-			this.props.clearOpenedProfile();
-			this.setState({ loading: true });
-			await getProfile(id);
-			this.setState({ loading: false });
-		} else if (params.tab !== tab) {
-			if (selected && selected !== params.selected) {
-				this.handleSelectedChange(selected);
-			} else {
-				this.handleTabChange(tab);
-			}
+	componentWillReceiveProps(newProps) {
+		const { id } = newProps.params;
+		if (this.props.params.id !== id) {
+			this.profile = new IProfile(id);
 		}
 	}
 
-	handleSelectedChange = (selectedOverride) => {
-		const { params: { id, selected } } = this.props;
-		this.setState({ activeTab: 'badges' });
-		browserHistory.replace(`/profile/${id}/badges/${selected || selectedOverride || ''}`);
-		ReactGA.ga('send', 'screenView', { screenName: 'Profile Badges Page' });
-	}
-
-	handleTabChange = (activeTab) => {
-		const { params: { id } } = this.props;
-		this.setState({ activeTab });
-		browserHistory.replace(`/profile/${id}/${activeTab}`);
-		ReactGA.ga('send', 'screenView', { screenName: `Profile ${capitalize(activeTab)} Page` });
-	}
-
-	handlePopupOpen = () => {
-		this.setState({ popupOpened: true });
-	}
-
-	handlePopupClose = () => {
-		this.props.emptyProfileFollowers();
-		this.setState({ popupOpened: false });
-	}
-
-	loadFeedItems = async (fromId, userId) => {
-		try {
-			await this.props.getProfileFeedItems(fromId, userId);
-		} catch (e) {
-			console.log(e);
+	@action handleTabChange = (activeTab) => {
+		this.activeTab = activeTab;
+		const { location } = this.props;
+		location.pathname = `/profile/${this.props.params.id}/${this.activeTab}`;
+		if (activeTab !== 'badges') {
+			location.query = {};
 		}
+		browserHistory.replace(location);
+		ReactGA.ga('send', 'screenView', { screenName: `Profile ${capitalize(this.activeTab)} Page` });
 	}
 
-	loadMoreQuestions = () => {
-		const { profile } = this.props;
-		// if (profile.data.id != null) {
-		const index = profile.posts.questions !== null ? profile.posts.questions.length : 0;
-		this.props.getQuestions({
-			index,
-			profileId: profile.data.id,
-		});
-		// }
+	@action toggleFollowerPopup = () => {
+		this.followerPopupOpen = !this.followerPopupOpen;
 	}
 
 	render() {
 		const {
+			data, questions, codes,
+		} = this.profile;
+		const {
 			t,
 			levels,
 			userId,
-			profile,
-			params: { id, selected },
 		} = this.props;
-
-		const { loading, popupOpened, activeTab } = this.state;
 
 		return (
 			<Layout className="profile-container">
 				<Paper className="profile-overlay">
 					<BusyWrapper
-						isBusy={loading}
+						isBusy={data.id === undefined}
 						style={{ display: 'initial' }}
 						loadingComponent={<ProfileHeaderShimmer />}
 					>
 						<Header
 							levels={levels}
-							profile={profile.data}
-							openPopup={this.handlePopupOpen}
+							profile={data}
+							openPopup={this.toggleFollowerPopup}
 						/>
 						<Tabs
-							value={activeTab}
+							value={this.activeTab}
 							onChange={this.handleTabChange}
 							inkBarStyle={{ backgroundColor: '#777777' }}
 							tabItemContainerStyle={{ backgroundColor: 'white' }}
@@ -163,12 +105,12 @@ class Profile extends Component {
 							<Tab
 								value="codes"
 								style={{ color: '#676667' }}
-								label={<TabLabel data={profile.data.codes} label={t('profile.tab.codes')} />}
+								label={<TabLabel data={data.codes} label={t('profile.tab.codes')} />}
 							/>
 							<Tab
 								value="discussion"
 								style={{ color: '#676667' }}
-								label={<TabLabel data={profile.data.posts} label={t('profile.tab.posts')} />}
+								label={<TabLabel data={data.posts} label={t('profile.tab.posts')} />}
 							/>
 							<Tab
 								value="activity"
@@ -178,88 +120,80 @@ class Profile extends Component {
 							<Tab
 								value="skills"
 								style={{ color: '#676667' }}
-								label={<TabLabel data={profile.data.skills ? profile.data.skills.length : 0} label={t('profile.tab.skills')} />}
+								label={<TabLabel data={data.skills ? data.skills.length : 0} label={t('profile.tab.skills')} />}
 							/>
 							<Tab
 								value="badges"
 								style={{ color: '#676667' }}
-								label={<TabLabel data={profile.data.badges ? profile.data.badges.filter(item => item.isUnlocked).length : 0} label={t('profile.tab.badges')} />}
+								label={<TabLabel data={data.badges ? data.badges.filter(item => item.isUnlocked).length : 0} label={t('profile.tab.badges')} />}
 							/>
 						</Tabs>
 					</BusyWrapper>
 				</Paper>
 				{
-					activeTab === 'activity' &&
+					this.activeTab === 'activity' &&
 					<div className="section">
-						<FeedItemsBase
+						{/* <FeedItemsBase
 							isLoaded={profile.feed.length > 0}
 							feed={profile.feed}
 							feedPins={[]}
 							isUserProfile
 							userId={id}
-						/>
+						/> */}
+						Profile feed
 					</div>
 				}
 				{
-					activeTab === 'codes' &&
-
-					<Paper className="codes-wrapper section">
+					this.activeTab === 'codes' &&
+					<div className="codes-wrapper section">
 						<CodesList
-							codes={profile.codes}
-							hasMore
+							codes={codes.entities}
+							hasMore={codes.hasMore}
+							loadMore={this.profile.getCodes}
 						/>
-						{profile.data.id === userId &&
+						{data.id === userId &&
 							<AddCodeButton />
 						}
-					</Paper>
+					</div>
 				}
 				{
-					activeTab === 'discussion' &&
-					<Paper className="discussion-wrapper section">
+					this.activeTab === 'discussion' &&
+					<div className="discussion-wrapper section">
 						<QuestionList
-							questions={profile.posts.questions}
-							hasMore={profile.posts.hasMore}
-							loadMore={this.loadMoreQuestions}
+							questions={questions.entities}
+							hasMore={questions.hasMore}
+							loadMore={this.profile.getQuestions}
 						/>
-						{profile.data.id === userId &&
+						{data.id === userId &&
 							<AddQuestionButton />
 						}
-					</Paper>
+					</div>
 				}
-				{activeTab === 'skills' &&
+				{
+					this.activeTab === 'skills' &&
 					<Skills
 						levels={levels}
-						profile={profile.data}
+						profile={data}
 						currentUserId={userId}
-						skills={profile.data.skills}
-					/>}
-				{activeTab === 'badges' &&
-					<Badges badges={profile.data.badges} selectedId={selected || null} />}
-				<Dialog
-					modal={false}
-					open={popupOpened}
-					onRequestClose={this.handlePopupClose}
-				>
-					<FollowersBase t={t} userId={profile.data.id} closePopup={this.handlePopupClose} />
-				</Dialog>
+						skills={data.skills}
+					/>
+				}
+				{
+					this.activeTab === 'badges' && data.badges &&
+					<Badges badges={data.badges} selectedId={this.props.location.query.badgeID || 0} />}
+				<FollowersBase
+					open={this.followerPopupOpen}
+					profile={this.profile}
+					closePopup={this.toggleFollowerPopup}
+				/>
 			</Layout>
 		);
 	}
 }
 
 const mapStateToProps = state => ({
-	isLoaded: isLoaded(state, 'profile'),
-	profile: state.profile,
 	levels: state.levels,
 	userId: state.userProfile.id,
 });
 
-const mapDispatchToProps = {
-	getProfileFeedItems: getFeedItemsInternal,
-	getProfile: getProfileInternal,
-	emptyProfileFollowers,
-	clearOpenedProfile: emptyProfile,
-	getQuestions: getProfileQuestionsInternal,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps)(Profile);

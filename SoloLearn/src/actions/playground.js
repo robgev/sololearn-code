@@ -2,11 +2,6 @@ import Service from 'api/service';
 import * as types from 'constants/ActionTypes';
 import { codesSelector, codesFiltersSelector } from 'reducers/codes.reducer';
 
-const getProfileCodes = codes => ({
-	type: types.GET_PROFILE_CODES,
-	payload: codes,
-});
-
 export const removeCode = id => async (dispatch) => {
 	dispatch({
 		type: types.REMOVE_CODE,
@@ -14,15 +9,6 @@ export const removeCode = id => async (dispatch) => {
 	});
 	Service.request('Playground/DeleteCode', { id });
 };
-
-export const getCodesInternal = (index, orderBy, language, query, profileId = null, count = 20) =>
-	async (dispatch) => {
-		const { codes } = await Service.request('Playground/GetPublicCodes', {
-			index, count, orderBy, language, query, profileId,
-		});
-		dispatch(getProfileCodes(codes));
-		return codes.length;
-	};
 
 export const emptyCodes = () => ({
 	type: types.EMPTY_CODES,

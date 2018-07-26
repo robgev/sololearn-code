@@ -1,5 +1,6 @@
 const editorSettings = {
 	html: {
+		id: 1,
 		type: 'web',
 		languageName: 'Web',
 		name: 'HTML',
@@ -7,6 +8,7 @@ const editorSettings = {
 		language: 'web',
 	},
 	css: {
+		id: 2,
 		type: 'web',
 		languageName: 'Web',
 		name: 'CSS',
@@ -14,6 +16,7 @@ const editorSettings = {
 		language: 'web',
 	},
 	javascript: {
+		id: 3,
 		type: 'web',
 		languageName: 'Web',
 		name: 'JS',
@@ -21,6 +24,7 @@ const editorSettings = {
 		language: 'web',
 	},
 	c_cpp: {
+		id: 4,
 		type: 'default',
 		languageName: 'C++',
 		name: 'C++',
@@ -28,6 +32,7 @@ const editorSettings = {
 		language: 'cpp',
 	},
 	c: {
+		id: 5,
 		type: 'default',
 		languageName: 'C',
 		name: 'C',
@@ -35,6 +40,7 @@ const editorSettings = {
 		language: 'c',
 	},
 	csharp: {
+		id: 6,
 		type: 'default',
 		languageName: 'C#',
 		name: 'C#',
@@ -42,6 +48,7 @@ const editorSettings = {
 		language: 'cs',
 	},
 	java: {
+		id: 7,
 		type: 'default',
 		languageName: 'Java',
 		name: 'JAVA',
@@ -49,6 +56,7 @@ const editorSettings = {
 		language: 'java',
 	},
 	kotlin: {
+		id: 8,
 		type: 'default',
 		languageName: 'Kotlin',
 		name: 'Kotlin',
@@ -56,6 +64,7 @@ const editorSettings = {
 		language: 'kt',
 	},
 	swift: {
+		id: 9,
 		type: 'default',
 		languageName: 'Swift',
 		name: 'Swift',
@@ -63,6 +72,7 @@ const editorSettings = {
 		language: 'swift',
 	},
 	python: {
+		id: 10,
 		type: 'default',
 		languageName: 'Python',
 		name: 'Python 3',
@@ -70,6 +80,7 @@ const editorSettings = {
 		language: 'py',
 	},
 	ruby: {
+		id: 11,
 		type: 'default',
 		languageName: 'Ruby',
 		name: 'Ruby',
@@ -77,13 +88,13 @@ const editorSettings = {
 		language: 'rb',
 	},
 	php: {
+		id: 12,
 		type: 'combined',
 		languageName: 'PHP',
 		name: 'PHP',
 		alias: 'php',
 		language: 'php',
 	},
-
 };
 
 export default editorSettings;

@@ -41,7 +41,6 @@ LanguageSelector.defaultProps = {
 LanguageSelector.propTypes = {
 	courses: PropTypes.arrayOf(PropTypes.shape({
 		id: PropTypes.number.isRequired,
-		iconUrl: PropTypes.string.isRequired,
 		languageName: PropTypes.string.isRequired,
 	})).isRequired,
 	open: PropTypes.bool.isRequired,

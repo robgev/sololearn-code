@@ -1,9 +1,6 @@
 // React modules
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-
-import { getCodesInternal, emptyCodes } from 'actions/playground';
 
 // i18n
 import { translate } from 'react-i18next';
@@ -15,12 +12,6 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 
-const mapDispatchToProps = {
-	getCodesInternal,
-	emptyCodes,
-};
-
-@connect(null, mapDispatchToProps)
 @translate()
 class HeaderSearch extends PureComponent {
 	constructor(props) {
@@ -70,8 +61,6 @@ class HeaderSearch extends PureComponent {
 				browserHistory.push(`/learn/search/${searchValue}`);
 				break;
 			case 'codes':
-				await this.props.emptyCodes();
-				await this.props.getCodesInternal(0, 4, '', searchValue);
 				browserHistory.push('/codes');
 				break;
 			case 'users':

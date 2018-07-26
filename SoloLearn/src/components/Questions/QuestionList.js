@@ -1,17 +1,17 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import InfiniteScroll from 'components/InfiniteScroll';
 import Paper from 'material-ui/Paper';
-// import BusyWrapper from 'components/BusyWrapper'; TODO: Put component in BusyWrapper
 import DiscussShimmer from 'components/Shimmers/DiscussShimmer';
 import 'styles/Discuss/Questions.scss';
 import QuestionItem from './QuestionItem';
 
-export default ({
+export default observer(({
 	questions, loadMore, hasMore, header,
 }) =>
-	(questions !== null && questions.length === 0 ? <div>No questions found</div> : (
+	(questions.length === 0 && !hasMore ? <div>No questions found</div> : (
 		<div>
-			{questions === null &&
+			{questions.length === 0 &&
 				(
 					<Paper style={{ height: '100vh', overflow: 'hidden' }}>
 						{header}
@@ -19,7 +19,7 @@ export default ({
 					</Paper>
 				)}
 			<InfiniteScroll
-				header={questions === null ? null : header}
+				header={questions.length !== 0 ? header : null}
 				loadMore={loadMore}
 				hasMore={hasMore}
 				style={{
@@ -28,7 +28,7 @@ export default ({
 					flexDirection: 'column',
 				}}
 			>
-				{questions !== null && questions.map(el => <QuestionItem key={el.id} question={el} />)}
+				{questions.map(el => <QuestionItem key={el.id} question={el} />)}
 			</InfiniteScroll>
 		</div>
-	));
+	)));

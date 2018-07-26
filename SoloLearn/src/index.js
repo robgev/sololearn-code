@@ -4,6 +4,7 @@ import ReactGA from 'react-ga';
 import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
+import DevTools from 'mobx-react-devtools';
 import { Router, browserHistory } from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -36,6 +37,7 @@ class App extends PureComponent {
 	render() {
 		return (
 			<div>
+				<DevTools />
 				<Router onUpdate={() => window.scrollTo(0, 0)} history={browserHistory} routes={routes} />
 				<ToastContainer
 					draggable

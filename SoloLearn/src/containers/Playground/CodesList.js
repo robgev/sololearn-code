@@ -1,11 +1,12 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import Paper from 'material-ui/Paper';
 import InfiniteScroll from 'components/InfiniteScroll';
 import CodeShimmer from 'components/Shimmers/CodeShimmer';
 import 'styles/Playground/Codes.scss';
 import CodeItem from './CodeItem';
 
-const CodesList = ({
+const CodesList = observer(({
 	codes, loadMore, hasMore, header = null,
 }) => (
 	<div className="codes-wrapper">
@@ -39,6 +40,6 @@ const CodesList = ({
 				)
 		}
 	</div>
-);
+));
 
 export default CodesList;
