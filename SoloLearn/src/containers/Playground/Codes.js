@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
-import { browserHistory, withRouter } from 'react-router';
+import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 import { DropDownMenu, MenuItem } from 'material-ui';
 import {
-	getCodes, emptyCodes, removeCode,
+	getCodes, emptyCodes,
 	changeCodesLanguageFilter, changeCodesOrderByFilter,
 } from 'actions/playground';
 import {
 	codesSelector, codesFiltersSelector, codesHasMoreSelector,
 } from 'reducers/codes.reducer';
+import { showError } from 'utils';
 
 import Layout from 'components/Layouts/GeneralLayout';
 import CodesList from './CodesList';
@@ -21,7 +23,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-	getCodes, emptyCodes, removeCode, changeCodesLanguageFilter, changeCodesOrderByFilter,
+	getCodes, emptyCodes, changeCodesLanguageFilter, changeCodesOrderByFilter,
 };
 
 @translate()
@@ -55,6 +57,17 @@ class Codes extends Component {
 	}
 	handleOrderByFilterChange = (_, __, val) => {
 		this.props.changeCodesOrderByFilter(val);
+	}
+	getCodes = () => {
+		try {
+			this.props.getCodes();
+		} catch (e) {
+			if (e.data) {
+				showError(e.data);
+			} else {
+				toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+			}
+		}
 	}
 	render() {
 		const {
@@ -93,7 +106,7 @@ class Codes extends Component {
 					}
 					codes={codes}
 					hasMore={hasMore}
-					loadMore={this.props.getCodes}
+					loadMore={this.getCodes}
 				/>
 			</Layout>
 		);
