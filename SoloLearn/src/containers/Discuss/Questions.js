@@ -90,7 +90,7 @@ class Questions extends Component {
 				showError(res.error.data);
 			}
 		} catch (e) {
-			toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+			toast.error(`❌Something went wrong when trying to fetch questions: ${e.message}`);
 		}
 	}
 	handleFilterChange = (_, __, order) => {

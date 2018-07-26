@@ -124,7 +124,7 @@ class Reply extends Component {
 				showError(res.error.data);
 			}
 		} catch (e) {
-			toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+			toast.error(`❌Something went wrong when trying to edit: ${e.message}`);
 		}
 	}
 

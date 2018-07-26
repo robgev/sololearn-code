@@ -46,7 +46,7 @@ class NewQuestion extends Component {
 				if (e.data) {
 					showError(e.data);
 				} else {
-					toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+					toast.error(`❌Something went wrong when trying to fetch post: ${e.message}`);
 				}
 			}
 		}
@@ -68,7 +68,7 @@ class NewQuestion extends Component {
 				if (e.data) {
 					showError(e.data);
 				} else {
-					toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+					toast.error(`❌Something went wrong when trying to edit post: ${e.message}`);
 				}
 			});
 	}

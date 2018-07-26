@@ -98,7 +98,7 @@ class Post extends Component {
 			if (e.data) {
 				showError(e.data);
 			} else {
-				toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+				toast.error(`❌Something went wrong when trying to fetch post: ${e.message}`);
 			}
 		}
 	}
@@ -112,7 +112,7 @@ class Post extends Component {
 			if (e.data) {
 				showError(e.data);
 			} else {
-				toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+				toast.error(`❌Something went wrong when trying to fetch replies: ${e.message}`);
 			}
 		}
 	}
@@ -125,7 +125,7 @@ class Post extends Component {
 			if (e.data) {
 				showError(e.data);
 			} else {
-				toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+				toast.error(`❌Something went wrong when trying to fetch replies: ${e.message}`);
 			}
 		}
 	}
@@ -138,7 +138,7 @@ class Post extends Component {
 			if (e.data) {
 				showError(e.data);
 			} else {
-				toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+				toast.error(`❌Something went wrong when trying to add reply: ${e.message}`);
 			}
 		}
 	}
@@ -191,7 +191,7 @@ class Post extends Component {
 				if (e.data) {
 					showError(e.data);
 				} else {
-					toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+					toast.error(`❌Something went wrong when trying to delete post: ${e.message}`);
 				}
 			});
 		this.closeDeletePopup();

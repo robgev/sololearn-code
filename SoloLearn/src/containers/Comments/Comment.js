@@ -87,7 +87,7 @@ class Comment extends Component {
 				showError(res.error.data);
 			}
 		} catch (e) {
-			toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+			toast.error(`❌Something went wrong when trying to delete comment: ${e.message}`);
 		}
 	}
 
@@ -126,7 +126,7 @@ class Comment extends Component {
 			if (e.data) {
 				showError(e.data);
 			} else {
-				toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+				toast.error(`❌Something went wrong when trying to fetch comments: ${e.message}`);
 			}
 		}
 	}
@@ -148,7 +148,7 @@ class Comment extends Component {
 			if (e.data) {
 				showError(e.data);
 			} else {
-				toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
+				toast.error(`❌Something went wrong when trying to fetch comments: ${e.message}`);
 			}
 		}
 	}
