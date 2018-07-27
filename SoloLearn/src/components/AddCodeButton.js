@@ -58,8 +58,8 @@ class AddCodeButton extends Component {
 				<LanguageSelector
 					open={isLanguageSelectorOpen}
 					onChoose={this.selectLanguage}
-					courses={uniqBy(Object.values(languages), 'languageName')}
 					onClose={this.toggleLanguageSelector}
+					courses={uniqBy(Object.values(languages), 'languageName')}
 				/>
 			</div>
 		);

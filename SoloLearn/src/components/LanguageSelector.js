@@ -6,16 +6,17 @@ import LoadingOverlay from 'components/LoadingOverlay';
 import LanguageCard from 'components/LanguageCard';
 
 const LanguageSelector = ({
-	courses, open, onChoose, onClose, filter,
+	courses, open, onChoose, onClose, filter, bodyStyle,
 }) => {
 	const filteredCourses = courses.filter(filter);
 	return (
 		<Dialog
-			modal={false}
 			autoScrollBodyContent
 			title="Choose Language"
 			open={open}
 			onRequestClose={onClose}
+			contentStyle={{ maxWidth: 'none', width: '35%' }}
+			bodyStyle={{ border: 'none', paddingBottom: 10 }}
 		>
 			{filteredCourses.length === 0 ? <LoadingOverlay /> : null}
 			<List>
@@ -25,7 +26,6 @@ const LanguageSelector = ({
 							primaryText={course.languageName}
 							leftIcon={<LanguageCard language={course.language} />}
 						/>
-						{idx !== courses.length - 1 ? <Divider inset /> : null}
 					</div>
 				))}
 			</List>
