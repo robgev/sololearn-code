@@ -1,6 +1,5 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import Paper from 'material-ui/Paper';
 import InfiniteScroll from 'components/InfiniteScroll';
 import CodeShimmer from 'components/Shimmers/CodeShimmer';
 import 'styles/Playground/Codes.scss';
@@ -17,15 +16,16 @@ const CodesList = observer(({
 					<div>
 						{
 							codes.length === 0 &&
-								<Paper style={{ height: '100vh', overflow: 'hidden' }}>
+								<div style={{ height: '100vh', overflow: 'hidden' }}>
 									{header}
 									<CodeShimmer />
-								</Paper>
+								</div>
 						}
 						<InfiniteScroll
 							header={codes.length !== 0 ? header : null}
 							loadMore={loadMore}
 							hasMore={hasMore}
+							element="div"
 							style={{
 								display: 'flex',
 								width: '100%',
