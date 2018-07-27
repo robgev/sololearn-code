@@ -4,7 +4,7 @@ import Paper from 'material-ui/Paper';
 import InfiniteScroll from 'react-infinite-scroller';
 
 const InfiniteScrollWrapper = ({
-	children, element: Element, header, scrollParent, threshold, ...rest
+	children, element: Element, header, threshold, ...rest
 }) => (
 	<div>
 		<Element>
@@ -30,7 +30,6 @@ const InfiniteScrollWrapper = ({
 InfiniteScrollWrapper.defaultProps = {
 	element: Paper,
 	header: null,
-	scrollParent: null,
 	threshold: 500,
 };
 

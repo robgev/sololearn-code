@@ -16,7 +16,7 @@ export const emptyCodes = () => ({
 
 export const getCodes = ({
 	query = '', count = 20,
-}) => async (dispatch, getState) => {
+} = {}) => async (dispatch, getState) => {
 	const stateBefore = getState();
 	const filters = codesFiltersSelector(stateBefore);
 	const { length } = codesSelector(stateBefore);
