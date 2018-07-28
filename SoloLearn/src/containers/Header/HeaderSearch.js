@@ -61,7 +61,7 @@ class HeaderSearch extends PureComponent {
 				browserHistory.push(`/learn/search/${searchValue}`);
 				break;
 			case 'codes':
-				browserHistory.push('/codes');
+				browserHistory.push(`/codes/?query=${searchValue}`);
 				break;
 			case 'users':
 				browserHistory.push(`/discover/${searchValue}`);
