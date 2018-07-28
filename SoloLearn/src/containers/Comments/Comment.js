@@ -7,13 +7,16 @@ import FlatButton from 'material-ui/FlatButton';
 import Divider from 'material-ui/Divider';
 import CircularProgress from 'material-ui/CircularProgress';
 import MentionInput from 'components/MentionInput';
-import { replaceMention, showError } from 'utils';
+import { replaceMention, showError, determineAccessLevel } from 'utils';
 import CommentList from './CommentList';
 import CommentView from './CommentView';
 import IComment from './IComment';
 import { filterExisting } from './comments.utils';
 
-const mapStateToProps = ({ userProfile }) => ({ userProfile });
+const mapStateToProps = ({ userProfile }) => ({
+	userProfile,
+	accessLevel: determineAccessLevel(userProfile.accessLevel),
+});
 
 @connect(mapStateToProps, null, null, { withRef: true })
 @observer
@@ -225,7 +228,7 @@ class Comment extends Component {
 	downvote = () => this.vote(-1);
 
 	render() {
-		const { userProfile } = this.props;
+		const { userProfile, accessLevel, commentType } = this.props;
 		const {
 			replies,
 			repliesArray,
@@ -233,6 +236,8 @@ class Comment extends Component {
 		return (
 			<div>
 				<CommentView
+					commentType={commentType}
+					accessLevel={accessLevel}
 					comment={this.props.comment}
 					getUpvotes={this.getUpvotes}
 					getDownvotes={this.getDownvotes}
@@ -265,7 +270,7 @@ class Comment extends Component {
 						)
 						: <p>{replaceMention(message)}</p>)}
 				</CommentView>
-				<Divider />
+				<Divider style={{ backgroundColor: '#FAFAFA' }} />
 				{
 					repliesArray !== null && (
 						<div style={{ marginLeft: 30 }}>

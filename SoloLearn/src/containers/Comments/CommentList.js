@@ -5,6 +5,7 @@ import Comment from './Comment';
 
 const CommentList = observer(props => (
 	<InfiniteScroll
+		element="div"
 		loadMore={props.loadMore}
 		hasMore={props.infinite && props.hasMore}
 		style={{
@@ -15,6 +16,7 @@ const CommentList = observer(props => (
 	>
 		{props.comments.map(comment => (
 			<Comment
+				commentType={props.commentsType}
 				ref={props.commentsRef(comment.id)}
 				delete={props.delete}
 				key={comment.id}

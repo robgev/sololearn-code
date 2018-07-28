@@ -6,7 +6,7 @@ import ProfileAvatar from 'components/ProfileAvatar';
 import VoteControls from 'components/VoteControls';
 import { IconMenu, MenuItem, FlatButton, IconButton, Dialog } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import { replaceMention } from 'utils';
+import { updateDate } from 'utils';
 import './comment.scss';
 
 @translate(null, { withRef: true })
@@ -34,11 +34,11 @@ class CommenView extends Component {
 	}
 	render() {
 		const {
-			message, level, userName, avatarUrl,
+			date, message, level, userName, avatarUrl,
 			vote, votes, userID, replies, badge, id, parentID,
 		} = this.props.comment;
 		const {
-			userProfile, getUpvotes, getDownvotes,
+			commentType, accessLevel, userProfile, getUpvotes, getDownvotes,
 			upvote, downvote, selfDestruct, onRepliesButtonClick,
 			t, children,
 		} = this.props;
@@ -47,34 +47,26 @@ class CommenView extends Component {
 				ref={(node) => { this.mainDiv = node; }}
 				className={`comment-item ${this.highlighted ? 'animate' : ''}`}
 			>
-				{children({ isEditing: this.isEditing, message, toggleEdit: this.toggleEdit, id })}
-				<ProfileAvatar
-					size={40}
-					withTooltip
-					withUserNameBox
-					level={level}
-					badge={badge}
-					userID={userID}
-					userName={userName}
-					avatarUrl={avatarUrl}
-					tooltipId={`comment-${id}`}
-				/>
-				<VoteControls
-					getVotes={getUpvotes}
-					userVote={vote}
-					accessLevel={userProfile.accessLevel}
-					totalVotes={votes}
-					getDownvotes={getDownvotes}
-					buttonStyle={{ height: 32, width: 32, padding: 0 }}
-					onUpvote={upvote}
-					onDownvote={downvote}
-				/>
-				<IconMenu
-					iconButtonElement={<IconButton ><MoreVertIcon /></IconButton>}
-					anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-					targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-				>
-					{userID === userProfile.id &&
+				<div className="comment-header">
+					<ProfileAvatar
+						size={40}
+						withTooltip
+						withUserNameBox
+						level={level}
+						badge={badge}
+						userID={userID}
+						userName={userName}
+						avatarUrl={avatarUrl}
+						tooltipId={`comment-${id}`}
+					/>
+					<div className="comment-meta-info">
+						<p className="comment-date">{updateDate(date)}</p>
+						<IconMenu
+							iconButtonElement={<IconButton ><MoreVertIcon /></IconButton>}
+							anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+							targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+						>
+							{userID === userProfile.id &&
 						[
 							<MenuItem
 								primaryText={t('common.edit-action-title')}
@@ -87,29 +79,59 @@ class CommenView extends Component {
 								onClick={this.toggleDeleteDialog}
 							/>,
 						]
-					}
-					{userID !== userProfile.id &&
-						<MenuItem
-							primaryText={t('common.report-action-title')}
-							onClick={() => { }}
-						/>
-					}
-				</IconMenu>
-				{
-					parentID === null && (
-						<div>
-							<FlatButton
-								label={`${replies} ${replies === 1 ? t('comments.reply') : t('comments.replies-other')}`}
-								disabled={replies === 0}
-								onClick={onRepliesButtonClick}
+							}
+							{userID !== userProfile.id &&
+							<MenuItem
+								primaryText={t('common.report-action-title')}
+								onClick={() => { }}
 							/>
-						</div>
-					)
-				}
-				<FlatButton
-					label="Reply"
-					onClick={this.onReply}
-				/>
+							}
+							{userID !== userProfile.id &&
+							accessLevel > 0 &&
+							<MenuItem
+								onClick={this.toggleDeleteDialog}
+								primaryText={(accessLevel === 1 && commentType !== 'lesson') ?
+									t('discuss.forum_request_removal_prompt_title') :
+									t('discuss.forum_remove_prompt_title')
+								}
+							/>
+							}
+						</IconMenu>
+					</div>
+
+				</div>
+				{children({
+					isEditing: this.isEditing, message, toggleEdit: this.toggleEdit, id,
+				})}
+				<div className="comment-bottom-toolbar">
+					<VoteControls
+						getVotes={getUpvotes}
+						userVote={vote}
+						accessLevel={userProfile.accessLevel}
+						totalVotes={votes}
+						getDownvotes={getDownvotes}
+						buttonStyle={{ height: 32, width: 32, padding: 0 }}
+						onUpvote={upvote}
+						onDownvote={downvote}
+					/>
+					<div className="comment-reply-actions">
+						{
+							parentID === null && (
+								<div>
+									<FlatButton
+										label={`${replies} ${replies === 1 ? t('comments.reply') : t('comments.replies-other')}`}
+										disabled={replies === 0}
+										onClick={onRepliesButtonClick}
+									/>
+								</div>
+							)
+						}
+						<FlatButton
+							label="Reply"
+							onClick={this.onReply}
+						/>
+					</div>
+				</div>
 				<Dialog
 					open={this.deleteOpen}
 					actions={[

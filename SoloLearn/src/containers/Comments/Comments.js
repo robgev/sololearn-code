@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { observable, action, autorun, computed } from 'mobx';
 import { observer } from 'mobx-react';
-import DevTools from 'mobx-react-devtools';
 import { withRouter } from 'react-router';
-import uniqBy from 'lodash/uniqBy';
-import InfiniteScroll from 'components/InfiniteScroll';
 import MentionInput from 'components/MentionInput';
 import FlatButton from 'material-ui/FlatButton';
 
@@ -95,7 +92,7 @@ class Comments extends Component {
 			// FindPostId is a reply id, have to format the replies
 			withReplies = [ new IComment({
 				...comments[0],
-				repliesArray: comments.slice(1).map(c => new IComment({ ...c, repliesArray: null }))
+				repliesArray: comments.slice(1).map(c => new IComment({ ...c, repliesArray: null })),
 			}) ];
 		} else {
 			withReplies = comments.map(comment =>
@@ -188,7 +185,6 @@ class Comments extends Component {
 	render() {
 		return (
 			<div>
-				<DevTools />
 				<CommentsToolbar value={this.orderBy} onChange={this.changeOrder} />
 				<MentionInput
 					ref={(i) => { this.mentionInput = i; }}
@@ -211,6 +207,7 @@ class Comments extends Component {
 					delete={this.deleteComment}
 					comments={this.comments}
 					loadMore={this.loadMore}
+					commentsType={this.props.commentsType}
 					hasMore={this.hasMore && !this.initial && !this.isOnReply}
 					infinite
 					commentsAPI={this.commentsAPI}
