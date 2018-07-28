@@ -16,7 +16,6 @@ const SlayLessonCards = ({
 
 	<Layout>
 		<BusyWrapper
-			paper
 			isBusy={loading}
 			style={{
 				padding: 15,
