@@ -12,7 +12,7 @@ import { markReadInternal } from 'actions/profile';
 
 // Utils And Defaults
 import types from 'defaults/appTypes';
-import { updateDate } from 'utils';
+import { updateDate, toSeoFriendly } from 'utils';
 import ProfileAvatar from 'components/ProfileAvatar';
 
 import { NotificationItemStyles as styles } from './styles';
@@ -63,9 +63,10 @@ class NotificationItem extends Component {
 			browserHistory.push(`/discuss/${notification.post.id}`);
 			break;
 		case types.upvotePost:
-			browserHistory.push(`/discuss/${notification.post.id}/answer`);
+			browserHistory.push(notification.post.parentID
+				? `/discuss/${notification.post.id}/answer`
+				: `/discuss/${notification.post.parentID}/answer/${notification.post.id}`);
 			break;
-		case types.upvoteComment:
 		case types.postedAnswer:
 			browserHistory.push(`/discuss/${notification.post.parentID}/answer/${notification.post.id}`);
 			break;
@@ -81,9 +82,15 @@ class NotificationItem extends Component {
 		case types.upvoteCodeComment:
 			browserHistory.push(`/playground/${notification.code.publicID}?commentID=${notification.codeComment.id}`);
 			break;
+		case types.postedUserLessonComment:
+		case types.postedUserLessonCommentReply:
+		case types.upvoteUserLessonComment:
+			browserHistory.push(`/learn/slayLesson/2/${notification.userLesson.id}/1?commentID=${notification.userLessonComment.id}`);
+			break;
 		case types.postedLessonComment:
 		case types.postedLessonCommentReply:
-			// TODO: goto this lesson page with ?commentID=${notification.codeComment.id}
+		case types.upvoteComment:
+			browserHistory.push(`/learn/${toSeoFriendly(notification.course.name, 100)}/${notification.course.id}?commentID=${notification.comment.id}`);
 			break;
 		default:
 			break;
@@ -161,12 +168,6 @@ class NotificationItem extends Component {
 				{generatedContent}
 			</ListItem>
 
-		);
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		return (this.props.notification.isClicked !== nextProps.notification.isClicked ||
-			this.state.snackbarOpened !== nextState.snackbarOpened
 		);
 	}
 }

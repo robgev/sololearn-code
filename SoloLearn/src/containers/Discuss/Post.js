@@ -64,7 +64,7 @@ class Post extends Component {
 
 	async componentWillMount() {
 		await this.initialize();
-		document.title = this.props.post.title;
+		document.title = this.props.post ? this.props.post.title : 'SoloLearn';
 		ReactGA.ga('send', 'screenView', { screenName: 'Discussion Thread Page' });
 	}
 
@@ -88,6 +88,7 @@ class Post extends Component {
 		try {
 			const { params } = this.props;
 			this.props.loadPost(null);
+			console.log('LOADING POST', params.id);
 			await this.props.loadPostInternal(params.id);
 			await this.getReplies(params.replyId);
 			if (params.replyId) {
@@ -214,7 +215,6 @@ class Post extends Component {
 
 	render() {
 		const { post, t } = this.props;
-		console.log(this.state.ordering);
 		if (!this.props.isLoaded) {
 			return <LoadingOverlay />;
 		}

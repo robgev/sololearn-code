@@ -14,6 +14,7 @@ const types = {
 	lessonCreated: 111,
 	postedUserLessonComment: 113,
 	postedUserLessonCommentReply: 114,
+	upvoteUserLessonComment: 115,
 
 	postedQuestion: 201,
 	postedAnswer: 202,
