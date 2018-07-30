@@ -1,5 +1,5 @@
 // React modules
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { observable, action } from 'mobx';
 import { observer } from 'mobx-react';
 import './badge.scss';
@@ -53,7 +53,7 @@ const styles = {
 };
 
 @observer
-class Badge extends PureComponent {
+class Badge extends Component {
 	@observable highlighted = this.props.isSelected
 	componentDidMount() {
 		setTimeout(() => {

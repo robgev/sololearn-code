@@ -1,5 +1,5 @@
 // General modules
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { observer } from 'mobx-react';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -58,7 +58,7 @@ const styles = {
 
 @translate()
 @observer
-class FollowItem extends PureComponent {
+class FollowItem extends Component {
 	handleFollowClick = () => {
 		this.props.onFollowClick(this.props.follow.id);
 	}
