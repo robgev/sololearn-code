@@ -90,10 +90,10 @@ class Comments extends Component {
 		const isFindingReply = comments[0].index === -1;
 		if (isFindingReply) {
 			// FindPostId is a reply id, have to format the replies
-			withReplies = [ new IComment({
+			withReplies = [new IComment({
 				...comments[0],
 				repliesArray: comments.slice(1).map(c => new IComment({ ...c, repliesArray: null })),
-			}) ];
+			})];
 		} else {
 			withReplies = comments.map(comment =>
 				new IComment({ ...comment, repliesArray: [] }));
@@ -132,7 +132,7 @@ class Comments extends Component {
 	}
 
 	@action getCommentsAbove = async () => {
-		const firstIndex = this.firstIndex;
+		const { firstIndex } = this;
 		const index = firstIndex > 20 ? firstIndex - 20 : 0;
 		const count = firstIndex - index;
 		const comments = await this.commentsAPI.getComments({
@@ -177,6 +177,7 @@ class Comments extends Component {
 		}
 	}
 
+	// Soft delete in case of mod level 1 reporting, hides the comment but doesn't send delete req
 	@action deleteComment = (id) => {
 		this.comments.splice(this.comments.findIndex(c => c.id === id), 1);
 		this.commentsAPI.deleteComment({ id });

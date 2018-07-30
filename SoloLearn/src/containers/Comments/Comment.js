@@ -8,6 +8,7 @@ import Divider from 'material-ui/Divider';
 import CircularProgress from 'material-ui/CircularProgress';
 import MentionInput from 'components/MentionInput';
 import { replaceMention, showError, determineAccessLevel } from 'utils';
+import ReportItemTypes from 'constants/ReportItemTypes';
 import CommentList from './CommentList';
 import CommentView from './CommentView';
 import IComment from './IComment';
@@ -58,6 +59,12 @@ class Comment extends Component {
 	}
 	selfDestruct = () => {
 		this.props.delete(this.props.comment.id);
+	}
+
+	onRequestRemoval = () => {
+		const { id } = this.props.comment;
+		const itemType = ReportItemTypes[`${this.props.commentsType}Comment`];
+		this.props.commentsAPI.requestRemoval({ itemId: id, itemType });
 	}
 
 	@computed get firstIndex() {
@@ -230,7 +237,7 @@ class Comment extends Component {
 	downvote = () => this.vote(-1);
 
 	render() {
-		const { userProfile, accessLevel, commentType } = this.props;
+		const { userProfile, accessLevel, commentsType } = this.props;
 		const {
 			replies,
 			repliesArray,
@@ -238,7 +245,7 @@ class Comment extends Component {
 		return (
 			<div>
 				<CommentView
-					commentType={commentType}
+					commentsType={commentsType}
 					accessLevel={accessLevel}
 					comment={this.props.comment}
 					getUpvotes={this.getUpvotes}
@@ -249,6 +256,7 @@ class Comment extends Component {
 					onRepliesButtonClick={this.onRepliesButtonClick}
 					selfDestruct={this.selfDestruct}
 					onReply={this.toggleReplyBox}
+					onRequestRemoval={this.onRequestRemoval}
 					ref={(node) => { this.commentRef = node; }}
 				>
 					{({

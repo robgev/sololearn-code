@@ -4,9 +4,12 @@ import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 import ProfileAvatar from 'components/ProfileAvatar';
 import VoteControls from 'components/VoteControls';
+import ReportPopup from 'components/ReportPopup';
 import { IconMenu, MenuItem, FlatButton, IconButton, Dialog } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { updateDate } from 'utils';
+import ReportItemTypes from 'constants/ReportItemTypes';
+import RemovalPopup from './RemovalPopup';
 import './comment.scss';
 
 @translate(null, { withRef: true })
@@ -15,6 +18,14 @@ class CommenView extends Component {
 	@observable highlighted = false;
 	@observable deleteOpen = false;
 	@observable isEditing = false;
+	@observable removalPopupOpen = false;
+	@observable reportPopupOpen = false;
+	@action toggleReportPopup = () => {
+		this.reportPopupOpen = !this.reportPopupOpen;
+	}
+	@action toggleRemovalPopup = () => {
+		this.removalPopupOpen = !this.removalPopupOpen;
+	}
 	@action toggleDeleteDialog = () => {
 		this.deleteOpen = !this.deleteOpen;
 	}
@@ -38,10 +49,11 @@ class CommenView extends Component {
 			vote, votes, userID, replies, badge, id, parentID,
 		} = this.props.comment;
 		const {
-			commentType, accessLevel, userProfile, getUpvotes, getDownvotes,
+			commentsType, userProfile, getUpvotes, getDownvotes,
 			upvote, downvote, selfDestruct, onRepliesButtonClick,
-			t, children,
+			t, children, onRequestRemoval, accessLevel,
 		} = this.props;
+
 		return (
 			<div
 				ref={(node) => { this.mainDiv = node; }}
@@ -62,39 +74,40 @@ class CommenView extends Component {
 					<div className="comment-meta-info">
 						<p className="comment-date">{updateDate(date)}</p>
 						<IconMenu
-							iconButtonElement={<IconButton ><MoreVertIcon /></IconButton>}
+							iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
 							anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
 							targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 						>
 							{userID === userProfile.id &&
-						[
-							<MenuItem
-								primaryText={t('common.edit-action-title')}
-								key={`edit${id}`}
-								onClick={this.toggleEdit}
-							/>,
-							<MenuItem
-								primaryText={t('common.delete-title')}
-								key={`remove${id}`}
-								onClick={this.toggleDeleteDialog}
-							/>,
-						]
+								[
+									<MenuItem
+										primaryText={t('common.edit-action-title')}
+										key={`edit${id}`}
+										onClick={this.toggleEdit}
+									/>,
+									<MenuItem
+										primaryText={t('common.delete-title')}
+										key={`remove${id}`}
+										onClick={this.toggleDeleteDialog}
+									/>,
+								]
 							}
 							{userID !== userProfile.id &&
-							<MenuItem
-								primaryText={t('common.report-action-title')}
-								onClick={() => { }}
-							/>
+								<MenuItem
+									primaryText={t('common.report-action-title')}
+									onClick={this.toggleReportPopup}
+								/>
 							}
 							{userID !== userProfile.id &&
-							accessLevel > 0 &&
-							<MenuItem
-								onClick={this.toggleDeleteDialog}
-								primaryText={(accessLevel === 1 && commentType !== 'lesson') ?
-									t('discuss.forum_request_removal_prompt_title') :
-									t('discuss.forum_remove_prompt_title')
-								}
-							/>
+								accessLevel > 0 &&
+								<MenuItem
+									onClick={this.toggleRemovalPopup}
+									primaryText={(accessLevel === 1 &&
+											(commentsType !== 'lesson' && commentsType !== 'userLesson')) ?
+										t('discuss.forum_request_removal_prompt_title') :
+										t('discuss.forum_remove_prompt_title')
+									}
+								/>
 							}
 						</IconMenu>
 					</div>
@@ -133,20 +146,37 @@ class CommenView extends Component {
 					</div>
 				</div>
 				<Dialog
+					title={t('comments.lesson_comment_remove_title')}
 					open={this.deleteOpen}
 					actions={[
 						<FlatButton
 							label="Delete"
 							onClick={selfDestruct}
+							primary
 						/>,
 						<FlatButton
 							label="Cancel"
 							onClick={this.toggleDeleteDialog}
+							primary
 						/>,
 					]}
 				>
-					Are you sure you want to delete
+					{t('comments.lesson_comment_remove_message')}
 				</Dialog>
+				<RemovalPopup
+					open={this.removalPopupOpen}
+					accessLevel={accessLevel}
+					commentsType={commentsType}
+					onRequestClose={this.toggleRemovalPopup}
+					deleteComment={selfDestruct}
+					report={onRequestRemoval}
+				/>
+				<ReportPopup
+					open={this.reportPopupOpen}
+					itemId={id}
+					onRequestClose={this.toggleReportPopup}
+					itemType={ReportItemTypes[`${commentsType}Comment`]}
+				/>
 			</div>
 		);
 	}
