@@ -70,8 +70,8 @@ class CommentsAPI {
 	getVotesList = ({ id, type }) =>
 		getLikes(`${this.commentsType}Comment${type}`, id);
 
-	orderComments = (comments) => {
-		switch (this.orderBy) {
+	orderComments = (comments, orderBy = this.orderBy) => {
+		switch (orderBy) {
 		case 1: // Sort by date
 			return comments.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
 		case 2:

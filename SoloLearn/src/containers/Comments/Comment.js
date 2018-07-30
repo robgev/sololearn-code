@@ -124,7 +124,9 @@ class Comment extends Component {
 			const filtered = filterExisting(comment.repliesArray, newComments);
 			const nulledReplies = filtered.map(c => new IComment({ ...c, repliesArray: null }));
 			comment.repliesArray.push(...nulledReplies);
-			comment.repliesArray = this.props.commentsAPI.orderComments(comment.repliesArray);
+			// Replies always sort by date
+			comment.repliesArray = this.props.commentsAPI
+				.orderComments(comment.repliesArray, 1).reverse();
 		} catch (e) {
 			if (e.data) {
 				showError(e.data);
@@ -136,7 +138,7 @@ class Comment extends Component {
 
 	@action getRepliesAbove = async () => {
 		try {
-			const firstIndex = this.firstIndex;
+			const { firstIndex } = this;
 			const index = firstIndex > 20 ? firstIndex - 20 : 0;
 			const count = firstIndex - index;
 			const comments = await this.props.commentsAPI.getComments({
