@@ -145,7 +145,7 @@ class Profile extends Component {
 				}
 				{
 					this.activeTab === 'codes' &&
-					<Paper className="codes-wrapper section">
+					<div className="codes-wrapper section">
 						<CodesList
 							codes={codes.entities}
 							hasMore={codes.hasMore}
@@ -154,7 +154,7 @@ class Profile extends Component {
 						{data.id === userId &&
 							<AddCodeButton />
 						}
-					</Paper>
+					</div>
 				}
 				{
 					this.activeTab === 'discussion' &&

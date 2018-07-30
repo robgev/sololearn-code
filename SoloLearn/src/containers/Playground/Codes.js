@@ -3,7 +3,7 @@ import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
-import { DropDownMenu, MenuItem, Paper } from 'material-ui';
+import { DropDownMenu, MenuItem } from 'material-ui';
 import {
 	getCodes, emptyCodes,
 	changeCodesLanguageFilter, changeCodesOrderByFilter,
@@ -78,7 +78,7 @@ class Codes extends Component {
 		} = this.props;
 		return (
 			<Layout>
-				<Paper className="playground-codes-container">
+				<div className="playground-codes-container">
 					<CodesList
 						header={
 							<div className="playground-codes-toolbar">
@@ -116,7 +116,7 @@ class Codes extends Component {
 						loadMore={this.getCodes}
 					/>
 					<AddCodeButton />
-				</Paper>
+				</div>
 			</Layout>
 		);
 	}

@@ -1,12 +1,13 @@
 @import '~styles/utils';
 
 .playground-codes-container {
-	padding: 15px;
 	position: relative;
 	.playground-codes-toolbar {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		padding: 15px;
+		padding-bottom: 0;
 		.page-title {
 			@extend %title-text;
 		}
