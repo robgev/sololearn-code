@@ -2,40 +2,76 @@ import { toast } from 'react-toastify';
 import { last } from 'lodash';
 import Service from 'api/service';
 import * as types from 'constants/ActionTypes';
+import {
+	discussPostsSelector,
+	discussFiltersSelector,
+	isDiscussFetchingSelector,
+} from 'reducers/discuss.reducer';
 
 // Utils
 import { toSeoFriendly, showError } from 'utils';
 
-export const emptyQuestions = () => ({
-	type: types.EMPTY_QUESTIONS,
-});
+export const removePost = id => (dispatch) => {
+	dispatch({
+		type: types.REMOVE_POST,
+		payload: id,
+	});
+	return Service.request('Discussion/DeletePost', { id })
+		.then((res) => {
+			if (res.error) {
+				throw res.error;
+			}
+		});
+};
 
-export const getQuestions = questions => ({
-	type: types.GET_QUESTIONS,
-	payload: questions,
-});
-
-export const changeDiscussHasMore = hasMore =>
-	({ type: types.CHANGE_DISCUSS_HAS_MORE, payload: hasMore });
-
-export const getQuestionsInternal = ({
-	index, query, orderBy,
-}) => async (dispatch, getState) => {
-	const settings = {
-		index,
-		count: 20,
-		orderBy,
-		query,
-	};
-	const { posts } = await Service.request('Discussion/Search', settings);
-	const { order, tag } = getState().discussFilters;
-	if (order === orderBy && tag === query) {
-		dispatch(getQuestions(posts));
-		if (posts.length === 0) {
-			dispatch(changeDiscussHasMore(false));
+export const getPosts = ({
+	count = 20,
+} = {}) => async (dispatch, getState) => {
+	const stateBefore = getState();
+	// Avoid unnecessary requests if already fetching
+	if (!isDiscussFetchingSelector(stateBefore)) {
+		dispatch({ type: types.REQUEST_POSTS });
+		const	filters = discussFiltersSelector(stateBefore);
+		const { length } = discussPostsSelector(stateBefore);
+		const { posts, error } = await Service.request('Discussion/Search', {
+			index: length, count, orderBy: filters.orderBy, query: filters.query,
+		});
+		if (error) {
+			throw error;
+		}
+		// Ignore action if filters changed
+		if (filters === discussFiltersSelector(getState())) {
+			dispatch({ type: types.SET_POSTS, payload: posts });
+			if (posts.length < count) {
+				dispatch({ type: types.MARK_DISCUSS_LIST_FINISHED });
+			}
 		}
 	}
 };
+
+export const emptyPosts = () => ({
+	type: types.EMPTY_POSTS,
+});
+
+export const changeDiscussQueryFilter = query => (dispatch) => {
+	dispatch({
+		type: types.DISCUSS_QUERY_FILTER_CHANGE,
+		payload: query,
+	});
+	dispatch(emptyPosts());
+	dispatch(getPosts());
+};
+
+export const changeDiscussOrderByFilter = orderBy => (dispatch) => {
+	dispatch({
+		type: types.DISCUSS_ORDER_BY_FILTER_CHANGE,
+		payload: orderBy,
+	});
+	dispatch(emptyPosts());
+	dispatch(getPosts());
+};
+
+// Single post actions
 
 export const loadPost = post => ({
 	type: types.LOAD_DISCUSS_POST,
@@ -115,14 +151,11 @@ export const emptyReplies = () => ({
 	type: types.EMPTY_DISCUSS_POST_REPLIES,
 });
 
-const votePost = (id, isPrimary, vote, votes) => dispatch => new Promise((resolve) => {
-	dispatch({
-		type: types.VOTE_POST,
-		payload: {
-			id, isPrimary, vote, votes,
-		},
-	});
-	resolve();
+const votePost = (id, isPrimary, vote, votes) => ({
+	type: types.VOTE_POST,
+	payload: {
+		id, isPrimary, vote, votes,
+	},
 });
 
 export const votePostInternal = (post, vote) => {
@@ -132,7 +165,7 @@ export const votePostInternal = (post, vote) => {
 
 	return async (dispatch) => {
 		try {
-			await dispatch(votePost(post.id, isPrimary, userVote, votes));
+			dispatch(votePost(post.id, isPrimary, userVote, votes));
 			const res = Service.request('Discussion/VotePost', { id: post.id, vote: userVote });
 			if (res && res.error) {
 				showError(res.error.data);
@@ -154,29 +187,20 @@ export const editPostInternal = (post, message) => {
 	return editPost(post.id, isPrimary, message);
 };
 
-export const deletePost = (id, isPrimary) => dispatch => new Promise((resolve) => {
-	dispatch({
-		type: types.DELETE_POST,
-		payload: { id, isPrimary },
-	});
-	resolve();
+export const deletePost = (id, isPrimary) => ({
+	type: types.DELETE_POST,
+	payload: { id, isPrimary },
 });
 
 export const deletePostInternal = (post) => {
 	const isPrimary = post.parentID === null;
 	return (dispatch) => {
-		dispatch(emptyQuestions());
+		// dispatch(emptyQuestions());
 		if (!isPrimary) {
-			return dispatch(deletePost(post.id, isPrimary)).then(() => {
-				Service.request('Discussion/DeletePost', { id: post.id });
-			});
+			dispatch(deletePost(post.id, isPrimary));
+			return Service.request('Discussion/DeletePost', { id: post.id });
 		}
-		return Service.request('Discussion/DeletePost', { id: post.id }).then((res) => {
-			if (res.error) {
-				throw res.error;
-			}
-			dispatch(loadPost(null));
-		});
+		return dispatch(removePost(post.id));
 	};
 };
 

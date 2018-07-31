@@ -33,15 +33,21 @@ const mapDispatchToProps = {
 @connect(mapStateToProps, mapDispatchToProps)
 class Codes extends Component {
 	componentDidMount() {
+		document.title = 'Sololearn | Code Playground';
 		const { location, filters } = this.props;
 		const newQuery = { ...location.query };
 		if (location.query.orderBy) {
-			this.props.changeCodesOrderByFilter(parseInt(location.query.orderBy, 10));
+			const numOrderBy = parseInt(location.query.orderBy, 10);
+			if (numOrderBy !== filters.orderBy) {
+				this.props.changeCodesOrderByFilter(parseInt(location.query.orderBy, 10));
+			}
 		} else {
 			newQuery.orderBy = filters.orderBy;
 		}
 		if (location.query.language) {
-			this.props.changeCodesLanguageFilter(location.query.language);
+			if (location.query.language !== filters.langauge) {
+				this.props.changeCodesLanguageFilter(location.query.language);
+			}
 		} else {
 			newQuery.language = filters.language;
 		}

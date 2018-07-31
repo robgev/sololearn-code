@@ -21,9 +21,8 @@ import shortcutLesson from './reducer_shortcut';
 import codes from './codes.reducer';
 
 // Discuss
-import questions from './reducer_questions';
 import discussPost from './reducer_post';
-import discussFilters from './reducer_discuss_filters';
+import discuss from './discuss.reducer';
 
 // Notifications
 import notifications from './reducer_notifications';
@@ -74,9 +73,8 @@ const reducers = combineReducers({
 	// Playground
 	codes,
 	// Discuss
-	questions,
+	discuss,
 	discussPost,
-	discussFilters,
 	// Notifications
 	notifications,
 	notificationsCount,

@@ -181,13 +181,10 @@ class Post extends Component {
 	}
 
 	remove = () => {
-		const isPrimary = this.deletingPost.parentID == null;
-		this.props.deletePostInternal(this.deletingPost)
-			.then(() => {
-				if (isPrimary) {
-					browserHistory.push('/discuss');
-				}
-			})
+		const { deletingPost } = this;
+		this.closeDeletePopup();
+		const isPrimary = deletingPost.parentID == null;
+		this.props.deletePostInternal(deletingPost)
 			.catch((e) => {
 				if (e.data) {
 					showError(e.data);
@@ -195,7 +192,9 @@ class Post extends Component {
 					toast.error(`❌Something went wrong when trying to delete post: ${e.message}`);
 				}
 			});
-		this.closeDeletePopup();
+		if (isPrimary) {
+			browserHistory.push({ pathname: '/discuss' });
+		}
 	}
 
 	deleteActions = [

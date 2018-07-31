@@ -4,8 +4,20 @@ import uniqBy from 'lodash/uniqBy';
 import {
 	SET_CODES, EMPTY_CODES, REMOVE_CODE,
 	CODE_ORDER_BY_FILTER_CHANGE, CODE_LANGUAGE_FILTER_CHANGE,
-	MARK_CODES_LIST_FINISHED,
+	MARK_CODES_LIST_FINISHED, REQUEST_CODES,
 } from 'constants/ActionTypes';
+
+const isFetching = (state = false, action) => {
+	switch (action.type) {
+	case REQUEST_CODES:
+		return true;
+	case SET_CODES:
+	case EMPTY_CODES:
+		return false;
+	default:
+		return state;
+	}
+};
 
 const hasMore = (state = true, action) => {
 	switch (action.type) {
@@ -46,6 +58,7 @@ export default combineReducers({
 	entities,
 	filters,
 	hasMore,
+	isFetching,
 });
 
 const codesReducerSelector = state => state.codes;
@@ -63,4 +76,9 @@ export const codesFiltersSelector = createSelector(
 export const codesHasMoreSelector = createSelector(
 	codesReducerSelector,
 	codes => codes.hasMore,
+);
+
+export const isCodesFetchingSelector = createSelector(
+	codesReducerSelector,
+	codes => codes.isFetching,
 );
