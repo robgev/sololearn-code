@@ -1,6 +1,3 @@
-// General types
-export const TAB_SELECTED = 'TAB_SELECTED';
-
 // Learn types
 export const LOAD_COURSES = 'LOAD_COURSES';
 export const LOAD_LEVELS = 'LOAD_LEVELS';

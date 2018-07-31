@@ -1,11 +1,8 @@
 // General
 import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { isEmpty } from 'lodash';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
-// General reducers
-import activeTab from './reducer_active_tab';
 import userProfile from './reducer_user';
 
 // Learn
@@ -37,9 +34,6 @@ import feed from './reducer_feed';
 import feedPins from './reducer_feed_pins';
 import userSuggestions from './reducer_user_suggestions';
 
-// Profile
-import profile from './reducer_profile';
-
 // Likes
 import likes from './likes.reducer';
 
@@ -59,14 +53,12 @@ import discoverSuggestions from './discover.reducer';
 import quizSubmission from './quizSubmission.reducer';
 
 const reducers = combineReducers({
-	profile,
 	likes,
 	slay,
 	settings,
 	leaderboards,
 	discoverSuggestions,
 	// General
-	activeTab,
 	userProfile,
 	// Learn
 	courses,
@@ -122,8 +114,6 @@ export const isLoaded = (state, componentName) => {
 		return state.notifications.length > 0;
 	case 'feed':
 		return state.feed.length > 0;
-	case 'profile':
-		return !isEmpty(state.profile.data);
 	case 'followers':
 		return state.profile.followers.length > 0;
 	case 'following':
