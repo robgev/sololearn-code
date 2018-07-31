@@ -59,7 +59,6 @@ export const changeDiscussQueryFilter = query => (dispatch) => {
 		payload: query,
 	});
 	dispatch(emptyPosts());
-	dispatch(getPosts());
 };
 
 export const changeDiscussOrderByFilter = orderBy => (dispatch) => {
@@ -68,7 +67,6 @@ export const changeDiscussOrderByFilter = orderBy => (dispatch) => {
 		payload: orderBy,
 	});
 	dispatch(emptyPosts());
-	dispatch(getPosts());
 };
 
 // Single post actions
