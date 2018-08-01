@@ -34,7 +34,7 @@ export const getPosts = ({
 		const filters = discussFiltersSelector(stateBefore);
 		const { length } = discussPostsSelector(stateBefore);
 		const { posts, error } = await Service.request('Discussion/Search', {
-			index: length, count, orderBy: filters.orderBy, query: filters.query,
+			index: length, count, ...filters,
 		});
 		if (error) {
 			throw error;
@@ -60,7 +60,6 @@ export const setDiscussFilters = filters => (dispatch, getState) => {
 		formattedFilters.orderBy = parseInt(filters.orderBy, 10);
 	}
 	if (Object.keys(formattedFilters).some(key => formattedFilters[key] !== oldFilters[key])) {
-		console.warn('Updating');
 		dispatch({
 			type: types.SET_DISCUSS_FILTERS,
 			payload: formattedFilters,

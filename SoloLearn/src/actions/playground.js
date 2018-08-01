@@ -33,7 +33,7 @@ export const getCodes = ({
 		const filters = codesFiltersSelector(stateBefore);
 		const { length } = codesSelector(stateBefore);
 		const { codes, error } = await Service.request('Playground/GetPublicCodes', {
-			index: length, query, count, orderBy: filters.orderBy, language: filters.language,
+			index: length, query, count, ...filters,
 		});
 		if (error) {
 			throw error;
@@ -48,12 +48,17 @@ export const getCodes = ({
 	}
 };
 
-export const changeCodesLanguageFilter = lang => ({
-	type: types.CODE_LANGUAGE_FILTER_CHANGE,
-	payload: lang,
-});
-
-export const changeCodesOrderByFilter = orderBy => ({
-	type: types.CODE_ORDER_BY_FILTER_CHANGE,
-	payload: orderBy,
-});
+export const setCodesFilters = filters => (dispatch, getState) => {
+	const oldFilters = codesFiltersSelector(getState());
+	const formattedFilters = { ...filters };
+	if (filters.orderBy) {
+		formattedFilters.orderBy = parseInt(filters.orderBy, 10);
+	}
+	if (Object.keys(formattedFilters).some(key => formattedFilters[key] !== oldFilters[key])) {
+		dispatch({
+			type: types.SET_CODES_FILTERS,
+			payload: formattedFilters,
+		});
+		dispatch(emptyCodes());
+	}
+};

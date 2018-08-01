@@ -55,13 +55,13 @@ class HeaderSearch extends PureComponent {
 			const { searchArea } = this.state;
 			switch (searchArea) {
 			case 'discuss':
-				browserHistory.push(`/discuss/filter/${searchValue}`);
+				browserHistory.push({ pathname: '/discuss', query: { query: searchValue } });
 				break;
 			case 'learn':
 				browserHistory.push(`/learn/search/${searchValue}`);
 				break;
 			case 'codes':
-				browserHistory.push(`/codes/?query=${searchValue}`);
+				browserHistory.push({ pathname: '/codes', query: { query: searchValue } });
 				break;
 			case 'users':
 				browserHistory.push(`/discover/${searchValue}`);

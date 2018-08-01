@@ -35,13 +35,7 @@ class Questions extends Component {
 	componentDidMount() {
 		document.title = 'Sololearn | Discuss';
 		const { location, filters } = this.props;
-		const query = {};
-		query.orderBy = location.query.orderBy
-			? location.query.orderBy
-			: filters.orderBy;
-		query.query = location.query.query
-			? location.query.query
-			: filters.query;
+		const query = { ...filters, ...location.query };
 		browserHistory.replace({ ...location, query });
 	}
 	componentWillUpdate(nextProps) {

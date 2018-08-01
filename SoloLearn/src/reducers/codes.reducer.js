@@ -3,8 +3,7 @@ import { createSelector } from 'reselect';
 import uniqBy from 'lodash/uniqBy';
 import {
 	SET_CODES, EMPTY_CODES, REMOVE_CODE,
-	CODE_ORDER_BY_FILTER_CHANGE, CODE_LANGUAGE_FILTER_CHANGE,
-	MARK_CODES_LIST_FINISHED, REQUEST_CODES,
+	SET_CODES_FILTERS, MARK_CODES_LIST_FINISHED, REQUEST_CODES,
 } from 'constants/ActionTypes';
 
 const isFetching = (state = false, action) => {
@@ -30,12 +29,10 @@ const hasMore = (state = true, action) => {
 	}
 };
 
-const filters = (state = { orderBy: 4, language: '' }, action) => {
+const filters = (state = { orderBy: 4, language: '', query: '' }, action) => {
 	switch (action.type) {
-	case CODE_ORDER_BY_FILTER_CHANGE:
-		return { ...state, orderBy: action.payload };
-	case CODE_LANGUAGE_FILTER_CHANGE:
-		return { ...state, language: action.payload };
+	case SET_CODES_FILTERS:
+		return { ...state, ...action.payload };
 	default:
 		return state;
 	}

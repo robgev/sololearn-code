@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { DropDownMenu, MenuItem } from 'material-ui';
 import {
-	getCodes, emptyCodes,
-	changeCodesLanguageFilter, changeCodesOrderByFilter,
+	getCodes, emptyCodes, setCodesFilters,
 } from 'actions/playground';
 import {
 	codesSelector, codesFiltersSelector, codesHasMoreSelector,
@@ -26,7 +25,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-	getCodes, emptyCodes, changeCodesLanguageFilter, changeCodesOrderByFilter,
+	getCodes, emptyCodes, setCodesFilters,
 };
 
 @translate()
@@ -35,37 +34,21 @@ class Codes extends Component {
 	componentDidMount() {
 		document.title = 'Sololearn | Code Playground';
 		const { location, filters } = this.props;
-		const newQuery = { ...location.query };
-		if (location.query.orderBy) {
-			const numOrderBy = parseInt(location.query.orderBy, 10);
-			if (numOrderBy !== filters.orderBy) {
-				this.props.changeCodesOrderByFilter(parseInt(location.query.orderBy, 10));
-			}
-		} else {
-			newQuery.orderBy = filters.orderBy;
-		}
-		if (location.query.language) {
-			if (location.query.language !== filters.langauge) {
-				this.props.changeCodesLanguageFilter(location.query.language);
-			}
-		} else {
-			newQuery.language = filters.language;
-		}
-		browserHistory.replace({ ...location, query: { ...location.query, ...newQuery } });
+		const query = { ...filters, ...location.query };
+		browserHistory.replace({ ...location, query });
 	}
 	componentWillUpdate(nextProps) {
-		// Source of truth is the redux store
-		if (this.props.filters !== nextProps.filters) {
-			const { location } = this.props;
-			browserHistory.replace({ ...location, query: { ...location.query, ...nextProps.filters } });
-			this.props.emptyCodes();
-		}
+		// Source of truth is the route
+		const { query } = nextProps.location;
+		this.props.setCodesFilters(query);
 	}
-	handleLanguageFilterChange = (_, __, val) => {
-		this.props.changeCodesLanguageFilter(val);
+	handleLanguageFilterChange = (_, __, language) => {
+		const { location } = this.props;
+		browserHistory.push({ ...location, query: { ...location.query, language } });
 	}
-	handleOrderByFilterChange = (_, __, val) => {
-		this.props.changeCodesOrderByFilter(val);
+	handleOrderByFilterChange = (_, __, orderBy) => {
+		const { location } = this.props;
+		browserHistory.push({ ...location, query: { ...location.query, orderBy } });
 	}
 	getCodes = () => {
 		try {
