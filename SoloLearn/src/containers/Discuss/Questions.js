@@ -5,8 +5,7 @@ import { browserHistory } from 'react-router';
 import { toast } from 'react-toastify';
 import { showError } from 'utils';
 import {
-	getPosts, emptyPosts,
-	changeDiscussQueryFilter, changeDiscussOrderByFilter,
+	getPosts, emptyPosts, setDiscussFilters,
 } from 'actions/discuss';
 import {
 	discussPostsSelector,
@@ -27,7 +26,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-	getPosts, emptyPosts, changeDiscussQueryFilter, changeDiscussOrderByFilter,
+	getPosts, emptyPosts, setDiscussFilters,
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -36,30 +35,19 @@ class Questions extends Component {
 	componentDidMount() {
 		document.title = 'Sololearn | Discuss';
 		const { location, filters } = this.props;
-		const newQuery = { ...location.query };
-		if (location.query.orderBy) {
-			const numOrderBy = parseInt(location.query.orderBy, 10);
-			if (numOrderBy !== filters.orderBy) {
-				this.props.changeDiscussOrderByFilter(numOrderBy);
-			}
-		} else {
-			newQuery.orderBy = filters.orderBy;
-		}
-		if (location.query.query) {
-			if (location.query.query !== filters.query) {
-				this.props.changeDiscussQueryFilter(location.query.query);
-			}
-		} else {
-			newQuery.query = filters.query;
-		}
-		browserHistory.replace({ ...location, query: { ...location.query, ...newQuery } });
+		const query = {};
+		query.orderBy = location.query.orderBy
+			? location.query.orderBy
+			: filters.orderBy;
+		query.query = location.query.query
+			? location.query.query
+			: filters.query;
+		browserHistory.replace({ ...location, query });
 	}
 	componentWillUpdate(nextProps) {
-		// Source of truth is the redux store
-		if (this.props.filters !== nextProps.filters) {
-			const { location } = this.props;
-			browserHistory.replace({ ...location, query: { ...location.query, ...nextProps.filters } });
-		}
+		// Source of truth is the route
+		const { query } = nextProps.location;
+		this.props.setDiscussFilters(query);
 	}
 	getPosts = () => {
 		try {
@@ -73,10 +61,12 @@ class Questions extends Component {
 		}
 	}
 	handleOrderByFilterChange = (_, __, orderBy) => {
-		this.props.changeDiscussOrderByFilter(orderBy);
+		const { location } = this.props;
+		browserHistory.push({ ...location, query: { ...location.query, orderBy } });
 	}
 	removeQuery = () => {
-		this.props.changeDiscussQueryFilter('');
+		const { location } = this.props;
+		browserHistory.push({ ...location, query: { ...location.query, query: '' } });
 	}
 	render() {
 		const {

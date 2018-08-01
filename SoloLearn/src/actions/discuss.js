@@ -31,7 +31,7 @@ export const getPosts = ({
 	// Avoid unnecessary requests if already fetching
 	if (!isDiscussFetchingSelector(stateBefore)) {
 		dispatch({ type: types.REQUEST_POSTS });
-		const	filters = discussFiltersSelector(stateBefore);
+		const filters = discussFiltersSelector(stateBefore);
 		const { length } = discussPostsSelector(stateBefore);
 		const { posts, error } = await Service.request('Discussion/Search', {
 			index: length, count, orderBy: filters.orderBy, query: filters.query,
@@ -53,20 +53,20 @@ export const emptyPosts = () => ({
 	type: types.EMPTY_POSTS,
 });
 
-export const changeDiscussQueryFilter = query => (dispatch) => {
-	dispatch({
-		type: types.DISCUSS_QUERY_FILTER_CHANGE,
-		payload: query,
-	});
-	dispatch(emptyPosts());
-};
-
-export const changeDiscussOrderByFilter = orderBy => (dispatch) => {
-	dispatch({
-		type: types.DISCUSS_ORDER_BY_FILTER_CHANGE,
-		payload: orderBy,
-	});
-	dispatch(emptyPosts());
+export const setDiscussFilters = filters => (dispatch, getState) => {
+	const oldFilters = discussFiltersSelector(getState());
+	const formattedFilters = { ...filters };
+	if (filters.orderBy) {
+		formattedFilters.orderBy = parseInt(filters.orderBy, 10);
+	}
+	if (Object.keys(formattedFilters).some(key => formattedFilters[key] !== oldFilters[key])) {
+		console.warn('Updating');
+		dispatch({
+			type: types.SET_DISCUSS_FILTERS,
+			payload: formattedFilters,
+		});
+		dispatch(emptyPosts());
+	}
 };
 
 // Single post actions

@@ -1,19 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router';
-import { connect } from 'react-redux';
-import { changeDiscussQueryFilter } from 'actions/discuss';
+import { Link, withRouter } from 'react-router';
 
 import { DiscussTagStyles as styles } from './styles';
 
-const DiscussTag = ({ tag, index, changeQuery }) => (
+const DiscussTag = ({ tag, index, location }) => (
 	<div
 		style={index === 0 ? styles.base : { ...styles.base, ...styles.margin }}
 	>
 		<Link
-			to={{ pathname: '/discuss' }}
-			onClick={() => {
-				changeQuery(tag);
-			}}
+			to={{ pathname: '/discuss', query: { ...location.query, query: tag } }}
 			style={styles.none}
 		>
 			{tag}
@@ -21,4 +16,4 @@ const DiscussTag = ({ tag, index, changeQuery }) => (
 	</div>
 );
 
-export default connect(null, { changeQuery: changeDiscussQueryFilter })(DiscussTag);
+export default withRouter(DiscussTag);

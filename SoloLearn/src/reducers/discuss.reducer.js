@@ -3,16 +3,15 @@ import { createSelector } from 'reselect';
 import uniqBy from 'lodash/uniqBy';
 import {
 	SET_POSTS, EMPTY_POSTS, REMOVE_POST,
-	DISCUSS_ORDER_BY_FILTER_CHANGE, DISCUSS_QUERY_FILTER_CHANGE,
-	MARK_DISCUSS_LIST_FINISHED, REQUEST_POSTS,
+	MARK_DISCUSS_LIST_FINISHED, REQUEST_POSTS, SET_DISCUSS_FILTERS,
 } from 'constants/ActionTypes';
 
 const isFetching = (state = false, action) => {
 	switch (action.type) {
 	case REQUEST_POSTS:
 		return true;
-  case SET_POSTS:
-  case EMPTY_POSTS:
+	case SET_POSTS:
+	case EMPTY_POSTS:
 		return false;
 	default:
 		return state;
@@ -32,10 +31,8 @@ const hasMore = (state = true, action) => {
 
 const filters = (state = { orderBy: 8, query: '' }, action) => {
 	switch (action.type) {
-	case DISCUSS_ORDER_BY_FILTER_CHANGE:
-		return { ...state, orderBy: action.payload };
-	case DISCUSS_QUERY_FILTER_CHANGE:
-		return { ...state, query: action.payload };
+	case SET_DISCUSS_FILTERS:
+		return { ...state, ...action.payload };
 	default:
 		return state;
 	}
