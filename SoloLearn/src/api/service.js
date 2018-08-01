@@ -52,7 +52,7 @@ class Service {
 		});
 	}
 
-	getSession = async (locale = Storage.load('locale') || 'en') => {
+	getSession = (locale = Storage.load('locale') || 'en') => {
 		if (this.getSessionPromise === null) {
 			this.getSessionPromise = this._getSession(locale)
 				.then((res) => {
