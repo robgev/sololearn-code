@@ -13,7 +13,7 @@ import Close from 'material-ui/svg-icons/content/clear';
 import { grey600 } from 'material-ui/styles/colors';
 
 // Additional data and components
-import FollowList from './FollowList';
+import UserList from './UserList';
 
 const TabTypes = {
 	Followers: 1,
@@ -26,38 +26,17 @@ const styles = {
 		height: 500,
 		overflowY: 'auto',
 	},
-
 	header: {
 		display: 'flex',
 	},
-
 	tabsWrapper: {
 		flex: 1,
 	},
-
 	tabs: {
 		backgroundColor: '#fff',
 	},
-
 	tab: {
 		color: 'rgba(107, 104, 104, 0.8)',
-	},
-
-	inkBarStyle: {
-		// backgroundColor: '#777',
-	},
-
-	close: {
-		button: {
-			// width: '40px',
-			// height: '40px',
-			// padding: '10px',
-		},
-
-		icon: {
-			// width: '20px',
-			// height: '20px',
-		},
 	},
 };
 
@@ -90,7 +69,6 @@ class FollowersBase extends Component {
 							style={styles.tabsWrapper}
 							value={this.activeTab}
 							onChange={this.handleTabChange}
-							inkBarStyle={styles.inkBarStyle}
 							tabItemContainerStyle={styles.tabs}
 						>
 							<Tab
@@ -104,23 +82,21 @@ class FollowersBase extends Component {
 								style={styles.tab}
 							/>
 						</Tabs>
-						<IconButton className="close" style={styles.close.button} iconStyle={styles.close.icon} onClick={closePopup}>
+						<IconButton className="close" onClick={closePopup}>
 							<Close color={grey600} />
 						</IconButton>
 					</div>
 					{	this.activeTab === TabTypes.Followers &&
-						<FollowList
-							scrollParent={this.scroller}
-							followers={followers.entities}
+						<UserList
+							users={followers.entities}
 							hasMore={followers.hasMore}
 							loadMore={getFollowers}
 							onFollowClick={onFollow}
 						/>
 					}
 					{this.activeTab === TabTypes.Following &&
-						<FollowList
-							scrollParent={this.scroller}
-							followers={followings.entities}
+						<UserList
+							users={followings.entities}
 							hasMore={followings.hasMore}
 							loadMore={getFollowings}
 							onFollowClick={onFollow}
