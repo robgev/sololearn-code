@@ -18,7 +18,7 @@ const InfiniteScrollWrapper = ({
 			</InfiniteScroll>
 		</Element>
 		{
-			rest.hasMore &&
+			rest.hasMore && children.length !== 0 &&
 				<CircularProgress
 					size={40}
 					style={{ display: 'flex', alignItems: 'center', margin: '10px auto' }}

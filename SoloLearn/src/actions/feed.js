@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import { showError } from 'utils';
+import { showError, groupFeedItems } from 'utils';
 import Service from 'api/service';
 import * as types from 'constants/ActionTypes';
 import feedTypes from 'defaults/appTypes';
@@ -9,58 +9,6 @@ export const getFeedItems = feedItems => ({
 	payload: feedItems,
 });
 
-const groupAllChallengesByUser = (searchedFeedItems, currentItem) => {
-	const allChallenges = searchedFeedItems.filter(currentlyCheckedItem =>
-		currentlyCheckedItem.type === feedTypes.completedChallange &&
-		currentlyCheckedItem.contest.player.id === currentItem.contest.player.id);
-	if (allChallenges.length > 1) {
-		const challengesCount = allChallenges.length;
-		return {
-			id: allChallenges[challengesCount - 1].id,
-			toId: currentItem.id,
-			date: currentItem.date,
-			title: `has completed ${challengesCount} challenges`,
-			user: currentItem.user,
-			groupedItems: allChallenges,
-			type: 444,
-		};
-	}
-	return currentItem;
-};
-
-const groupFeedItems = (feedItems) => {
-	const reducedItems =
-		feedItems.reduce(({ groupedItems, checkedChallengers }, feedItem, currentIndex) => {
-			if (feedItem.type !== feedTypes.completedChallange) {
-				const newGroup = [ ...groupedItems, feedItem ];
-				return {
-					checkedChallengers,
-					groupedItems: newGroup,
-				};
-			}
-			const playerID = feedItem.contest.player.id;
-			const isUserChallengesAlreadyGrouped = checkedChallengers.includes(playerID);
-			if (!isUserChallengesAlreadyGrouped) {
-				const searchArray = feedItems.slice(currentIndex);
-				const allChallengesByCurrentChallenger =
-					groupAllChallengesByUser(searchArray, feedItem);
-				const newCheckedChallengersList = [ ...checkedChallengers, playerID ];
-				const newGroup = [ ...groupedItems, allChallengesByCurrentChallenger ];
-				return {
-					groupedItems: newGroup,
-					checkedChallengers: newCheckedChallengersList,
-				};
-			}
-
-			return {
-				groupedItems,
-				checkedChallengers,
-			};
-		}, { groupedItems: [], checkedChallengers: [] });
-
-	return reducedItems.groupedItems;
-};
-
 export const getProfileFeedItems = feedItems => ({
 	type: types.GET_PROFILE_FEED_ITEMS,
 	payload: feedItems,
@@ -68,28 +16,19 @@ export const getProfileFeedItems = feedItems => ({
 
 export const clearProfileFeedItems = () => ({ type: types.CLEAR_PROFILE_FEED_ITEMS });
 
-export const getFeedItemsInternal = (fromId, profileId) => async (dispatch, getState) => {
+export const getFeedItemsInternal = () => async (dispatch, getState) => {
 	try {
 		const requestLimitCount = 20;
-		const response = await Service.request('Profile/GetFeed', { fromId, profileId, count: requestLimitCount });
+		const { feed: { entities: feed }, userSuggestions } = getState();
+		const filteredFeed = feed.filter(item => item.type !== feedTypes.suggestions);
+		const suggestionsBatch = feed.length - filteredFeed.length;
+		const fromId = filteredFeed.length ? filteredFeed[filteredFeed.length - 1].id : null;
+		const response = await Service.request('Profile/GetFeed', { fromId, count: requestLimitCount });
 		const { length } = response.feed;
-		const { feed, userSuggestions, profile } = getState();
-		const suggestionsBatch = feed.filter(item => item.type === feedTypes.suggestions).length;
 		const feedItems = groupFeedItems(response.feed);
 		const feedItemsCount = feed.length + feedItems.length;
-		if (profileId != null) {
-			const profileFeedItemsCount = profile.feed.length + feedItems.length;
-			dispatch(getProfileFeedItems(feedItems));
-			if (profileFeedItemsCount < requestLimitCount / 2) {
-				const lastItem = feedItems[feedItems.length - 1];
-				if (lastItem !== undefined) {
-					const startId = lastItem.type === 444 ? lastItem.toId : lastItem.id;
-					await dispatch(getFeedItemsInternal(startId, profileId));
-				}
-			}
-			return length;
-		} else if (feedItemsCount >= requestLimitCount * (1 + suggestionsBatch) &&
-			suggestionsBatch < userSuggestions.length) {
+		if (feed.length + length >= requestLimitCount * (1 + suggestionsBatch) &&
+			suggestionsBatch * 10 < userSuggestions.length) {
 			const suggestionsObj = {
 				suggestions: userSuggestions.slice(suggestionsBatch * 10, (suggestionsBatch * 10) + 10),
 				type: feedTypes.suggestions,
@@ -107,9 +46,11 @@ export const getFeedItemsInternal = (fromId, profileId) => async (dispatch, getS
 				dispatch(getFeedItemsInternal(startId, profileId));
 			}
 		}
-		return length;
+		if (length < requestLimitCount) {
+			dispatch({ type: types.MARK_FEED_FINISHED });
+		}
 	} catch (e) {
-		return console.log(e);
+		console.log(e);
 	}
 };
 

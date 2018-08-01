@@ -46,6 +46,7 @@ export const MARK_READ = 'MARK_READ';
 export const EMPTY_NOTIFICATIONS = 'EMPTY_NOTIFICATIONS';
 
 // Feed types
+export const MARK_FEED_FINISHED = 'MARK_FEED_FINISHED';
 export const GET_FEED_ITEMS = 'GET_FEED_ITEMS';
 export const GET_FEED_PINS = 'GET_FEED_PINS';
 export const GET_USER_SUGGESTIONS = 'GET_USER_SUGGESTIONS';

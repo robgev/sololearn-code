@@ -29,7 +29,7 @@ import notifications from './reducer_notifications';
 import notificationsCount from './reducer_notifications_count';
 
 // Feed
-import feed from './reducer_feed';
+import feed from './feed.reducer';
 import feedPins from './reducer_feed_pins';
 import userSuggestions from './reducer_user_suggestions';
 

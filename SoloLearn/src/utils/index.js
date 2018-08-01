@@ -15,7 +15,6 @@ import generatePreviews from './generatePreviews';
 import numberFormatter from './numberFormatter';
 import getLanguageColor from './getLanguageColor';
 import calculateProgress from './calculateProgress';
-import EnumNameMapper from './enumNameMapper';
 import findCommonPrefix from './findCommonPrefix';
 import getChallengeStatus from './getChallengeStatus';
 import getCourseNameById from './getCourseNameById';
@@ -25,6 +24,8 @@ import determineBadge, { determineBadgeColor } from './modBadgeUtils';
 export { replaceMention, getMentionsList, mentionUsers } from './mention';
 export { default as getCommonPrefix } from './getCommonPrefix';
 export { default as filterExisting } from './filterExisting';
+export { default as EnumNameMapper } from './enumNameMapper';
+export { default as groupFeedItems } from './groupFeedItems';
 
 const hash = pass => hmacsha1('password', pass).slice(0, -1);
 const checkWeb = alias => [ 'html', 'css', 'js' ].includes(alias);
@@ -55,7 +56,6 @@ export {
 	numberFormatter,
 	calculateProgress,
 	getLanguageColor,
-	EnumNameMapper,
 	findCommonPrefix,
 	getChallengeStatus,
 	getCourseNameById,

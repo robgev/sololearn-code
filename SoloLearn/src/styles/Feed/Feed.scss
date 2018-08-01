@@ -1,0 +1,8 @@
+@import '~styles/utils';
+
+.feed-items-wrapper {
+	.sub-title {
+		@extend %title-text;
+		padding: 10px 5px;
+	}
+}

@@ -1,0 +1,26 @@
+.course-popup-container {
+	.course-details {
+		display: flex;
+		align-items: center;
+		.course-icon {
+			width: 50px;
+			margin-left: 8px;
+		}
+		.course-info {
+			flex: 2 auto;
+			.course-name {
+				color: black;
+				font-size: 14px;
+				margin-bottom: 3px;
+			}
+			.learners-count {
+				font-size: 12px;
+				margin-bottom: 3px;
+			}
+		}
+	}
+	.course-popup-actions {
+		text-align: right;
+		margin-top: 10px;
+	}
+}

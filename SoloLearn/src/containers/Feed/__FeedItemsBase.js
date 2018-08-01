@@ -34,7 +34,7 @@ import ProfileAvatar from 'components/ProfileAvatar';
 import LoadingOverlay from 'components/LoadingOverlay';
 import FeedShimmer from 'components/Shimmers/FeedShimmer';
 
-import 'styles/Feed/FeedItems.scss';
+import 'styles/Feed/FeedList.scss';
 
 // Additional data and components
 import Header from './Header';

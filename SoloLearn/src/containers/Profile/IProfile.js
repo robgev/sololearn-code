@@ -1,12 +1,13 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import Service from 'api/service';
-import { filterExisting } from 'utils';
+import { filterExisting, groupFeedItems } from 'utils';
 
 class IProfile {
 	constructor({ id }) {
 		this._profileID = id;
 		this.getQuestionsPromise = null;
 		this.getCodesPromise = null;
+		this.getFeedPromise = null;
 		this.getFollowersPromise = null;
 		this.getFollowingsPromise = null;
 		this.getData();
@@ -32,6 +33,11 @@ class IProfile {
 	}
 
 	@observable followings = {
+		entities: [],
+		hasMore: true,
+	}
+
+	@observable feed = {
 		entities: [],
 		hasMore: true,
 	}
@@ -77,6 +83,41 @@ class IProfile {
 				});
 		}
 		return this.getCodesPromise;
+	}
+
+	@computed get feedFromId() {
+		const { entities } = this.feed;
+		const lastItem = entities[entities.length - 1];
+		return entities.length === 0
+			? null
+			: lastItem.type === 444
+				? lastItem.toId
+				: lastItem.id;
+	}
+
+	@action getFeed = () => {
+		if (this.getFeedPromise === null) {
+			const count = 20;
+			const { entities } = this.feed;
+			this.getFeedPromise = Service.request('Profile/GetFeed', { fromId: this.feedFromId, profileId: this._profileID, count })
+				.then(({ feed }) => {
+					this.getFeedPromise = null;
+					if (feed.length < count) {
+						this.feed.hasMore = false;
+					}
+					const feedItems = groupFeedItems(feed);
+					const feedItemsCount = entities.length + feedItems.length;
+					const filtered = filterExisting(entities, feedItems);
+					this.feed.entities.push(...filtered);
+					if (feedItemsCount < count / 2 && this.feed.hasMore) {
+						const lastItem = feedItems[feedItems.length - 1];
+						if (lastItem !== undefined) {
+							this.getFeed();
+						}
+					}
+				});
+		}
+		return this.getFeedPromise;
 	}
 
 	@action getFollowers = () => {

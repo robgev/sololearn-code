@@ -11,7 +11,6 @@ import Paper from 'material-ui/Paper';
 import { toSeoFriendly } from 'utils';
 import { voteFeedPostItem, voteFeedCommentItem, voteFeedCodeItem } from 'actions/feed';
 import CourseCard from 'components/CourseCard';
-import FeedItems from './FeedItems';
 import FeedItemBase from './FeedItemBase';
 import Badge from './FeedTemplates/Badge';
 import Course from './FeedTemplates/Course';
@@ -83,10 +82,10 @@ class FeedItem extends Component {
 			return <Badge achievement={feedItem.achievement} />;
 		case types.courseStarted:
 			this.url = `/learn/${toSeoFriendly(feedItem.course.name, 100)}/${feedItem.course.id}/1`;
-			return <Course course={feedItem.course} openPopup={this.props.openPopup} />;
+			return <Course course={feedItem.course} openPopup={this.props.openCoursePopup} />;
 		case types.courseCompleted:
 			this.url = `/learn/${toSeoFriendly(feedItem.course.name, 100)}/${feedItem.course.id}/1`;
-			return <Course course={feedItem.course} openPopup={this.props.openPopup} />;
+			return <Course course={feedItem.course} openPopup={this.props.openCoursePopup} />;
 		case types.postedQuestion:
 			this.url = `/discuss/${feedItem.post.id}`;
 			this.votes = feedItem.post.votes;
@@ -230,11 +229,21 @@ class FeedItem extends Component {
 							votes={this.votes}
 						/>
 					</Paper>
-					<FeedItems
-						feedItems={feedItem.groupedItems}
+					<div
+						id="feed-items"
 						className={`merged-items-container ${this.state.isOpened ? 'open' : ''}`}
 						style={{ height: this.state.isOpened ? feedItem.groupedItems.length * 143 : 0 }}
-					/>
+					>
+						{feedItem.groupedItems.map(currentItem => (
+							<FeedItem
+								key={currentItem.type === types.mergedChallange ?
+									`feedGroup${currentItem.toId}` :
+									`feedItem${currentItem.id}`}
+								feedItem={currentItem}
+								openCoursePopup={this.props.openCoursePopup}
+							/>
+						))}
+					</div>
 				</div>
 			);
 		}

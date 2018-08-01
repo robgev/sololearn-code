@@ -10,7 +10,6 @@ import { translate } from 'react-i18next';
 import Paper from 'material-ui/Paper';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import FeedIcon from 'material-ui/svg-icons/image/dehaze';
-import Dialog from 'material-ui/Dialog';
 import { grey600 } from 'material-ui/styles/colors';
 
 // Redux modules
@@ -22,6 +21,7 @@ import AddQuestionButton from 'components/AddQuestionButton';
 import BusyWrapper from 'components/BusyWrapper';
 import ProfileHeaderShimmer from 'components/Shimmers/ProfileHeaderShimmer';
 import CodesList from 'containers/Playground/CodesList';
+import FeedList from 'containers/Feed/FeedList';
 
 import 'styles/Profile/index.scss';
 
@@ -75,7 +75,7 @@ class Profile extends Component {
 
 	render() {
 		const {
-			data, questions, codes,
+			data, questions, codes, feed,
 		} = this.profile;
 		const {
 			t,
@@ -133,14 +133,11 @@ class Profile extends Component {
 				{
 					this.activeTab === 'activity' &&
 					<div className="section">
-						{/* <FeedItemsBase
-							isLoaded={profile.feed.length > 0}
-							feed={profile.feed}
-							feedPins={[]}
-							isUserProfile
-							userId={id}
-						/> */}
-						Profile feed
+						<FeedList
+							feed={feed.entities}
+							hasMore={feed.hasMore}
+							loadMore={this.profile.getFeed}
+						/>
 					</div>
 				}
 				{

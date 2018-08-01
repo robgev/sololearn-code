@@ -1,9 +1,0 @@
-.feed-items-wrapper {
-	.merged-items-container {
-		opacity: 0;
-		transition: all 150ms ease-in;
-		&.open {
-			opacity: 1;
-		}
-	}
-}
