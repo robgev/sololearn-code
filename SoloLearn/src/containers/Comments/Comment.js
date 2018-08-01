@@ -135,11 +135,7 @@ class Comment extends Component {
 			comment.repliesArray = this.props.commentsAPI
 				.orderComments(comment.repliesArray, 1).reverse();
 		} catch (e) {
-			if (e.data) {
-				showError(e.data);
-			} else {
-				toast.error(`❌Something went wrong when trying to fetch comments: ${e.message}`);
-			}
+			showError(e, 'Something went wrong when trying to fetch comments');
 		}
 	}
 
@@ -157,11 +153,7 @@ class Comment extends Component {
 			comment.repliesArray.unshift(...nulledReplies);
 			comment.repliesArray = this.props.commentsAPI.orderComments(comment.repliesArray);
 		} catch (e) {
-			if (e.data) {
-				showError(e.data);
-			} else {
-				toast.error(`❌Something went wrong when trying to fetch comments: ${e.message}`);
-			}
+			showError(e, 'Something went wrong when trying to fetch comments');
 		}
 	}
 
@@ -172,15 +164,10 @@ class Comment extends Component {
 		comment.votes += (newVote - oldVote);
 		comment.vote = newVote;
 		this.props.commentsAPI.voteComment({ id: comment.id, vote: comment.vote })
-			.then((res) => {
-				if (res && res.error) {
-					showError(res.error.data);
-				}
-			})
 			.catch((e) => {
 				comment.vote = oldVote;
 				comment.votes -= (newVote - oldVote);
-				toast.error(`❌Something went wrong when trying to vote: ${e.message}`);
+				showError(e, 'Something went wrong when trying to vote');
 			});
 	}
 

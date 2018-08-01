@@ -43,14 +43,14 @@ export const getFeedItemsInternal = () => async (dispatch, getState) => {
 			const lastItem = feedItems[feedItems.length - 1];
 			if (lastItem !== undefined) {
 				const startId = lastItem.type === 444 ? lastItem.toId : lastItem.id;
-				dispatch(getFeedItemsInternal(startId, profileId));
+				dispatch(getFeedItemsInternal(startId));
 			}
 		}
 		if (length < requestLimitCount) {
 			dispatch({ type: types.MARK_FEED_FINISHED });
 		}
 	} catch (e) {
-		console.log(e);
+		throw e;
 	}
 };
 
@@ -64,18 +64,15 @@ export const getProfileNewFeedItems = feedItems => ({
 	payload: feedItems,
 });
 
-export const getNewFeedItemsInternal = (toId, userId) => async (dispatch) => {
-	const response = await Service.request('Profile/GetFeed', { toId, profileId: userId, count: 20 });
+export const getNewFeedItemsInternal = () => async (dispatch, getState) => {
+	const { feed: { entities: feed } } = getState();
+	const response = await Service.request('Profile/GetFeed', { toId: feed[0].id, count: 20 });
 	if (response.feed.length > 0) {
 		const feedItems = groupFeedItems(response.feed);
-		if (userId != null) {
-			dispatch(getProfileNewFeedItems(feedItems));
-		} else {
-			dispatch(getNewFeedItems(feedItems));
-		}
+		dispatch(getNewFeedItems(feedItems));
 		return feedItems.length;
 	}
-	return response.feed.length; // Change
+	return response.feed.length;
 };
 
 export const getPinnedFeedItems = feedItems => ({
@@ -87,8 +84,8 @@ export const getPinnedFeedItemsInternal = () => (dispatch) => {
 	Service.request('Profile/GetFeedPinnedItems').then((response) => {
 		const feedPinnedItems = response.pinnedItems;
 		dispatch(getPinnedFeedItems(feedPinnedItems));
-	}).catch((error) => {
-		console.log(error);
+	}).catch((e) => {
+		throw e;
 	});
 };
 
@@ -119,8 +116,8 @@ export const followUserSuggestion = ({ id, feedId, follow }) => {
 
 export const getUserSuggestionsInternal = () => dispatch => Service.request('Profile/SearchUsers').then((response) => {
 	dispatch(getUserSuggestions(response.users));
-}).catch((error) => {
-	console.log(error);
+}).catch((e) => {
+	throw e;
 });
 
 export const voteFeedPostItem = ({

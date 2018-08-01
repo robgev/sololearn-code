@@ -14,6 +14,7 @@ import { feedSelector, feedHasMoreSelector } from 'reducers/feed.reducer';
 import Layout from 'components/Layouts/GeneralLayout';
 
 import 'styles/Feed/Feed.scss';
+import { showError } from 'utils';
 import Header from './Header';
 import FeedList from './FeedList';
 
@@ -63,6 +64,11 @@ class FeedItemsBase extends Component {
 		}
 	}
 
+	getFeedItems = () => {
+		this.props.getFeedItems()
+			.catch(e => showError(e, 'Something went wrong when trying to get feed'));
+	}
+
 	// Scroll to top of the feed
 	scrollToFeedItems = () => {
 		window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -86,7 +92,7 @@ class FeedItemsBase extends Component {
 						feed={feed}
 						feedPins={feedPins}
 						hasMore={hasMore}
-						loadMore={this.props.getFeedItems}
+						loadMore={this.getFeedItems}
 					/>
 				</div>
 			</Layout>
