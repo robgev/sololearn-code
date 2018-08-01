@@ -44,15 +44,14 @@ class Questions extends Component {
 		this.props.setDiscussFilters(query);
 	}
 	getPosts = () => {
-		try {
-			this.props.getPosts();
-		} catch (e) {
-			if (e.data) {
-				showError(e.data);
-			} else {
-				toast.error(`❌Something went wrong when trying to fetch questions: ${e.message}`);
-			}
-		}
+		this.props.getPosts()
+			.catch((e) => {
+				if (e.data) {
+					showError(e.data);
+				} else {
+					toast.error(`❌Something went wrong when trying to fetch questions: ${e.message}`);
+				}
+			});
 	}
 	handleOrderByFilterChange = (_, __, orderBy) => {
 		const { location } = this.props;
