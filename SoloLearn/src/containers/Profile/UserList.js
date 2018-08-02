@@ -4,17 +4,18 @@ import CircularProgress from 'material-ui/CircularProgress';
 import InfiniteScroll from 'react-infinite-scroller';
 import FollowItem from './FollowItem';
 
-const FollowList = observer(({
-	followers, hasMore, loadMore, onFollowClick,
+const UserList = observer(({
+	users, hasMore, loadMore, onFollowClick,
 }) => (
-	followers.length === 0 && !hasMore
+	users.length === 0 && !hasMore
 		? <div>Nothing found</div>
 		: (
 			<InfiniteScroll
 				threshold={100}
-				initialLoad={followers.length === 0}
+				initialLoad={users.length === 0}
 				element="div"
 				loader={<CircularProgress
+					key="Infinite loader"
 					size={40}
 					style={{ display: 'flex', alignItems: 'center', margin: '10px auto' }}
 				/>}
@@ -27,10 +28,10 @@ const FollowList = observer(({
 					flexDirection: 'column',
 				}}
 			>
-				{followers.map(el =>
-					<FollowItem key={el.id} follow={el} onFollowClick={onFollowClick}>Follower</FollowItem>)}
+				{users.map(el =>
+					<FollowItem key={el.id} follow={el} onFollowClick={onFollowClick} />)}
 			</InfiniteScroll>
 		)
 ));
 
-export default FollowList;
+export default UserList;

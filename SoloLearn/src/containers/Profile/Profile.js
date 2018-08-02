@@ -54,7 +54,8 @@ class Profile extends Component {
 	componentWillReceiveProps(newProps) {
 		const { id } = newProps.params;
 		if (this.props.params.id !== id) {
-			this.profile = new IProfile(id);
+			this.profile = new IProfile({ id });
+			this.followerPopupOpen = false;
 		}
 	}
 
@@ -94,7 +95,8 @@ class Profile extends Component {
 						<Header
 							levels={levels}
 							profile={data}
-							openPopup={this.toggleFollowerPopup}
+							openFollowerPopup={this.toggleFollowerPopup}
+							onFollow={this.profile.onFollowUser}
 						/>
 						<Tabs
 							value={this.activeTab}

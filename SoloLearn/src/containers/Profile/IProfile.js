@@ -1,6 +1,6 @@
 import { observable, action, computed } from 'mobx';
 import Service from 'api/service';
-import { filterExisting, groupFeedItems } from 'utils';
+import { filterExisting, groupFeedItems, showError } from 'utils';
 
 class IProfile {
 	constructor({ id }) {
@@ -158,6 +158,7 @@ class IProfile {
 		return this.getFollowingsPromise;
 	}
 
+	// Action for following someone is followers/followings list
 	@action onFollow = (id) => {
 		const follow1 = this.followers.entities.find(el => el.id === id);
 		const follow2 = this.followings.entities.find(el => el.id === id);
@@ -170,6 +171,14 @@ class IProfile {
 		if (follow2) {
 			follow2.isFollowing = !follow2.isFollowing;
 		}
+	}
+
+	// Action for following this.user
+	@action onFollowUser = () => {
+		const url = this.data.isFollowing ? 'Unfollow' : 'Follow';
+		Service.request(`Profile/${url}`, { id: this.data.id })
+			.catch(e => showError(e, `Something went wrong when trying to ${url.toLowerCase()}`));
+		this.data.isFollowing = !this.data.isFollowing;
 	}
 }
 
