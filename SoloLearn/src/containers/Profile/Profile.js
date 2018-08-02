@@ -54,7 +54,8 @@ class Profile extends Component {
 	componentWillReceiveProps(newProps) {
 		const { id } = newProps.params;
 		if (this.props.params.id !== id) {
-			this.profile = new IProfile(id);
+			this.profile = new IProfile({ id });
+			this.followerPopupOpen = false;
 		}
 	}
 
