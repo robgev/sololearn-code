@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
-import { toast } from 'react-toastify';
 import { findKey } from 'lodash';
 
 // i18n
@@ -305,14 +304,8 @@ class Playground extends Component {
 			votes,
 		};
 		this.setState({ latestSavedCodeData });
-		try {
-			const res = await Service.request('Playground/VoteCode', { id: codeId, vote: userVote });
-			if (res && res.error) {
-				showError(res.error.data);
-			}
-		} catch (e) {
-			toast.error(`❌Something went wrong when trying to vote: ${e.message}`);
-		}
+		Service.request('Playground/VoteCode', { id: codeId, vote: userVote })
+			.catch(e => showError(e, 'Something went wrong when trying to vote'));
 	};
 
 	// Change web tabs

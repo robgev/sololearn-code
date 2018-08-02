@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import Radium from 'radium';
 import { connect } from 'react-redux';
 import Linkify from 'react-linkify';
-import { toast } from 'react-toastify';
 
 // Material UI components
 import { IconMenu, MenuItem, FlatButton, IconButton } from 'material-ui';
@@ -111,14 +110,8 @@ class Reply extends Component {
 	save = async () => {
 		const { reply } = this.props;
 		this.setState({ isEditing: false });
-		try {
-			const res = await this.props.editPostInternal(reply, this.mentionInput.popValue());
-			if (res && res.error) {
-				showError(res.error.data);
-			}
-		} catch (e) {
-			toast.error(`❌Something went wrong when trying to edit: ${e.message}`);
-		}
+		this.props.editPostInternal(reply, this.mentionInput.popValue())
+			.catch(e => showError(e, 'Something went wrong when trying to edit'));
 	}
 
 	scrollIntoView = () => {

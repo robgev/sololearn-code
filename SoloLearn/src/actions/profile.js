@@ -1,5 +1,3 @@
-import { toast } from 'react-toastify';
-import { showError } from 'utils';
 import Service from 'api/service';
 import Storage from 'api/storage';
 import * as types from 'constants/ActionTypes';
@@ -166,42 +164,33 @@ export const getFollowingInternal = (index, userId, count = 20, fromChallenges =
 	};
 
 export const followUser = (userId, fromFollowers, follow) => dispatch =>
-	new Promise((resolve) => {
-		dispatch({
-			type: types.FOLLOW_USER,
-			payload: {
-				id: userId,
-				follow,
-				fromFollowers,
-			},
-		});
-		resolve();
+	dispatch({
+		type: types.FOLLOW_USER,
+		payload: {
+			id: userId,
+			follow,
+			fromFollowers,
+		},
 	});
 
 export const followUserInternal = (userId, fromFollowers = null) =>
-	async (dispatch) => {
-		try {
-			await dispatch(followUser(userId, fromFollowers, true));
-			const res = Service.request('Profile/Follow', { id: userId });
-			if (res && res.error) {
-				showError(res.error.data);
-			}
-		} catch (e) {
-			toast.error(`❌Something went wrong when trying to follow: ${e.message}`);
-		}
+	(dispatch) => {
+		dispatch(followUser(userId, fromFollowers, true));
+		Service.request('Profile/Follow', { id: userId })
+			.catch((e) => {
+				dispatch(followUser(userId, fromFollowers, false));
+				throw e;
+			});
 	};
 
 export const unfollowUserInternal = (userId, fromFollowers = null) =>
-	async (dispatch) => {
-		try {
-			await dispatch(followUser(userId, fromFollowers, false));
-			const res = Service.request('Profile/Unfollow', { id: userId });
-			if (res && res.error) {
-				showError(res.error.data);
-			}
-		} catch (e) {
-			toast.error(`❌Something went wrong when trying to unfollow: ${e.message}`);
-		}
+	(dispatch) => {
+		dispatch(followUser(userId, fromFollowers, false));
+		Service.request('Profile/Unfollow', { id: userId })
+			.catch((e) => {
+				dispatch(followUser(userId, fromFollowers, true));
+				throw e;
+			});
 	};
 
 export const emptyProfileFollowers = () => ({

@@ -20,6 +20,12 @@ class Service {
 	_request = (url, options) =>
 		fetch(url, { ...options, credentials: 'include' })
 			.then(res => res.json())
+			.then((res) => {
+				if (res.error) {
+					throw res.error;
+				}
+				return res;
+			})
 			.catch((e) => {
 				console.error(e);
 				throw e;

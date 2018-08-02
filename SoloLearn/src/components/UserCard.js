@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { toast } from 'react-toastify';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import Service from 'api/service';
@@ -25,15 +24,12 @@ handleFollow = async () => {
 	const { following } = this.state;
 	const { id } = this.props;
 	const endpoint = following ? 'Profile/Unfollow' : 'Profile/Follow';
-	try {
-		this.setState({ following: !following });
-		const res = await Service.request(endpoint, { id });
-		if (res && res.error) {
-			showError(res.error.data);
-		}
-	} catch (e) {
-		toast.error(`❌Something went wrong when trying to ${following ? 'unfollow' : 'follow'}: ${e.message}`);
-	}
+	this.setState(prevState => ({ following: !prevState.following }));
+	Service.request(endpoint, { id })
+		.catch((e) => {
+			showError(e, `Something went wrong when trying to ${following ? 'unfollow' : 'follow'}`);
+			this.setState(prevState => ({ following: !prevState.following }));
+		});
 }
 
 render() {

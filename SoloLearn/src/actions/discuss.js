@@ -1,4 +1,3 @@
-import { toast } from 'react-toastify';
 import { last } from 'lodash';
 import Service from 'api/service';
 import * as types from 'constants/ActionTypes';
@@ -9,7 +8,7 @@ import {
 } from 'reducers/discuss.reducer';
 
 // Utils
-import { toSeoFriendly, showError } from 'utils';
+import { toSeoFriendly } from 'utils';
 
 export const removePost = id => (dispatch) => {
 	dispatch({
@@ -155,22 +154,12 @@ const votePost = (id, isPrimary, vote, votes) => ({
 	},
 });
 
-export const votePostInternal = (post, vote) => {
+export const votePostInternal = (post, vote) => (dispatch) => {
 	const userVote = post.vote === vote ? 0 : vote;
 	const votes = (post.votes + userVote) - post.vote;
 	const isPrimary = post.parentID === null;
-
-	return async (dispatch) => {
-		try {
-			dispatch(votePost(post.id, isPrimary, userVote, votes));
-			const res = Service.request('Discussion/VotePost', { id: post.id, vote: userVote });
-			if (res && res.error) {
-				showError(res.error.data);
-			}
-		} catch (e) {
-			toast.error(`❌Something went wrong when trying to vote: ${e.message}`);
-		}
-	};
+	dispatch(votePost(post.id, isPrimary, userVote, votes));
+	return Service.request('Discussion/VotePost', { id: post.id, vote: userVote });
 };
 
 export const editPost = (id, isPrimary, message) => ({
@@ -203,9 +192,6 @@ export const deletePostInternal = (post) => {
 
 export const addQuestion = (title, message, tags) => async (dispatch) => {
 	const res = await Service.request('Discussion/CreatePost', { title, message, tags });
-	if (res.error) {
-		throw res.error;
-	}
 	const { post } = await Service.request('Discussion/GetPost', { id: res.post.id });
 	post.replies = [];
 	post.alias = toSeoFriendly(post.title, 100);

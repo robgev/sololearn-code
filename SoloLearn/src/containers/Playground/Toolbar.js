@@ -23,7 +23,6 @@ import InsertLink from 'material-ui/svg-icons/editor/insert-link';
 // Defaults
 import texts from 'defaults/texts';
 import externalResources from 'defaults/externalResources';
-import { toast } from 'react-toastify';
 
 // Components
 import OverlaySaveActions from './OverlaySaveActions';
@@ -225,9 +224,6 @@ ${this.props.code}
 			});
 			try {
 				const res = await this.saveCodeInternal(userCodeData.id);
-				if (res && res.error) {
-					showError(res.error.data);
-				}
 				this.setState({
 					isSaving: false,
 				}, () => {
@@ -239,7 +235,7 @@ ${this.props.code}
 					});
 				});
 			} catch (e) {
-				toast.error(`❌Something went wrong when trying to save: ${e.message}`);
+				showError(e, 'Something went wrong when trying to save');
 			}
 		} else {
 			this.openSavePopup();
@@ -253,9 +249,6 @@ ${this.props.code}
 		if (this.state.codeName.trim()) {
 			try {
 				const res = await this.saveCodeInternal(0);
-				if (res && res.error) {
-					showError(res.error.data);
-				}
 				setNewState({
 					latestSavedCodeData: { ...res.code, avatarUrl, userName },
 					id: res.code.id,
@@ -268,7 +261,7 @@ ${this.props.code}
 					showToolbar();
 				});
 			} catch (e) {
-				toast.error(`❌Something went wrong when trying to save: ${e.message}`);
+				showError(e, 'Something went wrong when trying to save');
 			}
 		} else {
 			this.setState({ errorText: texts.codeNameError });
