@@ -295,7 +295,7 @@ class QuizManager extends Component {
 			return <LoadingOverlay />;
 		}
 
-		const { quizzes } = activeLesson;
+		const { quizzes, tags } = activeLesson;
 
 		const childrenWithProps = React.Children.map(
 			this.props.children,
@@ -323,6 +323,7 @@ class QuizManager extends Component {
 						{this.generateTimeline(quizzes, activeQuiz)}
 					</Stepper>
 					{childrenWithProps}
+					<Link to={{ pathname: '/discuss', query: { query: tags } }}>Q&A</Link>
 					{commentsOpened || activeQuiz.isText ?
 						<Comments
 							id={activeQuiz.id}
@@ -331,6 +332,7 @@ class QuizManager extends Component {
 							commentsCount={commentsCount}
 						/> : null
 					}
+
 				</Paper>
 			</Layout>
 		);
