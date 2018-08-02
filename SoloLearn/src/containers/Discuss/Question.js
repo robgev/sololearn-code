@@ -31,7 +31,6 @@ import {
 
 // Redux modules
 import { questionFollowingInternal } from 'actions/discuss';
-import getLikesAndDownvotesCurried from 'actions/likes';
 
 import DiscussTag from 'components/Questions/DiscussTag';
 import RemovalPopup from './RemovalPopup';
@@ -45,8 +44,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
 	questionFollowingInternal,
-	getLikes: getLikesAndDownvotesCurried('postLikes'),
-	getDownvotes: getLikesAndDownvotesCurried('postDownvotes'),
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -58,10 +55,6 @@ class Question extends Component {
 		removalPopupOpen: false,
 		followSnackbarOpen: false,
 	}
-
-	getLikes = () => this.props.getLikes(this.props.question.id);
-
-	getDownvotes = () => this.props.getDownvotes(this.props.question.id);
 
 	toggleRemovalPopup = () => {
 		const { removalPopupOpen } = this.state;
@@ -102,9 +95,8 @@ class Question extends Component {
 						</IconButton>
 						<Likes
 							votes={question.votes}
-							getLikes={this.getLikes}
-							accessLevel={accessLevel}
-							getDownvotes={this.getDownvotes}
+							type="post"
+							id={question.id}
 						/>
 						<IconButton
 							className="downvote"

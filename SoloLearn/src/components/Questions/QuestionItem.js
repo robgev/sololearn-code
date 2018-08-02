@@ -1,7 +1,6 @@
 // React modules
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
-import { connect } from 'react-redux';
 import ToolTip from 'react-portal-tooltip';
 
 // Material UI components
@@ -9,48 +8,33 @@ import ChatBubble from 'material-ui/svg-icons/communication/chat-bubble-outline'
 import { green500 } from 'material-ui/styles/colors';
 
 // Utils
-import { removeDups, updateDate, determineAccessLevel } from 'utils';
+import { removeDups, updateDate } from 'utils';
 
 import Likes from 'components/Likes';
 import UserCard from 'components/UserCard';
-import getLikesAndDownvotesCurried from 'actions/likes';
 import DiscussTag from './DiscussTag';
 
 import { QuestionItemStyles as styles } from './styles';
 
 export const noStyleLink = { textDecoration: 'none' };
 
-const mapStateToProps = state => ({
-	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
-});
-
-const mapDispatchToProps = {
-	getLikes: getLikesAndDownvotesCurried('postLikes'),
-	getDownvotes: getLikesAndDownvotesCurried('postDownvotes'),
-};
-
-@connect(mapStateToProps, mapDispatchToProps)
 class QuestionItem extends PureComponent {
 	state = {
 		isTooltipActive: false,
 	}
-	getLikes = () => this.props.getLikes(this.props.question.id);
-	getDownvotes = () => this.props.getDownvotes(this.props.question.id);
 	toggleTooltip = () => {
 		this.setState(state => ({ isTooltipActive: !state.isTooltipActive }));
 	}
 	render() {
 		const { isTooltipActive } = this.state;
-		const { question, accessLevel } = this.props;
+		const { question } = this.props;
 		return (
 			<div style={styles.question}>
-
 				<div style={styles.stats}>
 					<Likes
 						votes={question.votes}
-						getLikes={this.getLikes}
-						accessLevel={accessLevel}
-						getDownvotes={this.getDownvotes}
+						id={question.id}
+						type="post"
 					/>
 					<div style={styles.answersCountWrapper}>
 						<p style={styles.answersCount}>{question.answers > 99 ? '99+' : question.answers}</p>

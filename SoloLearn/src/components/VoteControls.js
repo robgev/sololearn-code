@@ -10,14 +10,13 @@ import Likes from './Likes';
 const VoteControls = ({
 	absolute,
 	userVote,
-	getVotes,
 	onUpvote,
 	className,
 	totalVotes,
-	accessLevel,
 	onDownvote,
 	buttonStyle,
-	getDownvotes,
+	id,
+	type,
 }) => (
 	<div className={`vote-controls ${absolute ? 'absolute-controls' : ''} ${className}`}>
 		<IconButton
@@ -33,9 +32,8 @@ const VoteControls = ({
 		</IconButton>
 		<Likes
 			votes={totalVotes}
-			getLikes={getVotes}
-			accessLevel={accessLevel}
-			getDownvotes={getDownvotes}
+			id={id}
+			type={type}
 		/>
 		<IconButton
 			className="icon-button down"

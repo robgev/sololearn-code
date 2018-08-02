@@ -33,9 +33,6 @@ import feed from './feed.reducer';
 import feedPins from './reducer_feed_pins';
 import userSuggestions from './reducer_user_suggestions';
 
-// Likes
-import likes from './likes.reducer';
-
 // Slay
 import slay from './slay.reducer';
 
@@ -52,7 +49,6 @@ import discoverSuggestions from './discover.reducer';
 import quizSubmission from './quizSubmission.reducer';
 
 const reducers = combineReducers({
-	likes,
 	slay,
 	settings,
 	leaderboards,

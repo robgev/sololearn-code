@@ -4,7 +4,6 @@ import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 import Service from 'api/service';
 import Toggle from 'material-ui/Toggle';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import { red500 } from 'material-ui/styles/colors';
@@ -14,7 +13,6 @@ import VoteControls from 'components/VoteControls';
 
 import { determineAccessLevel } from 'utils';
 import { removeCode } from 'actions/playground';
-import getLikesAndDownvotesCurried from 'actions/likes';
 
 import 'styles/Playground/bottomToolbar.scss';
 
@@ -25,8 +23,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
 	removeCode,
-	getLikes: getLikesAndDownvotesCurried('codeLikes'),
-	getDownvotes: getLikesAndDownvotesCurried('codeDownvotes'),
 };
 
 @translate()
@@ -53,10 +49,6 @@ class BottomToolbar extends PureComponent {
 		browserHistory.goBack();
 	}
 
-	getVotes = () => this.props.getLikes(this.props.codeData.id)
-
-	getDownvotes = () => this.props.getDownvotes(this.props.codeData.id)
-
 	toggleDeleteModal = () => {
 		this.setState(state => ({ isDeleteModalOpen: !state.isDeleteModalOpen }));
 	}
@@ -69,7 +61,6 @@ class BottomToolbar extends PureComponent {
 			voteCode,
 			codeData,
 			accessLevel,
-			openComments,
 		} = this.props;
 		const {
 			id,
@@ -140,9 +131,8 @@ class BottomToolbar extends PureComponent {
 							userVote={vote}
 							totalVotes={votes}
 							key="voteControls"
-							getVotes={this.getVotes}
-							accessLevel={accessLevel}
-							getDownvotes={this.getDownvotes}
+							id={codeData.id}
+							type="code"
 							onUpvote={() => voteCode(codeData, 1)}
 							onDownvote={() => voteCode(codeData, -1)}
 						/>
