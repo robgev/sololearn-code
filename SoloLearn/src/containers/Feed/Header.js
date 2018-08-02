@@ -68,15 +68,17 @@ class Header extends PureComponent {
 
 	getLeaderboardString = () => {
 		const { ranks, t } = this.props;
-		const localePrefix = 'leaderboard.rank';
-		const { key, rank } = findBestRank(ranks);
-		if (key !== null) {
-			const localeFormat = this.getRightLocaleFormat(key);
-			const numberFormat = key.endsWith('p') ? 'percent-format' : 'default-format';
-			return t(`${localePrefix}.${localeFormat}`, {
-				rank: t(`${localePrefix}.${numberFormat}`, { number: +rank.toFixed(2) }),
-				country: this.getCountryName(ranks.countryCode),
-			});
+		if (ranks !== null) {
+			const localePrefix = 'leaderboard.rank';
+			const { key, rank } = findBestRank(ranks);
+			if (key !== null) {
+				const localeFormat = this.getRightLocaleFormat(key);
+				const numberFormat = key.endsWith('p') ? 'percent-format' : 'default-format';
+				return t(`${localePrefix}.${localeFormat}`, {
+					rank: t(`${localePrefix}.${numberFormat}`, { number: +rank.toFixed(2) }),
+					country: this.getCountryName(ranks.countryCode),
+				});
+			}
 		}
 		return t('leaderboard.rank.placeholder');
 	}
