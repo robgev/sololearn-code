@@ -14,7 +14,6 @@ import { grey500, blueGrey500, lightGreen500 } from 'material-ui/styles/colors';
 
 // Redux modules
 import { editPostInternal, toggleAcceptedAnswerInternal } from 'actions/discuss';
-import getLikesAndDownvotesCurried from 'actions/likes';
 
 import Likes from 'components/Likes';
 import ProfileAvatar from 'components/ProfileAvatar';
@@ -33,8 +32,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
 	editPostInternal,
 	toggleAcceptedAnswerInternal,
-	getLikes: getLikesAndDownvotesCurried('postLikes'),
-	getDownvotes: getLikesAndDownvotesCurried('postDownvotes'),
 };
 
 @connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })
@@ -45,10 +42,6 @@ class Reply extends Component {
 		replyLength: 0,
 		animate: false,
 	};
-
-	getLikes = () => this.props.getLikes(this.props.reply.id);
-
-	getDownvotes = () => this.props.getDownvotes(this.props.reply.id);
 
 	onLengthChange = (replyLength) => {
 		if (this.mentionInput) {
@@ -151,9 +144,8 @@ class Reply extends Component {
 						</IconButton>
 						<Likes
 							votes={reply.votes}
-							getLikes={this.getLikes}
-							accessLevel={accessLevel}
-							getDownvotes={this.getDownvotes}
+							id={reply.id}
+							type="post"
 						/>
 						<IconButton className="downvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(reply, -1); }}>
 							<ThumbDown color={reply.vote === -1 ? blueGrey500 : grey500} />

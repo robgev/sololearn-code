@@ -1,16 +1,22 @@
-.question-item-wrapper {
+.question-item-container {
 	display: flex;
 	padding: 10px;
 	border-bottom: 1px solid #F3F3F3;
 	.question-stats {
 		display: flex;
-		margin-right: 5px;
-		.question-item-answer-wrapper {
+		margin-top: 5px;
+		.question-item-likes {
+			font-size: 14px;
+			color: rgba(0, 0, 0, 0.87);
+			font-weight: initial;
+		}
+		.question-item-wrapper {
 			text-align: center;
+			margin-right: 5px;
 			.question-item-answer-count {
 				font-size: 14px;
 			}
-			.question-item-answer-label {
+			.question-item-label {
 				font-size: 11px;
 			}
 		}

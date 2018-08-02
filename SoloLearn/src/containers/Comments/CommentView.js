@@ -49,7 +49,7 @@ class CommenView extends Component {
 			vote, votes, userID, replies, badge, id, parentID,
 		} = this.props.comment;
 		const {
-			commentsType, userProfile, getUpvotes, getDownvotes,
+			commentsType, userProfile,
 			upvote, downvote, selfDestruct, onRepliesButtonClick,
 			t, children, onRequestRemoval, accessLevel,
 		} = this.props;
@@ -103,7 +103,7 @@ class CommenView extends Component {
 								<MenuItem
 									onClick={this.toggleRemovalPopup}
 									primaryText={(accessLevel === 1 &&
-											(commentsType !== 'lesson' && commentsType !== 'userLesson')) ?
+										(commentsType !== 'lesson' && commentsType !== 'userLesson')) ?
 										t('discuss.forum_request_removal_prompt_title') :
 										t('discuss.forum_remove_prompt_title')
 									}
@@ -118,11 +118,11 @@ class CommenView extends Component {
 				})}
 				<div className="comment-bottom-toolbar">
 					<VoteControls
-						getVotes={getUpvotes}
+						id={id}
+						type={`${commentsType}Comment`}
 						userVote={vote}
 						accessLevel={userProfile.accessLevel}
 						totalVotes={votes}
-						getDownvotes={getDownvotes}
 						buttonStyle={{ height: 32, width: 32, padding: 0 }}
 						onUpvote={upvote}
 						onDownvote={downvote}

@@ -10,6 +10,13 @@ class ILikes {
 		this.getDownvotesPromise = null;
 	}
 
+	@action empty = () => {
+		this.upvotes.entities = [];
+		this.upvotes.hasMore = true;
+		this.downvotes.entities = [];
+		this.downvotes.hasMore = true;
+	}
+
 	@observable upvotes = {
 		entities: [],
 		hasMore: true,

@@ -201,12 +201,6 @@ class Comment extends Component {
 			.catch(e => showError(e, 'Something went wrong when trying to edit comment'));
 	}
 
-	getVotes = (voteType) => {
-		const { dispatch, commentsAPI, comment } = this.props;
-		return dispatch(commentsAPI.getVotesList({ id: comment.id, type: voteType }));
-	}
-	getUpvotes = () => this.getVotes('Likes');
-	getDownvotes = () => this.getVotes('Downvotes');
 	upvote = () => this.vote(1);
 	downvote = () => this.vote(-1);
 
@@ -222,8 +216,6 @@ class Comment extends Component {
 					commentsType={commentsType}
 					accessLevel={accessLevel}
 					comment={this.props.comment}
-					getUpvotes={this.getUpvotes}
-					getDownvotes={this.getDownvotes}
 					upvote={this.upvote}
 					downvote={this.downvote}
 					userProfile={userProfile}

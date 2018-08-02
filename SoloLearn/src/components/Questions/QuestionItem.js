@@ -1,53 +1,42 @@
 // React modules
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
-import { connect } from 'react-redux';
 import ToolTip from 'react-portal-tooltip';
 // Utils
-import { removeDups, updateDate, determineAccessLevel } from 'utils';
+import { removeDups, updateDate } from 'utils';
 
 import Likes from 'components/Likes';
 import UserCard from 'components/UserCard';
-import getLikesAndDownvotesCurried from 'actions/likes';
 
 import 'styles/Discuss/QuestionItem.scss';
 import DiscussTag from './DiscussTag';
 
-const mapStateToProps = state => ({
-	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
-});
-
-const mapDispatchToProps = {
-	getLikes: getLikesAndDownvotesCurried('postLikes'),
-	getDownvotes: getLikesAndDownvotesCurried('postDownvotes'),
-};
-
-@connect(mapStateToProps, mapDispatchToProps)
 class QuestionItem extends PureComponent {
 	state = {
 		isTooltipActive: false,
 	}
-	getLikes = () => this.props.getLikes(this.props.question.id);
-	getDownvotes = () => this.props.getDownvotes(this.props.question.id);
 	toggleTooltip = () => {
 		this.setState(state => ({ isTooltipActive: !state.isTooltipActive }));
 	}
 	render() {
 		const { isTooltipActive } = this.state;
-		const { question, accessLevel } = this.props;
+		const { question } = this.props;
 		return (
-			<div className="question-item-wrapper">
-
+			<div className="question-item-container">
 				<div className="question-stats">
-					<Likes
-						votes={question.votes}
-						getLikes={this.getLikes}
-						accessLevel={accessLevel}
-						getDownvotes={this.getDownvotes}
-					/>
-					<div className="question-item-answer-wrapper">
+					<div className="question-item-wrapper">
+						<Likes
+							hasPlus={false}
+							votes={question.votes}
+							id={question.id}
+							type="post"
+							className="question-item-likes"
+						/>
+						<p className="question-item-label">Votes</p>
+					</div>
+					<div className="question-item-wrapper">
 						<p className="question-item-answer-count">{question.answers > 99 ? '99+' : question.answers}</p>
-						<p className="question-item-answer-label">Answers</p>
+						<p className="question-item-label">Answers</p>
 					</div>
 				</div>
 				<div className="question-item-details-wrapper">

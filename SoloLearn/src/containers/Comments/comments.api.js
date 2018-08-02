@@ -1,5 +1,4 @@
 import Service from 'api/service';
-import getLikes from 'actions/likes';
 
 export default
 class CommentsAPI {
@@ -66,9 +65,6 @@ class CommentsAPI {
 		};
 		return Service.request(`Discussion/Create${this.commentsType}Comment`, params);
 	};
-
-	getVotesList = ({ id, type }) =>
-		getLikes(`${this.commentsType}Comment${type}`, id);
 
 	orderComments = (comments, orderBy = this.orderBy) => {
 		switch (orderBy) {
