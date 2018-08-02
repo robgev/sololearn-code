@@ -17,7 +17,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { blockUser } from 'actions/settings';
 
 // Utils and defaults
-import { numberFormatter, determineAccessLevel, showError } from 'utils';
+import { numberFormatter, determineAccessLevel } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
 
 import ProfileAvatar from 'components/ProfileAvatar';

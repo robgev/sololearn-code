@@ -8,7 +8,7 @@ import {
 } from 'reducers/discuss.reducer';
 
 // Utils
-import { toSeoFriendly, showError } from 'utils';
+import { toSeoFriendly } from 'utils';
 
 export const removePost = id => (dispatch) => {
 	dispatch({
