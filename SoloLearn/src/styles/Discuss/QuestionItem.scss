@@ -1,0 +1,37 @@
+.question-item-wrapper {
+	display: flex;
+	padding: 10px;
+	border-bottom: 1px solid #F3F3F3;
+	.question-stats {
+		display: flex;
+		margin-right: 5px;
+		.question-item-answer-wrapper {
+			text-align: center;
+			.question-item-answer-count {
+				font-size: 14px;
+			}
+			.question-item-answer-label {
+				font-size: 11px;
+			}
+		}
+	}
+	.question-item-details-wrapper {
+		width: 100%;
+		.question-item-title-link {
+			text-decoration: none;
+			.question-item-title {
+				font-size: 15px;
+				color: #636060
+			}
+		}
+		.question-item-author-details {
+			display: flex;
+			justify-content: flex-end;
+			font-size: 12px;
+			.question-item-date {
+				color: #777777;
+				margin-right: 5px;
+			}
+		}
+	}
+}

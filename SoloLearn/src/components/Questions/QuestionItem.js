@@ -3,22 +3,15 @@ import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import ToolTip from 'react-portal-tooltip';
-
-// Material UI components
-import ChatBubble from 'material-ui/svg-icons/communication/chat-bubble-outline';
-import { green500 } from 'material-ui/styles/colors';
-
 // Utils
 import { removeDups, updateDate, determineAccessLevel } from 'utils';
 
 import Likes from 'components/Likes';
 import UserCard from 'components/UserCard';
 import getLikesAndDownvotesCurried from 'actions/likes';
+
+import 'styles/Discuss/QuestionItem.scss';
 import DiscussTag from './DiscussTag';
-
-import { QuestionItemStyles as styles } from './styles';
-
-export const noStyleLink = { textDecoration: 'none' };
 
 const mapStateToProps = state => ({
 	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
@@ -43,24 +36,24 @@ class QuestionItem extends PureComponent {
 		const { isTooltipActive } = this.state;
 		const { question, accessLevel } = this.props;
 		return (
-			<div style={styles.question}>
+			<div className="question-item-wrapper">
 
-				<div style={styles.stats}>
+				<div className="question-stats">
 					<Likes
 						votes={question.votes}
 						getLikes={this.getLikes}
 						accessLevel={accessLevel}
 						getDownvotes={this.getDownvotes}
 					/>
-					<div style={styles.answersCountWrapper}>
-						<p style={styles.answersCount}>{question.answers > 99 ? '99+' : question.answers}</p>
-						<ChatBubble color={green500} style={styles.chatBubble} />
+					<div className="question-item-answer-wrapper">
+						<p className="question-item-answer-count">{question.answers > 99 ? '99+' : question.answers}</p>
+						<p className="question-item-answer-label">Answers</p>
 					</div>
 				</div>
-				<div style={styles.detailsWrapper}>
+				<div className="question-item-details-wrapper">
 					<div>
-						<Link to={`/discuss/${question.id}`} style={noStyleLink}>
-							<p style={styles.title}>{question.title}</p>
+						<Link className="question-item-title-link" to={`/discuss/${question.id}`}>
+							<p className="question-item-title">{question.title}</p>
 						</Link>
 						<div>
 							{
@@ -74,8 +67,8 @@ class QuestionItem extends PureComponent {
 							}
 						</div>
 					</div>
-					<div style={styles.authorDetails}>
-						<span style={styles.date}>
+					<div className="question-item-author-details">
+						<span className="question-item-date">
 							{updateDate(question.date)} by {' '}
 						</span>
 						<span
