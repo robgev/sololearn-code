@@ -24,6 +24,7 @@ class Service {
 				if (res.error) {
 					throw res.error;
 				}
+				return res;
 			})
 			.catch((e) => {
 				console.error(e);

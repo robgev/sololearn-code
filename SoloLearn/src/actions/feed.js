@@ -79,14 +79,13 @@ export const getPinnedFeedItems = feedItems => ({
 	payload: feedItems,
 });
 
-export const getPinnedFeedItemsInternal = () => (dispatch) => {
+export const getPinnedFeedItemsInternal = () => dispatch =>
 	Service.request('Profile/GetFeedPinnedItems').then((response) => {
 		const feedPinnedItems = response.pinnedItems;
 		dispatch(getPinnedFeedItems(feedPinnedItems));
 	}).catch((e) => {
 		throw e;
 	});
-};
 
 export const getUserSuggestions = users => ({
 	type: types.GET_USER_SUGGESTIONS,
