@@ -95,7 +95,8 @@ class Profile extends Component {
 						<Header
 							levels={levels}
 							profile={data}
-							openPopup={this.toggleFollowerPopup}
+							openFollowerPopup={this.toggleFollowerPopup}
+							onFollow={this.profile.onFollowUser}
 						/>
 						<Tabs
 							value={this.activeTab}

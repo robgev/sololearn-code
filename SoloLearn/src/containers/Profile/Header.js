@@ -1,6 +1,8 @@
 // General modules
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { observable, action } from 'mobx';
+import { observer } from 'mobx-react';
 
 // Material UI components
 import IconMenu from 'material-ui/IconMenu';
@@ -12,7 +14,6 @@ import Person from 'material-ui/svg-icons/social/person';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 // Redux modules
-import { followUserInternal, unfollowUserInternal } from 'actions/profile';
 import { blockUser } from 'actions/settings';
 
 // Utils and defaults
@@ -35,74 +36,46 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
 	blockUser,
-	followUser: followUserInternal,
-	unfollowUser: unfollowUserInternal,
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
 @translate()
+@observer
 class Header extends Component {
-	constructor(props) {
-		super(props);
+	@observable isReportPopupOpen = false;
+	@observable isBlockPopupOpen = false;
+	@observable isDeactivationPopupOpen = false;
 
-		this.state = {
-			reportPopupOpen: false,
-			blockPopupOpened: false,
-			deactivationPopupOpen: false,
-			isFollowing: props.profile.isFollowing,
-		};
+	@action toggleReportPopup = () => {
+		this.isReportPopupOpen = !this.isReportPopupOpen;
 	}
 
-	handleFollowing = () => {
-		const { profile: { id } } = this.props;
-		const { isFollowing } = this.state;
-		this.setState({ isFollowing: !isFollowing });
+	@action toggleBlockPopup = () => {
+		this.isBlockPopupOpen = !this.isBlockPopupOpen;
+	}
 
-		if (isFollowing) {
-			this.props.unfollowUser(id);
-		} else {
-			this.props.followUser(id);
-		}
+	@action toggleDeactivationPopup = () => {
+		this.isDeactivationPopupOpen = !this.isDeactivationPopupOpen;
 	}
 
 	blockUser = () => {
-		const { profile, blockUser } = this.props;
-		blockUser({
+		const { profile } = this.props;
+		this.props.blockUser({
 			userId: profile.id,
 			block: !profile.blockedState,
 		});
 		this.toggleBlockPopup();
 	}
 
-	toggleReportPopup = () => {
-		const { reportPopupOpen } = this.state;
-		this.setState({ reportPopupOpen: !reportPopupOpen });
-	}
-
-	toggleBlockPopup = () => {
-		const { blockPopupOpened } = this.state;
-		this.setState({ blockPopupOpened: !blockPopupOpened });
-	}
-
-	toggleDeactivationPopup = () => {
-		const { deactivationPopupOpen } = this.state;
-		this.setState({ deactivationPopupOpen: !deactivationPopupOpen });
-	}
-
 	render() {
-		const {
-			isFollowing,
-			reportPopupOpen,
-			blockPopupOpened,
-			deactivationPopupOpen,
-		} = this.state;
 		const {
 			t,
 			levels,
 			userId,
 			profile,
-			openPopup,
+			openFollowerPopup,
 			accessLevel,
+			onFollow,
 		} = this.props;
 
 		const nextLevel = levels.filter(item => item.maxXp > profile.xp)[0];
@@ -114,16 +87,16 @@ class Header extends Component {
 					<RaisedButton
 						secondary
 						icon={<Person />}
-						onClick={openPopup}
+						onClick={openFollowerPopup}
 						label={numberFormatter(profile.followers)}
 					/>
 					{
 						profile.id !== userId &&
 						<div className="action-buttons">
 							<RaisedButton
-								secondary={isFollowing}
-								onClick={this.handleFollowing}
-								label={isFollowing ? t('common.user-following') : t('common.follow-user')}
+								secondary={profile.isFollowing}
+								onClick={onFollow}
+								label={profile.isFollowing ? t('common.user-following') : t('common.follow-user')}
 							/>
 							<IconMenu
 								iconButtonElement={
@@ -177,19 +150,19 @@ class Header extends Component {
 				</div>
 				<ReportPopup
 					itemId={profile.id}
-					open={reportPopupOpen}
+					open={this.isReportPopupOpen}
 					itemType={ReportItemTypes.profile}
 					onRequestClose={this.toggleReportPopup}
 				/>
 				<BlockPopup
 					userId={profile.id}
-					open={blockPopupOpened}
+					open={this.isBlockPopupOpen}
 					blockUser={this.blockUser}
 					onRequestClose={this.toggleBlockPopup}
 				/>
 				<DeactivationPopup
 					reportedUserId={profile.id}
-					open={deactivationPopupOpen}
+					open={this.isDeactivationPopupOpen}
 					itemType={ReportItemTypes.profile}
 					onRequestClose={this.toggleDeactivationPopup}
 					accessLevel={accessLevel}
