@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { toast } from 'react-toastify';
 import { action, observable, computed } from 'mobx';
 import { observer } from 'mobx-react';
 import FlatButton from 'material-ui/FlatButton';
@@ -88,17 +87,11 @@ class Comment extends Component {
 	}
 
 	@action deleteReply = async (id) => {
-		try {
-			const { comment } = this.props;
-			comment.repliesArray.splice(comment.repliesArray.findIndex(i => i.id === id), 1);
-			comment.replies -= 1;
-			const res = await this.props.commentsAPI.deleteComment({ id });
-			if (res && res.error) {
-				showError(res.error.data);
-			}
-		} catch (e) {
-			toast.error(`❌Something went wrong when trying to delete comment: ${e.message}`);
-		}
+		const { comment } = this.props;
+		comment.repliesArray.splice(comment.repliesArray.findIndex(i => i.id === id), 1);
+		comment.replies -= 1;
+		this.props.commentsAPI.deleteComment({ id })
+			.catch(e => showError(e, 'Something went wrong when trying to delete comment'));
 	}
 
 	scrollIntoView = (replyId = null) => {
@@ -118,7 +111,7 @@ class Comment extends Component {
 			this.isReplyLoading = false;
 		} catch (e) {
 			this.isReplyLoading = false;
-			toast.error(`❌Something went wrong when trying to reply: ${e.message}`);
+			showError(e, 'Something went wrong when trying to reply');
 		}
 	}
 
@@ -203,15 +196,9 @@ class Comment extends Component {
 	}
 
 	@action editComment = async ({ message, id }) => {
-		try {
-			this.props.comment.message = message;
-			const res = await this.props.commentsAPI.editComment({ message, id });
-			if (res && res.error) {
-				showError(res.error.data);
-			}
-		} catch (e) {
-			toast.error(`❌Something went wrong when trying to edit comment: ${e.message}`);
-		}
+		this.props.comment.message = message;
+		this.props.commentsAPI.editComment({ message, id })
+			.catch(e => showError(e, 'Something went wrong when trying to edit comment'));
 	}
 
 	getVotes = (voteType) => {

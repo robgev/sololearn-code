@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { toast } from 'react-toastify';
 import Layout from 'components/Layouts/GeneralLayout';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -31,25 +30,15 @@ class Rate extends Component {
 	}
 	like = () => {
 		voteChallenge(this.state.challenge.id, 1)
-			.then((res) => {
-				if (res && res.error) {
-					showError(res.error.data);
-				}
-			})
 			.catch((e) => {
-				toast.error(`❌Something went wrong when trying to vote: ${e.message}`);
+				showError(e, 'Something went wrong when trying to vote');
 			});
 		this.getChallenge();
 	}
 	dislike = () => {
 		voteChallenge(this.state.challenge.id, -1)
-			.then((res) => {
-				if (res && res.error) {
-					showError(res.error.data);
-				}
-			})
 			.catch((e) => {
-				toast.error(`❌Something went wrong when trying to vote: ${e.message}`);
+				showError(e, 'Something went wrong when trying to vote');
 			});
 		this.getChallenge();
 	}

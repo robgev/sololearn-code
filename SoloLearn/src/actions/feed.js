@@ -1,4 +1,3 @@
-import { toast } from 'react-toastify';
 import { showError, groupFeedItems } from 'utils';
 import Service from 'api/service';
 import * as types from 'constants/ActionTypes';
@@ -95,37 +94,32 @@ export const getUserSuggestions = users => ({
 });
 
 export const followUserSuggestion = ({ id, feedId, follow }) => {
-	try {
-		const endpoint = follow ? 'Profile/Follow' : 'Profile/Unfollow';
-		const res = Service.request(endpoint, { id });
-		if (res && res.error) {
-			showError(res.error.data);
-		}
-		return {
-			type: types.FOLLOW_USER_SUGGESTION,
-			payload: {
-				id,
-				follow,
-				feedId,
-			},
-		};
-	} catch (e) {
-		toast.error(`❌Something went wrong when trying to ${follow ? 'unfollow' : 'follow'}: ${e.message}`);
-	}
+	const endpoint = follow ? 'Profile/Follow' : 'Profile/Unfollow';
+	Service.request(endpoint, { id })
+		.catch(e => showError(e, 'Something went wrong when trying to follow the suggested user'));
+	return {
+		type: types.FOLLOW_USER_SUGGESTION,
+		payload: {
+			id,
+			follow,
+			feedId,
+		},
+	};
 };
 
-export const getUserSuggestionsInternal = () => dispatch => Service.request('Profile/SearchUsers').then((response) => {
-	dispatch(getUserSuggestions(response.users));
-}).catch((e) => {
-	throw e;
-});
+export const getUserSuggestionsInternal = () => dispatch =>
+	Service.request('Profile/SearchUsers')
+		.then((response) => {
+			dispatch(getUserSuggestions(response.users));
+		})
+		.catch((e) => { throw e; });
 
 export const voteFeedPostItem = ({
 	vote,
 	id: feedItemId,
 	votes: totalVotes,
 	post: { id: postId },
-}, newVote) => async (dispatch) => {
+}, newVote) => (dispatch) => {
 	const userVote = vote === newVote ? 0 : newVote;
 	const votes = (totalVotes + userVote) - vote;
 	dispatch({
@@ -136,14 +130,8 @@ export const voteFeedPostItem = ({
 			id: feedItemId,
 		},
 	});
-	try {
-		const res = await Service.request('Discussion/VotePost', { id: postId, vote: userVote });
-		if (res && res.error) {
-			showError(res.error.data);
-		}
-	} catch (e) {
-		toast.error(`❌Something went wrong when trying to vote: ${e.message}`);
-	}
+	Service.request('Discussion/VotePost', { id: postId, vote: userVote })
+		.catch(e => showError(e, 'Something went wrong when trying to vote'));
 };
 
 export const voteFeedCommentItem = ({
@@ -151,7 +139,7 @@ export const voteFeedCommentItem = ({
 	id: feedItemId,
 	votes: totalVotes,
 	comment: { id: commentId },
-}, newVote, commentsType) => async (dispatch) => {
+}, newVote, commentsType) => (dispatch) => {
 	const userVote = vote === newVote ? 0 : newVote;
 	const votes = (totalVotes + userVote) - vote;
 	const url =
@@ -166,7 +154,8 @@ export const voteFeedCommentItem = ({
 			id: feedItemId,
 		},
 	});
-	await Service.request(url, { id: commentId, vote: userVote });
+	Service.request(url, { id: commentId, vote: userVote })
+		.catch(e => showError(e, 'Something went wrong when trying to vote'));
 };
 
 export const voteFeedCodeItem = ({
@@ -185,12 +174,6 @@ export const voteFeedCodeItem = ({
 			id: feedItemId,
 		},
 	});
-	try {
-		const res = await Service.request('Playground/VoteCode', { id: codeId, vote: userVote });
-		if (res && res.error) {
-			showError(res.error.data);
-		}
-	} catch (e) {
-		toast.error(`❌Something went wrong when trying to vote: ${e.message}`);
-	}
+	Service.request('Playground/VoteCode', { id: codeId, vote: userVote })
+		.catch(e => showError(e, 'Something went wrong when trying to vote'));
 };

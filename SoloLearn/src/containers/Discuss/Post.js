@@ -96,11 +96,7 @@ class Post extends Component {
 			}
 			this.checkAlias(params.questionName);
 		} catch (e) {
-			if (e.data) {
-				showError(e.data);
-			} else {
-				toast.error(`❌Something went wrong when trying to fetch post: ${e.message}`);
-			}
+			showError(e, 'Something went wrong when trying to fetch post');
 		}
 	}
 
@@ -110,11 +106,7 @@ class Post extends Component {
 			const { ordering } = this.state;
 			return this.props.loadRepliesInternal(ordering, replyId);
 		} catch (e) {
-			if (e.data) {
-				showError(e.data);
-			} else {
-				toast.error(`❌Something went wrong when trying to fetch replies: ${e.message}`);
-			}
+			showError(e, 'Something went wrong when trying to fetch replies');
 		}
 	}
 
@@ -123,11 +115,7 @@ class Post extends Component {
 			const { ordering } = this.state;
 			await this.props.loadPreviousRepliesInternal(ordering);
 		} catch (e) {
-			if (e.data) {
-				showError(e.data);
-			} else {
-				toast.error(`❌Something went wrong when trying to fetch replies: ${e.message}`);
-			}
+			showError(e, 'Something went wrong when trying to fetch replies');
 		}
 	}
 
@@ -165,7 +153,8 @@ class Post extends Component {
 	}
 
 	votePost = (post, voteValue) => {
-		this.props.votePostInternal(post, voteValue);
+		this.props.votePostInternal(post, voteValue)
+			.catch(e => showError(e, 'Something went wrong when trying to vote post'));
 	}
 
 	// Open deleting confimation dialog

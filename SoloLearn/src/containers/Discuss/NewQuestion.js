@@ -1,7 +1,6 @@
 // React modules
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
-import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 
 import { showError } from 'utils';
@@ -34,11 +33,7 @@ class NewQuestion extends Component {
 				}
 			})
 			.catch((e) => {
-				if (e.data) {
-					showError(e.data);
-				} else {
-					toast.error(`❌Something went wrong when trying to create question: ${e.message}`);
-				}
+				showError(e.data, 'Something went wrong when trying to create question');
 			});
 	}
 

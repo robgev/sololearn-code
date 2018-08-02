@@ -2,7 +2,6 @@
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
-import { toast } from 'react-toastify';
 import { showError } from 'utils';
 import {
 	getPosts, emptyPosts, setDiscussFilters,
@@ -46,11 +45,7 @@ class Questions extends Component {
 	getPosts = () => {
 		this.props.getPosts()
 			.catch((e) => {
-				if (e.data) {
-					showError(e.data);
-				} else {
-					toast.error(`❌Something went wrong when trying to fetch questions: ${e.message}`);
-				}
+				showError(e, 'Something went wrong when trying to fetch questions');
 			});
 	}
 	handleOrderByFilterChange = (_, __, orderBy) => {

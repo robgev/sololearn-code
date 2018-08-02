@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { toast } from 'react-toastify';
 import { DropDownMenu, MenuItem } from 'material-ui';
 import {
 	getCodes, emptyCodes, setCodesFilters,
@@ -51,15 +50,8 @@ class Codes extends Component {
 		browserHistory.push({ ...location, query: { ...location.query, orderBy } });
 	}
 	getCodes = () => {
-		try {
-			this.props.getCodes();
-		} catch (e) {
-			if (e.data) {
-				showError(e.data);
-			} else {
-				toast.error(`❌Something went wrong when trying to fetch codes: ${e.message}`);
-			}
-		}
+		this.props.getCodes()
+			.catch(e => showError(e, 'Something went wrong when trying to fetch codes'));
 	}
 	render() {
 		const {

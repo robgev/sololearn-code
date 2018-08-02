@@ -16,7 +16,7 @@ import { followUserInternal, unfollowUserInternal } from 'actions/profile';
 import { blockUser } from 'actions/settings';
 
 // Utils and defaults
-import { numberFormatter, determineAccessLevel } from 'utils';
+import { numberFormatter, determineAccessLevel, showError } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
 
 import ProfileAvatar from 'components/ProfileAvatar';
@@ -59,9 +59,11 @@ class Header extends Component {
 		this.setState({ isFollowing: !isFollowing });
 
 		if (isFollowing) {
-			this.props.unfollowUser(id);
+			this.props.unfollowUser(id)
+				.catch(e => showError(e, 'Something went wrong when trying to unfollow'));
 		} else {
-			this.props.followUser(id);
+			this.props.followUser(id)
+				.catch(e => showError(e, 'Something went wrong when trying to follow'));
 		}
 	}
 
