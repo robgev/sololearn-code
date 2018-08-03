@@ -1,5 +1,6 @@
 @import "~slick-carousel/slick/slick.css";
 @import "~slick-carousel/slick/slick-theme.css";
+@import "utils";
 
 * {
   margin:0;
@@ -36,6 +37,14 @@ html, body {
 .hoverable-icon {
 	&:hover svg {
 		fill: #607D8B !important;
+	}
+}
+
+.sidebar-title {
+	.title {
+		@extend %title-text;
+		padding-bottom: 5px;
+		line-height: 14px;
 	}
 }
 
