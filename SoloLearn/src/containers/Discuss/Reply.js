@@ -139,7 +139,7 @@ class Reply extends Component {
 			>
 				<div className="details-wrapper" style={styles.detailsWrapper}>
 					<div className="stats" style={styles.stats}>
-						<IconButton className="upvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(reply, 1); }}>
+						<IconButton className="upvote hoverable-icon" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(reply, 1); }}>
 							<ThumbUp color={reply.vote === 1 ? blueGrey500 : grey500} />
 						</IconButton>
 						<Likes
@@ -147,7 +147,7 @@ class Reply extends Component {
 							id={reply.id}
 							type="post"
 						/>
-						<IconButton className="downvote" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(reply, -1); }}>
+						<IconButton className="downvote hoverable-icon" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(reply, -1); }}>
 							<ThumbDown color={reply.vote === -1 ? blueGrey500 : grey500} />
 						</IconButton>
 					</div>
@@ -198,7 +198,7 @@ class Reply extends Component {
 						{
 							(this.props.isUsersQuestion || accessLevel > 1) ?
 								<IconButton
-									className="follow"
+									className="follow hoverable-icon"
 									style={styles.bestAnswerButton.base}
 									iconStyle={styles.bestAnswerButton.icon}
 									onClick={

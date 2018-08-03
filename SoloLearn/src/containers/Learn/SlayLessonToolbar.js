@@ -17,7 +17,7 @@ const SlayLessonToolbar = ({
 		<div className="lesson-data">
 			<IconButton
 				onClick={toggleBookmark}
-				className="search-button"
+				className="search-button hoverable-icon"
 			>
 				{ isBookmarked ?
 					<BookmarkIcon color={grey500} /> :
