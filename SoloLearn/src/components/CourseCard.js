@@ -53,9 +53,9 @@ const CourseCard = ({
 				/>
 			</div>
 			<div className="info-container">
-				<p>{name}</p>
+				<p className="hoverable">{name}</p>
 				<Link
-					className="user-link"
+					className="user-link hoverable"
 					to={`/profile/${userID}`}
 				>
 					{userName}

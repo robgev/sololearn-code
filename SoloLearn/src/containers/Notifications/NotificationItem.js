@@ -100,7 +100,7 @@ class NotificationItem extends Component {
 	getTitleUser = (title, pattern) => {
 		const { notification } = this.props;
 		const href = `/profile/${notification.actionUser.id}`;
-		return title.replace(pattern, `<a href=${href} style="text-decoration:none;color:#8BC34A;font-weight:500;">${notification.actionUser.name}</a>`);
+		return title.replace(pattern, `<a href=${href} class="hoverable" style="text-decoration:none;color:#8BC34A;font-weight:500;">${notification.actionUser.name}</a>`);
 	}
 
 	generateContent = () => {

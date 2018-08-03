@@ -27,7 +27,7 @@ const CodeItem = ({ code }) => (
 			/>
 		</div>
 		<div className="details-wrapper">
-			<Link className="code-title" to={`/playground/${code.publicID}`}>
+			<Link className="code-title hoverable" to={`/playground/${code.publicID}`}>
 				{code.name}
 			</Link>
 			<div className="stats">

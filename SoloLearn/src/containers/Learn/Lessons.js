@@ -117,10 +117,10 @@ class Lessons extends Component {
 			<Layout>
 				<div className="lessons-container">
 					<div className="lesson-breadcrumbs">
-						<Link to={`/learn/${courseName}/${courseId}/${itemType}`}>
+						<Link className="hoverable" to={`/learn/${courseName}/${courseId}/${itemType}`}>
 							{course.name}
 						</Link> &gt;
-						<Link to={`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}`}>
+						<Link className="hoverable" to={`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}`}>
 							{name}
 						</Link>
 					</div>

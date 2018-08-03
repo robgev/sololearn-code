@@ -49,7 +49,7 @@ class InfiniteLeaderboard extends PureComponent {
 							key={user.name}
 							to={`/profile/${user.userID}`}
 							id={`user-card-${user.userID}`}
-							className="leaderboard-card highlighted"
+							className="leaderboard-card highlighted hoverable"
 						>
 							<UserCard {...user} />
 						</Link>
@@ -58,7 +58,7 @@ class InfiniteLeaderboard extends PureComponent {
 						key={user.name}
 						to={`/profile/${user.userID}`}
 						id={`user-card-${user.userID}`}
-						className="leaderboard-card"
+						className="leaderboard-card hoverable"
 					>
 						<UserCard alltime {...user} />
 					</Link>

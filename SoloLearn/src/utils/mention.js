@@ -12,15 +12,15 @@ const mentionTypes = {
 };
 
 export const replaceMention = (text) => {
-	let resArr = [text];
+	let resArr = [ text ];
 	const regex = /\[user id ?= ?"?(\d+)"?\](.+?)\[\/user\]/;
 	while (regex.test(last(resArr))) {
-		const [tagged, id, name] = regex.exec(last(resArr));
+		const [ tagged, id, name ] = regex.exec(last(resArr));
 		const partial = last(resArr).split(tagged);
-		resArr = [...resArr.slice(0, resArr.length - 1), partial[0], { id, name, type: 'tag' }, partial[1]];
+		resArr = [ ...resArr.slice(0, resArr.length - 1), partial[0], { id, name, type: 'tag' }, partial[1] ];
 	}
 	return resArr.map(curr => (curr.type === 'tag'
-		? <b key={curr.id}><Link style={{ color: '#0645AD' }} to={`/profile/${curr.id}`}>{curr.name}</Link></b>
+		? <b key={curr.id}><Link className="hoverable" style={{ color: '#0645AD' }} to={`/profile/${curr.id}`}>{curr.name}</Link></b>
 		: <span key={curr}>{curr}</span>));
 };
 

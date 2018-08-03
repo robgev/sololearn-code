@@ -78,7 +78,7 @@ class Skills extends PureComponent {
 					<p className="skills-header">{t('skills.status-plus-rank')}</p>
 					<ModeratorStatus t={t} badge={profile.badge} />
 					<div className="skills-details">
-						<Link to={`/leaderboards/${profile.id}`} className="leaderboard-link">
+						<Link to={`/leaderboards/${profile.id}`} className="leaderboard-link hoverable">
 							{t('leaderboard.rank.placeholder')}
 						</Link>
 						<div className="skills-progress-wrapper">
