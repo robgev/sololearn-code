@@ -4,7 +4,6 @@ import {
 	RESET_LOCALE_DATA,
 	GET_NEW_FEED_ITEMS,
 	MARK_FEED_FINISHED,
-	FOLLOW_USER_SUGGESTION,
 	SET_FEED_ITEM_VOTE_DATA,
 } from 'constants/ActionTypes';
 import uniqBy from 'lodash/uniqBy';
@@ -30,18 +29,6 @@ const entities = (state = [], action) => {
 		return changeFeedItemVote(state, action.payload);
 	case GET_NEW_FEED_ITEMS:
 		return uniqBy([ ...action.payload, ...state ], 'id');
-	case FOLLOW_USER_SUGGESTION:
-		return state.map(feedItem =>
-			(feedItem.id !== action.payload.feedId
-				? feedItem
-				: {
-					...feedItem,
-					suggestions: feedItem.suggestions.map(sugg =>
-						(sugg.id !== action.payload.id
-							? sugg
-							: { ...sugg, isFollowing: action.payload.follow })),
-				}
-			));
 	case CLEAR_FEED:
 	case RESET_LOCALE_DATA:
 		return [];

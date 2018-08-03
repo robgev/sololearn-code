@@ -18,7 +18,7 @@ export const clearProfileFeedItems = () => ({ type: types.CLEAR_PROFILE_FEED_ITE
 export const getFeedItemsInternal = () => async (dispatch, getState) => {
 	try {
 		const requestLimitCount = 20;
-		const { feed: { entities: feed }, userSuggestions } = getState();
+		const { feed: { entities: feed }, discoverSuggestions } = getState();
 		const filteredFeed = feed.filter(item => item.type !== feedTypes.suggestions);
 		const suggestionsBatch = feed.length - filteredFeed.length;
 		const fromId = filteredFeed.length ? filteredFeed[filteredFeed.length - 1].id : null;
@@ -27,9 +27,9 @@ export const getFeedItemsInternal = () => async (dispatch, getState) => {
 		const feedItems = groupFeedItems(response.feed);
 		const feedItemsCount = feed.length + feedItems.length;
 		if (feed.length + length >= requestLimitCount * (1 + suggestionsBatch) &&
-			suggestionsBatch * 10 < userSuggestions.length) {
+			suggestionsBatch * 10 < discoverSuggestions.length) {
 			const suggestionsObj = {
-				suggestions: userSuggestions.slice(suggestionsBatch * 10, (suggestionsBatch * 10) + 10),
+				number: suggestionsBatch,
 				type: feedTypes.suggestions,
 				id: suggestionsBatch,
 			};
@@ -87,31 +87,18 @@ export const getPinnedFeedItemsInternal = () => dispatch =>
 		throw e;
 	});
 
-export const getUserSuggestions = users => ({
-	type: types.GET_USER_SUGGESTIONS,
-	payload: users,
-});
-
-export const followUserSuggestion = ({ id, feedId, follow }) => {
-	const endpoint = follow ? 'Profile/Follow' : 'Profile/Unfollow';
+export const followUserSuggestion = ({ id, isFollowing }) => {
+	const endpoint = isFollowing ? 'Profile/Unfollow' : 'Profile/Follow';
 	Service.request(endpoint, { id })
 		.catch(e => showError(e, 'Something went wrong when trying to follow the suggested user'));
 	return {
 		type: types.FOLLOW_USER_SUGGESTION,
 		payload: {
-			id,
-			follow,
-			feedId,
+			userId: id,
+			isFollowing: !isFollowing,
 		},
 	};
 };
-
-export const getUserSuggestionsInternal = () => dispatch =>
-	Service.request('Profile/SearchUsers')
-		.then((response) => {
-			dispatch(getUserSuggestions(response.users));
-		})
-		.catch((e) => { throw e; });
 
 export const voteFeedPostItem = ({
 	vote,

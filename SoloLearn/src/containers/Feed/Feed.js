@@ -6,9 +6,11 @@ import { connect } from 'react-redux';
 import {
 	getFeedItemsInternal,
 	getNewFeedItemsInternal,
-	getUserSuggestionsInternal,
 	getPinnedFeedItemsInternal,
 } from 'actions/feed';
+import {
+	getDiscoverSuggestions,
+} from 'actions/discover';
 import { feedSelector, feedHasMoreSelector } from 'reducers/feed.reducer';
 
 import Layout from 'components/Layouts/GeneralLayout';
@@ -29,7 +31,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
 	getFeedItems: getFeedItemsInternal,
 	getPinnedFeedItems: getPinnedFeedItemsInternal,
-	getUserSuggestions: getUserSuggestionsInternal,
+	getDiscoverSuggestions,
 	getNewFeedItems: getNewFeedItemsInternal,
 };
 
@@ -47,7 +49,7 @@ class FeedItemsBase extends Component {
 		if (!isLoaded) {
 			this.props.getPinnedFeedItems(null, null, null)
 				.catch(e => showError(e, 'Something went wrong when trying to fetch pins'));
-			this.props.getUserSuggestions()
+			this.props.getDiscoverSuggestions()
 				.catch(e => showError(e, 'Something went wrong when trying to fetch user suggestions'));
 		}
 	}
@@ -86,7 +88,11 @@ class FeedItemsBase extends Component {
 			levels,
 		} = this.props;
 		return (
-			<Layout>
+			<Layout
+				sidebarContent={
+					null
+				}
+			>
 				<div className="feed-items-wrapper">
 					<Header profile={userProfile} levels={levels} />
 					<p className="sub-title">{t('feed.title')}</p>

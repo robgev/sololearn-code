@@ -1,5 +1,6 @@
 // React modules
 import React from 'react';
+import { connect } from 'react-redux';
 
 // Additional data and components
 import FeedSuggestion from './FeedSuggestion';
@@ -20,7 +21,11 @@ const styles = {
 	},
 };
 
-const FeedSuggestions = ({ feedItem }) => (
+const mapStateToProps = ({ discoverSuggestions }, { number }) => ({
+	suggestions: discoverSuggestions.slice(number * 10, (number * 10) + 10),
+});
+
+const FeedSuggestions = ({ number, suggestions }) => (
 	<div className="feed-suggestions">
 		<GridList
 			style={styles.gridList}
@@ -28,16 +33,16 @@ const FeedSuggestions = ({ feedItem }) => (
 			cellHeight={150}
 			padding={8}
 		>
-			{feedItem.suggestions.map(suggestion => (
+			{suggestions.map(suggestion => (
 				<GridTile
 					key={`suggestion${suggestion.id}`}
 					style={styles.tileStyle}
 				>
-					<FeedSuggestion className="suggestion-wrapper" feedId={feedItem.id} suggestion={suggestion} />
+					<FeedSuggestion className="suggestion-wrapper" suggestion={suggestion} />
 				</GridTile>
 			))}
 		</GridList>
 	</div>
 );
 
-export default FeedSuggestions;
+export default connect(mapStateToProps)(FeedSuggestions);

@@ -1,5 +1,5 @@
 // React modules
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -56,7 +56,7 @@ const mapDispatchToProps = {
 	followUser: followUserSuggestion,
 };
 
-const FeedSuggestion = ({ suggestion, followUser, feedId }) => {
+const FeedSuggestion = ({ suggestion, followUser }) => {
 	const {
 		id,
 		name,
@@ -85,7 +85,7 @@ const FeedSuggestion = ({ suggestion, followUser, feedId }) => {
 				labelStyle={styles.followButton.label}
 				label={isFollowing ? 'Following' : 'Follow'}
 				buttonStyle={styles.followButton.button}
-				onClick={() => followUser({ feedId, id, follow: !isFollowing })}
+				onClick={() => followUser({ id, isFollowing })}
 			/>
 		</Paper>
 	);

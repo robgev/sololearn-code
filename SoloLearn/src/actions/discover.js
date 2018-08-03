@@ -2,13 +2,32 @@ import Service from 'api/service';
 import * as types from 'constants/ActionTypes';
 
 export const getDiscoverSuggestions = query => async (dispatch) => {
-	try {
-		const response = await Service.request('/Profile/SearchUsers', { query });
-		dispatch({
-			type: types.SET_DISCOVER_SUGGESTIONS,
-			payload: response.users || [],
+	const response = await Service.request('/Profile/SearchUsers', { query });
+	dispatch({
+		type: types.SET_DISCOVER_SUGGESTIONS,
+		payload: response.users || [],
+	});
+};
+
+export const followSuggestion = (id, isFollowing) => async (dispatch) => {
+	const endpoint = isFollowing ? 'Profile/Unfollow' : 'Profile/Follow';
+	console.log(id);
+	dispatch({
+		type: types.FOLLOW_USER_SUGGESTION,
+		payload: {
+			userId: id,
+			isFollowing: !isFollowing,
+		},
+	});
+	Service.request(endpoint, { id })
+		.catch((e) => {
+			dispatch({
+				type: types.FOLLOW_USER_SUGGESTION,
+				payload: {
+					userId: id,
+					isFollowing,
+				},
+			});
+			throw e;
 		});
-	} catch (e) {
-		console.log(e);
-	}
 };
