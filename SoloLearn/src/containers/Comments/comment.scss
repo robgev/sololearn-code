@@ -31,8 +31,11 @@
 			align-items: center;
 		}
 	}
-	> p {
+	> .Linkify > p {
+		font-size: 14px;
+    color: rgb(130, 126, 126);
 		padding-left: 50px;
+		margin-bottom: 5px;
 	}
   &.animate {
     animation: highlight 1.5s ease-in 1;
