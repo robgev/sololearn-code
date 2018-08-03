@@ -123,6 +123,7 @@ class CommenView extends Component {
 					<PreviewItem
 						{...singlePreviewData}
 						key={singlePreviewData.link}
+						className="comment-preview"
 					/>
 				))}
 				<div className="comment-bottom-toolbar">

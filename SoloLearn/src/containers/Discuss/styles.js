@@ -199,7 +199,6 @@ export const QuestionStyles = {
 	question: {
 		padding: '10px',
 		borderBottom: '1px solid #f3f3f3',
-		overflow: 'hidden',
 	},
 	stats: {
 		textAlign: 'center',
@@ -226,11 +225,9 @@ export const QuestionStyles = {
 		},
 	},
 	detailsWrapper: {
-		overflow: 'hidden',
 		display: 'flex',
 	},
 	details: {
-		overflow: 'hidden',
 		margin: '7px 0px 0px 10px',
 		width: '90%',
 	},
@@ -262,7 +259,6 @@ export const QuestionStyles = {
 		whiteSpace: 'pre-line',
 	},
 	additionalDetails: {
-		overflow: 'hidden',
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'space-between',
@@ -328,7 +324,6 @@ export const QuestionItemStyles = {
 		height: '32px',
 	},
 	detailsWrapper: {
-		overflow: 'hidden',
 		margin: '0 0 0 10px',
 	},
 	title: {
@@ -390,7 +385,7 @@ export const ReplyStyles = {
 		base: {
 			padding: '10px',
 			borderBottom: '1px solid #f3f3f3',
-			overflow: 'hidden',
+
 		},
 		accepted: {
 			borderLeft: '4px solid #9ccc65',
@@ -421,12 +416,11 @@ export const ReplyStyles = {
 		},
 	},
 	detailsWrapper: {
-		overflow: 'hidden',
 		display: 'flex',
 	},
 	details: {
 		base: {
-			overflow: 'hidden',
+
 			margin: '7px 0 0 10px',
 			width: '90%',
 		},
@@ -447,7 +441,6 @@ export const ReplyStyles = {
 		whiteSpace: 'pre-line',
 	},
 	additionalDetails: {
-		overflow: 'hidden',
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'space-between',
