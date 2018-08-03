@@ -9,9 +9,8 @@ export const getDiscoverSuggestions = query => async (dispatch) => {
 	});
 };
 
-export const followSuggestion = (id, isFollowing) => async (dispatch) => {
+export const followSuggestion = ({ id, isFollowing }) => async (dispatch) => {
 	const endpoint = isFollowing ? 'Profile/Unfollow' : 'Profile/Follow';
-	console.log(id);
 	dispatch({
 		type: types.FOLLOW_USER_SUGGESTION,
 		payload: {

@@ -19,6 +19,7 @@ import 'styles/Feed/Feed.scss';
 import { showError } from 'utils';
 import Header from './Header';
 import FeedList from './FeedList';
+import FeedSidebar from './FeedSidebar';
 
 const mapStateToProps = state => ({
 	feed: feedSelector(state),
@@ -89,9 +90,7 @@ class FeedItemsBase extends Component {
 		} = this.props;
 		return (
 			<Layout
-				sidebarContent={
-					null
-				}
+				sidebarContent={<FeedSidebar t={t} />}
 			>
 				<div className="feed-items-wrapper">
 					<Header profile={userProfile} levels={levels} />
