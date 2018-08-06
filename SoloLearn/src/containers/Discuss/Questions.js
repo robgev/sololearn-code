@@ -18,6 +18,8 @@ import Chip from 'material-ui/Chip';
 import { QuestionList } from 'components/Questions';
 import AddQuestionButton from 'components/AddQuestionButton';
 
+import DiscussSidebar from './DiscussSidebar';
+
 const mapStateToProps = state => ({
 	posts: discussPostsSelector(state),
 	filters: discussFiltersSelector(state),
@@ -61,7 +63,11 @@ class Questions extends Component {
 			t, posts, filters, hasMore,
 		} = this.props;
 		return (
-			<Layout>
+			<Layout
+				sidebarContent={
+					<DiscussSidebar />
+				}
+			>
 				<div style={{ position: 'relative' }}>
 					<QuestionList
 						header={
