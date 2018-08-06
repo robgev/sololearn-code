@@ -12,7 +12,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
-import { loadCourseInternal, toggleCourseInternal, toggleCourse, selectModule } from 'actions/learn';
+// import { loadCourseInternal, toggleCourseInternal, toggleCourse, selectModule } from 'actions/learn';
 import { isLoaded } from 'reducers';
 
 import Service from 'api/service';
@@ -37,14 +37,14 @@ const mapStateToProps = state => ({
 	userProfile: state.userProfile,
 });
 
-const mapDispatchToProps = {
-	loadCourseInternal,
-	toggleCourse,
-	toggleCourseInternal,
-	selectModule,
-};
+// const mapDispatchToProps = {
+// 	loadCourseInternal,
+// 	toggleCourse,
+// 	toggleCourseInternal,
+// 	selectModule,
+// };
 
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(mapStateToProps)
 @translate()
 class Modules extends Component {
 	constructor(props) {
@@ -169,7 +169,7 @@ class Modules extends Component {
 						/>
 					}
 				>
-					{ userCourses.length > 0 ?
+					{userCourses.length > 0 ?
 
 						<div className="modules-wrapper">
 							<div className="course-selector">
@@ -205,7 +205,7 @@ class Modules extends Component {
 									modules={modules}
 								/>
 								<ModuleChip
-									onClick={() => {}}
+									onClick={() => { }}
 									className="center"
 									name="More on the Topic"
 									paperClassName="normal"
@@ -227,7 +227,7 @@ class Modules extends Component {
 						</div>
 					}
 
-					{ this.state.resetPopupOpened && Popup.getPopup(Popup.generatePopupActions(resetProgressActions), this.state.resetPopupOpened, this.handleResetPopupClose, [ { key: 'hintSkipConfirmText', replacemant: this.skipPrice } ]) }
+					{this.state.resetPopupOpened && Popup.getPopup(Popup.generatePopupActions(resetProgressActions), this.state.resetPopupOpened, this.handleResetPopupClose, [ { key: 'hintSkipConfirmText', replacemant: this.skipPrice } ])}
 				</BusyWrapper>
 			</Layout>
 		);

@@ -15,3 +15,10 @@ export default (state = null, action) => {
 		return state;
 	}
 };
+
+const coursesReducer = state => state.courses;
+
+export const getCourseByAlias = (state, alias) => {
+	const courses = coursesReducer(state);
+	return courses.find(c => c.alias === alias);
+};

@@ -6,7 +6,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import Progress from 'api/progress';
 import Service from 'api/service';
-import { loadCourseInternal } from 'actions/learn';
+// import { loadCourseInternal } from 'actions/learn';
 import BusyWrapper from 'components/BusyWrapper';
 
 const mapStateToProps = state => ({
@@ -14,7 +14,9 @@ const mapStateToProps = state => ({
 	course: state.course,
 });
 
-const mapDispatchToProps = { loadCourseInternal };
+const mapDispatchToProps = {
+	// loadCourseInternal
+};
 
 @connect(mapStateToProps, mapDispatchToProps)
 class Certificate extends PureComponent {
@@ -27,7 +29,7 @@ class Certificate extends PureComponent {
 		const { params: { id }, loadCourseInternal } = this.props;
 		const courseId = parseInt(id, 10);
 		if (!this.props.course) {
-			await loadCourseInternal(courseId);
+			// await loadCourseInternal(courseId);
 		}
 		const { modules } = this.props.course;
 		const lastModule = modules[modules.length - 1];

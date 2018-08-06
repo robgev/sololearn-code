@@ -11,10 +11,10 @@ import { ProgressState } from 'api/progress';
 
 // Redux modules
 import {
-	selectQuiz,
-	selectLesson,
-	selectModule,
-	loadCourseInternal,
+// selectQuiz,
+// selectLesson,
+// selectModule,
+// loadCourseInternal,
 } from 'actions/learn';
 import { isLoaded } from 'reducers';
 
@@ -35,10 +35,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-	loadCourseInternal,
-	selectLesson,
-	selectModule,
-	selectQuiz,
+	// loadCourseInternal,
+	// selectLesson,
+	// selectModule,
+	// selectQuiz,
 };
 
 @connect(mapStateToProps, mapDispatchToProps)

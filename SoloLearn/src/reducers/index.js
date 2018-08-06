@@ -7,14 +7,14 @@ import userProfile from './reducer_user';
 
 // Learn
 import courses from './reducer_courses';
-import course from './reducer_course';
 import levels from './reducer_levels';
-import modulesMapping from './reducer_modules';
-import lessonsMapping from './reducer_lessons';
-import quizzesMapping from './reducer_quizzes';
-import activeModuleId from './reducer_active_module';
-import activeLessonId from './reducer_active_lesson';
-import activeQuiz from './reducer_active_quiz';
+// import course from './reducer_course';
+// import modulesMapping from './reducer_modules';
+// import lessonsMapping from './reducer_lessons';
+// import quizzesMapping from './reducer_quizzes';
+// import activeModuleId from './reducer_active_module';
+// import activeLessonId from './reducer_active_lesson';
+// import activeQuiz from './reducer_active_quiz';
 
 // Playground
 import codes from './codes.reducer';
@@ -55,14 +55,14 @@ const reducers = combineReducers({
 	userProfile,
 	// Learn
 	courses,
-	course,
+	// course,
 	levels,
-	modulesMapping,
-	lessonsMapping,
-	quizzesMapping,
-	activeModuleId,
-	activeLessonId,
-	activeQuiz,
+	// modulesMapping,
+	// lessonsMapping,
+	// quizzesMapping,
+	// activeModuleId,
+	// activeLessonId,
+	// activeQuiz,
 	// Playground
 	codes,
 	// Discuss

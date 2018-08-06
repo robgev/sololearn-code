@@ -71,6 +71,7 @@ import {
 	QuizFactoryRate,
 } from 'containers/QuizFactory';
 
+// TODO: Playgroud gets language and codeID prop from Slay lesson (parent)
 export default ([
 	<Route path="/login" component={Login} />,
 	<Route component={redirector(MainLayout)} key="mainLayoutRoutes">
@@ -81,13 +82,23 @@ export default ([
 		<Route path="/learn/more-on/:courseId" component={SlayMoreOnTopic} />
 		<Route path="/learn/more/author/:userId" component={SlayMoreByAuthor} />
 		<Route path="/learn/more/:collectionId" component={SlayDetailed} />
-		<Route path="/learn/slayLesson/:itemType/:lessonId/:pageNumber(/:language(/:codeID))" component={SlayLesson} />
-		<Redirect path="/courses/:courseName/:courseId/:itemType" to="/learn/:courseName/:courseId/:itemType" />
-		<Route path="/learn/:courseName/:courseId/:itemType" component={CourseMore} />
-		<Route path="/learn/:courseName/:courseId/:itemType/:moduleId(/:moduleName)" component={Lessons} />
-		<Route path="/learn/:courseName/:courseId/:itemType/:moduleId/:moduleName/:lessonId(/:lessonName)" component={QuizManager}>
+
+		<Route path="/learn/lesson/:lessonId/:pageNumber(/:language(/:codeID))" component={SlayLesson} />
+		<Route path="/learn/course/:courseName/:moduleName" component={Lessons} />
+		<Route path="/learn/course/:courseName/:moduleName/:lessonName" component={QuizManager} />
+		<Route path="/learn/lesson/:courseName/:moduleName/" component={CourseMore} />
+		<Route path="/learn/course/:courseId/:courseName/" component={CourseMore} />
+		{/* <Route path="/learn/slayLesson/
+		:itemType/:lessonId/:pageNumber(/:language(/:codeID))" component={SlayLesson} />
+		<Redirect path="/courses/:co
+		urseName/:courseId/:itemType" to="/learn/:courseName/:courseId/:itemType" />
+		<Route path="/learn/:courseName/:courseId/
+		:itemType/:moduleId(/:moduleName)" component={Lessons} />
+		<Route path="/learn/:courseName/:courseId
+		/:itemType/:moduleId/:moduleName/:lessonId(/:lessonName)" component={QuizManager}>
 			<Route path=":quizNumber(/:primary)(/:secondary)" component={Quiz} />
-		</Route>
+		</Route> */}
+
 		<Route path="/play" component={Play} />
 		<Route path="/codes" component={Codes} />
 		<Route path="/settings(/:settingID)" component={Settings} />

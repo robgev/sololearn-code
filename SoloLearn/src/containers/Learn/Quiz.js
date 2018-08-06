@@ -8,7 +8,7 @@ import { browserHistory } from 'react-router';
 
 // Redux modules
 import { isLoaded } from 'reducers';
-import { selectModule, selectLesson, selectQuiz } from 'actions/learn';
+// import { selectModule, selectLesson, selectQuiz } from 'actions/learn';
 import Progress, { PointExchangeTypes } from 'api/progress';
 
 // Marterial UI components
@@ -333,12 +333,6 @@ const mapStateToProps = state => ({
 	userXp: state.userProfile.xp,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-	selectModule,
-	selectLesson,
-	selectQuiz,
-}, dispatch);
-
 const translatedQuiz = translate()(Quiz);
 
-export default connect(mapStateToProps, mapDispatchToProps)(translatedQuiz);
+export default connect(mapStateToProps)(translatedQuiz);

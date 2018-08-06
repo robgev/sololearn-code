@@ -13,12 +13,12 @@ import Paper from 'material-ui/Paper';
 
 // Redux modules
 import { isLoaded } from 'reducers';
-import {
-	selectQuiz,
-	selectLesson,
-	selectModule,
-	loadCourseInternal,
-} from 'actions/learn';
+// import {
+// 	selectQuiz,
+// 	selectLesson,
+// 	selectModule,
+// 	loadCourseInternal,
+// } from 'actions/learn';
 
 // Utils
 import { toSeoFriendly } from 'utils';
@@ -46,11 +46,11 @@ const mapStateToProps = state => ({
 	activeLesson: !state.course ? null : state.lessonsMapping[state.activeLessonId],
 });
 
-const mapDispatchToProps = {
-	loadCourseInternal, selectLesson, selectModule, selectQuiz,
-};
+// const mapDispatchToProps = {
+// 	loadCourseInternal, selectLesson, selectModule, selectQuiz,
+// };
 
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(mapStateToProps)
 class QuizManager extends Component {
 	state = {
 		commentsCount: 0,
