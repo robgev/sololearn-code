@@ -32,6 +32,7 @@ import Skills from './Skills';
 import Badges from './Badges';
 import TabLabel from './ProfileTabLabel';
 import FollowersBase from './FollowersBase';
+import ProfileSidebar from './ProfileSidebar';
 
 import IProfile from './IProfile';
 
@@ -85,7 +86,7 @@ class Profile extends Component {
 		} = this.props;
 
 		return (
-			<Layout className="profile-container">
+			<Layout className="profile-container" sidebarContent={<ProfileSidebar />}>
 				<Paper className="profile-overlay">
 					<BusyWrapper
 						isBusy={data.id === undefined}

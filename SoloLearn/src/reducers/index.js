@@ -30,7 +30,6 @@ import notificationsCount from './reducer_notifications_count';
 // Feed
 import feed from './feed.reducer';
 import feedPins from './reducer_feed_pins';
-import userSuggestions from './reducer_user_suggestions';
 
 // Slay
 import slay from './slay.reducer';
@@ -75,7 +74,6 @@ const reducers = combineReducers({
 	// Feed
 	feed,
 	feedPins,
-	userSuggestions,
 	// Quiz factory
 	quizSubmission,
 });

@@ -93,7 +93,7 @@ render() {
 				<div className={`avatar-meta-info-container ${reversedOrder ? 'reversed' : ''}`}>
 					{withUserNameBox &&
 						<div>
-							<p className="avatar-user-name">{userName}
+							<p className="avatar-user-name hoverable">{userName}
 								<ModBadge
 									badge={modBadge}
 									className="small"

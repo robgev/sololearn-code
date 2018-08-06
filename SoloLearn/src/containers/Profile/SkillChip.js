@@ -31,7 +31,7 @@ const SkillChips = ({ t, course, shouldShowLink }) => (
 			<p className="course-name">{course.languageName}</p>
 			<p className="course-xp">{course.xp} XP</p>
 			{ (course.progress >= 1 && shouldShowLink) &&
-				<Link to={`/certificate/${course.id}`}>
+				<Link className="hoverable" to={`/certificate/${course.id}`}>
 					{t('skills.view-certificate')}
 				</Link>
 			}

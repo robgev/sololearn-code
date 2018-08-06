@@ -309,13 +309,13 @@ class QuizManager extends Component {
 			<Layout>
 				<Paper className="quiz-container" style={{ padding: 15 }}>
 					<div className="lesson-breadcrumbs">
-						<Link to={`/learn/${courseName}/${courseId}/${itemType}`}>
+						<Link className="hoverable" to={`/learn/${courseName}/${courseId}/${itemType}`}>
 							{course.name} &gt;
 						</Link>
-						<Link to={`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}`}>
+						<Link className="hoverable" to={`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}`}>
 							{activeModule.name} &gt;
 						</Link>
-						<Link to={`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}/${activeLesson.id}/${toSeoFriendly(activeLesson.name, 100)}/1`}>
+						<Link className="hoverable" to={`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}/${activeLesson.id}/${toSeoFriendly(activeLesson.name, 100)}/1`}>
 							{activeLesson.name}
 						</Link>
 					</div>

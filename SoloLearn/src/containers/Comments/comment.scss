@@ -21,6 +21,10 @@
 			}
 		}
 	}
+	.comment-preview {
+		display: flex;
+		padding: 0 50px;
+	}
 	.comment-bottom-toolbar {
 		display: flex;
 		align-items: center;
@@ -31,8 +35,11 @@
 			align-items: center;
 		}
 	}
-	> p {
-		padding-left: 50px;
+	> .Linkify > p {
+		font-size: 14px;
+    color: rgb(130, 126, 126);
+		padding: 0 50px;
+		margin-bottom: 5px;
 	}
   &.animate {
     animation: highlight 1.5s ease-in 1;

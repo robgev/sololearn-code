@@ -86,9 +86,9 @@ class Question extends Component {
 				<div className="details-wrapper" style={styles.detailsWrapper}>
 					<div className="stats" style={styles.stats}>
 						<IconButton
-							className="upvote"
 							style={styles.vote.button.base}
 							iconStyle={styles.vote.button.icon}
+							className="upvote hoverable-icon"
 							onClick={() => { this.props.votePost(question, 1); }}
 						>
 							<ThumbUp color={question.vote === 1 ? blueGrey500 : grey500} />
@@ -99,9 +99,9 @@ class Question extends Component {
 							id={question.id}
 						/>
 						<IconButton
-							className="downvote"
 							style={styles.vote.button.base}
 							iconStyle={styles.vote.button.icon}
+							className="downvote hoverable-icon"
 							onClick={() => { this.props.votePost(question, -1); }}
 						>
 							<ThumbDown color={question.vote === -1 ? blueGrey500 : grey500} />
@@ -174,7 +174,7 @@ class Question extends Component {
 				</div>
 				<div className="additional-details" style={styles.additionalDetails}>
 					<IconButton
-						className="follow"
+						className="follow hoverable-icon"
 						style={styles.followButton.base}
 						iconStyle={styles.followButton.icon}
 						onClick={this.handleFollowing}

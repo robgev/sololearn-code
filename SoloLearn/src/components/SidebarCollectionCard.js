@@ -24,7 +24,7 @@ const SidebarCollection = ({
 		<div style={{ color: 'rgba(0, 0, 0, .87)' }} className="meta-info">
 			<p>{ title }</p>
 			{ !noViewMore &&
-				<Link to={bookmarks ? 'learn/bookmarks' : `/learn/more/author/${userID}`} >
+				<Link className="hoverable" to={bookmarks ? 'learn/bookmarks' : `/learn/more/author/${userID}`} >
 					{t('common.loadMore')}
 				</Link>
 			}

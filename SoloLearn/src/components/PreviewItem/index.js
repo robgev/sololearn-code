@@ -31,7 +31,7 @@ const PreviewBody = ({
 };
 
 const PreviewItem = props => (
-	<Link to={props.link} className="preview-container">
+	<Link to={props.link} className={`preview-container ${props.className}`}>
 		<PreviewBody {...props} />
 	</Link>
 );

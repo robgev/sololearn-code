@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import Service from 'api/service';
+import { followSuggestion } from 'actions/discover';
 import { numberFormatter, showError } from 'utils';
 import 'styles/components/UserCard.scss';
 
@@ -12,23 +13,14 @@ const CustomWrapper = ({ children, className }) => (
 	</span>
 );
 
+@connect(null, { followSuggestion })
 class UserCard extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			following: props.isFollowing,
-		};
-	}
-
-handleFollow = async () => {
-	const { following } = this.state;
-	const { id } = this.props;
-	const endpoint = following ? 'Profile/Unfollow' : 'Profile/Follow';
-	this.setState(prevState => ({ following: !prevState.following }));
-	Service.request(endpoint, { id })
+handleFollow = () => {
+	const { id, isFollowing } = this.props;
+	this.props.followSuggestion({ id, isFollowing })
 		.catch((e) => {
-			showError(e, `Something went wrong when trying to ${following ? 'unfollow' : 'follow'}`);
-			this.setState(prevState => ({ following: !prevState.following }));
+			showError(e, `Something went wrong when trying to ${isFollowing ? 'unfollow' : 'follow'}`);
+			this.props.followSuggestion({ id, isFollowing });
 		});
 }
 
@@ -40,10 +32,10 @@ render() {
 		withLink,
 		followers,
 		avatarUrl,
+		isFollowing,
 		className = '',
 		withFollowButton,
 	} = this.props;
-	const { following } = this.state;
 	const WrapperComponent = withLink ? Link : CustomWrapper;
 	return (
 		<div className={`discover-user-card-container ${className}`}>
@@ -67,10 +59,10 @@ render() {
 					}
 					{withFollowButton ?
 						<RaisedButton
-							secondary={following}
+							secondary={isFollowing}
 							onClick={this.handleFollow}
 							className="user-card-follow-button"
-							label={following ? 'Following' : 'Follow'}
+							label={isFollowing ? 'Following' : 'Follow'}
 						/> : (
 							<Link to={`/profile/${id}`} className="user-card-follow-button">
 								<RaisedButton

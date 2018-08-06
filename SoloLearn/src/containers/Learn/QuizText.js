@@ -156,7 +156,7 @@ const TextContent = props => (
 
 const NoteBlock = props => (
 	<div className="note-block" style={styles.noteBlock}>
-	<span className="note" style={styles.note} dangerouslySetInnerHTML={{ __html: props.noteText }} />
+		<span className="note" style={styles.note} dangerouslySetInnerHTML={{ __html: props.noteText }} />
 	</div>
 );
 
@@ -394,7 +394,7 @@ class QuizText extends Component {
 			.replace(/(\[)(\/?(b|i|u))(\])/g, '<' + '$2' + '>')
 			.replace(/(\[)(h1|h2|h3)(\])/g, '<' + '$2' + '>')
 			.replace(/(\[\/)(h1|h2|h3)(\])/g, '</' + '$2' + '>')
-			.replace(anchorRegex, '<a ' + '$2' + '>' + '$3' + '</a>');
+			.replace(anchorRegex, '<a class="hoverable"' + '$2' + '>' + '$3' + '</a>');
 
 		return this.generateBlocks(text);
 	}
@@ -413,8 +413,8 @@ class QuizText extends Component {
 					<CodeBlock
 						key={index}
 						basePath={pathname}
-	text={element.props.codeText}
-	codeId={element.props.codeId}
+						text={element.props.codeText}
+						codeId={element.props.codeId}
 						format={element.props.format}
 						courseLanguage={courseLanguage}
 					/>
@@ -441,23 +441,23 @@ class QuizText extends Component {
     		withToolbar, userData, date, quizId,
     	} = this.props;
     	return (
-	<div className="text-container" style={styles.textContainer}>
-    			{tooltipOpened}
-    			{tooltipTopPlaced}
-    			{tooltipRightPlaced}
-    			{tooltipLeftPlaced}
-    			{tooltipBottomPlaced}
-    			<div id="text-content">{this.renderComponentParts()}</div>
-    			{withToolbar &&
+    		<div className="text-container" style={styles.textContainer}>
+		{tooltipOpened}
+		{tooltipTopPlaced}
+		{tooltipRightPlaced}
+		{tooltipLeftPlaced}
+		{tooltipBottomPlaced}
+		<div id="text-content">{this.renderComponentParts()}</div>
+		{withToolbar &&
                     <SlayLessonToolbar
-                    	id={quizId}
-                    	userData={userData}
-                    	isBookmarked={isBookmarked}
-                    	timePassed={updateDate(date)}
-                    	toggleBookmark={this.toggleBookmark}
+	id={quizId}
+	userData={userData}
+	isBookmarked={isBookmarked}
+	timePassed={updateDate(date)}
+	toggleBookmark={this.toggleBookmark}
                     />
     			}
-    		</div>
+	</div>
     	);
     }
 

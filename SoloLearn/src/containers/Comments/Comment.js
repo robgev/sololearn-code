@@ -12,6 +12,7 @@ import CommentList from './CommentList';
 import CommentView from './CommentView';
 import IComment from './IComment';
 import { filterExisting } from './comments.utils';
+import Linkify from 'react-linkify';
 
 const mapStateToProps = ({ userProfile }) => ({
 	userProfile,
@@ -244,7 +245,11 @@ class Comment extends Component {
 								/>
 							</div>
 						)
-						: <p>{replaceMention(message)}</p>)}
+						: (
+							<Linkify>
+								<p>{replaceMention(message)}</p>
+							</Linkify>
+						))}
 				</CommentView>
 				<Divider style={{ backgroundColor: '#FAFAFA' }} />
 				{

@@ -29,7 +29,7 @@ const LeaderboardCard = ({
 								key={user.name}
 								to={`/profile/${user.userID}`}
 								id={`user-card-${user.userID}`}
-								className="leaderboard-card  highlighted"
+								className="leaderboard-card  highlighted hoverable"
 							>
 								<UserCard {...user} />
 							</Link>
@@ -38,7 +38,7 @@ const LeaderboardCard = ({
 							key={user.name}
 							to={`/profile/${user.userID}`}
 							id={`user-card-${user.userID}`}
-							className="leaderboard-card"
+							className="leaderboard-card hoverable"
 						>
 							<UserCard {...user} />
 						</Link>

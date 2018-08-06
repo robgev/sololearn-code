@@ -56,7 +56,7 @@ const CollectionCard = ({
 			<div className={`meta-info ${!description ? 'big-padding-bottom' : ''}`}>
 				<p>{ name }</p>
 				{ !noViewMore &&
-				<Link to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} >
+				<Link className="hoverable" to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} >
 					{t('common.loadMore')}
 				</Link>
 				}

@@ -31,12 +31,12 @@ const Settings = ({ t, params: { settingID = 'profile' } }) => {
 	return (
 		<Layout className="settings-container">
 			<div className="settings-sections">
-				<Link to="/settings/profile">{t('settings.edit-profile')}</Link>
-				<Link to="/settings/password">{t('settings.change-password')}</Link>
-				<Link to="/settings/blocking">{t('settings.blocked-accounts')}</Link>
-				<Link to="/settings/weapons">{t('settings.manage-weapons')}</Link>
-				<Link to="/settings/content">{t('settings.activity-feed')}</Link>
-				<Link to="/settings/localization">{t('settings.language')}</Link>
+				<Link className="hoverable" to="/settings/profile">{t('settings.edit-profile')}</Link>
+				<Link className="hoverable" to="/settings/password">{t('settings.change-password')}</Link>
+				<Link className="hoverable" to="/settings/blocking">{t('settings.blocked-accounts')}</Link>
+				<Link className="hoverable" to="/settings/weapons">{t('settings.manage-weapons')}</Link>
+				<Link className="hoverable" to="/settings/content">{t('settings.activity-feed')}</Link>
+				<Link className="hoverable" to="/settings/localization">{t('settings.language')}</Link>
 			</div>
 			<div className="settings-main">
 				<SettingsComponent />

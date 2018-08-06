@@ -138,19 +138,19 @@ class Leaderboards extends PureComponent {
 						<div className="leaderboard-tabs">
 							<Link
 								to={`/leaderboards/${userId}/1/${range}`}
-								className={`mode-item ${mode === 1 ? 'active' : ''}`}
+								className={`hoverable mode-item ${mode === 1 ? 'active' : ''}`}
 							>
 								{texts.following}
 							</Link>
 							<Link
 								to={`/leaderboards/${userId}/2/${range}`}
-								className={`mode-item ${mode === 2 ? 'active' : ''}`}
+								className={`hoverable mode-item ${mode === 2 ? 'active' : ''}`}
 							>
 								{texts.local}
 							</Link>
 							<Link
 								to={`/leaderboards/${userId}/0/${range}`}
-								className={`mode-item ${mode === 0 ? 'active' : ''}`}
+								className={`hoverable mode-item ${mode === 0 ? 'active' : ''}`}
 							>
 								{texts.global}
 							</Link>

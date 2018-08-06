@@ -81,7 +81,7 @@ class FollowItem extends Component {
 						tooltipId={`follower-${follow.id}`}
 					/>
 					<Link to={`/profile/${follow.id}`} style={styles.authorDetails}>
-						<p style={styles.name}>{follow.name}</p>
+						<p className="hoverable" style={styles.name}>{follow.name}</p>
 						<p style={styles.info}>{follow.followers} {t('common.user-followers')} | {t('common.user-level')} {follow.level}</p>
 					</Link>
 				</div>

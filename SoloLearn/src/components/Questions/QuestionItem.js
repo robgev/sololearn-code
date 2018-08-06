@@ -41,8 +41,8 @@ class QuestionItem extends PureComponent {
 				</div>
 				<div className="question-item-details-wrapper">
 					<div>
-						<Link className="question-item-title-link" to={`/discuss/${question.id}`}>
-							<p className="question-item-title">{question.title}</p>
+						<Link className="question-item-title-link hoverable" to={`/discuss/${question.id}`}>
+							{question.title}
 						</Link>
 						<div>
 							{

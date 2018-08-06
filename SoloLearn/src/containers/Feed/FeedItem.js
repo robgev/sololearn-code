@@ -136,7 +136,7 @@ class FeedItem extends Component {
 			this.url = `/profile/${feedItem.contest.player.id}`;
 			return <Challenge contest={feedItem.contest} />;
 		case types.suggestions:
-			return <FeedSuggestions feedItem={feedItem} />;
+			return <FeedSuggestions number={feedItem.number} />;
 		case types.postedLessonComment:
 		case types.postedLessonCommentReply:
 			// this.url = `/learn/${feedItem.course.alias}/${feedItem.course.id}`;

@@ -8,6 +8,7 @@ import { getDiscoverSuggestions } from 'actions/discover';
 import UserCard from 'components/UserCard';
 import BusyWrapper from 'components/BusyWrapper';
 import Layout from 'components/Layouts/GeneralLayout';
+import { showError } from 'utils';
 
 import 'styles/components/Layouts/DiscoverLayout.scss';
 
@@ -37,9 +38,13 @@ class DiscoverContainer extends PureComponent {
 	}
 
 	handleQuery = async (query) => {
-		this.setState({ loading: true });
-		await this.props.getDiscoverSuggestions(query);
-		this.setState({ loading: false });
+		try {
+			this.setState({ loading: true });
+			await this.props.getDiscoverSuggestions(query);
+			this.setState({ loading: false });
+		} catch (e) {
+			showError(e, 'Error while trying to get user list');
+		}
 	}
 
 	render() {

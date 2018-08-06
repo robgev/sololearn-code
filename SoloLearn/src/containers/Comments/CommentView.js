@@ -5,9 +5,10 @@ import { translate } from 'react-i18next';
 import ProfileAvatar from 'components/ProfileAvatar';
 import VoteControls from 'components/VoteControls';
 import ReportPopup from 'components/ReportPopup';
+import PreviewItem from 'components/PreviewItem';
 import { IconMenu, MenuItem, FlatButton, IconButton, Dialog } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import { updateDate } from 'utils';
+import { updateDate, generatePreviews } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
 import RemovalPopup from './RemovalPopup';
 import './comment.scss';
@@ -53,6 +54,8 @@ class CommenView extends Component {
 			upvote, downvote, selfDestruct, onRepliesButtonClick,
 			t, children, onRequestRemoval, accessLevel,
 		} = this.props;
+
+		const previewsData = generatePreviews(message);
 
 		return (
 			<div
@@ -116,6 +119,13 @@ class CommenView extends Component {
 				{children({
 					isEditing: this.isEditing, message, toggleEdit: this.toggleEdit, id,
 				})}
+				{previewsData.map(singlePreviewData => (
+					<PreviewItem
+						{...singlePreviewData}
+						key={singlePreviewData.link}
+						className="comment-preview"
+					/>
+				))}
 				<div className="comment-bottom-toolbar">
 					<VoteControls
 						id={id}
