@@ -45,6 +45,15 @@ export const getCodes = ({
 	}
 };
 
+export const getSidebarCodes = ({
+	query = '', count = 20, language = '',
+} = {}) => async (dispatch) => {
+	const { codes } = await Service.request('Playground/GetPublicCodes', {
+		index: 0, query, count, orderBy: 3, language,
+	});
+	dispatch({ type: types.SET_SIDEBAR_CODES, payload: codes });
+};
+
 export const setCodesFilters = filters => (dispatch, getState) => {
 	const oldFilters = codesFiltersSelector(getState());
 	const formattedFilters = { ...filters };

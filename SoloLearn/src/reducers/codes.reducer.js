@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { createSelector } from 'reselect';
 import uniqBy from 'lodash/uniqBy';
 import {
-	SET_CODES, EMPTY_CODES, REMOVE_CODE,
+	SET_SIDEBAR_CODES, SET_CODES, EMPTY_CODES, REMOVE_CODE,
 	SET_CODES_FILTERS, MARK_CODES_LIST_FINISHED, REQUEST_CODES,
 } from 'constants/ActionTypes';
 
@@ -51,11 +51,23 @@ const entities = (state = [], action) => {
 	}
 };
 
+const sidebarCodes = (state = [], action) => {
+	switch (action.type) {
+	case SET_SIDEBAR_CODES:
+		return action.payload;
+	case REMOVE_CODE:
+		return state.filter(code => code.id !== action.payload);
+	default:
+		return state;
+	}
+};
+
 export default combineReducers({
 	entities,
 	filters,
 	hasMore,
 	isFetching,
+	sidebarCodes,
 });
 
 const codesReducerSelector = state => state.codes;
@@ -63,6 +75,11 @@ const codesReducerSelector = state => state.codes;
 export const codesSelector = createSelector(
 	codesReducerSelector,
 	codes => codes.entities,
+);
+
+export const sidebarCodesSelector = createSelector(
+	codesReducerSelector,
+	codes => codes.sidebarCodes,
 );
 
 export const codesFiltersSelector = createSelector(

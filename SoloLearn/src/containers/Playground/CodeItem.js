@@ -13,6 +13,8 @@ import { numberFormatter } from 'utils';
 import ProfileAvatar from 'components/ProfileAvatar';
 import LanguageIcon from 'components/LanguageIcon';
 
+import 'styles/Playground/CodeItem.scss';
+
 const CodeItem = ({ code }) => (
 	<div className="code-item-wrapper">
 		<div className="author-details">

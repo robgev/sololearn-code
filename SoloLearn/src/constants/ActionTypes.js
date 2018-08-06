@@ -18,6 +18,7 @@ export const REMOVE_CODE = 'REMOVE_CODE';
 export const SET_CODES_FILTERS = 'SET_CODES_FILTERS';
 export const MARK_CODES_LIST_FINISHED = 'MARK_CODES_LIST_FINISHED';
 export const REQUEST_CODES = 'REQUEST_CODES';
+export const SET_SIDEBAR_CODES = 'SET_SIDEBAR_CODES';
 
 // Discuss types
 export const SET_POSTS = 'SET_POSTS';

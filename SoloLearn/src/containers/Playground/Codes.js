@@ -4,7 +4,7 @@ import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { DropDownMenu, MenuItem } from 'material-ui';
 import {
-	getCodes, emptyCodes, setCodesFilters,
+	getCodes, emptyCodes, setCodesFilters, getSidebarCodes,
 } from 'actions/playground';
 import {
 	codesSelector, codesFiltersSelector, codesHasMoreSelector,
@@ -16,6 +16,7 @@ import Layout from 'components/Layouts/GeneralLayout';
 
 import 'styles/Playground/CodesBase.scss';
 import CodesList from './CodesList';
+import PlaygroundSidebar from './PlaygroundSidebar';
 
 const mapStateToProps = state => ({
 	codes: codesSelector(state),
@@ -24,7 +25,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-	getCodes, emptyCodes, setCodesFilters,
+	getCodes, emptyCodes, setCodesFilters, getSidebarCodes,
 };
 
 @translate()
@@ -35,6 +36,7 @@ class Codes extends Component {
 		const { location, filters } = this.props;
 		const query = { ...filters, ...location.query };
 		browserHistory.replace({ ...location, query });
+		this.props.getSidebarCodes();
 	}
 	componentWillUpdate(nextProps) {
 		// Source of truth is the route
@@ -58,7 +60,9 @@ class Codes extends Component {
 			codes, filters, hasMore, t,
 		} = this.props;
 		return (
-			<Layout>
+			<Layout
+				sidebarContent={<PlaygroundSidebar />}
+			>
 				<div className="playground-codes-container">
 					<CodesList
 						header={
