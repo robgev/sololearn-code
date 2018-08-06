@@ -32,7 +32,7 @@ const CourseBox = ({
 			</div>
 		}
 		<Link
-			to={`/learn/course/${toSeoFriendly(name, 100)}`}
+			to={`/learn/course/${name}`}
 			className="course-card-wrapper"
 		>
 			<div className="image-wrapper" style={{ backgroundColor: color }}>

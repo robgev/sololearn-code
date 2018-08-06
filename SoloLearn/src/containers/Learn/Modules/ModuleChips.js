@@ -36,7 +36,7 @@ const ModuleChips = ({
 					className={alignmentClass}
 					paperClassName={stateClass}
 					onClick={e => onClick(e, module.id, moduleState)}
-					linkAddress={`/learn/course/${courseName}/${toSeoFriendly(module.name, 100)}`}
+					linkAddress={`/learn/course/${courseName}/${module.name}`}
 				/>
 			);
 		})}

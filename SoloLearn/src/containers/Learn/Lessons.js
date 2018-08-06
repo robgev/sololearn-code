@@ -71,7 +71,7 @@ class Lessons extends Component {
 		}
 		this.props.selectLesson(lessonId, lessonState);
 		this.props.selectQuiz(this.getActiveQuiz(this.props.lessons[lessonId]));
-		browserHistory.push(`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(lessonName, 100)}`);
+		browserHistory.push(`/learn/course/${courseName}/${moduleName}/${lessonName}`);
 	}
 
 	getActiveQuiz = (lesson) => {

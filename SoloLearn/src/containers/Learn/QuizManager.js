@@ -102,12 +102,12 @@ class QuizManager extends Component {
 							localProgress[localProgress.length - 1].lessonID :
 							lessons[0].id;
 						this.setActiveLesson(activeLessonId, activeModuleId);
-						browserHistory.replace(`/learn/course/${courseName}/${toSeoFriendly(moduleName, 100)}/${toSeoFriendly(this.props.activeLesson.name, 100)}`);
+						browserHistory.replace(`/learn/course/${courseName}/${moduleName}/${this.props.activeLesson.name}`);
 					} else {
 						const { localProgress } = Progress;
 						const activeLessonId = localProgress[localProgress.length - 1].lessonID;
 						this.setActiveLesson(activeLessonId, moduleId);
-						browserHistory.replace(`/learn/course/${courseName}/${toSeoFriendly(moduleName, 100)}/${toSeoFriendly(this.props.activeLesson.name, 100)}`);
+						browserHistory.replace(`/learn/course/${courseName}/${moduleName}/${this.props.activeLesson.name}`);
 					}
 				} else {
 					this.setActiveLesson(lessonId, moduleId);
@@ -240,7 +240,7 @@ class QuizManager extends Component {
 			},
 		} = this.props;
 		const lesson = this.props.activeLesson;
-		browserHistory.push(`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(lesson.name, 100)}`);
+		browserHistory.push(`/learn/course/${courseName}/${moduleName}/${lesson.name}`);
 	}
 
 	getActiveQuiz = (lesson) => {
@@ -315,7 +315,7 @@ class QuizManager extends Component {
 						<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}`}>
 							{activeModule.name} &gt;
 						</Link>
-						<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(activeLesson.name, 100)}`}>
+						<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}/${activeLesson.name}`}>
 							{activeLesson.name}
 						</Link>
 					</div>

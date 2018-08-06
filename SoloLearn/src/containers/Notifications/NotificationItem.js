@@ -90,7 +90,7 @@ class NotificationItem extends Component {
 		case types.postedLessonComment:
 		case types.postedLessonCommentReply:
 		case types.upvoteComment:
-			browserHistory.push(`/learn/course/${toSeoFriendly(notification.course.name, 100)}?commentID=${notification.comment.id}`);
+			browserHistory.push(`/learn/course/${notification.course.name}?commentID=${notification.comment.id}`);
 			break;
 		default:
 			break;
