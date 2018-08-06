@@ -102,12 +102,12 @@ class QuizManager extends Component {
 							localProgress[localProgress.length - 1].lessonID :
 							lessons[0].id;
 						this.setActiveLesson(activeLessonId, activeModuleId);
-						browserHistory.replace(`/learn/${courseName}/${courseId}/${itemType}/${activeModuleId}/${toSeoFriendly(moduleName, 100)}/${activeLessonId}/${toSeoFriendly(this.props.activeLesson.name, 100)}/${this.props.activeQuiz.number}`);
+						browserHistory.replace(`/learn/course/${courseName}/${toSeoFriendly(moduleName, 100)}/${toSeoFriendly(this.props.activeLesson.name, 100)}`);
 					} else {
 						const { localProgress } = Progress;
 						const activeLessonId = localProgress[localProgress.length - 1].lessonID;
 						this.setActiveLesson(activeLessonId, moduleId);
-						browserHistory.replace(`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${toSeoFriendly(moduleName, 100)}/${activeLessonId}/${toSeoFriendly(this.props.activeLesson.name, 100)}/${this.props.activeQuiz.number}`);
+						browserHistory.replace(`/learn/course/${courseName}/${toSeoFriendly(moduleName, 100)}/${toSeoFriendly(this.props.activeLesson.name, 100)}`);
 					}
 				} else {
 					this.setActiveLesson(lessonId, moduleId);
@@ -240,7 +240,7 @@ class QuizManager extends Component {
 			},
 		} = this.props;
 		const lesson = this.props.activeLesson;
-		browserHistory.push(`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}/${lesson.id}/${toSeoFriendly(lesson.name, 100)}/${number}`);
+		browserHistory.push(`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(lesson.name, 100)}`);
 	}
 
 	getActiveQuiz = (lesson) => {
@@ -309,13 +309,13 @@ class QuizManager extends Component {
 			<Layout>
 				<Paper className="quiz-container" style={{ padding: 15 }}>
 					<div className="lesson-breadcrumbs">
-						<Link className="hoverable" to={`/learn/${courseName}/${courseId}/${itemType}`}>
+						<Link className="hoverable" to={`/learn/course/${courseName}`}>
 							{course.name} &gt;
 						</Link>
-						<Link className="hoverable" to={`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}`}>
+						<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}`}>
 							{activeModule.name} &gt;
 						</Link>
-						<Link className="hoverable" to={`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}/${activeLesson.id}/${toSeoFriendly(activeLesson.name, 100)}/1`}>
+						<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(activeLesson.name, 100)}`}>
 							{activeLesson.name}
 						</Link>
 					</div>

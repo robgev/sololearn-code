@@ -161,7 +161,7 @@ class SlayLesson extends PureComponent {
 								isBookmarked={isBookmarked}
 							/>
 							{nextLesson &&
-								<Link to={`/learn/slayLesson/${itemType}/${nextLesson.id}/1`}>
+								<Link to={`/learn/lesson/${nextLesson.id}/1`}>
 									<RaisedButton
 										labelColor="#fff"
 										backgroundColor="#8bc34a"

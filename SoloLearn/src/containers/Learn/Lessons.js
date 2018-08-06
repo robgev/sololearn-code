@@ -71,7 +71,7 @@ class Lessons extends Component {
 		}
 		this.props.selectLesson(lessonId, lessonState);
 		this.props.selectQuiz(this.getActiveQuiz(this.props.lessons[lessonId]));
-		browserHistory.push(`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}/${lessonId}/${toSeoFriendly(lessonName, 100)}/1`);
+		browserHistory.push(`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(lessonName, 100)}`);
 	}
 
 	getActiveQuiz = (lesson) => {
@@ -117,10 +117,10 @@ class Lessons extends Component {
 			<Layout>
 				<div className="lessons-container">
 					<div className="lesson-breadcrumbs">
-						<Link className="hoverable" to={`/learn/${courseName}/${courseId}/${itemType}`}>
+						<Link className="hoverable" to={`/learn/course/${courseName}`}>
 							{course.name}
 						</Link> &gt;
-						<Link className="hoverable" to={`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}`}>
+						<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}`}>
 							{name}
 						</Link>
 					</div>

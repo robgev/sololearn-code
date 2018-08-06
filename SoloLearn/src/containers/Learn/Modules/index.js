@@ -70,17 +70,17 @@ class Modules extends Component {
 		} = this.props;
 		this.setState({ loading: true });
 		if (!isLoaded || courseName !== toSeoFriendly(course.name, 100)) {
-			const courseNameIsANumber = courseName.match(/^\d+$/);
-			// I've added this temporary code to reroute to the slay lessons
-			// The next if statement needs to be removed after reconstructing the routes
-			if (courseNameIsANumber) {
-				browserHistory.replace(`/learn/slayLesson/2/${courseName}/1`);
-			} else {
-				const currentCourse = courses.find(item =>
-					toSeoFriendly(item.name, 100) === courseName);
-				const courseId = currentCourse ? currentCourse.id : null;
-				await loadCourseInternal(courseId);
-			}
+			// const courseNameIsANumber = courseName.match(/^\d+$/);
+			// // I've added this temporary code to reroute to the slay lessons
+			// // The next if statement needs to be removed after reconstructing the routes
+			// if (courseNameIsANumber) {
+			// 	browserHistory.replace(`/learn/lesson/2/${courseName}/1`);
+			// } else {
+			const currentCourse = courses.find(item =>
+				toSeoFriendly(item.name, 100) === courseName);
+			const courseId = currentCourse ? currentCourse.id : null;
+			await loadCourseInternal(courseId);
+			// }
 			document.title = this.props.course ? `Modules of ${this.props.course.name}` : 'Sololearn | Slay';
 			ReactGA.ga('send', 'screenView', { screenName: 'Modules Page' });
 		}

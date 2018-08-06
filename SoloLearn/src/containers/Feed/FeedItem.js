@@ -81,10 +81,10 @@ class FeedItem extends Component {
 			this.url = `/profile/${feedItem.user.id}/badges/${feedItem.achievement.id}`;
 			return <Badge achievement={feedItem.achievement} />;
 		case types.courseStarted:
-			this.url = `/learn/${toSeoFriendly(feedItem.course.name, 100)}/${feedItem.course.id}/1`;
+			this.url = `/learn/course/${toSeoFriendly(feedItem.course.name, 100)}`;
 			return <Course course={feedItem.course} openPopup={this.props.openCoursePopup} />;
 		case types.courseCompleted:
-			this.url = `/learn/${toSeoFriendly(feedItem.course.name, 100)}/${feedItem.course.id}/1`;
+			this.url = `/learn/course/${toSeoFriendly(feedItem.course.name, 100)}`;
 			return <Course course={feedItem.course} openPopup={this.props.openCoursePopup} />;
 		case types.postedQuestion:
 			this.url = `/discuss/${feedItem.post.id}`;
@@ -140,7 +140,7 @@ class FeedItem extends Component {
 		case types.postedLessonComment:
 		case types.postedLessonCommentReply:
 			// this.url = `/learn/${feedItem.course.alias}/${feedItem.course.id}`;
-			this.url = `/learn/${toSeoFriendly(feedItem.course.name, 100)}/${feedItem.course.id}?commentID=${feedItem.comment.id}`;
+			this.url = `/learn/course/${toSeoFriendly(feedItem.course.name, 100)}?commentID=${feedItem.comment.id}`;
 			return (
 				<div>
 					<Comment url={this.url} comment={feedItem.comment} />
@@ -155,7 +155,7 @@ class FeedItem extends Component {
 			);
 		case types.postedUserLessonComment:
 		case types.postedUserLessonCommentReply:
-			this.url = `/learn/slayLesson/2/${feedItem.userLesson.id}/1?commentID=${feedItem.comment.id}`;
+			this.url = `/learn/lesson/${feedItem.userLesson.id}/1?commentID=${feedItem.comment.id}`;
 			return (
 				<div>
 					<Comment url={this.url} comment={feedItem.comment} />
@@ -185,7 +185,7 @@ class FeedItem extends Component {
 				</div>
 			);
 		case types.lessonCreated:
-			this.url = `/learn/slayLesson/2/${feedItem.userLesson.id}/1`;
+			this.url = `/learn/lesson/${feedItem.userLesson.id}/1`;
 			return (
 				<CourseCard
 					itemType={2}

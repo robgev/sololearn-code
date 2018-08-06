@@ -36,7 +36,7 @@ const CoursePopup = ({
 				</div>
 			</div>
 			<div className="course-popup-actions">
-				<Link to={`/learn/${toSeoFriendly(name, 100)}/${id}/1`}>
+				<Link to={`/learn/course/${toSeoFriendly(name, 100)}`}>
 					<FlatButton
 						primary
 						label={t('learn.open-course-action-tite')}

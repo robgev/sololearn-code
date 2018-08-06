@@ -36,8 +36,8 @@ const CourseCard = ({
 		<Link
 			to={
 				itemType === slayItemTypes.course || isCourses ?
-					`/learn/${getCourseNameById(courses, id)}/${id}/1` :
-					`/learn/slayLesson/${itemType}/${id}/1`
+					`/learn/course/${getCourseNameById(courses, id)}` :
+					`/learn/lesson/${id}/1`
 			}
 			style={wrapperStyle}
 			className="course-card-wrapper"

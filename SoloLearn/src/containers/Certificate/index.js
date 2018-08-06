@@ -54,7 +54,7 @@ class Certificate extends PureComponent {
 		const { params: { id }, courses } = this.props;
 		const courseId = parseInt(id, 10);
 		const { name } = courses.find(singleCourse => singleCourse.id === courseId);
-		browserHistory.replace(`/learn/${name}/${id}/1`);
+		browserHistory.replace(`/learn/course/${name}`);
 	}
 
 	render() {
