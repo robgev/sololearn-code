@@ -18,7 +18,8 @@ import SlayMoreOnTopic from 'containers/Learn/SlayMoreOnTopic';
 import SlayMoreByAuthor from 'containers/Learn/SlayMoreByAuthor';
 
 // Learn
-import CourseMore from 'containers/Learn/CourseMore';
+import Modules from 'containers/Learn/Modules';
+import SlayLessonsPage from 'containers/Learn/SlayLessonsPage';
 import Lessons from 'containers/Learn/Lessons';
 import QuizManager from 'containers/Learn/QuizManager';
 import Quiz from 'containers/Learn/Quiz';
@@ -83,11 +84,11 @@ export default ([
 		<Route path="/learn/more/author/:userId" component={SlayMoreByAuthor} />
 		<Route path="/learn/more/:collectionId" component={SlayDetailed} />
 
+		<Route path="/learn/lessons/:courseName/:courseId" component={SlayLessonsPage} />
 		<Route path="/learn/lesson/:lessonId/:pageNumber(/:language(/:codeID))" component={SlayLesson} />
+		<Route path="/learn/course/:courseName/" component={Modules} />
 		<Route path="/learn/course/:courseName/:moduleName" component={Lessons} />
 		<Route path="/learn/course/:courseName/:moduleName/:lessonName" component={QuizManager} />
-		<Route path="/learn/lesson/:courseName/:moduleName/" component={CourseMore} />
-		<Route path="/learn/course/:courseId/:courseName/" component={CourseMore} />
 		{/* <Route path="/learn/slayLesson/
 		:itemType/:lessonId/:pageNumber(/:language(/:codeID))" component={SlayLesson} />
 		<Redirect path="/courses/:co

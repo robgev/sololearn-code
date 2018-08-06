@@ -1,44 +1,45 @@
-import React from 'react';
-import { translate } from 'react-i18next';
-import CircularProgress from 'material-ui/CircularProgress';
-import Layout from 'components/Layouts/GeneralLayout';
-import BusyWrapper from 'components/BusyWrapper';
+import React, { Component } from 'react';
+import ReactGA from 'react-ga';
+import { connect } from 'react-redux';
+import { getCollectionItems, setSelectedCollection } from 'actions/slay';
 
-import 'styles/Learn/Lessons.scss';
-import LessonTiles from './LessonTiles';
+import SlayLessonCards from './SlayLessonCards';
 
-const SlayLessonCards = ({
-	t,
-	name,
-	lessons,
-	loading,
-}) => (
+const mapStateToProps = state => ({
+	selectedCollection: state.slay.selectedCollection,
+	collectionCourses: state.slay.filteredCollectionItems,
+});
 
-	<Layout>
-		<BusyWrapper
-			isBusy={loading}
-			style={{
-				padding: 15,
-				minHeight: '60vh',
-				alignItems: 'initial',
-			}}
-			wrapperClassName="lessons-container"
-			loadingComponent={
-				<CircularProgress
-					size={100}
-				/>
-			}
-		>
-			<div className="lesson-breadcrumbs">
-				{name}
-			</div>
-			<LessonTiles
-				t={t}
-				slayLessons
-				lessons={lessons}
+const mapDispatchToProps = { getCollectionItems, setSelectedCollection };
+
+@connect(mapStateToProps, mapDispatchToProps)
+class SlayLessonsPage extends Component {
+	state = {
+		loading: true,
+	}
+
+	async componentWillMount() {
+		const { params: { courseId } } = this.props;
+		const collectionId = parseInt(courseId, 10);
+		await this.props.setSelectedCollection(collectionId);
+		await this.props.getCollectionItems(collectionId, { index: 0, count: 20 });
+		ReactGA.ga('send', 'screenView', { screenName: 'Collection Page' });
+		this.setState({ loading: false });
+	}
+
+	// This component is just for deciding the right item to show when clicking on round
+	// lesson items in learn home page.
+	render() {
+		const { selectedCollection, collectionCourses } = this.props;
+		const { loading } = this.state;
+		return (
+			<SlayLessonCards
+				loading={loading}
+				lessons={collectionCourses}
+				name={selectedCollection ? selectedCollection.name : ''}
 			/>
-		</BusyWrapper>
-	</Layout>
-);
+		);
+	}
+}
 
-export default translate()(SlayLessonCards);
+export default SlayLessonsPage;

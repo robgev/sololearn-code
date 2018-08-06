@@ -38,7 +38,7 @@ const CourseChip = ({
 				...wrapperStyle,
 			}}
 			className={`chip-container ${(roundItem) ? 'round' : ''} ${className}`}
-			to={customLink || (isCourse ? `/learn/${toSeoFriendly(name, 100)}/${id}/${itemType}` : `/learn/slayLesson/${itemType}/${id}/1`)}
+			to={customLink || (isCourse ? `/learn/${itemType === 1 ? 'course' : 'lessons'}/${toSeoFriendly(name, 100)}/${id}` : `/learn/lesson/${id}/1`)}
 		>
 			<div
 				className={`course-chip-image-container ${(roundItem) ? 'round' : ''} ${noBoxShadow ? '' : 'with-shadow'}`}
