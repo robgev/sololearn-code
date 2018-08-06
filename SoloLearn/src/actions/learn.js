@@ -161,8 +161,3 @@ export const selectQuiz = quiz => ({
 	type: types.QUIZ_SELECTED,
 	payload: quiz,
 });
-
-export const setShortcutLesson = lesson => ({
-	type: types.SET_SHORTCUT_LESSON,
-	payload: lesson,
-});

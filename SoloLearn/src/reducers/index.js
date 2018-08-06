@@ -15,7 +15,6 @@ import quizzesMapping from './reducer_quizzes';
 import activeModuleId from './reducer_active_module';
 import activeLessonId from './reducer_active_lesson';
 import activeQuiz from './reducer_active_quiz';
-import shortcutLesson from './reducer_shortcut';
 
 // Playground
 import codes from './codes.reducer';
@@ -65,7 +64,6 @@ const reducers = combineReducers({
 	activeModuleId,
 	activeLessonId,
 	activeQuiz,
-	shortcutLesson,
 	// Playground
 	codes,
 	// Discuss
