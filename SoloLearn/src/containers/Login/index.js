@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react';
 import { browserHistory } from 'react-router';
-import FacebookLogin from 'react-facebook-login';
 import { toast, Bounce } from 'react-toastify';
 import { connect } from 'react-redux';
-import Paper from 'material-ui/Paper';
 import { login, signup, forgotPassword, logout } from 'actions/login.action';
 
-import Login from './Login';
+import LoginBody from './LoginBody';
+import './style.scss';
 
 const mapDispatchToProps = {
 	login, signup, forgotPassword, logout,
@@ -66,25 +65,17 @@ class LoginContainer extends PureComponent {
 	}
 
 	render() {
+		const isLogin = this.props.location.pathname.includes('login');
 		return (
-			<Paper
-				zDepth={2}
-				style={{
-					width: '50%',
-					margin: 'auto',
-					padding: 10,
-				}}
-			>
-				<Login
+			<div className="login-root-container">
+				<LoginBody
+					isLogin={isLogin}
+					signup={this.signup}
 					alert={this.alert}
 					login={this.login}
-					signup={this.signup}
 					forgot={this.forgot}
 				/>
-				<FacebookLogin
-					appId="153040644900826"
-				/>
-			</Paper>
+			</div>
 		);
 	}
 }

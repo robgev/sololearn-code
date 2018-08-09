@@ -1,0 +1,123 @@
+.login-root-container {
+	.login-body-container {
+		display: flex;
+		justify-content: space-around;
+		height: 100vh;
+		.artwork-container {
+			display: flex;
+			flex: 1 0 50%;
+			margin-left: -1px;
+			align-items: center;
+			background-color: #607D8B;
+			position: relative;
+			overflow: hidden;
+			.artwork-info {
+				padding-left: 50px;
+				.info-item {
+					padding-bottom: 30px;
+					display: flex;
+					align-items: center;
+					p {
+						max-width: 200px;
+						font-size: 18px;
+						color: white;
+					}
+					img {
+						width: 40px;
+						padding: 0 15px;
+					}
+				}
+			}
+			svg {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				fill: white;
+				right: -50%;
+				opacity: 0.4;
+			}
+		}
+		.inputs-container {
+			display: flex;
+			flex-direction: column;
+			flex: 1 0 50%;
+			align-items: center;
+			justify-content: center;
+			border-left: 1px solid #DDDDDD;
+			.inputs-wrapper {
+				width: 50%;
+				.inputs-header {
+					.sololearn {
+						display: flex;
+						align-items: center;
+						img {
+							width: 50px;
+							margin-right: 10px;
+						}
+					}
+					h2 {
+						font-weight: normal;
+						font-size: 19px;
+					}
+				}
+				.input-fields {
+					display: flex;
+					flex-direction: column;
+					input {
+						border: 1px solid #C4C7CC;
+						border-radius: 5px;
+						padding: 5px;
+						margin: 10px 0;
+						font-size: 18px;
+					}
+				}
+				.forgot-pass-container {
+					padding-bottom: 11px;
+					.forgot-pass {
+						color: #AAAAAA;
+						font-size: 13px;
+					}
+				}
+				.tos-disclaimer {
+					color: #AAAAAA;
+					font-size: 13px;
+					padding-bottom: 10px;
+				}
+			}
+			.option-changer {
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				margin-top: 20px;
+				border-top: 1px solid #EFEFEF;
+				padding: 20px 0;
+			}
+			.social-logins {
+				display: flex;
+				justify-content: center;
+				width: 100%;
+				.social-logins-wrapper {
+					display: flex;
+					width: 50%;
+					.login-component {
+						flex: 1;
+						position: relative;
+						height: 40px;
+						line-height: 40px;
+						border: none;
+						color: #fff;
+						cursor: pointer;
+					}
+					.facebook-login {
+						background-color: #47639e;
+						margin-right: 5px;
+					}
+					.google-login {
+						background-color: #de4733;
+						margin-left: 5px;
+					}
+				}
+			}
+		}
+	}
+}

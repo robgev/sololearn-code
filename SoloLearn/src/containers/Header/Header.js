@@ -1,8 +1,8 @@
 // React modules
 import React from 'react';
 import { Link } from 'react-router';
+import HomeIcon from 'components/HomeIcon';
 import 'styles/header.scss';
-import HomeIcon from './HomeIcon';
 import Search from './HeaderSearch';
 
 // Additional components

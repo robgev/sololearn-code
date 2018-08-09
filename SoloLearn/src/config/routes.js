@@ -75,6 +75,7 @@ import {
 // TODO: Playgroud gets language and codeID prop from Slay lesson (parent)
 export default ([
 	<Route path="/login" component={Login} />,
+	<Route path="/signup" component={Login} />,
 	<Route component={redirector(MainLayout)} key="mainLayoutRoutes">
 		<Redirect exact path="/" to="/feed" />
 		<Route path="/learn" component={SlayHome} />
