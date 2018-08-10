@@ -17,7 +17,7 @@ export const login = ({ email, password }) => async (dispatch, getState) => {
 		if (userProfile != null) await dispatch(logout());
 		const res = await Service.request('Login', { email, password: hash(password) });
 		if (res && res.error) return { err: faultGenerator(res.error.data) };
-		dispatch(getUserProfileAsync());
+		await dispatch(getUserProfileAsync());
 		return { err: false };
 	} catch (e) {
 		throw new Error(`Something went wrong when trying to login: ${e.message}`);
