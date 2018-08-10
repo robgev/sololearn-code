@@ -8,12 +8,13 @@ import { translate } from 'react-i18next';
 // Marterial UI components
 import Paper from 'material-ui/Paper';
 import { ProgressState } from 'api/progress';
+import { getCourseByLanguage } from 'reducers/courses.reducer';
 
 // Redux modules
 import {
 	selectQuiz,
 	selectLesson,
-	selectModule,
+	selectModuleByName,
 	loadCourseInternal,
 } from 'actions/learn';
 import { isLoaded } from 'reducers';
@@ -26,9 +27,9 @@ import 'styles/Learn/Lessons.scss';
 import { LessonType } from './QuizManager';
 import LessonTiles from './LessonTiles';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
 	isLoaded: isLoaded(state, 'lessons'),
-	course: state.course,
+	course: getCourseByLanguage(state, ownProps.params.language),
 	modules: state.modulesMapping,
 	activeModule: !state.course ? null : state.modulesMapping[state.activeModuleId],
 	lessons: state.lessonsMapping,
@@ -37,7 +38,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
 	loadCourseInternal,
 	selectLesson,
-	selectModule,
+	selectModuleByName,
 	selectQuiz,
 };
 
@@ -46,10 +47,8 @@ const mapDispatchToProps = {
 class Lessons extends Component {
 	componentWillMount() {
 		if (!this.props.isLoaded) {
-			this.props.loadCourseInternal().then(() => {
-				this.props.selectModule(parseInt(this.props.params.moduleId, 10));
-			}).catch((error) => {
-				console.log(error);
+			this.props.loadCourseInternal(this.props.course.id).then(() => {
+				this.props.selectModuleByName(this.props.params.moduleName);
 			});
 		}
 		document.title = `${this.props.activeModule ? this.props.activeModule.name : 'Learn'}`;
@@ -58,20 +57,15 @@ class Lessons extends Component {
 
 	handleClick = (lessonId, lessonState, lessonName) => {
 		const {
-			params: {
-				courseName,
-				courseId,
-				moduleId,
-				moduleName,
-				itemType,
-			},
+			params,
+			course,
 		} = this.props;
 		if (lessonState.visualState === ProgressState.Disabled) {
 			return;
 		}
 		this.props.selectLesson(lessonId, lessonState);
 		this.props.selectQuiz(this.getActiveQuiz(this.props.lessons[lessonId]));
-		browserHistory.push(`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}/${lessonId}/${toSeoFriendly(lessonName, 100)}/1`);
+		browserHistory.push(`/learn/course/${course.language}/${params.moduleName}/${lessonName}/1`);
 	}
 
 	getActiveQuiz = (lesson) => {

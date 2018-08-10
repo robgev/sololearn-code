@@ -165,12 +165,12 @@ class Quiz extends Component {
 						// alert('CONGRATS');
 					} else {
 						// Go back to module list
-						browserHistory.push('/learn/');
+						browserHistory.push('/learn');
 					}
 				} else {
 					// Else show lessons
 					this.setState({ checkResult: null });
-					browserHistory.push(`/learn/${this.props.activeModuleId}/${this.props.params.moduleName}/`);
+					browserHistory.push(`/learn/course/${this.props.params.language}/`);
 				}
 				// return;
 			}

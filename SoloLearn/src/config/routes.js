@@ -18,6 +18,8 @@ import SlayMoreOnTopic from 'containers/Learn/SlayMoreOnTopic';
 import SlayMoreByAuthor from 'containers/Learn/SlayMoreByAuthor';
 
 // Learn
+import Modules from 'containers/Learn/Modules';
+import SlayLessonsPage from 'containers/Learn/SlayLessonsPage';
 import CourseMore from 'containers/Learn/CourseMore';
 import Lessons from 'containers/Learn/Lessons';
 import QuizManager from 'containers/Learn/QuizManager';
@@ -81,13 +83,23 @@ export default ([
 		<Route path="/learn/more-on/:courseId" component={SlayMoreOnTopic} />
 		<Route path="/learn/more/author/:userId" component={SlayMoreByAuthor} />
 		<Route path="/learn/more/:collectionId" component={SlayDetailed} />
-		<Route path="/learn/slayLesson/:itemType/:lessonId/:pageNumber(/:language(/:codeID))" component={SlayLesson} />
+
+		<Route path="/learn/lessons/:courseName/:courseId" component={SlayLessonsPage} />
+		<Route path="/learn/lesson/:lessonId/:pageNumber(/:language(/:codeID))" component={SlayLesson} />
+		<Route path="/learn/course/:language" component={Modules} />
+		<Route path="/learn/course/:language/:moduleName" component={Lessons} />
+		<Route path="/learn/course/:language/:moduleName/:lessonName" component={QuizManager}>
+			<Route path=":quizNumber(/:primary)(/:secondary)" component={Quiz} />
+		</Route>
+
+		{/* <Route path="/learn/slayLesson/:itemType/:lessonId/:pageNumber(/:language(/:codeID))" component={SlayLesson} />
 		<Redirect path="/courses/:courseName/:courseId/:itemType" to="/learn/:courseName/:courseId/:itemType" />
 		<Route path="/learn/:courseName/:courseId/:itemType" component={CourseMore} />
 		<Route path="/learn/:courseName/:courseId/:itemType/:moduleId(/:moduleName)" component={Lessons} />
 		<Route path="/learn/:courseName/:courseId/:itemType/:moduleId/:moduleName/:lessonId(/:lessonName)" component={QuizManager}>
 			<Route path=":quizNumber(/:primary)(/:secondary)" component={Quiz} />
-		</Route>
+		</Route> */}
+
 		<Route path="/play" component={Play} />
 		<Route path="/codes" component={Codes} />
 		<Route path="/settings(/:settingID)" component={Settings} />

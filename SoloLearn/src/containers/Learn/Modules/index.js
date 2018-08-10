@@ -13,7 +13,8 @@ import CircularProgress from 'material-ui/CircularProgress';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import { loadCourseInternal, toggleCourseInternal, toggleCourse, selectModule } from 'actions/learn';
-import { isLoaded } from 'reducers';
+import { getCourseByLanguage } from 'reducers/courses.reducer';
+import { isCourseLoaded } from 'reducers/reducer_course';
 
 import Service from 'api/service';
 import Progress, { ProgressState } from 'api/progress';
@@ -22,7 +23,6 @@ import BusyWrapper from 'components/BusyWrapper';
 import Layout from 'components/Layouts/GeneralLayout';
 
 import Popup from 'api/popupService';
-import { toSeoFriendly } from 'utils';
 
 import 'styles/Learn/Modules.scss';
 
@@ -30,9 +30,9 @@ import ModuleChips from './ModuleChips';
 import ModuleChip from './ModuleChip';
 import Certificate from './Certificate';
 
-const mapStateToProps = state => ({
-	isLoaded: isLoaded(state, 'modules'),
-	course: state.course,
+const mapStateToProps = (state, ownProps) => ({
+	isLoaded: isCourseLoaded(state, ownProps.params.language),
+	course: getCourseByLanguage(state, ownProps.params.language),
 	courses: state.courses,
 	userProfile: state.userProfile,
 });
@@ -66,21 +66,13 @@ class Modules extends Component {
 			isLoaded,
 			selectModule,
 			loadCourseInternal,
-			params: { courseName },
+			params,
 		} = this.props;
 		this.setState({ loading: true });
-		if (!isLoaded || courseName !== toSeoFriendly(course.name, 100)) {
-			const courseNameIsANumber = courseName.match(/^\d+$/);
+		if (!isLoaded) {
 			// I've added this temporary code to reroute to the slay lessons
 			// The next if statement needs to be removed after reconstructing the routes
-			if (courseNameIsANumber) {
-				browserHistory.replace(`/learn/slayLesson/2/${courseName}/1`);
-			} else {
-				const currentCourse = courses.find(item =>
-					toSeoFriendly(item.name, 100) === courseName);
-				const courseId = currentCourse ? currentCourse.id : null;
-				await loadCourseInternal(courseId);
-			}
+			await loadCourseInternal(course.id);
 			document.title = this.props.course ? `Modules of ${this.props.course.name}` : 'Sololearn | Slay';
 			ReactGA.ga('send', 'screenView', { screenName: 'Modules Page' });
 		}
@@ -96,7 +88,7 @@ class Modules extends Component {
 		this.props.selectModule(moduleId);
 	}
 
-	toggleCourse(courseId, enable) {
+	toggleCourse = (courseId, enable) => {
 		this.props.toggleCourseInternal(courseId, enable);
 	}
 
@@ -112,7 +104,7 @@ class Modules extends Component {
 		Service.request('ResetProgress', { courseId });
 	}
 
-	handleResetPopupOpen(courseId) {
+	handleResetPopupOpen = (courseId) => {
 		this.editableCourseId = courseId;
 		this.setState({ resetPopupOpened: true });
 	}
@@ -122,16 +114,15 @@ class Modules extends Component {
 	}
 
 	render() {
-		const that = this;
 		const {
 			t,
 			course,
-			params: { itemType, courseName },
+			params: { itemType, language },
 			isLoaded: isModuleLoaded,
 		} = this.props;
 		const { loading } = this.state;
 		if (!isModuleLoaded && this.props.userProfile.skills.length > 0) {
-			return <CircularProgress size={80} thickness={5} />;
+			return <CircularProgress size={40} style={{ display: 'flex', alignItems: 'center', margin: 'auto' }} />;
 		}
 
 		const { modules, id } = course;
@@ -142,13 +133,13 @@ class Modules extends Component {
 				componentType: FlatButton,
 				label: 'popupCancel',
 				primary: false,
-				actionCallback: that.handleResetPopupClose,
+				actionCallback: this.handleResetPopupClose,
 			},
 			{
 				componentType: FlatButton,
 				label: 'resetContinue',
 				primary: true,
-				actionCallback: () => { that.resetProgress(this.editableCourseId); },
+				actionCallback: () => { this.resetProgress(this.editableCourseId); },
 			},
 		];
 
@@ -169,7 +160,7 @@ class Modules extends Component {
 						/>
 					}
 				>
-					{ userCourses.length > 0 ?
+					{userCourses.length > 0 ?
 
 						<div className="modules-wrapper">
 							<div className="course-selector">
@@ -198,14 +189,14 @@ class Modules extends Component {
 									modules={modules}
 									itemType={itemType}
 									onClick={this.handleClick}
-									courseName={courseName}
+									courseName={language}
 								/>
 								<Certificate
 									courseId={id}
 									modules={modules}
 								/>
 								<ModuleChip
-									onClick={() => {}}
+									onClick={() => { }}
 									className="center"
 									name="More on the Topic"
 									paperClassName="normal"
@@ -227,7 +218,7 @@ class Modules extends Component {
 						</div>
 					}
 
-					{ this.state.resetPopupOpened && Popup.getPopup(Popup.generatePopupActions(resetProgressActions), this.state.resetPopupOpened, this.handleResetPopupClose, [ { key: 'hintSkipConfirmText', replacemant: this.skipPrice } ]) }
+					{this.state.resetPopupOpened && Popup.getPopup(Popup.generatePopupActions(resetProgressActions), this.state.resetPopupOpened, this.handleResetPopupClose, [ { key: 'hintSkipConfirmText', replacemant: this.skipPrice } ])}
 				</BusyWrapper>
 			</Layout>
 		);

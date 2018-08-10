@@ -1,20 +1,24 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { getUserProfileSync, getUserProfileAsync } from 'actions/profile';
-import { omit } from 'lodash';
+import { getUserSelector } from 'reducers/reducer_user';
+
+const mapStateToProps = state => ({
+	isUserLoaded: getUserSelector(state) !== null,
+});
 
 export default (Comp) => {
+	@connect(mapStateToProps)
 	class Redirector extends Component {
 		componentWillMount() {
-			if (!this.props.getUserProfileSync()) {
+			if (!this.props.isUserLoaded) {
 				browserHistory.replace('/login');
 			}
 		}
 		render() {
-			const cleanedProps = omit(this.props, [ 'getUserProfileAsync', 'getUserProfileSync' ]);
-			return <Comp {...cleanedProps} />;
+			const { isUserLoaded, ...childProps } = this.props;
+			return <Comp {...childProps} />;
 		}
 	}
-	return connect(null, { getUserProfileAsync, getUserProfileSync })(Redirector);
+	return Redirector;
 };

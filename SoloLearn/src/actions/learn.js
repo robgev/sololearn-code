@@ -3,6 +3,7 @@ import Progress from 'api/progress';
 import Storage from 'api/storage';
 import * as types from 'constants/ActionTypes';
 import { getProfileInternal } from 'actions/profile';
+import { getModuleByName } from 'reducers/reducer_modules';
 
 const setLevels = payload => ({ type: types.LOAD_LEVELS, payload });
 const setCourses = payload => ({ type: types.LOAD_COURSES, payload });
@@ -13,9 +14,7 @@ const getCoursesSync = () => (dispatch) => {
 	if (courses !== null && levels !== null) {
 		dispatch(setCourses(courses));
 		dispatch(setLevels(levels));
-		return true;
 	}
-	return false;
 };
 
 const getCoursesAsync = () => async (dispatch) => {
@@ -29,66 +28,37 @@ const getCoursesAsync = () => async (dispatch) => {
 };
 
 export const getCourses = () => (dispatch) => {
-	dispatch(getCoursesAsync());
-	return dispatch(getCoursesSync());
+	dispatch(getCoursesSync());
+	return dispatch(getCoursesAsync());
 };
 
 // Identifying keys of modules, lessons and quizzes objects
-const structurizeCourse = (modules, dispatch) => {
-	let structuredModules = {};
-	let structuredLessons = {};
-	let structuredQuizzes = {};
+const normalizeCourse = modules => (dispatch) => {
+	const normalizedModules = {};
+	const normalizedLessons = {};
+	const normalizedQuizzes = {};
 
-	for (let i = 0; i < modules.length; i++) {
-		const currentModule = modules[i];
-		const currentModuleId = currentModule.id;
+	modules.forEach((mod) => {
+		mod.lessons.forEach((les) => {
+			les.quizzes.forEach((quiz) => {
+				normalizedQuizzes[quiz.id] = quiz;
+			});
+			normalizedLessons[les.id] = les;
+		});
+		normalizedModules[mod.id] = mod;
+	});
 
-		const { lessons } = currentModule;
-
-		for (let j = 0; j < lessons.length; j++) {
-			const currentLesson = lessons[j];
-			const currentLessonId = currentLesson.id;
-
-			const { quizzes } = currentLesson;
-
-			for (let k = 0; k < quizzes.length; k++) {
-				const currentQuiz = quizzes[k];
-				const currentQuizId = currentQuiz.id;
-				const quizObj = {};
-				quizObj[currentQuizId] = quizzes[k];
-				structuredQuizzes = Object.assign(structuredQuizzes, quizObj);
-			}
-
-			const lessonObj = {};
-			lessonObj[currentLessonId] = lessons[j];
-			structuredLessons = Object.assign(structuredLessons, lessonObj);
-		}
-
-		const moduleObj = {};
-		moduleObj[currentModuleId] = modules[i];
-		structuredModules = Object.assign(structuredModules, moduleObj);
-	}
-
-	const modulesMapping = {
+	dispatch({
 		type: types.MAP_MODULES,
-		payload: structuredModules,
-	};
-
-	const lessonsMapping = {
+		payload: normalizedModules,
+	});
+	dispatch({
 		type: types.MAP_LESSONS,
-		payload: structuredLessons,
-	};
-
-	const quizzesMapping = {
+		payload: normalizedLessons,
+	});
+	dispatch({
 		type: types.MAP_QUIZZES,
-		payload: structuredQuizzes,
-	};
-
-	return new Promise((resolve) => {
-		dispatch(modulesMapping);
-		dispatch(lessonsMapping);
-		dispatch(quizzesMapping);
-		resolve();
+		payload: normalizedQuizzes,
 	});
 };
 
@@ -132,7 +102,7 @@ export const loadCourseInternal = courseId => async (dispatch, getState) => {
 		Progress.courseId = course.id;
 		Progress.loadCourse(course); // Getting progress of course
 		await Progress.sync();
-		await structurizeCourse(course.modules, dispatch);
+		dispatch(normalizeCourse(course.modules));
 		dispatch(loadCourse(course));
 	} else {
 		selectedCourseId = selectedCourseId || userCourses[0].id;
@@ -142,7 +112,7 @@ export const loadCourseInternal = courseId => async (dispatch, getState) => {
 		Progress.loadCourse(fetchedCourse); // Getting progress of course
 		await Progress.sync();
 		Storage.save(`c${selectedCourseId}`, fetchedCourse); // Saveing data to localStorage
-		await structurizeCourse(fetchedCourse.modules, dispatch);
+		dispatch(normalizeCourse(fetchedCourse.modules, dispatch));
 		dispatch(loadCourse(fetchedCourse));
 	}
 };
@@ -151,6 +121,11 @@ export const selectModule = moduleId => ({
 	type: types.MODULE_SELECTED,
 	payload: moduleId,
 });
+
+export const selectModuleByName = name => (dispatch, getState) => {
+	const { id } = getModuleByName(getState(), name);
+	dispatch(selectModule(id));
+};
 
 export const selectLesson = lessonId => ({
 	type: types.LESSON_SELECTED,

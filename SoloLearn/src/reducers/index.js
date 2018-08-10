@@ -1,12 +1,13 @@
 // General
 import { createStore, applyMiddleware, combineReducers } from 'redux';
+import Storage from 'api/storage';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
 import userProfile from './reducer_user';
 
 // Learn
-import courses from './reducer_courses';
+import courses from './courses.reducer';
 import course from './reducer_course';
 import levels from './reducer_levels';
 import modulesMapping from './reducer_modules';
@@ -78,10 +79,17 @@ const reducers = combineReducers({
 	quizSubmission,
 });
 
-export const store = createStore(reducers, applyMiddleware(
-	thunk,
-	logger,
-));
+const initialStore = {
+	courses: Storage.load('courses') || undefined,
+	levels: Storage.load('levels') || undefined,
+	userProfile: Storage.load('profile') || undefined,
+};
+
+export const store = createStore(
+	reducers,
+	initialStore,
+	applyMiddleware(thunk, logger),
+);
 
 // Redux selector for detecting data state
 export const isLoaded = (state, componentName) => {
