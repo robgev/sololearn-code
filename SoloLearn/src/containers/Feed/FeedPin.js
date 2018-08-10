@@ -36,7 +36,7 @@ const styles = {
 	},
 
 	heading: {
-		padding: '15px 15px 10px 15px',
+		padding: '15px 20px 10px 20px',
 	},
 
 	title: {
@@ -288,7 +288,7 @@ class FeedPin extends Component {
 				<Paper className="feed-pin-content">
 					<div className="heading" style={styles.heading}>
 						<p className="title" style={styles.title}>{pin.title}</p>
-						<p className="sub-title" style={styles.subTitle}>{pin.message}</p>
+						<p style={styles.subTitle}>{pin.message}</p>
 					</div>
 					{pin.imageUrl &&
 						<img
