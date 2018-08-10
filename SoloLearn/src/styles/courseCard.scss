@@ -31,7 +31,7 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
-			padding: 10px;
+			padding: 10px 15px;
 			.user-link {
 				text-decoration: none;
 				color: #2196F3;
@@ -45,6 +45,7 @@
 					justify-content: space-between;
 					p {
 						padding: 5px;
+						font-size: 13px;
 					}
 				}
 			}
@@ -56,8 +57,8 @@
 			margin: 0;
 			align-items: center;
 		.course-card-image-container {
-				height: 70px;
-				width: 70px;
+				height: 65px;
+				width: 65px;
 			}
 		}
 	}

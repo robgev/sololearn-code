@@ -9,11 +9,11 @@ const ViewStats = ({
 }) => (
 	<div className="view-stats">
 		<div className="stat-group">
-			<ViewsIcon color={color || grey500} style={iconStyle} />
+			<ViewsIcon color={color || grey500} style={{ height: 20, width: 20, ...iconStyle }} />
 			<p>{ numberFormatter(views) }</p>
 		</div>
 		<div className="stat-group">
-			<CommentsIcon color={color || grey500} style={iconStyle} />
+			<CommentsIcon color={color || grey500} style={{ height: 20, width: 20, ...iconStyle }} />
 			<p>{ numberFormatter(comments) }</p>
 		</div>
 	</div>

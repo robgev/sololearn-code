@@ -43,8 +43,9 @@ const Post = ({
 	onUpvote,
 	isQuestion,
 	onDownvote,
+	containerStyle,
 }) => (
-	<div>
+	<div style={containerStyle}>
 		<Link
 			to={url}
 			style={styles.post}

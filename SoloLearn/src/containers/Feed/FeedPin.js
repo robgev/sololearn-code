@@ -20,6 +20,7 @@ import User from './FeedTemplates/User';
 const styles = {
 	feedPinWrapper: {
 		position: 'relative',
+		marginBottom: 10,
 	},
 
 	linkStyle: {
@@ -51,6 +52,7 @@ const styles = {
 	},
 
 	pinImage: {
+		display: 'block',
 		width: '100%',
 	},
 
@@ -99,6 +101,17 @@ const styles = {
 		color: '#777',
 	},
 
+	codeAuthor: {
+		fontSize: '12px',
+		color: '#888',
+	},
+
+	codeInfo: {
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'flex-start',
+	},
+
 	posts: {
 		display: 'flex',
 		boxSizing: 'border-box',
@@ -145,7 +158,11 @@ class FeedPin extends Component {
 		return pin.codes.map(code => (
 			<Link to={`/playground/${code.publicID}`} className="code" style={styles.code} key={`pinCode ${code.id} ${pin.id}`}>
 				<div className="language" style={[ styles.languageIcon, { backgroundColor: getLanguageColor(code.language) } ]}>{code.language}</div>
-				<p style={styles.codeName}>{code.name}</p>
+				<div style={styles.codeInfo}>
+					<p style={styles.codeName}>{code.name}</p>
+					<p style={styles.codeAuthor}>{code.userName}</p>
+
+				</div>
 			</Link>
 		));
 	}
@@ -155,7 +172,7 @@ class FeedPin extends Component {
 		const { pin } = this.props;
 
 		return pin.posts.map(post => (
-			<Post noVotes key={`pinPost ${post.id} ${pin.id}`} post={post} isQuestion />
+			<Post containerStyle={{ display: 'flex', width: '100%' }} noVotes key={`pinPost ${post.id} ${pin.id}`} post={post} isQuestion />
 		));
 	}
 
