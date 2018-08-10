@@ -133,26 +133,32 @@ class LoginHeader extends Component {
 					</div>
 					<div className="social-logins">
 						<div className="social-logins-wrapper">
-							<FacebookLogin
-								socialId="1088597931155576"
-								language="en_US"
-								scope="public_profile,email"
-								responseHandler={() => {}}
-								xfbml
-								fields="id,email,name"
-								version="v2.5"
-								className="facebook-login login-component"
-								buttonText="Login With Facebook"
-							/>
-							<GoogleLogin
-								socialId="303971375723-2de33bk4bf6n632t35nebb357aerc798.apps.googleusercontent.com"
-								className="google-login login-component"
-								scope="profile"
-								prompt="select_account"
-								fetchBasicProfile={false}
-								responseHandler={() => {}}
-								buttonText="Login With Google"
-							/>
+							<div className="social-login-element facebook-login">
+								<i className="fab fa-facebook-f" />
+								<FacebookLogin
+									socialId="1088597931155576"
+									language="en_US"
+									scope="public_profile,email"
+									responseHandler={() => {}}
+									xfbml
+									fields="id,email,name"
+									version="v2.5"
+									className="login-component"
+									buttonText="Login With Facebook"
+								/>
+							</div>
+							<div className="social-login-element google-login">
+								<i className="fab fa-google" />
+								<GoogleLogin
+									socialId="303971375723-2de33bk4bf6n632t35nebb357aerc798.apps.googleusercontent.com"
+									className="login-component"
+									scope="profile"
+									prompt="select_account"
+									fetchBasicProfile={false}
+									responseHandler={() => {}}
+									buttonText="Login With Google"
+								/>
+							</div>
 						</div>
 					</div>
 				</div>

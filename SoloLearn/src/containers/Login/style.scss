@@ -101,22 +101,33 @@
 				.social-logins-wrapper {
 					display: flex;
 					width: 50%;
-					.login-component {
+					.social-login-element {
+						display: flex;
+						align-items: center;
 						flex: 1;
-						position: relative;
 						height: 40px;
 						line-height: 40px;
-						border: none;
+						font-size: 25px;
 						color: #fff;
-						cursor: pointer;
-					}
-					.facebook-login {
-						background-color: #47639e;
-						margin-right: 5px;
-					}
-					.google-login {
-						background-color: #de4733;
-						margin-left: 5px;
+						.login-component {
+							position: relative;
+							border: none;
+							color: inherit;
+							background: none;
+							cursor: pointer;
+							padding-left: 10px;
+						}
+						.fab {
+							padding-left: 10px;
+						}
+						&.facebook-login {
+							background-color: #47639e;
+							margin-right: 5px;
+						}
+						&.google-login {
+							background-color: #de4733;
+							margin-left: 5px;
+						}
 					}
 				}
 			}
