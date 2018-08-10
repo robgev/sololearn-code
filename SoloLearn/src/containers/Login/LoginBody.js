@@ -91,8 +91,8 @@ class LoginHeader extends Component {
 					<div className="inputs-wrapper">
 						<div className="inputs-header">
 							<div className="sololearn">
-								<img src="/assets/logo_small.png" alt="logo" />
-								<h1>Sololearn</h1>
+								<img src="/assets/logo.png" alt="logo" />
+								{/* <h1>SoloLearn</h1> */}
 							</div>
 							<h2> { isLogin
 								? 'Sign in to Sololearn'
