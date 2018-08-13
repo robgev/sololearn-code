@@ -8,9 +8,10 @@ const U = ({ children }) => <span style={{ textDecoration: 'underline' }}>{child
 
 const Note = ({ children }) => <div style={{ backgroundColor: 'yellow' }}>{children}</div>;
 
-const codeRegex = /format="(\w+)" codeId="(\d+)"/;
+const codeRegex = /format="(\w+)"( codeId="(\d+)")?/;
 
 const Code = ({ children, strAttributes }) => {
+	// codeId may be undefined
 	const [ , codeFormat, codeId ] = codeRegex.exec(strAttributes);
 	// TODO: use codeId and codeFormat
 	return <div style={{ backgroundColor: 'orange' }}>{children}</div>;
