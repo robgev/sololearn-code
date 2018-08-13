@@ -13,6 +13,9 @@
 		}
 		&.vertical {
 			flex-direction: column;
+			.profile-picture-container {
+				padding-bottom: 5px;
+			}
 		}
 	}
 	.avatar-meta-info-container {

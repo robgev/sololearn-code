@@ -62,11 +62,12 @@ html, body {
 			border-radius: 2px;
 		}
 		.sidebar-static-pages {
-			padding: 10px;
+			padding: 10px 0;
 			.static-link {
 				display: inline-block;
 				color: #90948F;
-				padding: 0 3px;
+				padding: 0 10px;
+				font-size: 14px;
 				&:not(:last-child) {
 					border-right: 1px solid #CCCCCC;
 				}

@@ -75,7 +75,7 @@ class FeedList extends Component {
 													/>
 												))}
 											</div>
-											<p className="sub-title" key="separator">{t('feed.most-recent-title')}</p>
+											<p className="sub-title" style={{ paddingTop: 5 }} key="separator">{t('feed.most-recent-title')}</p>
 										</div>
 									)
 								}

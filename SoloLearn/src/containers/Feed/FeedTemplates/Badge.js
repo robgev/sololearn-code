@@ -17,13 +17,13 @@ const styles = {
 		},
 
 		icon: {
-			width: '100%',
+			width: '80%',
 		},
 	},
 
 	details: {
 		color: '#545454',
-		margin: '0 0 0 5px',
+		marginLeft: 10,
 	},
 
 	title: {

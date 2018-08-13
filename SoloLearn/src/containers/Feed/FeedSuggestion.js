@@ -14,12 +14,9 @@ const styles = {
 		alignItems: 'center',
 		textAlign: 'center',
 		flexDirection: 'column',
-		height: '150px',
-		width: '150px',
-	},
-
-	avatar: {
-		margin: '0 0 5px 0',
+		height: '140px',
+		width: '140px',
+		margin: '0 5px',
 	},
 
 	userName: {
@@ -32,7 +29,7 @@ const styles = {
 	},
 
 	followers: {
-		fontSize: '12px',
+		fontSize: '11px',
 		color: '#8BC34A',
 	},
 
@@ -71,7 +68,6 @@ const FeedSuggestion = ({ suggestion, followUser }) => {
 				vertical
 				size={50}
 				withUserNameBox
-				style={styles.avatar}
 				userID={id}
 				userName={name}
 				avatarUrl={avatarUrl}

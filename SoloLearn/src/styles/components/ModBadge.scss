@@ -8,7 +8,13 @@
 	color: white;
 	.icon {
 		width: 13px;
-    height: 13px;
+		height: 13px;
+		&.placeholder {
+			width: 2px;
+		}
+		img {
+			width: 100%;
+		}
 	}
 	.mod {
 		display: inline-block;
@@ -21,7 +27,8 @@
 		padding: 0 5px 0 2px;
 		margin: 0 3px 0 0;
 		.mod {
-			font-size: 12px;
+			font-size: 10px;
+			line-height: 9px;
 		}
 	}
 	&.absolute {
