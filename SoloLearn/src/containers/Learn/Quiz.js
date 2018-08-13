@@ -286,6 +286,7 @@ class Quiz extends Component {
 		return (
 			<div className="quiz" style={styles.wrapper}>
 				<QuizAnswers
+					key={activeQuiz.id}
 					quiz={quiz}
 					onChange={this.onChange}
 					disabled={checkResult !== null}

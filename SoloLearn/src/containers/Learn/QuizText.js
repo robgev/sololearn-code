@@ -458,7 +458,7 @@ class QuizText extends Component {
 						toggleBookmark={this.toggleBookmark}
 					/>
 				} */}
-				<Parser text={this.props.textContent} />
+				<Parser text={this.props.textContent} glossary={this.props.glossary} />
 			</div>
 		);
 	}
