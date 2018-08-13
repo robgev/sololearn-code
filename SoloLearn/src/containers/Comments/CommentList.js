@@ -16,7 +16,6 @@ const CommentList = observer(props => (
 	>
 		{props.comments.map(comment => (
 			<Comment
-				commentsType={props.commentsType}
 				ref={props.commentsRef(comment.id)}
 				delete={props.delete}
 				key={comment.id}
