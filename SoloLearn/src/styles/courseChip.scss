@@ -46,7 +46,7 @@
 		.course-name {
 			height: 28px;
 			font-size: 13px;
-			padding-top: 7px;
+			padding-top: 10px;
 			@include multiLineEllipsis($lineHeight: 14px, $lineCount: 2, $bgColor: white);
 		}
 	}
