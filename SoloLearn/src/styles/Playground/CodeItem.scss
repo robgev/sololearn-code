@@ -24,9 +24,12 @@
 			display: inline-flex;
 			align-items: center;
 			.code-language-icon {
-				height: 16px;
+				height: 14px;
+				font-size: 11px;
 			}
 			.votes {
+				display: flex;
+				align-items: center;
 				.votes-icon {
 					width: 16px;
 					height: 16px;
@@ -35,17 +38,20 @@
 					margin: 0 5px;
 					min-width: 23px;
 					color: #5a5a5a;
-					font-size: 14px;
+					font-size: 12px;
 				}
 			}
 			.comments {
+				display: flex;
+				align-items: center;
 				.comments-icon {
 					height: 16px;
 					width: 16px;
 				}
 				.comments-text {
+					margin: 0 3px;
 					color: #5a5a5a;
-					font-size: 14px;
+					font-size: 12px;
 				}
 			}
 			.lock-icon {

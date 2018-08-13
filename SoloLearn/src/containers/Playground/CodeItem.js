@@ -26,6 +26,7 @@ const CodeItem = ({ code }) => (
 				tooltipId={code.publicID}
 				userName={code.userName}
 				avatarUrl={code.avatarUrl}
+				avatarStyle={{ marginRight: 10 }}
 			/>
 		</div>
 		<div className="details-wrapper">

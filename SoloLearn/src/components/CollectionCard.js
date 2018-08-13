@@ -47,7 +47,7 @@ const CollectionCard = ({
 		<Paper
 			zDepth={1}
 			style={{
-				padding: 15,
+				padding: '15px 20px',
 				width: '100%',
 				marginBottom: 10,
 				overflow: 'hidden',

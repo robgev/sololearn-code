@@ -68,8 +68,11 @@ class Codes extends Component {
 						header={
 							<div className="playground-codes-toolbar">
 								<p className="page-title">{t('code_playground.title')}</p>
-								<div>
+								<div className="playground-menus">
 									<DropDownMenu
+										style={{ height: 20 }}
+										iconStyle={{ height: 5, padding: 0 }}
+										labelStyle={{ height: 20, lineHeight: '20px' }}
 										value={filters.language}
 										autoWidth={false}
 										onChange={this.handleLanguageFilterChange}
@@ -84,6 +87,9 @@ class Codes extends Component {
 										<MenuItem value="web" primaryText="Web" />
 									</DropDownMenu>
 									<DropDownMenu
+										style={{ height: 20 }}
+										iconStyle={{ height: 5, padding: 0 }}
+										labelStyle={{ height: 20, lineHeight: '20px' }}
 										value={filters.orderBy}
 										autoWidth={false}
 										onChange={this.handleOrderByFilterChange}
