@@ -45,10 +45,10 @@ const createChartData = ranks => Object.keys(ranks)
 		y: (Math.sqrt(ranks[key]) * 50) + 50,
 	}));
 
-const ModeratorStatus = ({ badge }) => {
+const ModeratorStatus = ({ badge, t }) => {
 	const modBadge = determineBadge(badge);
 	return !modBadge ? null
-		: <div style={{ textTransform: 'uppercase' }}>{i18n.t(`profile.skills.${modBadge}`)}</div>;
+		: <div style={{ textTransform: 'uppercase' }}>{t(`skills.${modBadge}`)}</div>;
 };
 
 @translate()
