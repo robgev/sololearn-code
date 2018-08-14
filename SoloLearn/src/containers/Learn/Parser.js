@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import CodeBlock from './CodeBlock';
 import './Parser.scss';
 
 const flattenGlossaryTerms = (arr) => {
@@ -39,11 +40,28 @@ class Parser extends Component {
 
 	static Note = ({ children }) => <div className="note">{children}</div>;
 
-	static Code = ({ children, strAttributes }) => {
+	static Code = ({
+		basePath,
+		children,
+		strAttributes,
+		courseLanguage,
+	}) => {
 		// codeId may be undefined
 		const [ , codeFormat, codeId ] = Parser.codeRegex.exec(strAttributes);
-		// TODO:  use codeId and codeFormat
-		return <div className="code">{children}</div>;
+		// TODO:  Change this logic
+		// as codeId we get a string " codeId="647""
+		// so we use number regex to take codeId out
+		const parsedCodeId = /\d+/.exec(codeId)[0];
+		return (
+			<CodeBlock
+				codeId={parsedCodeId}
+				basePath={basePath}
+				format={codeFormat}
+				courseLanguage={courseLanguage}
+			>
+				<div className="code">{children}</div>
+			</CodeBlock>
+		);
 	};
 
 	static Image = ({ id, width }) =>
@@ -52,7 +70,7 @@ class Parser extends Component {
 	static GlossaryItem = ({ glossaryText, children }) => <span title={glossaryText}>{children}</span>
 
 	// recursive parser
-	_parse = (text) => {
+	_parse = ({ text, courseLanguage, pathname }) => {
 		let current = text;
 		const result = [];
 		if (!Parser.tagRegex.test(current)) {
@@ -62,7 +80,7 @@ class Parser extends Component {
 			const regexed = Parser.tagRegex.exec(current);
 			const [ match, tag, args, innerText ] = regexed;
 			result.push(this.noTagParse(current.substring(0, current.indexOf(match))));
-			const inner = this._parse(innerText);
+			const inner = this._parse({ text: innerText, courseLanguage, pathname });
 			switch (tag) {
 			case 'b':
 				result.push(<b>{inner}</b>);
@@ -86,7 +104,15 @@ class Parser extends Component {
 				result.push(<Parser.Note>{inner}</Parser.Note>);
 				break;
 			case 'code':
-				result.push(<Parser.Code strAttributes={args}>{inner}</Parser.Code>);
+				result.push((
+					<Parser.Code
+						basePath={pathname}
+						courseLanguage={courseLanguage}
+						strAttributes={args}
+					>
+						{inner}
+					</Parser.Code>
+				));
 				break;
 			default:
 				throw new Error('Tag not found during parsing');
@@ -106,8 +132,9 @@ class Parser extends Component {
 		this.text = props.text;
 	}
 	parse = () => {
+		const { courseLanguage, pathname } = this.props;
 		const toBeParsed = this.text.replace('\r\n\r\n', '\r\n');
-		return this._parse(toBeParsed);
+		return this._parse({ text: toBeParsed, courseLanguage, pathname });
 	}
 	parseGlossary = (fullText) => {
 		if (this.filteredGlossary === null) {

@@ -670,6 +670,7 @@ ${succeedingSubstr}
 			inline,
 			withBottomToolbar,
 		} = this.props;
+		console.log(this.props.params);	
 
 		const inputsPopupActions = [
 			<FlatButton

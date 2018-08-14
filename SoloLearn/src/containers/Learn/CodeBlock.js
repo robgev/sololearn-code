@@ -60,9 +60,8 @@ class CodeBlock extends Component {
 	render() {
 		const {
 			t,
-			text,
+			children,
 			codeId,
-			format,
 			basePath,
 			courseLanguage,
 		} = this.props;
@@ -70,7 +69,6 @@ class CodeBlock extends Component {
 			primary: courseLanguage,
 			secondary: codeId,
 		};
-		console.log(text);
 
 		const { playgroundOpened } = this.state;
 		if (codeId !== undefined) {
@@ -93,9 +91,7 @@ class CodeBlock extends Component {
 							/>
 						</div> :
 						<div>
-							<span className="code-block" data-codeid={codeId} style={styles.codeBlock}>
-								<span className={`code ${format}`} style={styles.code} dangerouslySetInnerHTML={{ __html: text }} />
-							</span>
+							{children}
 							<FlatButton
 								label={t('learn.try-it-yourself')}
 								style={styles.codeButton}
@@ -109,11 +105,7 @@ class CodeBlock extends Component {
 			);
 		}
 
-		return (
-			<div className="code-block" style={styles.codeBlock}>
-				<span className={`code${format}`} style={styles.code} dangerouslySetInnerHTML={{ __html: text }} />
-			</div>
-		);
+		return children;
 	}
 }
 

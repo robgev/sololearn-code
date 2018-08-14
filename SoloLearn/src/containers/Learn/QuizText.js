@@ -436,10 +436,14 @@ class QuizText extends Component {
 		this.setState({ isBookmarked });
 	}
 
+	componentWillUnmount() {
+		browserHistory.replace(this.state.pathname);
+	}
+
 	render() {
-		const { isBookmarked } = this.state;
+		const { isBookmarked, pathname } = this.state;
 		const {
-			withToolbar, userData, date, quizId,
+			courseLanguage, withToolbar, userData, date, quizId,
 		} = this.props;
 		return (
 			<div className="text-container" style={styles.textContainer}>
@@ -458,7 +462,12 @@ class QuizText extends Component {
 						toggleBookmark={this.toggleBookmark}
 					/>
 				} */}
-				<Parser text={this.props.textContent} glossary={this.props.glossary} />
+				<Parser
+					pathname={pathname}
+					courseLanguage={courseLanguage}
+					text={this.props.textContent}
+					glossary={this.props.glossary}
+				/>
 			</div>
 		);
 	}
