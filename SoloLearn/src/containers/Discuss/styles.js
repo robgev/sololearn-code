@@ -1,10 +1,11 @@
 export const AddReplyStyles = {
 	container: {
 		width: 'inherit',
-		padding: '10px 20px',
+		padding: 15,
 		background: '#fff',
 		boxSizing: 'border-box',
-		boxShadow: 'rgba(0, 0, 0, 0.156863) 0px 3px 10px, rgba(0, 0, 0, 0.227451) 0px 3px 10px',
+		borderBottomLeftRadius: 0,
+		borderBottomRightRadius: 0,
 	},
 	editor: {
 		position: 'relative',
@@ -504,5 +505,8 @@ export const ReplyStyles = {
 export const RepliesStyles = {
 	container: {
 		overflowY: 'hidden',
+		borderRadius: 0,
+		borderTop: '4px solid white',
+		boxShadow: 'rgba(0, 0, 0, 0.12) 0px 6px 6px, rgba(0, 0, 0, 0.12) 0px 4px 4px',
 	},
 };

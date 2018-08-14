@@ -91,6 +91,7 @@ class Codes extends Component {
 										style={{ height: 20 }}
 										iconStyle={{ height: 5, padding: 0 }}
 										labelStyle={{ height: 20, lineHeight: '20px' }}
+										className="mini-drop-down"
 										value={filters.orderBy}
 										autoWidth={false}
 										onChange={this.handleOrderByFilterChange}

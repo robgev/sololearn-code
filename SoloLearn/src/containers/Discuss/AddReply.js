@@ -7,6 +7,7 @@ import { RaisedButton, Paper } from 'material-ui';
 import MentionInput from 'components/MentionInput';
 
 import { AddReplyStyles as styles } from './styles';
+import './addReply.scss';
 
 class AddReply extends Component {
 	state = {
@@ -36,7 +37,7 @@ class AddReply extends Component {
 		return (
 			<Paper
 				id="add-reply"
-				zDepth={5}
+				className="add-reply"
 				style={styles.container}
 			>
 				<div style={styles.editor}>
@@ -45,7 +46,7 @@ class AddReply extends Component {
 						onFocus={this.openReplyBox}
 						onBlur={this.handleBlur}
 						onLengthChange={this.onLengthChange}
-						style={isReplyBoxOpen ? { height: 200 } : { height: 50 }}
+						style={isReplyBoxOpen ? { height: 100 } : { height: 50 }}
 						getUsers={{ type: 'discuss', params: { postId: this.props.postId } }}
 						submit={this.props.save}
 						placeholder={!isReplyBoxOpen && replyLength === 0 ? 'Write a new answer' : ''}
