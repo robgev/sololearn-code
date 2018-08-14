@@ -4,7 +4,7 @@ import ReactDOMServer from 'react-dom/server';
 import { browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
 import Radium, { Style } from 'radium';
-import { Parser } from 'utils';
+import Parser from './Parser';
 
 // Service & others
 import Service from 'api/service';

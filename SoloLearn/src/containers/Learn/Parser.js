@@ -1,4 +1,5 @@
 import React from 'react';
+import './Parser.scss';
 
 const tagRegex = /\[(b|i|u|h1|h2|h3|note|code)(.*?)\]([\s\S\n]*?)\[\/\1\]/;
 
@@ -6,15 +7,15 @@ const imgRegex = /\[img id="(\d+)" width="(\d+)%"\]/;
 
 const U = ({ children }) => <span style={{ textDecoration: 'underline' }}>{children}</span>;
 
-const Note = ({ children }) => <div style={{ backgroundColor: 'yellow' }}>{children}</div>;
+const Note = ({ children }) => <div className="note">{children}</div>;
 
 const codeRegex = /format="(\w+)"( codeId="(\d+)")?/;
 
 const Code = ({ children, strAttributes }) => {
 	// codeId may be undefined
 	const [ , codeFormat, codeId ] = codeRegex.exec(strAttributes);
-	// TODO: use codeId and codeFormat
-	return <div style={{ backgroundColor: 'orange' }}>{children}</div>;
+	// TODO:  use codeId and codeFormat
+	return <div className="code">{children}</div>;
 };
 
 const Image = ({ id, width }) =>
@@ -36,7 +37,7 @@ const noTagParse = (text) => {
 	return result;
 };
 
-const parse = (text) => {
+const _parse = (text) => {
 	let current = text;
 	const result = [];
 	if (!tagRegex.test(current)) {
@@ -46,7 +47,7 @@ const parse = (text) => {
 		const regexed = tagRegex.exec(current);
 		const [ match, tag, args, innerText ] = regexed;
 		result.push(noTagParse(current.substring(0, current.indexOf(match))));
-		const inner = parse(innerText);
+		const inner = _parse(innerText);
 		switch (tag) {
 		case 'b':
 			result.push(<b>{inner}</b>);
@@ -81,8 +82,13 @@ const parse = (text) => {
 	return result;
 };
 
+const parse = (text) => {
+	const toBeParsed = text.replace('\r\n\r\n', '\r\n');
+	return _parse(toBeParsed);
+};
+
 const Parser = ({ text, style, className }) => (
-	<div className={className} style={style}>
+	<div className={`parser-root ${className}`} style={style}>
 		{parse(text)}
 	</div>
 );

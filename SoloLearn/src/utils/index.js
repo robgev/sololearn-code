@@ -26,7 +26,6 @@ export { default as getCommonPrefix } from './getCommonPrefix';
 export { default as filterExisting } from './filterExisting';
 export { default as EnumNameMapper } from './enumNameMapper';
 export { default as groupFeedItems } from './groupFeedItems';
-export { default as Parser } from './parser';
 
 const hash = pass => hmacsha1('password', pass).slice(0, -1);
 const checkWeb = alias => [ 'html', 'css', 'js' ].includes(alias);
