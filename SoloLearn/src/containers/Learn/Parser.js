@@ -1,6 +1,25 @@
 import React, { Component } from 'react';
 import './Parser.scss';
 
+const flattenGlossaryTerms = (arr) => {
+	const res = [];
+	arr.forEach(({ terms }) => {
+		res.push(...terms);
+	});
+	return res;
+};
+
+const filterGlossary = (glossary, text) => {
+	const flatGlossary = flattenGlossaryTerms(glossary);
+	const filtered = flatGlossary.filter(({ pattern, term }) => {
+		if (pattern !== null) {
+			return new RegExp(pattern).test(text);
+		}
+		return text.includes(term);
+	});
+	return filtered;
+};
+
 class Parser extends Component {
 	static defaultProps = {
 		style: {},
@@ -28,6 +47,8 @@ class Parser extends Component {
 
 	static Image = ({ id, width }) =>
 		<img alt="" src={`https://api.sololearn.com/DownloadFile?id=${id}`} width={`${width}%`} />;
+
+	static GlossaryItem = ({ glossaryText, children }) => <span title={glossaryText}>{children}</span>
 
 	// recursive parser
 	_parse = (text) => {
@@ -78,31 +99,46 @@ class Parser extends Component {
 	constructor(props) {
 		super(props);
 		// Do for performance
-		this.filteredGlossary = props.glossary.filter(({ pattern }) =>
-			new RegExp(pattern).test(props.text));
+		this.filteredGlossary = filterGlossary(props.glossary, props.text);
 		this.text = props.text;
 	}
 	parse = () => {
 		const toBeParsed = this.text.replace('\r\n\r\n', '\r\n');
 		return this._parse(toBeParsed);
 	}
-	// TODO: implement glossary
-	// parseGlossary = (text) => {
-	// 	const result = [];
-	// 	this.filteredGlossary.forEach(({ term, text, pattern }) => {
-	// 		let current = text;
-	// 		const patternRegExp = new RegExp(pattern);
-	// 		while (patternRegExp.test(current)) {
-	// 			const [ match ] = patternRegExp.exec(current);
-	// 			const index = current.indexOf(match);
-	// 			result.push(
-	// 				current.substring(0, index),
-	// 				<span title={text}>{match}</span>,
-	// 			);
-	// 			current = current.substring(index + match.length);
-	// 		}
-	// 	});
-	// }
+	parseGlossary = (fullText) => {
+		const allItems = [];
+		this.filteredGlossary.forEach(({ text, pattern, term }) => {
+			const patternRegExp = pattern !== null ? new RegExp(pattern) : new RegExp(term);
+			let current = fullText;
+			while (patternRegExp.test(current)) {
+				const [ match ] = patternRegExp.exec(current);
+				const index = current.indexOf(match);
+				allItems.push({
+					item: <Parser.GlossaryItem glossaryText={text}>{match}</Parser.GlossaryItem>,
+					offset: index + fullText.indexOf(current),
+					length: match.length,
+				});
+				current = current.substring(index + match.length);
+			}
+		});
+		allItems.sort((a, b) => b.offset - a.offset);
+		const result = [];
+		if (allItems.length === 0) {
+			return fullText;
+		}
+		allItems.forEach((el, index, arr) => {
+			const start = index === 0 ? 0 : arr[index - 1].offset + arr[index - 1].length;
+			result.push(
+				fullText.substring(start, el.offset),
+				el.item,
+			);
+			if (index === arr.length - 1) {
+				result.push(fullText.substring(start + el.offset + el.length));
+			}
+		});
+		return result;
+	}
 	noTagParse = (text) => {
 		let current = text;
 		const result = [];
@@ -110,12 +146,12 @@ class Parser extends Component {
 			const [ match, id, width ] = Parser.imgRegex.exec(current);
 			const index = current.indexOf(match);
 			result.push(
-				current.substring(0, index),
+				this.parseGlossary(current.substring(0, index)),
 				<Parser.Image id={id} width={width} />,
 			);
 			current = current.substring(index + match.length);
 		}
-		result.push(current);
+		result.push(this.parseGlossary(current));
 		return result;
 	};
 	render() {
