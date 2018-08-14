@@ -128,7 +128,7 @@ const PlaygroundTabs = ({
 							buttonStyle={{ height: 36 }}
 							style={{
 								...(isDarkTheme ? styles.webTab.dark : styles.webTab.light),
-								...(mode === 'javascript' ? { backgroundColor: isDarkTheme ? '``#272822``' : '#D2D2D2' } : {}),
+								...(mode === 'javascript' ? { backgroundColor: isDarkTheme ? '#272822' : '#D2D2D2' } : {}),
 							}}
 						/>,
 					] : (
