@@ -8,7 +8,7 @@ const CommentList = observer(props => (
 		element="div"
 		loadMore={props.loadMore}
 		hasMore={props.infinite && props.hasMore}
-		style={{
+		containerStyle={{
 			display: 'flex',
 			width: '100%',
 			flexDirection: 'column',
