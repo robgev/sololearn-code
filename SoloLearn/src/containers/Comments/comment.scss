@@ -8,10 +8,15 @@
 }
 
 .comment-item {
+	padding: 10px;
+	border-bottom: 1px solid rgb(243, 243, 243);
 	.comment-header {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		.avatar-user-name {
+			font-weight: 500;
+		}
 		.comment-meta-info {
 			display: flex;
 			align-items: center;
@@ -23,7 +28,7 @@
 	}
 	.comment-preview {
 		display: flex;
-		padding: 0 50px;
+		padding: 0 49px;
 	}
 	.comment-bottom-toolbar {
 		display: flex;
@@ -38,8 +43,9 @@
 	> .Linkify > p {
 		font-size: 14px;
     color: rgb(130, 126, 126);
-		padding: 0 50px;
+		padding: 0 49px;
 		margin-bottom: 5px;
+		margin-top: -13px;
 	}
   &.animate {
     animation: highlight 1.5s ease-in 1;

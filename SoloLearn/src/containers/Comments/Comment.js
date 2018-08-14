@@ -251,7 +251,6 @@ class Comment extends Component {
 							</Linkify>
 						))}
 				</CommentView>
-				<Divider style={{ backgroundColor: '#FAFAFA' }} />
 				{
 					repliesArray !== null && (
 						<div style={{ marginLeft: 30 }}>

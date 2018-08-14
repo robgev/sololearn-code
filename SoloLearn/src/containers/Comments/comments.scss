@@ -1,0 +1,17 @@
+.comments-container {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	justify-content: center;
+	.editor {
+		width: 100%;
+	}
+	.comments-toolbar-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		width: calc(100% - 30px);
+		padding: 15px;
+		padding-top: 0;
+	}
+}
