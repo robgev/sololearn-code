@@ -17,7 +17,7 @@ const CodesList = observer(({
 					<div>
 						{
 							codes.length === 0 &&
-								<Paper style={{ height: '100vh', overflow: 'hidden' }}>
+								<Paper style={{ height: '100vh', overflow: 'hidden', padding: 15 }}>
 									{header}
 									<CodeShimmer />
 								</Paper>

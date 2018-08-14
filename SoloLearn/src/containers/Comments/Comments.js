@@ -11,6 +11,7 @@ import CommentList from './CommentList';
 import IComment from './IComment';
 import CommentsToolbar from './CommentsToolbar';
 import { filterExisting } from './comments.utils';
+import './comments.scss';
 
 const mapStateToProps = ({ userProfile }) => ({ userProfile });
 
@@ -185,7 +186,7 @@ class Comments extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className="comments-container">
 				<CommentsToolbar value={this.orderBy} onChange={this.changeOrder} />
 				<MentionInput
 					ref={(i) => { this.mentionInput = i; }}

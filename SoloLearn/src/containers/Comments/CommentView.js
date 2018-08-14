@@ -142,6 +142,8 @@ class CommenView extends Component {
 							parentID === null && (
 								<div>
 									<FlatButton
+										style={{ height: 30, lineHeight: '30px' }}
+										labelStyle={{ fontSize: 13 }}
 										label={`${replies} ${replies === 1 ? t('comments.reply') : t('comments.replies-other')}`}
 										disabled={replies === 0}
 										onClick={onRepliesButtonClick}
@@ -150,6 +152,8 @@ class CommenView extends Component {
 							)
 						}
 						<FlatButton
+							style={{ height: 30, lineHeight: '30px' }}
+							labelStyle={{ fontSize: 13 }}
 							label="Reply"
 							onClick={this.onReply}
 						/>
