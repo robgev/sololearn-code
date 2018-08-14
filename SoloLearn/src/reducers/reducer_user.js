@@ -1,6 +1,7 @@
-import { GET_USER_PROFILE, UPDATE_PROFILE_DATA, TOGGLE_COURSE } from '../constants/ActionTypes';
+import { GET_USER_PROFILE, UPDATE_PROFILE_DATA, TOGGLE_COURSE } from 'constants/ActionTypes';
+import { createSelector } from 'reselect';
 
-export default function (state = null, action) {
+export default (state = null, action) => {
 	switch (action.type) {
 	case GET_USER_PROFILE:
 		return action.payload;
@@ -13,4 +14,11 @@ export default function (state = null, action) {
 	default:
 		return state;
 	}
-}
+};
+
+const userReducer = state => state.userProfile;
+
+export const getUserSelector = createSelector(
+	userReducer,
+	user => user,
+);

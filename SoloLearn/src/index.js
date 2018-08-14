@@ -23,8 +23,18 @@ ReactGA.initialize('UA-42641357-240');
 ReactGA.set({ appName: 'SoloLearn', appVersion: '0.1' });
 ReactGA.ga('require', 'displayfeatures');
 
-@connect(null, { getCourses })
+const mapStateToProps = state => ({
+	isCoursesLoaded: state.courses.length > 0,
+});
+
+@connect(mapStateToProps, { getCourses })
 class App extends PureComponent {
+	constructor(props) {
+		super(props);
+		this.state = {
+			isLoading: !props.isCoursesLoaded,
+		};
+	}
 	componentWillMount() {
 		Service.getSession()
 			.then((user) => {
@@ -32,25 +42,32 @@ class App extends PureComponent {
 					browserHistory.replace('/login');
 				}
 			});
-		this.props.getCourses();
+		this.props.getCourses()
+			.then(() => {
+				if (this.state.isLoading) {
+					this.setState({ isLoading: false });
+				}
+			});
 	}
 	render() {
-		return (
-			<div>
-				<DevTools />
-				<Router onUpdate={() => window.scrollTo(0, 0)} history={browserHistory} routes={routes} />
-				<ToastContainer
-					draggable
-					newestOnTop
-					closeOnClick
-					pauseOnHover
-					hideProgressBar
-					pauseOnVisibilityChange
-					position="bottom-right"
-					autoClose={2000}
-				/>
-			</div>
-		);
+		return this.state.isLoading
+			? null
+			: (
+				<div>
+					<DevTools />
+					<Router onUpdate={() => window.scrollTo(0, 0)} history={browserHistory} routes={routes} />
+					<ToastContainer
+						draggable
+						newestOnTop
+						closeOnClick
+						pauseOnHover
+						hideProgressBar
+						pauseOnVisibilityChange
+						position="bottom-right"
+						autoClose={2000}
+					/>
+				</div>
+			);
 	}
 }
 

@@ -1,5 +1,6 @@
 // General modules
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { observer } from 'mobx-react';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -56,6 +57,9 @@ const styles = {
 	},
 };
 
+const mapStateToProps = state => ({ userID: state.userProfile.id });
+
+@connect(mapStateToProps)
 @translate()
 @observer
 class FollowItem extends Component {
@@ -85,16 +89,19 @@ class FollowItem extends Component {
 						<p style={styles.info}>{follow.followers} {t('common.user-followers')} | {t('common.user-level')} {follow.level}</p>
 					</Link>
 				</div>
-				<RaisedButton
-					label={follow.isFollowing ? t('common.user-following') : t('common.follow-user')}
-					primary={!follow.isFollowing}
-					secondary={follow.isFollowing}
-					style={styles.followButton.base}
-					labelStyle={styles.followButton.label}
-					buttonStyle={styles.followButton.button}
-					overlayStyle={styles.followButton.overlay}
-					onClick={this.handleFollowClick}
-				/>
+				{
+					this.props.userID !== follow.id &&
+					<RaisedButton
+						label={follow.isFollowing ? t('common.user-following') : t('common.follow-user')}
+						primary={!follow.isFollowing}
+						secondary={follow.isFollowing}
+						style={styles.followButton.base}
+						labelStyle={styles.followButton.label}
+						buttonStyle={styles.followButton.button}
+						overlayStyle={styles.followButton.overlay}
+						onClick={this.handleFollowClick}
+					/>
+				}
 			</div>
 		);
 	}

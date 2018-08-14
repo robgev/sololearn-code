@@ -8,7 +8,7 @@ import { browserHistory } from 'react-router';
 
 // Redux modules
 import { isLoaded } from 'reducers';
-// import { selectModule, selectLesson, selectQuiz } from 'actions/learn';
+import { selectModule, selectLesson, selectQuiz } from 'actions/learn';
 import Progress, { PointExchangeTypes } from 'api/progress';
 
 // Marterial UI components
@@ -165,13 +165,12 @@ class Quiz extends Component {
 						// alert('CONGRATS');
 					} else {
 						// Go back to module list
-						browserHistory.push('/learn/');
+						browserHistory.push('/learn');
 					}
 				} else {
 					// Else show lessons
 					this.setState({ checkResult: null });
-					// TODO: Check if this works
-					browserHistory.push(`/learn/course/${this.props.activeModuleId}/${this.props.params.moduleName}/`);
+					browserHistory.push(`/learn/course/${this.props.params.language}/`);
 				}
 				// return;
 			}
@@ -287,6 +286,7 @@ class Quiz extends Component {
 		return (
 			<div className="quiz" style={styles.wrapper}>
 				<QuizAnswers
+					key={activeQuiz.id}
 					quiz={quiz}
 					onChange={this.onChange}
 					disabled={checkResult !== null}
@@ -334,6 +334,12 @@ const mapStateToProps = state => ({
 	userXp: state.userProfile.xp,
 });
 
+const mapDispatchToProps = dispatch => bindActionCreators({
+	selectModule,
+	selectLesson,
+	selectQuiz,
+}, dispatch);
+
 const translatedQuiz = translate()(Quiz);
 
-export default connect(mapStateToProps)(translatedQuiz);
+export default connect(mapStateToProps, mapDispatchToProps)(translatedQuiz);

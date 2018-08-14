@@ -90,10 +90,10 @@ class Comments extends Component {
 		const isFindingReply = comments[0].index === -1;
 		if (isFindingReply) {
 			// FindPostId is a reply id, have to format the replies
-			withReplies = [new IComment({
+			withReplies = [ new IComment({
 				...comments[0],
 				repliesArray: comments.slice(1).map(c => new IComment({ ...c, repliesArray: null })),
-			})];
+			}) ];
 		} else {
 			withReplies = comments.map(comment =>
 				new IComment({ ...comment, repliesArray: [] }));
@@ -208,7 +208,6 @@ class Comments extends Component {
 					delete={this.deleteComment}
 					comments={this.comments}
 					loadMore={this.loadMore}
-					commentsType={this.props.commentsType}
 					hasMore={this.hasMore && !this.initial && !this.isOnReply}
 					infinite
 					commentsAPI={this.commentsAPI}

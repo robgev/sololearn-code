@@ -13,12 +13,14 @@ import Paper from 'material-ui/Paper';
 
 // Redux modules
 import { isLoaded } from 'reducers';
-// import {
-// 	selectQuiz,
-// 	selectLesson,
-// 	selectModule,
-// 	loadCourseInternal,
-// } from 'actions/learn';
+import {
+	selectQuiz,
+	selectLesson,
+	selectModule,
+	loadCourseInternal,
+} from 'actions/learn';
+import { getModuleByName } from 'reducers/reducer_modules';
+import { getLessonByName } from 'reducers/reducer_lessons';
 
 // Utils
 import { toSeoFriendly } from 'utils';
@@ -37,20 +39,22 @@ export const LessonType = {
 	Quiz: 1,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
 	isLoaded: isLoaded(state, 'quizzes'),
 	course: state.course,
 	lessons: state.lessonsMapping,
 	activeQuiz: state.activeQuiz,
+	lesson: getLessonByName(state, ownProps.params.lessonName),
+	module: getModuleByName(state, ownProps.params.moduleName),
 	activeModule: !state.course ? null : state.modulesMapping[state.activeModuleId],
 	activeLesson: !state.course ? null : state.lessonsMapping[state.activeLessonId],
 });
 
-// const mapDispatchToProps = {
-// 	loadCourseInternal, selectLesson, selectModule, selectQuiz,
-// };
+const mapDispatchToProps = {
+	loadCourseInternal, selectLesson, selectModule, selectQuiz,
+};
 
-@connect(mapStateToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 class QuizManager extends Component {
 	state = {
 		commentsCount: 0,
@@ -67,54 +71,50 @@ class QuizManager extends Component {
 
 		this.setState({ loading: true });
 
-		Service.request('/AddLessonImpression', { lessonId: params.lessonId });
-
 		if (!isLoaded) {
-			try {
-				await loadCourseInternal();
-				const lessonId = parseInt(params.lessonId, 10);
-				const moduleId = parseInt(params.moduleId, 10);
-				// As always, there are <censored> mappings. This one being:
-				// 1 - Module is disabled
-				// 2 - Module is active
-				// 3 - Module is finished
-				const {
-					params: {
-						courseName, moduleName, courseId, itemType,
-					},
-				} = this.props;
-				const { _visualState: lessonState } = Progress.getLessonStateById(lessonId);
+			await loadCourseInternal();
+		}
+		const lessonId = this.props.lesson.id;
+		Service.request('AddLessonImpression', { lessonId });
+		const moduleId = this.props.module.id;
+		// As always, there are <censored> mappings. This one being:
+		// 1 - Module is disabled
+		// 2 - Module is active
+		// 3 - Module is finished
+		const {
+			params: {
+				language, moduleName, lessonName,
+			},
+		} = this.props;
+		const { _visualState: lessonState } = Progress.getLessonStateById(lessonId);
 
-				const { _visualState: moduleState } = Progress.getModuleStateById(moduleId);
-				if (lessonState < 2) {
-					if (moduleState < 2) {
-						const {
-							lessons,
-							modules,
-							localProgress,
-							getModuleStateById,
-						} = Progress;
-						// Get the active module id
-						const { id: activeModuleId, name: moduleName } =
-							modules.find(({ id }) => getModuleStateById(id)._visualState > 1)
-							|| modules[0].id;
-						const activeLessonId = localProgress.length ?
-							localProgress[localProgress.length - 1].lessonID :
-							lessons[0].id;
-						this.setActiveLesson(activeLessonId, activeModuleId);
-						browserHistory.replace(`/learn/course/${courseName}/${moduleName}/${this.props.activeLesson.name}`);
-					} else {
-						const { localProgress } = Progress;
-						const activeLessonId = localProgress[localProgress.length - 1].lessonID;
-						this.setActiveLesson(activeLessonId, moduleId);
-						browserHistory.replace(`/learn/course/${courseName}/${moduleName}/${this.props.activeLesson.name}`);
-					}
-				} else {
-					this.setActiveLesson(lessonId, moduleId);
-				}
-			} catch (e) {
-				console.log(e);
+		const { _visualState: moduleState } = Progress.getModuleStateById(moduleId);
+
+		if (lessonState < 2) {
+			if (moduleState < 2) {
+				const {
+					lessons,
+					modules,
+					localProgress,
+					getModuleStateById,
+				} = Progress;
+				// Get the active module id
+				const { id: activeModuleId } =
+					modules.find(({ id }) => getModuleStateById(id)._visualState > 1)
+					|| modules[0].id;
+				const activeLessonId = localProgress.length ?
+					localProgress[localProgress.length - 1].lessonID :
+					lessons[0].id;
+				this.setActiveLesson(activeLessonId, activeModuleId);
+				browserHistory.replace(`/learn/course/${language}/${moduleName}/${lessonName}/${this.props.activeQuiz.number}`);
+			} else {
+				const { localProgress } = Progress;
+				const activeLessonId = localProgress[localProgress.length - 1].lessonID;
+				this.setActiveLesson(activeLessonId, moduleId);
+				browserHistory.replace(`/learn/course/${language}/${moduleName}/${lessonName}/${this.props.activeQuiz.number}`);
 			}
+		} else {
+			this.setActiveLesson(lessonId, moduleId);
 		}
 		const { count } =
 			await Service.request('Discussion/GetLessonCommentCount', { quizId: this.props.activeQuiz.id, type: this.props.activeQuiz.isText ? 1 : 3 });
@@ -229,18 +229,15 @@ class QuizManager extends Component {
 		const { count } =
 			await Service.request('Discussion/GetLessonCommentCount', { quizId, type: isText ? 1 : 3 });
 		this.setState({ commentsCount: count, commentsOpened: false });
-		this.props.selectQuiz(Object.assign({}, { id: quizId }, { number }, { isText }));
+		this.props.selectQuiz({ id: quizId, number, isText });
 		const {
 			params: {
-				courseName,
-				courseId,
-				itemType,
-				moduleId,
+				language,
 				moduleName,
 			},
 		} = this.props;
 		const lesson = this.props.activeLesson;
-		browserHistory.push(`/learn/course/${courseName}/${moduleName}/${lesson.name}`);
+		browserHistory.push(`/learn/course/${language}/${moduleName}/${lesson.name}/${number}`);
 	}
 
 	getActiveQuiz = (lesson) => {
@@ -266,6 +263,9 @@ class QuizManager extends Component {
 		}
 
 		this.props.selectQuiz(activeQuiz);
+		if (!this.props.params.quizNumber) {
+			browserHistory.replace(`${this.props.location.pathname}/${currentNumber}`);
+		}
 	}
 
 	openComments = () => {
@@ -309,13 +309,13 @@ class QuizManager extends Component {
 			<Layout>
 				<Paper className="quiz-container" style={{ padding: 15 }}>
 					<div className="lesson-breadcrumbs">
-						<Link className="hoverable" to={`/learn/course/${courseName}`}>
+						<Link className="hoverable" to={`/learn/${courseName}/${courseId}/${itemType}`}>
 							{course.name} &gt;
 						</Link>
-						<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}`}>
+						<Link className="hoverable" to={`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}`}>
 							{activeModule.name} &gt;
 						</Link>
-						<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}/${activeLesson.name}`}>
+						<Link className="hoverable" to={`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}/${activeLesson.id}/${toSeoFriendly(activeLesson.name, 100)}/1`}>
 							{activeLesson.name}
 						</Link>
 					</div>

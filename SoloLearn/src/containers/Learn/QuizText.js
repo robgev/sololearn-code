@@ -4,6 +4,7 @@ import ReactDOMServer from 'react-dom/server';
 import { browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
 import Radium, { Style } from 'radium';
+import Parser from './Parser';
 
 // Service & others
 import Service from 'api/service';
@@ -427,50 +428,51 @@ class QuizText extends Component {
 		});
 	}
 
-    toggleBookmark = async () => {
-    	const { quizId: id, type } = this.props;
-    	const { isBookmarked: bookmark } = this.state;
-    	const { isBookmarked } =
-            await Service.request('/BookmarkLesson', { id, type, bookmark: !bookmark });
-    	this.setState({ isBookmarked });
-    }
+	toggleBookmark = async () => {
+		const { quizId: id, type } = this.props;
+		const { isBookmarked: bookmark } = this.state;
+		const { isBookmarked } =
+			await Service.request('/BookmarkLesson', { id, type, bookmark: !bookmark });
+		this.setState({ isBookmarked });
+	}
 
-    render() {
-    	const { isBookmarked } = this.state;
-    	const {
-    		withToolbar, userData, date, quizId,
-    	} = this.props;
-    	return (
-    		<div className="text-container" style={styles.textContainer}>
-		{tooltipOpened}
-		{tooltipTopPlaced}
-		{tooltipRightPlaced}
-		{tooltipLeftPlaced}
-		{tooltipBottomPlaced}
-		<div id="text-content">{this.renderComponentParts()}</div>
-		{withToolbar &&
-                    <SlayLessonToolbar
-	id={quizId}
-	userData={userData}
-	isBookmarked={isBookmarked}
-	timePassed={updateDate(date)}
-	toggleBookmark={this.toggleBookmark}
-                    />
-    			}
-	</div>
-    	);
-    }
+	render() {
+		const { isBookmarked } = this.state;
+		const {
+			withToolbar, userData, date, quizId,
+		} = this.props;
+		return (
+			<div className="text-container" style={styles.textContainer}>
+				{/* {tooltipOpened}
+				{tooltipTopPlaced}
+				{tooltipRightPlaced}
+				{tooltipLeftPlaced}
+				{tooltipBottomPlaced}
+				<div id="text-content">{this.renderComponentParts()}</div>
+				{withToolbar &&
+					<SlayLessonToolbar
+						id={quizId}
+						userData={userData}
+						isBookmarked={isBookmarked}
+						timePassed={updateDate(date)}
+						toggleBookmark={this.toggleBookmark}
+					/>
+				} */}
+				<Parser text={this.props.textContent} glossary={this.props.glossary} />
+			</div>
+		);
+	}
 
-    componentDidUpdate() {
-    	const glossaryItems = document.getElementsByClassName('glossary-item');
-    	for (let i = 0; i < glossaryItems.length; i++) {
-    		const item = glossaryItems[i];
-    		item.addEventListener('mouseleave', e => this.closeTooltip(e, item));
-    		item.addEventListener('mouseenter', e => this.openTooltip(e, item, 'right'));
-    	}
-    }
+	componentDidUpdate() {
+		const glossaryItems = document.getElementsByClassName('glossary-item');
+		for (let i = 0; i < glossaryItems.length; i++) {
+			const item = glossaryItems[i];
+			item.addEventListener('mouseleave', e => this.closeTooltip(e, item));
+			item.addEventListener('mouseenter', e => this.openTooltip(e, item, 'right'));
+		}
+	}
 
-    // REMOVE EVENT LISTENERS
+	// REMOVE EVENT LISTENERS
 }
 
 export default translate()(Radium(QuizText));

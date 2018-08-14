@@ -1,0 +1,17 @@
+.parser-root {
+  white-space: pre-wrap;
+  .note {
+    border: solid 1px #ddd;
+    margin: 10px 20px;
+    background: #eeea87;
+    border-left: 5px solid #c9c54c;
+    padding: 10px;
+  }
+  .code {
+    border: solid 1px #ddd;
+    margin: 10px 20px;
+    background: #ecf0f1;
+    border-left: 5px solid #589d32;
+    padding: 10px;
+  }
+}
