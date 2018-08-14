@@ -82,6 +82,7 @@ class DiscoverContainer extends PureComponent {
 									{...suggestion}
 									withFollowButton
 									key={suggestion.id}
+									badge={suggestion.badge}
 								/>
 							))}
 						</div>

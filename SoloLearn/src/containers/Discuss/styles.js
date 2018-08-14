@@ -138,6 +138,7 @@ export const PostStyles = {
 	},
 	repliesData: {
 		padding: '5px 25px',
+		paddingBottom: 4,
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'space-between',

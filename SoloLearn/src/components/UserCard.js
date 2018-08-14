@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import { followSuggestion } from 'actions/discover';
-import { numberFormatter, showError } from 'utils';
+import ModBadge from 'components/ModBadge';
+import { numberFormatter, showError, determineBadge } from 'utils';
 import 'styles/components/UserCard.scss';
 
 const CustomWrapper = ({ children, className }) => (
@@ -29,6 +30,7 @@ render() {
 		id,
 		level,
 		name,
+		badge,
 		withLink,
 		followers,
 		avatarUrl,
@@ -37,6 +39,7 @@ render() {
 		withFollowButton,
 	} = this.props;
 	const WrapperComponent = withLink ? Link : CustomWrapper;
+	const modBadge = determineBadge(badge);
 	return (
 		<div className={`discover-user-card-container ${className}`}>
 			<WrapperComponent to={`/profile/${id}`} className="profile-container">
@@ -48,6 +51,10 @@ render() {
 
 						<div className="profile-name">
 							{name}
+							<ModBadge
+								badge={modBadge}
+								className="small"
+							/>
 						</div>
 						{ (followers || followers === 0) &&
 						<div className="profile-followers">

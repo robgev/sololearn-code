@@ -28,11 +28,12 @@ const styles = {
 	wrapper: {
 		position: 'relative',
 		// overflow: 'hidden',
-
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'flex-end',
 	},
 
 	skipText: {
-		float: 'right',
 		margin: '15px 48px 0 0',
 	},
 

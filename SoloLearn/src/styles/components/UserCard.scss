@@ -2,7 +2,7 @@
 
 .discover-user-card-container {
 	display: flex;
-	width: calc(100% / 3 - 16px);
+	flex: 1 0 30%;
 	margin: 7px;
 	border: 1px solid #E9EBEE;
 	align-items: center;
