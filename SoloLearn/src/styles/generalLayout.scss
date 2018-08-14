@@ -1,7 +1,7 @@
 .layout-container {
 	display: flex;
 	justify-content: center;
-	padding-top: 20px;
+	padding: 20px 0;
 	transition: padding-top 150ms cubic-bezier(0.075, 0.82, 0.165, 1);
 	.main-content {
 		width: 610px;

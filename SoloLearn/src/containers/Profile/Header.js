@@ -87,6 +87,7 @@ class Header extends Component {
 					<RaisedButton
 						secondary
 						icon={<Person />}
+						style={{ marginRight: 3 }}
 						onClick={openFollowerPopup}
 						label={numberFormatter(profile.followers)}
 					/>
