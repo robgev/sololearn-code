@@ -3,7 +3,7 @@ import Progress from 'api/progress';
 import Storage from 'api/storage';
 import * as types from 'constants/ActionTypes';
 import { getProfileInternal } from 'actions/profile';
-import { getCourseByAlias } from 'reducers/reducer_courses';
+import { getModuleByName } from 'reducers/reducer_modules';
 
 const setLevels = payload => ({ type: types.LOAD_LEVELS, payload });
 const setCourses = payload => ({ type: types.LOAD_COURSES, payload });
@@ -14,9 +14,7 @@ const getCoursesSync = () => (dispatch) => {
 	if (courses !== null && levels !== null) {
 		dispatch(setCourses(courses));
 		dispatch(setLevels(levels));
-		return true;
 	}
-	return false;
 };
 
 const getCoursesAsync = () => async (dispatch) => {
@@ -30,135 +28,111 @@ const getCoursesAsync = () => async (dispatch) => {
 };
 
 export const getCourses = () => (dispatch) => {
-	dispatch(getCoursesAsync());
-	return dispatch(getCoursesSync());
+	dispatch(getCoursesSync());
+	return dispatch(getCoursesAsync());
 };
 
 // Identifying keys of modules, lessons and quizzes objects
-// const structurizeCourse = (modules, dispatch) => {
-// 	let structuredModules = {};
-// 	let structuredLessons = {};
-// 	let structuredQuizzes = {};
+const normalizeCourse = modules => (dispatch) => {
+	const normalizedModules = {};
+	const normalizedLessons = {};
+	const normalizedQuizzes = {};
 
-// 	for (let i = 0; i < modules.length; i++) {
-// 		const currentModule = modules[i];
-// 		const currentModuleId = currentModule.id;
+	modules.forEach((mod) => {
+		mod.lessons.forEach((les) => {
+			les.quizzes.forEach((quiz) => {
+				normalizedQuizzes[quiz.id] = quiz;
+			});
+			normalizedLessons[les.id] = les;
+		});
+		normalizedModules[mod.id] = mod;
+	});
 
-// 		const { lessons } = currentModule;
+	dispatch({
+		type: types.MAP_MODULES,
+		payload: normalizedModules,
+	});
+	dispatch({
+		type: types.MAP_LESSONS,
+		payload: normalizedLessons,
+	});
+	dispatch({
+		type: types.MAP_QUIZZES,
+		payload: normalizedQuizzes,
+	});
+};
 
-// 		for (let j = 0; j < lessons.length; j++) {
-// 			const currentLesson = lessons[j];
-// 			const currentLessonId = currentLesson.id;
+const loadCourse = course => ({
+	type: types.LOAD_COURSE,
+	payload: course,
+});
 
-// 			const { quizzes } = currentLesson;
+export const toggleCourse = skills => ({
+	type: types.TOGGLE_COURSE,
+	payload: skills,
+});
 
-// 			for (let k = 0; k < quizzes.length; k++) {
-// 				const currentQuiz = quizzes[k];
-// 				const currentQuizId = currentQuiz.id;
-// 				const quizObj = {};
-// 				quizObj[currentQuizId] = quizzes[k];
-// 				structuredQuizzes = Object.assign(structuredQuizzes, quizObj);
-// 			}
+export const toggleCourseInternal = (courseId, enable) => (dispatch, getState) => {
+	const { userProfile: profile } = getState();
 
-// 			const lessonObj = {};
-// 			lessonObj[currentLessonId] = lessons[j];
-// 			structuredLessons = Object.assign(structuredLessons, lessonObj);
-// 		}
+	return Service.request('Profile/ToggleCourse', { courseId, enable }).then(() => {
+		if (!enable) {
+			const index = profile.skills.findIndex(item => item.id === courseId);
+			profile.skills.splice(index, 1);
+			dispatch(toggleCourse(profile.skills));
+		} else {
+			dispatch(getProfileInternal(profile.id));
+		}
+	}).catch((error) => {
+		console.log(error);
+	});
+};
 
-// 		const moduleObj = {};
-// 		moduleObj[currentModuleId] = modules[i];
-// 		structuredModules = Object.assign(structuredModules, moduleObj);
-// 	}
+export const loadCourseInternal = courseId => async (dispatch, getState) => {
+	let selectedCourseId = courseId || Storage.load('selectedCourseId');
+	const course = Storage.load(`c${selectedCourseId}`);
+	const store = getState();
+	const userCourses = store.userProfile.skills;
 
-// 	const modulesMapping = {
-// 		type: types.MAP_MODULES,
-// 		payload: structuredModules,
-// 	};
+	if (selectedCourseId && userCourses.findIndex(item => item.id === selectedCourseId) === -1) {
+		dispatch(toggleCourseInternal(selectedCourseId, true));
+	}
+	if (course != null) {
+		Storage.save('selectedCourseId', course.id);
+		Progress.courseId = course.id;
+		Progress.loadCourse(course); // Getting progress of course
+		await Progress.sync();
+		dispatch(normalizeCourse(course.modules));
+		dispatch(loadCourse(course));
+	} else {
+		selectedCourseId = selectedCourseId || userCourses[0].id;
+		Storage.save('selectedCourseId', selectedCourseId);
+		const { course: fetchedCourse } = await Service.request('GetCourse', { id: selectedCourseId });
+		Progress.courseId = fetchedCourse.id;
+		Progress.loadCourse(fetchedCourse); // Getting progress of course
+		await Progress.sync();
+		Storage.save(`c${selectedCourseId}`, fetchedCourse); // Saveing data to localStorage
+		dispatch(normalizeCourse(fetchedCourse.modules, dispatch));
+		dispatch(loadCourse(fetchedCourse));
+	}
+};
 
-// 	const lessonsMapping = {
-// 		type: types.MAP_LESSONS,
-// 		payload: structuredLessons,
-// 	};
+export const selectModule = moduleId => ({
+	type: types.MODULE_SELECTED,
+	payload: moduleId,
+});
 
-// 	const quizzesMapping = {
-// 		type: types.MAP_QUIZZES,
-// 		payload: structuredQuizzes,
-// 	};
+export const selectModuleByName = name => (dispatch, getState) => {
+	const { id } = getModuleByName(getState(), name);
+	dispatch(selectModule(id));
+};
 
-// 	return new Promise((resolve) => {
-// 		dispatch(modulesMapping);
-// 		dispatch(lessonsMapping);
-// 		dispatch(quizzesMapping);
-// 		resolve();
-// 	});
-// };
+export const selectLesson = lessonId => ({
+	type: types.LESSON_SELECTED,
+	payload: lessonId,
+});
 
-// const loadCourse = course => ({
-// 	type: types.LOAD_COURSE,
-// 	payload: course,
-// });
-
-// export const toggleCourse = skills => ({
-// 	type: types.TOGGLE_COURSE,
-// 	payload: skills,
-// });
-
-// export const toggleCourseInternal = (courseId, enable) => (dispatch, getState) => {
-// 	const { userProfile: profile } = getState();
-
-// 	return Service.request('Profile/ToggleCourse', { courseId, enable }).then(() => {
-// 		if (!enable) {
-// 			const index = profile.skills.findIndex(item => item.id === courseId);
-// 			profile.skills.splice(index, 1);
-// 			dispatch(toggleCourse(profile.skills));
-// 		} else {
-// 			dispatch(getProfileInternal(profile.id));
-// 		}
-// 	}).catch((error) => {
-// 		console.log(error);
-// 	});
-// };
-
-// export const loadCourseInternal = courseId => async (dispatch, getState) => {
-// 	let selectedCourseId = courseId || Storage.load('selectedCourseId');
-// 	const course = Storage.load(`c${selectedCourseId}`);
-// 	const store = getState();
-// 	const userCourses = store.userProfile.skills;
-
-// 	if (selectedCourseId && userCourses.findIndex(item => item.id === selectedCourseId) === -1) {
-// 		dispatch(toggleCourseInternal(selectedCourseId, true));
-// 	}
-// 	if (course != null) {
-// 		Storage.save('selectedCourseId', course.id);
-// 		Progress.courseId = course.id;
-// 		Progress.loadCourse(course); // Getting progress of course
-// 		await Progress.sync();
-// 		await structurizeCourse(course.modules, dispatch);
-// 		dispatch(loadCourse(course));
-// 	} else {
-// 		selectedCourseId = selectedCourseId || userCourses[0].id;
-// 		Storage.save('selectedCourseId', selectedCourseId);
-// 		const { course: fetchedCourse } = await Service.request('GetCourse', { id: selectedCourseId });
-// 		Progress.courseId = fetchedCourse.id;
-// 		Progress.loadCourse(fetchedCourse); // Getting progress of course
-// 		await Progress.sync();
-// 		Storage.save(`c${selectedCourseId}`, fetchedCourse); // Saveing data to localStorage
-// 		await structurizeCourse(fetchedCourse.modules, dispatch);
-// 		dispatch(loadCourse(fetchedCourse));
-// 	}
-// };
-
-// export const selectModule = moduleId => ({
-// 	type: types.MODULE_SELECTED,
-// 	payload: moduleId,
-// });
-
-// export const selectLesson = lessonId => ({
-// 	type: types.LESSON_SELECTED,
-// 	payload: lessonId,
-// });
-
-// export const selectQuiz = quiz => ({
-// 	type: types.QUIZ_SELECTED,
-// 	payload: quiz,
-// });
+export const selectQuiz = quiz => ({
+	type: types.QUIZ_SELECTED,
+	payload: quiz,
+});

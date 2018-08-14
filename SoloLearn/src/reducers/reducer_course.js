@@ -10,3 +10,8 @@ export default function (state = null, action) {
 		return state;
 	}
 }
+
+export const isCourseLoaded = (state, language) => {
+	const { course } = state;
+	return course !== null && course.language === language;
+};

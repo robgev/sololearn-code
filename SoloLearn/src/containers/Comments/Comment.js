@@ -63,7 +63,7 @@ class Comment extends Component {
 
 	onRequestRemoval = () => {
 		const { id } = this.props.comment;
-		const itemType = ReportItemTypes[`${this.props.commentsType}Comment`];
+		const itemType = ReportItemTypes[`${this.props.commentsAPI.commentsType}Comment`];
 		this.props.commentsAPI.requestRemoval({ itemId: id, itemType });
 	}
 
@@ -206,7 +206,7 @@ class Comment extends Component {
 	downvote = () => this.vote(-1);
 
 	render() {
-		const { userProfile, accessLevel, commentsType } = this.props;
+		const { userProfile, accessLevel } = this.props;
 		const {
 			replies,
 			repliesArray,
@@ -214,7 +214,7 @@ class Comment extends Component {
 		return (
 			<div>
 				<CommentView
-					commentsType={commentsType}
+					commentsType={this.props.commentsAPI.commentsType}
 					accessLevel={accessLevel}
 					comment={this.props.comment}
 					upvote={this.upvote}
