@@ -24,6 +24,7 @@ class Parser extends Component {
 	static defaultProps = {
 		style: {},
 		className: '',
+		glossary: null,
 	}
 
 	// static utility funcitons and regexes
@@ -99,7 +100,9 @@ class Parser extends Component {
 	constructor(props) {
 		super(props);
 		// Do for performance
-		this.filteredGlossary = filterGlossary(props.glossary, props.text);
+		this.filteredGlossary = props.glossary === null
+			? null
+			: filterGlossary(props.glossary, props.text);
 		this.text = props.text;
 	}
 	parse = () => {
@@ -107,6 +110,9 @@ class Parser extends Component {
 		return this._parse(toBeParsed);
 	}
 	parseGlossary = (fullText) => {
+		if (this.filteredGlossary === null) {
+			return fullText;
+		}
 		const allItems = [];
 		this.filteredGlossary.forEach(({ text, pattern, term }) => {
 			const patternRegExp = pattern !== null ? new RegExp(pattern) : new RegExp(term);
