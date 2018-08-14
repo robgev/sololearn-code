@@ -65,6 +65,8 @@ render() {
 						<RaisedButton
 							secondary={isFollowing}
 							onClick={this.handleFollow}
+							style={{ height: 28, marginBottom: 5 }}
+							buttonStyle={{ height: 28, lineHeight: '28px' }}
 							className="user-card-follow-button"
 							label={isFollowing ? 'Following' : 'Follow'}
 						/> : (
