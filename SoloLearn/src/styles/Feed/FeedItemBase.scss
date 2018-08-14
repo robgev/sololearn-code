@@ -30,5 +30,12 @@
 				}
 			}
 		}
+		.course-card-container.small {
+			padding: 0;
+			.info-container > p {
+				font-size: 16px;
+				font-weight: 500;
+			}
+		}
 	}
 }

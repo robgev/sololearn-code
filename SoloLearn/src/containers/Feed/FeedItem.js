@@ -188,7 +188,9 @@ class FeedItem extends Component {
 			this.url = `/learn/lesson/${feedItem.userLesson.id}/1`;
 			return (
 				<CourseCard
+					small
 					itemType={2}
+					style={{ boxShadow: 'none' }}
 					id={feedItem.userLesson.id}
 					name={feedItem.userLesson.name}
 					color={feedItem.userLesson.color}
