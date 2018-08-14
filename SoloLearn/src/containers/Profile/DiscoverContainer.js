@@ -52,15 +52,26 @@ class DiscoverContainer extends PureComponent {
 		const { t, discoverSuggestions } = this.props;
 		return (
 			<Layout noSidebar>
-				<Paper className="discover-container">
+				<Paper
+					className="discover-container"
+					style={
+						loading
+							? {
+								display: 'flex',
+								minHeight: '60vh',
+								alignItems: 'center',
+								justifyContent: 'center',
+							}
+							: null
+					}
+				>
 					<BusyWrapper
 						isBusy={loading}
 						title={t('discover_peers.title')}
 						wrapperClassName="discover-busy-wrapper"
-						style={{ minHeight: '60vh' }}
 						loadingComponent={
 							<CircularProgress
-								size={100}
+								size={30}
 							/>
 						}
 					>

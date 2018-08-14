@@ -69,16 +69,25 @@ class Questions extends Component {
 				}
 			>
 				<div style={{ position: 'relative' }}>
+
 					<QuestionList
 						header={
-							<div style={{ marginBottom: 10, display: 'flex', justifyContent: 'space-between' }}>
+							<div style={{
+								marginBottom: 10, display: 'flex', justifyContent: 'space-between',
+							}}
+							>
+								<p className="page-title">{t('discuss.title')}</p>
 								<div style={{ display: 'flex', alignItems: 'center', marginLeft: 15 }}>
 									{filters.query !== '' &&
 										<Chip onRequestDelete={this.removeQuery}>{filters.query}</Chip>}
 								</div>
 								<DropDownMenu
+									style={{ height: 20 }}
 									value={filters.orderBy}
+									className="mini-drop-down"
+									iconStyle={{ height: 5, padding: 0 }}
 									onChange={this.handleOrderByFilterChange}
+									labelStyle={{ height: 20, lineHeight: '20px' }}
 								>
 									<MenuItem value={8} primaryText={t('discuss.filter.trending')} />
 									<MenuItem value={1} primaryText={t('discuss.filter.most-recent')} />

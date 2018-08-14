@@ -44,19 +44,23 @@ render() {
 					<img src={avatarUrl} alt="avatar" className="profile-avatar" />
 				</div>
 				<div className="profile-data">
-					<div className="profile-name">
-						{name}
-					</div>
-					{ (followers || followers === 0) &&
-					<div className="profile-followers">
-						{numberFormatter(followers)} Followers
-					</div>
-					}
-					{ (level || level === 0) &&
-					<div className="profile-followers">
+					<div>
+
+						<div className="profile-name">
+							{name}
+						</div>
+						{ (followers || followers === 0) &&
+						<div className="profile-followers">
+							{numberFormatter(followers)} Followers
+						</div>
+						}
+						{ (level || level === 0) &&
+						<div className="profile-followers">
 						Level {numberFormatter(level)}
+						</div>
+						}
 					</div>
-					}
+
 					{withFollowButton ?
 						<RaisedButton
 							secondary={isFollowing}

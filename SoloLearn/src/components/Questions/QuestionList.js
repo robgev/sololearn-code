@@ -13,7 +13,7 @@ export default observer(({
 		<div>
 			{questions.length === 0 &&
 				(
-					<Paper style={{ height: '100vh', overflow: 'hidden' }}>
+					<Paper style={{ height: '100vh', padding: 15, overflow: 'hidden' }}>
 						{header}
 						<DiscussShimmer />
 					</Paper>
@@ -25,6 +25,7 @@ export default observer(({
 				style={{
 					display: 'flex',
 					width: '100%',
+					padding: 15,
 					flexDirection: 'column',
 				}}
 			>

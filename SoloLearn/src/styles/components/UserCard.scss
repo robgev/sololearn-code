@@ -19,12 +19,14 @@
 		.profile-data {
 			display: flex;
 			flex-direction: column;
-			justify-content: space-around;
+			justify-content: space-between;
 			padding: 5px 10px;
 			width: 100%;
 			.profile-name {
 				color: #1E1E1E;
-				@include multiLineEllipsis($lineHeight: 16px, $lineCount: 2, $bgColor: white);
+				padding-bottom: 5px;
+				font-size: 14px;
+				@include multiLineEllipsis($lineHeight: 14px, $lineCount: 2, $bgColor: white);
 			}
 			.profile-followers {
 				font-size: 14px;

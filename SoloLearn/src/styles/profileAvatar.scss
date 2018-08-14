@@ -23,8 +23,13 @@
 		flex-direction: column;
 		justify-content: space-between;
 		.avatar-user-name {
+			display: inline-flex;
+			align-items: center;
 			color: #607D8B;
 			margin: 0 0 2px 0;
+			.badge-container.mod.small {
+				margin-left: 3px;
+			}
 		}
 		.avatar-date-text {
 			color: #777;

@@ -70,11 +70,12 @@ class Codes extends Component {
 								<p className="page-title">{t('code_playground.title')}</p>
 								<div className="playground-menus">
 									<DropDownMenu
+										autoWidth={false}
 										style={{ height: 20 }}
+										value={filters.language}
+										className="mini-drop-down"
 										iconStyle={{ height: 5, padding: 0 }}
 										labelStyle={{ height: 20, lineHeight: '20px' }}
-										value={filters.language}
-										autoWidth={false}
 										onChange={this.handleLanguageFilterChange}
 									>
 										<MenuItem value="" primaryText={t('code.language-filter.all')} />

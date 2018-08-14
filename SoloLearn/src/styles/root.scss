@@ -48,6 +48,18 @@ html, body {
 	}
 }
 
+.page-title {
+	@extend %title-text;
+	line-height: 14px;
+}
+
+.mini-drop-down {
+	svg {
+		height: 13px !important;
+		width: 13px !important;
+	}
+}
+
 .sidebar-placeholder {
 	position: relative;
 	width: 300px;
