@@ -155,7 +155,7 @@ class FeedItem extends Component {
 			);
 		case types.postedUserLessonComment:
 		case types.postedUserLessonCommentReply:
-			this.url = `/learn/lesson/${feedItem.userLesson.id}/1?commentID=${feedItem.comment.id}`;
+			this.url = `/learn/lesson/${feedItem.userLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${feedItem.userLesson.id}/1?commentID=${feedItem.comment.id}`;
 			return (
 				<div>
 					<Comment url={this.url} comment={feedItem.comment} />
@@ -185,7 +185,7 @@ class FeedItem extends Component {
 				</div>
 			);
 		case types.lessonCreated:
-			this.url = `/learn/lesson/${feedItem.userLesson.id}/1`;
+			this.url = `/learn/lesson/${feedItem.userLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${feedItem.userLesson.id}/1`;
 			return (
 				<CourseCard
 					small

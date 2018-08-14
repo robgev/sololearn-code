@@ -31,7 +31,7 @@ const CodePenCard = ({
 			</div>
 		}
 		<Link
-			to={`/learn/lesson/${id}/1`}
+			to={`/learn/lesson/${itemType === slayItemTypes.courseLesson ? 'course-lesson' : 'user-lesson'}/${id}/1`}
 			className="code-pen-wrapper"
 		>
 			<div className="image-wrapper" style={{ backgroundColor: color }}>

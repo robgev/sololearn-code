@@ -37,7 +37,7 @@ const CourseCard = ({
 			to={
 				itemType === slayItemTypes.course || isCourses ?
 					`/learn/course/${getCourseNameById(courses, id)}` :
-					`/learn/lesson/${id}/1`
+					`/learn/lesson/${itemType === slayItemTypes.courseLesson ? 'course-lesson' : 'user-lesson'}/${id}/1`
 			}
 			style={wrapperStyle}
 			className="course-card-wrapper"

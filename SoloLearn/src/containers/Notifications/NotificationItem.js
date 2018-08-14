@@ -85,7 +85,7 @@ class NotificationItem extends Component {
 		case types.postedUserLessonComment:
 		case types.postedUserLessonCommentReply:
 		case types.upvoteUserLessonComment:
-			browserHistory.push(`/learn/lesson/${notification.userLesson.id}/1?commentID=${notification.userLessonComment.id}`);
+			browserHistory.push(`/learn/lesson/${notification.userLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${notification.userLesson.id}/1?commentID=${notification.userLessonComment.id}`);
 			break;
 		case types.postedLessonComment:
 		case types.postedLessonCommentReply:

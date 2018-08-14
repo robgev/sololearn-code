@@ -61,10 +61,21 @@ class SlayLesson extends PureComponent {
 		return count;
 	}
 
+	getParsedItemType = () => {
+		const { itemType } = this.props.params;
+		switch (itemType) {
+		case 'course-lesson':
+			return slayItemTypes.courseLesson;
+		case 'user-lesson':
+			return slayItemTypes.slayLesson;
+		default:
+			return slayItemTypes.slayLesson;
+		}
+	}
+
 	loadLesson = async (lessonId) => {
-		const { params, getCourseLesson, getLesson } = this.props;
-		const { itemType } = params;
-		const parsedItemType = parseInt(itemType, 10);
+		const { getCourseLesson, getLesson } = this.props;
+		const parsedItemType = this.getParsedItemType();
 		this.setState({ loading: true });
 		switch (parsedItemType) {
 		case slayItemTypes.courseLesson: {
@@ -161,7 +172,7 @@ class SlayLesson extends PureComponent {
 								isBookmarked={isBookmarked}
 							/>
 							{nextLesson &&
-								<Link to={`/learn/lesson/${nextLesson.id}/1`}>
+								<Link to={`/learn/lesson/${nextLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${nextLesson.id}/1`}>
 									<RaisedButton
 										labelColor="#fff"
 										backgroundColor="#8bc34a"
