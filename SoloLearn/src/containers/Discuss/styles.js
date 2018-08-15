@@ -174,6 +174,7 @@ export const PostStyles = {
 	},
 	repliesFilter: {
 		height: '25px',
+		width: 100,
 	},
 	repliesWrapper: {
 		position: 'relative',

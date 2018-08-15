@@ -88,7 +88,6 @@ class Post extends Component {
 		try {
 			const { params } = this.props;
 			this.props.loadPost(null);
-			console.log('LOADING POST', params.id);
 			await this.props.loadPostInternal(params.id);
 			await this.getReplies(params.replyId);
 			if (params.replyId) {
