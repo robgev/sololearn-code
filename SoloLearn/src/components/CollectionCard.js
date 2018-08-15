@@ -86,6 +86,7 @@ const CollectionCard = ({
 									isCourse={isCourses}
 									className="collection-card-chip"
 									noBoxShadow={!(isCourses && round)}
+									customLink={lessonItem.itemType === 5 ? `/learn/collection/${lessonItem.id}` : null}
 								/>
 							</div>
 					))

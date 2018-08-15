@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { toSeoFriendly } from 'utils';
 import { Circle } from 'react-progressbar.js';
 import 'styles/courseChip.scss';
 

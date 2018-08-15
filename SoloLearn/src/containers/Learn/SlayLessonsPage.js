@@ -19,10 +19,10 @@ class SlayLessonsPage extends Component {
 	}
 
 	async componentWillMount() {
-		const { params: { courseId } } = this.props;
-		const collectionId = parseInt(courseId, 10);
-		await this.props.setSelectedCollection(collectionId);
-		await this.props.getCollectionItems(collectionId, { index: 0, count: 20 });
+		const { params: { collectionId } } = this.props;
+		const parsedCollectionId = parseInt(collectionId, 10);
+		await this.props.setSelectedCollection(parsedCollectionId);
+		await this.props.getCollectionItems(parsedCollectionId, { index: 0, count: 20 });
 		ReactGA.ga('send', 'screenView', { screenName: 'Collection Page' });
 		this.setState({ loading: false });
 	}

@@ -85,7 +85,7 @@ export default ([
 		<Route path="/learn/more/author/:userId" component={SlayMoreByAuthor} />
 		<Route path="/learn/more/:collectionId" component={SlayDetailed} />
 
-		<Route path="/learn/lessons/:courseName/:courseId" component={SlayLessonsPage} />
+		<Route path="/learn/collection/:collectionId" component={SlayLessonsPage} />
 		<Route path="/learn/lesson/:itemType/:lessonId/:pageNumber(/:language(/:codeID))" component={SlayLesson} />
 		<Route path="/learn/course/:language" component={Modules} />
 		<Route path="/learn/course/:language/:moduleName" component={Lessons} />
