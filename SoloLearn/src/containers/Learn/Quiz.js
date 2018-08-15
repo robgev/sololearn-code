@@ -30,7 +30,6 @@ const styles = {
 		// overflow: 'hidden',
 		display: 'flex',
 		flexDirection: 'column',
-		alignItems: 'flex-end',
 	},
 
 	skipText: {
@@ -285,7 +284,7 @@ class Quiz extends Component {
 		];
 		ReactGA.ga('send', 'screenView', { screenName: 'Lesson Quiz Page' });
 		return (
-			<div className="quiz" style={styles.wrapper}>
+			<div className="quiz" style={{ ...styles.wrapper, alignItems: 'flex-end' }}>
 				<QuizAnswers
 					key={activeQuiz.id}
 					quiz={quiz}
