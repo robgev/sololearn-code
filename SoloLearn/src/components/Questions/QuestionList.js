@@ -9,15 +9,25 @@ import QuestionItem from './QuestionItem';
 export default observer(({
 	questions, loadMore, hasMore, header,
 }) =>
-	(questions.length === 0 && !hasMore ? <div>No questions found</div> : (
+	(questions.length === 0 && !hasMore ? (
+		<Paper style={{
+			padding: 15,
+		}}
+		>
+			{header}
+			<div className="no-questions-wrapper">
+				No questions found
+			</div>
+		</Paper>
+	) : (
 		<div>
 			{questions.length === 0 &&
-				(
-					<Paper style={{ height: '100vh', padding: 15, overflow: 'hidden' }}>
-						{header}
-						<DiscussShimmer />
-					</Paper>
-				)}
+					(
+						<Paper style={{ height: '100vh', padding: 15, overflow: 'hidden' }}>
+							{header}
+							<DiscussShimmer />
+						</Paper>
+					)}
 			<InfiniteScroll
 				header={questions.length !== 0 ? header : null}
 				loadMore={loadMore}

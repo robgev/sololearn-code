@@ -12,7 +12,12 @@ const CodesList = observer(({
 	<div className="codes-wrapper">
 		{
 			codes.length === 0 && !hasMore
-				? <div>No codes found</div>
+				? (
+					<Paper style={{ padding: 15 }}>
+						{header}
+						<div className="no-codes-wrapper">No codes found</div>
+					</Paper>
+				)
 				: (
 					<div>
 						{
