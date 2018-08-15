@@ -234,7 +234,7 @@ class Quiz extends Component {
 		if (activeQuiz.isText) {
 			ReactGA.ga('send', 'screenView', { screenName: 'Lesson Text Page' });
 			return (
-				<div className="quiz-text" style={styles.wrapper}>
+				<div className="quiz-text" style={{ ...styles.wrapper, alignItems: 'flex-end' }}>
 					<QuizText
 						type={1}
 						key={quiz.id}
@@ -284,7 +284,7 @@ class Quiz extends Component {
 		];
 		ReactGA.ga('send', 'screenView', { screenName: 'Lesson Quiz Page' });
 		return (
-			<div className="quiz" style={{ ...styles.wrapper, alignItems: 'flex-end' }}>
+			<div className="quiz" style={styles.wrapper}>
 				<QuizAnswers
 					key={activeQuiz.id}
 					quiz={quiz}
