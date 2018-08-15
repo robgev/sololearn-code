@@ -1,7 +1,7 @@
 // React modules
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
-import { browserHistory } from 'react-router';
+import { browserHistory, withRouter } from 'react-router';
 import { findKey } from 'lodash';
 
 // i18n
@@ -12,9 +12,6 @@ import Paper from 'material-ui/Paper';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
-
-// Redux loaded
-import { isLoaded } from 'reducers';
 
 // Service
 import Service from 'api/service';
@@ -71,6 +68,7 @@ const styles = {
 	},
 };
 
+@withRouter
 class Playground extends Component {
 	state = {
 		id: 0,
@@ -129,7 +127,7 @@ class Playground extends Component {
 						languageSelector: isWeb ? 'web' : foundEditorSettingKey,
 					});
 
-					browserHistory.replace(`${basePath}/${alias}`);
+					browserHistory.replace({ pathname: `${basePath}/${alias}`, query: this.props.location.query });
 				} else {
 					this.setDefaultSettings();
 				}
@@ -163,13 +161,13 @@ class Playground extends Component {
 			latestSavedCodeData: codeData,
 		});
 
-		browserHistory.replace(`${basePath}/html`);
+		browserHistory.replace({ pathname: `${basePath}/html`, query: this.props.location.query });
 		ReactGA.ga('send', 'screenView', { screenName: 'Code Editor Page' });
 		document.title = 'Sololearn | Playground';
 	}
 
 	getCodeTemplate = async () => {
-		const { params, basePath } = this.props;
+		const { params, basePath, location } = this.props;
 		this.setState({ isGettingCode: true });
 		try {
 			const id = parseInt(params.secondary, 10);
@@ -203,9 +201,9 @@ class Playground extends Component {
 					languageSelector: isWeb ? 'web' : foundEditorSettingKey,
 				});
 
-				browserHistory.replace(`${basePath}/${alias}/${params.secondary}`);
+				browserHistory.replace({ pathname: `${basePath}/${alias}/${params.secondary}`, query: location.query });
 			} else {
-				browserHistory.replace(`${basePath}/html/${params.secondary}`);
+				browserHistory.replace({ pathname: `${basePath}/html/${params.secondary}`, query: location.query });
 			}
 			this.setState({ isGettingCode: false });
 		} catch (error) {
@@ -238,7 +236,7 @@ class Playground extends Component {
 			if (foundEditorSettingKey) {
 				const { alias, type } = editorSettings[foundEditorSettingKey];
 				if (!params.secondary) { // if the language/tab is not specified
-					browserHistory.replace(`${basePath}/${publicID}/${alias}`);
+					browserHistory.replace({ pathname: `${basePath}/${publicID}/${alias}`, query: this.props.location.query });
 				}
 				const isWeb = checkWeb(alias);
 				const codeData = {
@@ -278,16 +276,16 @@ class Playground extends Component {
 	getTabCodeData = (mode, codes) => {
 		const { sourceCode, cssCode, jsCode } = codes || this.state;
 		switch (mode) {
-		case 'html':
-		case 'php':
-			return sourceCode;
-		case 'css':
-			return cssCode;
-		case 'js':
-		case 'javascript':
-			return jsCode;
-		default:
-			return sourceCode;
+			case 'html':
+			case 'php':
+				return sourceCode;
+			case 'css':
+				return cssCode;
+			case 'js':
+			case 'javascript':
+				return jsCode;
+			default:
+				return sourceCode;
 		}
 	}
 
@@ -325,21 +323,21 @@ class Playground extends Component {
 			languageSelector: 'web',
 			userCodeLanguage: 'web',
 		});
-		browserHistory.replace(`${link}${alias}`);
+		browserHistory.replace({ pathname: `${link}${alias}`, query: this.props.location.query });
 	}
 
 	handleEditorChange = (editorValue) => {
 		const { mode } = this.state;
 		switch (mode) {
-		case 'css':
-			this.setState({ code: editorValue, cssCode: editorValue });
-			break;
-		case 'javascript':
-			this.setState({ code: editorValue, jsCode: editorValue });
-			break;
-		default:
-			this.setState({ code: editorValue, sourceCode: editorValue });
-			break;
+			case 'css':
+				this.setState({ code: editorValue, cssCode: editorValue });
+				break;
+			case 'javascript':
+				this.setState({ code: editorValue, jsCode: editorValue });
+				break;
+			default:
+				this.setState({ code: editorValue, sourceCode: editorValue });
+				break;
 		}
 	}
 
@@ -358,7 +356,7 @@ class Playground extends Component {
 		const isUserWritten =
 			latestSavedCodeData.codeType === 'userCode' && language === userCodeLanguage;
 		const code = isUserWritten ? latestSavedCodeData.sourceCode : texts[mode];
-		browserHistory.replace(`${link}${alias}`);
+		browserHistory.replace({ pathname: `${link}${alias}`, query: this.props.location.query });
 		this.setState({
 			code,
 			type,
@@ -389,24 +387,24 @@ class Playground extends Component {
 		const computedJsCode = isPredefined ? jsCode : texts[mode];
 		const computedSourceCode = isPredefined ? sourceCode : texts[mode];
 		switch (mode) {
-		case 'css':
-			this.setState({
-				code: computedCssCode,
-				cssCode: computedCssCode,
-			});
-			break;
-		case 'javascript':
-			this.setState({
-				code: computedJsCode,
-				jsCode: computedJsCode,
-			});
-			break;
-		default:
-			this.setState({
-				code: computedSourceCode,
-				sourceCode: computedSourceCode,
-			});
-			break;
+			case 'css':
+				this.setState({
+					code: computedCssCode,
+					cssCode: computedCssCode,
+				});
+				break;
+			case 'javascript':
+				this.setState({
+					code: computedJsCode,
+					jsCode: computedJsCode,
+				});
+				break;
+			default:
+				this.setState({
+					code: computedSourceCode,
+					sourceCode: computedSourceCode,
+				});
+				break;
 		}
 	}
 
@@ -639,7 +637,7 @@ ${succeedingSubstr}
 
 	maximizeInlineCode = () => {
 		const { params: { primary, secondary } } = this.props;
-		browserHistory.replace(`/playground/${primary}/${secondary}`);
+		browserHistory.replace({ pathname: `/playground/${primary}/${secondary}`, query: this.props.location.query });
 	}
 
 	render() {
@@ -670,7 +668,7 @@ ${succeedingSubstr}
 			inline,
 			withBottomToolbar,
 		} = this.props;
-		console.log(this.props.params);	
+		console.log(this.props.params);
 
 		const inputsPopupActions = [
 			<FlatButton
