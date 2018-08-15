@@ -63,7 +63,9 @@ class Post extends Component {
 	}
 
 	async componentWillMount() {
-		await this.initialize();
+		if (this.props.post === null || this.props.params.id !== this.props.post.id.toString()) {
+			await this.initialize();
+		}
 		document.title = this.props.post ? this.props.post.title : 'SoloLearn';
 		ReactGA.ga('send', 'screenView', { screenName: 'Discussion Thread Page' });
 	}
