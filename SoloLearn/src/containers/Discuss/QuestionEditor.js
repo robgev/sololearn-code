@@ -48,7 +48,7 @@ class QuestionEditor extends Component {
 	// Collect tags into one array
 	addTag = (newTag) => {
 		const { tags } = this.state;
-		this.setState({ tags: [...tags, newTag] });
+		this.setState({ tags: [ ...tags, newTag ] });
 	}
 
 	handleDeleteTag = (tag) => {
@@ -70,7 +70,7 @@ class QuestionEditor extends Component {
 
 	hanldeChipBlur = ({ target: { value } }) => {
 		if (value) {
-			this.setState(s => ({ tags: [...s.tags, value] }));
+			this.setState(s => ({ tags: [ ...s.tags, value ] }));
 		}
 	}
 
@@ -86,7 +86,7 @@ class QuestionEditor extends Component {
 		} else {
 			this.props.submit(
 				this.state.title,
-				this.mentionInput.popValue(),
+				this.mentionInput.getValue(),
 				this.state.tags,
 			);
 		}
@@ -160,7 +160,7 @@ class QuestionEditor extends Component {
 							value={this.state.tags}
 							style={styles.textField}
 							onBlur={this.handleChipBlur}
-							newChipKeyCodes={[13, 32]}
+							newChipKeyCodes={[ 13, 32 ]}
 							chipRenderer={this.renderChip}
 							dataSource={this.state.suggestions}
 							errorText={this.state.tagsErrorText}
