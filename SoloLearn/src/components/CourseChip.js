@@ -38,7 +38,7 @@ const CourseChip = ({
 				...wrapperStyle,
 			}}
 			className={`chip-container ${(roundItem) ? 'round' : ''} ${className}`}
-			to={customLink || (isCourse ? `/learn/course/${language}` : `/learn/slayLesson/${itemType}/${id}/1`)}
+			to={customLink || (isCourse ? `/learn/course/${language}` : `/learn/lesson/${itemType === 3 ? 'course-lesson' : 'user-lesson'}/${id}/1`)}
 		>
 			<div
 				className={`course-chip-image-container ${(roundItem) ? 'round' : ''} ${noBoxShadow ? '' : 'with-shadow'}`}
