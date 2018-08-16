@@ -123,6 +123,7 @@ class QuestionEditor extends Component {
 				<div onSubmit={this.handleSubmit}>
 					<div className="question-data" style={styles.questionData}>
 						<TextField
+							multiLine
 							fullWidth
 							value={this.state.title}
 							style={styles.textField}
