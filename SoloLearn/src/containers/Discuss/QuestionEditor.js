@@ -68,12 +68,6 @@ class QuestionEditor extends Component {
 		}
 	}
 
-	hanldeChipBlur = ({ target: { value } }) => {
-		if (value) {
-			this.setState(s => ({ tags: [ ...s.tags, value ] }));
-		}
-	}
-
 	// Add question form submit
 	handleSubmit = () => {
 		const { t } = this.props;
@@ -107,6 +101,12 @@ class QuestionEditor extends Component {
 	handleBlur = () => {
 		if (this.state.replyLength <= 1) { this.closeReplyBox(); }
 	}
+	handleChipBlur = (e) => {
+		const { value } = e.currentTarget;
+		if (value !== '') {
+			this.setState(s => ({ tags: [ ...s.tags, value ] }));
+		}
+	}
 	onLengthChange = (replyLength) => {
 		if (this.mentionInput) {
 			this.setState({ replyLength });
@@ -123,6 +123,7 @@ class QuestionEditor extends Component {
 				<div onSubmit={this.handleSubmit}>
 					<div className="question-data" style={styles.questionData}>
 						<TextField
+							multiLine
 							fullWidth
 							value={this.state.title}
 							style={styles.textField}

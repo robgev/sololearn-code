@@ -54,7 +54,9 @@ export default (state = null, action) => {
 	case LOAD_DISCUSS_POST_REPLIES:
 		return { ...state, replies: loadReplies(state.replies, action.payload) };
 	case ADD_NEW_REPLY:
-		return { ...state, replies: addNewReply(state.replies, action.payload) };
+		return {
+			...state, replies: addNewReply(state.replies, action.payload), answers: state.answers + 1,
+		};
 	case LOAD_DISCUSS_POST_PREVIOUS_REPLIES:
 		return { ...state, replies: [ ...action.payload, ...state.replies ] };
 	case EMPTY_DISCUSS_POST_REPLIES:
@@ -64,7 +66,11 @@ export default (state = null, action) => {
 	case EDIT_POST:
 		return editPost(state, action.payload);
 	case DELETE_POST:
-		return { ...state, replies: state.replies.filter(reply => reply.id !== action.payload.id) };
+		return {
+			...state,
+			answers: state.answers - 1,
+			replies: state.replies.filter(reply => reply.id !== action.payload.id),
+		};
 	case QUESTION_FOLLOWING:
 		return { ...state, isFollowing: action.payload };
 	case ACCEPT_ANSWER:

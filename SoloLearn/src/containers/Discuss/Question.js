@@ -118,7 +118,9 @@ class Question extends Component {
 						</div>
 						<pre className="message" style={styles.message}>
 							<Linkify>
-								{replaceMention(question.message)}
+								<div style={{ overflowWrap: 'break-word' }}>
+									{replaceMention(question.message)}
+								</div>
 							</Linkify>
 						</pre>
 						{previewsData.map(singlePreviewData => (

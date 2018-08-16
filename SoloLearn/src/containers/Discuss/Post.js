@@ -63,7 +63,9 @@ class Post extends Component {
 	}
 
 	async componentWillMount() {
-		await this.initialize();
+		if (this.props.post === null || this.props.params.id !== this.props.post.id.toString()) {
+			await this.initialize();
+		}
 		document.title = this.props.post ? this.props.post.title : 'SoloLearn';
 		ReactGA.ga('send', 'screenView', { screenName: 'Discussion Thread Page' });
 	}
@@ -88,7 +90,6 @@ class Post extends Component {
 		try {
 			const { params } = this.props;
 			this.props.loadPost(null);
-			console.log('LOADING POST', params.id);
 			await this.props.loadPostInternal(params.id);
 			await this.getReplies(params.replyId);
 			if (params.replyId) {

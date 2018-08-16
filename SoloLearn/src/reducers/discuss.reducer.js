@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { createSelector } from 'reselect';
 import uniqBy from 'lodash/uniqBy';
 import {
-	SET_POSTS, EMPTY_POSTS, REMOVE_POST,
+	SET_POSTS, EMPTY_POSTS, REMOVE_POST, VOTE_POST,
 	MARK_DISCUSS_LIST_FINISHED, REQUEST_POSTS, SET_DISCUSS_FILTERS,
 } from 'constants/ActionTypes';
 
@@ -46,6 +46,19 @@ const entities = (state = [], action) => {
 		return state.filter(question => question.id !== action.payload);
 	case EMPTY_POSTS:
 		return [];
+	case VOTE_POST:
+		// TODO: needs refactoring after Post state becomes local
+		/* eslint-disable */
+			const {
+				vote, isPrimary, votes, id,
+			} = action.payload;
+			/* eslint-enable */
+		if (isPrimary) {
+			return state.map(post => (post.id === id
+				? { ...post, vote, votes }
+				: post));
+		}
+		return state;
 	default:
 		return state;
 	}
