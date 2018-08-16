@@ -34,7 +34,7 @@ class Parser extends Component {
 
 	static imgRegex = /\[img id="(\d+)" width="(\d+)%"\]/;
 
-	static codeRegex = /format="(\w+)"( codeId="(\d+)")?/;
+	static codeRegex = /format="(\w+)"(?: codeId="(\d+)")?/;
 
 	static U = ({ children }) => <span style={{ textDecoration: 'underline' }}>{children}</span>;
 
@@ -51,10 +51,9 @@ class Parser extends Component {
 		// TODO:  Change this logic
 		// as codeId we get a string " codeId="647""
 		// so we use number regex to take codeId out
-		const parsedCodeId = /\d+/.exec(codeId)[0];
 		return (
 			<CodeBlock
-				codeId={parsedCodeId}
+				codeId={codeId}
 				basePath={basePath}
 				format={codeFormat}
 				courseLanguage={courseLanguage}
