@@ -10,6 +10,7 @@ import { ListItem } from 'material-ui/List';
 import { updateDate, getChallengeStatus } from 'utils';
 import contestTypes from 'defaults/contestTypes';
 import ProfileAvatar from 'components/ProfileAvatar';
+import UserTooltip from 'components/UserTooltip';
 
 // i18n
 import { translate } from 'react-i18next';
@@ -108,16 +109,16 @@ class ContestItemBase extends PureComponent {
 				onClick={this.setContest}
 				innerDivStyle={styles.content}
 			>
-				<ProfileAvatar
-					vertical
-					withTooltip
-					userID={opponent.id}
-					level={opponent.level}
-					badge={opponent.badge}
-					tooltipId={`contest-${id}`}
-					userName={opponent.name}
-					avatarUrl={opponent.avatarUrl}
-				/>
+				<UserTooltip userData={opponent}>
+					<ProfileAvatar
+						vertical
+						userID={opponent.id}
+						level={opponent.level}
+						badge={opponent.badge}
+						userName={opponent.name}
+						avatarUrl={opponent.avatarUrl}
+					/>
+				</UserTooltip>
 				<div className="wrapper" style={styles.wrapper}>
 					<p style={styles.userName}>{opponent.name}</p>
 					<p style={styles.date}>

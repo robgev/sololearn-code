@@ -10,6 +10,7 @@ import { red500 } from 'material-ui/styles/colors';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import ProfileAvatar from 'components/ProfileAvatar';
 import VoteControls from 'components/VoteControls';
+import UserTooltip from 'components/UserTooltip';
 
 import { determineAccessLevel } from 'utils';
 import { removeCode } from 'actions/playground';
@@ -56,7 +57,6 @@ class BottomToolbar extends PureComponent {
 	render() {
 		const { isPublic } = this.state;
 		const {
-			t,
 			userId,
 			voteCode,
 			codeData,
@@ -70,7 +70,6 @@ class BottomToolbar extends PureComponent {
 			name,
 			badge,
 			userID,
-			publicID,
 			language,
 			userName,
 			avatarUrl,
@@ -79,16 +78,16 @@ class BottomToolbar extends PureComponent {
 			<div className="bottom-toolbar">
 				<div className="toolbar-left">
 					<div className="user-data">
-						<ProfileAvatar
-							size={40}
-							withTooltip
-							level={level}
-							badge={badge}
-							userID={userID}
-							userName={userName}
-							avatarUrl={avatarUrl}
-							tooltipId={`challenge-user-${publicID}`}
-						/>
+						<UserTooltip userData={codeData}>
+							<ProfileAvatar
+								size={40}
+								level={level}
+								badge={badge}
+								userID={userID}
+								userName={userName}
+								avatarUrl={avatarUrl}
+							/>
+						</UserTooltip>
 						<div className="user-text-data">
 							<p className="code-name">
 								{name} <span className="language-tag">{language}</span>

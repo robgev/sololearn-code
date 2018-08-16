@@ -1,12 +1,11 @@
 // React modules
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
-import ToolTip from 'react-portal-tooltip';
+import UserTooltip from 'components/UserTooltip';
 // Utils
 import { removeDups, updateDate } from 'utils';
 
 import Likes from 'components/Likes';
-import UserCard from 'components/UserCard';
 
 import 'styles/Discuss/QuestionItem.scss';
 import DiscussTag from './DiscussTag';
@@ -60,30 +59,13 @@ class QuestionItem extends PureComponent {
 						<span className="question-item-date">
 							{updateDate(question.date)} by {' '}
 						</span>
-						<span
-							id={`question-item-${question.id}`}
-							onMouseEnter={this.toggleTooltip}
-							onMouseLeave={this.toggleTooltip}
-						>
-							{question.userName}
-						</span>
+						<UserTooltip userData={question}>
+							<span>
+								{question.userName}
+							</span>
+						</UserTooltip>
 					</div>
 				</div>
-				<ToolTip
-					align="center"
-					position="top"
-					arrow="left"
-					active={isTooltipActive}
-					parent={`#question-item-${question.id}`}
-				>
-					<UserCard
-						id={question.userID}
-						level={question.level}
-						name={question.userName}
-						avatarUrl={question.avatarUrl}
-						className="profile-avatar-user-card profile-avatar-reset"
-					/>
-				</ToolTip>
 			</div>
 		);
 	}

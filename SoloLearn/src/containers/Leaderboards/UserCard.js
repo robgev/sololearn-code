@@ -1,5 +1,6 @@
 import React from 'react';
 import ProfileAvatar from 'components/ProfileAvatar';
+import UserTooltip from 'components/UserTooltip';
 import 'styles/userCard.scss';
 
 const UserData = ({ name, xp }) => (
@@ -20,22 +21,29 @@ const UserCard = ({
 	avatarUrl,
 }) => (
 	<div className="user-card-container">
-		<ProfileAvatar
-			disabled
-			withTooltip
-			userID={id}
-			level={level}
-			userName={name}
-			avatarUrl={avatarUrl}
-			className="user-info"
-			tooltipId={`user-${id}`}
-			sideComponent={
-				<UserData
-					name={name}
-					xp={alltime ? xp : rangeXp}
-				/>
-			}
-		/>
+		<UserTooltip
+			userData={{
+				id,
+				level,
+				avatarUrl,
+				userName: name,
+			}}
+		>
+			<ProfileAvatar
+				disabled
+				userID={id}
+				level={level}
+				userName={name}
+				avatarUrl={avatarUrl}
+				className="user-info"
+				sideComponent={
+					<UserData
+						name={name}
+						xp={alltime ? xp : rangeXp}
+					/>
+				}
+			/>
+		</UserTooltip>
 		<div>{ rank }</div>
 	</div>
 );

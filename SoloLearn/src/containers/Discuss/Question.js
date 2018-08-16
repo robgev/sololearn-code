@@ -21,6 +21,7 @@ import PreviewItem from 'components/PreviewItem';
 import ReportPopup from 'components/ReportPopup';
 import DiscussAuthor from 'components/ProfileAvatar';
 import ReportItemTypes from 'constants/ReportItemTypes';
+import UserTooltip from 'components/UserTooltip';
 import {
 	updateDate,
 	removeDups,
@@ -181,18 +182,18 @@ class Question extends Component {
 					>
 						<FollowIcon color={question.isFollowing ? blueGrey500 : grey500} />
 					</IconButton>
-					<DiscussAuthor
-						withTooltip
-						reversedOrder
-						withUserNameBox
-						level={question.level}
-						badge={question.badge}
-						userID={question.userID}
-						avatarUrl={question.avatarUrl}
-						userName={question.userName}
-						tooltipId={`question-${question.id}`}
-						timePassed={updateDate(question.date)}
-					/>
+					<UserTooltip userData={question}>
+						<DiscussAuthor
+							reversedOrder
+							withUserNameBox
+							level={question.level}
+							badge={question.badge}
+							userID={question.userID}
+							avatarUrl={question.avatarUrl}
+							userName={question.userName}
+							timePassed={updateDate(question.date)}
+						/>
+					</UserTooltip>
 				</div>
 				<ReportPopup
 					itemId={question.id}

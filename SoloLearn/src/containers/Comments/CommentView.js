@@ -6,6 +6,7 @@ import ProfileAvatar from 'components/ProfileAvatar';
 import VoteControls from 'components/VoteControls';
 import ReportPopup from 'components/ReportPopup';
 import PreviewItem from 'components/PreviewItem';
+import UserTooltip from 'components/UserTooltip';
 import { IconMenu, MenuItem, FlatButton, IconButton, Dialog } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { updateDate, generatePreviews } from 'utils';
@@ -63,17 +64,17 @@ class CommenView extends Component {
 				className={`comment-item ${this.highlighted ? 'animate' : ''}`}
 			>
 				<div className="comment-header">
-					<ProfileAvatar
-						size={40}
-						withTooltip
-						withUserNameBox
-						level={level}
-						badge={badge}
-						userID={userID}
-						userName={userName}
-						avatarUrl={avatarUrl}
-						tooltipId={`comment-${id}`}
-					/>
+					<UserTooltip userData={this.props.comment}>
+						<ProfileAvatar
+							size={40}
+							withUserNameBox
+							level={level}
+							badge={badge}
+							userID={userID}
+							userName={userName}
+							avatarUrl={avatarUrl}
+						/>
+					</UserTooltip>
 					<div className="comment-meta-info">
 						<p className="comment-date">{updateDate(date)}</p>
 						<IconMenu

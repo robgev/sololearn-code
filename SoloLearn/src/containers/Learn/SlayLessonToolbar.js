@@ -1,5 +1,6 @@
 import React from 'react';
 import ProfileAvatar from 'components/ProfileAvatar';
+import UserTooltip from 'components/UserTooltip';
 
 import IconButton from 'material-ui/IconButton';
 import { grey500 } from 'material-ui/styles/colors';
@@ -7,7 +8,6 @@ import BookmarkIcon from 'material-ui/svg-icons/action/bookmark';
 import BookmarkBorderIcon from 'material-ui/svg-icons/action/bookmark-border';
 
 const SlayLessonToolbar = ({
-	id,
 	userData, // User data contains avatarURL, userName and userID
 	timePassed,
 	isBookmarked,
@@ -26,13 +26,13 @@ const SlayLessonToolbar = ({
 			</IconButton>
 		</div>
 		<div className="author-data">
-			<ProfileAvatar
-				{...userData}
-				withTooltip
-				withUserNameBox
-				timePassed={timePassed}
-				tooltipId={`lesson-${id}`}
-			/>
+			<UserTooltip userData={userData}>
+				<ProfileAvatar
+					{...userData}
+					withUserNameBox
+					timePassed={timePassed}
+				/>
+			</UserTooltip>
 		</div>
 	</div>
 );

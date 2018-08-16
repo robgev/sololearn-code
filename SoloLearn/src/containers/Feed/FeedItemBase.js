@@ -4,24 +4,25 @@ import { Link } from 'react-router';
 import { determineBadge } from 'utils';
 import ModBadge from 'components/ModBadge';
 import ProfileAvatar from 'components/ProfileAvatar';
+import UserTooltip from 'components/UserTooltip';
 
 import 'styles/Feed/FeedItemBase.scss';
 
 const FeedItemBase = ({
-	title, user, children, feedItemId,
+	title, user, children,
 }) => (
 	<div className="feed-item-content">
-		<ProfileAvatar
-			size={40}
-			withTooltip
-			userID={user.id}
-			level={user.level}
-			badge={user.badge}
-			userName={user.name}
-			avatarUrl={user.avatarUrl}
-			avatarStyle={{ margin: 0 }}
-			tooltipId={`feedItem-${feedItemId}`}
-		/>
+		<UserTooltip userData={user}>
+			<ProfileAvatar
+				size={40}
+				userID={user.id}
+				level={user.level}
+				badge={user.badge}
+				userName={user.name}
+				avatarUrl={user.avatarUrl}
+				avatarStyle={{ margin: 0 }}
+			/>
+		</UserTooltip>
 		<div className="wrapper">
 			<p className="feed-item-title">
 				<Link

@@ -12,22 +12,23 @@ import { grey500 } from 'material-ui/styles/colors';
 import { numberFormatter } from 'utils';
 import ProfileAvatar from 'components/ProfileAvatar';
 import LanguageIcon from 'components/LanguageIcon';
+import UserTooltip from 'components/UserTooltip';
 
 import 'styles/Playground/CodeItem.scss';
 
 const CodeItem = ({ code }) => (
 	<div className="code-item-wrapper">
 		<div className="author-details">
-			<ProfileAvatar
-				size={50}
-				withTooltip
-				level={code.level}
-				userID={code.userID}
-				tooltipId={code.publicID}
-				userName={code.userName}
-				avatarUrl={code.avatarUrl}
-				avatarStyle={{ marginRight: 10 }}
-			/>
+			<UserTooltip userData={code}>
+				<ProfileAvatar
+					size={50}
+					level={code.level}
+					userID={code.userID}
+					userName={code.userName}
+					avatarUrl={code.avatarUrl}
+					avatarStyle={{ marginRight: 10 }}
+				/>
+			</UserTooltip>
 		</div>
 		<div className="details-wrapper">
 			<Link className="code-title hoverable" to={`/playground/${code.publicID}`}>

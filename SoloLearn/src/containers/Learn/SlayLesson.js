@@ -140,6 +140,7 @@ class SlayLesson extends PureComponent {
 			userID,
 			avatarUrl,
 			userName,
+			id: userID,
 		};
 		return (
 			<LessonLayout

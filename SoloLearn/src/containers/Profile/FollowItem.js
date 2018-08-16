@@ -6,6 +6,7 @@ import { observer } from 'mobx-react';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import ProfileAvatar from 'components/ProfileAvatar';
+import UserTooltip from 'components/UserTooltip';
 
 // i18next
 import { translate } from 'react-i18next';
@@ -73,17 +74,17 @@ class FollowItem extends Component {
 		return (
 			<div id="follower" style={styles.follower}>
 				<div className="details" style={styles.details}>
-					<ProfileAvatar
-						size={50}
-						withTooltip
-						style={styles.avatar}
-						userID={follow.id}
-						level={follow.level}
-						badge={follow.badge}
-						userName={follow.name}
-						avatarUrl={follow.avatarUrl}
-						tooltipId={`follower-${follow.id}`}
-					/>
+					<UserTooltip userData={follow}>
+						<ProfileAvatar
+							size={50}
+							style={styles.avatar}
+							userID={follow.id}
+							level={follow.level}
+							badge={follow.badge}
+							userName={follow.name}
+							avatarUrl={follow.avatarUrl}
+						/>
+					</UserTooltip>
 					<Link to={`/profile/${follow.id}`} style={styles.authorDetails}>
 						<p className="hoverable" style={styles.name}>{follow.name}</p>
 						<p style={styles.info}>{follow.followers} {t('common.user-followers')} | {t('common.user-level')} {follow.level}</p>

@@ -15,6 +15,7 @@ import { getCourses } from 'actions/learn';
 import Service from 'api/service';
 import 'styles/root.scss';
 import 'react-toastify/dist/ReactToastify.min.css';
+import 'react-tippy/dist/tippy.css';
 import routes from './config/routes';
 import './i18n';
 

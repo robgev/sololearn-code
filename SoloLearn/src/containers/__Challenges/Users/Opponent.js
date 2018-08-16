@@ -53,7 +53,6 @@ const Opponent = ({ opponent, createContest }) => (
 				badge={opponent.badge}
 				userName={opponent.name}
 				avatarUrl={opponent.avatarUrl}
-				tooltipId={`opponent-${opponent.id}`}
 				disabled
 			/>
 		</div>

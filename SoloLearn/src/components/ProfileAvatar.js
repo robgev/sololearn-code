@@ -1,6 +1,5 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
-import ToolTip from 'react-portal-tooltip';
 import Avatar from 'material-ui/Avatar';
 
 import { determineBadge, determineBadgeColor } from 'utils';
@@ -8,55 +7,36 @@ import AvatarColors from 'constants/AvatarColors';
 
 import 'styles/profileAvatar.scss';
 import ModBadge from './ModBadge';
-import UserCard from './UserCard';
 
 const DisabledContainer = props => (
 	<div {...props} />
 );
 
-class ProfileAvatar extends PureComponent {
-state = {
-	isTooltipActive: false,
-}
-
-toggleTooltip = () => {
-	this.setState(state => ({ isTooltipActive: !state.isTooltipActive }));
-}
-
-render() {
-	const {
-		style,
-		level,
-		badge,
-		userID,
-		vertical,
-		disabled,
-		size = 30,
-		userName,
-		avatarUrl,
-		tooltipId,
-		className,
-		withBorder,
-		timePassed,
-		avatarStyle,
-		withTooltip,
-		reversedOrder,
-		sideComponent,
-		withUserNameBox,
-		withFollowButton,
-	} = this.props;
-	const { isTooltipActive } = this.state;
+const ProfileAvatar = ({
+	style,
+	badge,
+	userID,
+	vertical,
+	disabled,
+	size = 30,
+	userName,
+	avatarUrl,
+	className,
+	withBorder,
+	timePassed,
+	avatarStyle,
+	reversedOrder,
+	sideComponent,
+	withUserNameBox,
+}) => {
 	const ConditionalContainer = disabled ? DisabledContainer : Link;
 	const modBadge = determineBadge(badge);
 	const modBadgeColor = determineBadgeColor(modBadge);
 	return (
 		<ConditionalContainer
 			style={style}
-			id={tooltipId}
 			to={`/profile/${userID}`}
 			className="avatar-container"
-			onMouseEnter={this.toggleTooltip}
-			onMouseLeave={this.toggleTooltip}
 		>
 			<div className={`avatar-wrapper ${vertical ? 'vertical' : ''} ${className || ''}`}>
 				<div className="profile-picture-container">
@@ -108,27 +88,8 @@ render() {
 					}
 				</div>
 			</div>
-			{ withTooltip &&
-				<ToolTip
-					align="center"
-					position="top"
-					arrow="left"
-					active={isTooltipActive}
-					parent={`#${tooltipId}`}
-				>
-					<UserCard
-						id={userID}
-						level={level}
-						name={userName}
-						avatarUrl={avatarUrl}
-						withFollowButton={withFollowButton}
-						className="profile-avatar-user-card profile-avatar-reset"
-					/>
-				</ToolTip>
-			}
 		</ConditionalContainer>
 	);
-}
-}
+};
 
 export default ProfileAvatar;

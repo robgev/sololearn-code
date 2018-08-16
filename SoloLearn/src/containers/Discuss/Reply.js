@@ -18,6 +18,7 @@ import { editPostInternal, toggleAcceptedAnswerInternal } from 'actions/discuss'
 import Likes from 'components/Likes';
 import ProfileAvatar from 'components/ProfileAvatar';
 import PreviewItem from 'components/PreviewItem';
+import UserTooltip from 'components/UserTooltip';
 import { showError, updateDate, determineAccessLevel, generatePreviews, replaceMention } from 'utils';
 import MentionInput from 'components/MentionInput';
 
@@ -214,19 +215,19 @@ class Reply extends Component {
 									style={{ ...styles.bestAnswerButton.icon, ...styles.bestAnswerButton.margin }}
 								/>
 						}
-						<ProfileAvatar
-							withTooltip
-							reversedOrder
-							withUserNameBox
-							level={reply.level}
-							badge={reply.badge}
-							userID={reply.userID}
-							avatarUrl={reply.avatarUrl}
-							userName={reply.userName}
-							style={{ marginLeft: 'auto' }}
-							tooltipId={`reply-${reply.id}`}
-							timePassed={updateDate(reply.date)}
-						/>
+						<UserTooltip userData={reply}>
+							<ProfileAvatar
+								reversedOrder
+								withUserNameBox
+								level={reply.level}
+								badge={reply.badge}
+								userID={reply.userID}
+								avatarUrl={reply.avatarUrl}
+								userName={reply.userName}
+								style={{ marginLeft: 'auto' }}
+								timePassed={updateDate(reply.date)}
+							/>
+						</UserTooltip>
 					</div>
 				}
 			</div>
