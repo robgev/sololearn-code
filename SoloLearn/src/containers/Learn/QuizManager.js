@@ -56,12 +56,15 @@ const mapDispatchToProps = {
 
 @connect(mapStateToProps, mapDispatchToProps)
 class QuizManager extends Component {
+	_isMounted = false;
+
 	state = {
 		commentsCount: 0,
 		commentsOpened: false,
 	}
 
-	async componentWillMount() {
+	async componentDidMount() {
+		this._isMounted = true;
 		const {
 			params,
 			isLoaded,
@@ -74,52 +77,60 @@ class QuizManager extends Component {
 		if (!isLoaded) {
 			await loadCourseInternal();
 		}
-		const lessonId = this.props.lesson.id;
-		Service.request('AddLessonImpression', { lessonId });
-		const moduleId = this.props.module.id;
-		// As always, there are <censored> mappings. This one being:
-		// 1 - Module is disabled
-		// 2 - Module is active
-		// 3 - Module is finished
-		const {
-			params: {
-				language, moduleName, lessonName,
-			},
-		} = this.props;
-		const { _visualState: lessonState } = Progress.getLessonStateById(lessonId);
+		if (this._isMounted) {
+			const lessonId = this.props.lesson.id;
+			Service.request('AddLessonImpression', { lessonId });
+			const moduleId = this.props.module.id;
+			// As always, there are <censored> mappings. This one being:
+			// 1 - Module is disabled
+			// 2 - Module is active
+			// 3 - Module is finished
+			const {
+				params: {
+					language, moduleName, lessonName,
+				},
+			} = this.props;
+			const { _visualState: lessonState } = Progress.getLessonStateById(lessonId);
 
-		const { _visualState: moduleState } = Progress.getModuleStateById(moduleId);
+			const { _visualState: moduleState } = Progress.getModuleStateById(moduleId);
 
-		if (lessonState < 2) {
-			if (moduleState < 2) {
-				const {
-					lessons,
-					modules,
-					localProgress,
-					getModuleStateById,
-				} = Progress;
-				// Get the active module id
-				const { id: activeModuleId } =
-					modules.find(({ id }) => getModuleStateById(id)._visualState > 1)
-					|| modules[0].id;
-				const activeLessonId = localProgress.length ?
-					localProgress[localProgress.length - 1].lessonID :
-					lessons[0].id;
-				this.setActiveLesson(activeLessonId, activeModuleId);
-				browserHistory.replace(`/learn/course/${language}/${moduleName}/${lessonName}/${this.props.activeQuiz.number}`);
+			if (lessonState < 2) {
+				if (moduleState < 2) {
+					const {
+						lessons,
+						modules,
+						localProgress,
+						getModuleStateById,
+					} = Progress;
+					// Get the active module id
+					const { id: activeModuleId } =
+						modules.find(({ id }) => getModuleStateById(id)._visualState > 1)
+						|| modules[0].id;
+					const activeLessonId = localProgress.length ?
+						localProgress[localProgress.length - 1].lessonID :
+						lessons[0].id;
+					this.setActiveLesson(activeLessonId, activeModuleId);
+					browserHistory.replace(`/learn/course/${language}/${moduleName}/${lessonName}/${this.props.activeQuiz.number}`);
+				} else {
+					const { localProgress } = Progress;
+					const activeLessonId = localProgress[localProgress.length - 1].lessonID;
+					this.setActiveLesson(activeLessonId, moduleId);
+					browserHistory.replace(`/learn/course/${language}/${moduleName}/${lessonName}/${this.props.activeQuiz.number}`);
+				}
 			} else {
-				const { localProgress } = Progress;
-				const activeLessonId = localProgress[localProgress.length - 1].lessonID;
-				this.setActiveLesson(activeLessonId, moduleId);
-				browserHistory.replace(`/learn/course/${language}/${moduleName}/${lessonName}/${this.props.activeQuiz.number}`);
+				this.setActiveLesson(lessonId, moduleId);
 			}
-		} else {
-			this.setActiveLesson(lessonId, moduleId);
+			const { count } =
+				await Service.request('Discussion/GetLessonCommentCount', { quizId: this.props.activeQuiz.id, type: this.props.activeQuiz.isText ? 1 : 3 });
+			if (this._isMounted) {
+				this.setState({ commentsCount: count, loading: false });
+				document.title = `${this.props.activeLesson.name}`;
+			}
 		}
-		const { count } =
-			await Service.request('Discussion/GetLessonCommentCount', { quizId: this.props.activeQuiz.id, type: this.props.activeQuiz.isText ? 1 : 3 });
-		this.setState({ commentsCount: count, loading: false });
-		document.title = `${this.props.activeLesson.name}`;
+	}
+
+	componentWillUnmount() {
+		this._isMounted = false;
 	}
 
 	setActiveLesson = (lessonId, moduleId) => {
@@ -280,11 +291,9 @@ class QuizManager extends Component {
 			activeLesson,
 			activeModule,
 			params: {
-				courseName,
-				courseId,
-				itemType,
-				moduleId,
+				language,
 				moduleName,
+				lessonName,
 			},
 		} = this.props;
 		const { loading, commentsCount, commentsOpened } = this.state;
@@ -309,13 +318,13 @@ class QuizManager extends Component {
 			<Layout>
 				<Paper className="quiz-container" style={{ padding: 15 }}>
 					<div className="lesson-breadcrumbs">
-						<Link className="hoverable" to={`/learn/${courseName}/${courseId}/${itemType}`}>
-							{course.name} &gt;
+						<Link className="hoverable" to={`/learn/course/${language}`}>
+							{course.name} &gt;{' '}
 						</Link>
-						<Link className="hoverable" to={`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}`}>
-							{activeModule.name} &gt;
+						<Link className="hoverable" to={`/learn/course/${language}/${moduleName}`}>
+							{activeModule.name} &gt;{' '}
 						</Link>
-						<Link className="hoverable" to={`/learn/${courseName}/${courseId}/${itemType}/${moduleId}/${moduleName}/${activeLesson.id}/${toSeoFriendly(activeLesson.name, 100)}/1`}>
+						<Link className="hoverable" to={`/learn/course/${language}/${moduleName}/${lessonName}`}>
 							{activeLesson.name}
 						</Link>
 					</div>
