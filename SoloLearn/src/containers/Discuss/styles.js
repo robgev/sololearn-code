@@ -232,12 +232,13 @@ export const QuestionStyles = {
 	},
 	details: {
 		margin: '7px 0px 0px 10px',
-		width: '90%',
+		width: '85%',
 	},
 	title: {
+		overflowWrap: 'break-word',
 		fontSize: '15px',
 		color: '#636060',
-		margin: '0 0 5px 0',
+		margin: 5,
 	},
 	tags: {
 	},
