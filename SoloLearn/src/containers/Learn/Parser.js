@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import CodeBlock from './CodeBlock';
 import './Parser.scss';
 
+const wordBoundary = term => new RegExp(`(?:^|\\s|\\]|\\.|\\,)${term}(?:\\s|\\$|\\[|\\.|\\,)`, 'mi');
+
 const flattenGlossaryTerms = (arr) => {
 	const res = [];
 	arr.forEach(({ terms }) => {
@@ -11,13 +13,16 @@ const flattenGlossaryTerms = (arr) => {
 };
 
 const filterGlossary = (glossary, text) => {
+	console.log(text);
 	const flatGlossary = flattenGlossaryTerms(glossary);
 	const filtered = flatGlossary.filter(({ pattern, term }) => {
 		if (pattern !== null) {
 			return new RegExp(pattern).test(text);
 		}
-		return text.includes(term);
+		console.log(wordBoundary(term));
+		return wordBoundary(term).test(text);
 	});
+	console.warn(filtered);
 	return filtered;
 };
 
@@ -66,7 +71,8 @@ class Parser extends Component {
 	static Image = ({ id, width }) =>
 		<img alt="" src={`https://api.sololearn.com/DownloadFile?id=${id}`} width={`${width}%`} />;
 
-	static GlossaryItem = ({ glossaryText, children }) => <span title={glossaryText}>{children}</span>
+	static GlossaryItem = ({ glossaryText, children }) =>
+		<span style={{ color: 'blue' }} title={glossaryText}>{children}</span>
 
 	// recursive parser
 	_parse = ({ text, courseLanguage, pathname }) => {
@@ -141,10 +147,14 @@ class Parser extends Component {
 		}
 		const allItems = [];
 		this.filteredGlossary.forEach(({ text, pattern, term }) => {
-			const patternRegExp = pattern !== null ? new RegExp(pattern) : new RegExp(term);
+			const patternRegExp = pattern !== null ? new RegExp(pattern) : wordBoundary(term);
 			let current = fullText;
 			while (patternRegExp.test(current)) {
 				const [ match ] = patternRegExp.exec(current);
+				console.warn(`
+					${current}
+					${patternRegExp.exec(current)}
+				`);
 				const index = current.indexOf(match);
 				allItems.push({
 					item: <Parser.GlossaryItem glossaryText={text}>{match}</Parser.GlossaryItem>,
