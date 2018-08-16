@@ -13,16 +13,13 @@ const flattenGlossaryTerms = (arr) => {
 };
 
 const filterGlossary = (glossary, text) => {
-	console.log(text);
 	const flatGlossary = flattenGlossaryTerms(glossary);
 	const filtered = flatGlossary.filter(({ pattern, term }) => {
 		if (pattern !== null) {
 			return new RegExp(pattern).test(text);
 		}
-		console.log(wordBoundary(term));
 		return wordBoundary(term).test(text);
 	});
-	console.warn(filtered);
 	return filtered;
 };
 
@@ -151,10 +148,6 @@ class Parser extends Component {
 			let current = fullText;
 			while (patternRegExp.test(current)) {
 				const [ match ] = patternRegExp.exec(current);
-				console.warn(`
-					${current}
-					${patternRegExp.exec(current)}
-				`);
 				const index = current.indexOf(match);
 				allItems.push({
 					item: <Parser.GlossaryItem glossaryText={text}>{match}</Parser.GlossaryItem>,
