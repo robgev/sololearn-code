@@ -82,7 +82,7 @@ class Questions extends Component {
 										<Chip onRequestDelete={this.removeQuery}>{filters.query}</Chip>}
 								</div>
 								<DropDownMenu
-									style={{ height: 20 }}
+									style={{ height: 20, zIndex: 2 }}
 									value={filters.orderBy}
 									className="mini-drop-down"
 									iconStyle={{ height: 5, padding: 0 }}
