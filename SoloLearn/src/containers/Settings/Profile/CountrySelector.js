@@ -42,7 +42,6 @@ const CountrySelector = ({ t, value, onChange }) => (
 				}}
 			/>)
 		}
-
 	>
 		{ items }
 	</SelectField>
