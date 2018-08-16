@@ -147,6 +147,9 @@ const texts = {
 		get feedCodeComments() {
 			return i18n.t('notification_settings.feed-code-comments');
 		},
+		get feedUserPosts() {
+			return i18n.t('notification_settings.feed-user-posts');
+		},
 	},
 
 	// Leaderboards
