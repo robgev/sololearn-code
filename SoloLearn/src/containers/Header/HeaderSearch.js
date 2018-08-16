@@ -49,9 +49,9 @@ class HeaderSearch extends PureComponent {
 		this.setState({ searchValue });
 	}
 
-	handleKeyPress = async (e) => {
+	handleSearch = () => {
 		const { searchValue } = this.state;
-		if (e.key === 'Enter' && searchValue.trim()) { // Enter pressed and query is not empty
+		if (searchValue.trim()) { // Enter pressed and query is not empty
 			const { searchArea } = this.state;
 			switch (searchArea) {
 			case 'discuss':
@@ -69,6 +69,12 @@ class HeaderSearch extends PureComponent {
 			default:
 				break;
 			}
+		}
+	}
+
+	handleKeyPress = async (e) => {
+		if (e.key === 'Enter') { // Enter pressed and query is not empty
+			this.handleSearch();
 		}
 	}
 
@@ -116,6 +122,19 @@ class HeaderSearch extends PureComponent {
 							onUpdateInput={this.handleSearchTextChange}
 							ref={(searchInput) => { this.searchInput = searchInput; }}
 						/>
+						<IconButton
+							onClick={this.handleSearch}
+							className="header-search-open-icon"
+							iconStyle={{
+								width: 23,
+								height: 23,
+								fill: '#525A6A',
+								transition: 'opacity 200ms cubic-bezier(0.4, 0.0, 0.2, 1)',
+							}}
+							style={{ zIndex: 1, backgroundColor: '#F6F7F9' }}
+						>
+							<SearchIcon color="white" />
+						</IconButton>
 					</div>
 					<IconButton onClick={this.closeSearch}>
 						<CloseIcon color="white" />
