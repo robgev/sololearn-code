@@ -55,6 +55,7 @@ class Question extends Component {
 		reportPopupOpen: false,
 		removalPopupOpen: false,
 		followSnackbarOpen: false,
+		acceptedAnswerSnackbarOpen: false,
 	}
 
 	toggleRemovalPopup = () => {
@@ -78,7 +79,11 @@ class Question extends Component {
 	}
 
 	render() {
-		const { removalPopupOpen, reportPopupOpen, followSnackbarOpen } = this.state;
+		const {
+			reportPopupOpen,
+			removalPopupOpen,
+			followSnackbarOpen,
+		} = this.state;
 		const { question, accessLevel, t } = this.props;
 		const previewsData = generatePreviews(question.message);
 
@@ -215,7 +220,7 @@ class Question extends Component {
 					autoHideDuration={1500}
 					open={followSnackbarOpen}
 					onRequestClose={this.handleSnackbarClose}
-					message={question.isFollowing ? t('discuss.following-title') : t('discuss.not-following-title')}
+					message={question.isFollowing ? t('discuss.answer-accepted') : t('discuss.not-following-title')}
 				/>
 			</Paper>
 		);

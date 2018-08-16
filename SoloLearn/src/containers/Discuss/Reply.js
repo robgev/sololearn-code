@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Linkify from 'react-linkify';
 
 // Material UI components
-import { IconMenu, MenuItem, FlatButton, IconButton } from 'material-ui';
+import { IconMenu, MenuItem, FlatButton, IconButton, Snackbar } from 'material-ui';
 import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import AcceptedIcon from 'material-ui/svg-icons/navigation/check';
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
@@ -42,6 +42,7 @@ class Reply extends Component {
 		isEditing: false,
 		replyLength: 0,
 		animate: false,
+		snackbarOpen: false,
 	};
 
 	onLengthChange = (replyLength) => {
@@ -125,10 +126,23 @@ class Reply extends Component {
 			setTimeout(() => this.setState({ animate: false }), 3000));
 	}
 
+	handleSnackbarClose = () => {
+		this.setState({ snackbarOpen: false });
+	}
+
+	toggleAccepted = () => {
+		const { reply } = this.props;
+		this.props.toggleAcceptedAnswerInternal(reply.id, reply.isAccepted);
+		if (!reply.isAccepted) {
+			this.setState({ snackbarOpen: true });
+		}
+	}
+
 	render() {
 		const {
 			t, reply, accessLevel, toggleReportPopup, toggleRemovalPopup,
 		} = this.props;
+		const { snackbarOpen } = this.state;
 		return (
 			<div
 				ref={(node) => { this.node = node; }}
@@ -202,9 +216,7 @@ class Reply extends Component {
 									className="follow hoverable-icon"
 									style={styles.bestAnswerButton.base}
 									iconStyle={styles.bestAnswerButton.icon}
-									onClick={
-										() => this.props.toggleAcceptedAnswerInternal(reply.id, reply.isAccepted)
-									}
+									onClick={this.toggleAccepted}
 								>
 									<AcceptedIcon color={reply.isAccepted ? lightGreen500 : grey500} />
 								</IconButton>
@@ -230,6 +242,12 @@ class Reply extends Component {
 						</UserTooltip>
 					</div>
 				}
+				<Snackbar
+					autoHideDuration={1500}
+					open={snackbarOpen}
+					message={t('discuss.answer-accepted')}
+					onRequestClose={this.handleSnackbarClose}
+				/>
 			</div>
 		);
 	}

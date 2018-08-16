@@ -453,6 +453,7 @@
 		"answer-one-format": "ANSWER",
 		"following-title": "You are now following this Q&A thread",
 		"not-following-title": "You are no longer following this Q&A thread",
+		"answer-accepted": "Marked as the best answer",
 		"date-by-name-format": "by",
 		"invalid-thread": "Question not found",
 		"hide-post-popup-title": "Hide post",
