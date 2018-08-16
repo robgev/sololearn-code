@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 import Dialog from 'material-ui/Dialog';
@@ -6,6 +7,9 @@ import FlatButton from 'material-ui/FlatButton';
 import Service from 'api/service';
 import { deletePostInternal } from 'actions/discuss';
 
+const mapDispatchToProps = { deletePostInternal };
+
+@connect(null, mapDispatchToProps)
 @translate()
 class RemovalPopup extends PureComponent {
 	requestRemoval = async () => {
@@ -19,7 +23,7 @@ class RemovalPopup extends PureComponent {
 		} = this.props;
 		try {
 			if (accessLevel > 1) {
-				deletePostInternal(post);
+				this.props.deletePostInternal(post);
 				if (post.parentID === null) {
 					browserHistory.push('/discuss/');
 				}
