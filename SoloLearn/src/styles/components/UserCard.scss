@@ -11,6 +11,13 @@
 		width: 100%;
 		.profile-avatar-wrapper {
 			width: 100%;
+			div.profile-avatar {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: white;
+    		font-size: 60px;
+			}
 			.profile-avatar {
 				width: 100%;
 				max-height: 120px;

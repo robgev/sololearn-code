@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import AvatarColors from 'constants/AvatarColors';
 
 import { followSuggestion } from 'actions/discover';
 import ModBadge from 'components/ModBadge';
@@ -44,7 +45,10 @@ render() {
 		<div className={`discover-user-card-container ${className}`}>
 			<WrapperComponent to={`/profile/${id}`} className="profile-container">
 				<div className="profile-avatar-wrapper">
-					<img src={avatarUrl} alt="avatar" className="profile-avatar" />
+					{ avatarUrl
+						? <img src={avatarUrl} alt="avatar" className="profile-avatar" />
+						:	<div style={{ backgroundColor: AvatarColors[id % AvatarColors.length] }} className="profile-avatar">{name ? name.toUpperCase().charAt(0) : ''}</div>
+					}
 				</div>
 				<div className="profile-data">
 					<div>

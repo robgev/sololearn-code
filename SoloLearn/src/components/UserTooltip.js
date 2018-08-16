@@ -8,6 +8,7 @@ const UserTooltip = ({
 	userData: {
 		id,
 		level,
+		name,
 		userName,
 		avatarUrl,
 		userID,
@@ -25,8 +26,8 @@ const UserTooltip = ({
 			<UserCard
 				level={level}
 				id={userID || id}
-				name={userName}
 				avatarUrl={avatarUrl}
+				name={userName || name}
 				withFollowButton={follow}
 				className="profile-avatar-user-card profile-avatar-reset"
 			/>
