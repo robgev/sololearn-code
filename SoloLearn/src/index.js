@@ -12,6 +12,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Theme from 'defaults/theme';
 import { store } from 'reducers';
 import { getCourses } from 'actions/learn';
+import { getUserProfileAsync } from 'actions/profile';
 import Service from 'api/service';
 import 'styles/root.scss';
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -28,7 +29,7 @@ const mapStateToProps = state => ({
 	isCoursesLoaded: state.courses.length > 0,
 });
 
-@connect(mapStateToProps, { getCourses })
+@connect(mapStateToProps, { getCourses, getUserProfileAsync })
 class App extends PureComponent {
 	constructor(props) {
 		super(props);
@@ -41,6 +42,8 @@ class App extends PureComponent {
 			.then((user) => {
 				if (user === null) {
 					browserHistory.replace('/login');
+				} else {
+					this.props.getUserProfileAsync();
 				}
 			});
 		this.props.getCourses()
