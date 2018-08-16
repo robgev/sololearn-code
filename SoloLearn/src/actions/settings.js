@@ -88,7 +88,7 @@ export const changeWeaponSetting = weaponData => async (dispatch) => {
 };
 
 export const getWeaponSettings = () => (dispatch, getState) => {
-	const { courses } = getState();
+	const { courses, userProfile } = getState();
 	const weaponSettings = courses.map(({
 		id,
 		iconUrl,
@@ -99,6 +99,7 @@ export const getWeaponSettings = () => (dispatch, getState) => {
 		iconUrl,
 		languageName,
 		isPlayEnabled,
+		enabled: Boolean(userProfile.challengeSkills.find(c => c.id === id)),
 	}));
 	dispatch({
 		type: types.SET_WEAPON_SETTINGS,

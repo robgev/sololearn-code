@@ -24,16 +24,19 @@ class Arsenal extends PureComponent {
 		return (
 			<div className="arsenal-settings-container">
 				<p className="setting-banner">{texts.challengesBanner}</p>
-				{playSettings.map(currentSetting => (
-					<LanguageToggle
-						{...currentSetting}
-						key={currentSetting.id}
-						onToggle={() => changeWeaponSetting({
-							courseId: currentSetting.id,
-							enable: !currentSetting.isPlayEnabled,
-						})}
-					/>
-				))}
+				{playSettings.map(currentSetting => (currentSetting.isPlayEnabled
+					? (
+						<LanguageToggle
+							{...currentSetting}
+							key={currentSetting.id}
+							onToggle={() => changeWeaponSetting({
+								courseId: currentSetting.id,
+								enable: !currentSetting.enable,
+							})}
+						/>
+					)
+					: null))
+				}
 			</div>
 		);
 	}
