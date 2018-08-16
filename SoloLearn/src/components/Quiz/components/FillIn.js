@@ -17,7 +17,7 @@ const formatAnswers = (answerText, inputs, onChange, disabled, addRefOnIndex, fo
 						{
 							disabled
 								? (
-									<span>
+									<span style={{ fontSize: 18 }}>
 										<span className="fill-in-item" style={{ color: 'green' }}>
 											{getCommonPrefix(inputs[curr].text, inputs[curr].correct)}
 										</span>
@@ -32,7 +32,7 @@ const formatAnswers = (answerText, inputs, onChange, disabled, addRefOnIndex, fo
 									inputStyle={{ textAlign: 'center', overflow: 'hidden', fontFamily: 'monospace' }}
 									id={inputs[curr].id.toString()}
 									value={inputs[curr].text}
-									style={{ width: `${inputs[curr].correct.length}em` }}
+									style={{ width: `${inputs[curr].correct.length * 0.75}em` }}
 									onChange={(_, text) => {
 										onChange(text, inputs[curr].id);
 										if (text.length === inputs[curr].correct.length) {
