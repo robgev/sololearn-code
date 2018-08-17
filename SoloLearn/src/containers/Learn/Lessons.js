@@ -65,7 +65,7 @@ class Lessons extends Component {
 		}
 		this.props.selectLesson(lessonId, lessonState);
 		this.props.selectQuiz(this.getActiveQuiz(this.props.lessons[lessonId]));
-		browserHistory.push(`/learn/course/${course.language}/${params.moduleName}/${lessonName}/1`);
+		browserHistory.push(`/learn/course/${params.courseName}/${params.moduleName}/${lessonName}/1`);
 	}
 
 	getActiveQuiz = (lesson) => {
@@ -94,10 +94,7 @@ class Lessons extends Component {
 			activeModule,
 			params: {
 				courseName,
-				courseId,
-				moduleId,
 				moduleName,
-				itemType,
 			},
 		} = this.props;
 

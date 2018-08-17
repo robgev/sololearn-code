@@ -87,7 +87,7 @@ class QuizManager extends Component {
 			// 3 - Module is finished
 			const {
 				params: {
-					language, moduleName, lessonName,
+					courseName, moduleName, lessonName,
 				},
 			} = this.props;
 			const { _visualState: lessonState } = Progress.getLessonStateById(lessonId);
@@ -110,12 +110,12 @@ class QuizManager extends Component {
 						localProgress[localProgress.length - 1].lessonID :
 						lessons[0].id;
 					this.setActiveLesson(activeLessonId, activeModuleId);
-					browserHistory.replace(`/learn/course/${language}/${moduleName}/${lessonName}/${this.props.activeQuiz.number}`);
+					browserHistory.replace(`/learn/course/${courseName}/${moduleName}/${lessonName}/${this.props.activeQuiz.number}`);
 				} else {
 					const { localProgress } = Progress;
 					const activeLessonId = localProgress[localProgress.length - 1].lessonID;
 					this.setActiveLesson(activeLessonId, moduleId);
-					browserHistory.replace(`/learn/course/${language}/${moduleName}/${lessonName}/${this.props.activeQuiz.number}`);
+					browserHistory.replace(`/learn/course/${courseName}/${moduleName}/${lessonName}/${this.props.activeQuiz.number}`);
 				}
 			} else {
 				this.setActiveLesson(lessonId, moduleId);
@@ -243,12 +243,12 @@ class QuizManager extends Component {
 		this.props.selectQuiz({ id: quizId, number, isText });
 		const {
 			params: {
-				language,
+				courseName,
 				moduleName,
 			},
 		} = this.props;
 		const lesson = this.props.activeLesson;
-		browserHistory.push(`/learn/course/${language}/${moduleName}/${lesson.name}/${number}`);
+		browserHistory.push(`/learn/course/${courseName}/${moduleName}/${lesson.name}/${number}`);
 	}
 
 	getActiveQuiz = (lesson) => {
@@ -291,7 +291,7 @@ class QuizManager extends Component {
 			activeLesson,
 			activeModule,
 			params: {
-				language,
+				courseName,
 				moduleName,
 				lessonName,
 			},
@@ -318,13 +318,13 @@ class QuizManager extends Component {
 			<Layout>
 				<Paper className="quiz-container" style={{ padding: 15 }}>
 					<div className="lesson-breadcrumbs">
-						<Link className="hoverable" to={`/learn/course/${language}`}>
-							{course.name} &gt;{' '}
+						<Link className="hoverable" to={`/learn/course/${courseName}`}>
+							{course.name} &gt;
 						</Link>
-						<Link className="hoverable" to={`/learn/course/${language}/${moduleName}`}>
-							{activeModule.name} &gt;{' '}
+						<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}`}>
+							{activeModule.name} &gt;
 						</Link>
-						<Link className="hoverable" to={`/learn/course/${language}/${moduleName}/${lessonName}`}>
+						<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}${activeLesson.name}/1`}>
 							{activeLesson.name}
 						</Link>
 					</div>

@@ -170,7 +170,7 @@ class Quiz extends Component {
 				} else {
 					// Else show lessons
 					this.setState({ checkResult: null });
-					browserHistory.push(`/learn/course/${this.props.params.language}/`);
+					browserHistory.push(`/learn/course/${this.props.params.courseName}/`);
 				}
 				// return;
 			}

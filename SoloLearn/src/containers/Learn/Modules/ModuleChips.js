@@ -17,7 +17,6 @@ const ModuleChips = ({
 	onClick,
 	modules,
 	courseId,
-	itemType,
 	courseName,
 }) => (
 	<div className="modules-chips-container">
