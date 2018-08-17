@@ -53,10 +53,13 @@ class Profile extends Component {
 	}
 
 	componentWillReceiveProps(newProps) {
-		const { id } = newProps.params;
+		const { id, tab } = newProps.params;
 		if (this.props.params.id !== id) {
 			this.profile = new IProfile({ id });
 			this.followerPopupOpen = false;
+		}
+		if (tab !== this.activeTab) {
+			this.activeTab = tab;
 		}
 	}
 

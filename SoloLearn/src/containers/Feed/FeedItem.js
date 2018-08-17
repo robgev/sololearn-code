@@ -78,7 +78,7 @@ class FeedItem extends Component {
 		} = this.props;
 		switch (feedItem.type) {
 		case types.badgeUnlocked:
-			this.url = `/profile/${feedItem.user.id}/badges/${feedItem.achievement.id}`;
+			this.url = `/profile/${feedItem.user.id}/badges?badgeID=${feedItem.achievement.id}`;
 			return <Badge achievement={feedItem.achievement} />;
 		case types.courseStarted:
 			this.url = `/learn/course/${feedItem.course.name}`;

@@ -26,10 +26,10 @@ const styles = {
 class Badges extends PureComponent {
 	componentDidMount() {
 		if (this._selected) {
-			this._selected.scrollIntoView({
+			setTimeout(() => this._selected.scrollIntoView({
 				behavior: 'smooth',
 				block: 'center',
-			});
+			}), 0);
 		}
 	}
 	render() {
