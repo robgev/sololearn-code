@@ -88,8 +88,8 @@ class Password extends PureComponent {
 						style={{ width: '100%' }}
 						onFocus={this.handleFocus}
 						onChange={this.handleChange}
-						floatingLabelText="Old Password"
 						readOnly={focusedName !== 'oldPassword'}
+						floatingLabelText={t('auth.password-placeholder')}
 					/>
 					<TextField
 						type="password"
