@@ -1,0 +1,15 @@
+.tippy-popper {
+	z-index: 998 !important;
+	.tippy-tooltip {
+		.tippy-tooltip-content {
+			.profile-avatar-reset {
+				padding: 0;
+				.profile-container {
+					.profile-data {
+						align-items: flex-start;
+					}
+				}
+			}
+		}
+	}
+}

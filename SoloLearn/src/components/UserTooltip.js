@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
+import 'styles/components/UserTooltip.scss';
 import UserCard from './UserCard';
 
 const UserTooltip = ({
