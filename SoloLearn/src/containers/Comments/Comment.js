@@ -32,9 +32,7 @@ class Comment extends Component {
 		} else {
 			this.isReplyInputOpen = !this.isReplyInputOpen;
 			if (this.isReplyInputOpen) {
-				if (id !== this.props.comment.id) {
-					this.initText = `[user id="${userID}"]${userName}[/user]`;
-				}
+				this.initText = `[user id="${userID}"]${userName}[/user]`;
 				setTimeout(() => {
 					if (this.mentionInput) {
 						this.mentionInput.focus();
@@ -232,9 +230,11 @@ class Comment extends Component {
 						? (
 							<div>
 								<MentionInput
+									style={{ height: 50 }}
 									ref={(i) => { this.editMentionInput = i; }}
 									getUsers={this.props.commentsAPI.getMentionUsers}
 									initText={message}
+									placeholder="Write a new comment"
 								/>
 								<FlatButton
 									label="Edit"
@@ -280,9 +280,11 @@ class Comment extends Component {
 					&& (
 						<div>
 							<MentionInput
+								style={{ height: 50 }}
 								ref={(i) => { this.mentionInput = i; }}
 								initText={this.initText}
 								getUsers={this.props.commentsAPI.getMentionUsers}
+								placeholder="Write a new answer"
 							/>
 							<FlatButton label="Reply" onClick={this.addReply} />
 							<Divider />

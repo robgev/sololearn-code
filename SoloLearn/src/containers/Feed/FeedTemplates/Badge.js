@@ -14,6 +14,7 @@ const styles = {
 			display: 'inline-flex',
 			alignItems: 'center',
 			justifyContent: 'center',
+			flexShrink: 0,
 		},
 
 		icon: {
@@ -23,13 +24,12 @@ const styles = {
 
 	details: {
 		color: '#545454',
-		marginLeft: 10,
+		padding: '10px 12px',
 	},
 
 	title: {
-		fontSize: '16px',
+		fontSize: '15px',
 		fontWeight: 500,
-		margin: '0 0 3px 0',
 	},
 
 	description: {

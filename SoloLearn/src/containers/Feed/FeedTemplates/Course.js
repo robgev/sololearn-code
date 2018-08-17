@@ -18,10 +18,10 @@ const styles = {
 	},
 
 	courseName: {
-		fontSize: '16px',
+		fontSize: '15px',
 		fontWeight: 500,
-		margin: '0 0 0 7px',
-		color: '#565353',
+		paddingLeft: 12,
+		color: 'rgb(84, 84, 84)',
 	},
 };
 

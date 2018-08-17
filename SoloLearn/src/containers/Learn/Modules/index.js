@@ -173,10 +173,6 @@ class Modules extends Component {
 										targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 									>
 										<MenuItem
-											primaryText={t('course_picker.action.remove')}
-											onClick={() => this.toggleCourse(course.id, false)}
-										/>
-										<MenuItem
 											primaryText={t('course_picker.action.reset-progress')}
 											onClick={() => this.handleResetPopupOpen(course.id)}
 										/>

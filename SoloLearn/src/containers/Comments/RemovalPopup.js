@@ -37,16 +37,16 @@ class RemovalPopup extends Component {
 		const actions = [
 			<FlatButton
 				primary
-				onClick={onRequestClose}
-				label={t('common.cancel-title')}
-			/>,
-			<FlatButton
-				primary
 				onClick={this.requestRemoval}
 				label={cannotRemove ?
 					t('common.confirm-title') :
 					t('common.remove-title')
 				}
+			/>,
+			<FlatButton
+				primary
+				onClick={onRequestClose}
+				label={t('common.cancel-title')}
 			/>,
 		];
 		return (

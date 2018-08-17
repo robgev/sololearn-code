@@ -189,6 +189,8 @@ class Comments extends Component {
 			<div className="comments-container">
 				<CommentsToolbar value={this.orderBy} onChange={this.changeOrder} />
 				<MentionInput
+					style={{ height: 50 }}
+					placeholder="Write a new comment"
 					ref={(i) => { this.mentionInput = i; }}
 					getUsers={this.commentsAPI.getMentionUsers}
 				/>

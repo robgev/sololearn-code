@@ -58,6 +58,9 @@
 }
 
 .slick-slider {
+	.slick-list {
+		height: 145px;
+	}
 	.slick-arrow {
 		z-index: 1;
 		&.slick-disabled {

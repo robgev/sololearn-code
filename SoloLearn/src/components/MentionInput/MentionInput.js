@@ -5,6 +5,7 @@ import Editor from 'draft-js-plugins-editor';
 import createMentionPlugin from 'draft-js-mention-plugin';
 import { mentionUsers, getMentionsList } from 'utils';
 import 'draft-js-mention-plugin/lib/plugin.css';
+import 'draft-js/dist/Draft.css';
 
 import Entry from './Entry';
 import getCurrentSelectedLength from './getCurrentSelectedLength';
@@ -55,6 +56,7 @@ class MentionInput extends Component {
 				? EditorState.createWithContent(makeEditableContent(props.initText))
 				: EditorState.createEmpty(),
 			suggestions: [],
+			focused: false,
 		};
 	}
 
