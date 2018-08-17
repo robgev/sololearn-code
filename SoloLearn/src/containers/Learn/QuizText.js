@@ -12,92 +12,6 @@ import { getPosition, updateDate } from 'utils';
 import SlayLessonToolbar from './SlayLessonToolbar';
 import CodeBlock from './CodeBlock';
 
-const tooltipOpened = (<Style
-	scopeSelector=".tooltip-content.open"
-	rules={{
-		div: {
-			visibility: 'visible !important',
-			opacity: '0.9 !important',
-		},
-	}}
-/>);
-
-const tooltipTopPlaced = (<Style
-	scopeSelector=".tooltip-content.top"
-	rules={{
-		'.tooltip': {
-			marginTop: '-10px !important',
-		},
-		'.tooltip-arrow': {
-			borderTopColor: '#222',
-			borderTopStyle: 'solid',
-			borderTopWidth: '6px',
-			borderLeft: '5px solid transparent',
-			borderRight: '5px solid transparent',
-			bottom: '-6px',
-			left: '50%',
-			marginLeft: '-8px',
-		},
-	}}
-/>);
-
-const tooltipBottomPlaced = (<Style
-	scopeSelector=".tooltip-content.bottom"
-	rules={{
-		'.tooltip': {
-			marginTop: '10px !important',
-		},
-		'.tooltip-arrow': {
-			borderBottomColor: '#222',
-			borderBottomStyle: 'solid',
-			borderBottomWidth: '6px',
-			borderLeft: '5px solid transparent',
-			borderRight: '5px solid transparent',
-			top: '-6px',
-			left: '50%',
-			marginLeft: '-8px',
-		},
-	}}
-/>);
-
-const tooltipRightPlaced = (<Style
-	scopeSelector=".tooltip-content.right"
-	rules={{
-		'.tooltip': {
-			marginLeft: '10px',
-		},
-		'.tooltip-arrow': {
-			borderRightColor: '#222',
-			borderRightStyle: 'solid',
-			borderRightWidth: '6px',
-			borderTop: '5px solid transparent',
-			borderBottom: '5px solid transparent',
-			left: '-6px',
-			top: '50%',
-			marginTop: '-4px',
-		},
-	}}
-/>);
-
-const tooltipLeftPlaced = (<Style
-	scopeSelector=".tooltip-content.left"
-	rules={{
-		'.tooltip': {
-			marginLeft: '-10px',
-		},
-		'.tooltip-arrow': {
-			borderLeftColor: '#222',
-			borderLeftStyle: 'solid',
-			borderLeftWidth: '6px',
-			borderTop: '5px solid transparent',
-			borderBottom: '5px solid transparent',
-			right: '-6px',
-			top: '50%',
-			marginTop: '-4px',
-		},
-	}}
-/>);
-
 const styles = {
 	textContainer: {
 		width: '100%',
@@ -436,32 +350,13 @@ class QuizText extends Component {
 		this.setState({ isBookmarked });
 	}
 
-	componentWillUnmount() {
-		browserHistory.replace(this.state.pathname);
-	}
-
 	render() {
-		const { isBookmarked, pathname } = this.state;
+		const { pathname } = this.state;
 		const {
-			courseLanguage, withToolbar, userData, date, quizId,
+			courseLanguage,
 		} = this.props;
 		return (
 			<div className="text-container" style={styles.textContainer}>
-				{/* {tooltipOpened}
-				{tooltipTopPlaced}
-				{tooltipRightPlaced}
-				{tooltipLeftPlaced}
-				{tooltipBottomPlaced}
-				<div id="text-content">{this.renderComponentParts()}</div>
-				{withToolbar &&
-					<SlayLessonToolbar
-						id={quizId}
-						userData={userData}
-						isBookmarked={isBookmarked}
-						timePassed={updateDate(date)}
-						toggleBookmark={this.toggleBookmark}
-					/>
-				} */}
 				<Parser
 					pathname={pathname}
 					courseLanguage={courseLanguage}

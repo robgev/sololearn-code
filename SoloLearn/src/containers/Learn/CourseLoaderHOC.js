@@ -6,11 +6,11 @@ import CircularProgress from 'material-ui/CircularProgress';
 import { isCourseLoadedByLanguageSelector } from 'reducers/courses.reducer';
 
 const mapStateToProps = (state, ownProps) => {
-	const { language } = ownProps.params;
+	const { courseName } = ownProps.params;
 	return {
-		language,
-		isCourseLoaded: isCourseLoadedByLanguageSelector(state, language),
-		isCourseFullyLoaded: isCourseLoadedByLanguageSelector(state, language, { full: true }),
+		courseName,
+		isCourseLoaded: isCourseLoadedByLanguageSelector(state, courseName),
+		isCourseFullyLoaded: isCourseLoadedByLanguageSelector(state, courseName, { full: true }),
 	};
 };
 
@@ -35,13 +35,13 @@ const courseLoader = (Comp) => {
 		}
 
 		getCourse = () => {
-			this.props.getCourseByLanguage(this.props.language);
+			this.props.getCourseByLanguage(this.props.courseName);
 		}
 
 		render() {
 			// Take the injected props out, not to pollute child props namespace
 			const {
-				language,
+				courseName,
 				isCourseLoaded,
 				isCourseFullyLoaded,
 				getCourseByLanguage, // eslint-disable-line no-shadow

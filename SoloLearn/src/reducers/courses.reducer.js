@@ -18,10 +18,10 @@ export default (state = [], action) => {
 
 export const getCoursesReducer = state => state.courses;
 
-export const getCourseByLanguage = (state, language) => {
+export const getCourseByCourseName = (state, courseName) => {
 	if (state.course) {
 		return state.course;
 	}
 	const courses = getCoursesReducer(state);
-	return courses.find(c => c.language === language);
+	return courses.find(c => c.name === courseName);
 };

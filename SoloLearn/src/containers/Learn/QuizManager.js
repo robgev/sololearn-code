@@ -319,12 +319,12 @@ class QuizManager extends Component {
 				<Paper className="quiz-container" style={{ padding: 15 }}>
 					<div className="lesson-breadcrumbs">
 						<Link className="hoverable" to={`/learn/course/${courseName}`}>
-							{course.name} &gt;
+							{course.name} &gt; {' '}
 						</Link>
 						<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}`}>
-							{activeModule.name} &gt;
+							{activeModule.name} &gt; {' '}
 						</Link>
-						<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}${activeLesson.name}/1`}>
+						<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}/${activeLesson.name}/1`}>
 							{activeLesson.name}
 						</Link>
 					</div>

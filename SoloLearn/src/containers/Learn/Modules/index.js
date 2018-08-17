@@ -13,7 +13,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import { loadCourseInternal, toggleCourseInternal, toggleCourse, selectModule } from 'actions/learn';
-import { getCourseByLanguage } from 'reducers/courses.reducer';
+import { getCourseByCourseName } from 'reducers/courses.reducer';
 import { isCourseLoaded } from 'reducers/reducer_course';
 
 import Service from 'api/service';
@@ -31,8 +31,8 @@ import ModuleChip from './ModuleChip';
 import Certificate from './Certificate';
 
 const mapStateToProps = (state, ownProps) => ({
-	isLoaded: isCourseLoaded(state, ownProps.params.language),
-	course: getCourseByLanguage(state, ownProps.params.language),
+	isLoaded: isCourseLoaded(state, ownProps.params.courseName),
+	course: getCourseByCourseName(state, ownProps.params.courseName),
 	courses: state.courses,
 	userProfile: state.userProfile,
 });
@@ -117,7 +117,7 @@ class Modules extends Component {
 		const {
 			t,
 			course,
-			params: { itemType, language },
+			params: { itemType, courseName },
 			isLoaded: isModuleLoaded,
 		} = this.props;
 		const { loading } = this.state;
@@ -189,7 +189,7 @@ class Modules extends Component {
 									modules={modules}
 									itemType={itemType}
 									onClick={this.handleClick}
-									courseName={language}
+									courseName={courseName}
 								/>
 								<Certificate
 									courseId={id}

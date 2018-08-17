@@ -11,7 +11,7 @@ export default function (state = null, action) {
 	}
 }
 
-export const isCourseLoaded = (state, language) => {
+export const isCourseLoaded = (state, courseName) => {
 	const { course } = state;
-	return course !== null && course.language === language;
+	return course !== null && course.name === courseName;
 };

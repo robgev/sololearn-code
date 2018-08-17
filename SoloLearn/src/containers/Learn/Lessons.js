@@ -8,7 +8,7 @@ import { translate } from 'react-i18next';
 // Marterial UI components
 import Paper from 'material-ui/Paper';
 import { ProgressState } from 'api/progress';
-import { getCourseByLanguage } from 'reducers/courses.reducer';
+import { getCourseByCourseName } from 'reducers/courses.reducer';
 
 // Redux modules
 import {
@@ -29,7 +29,7 @@ import LessonTiles from './LessonTiles';
 
 const mapStateToProps = (state, ownProps) => ({
 	isLoaded: isLoaded(state, 'lessons'),
-	course: getCourseByLanguage(state, ownProps.params.language),
+	course: getCourseByCourseName(state, ownProps.params.courseName),
 	modules: state.modulesMapping,
 	activeModule: !state.course ? null : state.modulesMapping[state.activeModuleId],
 	lessons: state.lessonsMapping,
