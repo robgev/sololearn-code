@@ -237,18 +237,18 @@ class QuizManager extends Component {
 			this.setState(this.state);
 			return;
 		}
-		const { count } =
-			await Service.request('Discussion/GetLessonCommentCount', { quizId, type: isText ? 1 : 3 });
-		this.setState({ commentsCount: count, commentsOpened: false });
-		this.props.selectQuiz({ id: quizId, number, isText });
 		const {
 			params: {
 				courseName,
 				moduleName,
 			},
+			activeLesson,
 		} = this.props;
-		const lesson = this.props.activeLesson;
-		browserHistory.push(`/learn/course/${courseName}/${moduleName}/${lesson.name}/${number}`);
+		const { count } =
+			await Service.request('Discussion/GetLessonCommentCount', { quizId, type: isText ? 1 : 3 });
+		browserHistory.push(`/learn/course/${courseName}/${moduleName}/${activeLesson.name}/${number}`);
+		this.setState({ commentsCount: count, commentsOpened: false });
+		this.props.selectQuiz({ id: quizId, number, isText });
 	}
 
 	getActiveQuiz = (lesson) => {
