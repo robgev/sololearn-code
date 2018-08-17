@@ -148,8 +148,8 @@ class Profile extends PureComponent {
 						name="name"
 						value={name}
 						style={{ width: '100%' }}
-						floatingLabelText="Name"
 						onChange={this.handleChange}
+						floatingLabelText={t('edit_account.user-name')}
 					/>
 					<TextField
 						name="email"

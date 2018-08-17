@@ -231,7 +231,8 @@
 		"changes-saved-title": "Success",
 		"changes-saved-message": "Your data was successfully updated.",
 		"change-avatar-title": "Change Avatar",
-		"country-section-title": "Location"
+		"country-section-title": "Location",
+		"user-name": "Name"
 	},
 	"country": {
 		"title": "Location",

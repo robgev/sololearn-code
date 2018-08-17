@@ -231,7 +231,8 @@
     "changes-saved-title": "Сохранено",
     "changes-saved-message": "Ваши данные успешно обновлены.",
     "change-avatar-title": "Изменить аватар",
-    "country-section-title": "Местоположение"
+		"country-section-title": "Местоположение",
+		"user-name": "Имя"
   },
   "country": {
     "title": "Местоположение",
