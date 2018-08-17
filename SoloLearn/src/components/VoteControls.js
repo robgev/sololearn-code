@@ -1,8 +1,8 @@
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
-import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
+import ArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
+import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import { grey500, blueGrey500 } from 'material-ui/styles/colors';
-import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
 
 import 'styles/voteControls.scss';
 import Likes from './Likes';
@@ -21,14 +21,19 @@ const VoteControls = ({
 	<div className={`vote-controls ${absolute ? 'absolute-controls' : ''} ${className}`}>
 		<IconButton
 			className="icon-button up"
-			style={buttonStyle}
+			style={{
+				width: 32,
+				height: 32,
+				padding: 4,
+				...buttonStyle,
+			}}
 			iconStyle={{
-				width: 16,
-				height: 16,
+				width: 24,
+				height: 24,
 			}}
 			onClick={onUpvote}
 		>
-			<ThumbUp color={userVote === 1 ? blueGrey500 : grey500} />
+			<ArrowUp color={userVote === 1 ? blueGrey500 : grey500} />
 		</IconButton>
 		<Likes
 			votes={totalVotes}
@@ -37,14 +42,19 @@ const VoteControls = ({
 		/>
 		<IconButton
 			className="icon-button down"
-			style={buttonStyle}
+			style={{
+				width: 32,
+				height: 32,
+				padding: 4,
+				...buttonStyle,
+			}}
 			iconStyle={{
-				width: 16,
-				height: 16,
+				width: 24,
+				height: 24,
 			}}
 			onClick={onDownvote}
 		>
-			<ThumbDown color={userVote === -1 ? blueGrey500 : grey500} />
+			<ArrowDown color={userVote === -1 ? blueGrey500 : grey500} />
 		</IconButton>
 	</div>
 );

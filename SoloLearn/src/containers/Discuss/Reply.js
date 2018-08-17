@@ -6,9 +6,9 @@ import Linkify from 'react-linkify';
 
 // Material UI components
 import { IconMenu, MenuItem, FlatButton, IconButton, Snackbar } from 'material-ui';
-import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
+import ArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
+import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import AcceptedIcon from 'material-ui/svg-icons/navigation/check';
-import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { grey500, blueGrey500, lightGreen500 } from 'material-ui/styles/colors';
 
@@ -155,7 +155,7 @@ class Reply extends Component {
 				<div className="details-wrapper" style={styles.detailsWrapper}>
 					<div className="stats" style={styles.stats}>
 						<IconButton className="upvote hoverable-icon" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(reply, 1); }}>
-							<ThumbUp color={reply.vote === 1 ? blueGrey500 : grey500} />
+							<ArrowUp color={reply.vote === 1 ? blueGrey500 : grey500} />
 						</IconButton>
 						<Likes
 							votes={reply.votes}
@@ -163,7 +163,7 @@ class Reply extends Component {
 							type="post"
 						/>
 						<IconButton className="downvote hoverable-icon" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(reply, -1); }}>
-							<ThumbDown color={reply.vote === -1 ? blueGrey500 : grey500} />
+							<ArrowDown color={reply.vote === -1 ? blueGrey500 : grey500} />
 						</IconButton>
 					</div>
 					<div className="details" style={!this.state.isEditing ? styles.details.base : [ styles.details.base, styles.details.editing ]}>{this.getEditableArea()}</div>

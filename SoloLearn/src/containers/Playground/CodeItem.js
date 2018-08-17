@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 
 // Material UI components
 import CommentsIcon from 'material-ui/svg-icons/communication/comment';
-import Thumbs from 'material-ui/svg-icons/action/thumbs-up-down';
+import Arrows from 'material-ui/svg-icons/action/swap-vert';
 import LockIcon from 'material-ui/svg-icons/action/lock';
 import { grey500 } from 'material-ui/styles/colors';
 
@@ -37,7 +37,7 @@ const CodeItem = ({ code }) => (
 			<div className="stats">
 				<LanguageIcon className="code-language-icon" language={code.language} />
 				<div className="votes">
-					<Thumbs
+					<Arrows
 						color={grey500}
 						className="votes-icon"
 						style={{ width: 16, height: 16 }}

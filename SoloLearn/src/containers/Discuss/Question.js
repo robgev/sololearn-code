@@ -9,8 +9,8 @@ import Linkify from 'react-linkify';
 // Material UI components
 import { Paper, IconButton, IconMenu, MenuItem } from 'material-ui';
 import Snackbar from 'material-ui/Snackbar';
-import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
-import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
+import ArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
+import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import FollowIcon from 'material-ui/svg-icons/toggle/star';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { grey500, blueGrey500 } from 'material-ui/styles/colors';
@@ -97,7 +97,7 @@ class Question extends Component {
 							className="upvote hoverable-icon"
 							onClick={() => { this.props.votePost(question, 1); }}
 						>
-							<ThumbUp color={question.vote === 1 ? blueGrey500 : grey500} />
+							<ArrowUp color={question.vote === 1 ? blueGrey500 : grey500} />
 						</IconButton>
 						<Likes
 							votes={question.votes}
@@ -110,7 +110,7 @@ class Question extends Component {
 							className="downvote hoverable-icon"
 							onClick={() => { this.props.votePost(question, -1); }}
 						>
-							<ThumbDown color={question.vote === -1 ? blueGrey500 : grey500} />
+							<ArrowDown color={question.vote === -1 ? blueGrey500 : grey500} />
 						</IconButton>
 					</div>
 					<div className="details" style={styles.details}>

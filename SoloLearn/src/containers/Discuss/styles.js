@@ -213,11 +213,11 @@ export const QuestionStyles = {
 			base: {
 				width: '32px',
 				height: '32px',
-				padding: '8px',
+				padding: '4px',
 			},
 			icon: {
-				width: '16px',
-				height: '16px',
+				width: '24px',
+				height: '24px',
 			},
 		},
 		text: {
@@ -405,11 +405,11 @@ export const ReplyStyles = {
 			base: {
 				width: '32px',
 				height: '32px',
-				padding: '8px',
+				padding: '4px',
 			},
 			icon: {
-				width: '16px',
-				height: '16px',
+				width: '24px',
+				height: '24px',
 			},
 		},
 		text: {
