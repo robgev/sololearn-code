@@ -7,7 +7,7 @@ import { GoogleLogin } from 'react-google-login-component';
 import SignupFields from './SignupFields';
 import LoginFields from './LoginFields';
 
-class LoginHeader extends Component {
+class LoginBody extends Component {
 	state = {
 		email: '',
 		password: '',
@@ -47,10 +47,9 @@ class LoginHeader extends Component {
 	}
 
 	_handleEnter = (e) => {
-		const { isLogin, forgot } = this.state;
+		const { isLogin } = this.props;
 		if (e.key === 'Enter') {
-			if (forgot) this.forgot();
-			else if (isLogin) this.login();
+			if (isLogin) this.login();
 			else this.signup();
 		}
 	}
@@ -167,4 +166,4 @@ class LoginHeader extends Component {
 	}
 }
 
-export default LoginHeader;
+export default LoginBody;
