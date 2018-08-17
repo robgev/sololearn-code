@@ -18,7 +18,6 @@ const generateBreakpoints = (numberOfItems) => {
 		return {
 			breakpoint: currentPoint,
 			settings: {
-				infinite: numberOfItems > slidesToShow,
 				slidesToShow,
 				slidesToScroll: slidesToShow,
 			},
@@ -34,9 +33,9 @@ const FeedSuggestions = ({ suggestions }) => (
 			dots={false}
 			speed={500}
 			swipeToSlide
+			infinite={false}
 			slidesToShow={4}
 			slidesToScroll={4}
-			infinite={suggestions.length > 4}
 			responsive={generateBreakpoints(suggestions.length)}
 		>
 			{suggestions.map(suggestion => (

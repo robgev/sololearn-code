@@ -60,6 +60,9 @@
 .slick-slider {
 	.slick-arrow {
 		z-index: 1;
+		&.slick-disabled {
+			opacity: .3;
+		}
 		&:before {
 			transition: opacity .2s;
 			font-family: 'Material Icons';
@@ -67,9 +70,11 @@
 			line-height: 30px;
 			opacity: .5;
 		}
-		&:hover {
-			&:before {
-				opacity: 1;
+		&:not(.slick-disabled){
+			&:hover {
+				&:before {
+					opacity: 1;
+				}
 			}
 		}
 	}

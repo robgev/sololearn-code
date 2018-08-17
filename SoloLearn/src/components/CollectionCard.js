@@ -21,7 +21,6 @@ const generateBreakpoints = (numberOfItems, roundItems) => {
 		return {
 			breakpoint: currentPoint,
 			settings: {
-				infinite: numberOfItems > slidesToShow,
 				slidesToShow,
 			},
 		};
@@ -70,8 +69,8 @@ const CollectionCard = ({
 				dots={false}
 				speed={500}
 				swipeToSlide
+				infinite={false}
 				slidesToShow={slidesToShow}
-				infinite={items.length > slidesToShow}
 				className={`courses-list ${(isCourses || round) ? 'round' : ''}`}
 				responsive={generateBreakpoints(items.length, isCourses || round)}
 			>
