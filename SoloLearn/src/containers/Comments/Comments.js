@@ -38,6 +38,7 @@ class Comments extends Component {
 	@observable commentsCount = this.props.commentsCount;
 	@observable hasMore = true;
 	@observable initial = true;
+	@observable commentLength = 0;
 
 	@computed get hasMoreAbove() {
 		return this.firstIndex > 0;
@@ -178,6 +179,13 @@ class Comments extends Component {
 		}
 	}
 
+	@action onLengthChange = (replyLength) => {
+		console.log(replyLength);
+		if (this.mentionInput) {
+			this.commentLength = replyLength;
+		}
+	}
+
 	// Soft delete in case of mod level 1 reporting, hides the comment but doesn't send delete req
 	@action deleteComment = (id) => {
 		this.comments.splice(this.comments.findIndex(c => c.id === id), 1);
@@ -185,7 +193,6 @@ class Comments extends Component {
 	}
 
 	render() {
-		console.log(this.commentsCount, this.props.commentsCount);
 		return (
 			<div className="comments-container">
 				<CommentsToolbar count={this.commentsCount} value={this.orderBy} onChange={this.changeOrder} />
@@ -193,11 +200,13 @@ class Comments extends Component {
 					style={{ height: 50 }}
 					placeholder="Write a new comment"
 					ref={(i) => { this.mentionInput = i; }}
+					onLengthChange={this.onLengthChange}
 					getUsers={this.commentsAPI.getMentionUsers}
 				/>
 				<FlatButton
 					label="Comment"
 					onClick={this.addComment}
+					disabled={!this.commentLength}
 				/>
 				{
 					this.isOnReply &&

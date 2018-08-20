@@ -25,6 +25,8 @@ class Comment extends Component {
 	@observable isReplyInputOpen = false;
 	@observable isReplyLoading = false;
 	@observable initText = null;
+	@observable editCommentLength = 0;
+	@observable replyCommentLength = 0;
 	@action toggleReplyBox = async ({ id, userID, userName }) => {
 		if (this.props.toggleReplyBox) {
 			// Reply case
@@ -200,6 +202,14 @@ class Comment extends Component {
 			.catch(e => showError(e, 'Something went wrong when trying to edit comment'));
 	}
 
+	@action handleEditLengthChange = (length) => {
+		this.editCommentLength = length;
+	}
+
+	@action handleReplyLengthChange = (length) => {
+		this.replyCommentLength = length;
+	}
+
 	upvote = () => this.vote(1);
 	downvote = () => this.vote(-1);
 
@@ -234,10 +244,12 @@ class Comment extends Component {
 									ref={(i) => { this.editMentionInput = i; }}
 									getUsers={this.props.commentsAPI.getMentionUsers}
 									initText={message}
+									onLengthChange={this.handleEditLengthChange}
 									placeholder="Write a new comment"
 								/>
 								<FlatButton
 									label="Edit"
+									disabled={!this.editCommentLength}
 									onClick={() => {
 										this.editComment({ message: this.editMentionInput.popValue(), id });
 										toggleEdit();
@@ -284,9 +296,10 @@ class Comment extends Component {
 								ref={(i) => { this.mentionInput = i; }}
 								initText={this.initText}
 								getUsers={this.props.commentsAPI.getMentionUsers}
+								onLengthChange={this.handleReplyLengthChange}
 								placeholder="Write a new answer"
 							/>
-							<FlatButton label="Reply" onClick={this.addReply} />
+							<FlatButton disabled={!this.replyCommentLength} label="Reply" onClick={this.addReply} />
 							<Divider />
 						</div>
 					)
