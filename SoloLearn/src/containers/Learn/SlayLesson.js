@@ -166,6 +166,7 @@ class SlayLesson extends PureComponent {
 								withToolbar
 								parts={parts}
 								userData={userData}
+								itemType={itemType}
 								textContent={content}
 								pageNumber={pageNumber}
 								courseLanguage={language}

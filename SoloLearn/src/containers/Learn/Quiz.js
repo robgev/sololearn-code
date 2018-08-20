@@ -63,6 +63,27 @@ const styles = {
 	},
 };
 
+const mapStateToProps = state => ({
+	isLoaded: isLoaded(state, 'quizzes'),
+	course: state.course,
+	activeModuleId: state.activeModuleId,
+	activeModule: state.modulesMapping[state.activeModuleId],
+	activeLessonId: state.activeLessonId,
+	activeLesson: state.lessonsMapping[state.activeLessonId],
+	glossary: state.course.glossary,
+	activeQuiz: state.activeQuiz,
+	quizzes: state.quizzesMapping,
+	userXp: state.userProfile.xp,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+	selectModule,
+	selectLesson,
+	selectQuiz,
+}, dispatch);
+
+@connect(mapStateToProps, mapDispatchToProps)
+@translate()
 class Quiz extends Component {
 	state = {
 		hintOpened: false,
@@ -321,25 +342,4 @@ class Quiz extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	isLoaded: isLoaded(state, 'quizzes'),
-	course: state.course,
-	activeModuleId: state.activeModuleId,
-	activeModule: state.modulesMapping[state.activeModuleId],
-	activeLessonId: state.activeLessonId,
-	activeLesson: state.lessonsMapping[state.activeLessonId],
-	glossary: state.course.glossary,
-	activeQuiz: state.activeQuiz,
-	quizzes: state.quizzesMapping,
-	userXp: state.userProfile.xp,
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-	selectModule,
-	selectLesson,
-	selectQuiz,
-}, dispatch);
-
-const translatedQuiz = translate()(Quiz);
-
-export default connect(mapStateToProps, mapDispatchToProps)(translatedQuiz);
+export default Quiz;
