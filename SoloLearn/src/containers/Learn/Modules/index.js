@@ -197,7 +197,7 @@ class Modules extends Component {
 									name="More on the Topic"
 									paperClassName="normal"
 									linkAddress={`/learn/more-on/${id}`}
-									iconSource={`https://api.sololearn.com/uploads/Courses/assets/${id ? `${id}_` : ''}more.png`}
+									iconSource="https://api.sololearn.com/uploads/Courses/assets/more.png"
 								/>
 							</div>
 						</div>

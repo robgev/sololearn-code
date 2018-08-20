@@ -1,6 +1,5 @@
 // React modules
 import React, { Component } from 'react';
-import PopupTypes from 'defaults/feedPopupTypes';
 
 const styles = {
 	course: {
@@ -28,12 +27,7 @@ const styles = {
 class Course extends Component {
 	openCoursePopup = () => {
 		const { course } = this.props;
-		const data = {
-			type: PopupTypes.course,
-			courseId: course.id,
-			courseName: course.name,
-		};
-		this.props.openPopup(data);
+		this.props.openPopup(course.id);
 	}
 
 	render() {

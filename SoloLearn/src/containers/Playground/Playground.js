@@ -772,7 +772,7 @@ ${succeedingSubstr}
 									id={id}
 									type={1}
 									commentsType="code"
-									commentsCount={code.comments}
+									commentsCount={latestSavedCodeData.comments}
 								/>
 							}
 							<Dialog

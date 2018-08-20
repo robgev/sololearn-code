@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import LinearProgress from 'material-ui/LinearProgress';
-import { numberFormatter, toSeoFriendly } from 'utils';
+import { numberFormatter } from 'utils';
 import 'styles/Feed/CoursePopup.scss';
 
 const CoursePopup = ({

@@ -33,7 +33,7 @@ class FeedList extends Component {
 	}
 
 	toggleCoursePopup = (courseId = null) => {
-		this.setState({ coursePopupOpen: true, courseId });
+		this.setState(state => ({ coursePopupOpen: !state.coursePopupOpen, courseId }));
 	}
 
 	render() {
@@ -71,7 +71,7 @@ class FeedList extends Component {
 													<FeedPin
 														pin={pin}
 														key={`pin${pin.id}`}
-														openCoursePopup={this.handleCoursePopupOpen}
+														openCoursePopup={this.toggleCoursePopup}
 													/>
 												))}
 											</div>
@@ -95,7 +95,7 @@ class FeedList extends Component {
 												`feedGroup${feedItem.toId}` :
 												`feedItem${feedItem.id}`}
 											feedItem={feedItem}
-											openCoursePopup={this.handleCoursePopupOpen}
+											openCoursePopup={this.toggleCoursePopup}
 										/>
 									))}
 								</InfiniteScroll>

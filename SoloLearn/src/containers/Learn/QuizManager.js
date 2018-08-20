@@ -23,7 +23,6 @@ import { getModuleByName } from 'reducers/reducer_modules';
 import { getLessonByName } from 'reducers/reducer_lessons';
 
 // Utils
-import { toSeoFriendly } from 'utils';
 import Progress, { ProgressState } from 'api/progress';
 import Service from 'api/service';
 
@@ -66,9 +65,7 @@ class QuizManager extends Component {
 	async componentDidMount() {
 		this._isMounted = true;
 		const {
-			params,
 			isLoaded,
-			selectQuiz,
 			loadCourseInternal,
 		} = this.props;
 
@@ -293,7 +290,6 @@ class QuizManager extends Component {
 			params: {
 				courseName,
 				moduleName,
-				lessonName,
 			},
 		} = this.props;
 		const { loading, commentsCount, commentsOpened } = this.state;

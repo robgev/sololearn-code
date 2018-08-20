@@ -3,9 +3,11 @@ import { translate } from 'react-i18next';
 import MenuItem from 'material-ui/MenuItem';
 import DropDownMenu from 'material-ui/DropDownMenu';
 
-const CommentsToolbar = ({ value, onChange, t }) => (
+const CommentsToolbar = ({
+	value, count, onChange, t,
+}) => (
 	<div className="comments-toolbar-container">
-		<p className="page-title">{t('common.comments')}</p>
+		<p className="page-title">{count} {t('common.comments')}</p>
 		<DropDownMenu
 			value={value}
 			onChange={(_, __, val) => onChange(val)}

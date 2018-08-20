@@ -197,7 +197,6 @@ class FeedPin extends Component {
 	openCoursePopup = () => {
 		const { pin } = this.props;
 		const firstCourse = pin.courses[0];
-		console.log(firstCourse.id, firstCourse.name);
 		const data = {
 			type: PopupTypes.course,
 			courseId: firstCourse.id,
