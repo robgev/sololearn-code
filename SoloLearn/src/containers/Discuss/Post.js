@@ -7,7 +7,9 @@ import { translate } from 'react-i18next';
 import { toast } from 'react-toastify';
 import Radium from 'radium';
 // Material UI components
-import { DropDownMenu, MenuItem, FlatButton } from 'material-ui';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
 
 // Redux modules
 import {

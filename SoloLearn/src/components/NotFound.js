@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import Paper from 'material-ui/Paper';
 import Layout from 'components/Layouts/GeneralLayout';
-import { RaisedButton } from 'material-ui';
+import RaisedButton from 'material-ui/RaisedButton';
 
 const NotFound = () => (
 	<Layout

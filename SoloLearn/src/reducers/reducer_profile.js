@@ -1,4 +1,4 @@
-import { uniqBy } from 'lodash';
+import uniqBy from 'lodash/uniqBy';
 import {
 	GET_PROFILE,
 	FOLLOW_USER,

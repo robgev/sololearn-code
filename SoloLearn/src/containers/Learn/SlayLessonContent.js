@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { omit } from 'lodash';
 import { browserHistory } from 'react-router';
 import {
 	Step,
@@ -32,6 +31,7 @@ class SlayLessonContent extends Component {
 	render() {
 		const { parts } = this.props;
 		const { currentStep } = this.state;
+		const { textContent, ...childProps } = this.props;
 		return parts ?
 			<div>
 				<Stepper>
@@ -59,7 +59,7 @@ class SlayLessonContent extends Component {
 				</Stepper>
 				<QuizText
 					key={parts[currentStep].id}
-					{...omit(this.props, 'textContent')}
+					{...childProps}
 					textContent={parts[currentStep].textContent}
 				/>
 

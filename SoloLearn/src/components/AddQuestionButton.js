@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { FloatingActionButton } from 'material-ui';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
 const AddQuestionButton = () => (

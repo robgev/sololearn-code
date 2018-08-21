@@ -5,7 +5,7 @@ import {
 	WindowScroller,
 	AutoSizer,
 } from 'react-virtualized';
-import { findIndex } from 'lodash';
+import findIndex from 'lodash/findIndex';
 import Radium from 'radium';
 
 import 'react-virtualized/styles.css';

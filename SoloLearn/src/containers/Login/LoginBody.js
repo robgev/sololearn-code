@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import HomeIcon from 'components/HomeIcon';
 import { Link } from 'react-router';
-import { RaisedButton } from 'material-ui';
+import RaisedButton from 'material-ui/RaisedButton';
 import { FacebookLogin } from 'react-facebook-login-component';
 import { GoogleLogin } from 'react-google-login-component';
 import SignupFields from './SignupFields';
@@ -93,13 +93,13 @@ class LoginBody extends Component {
 								<img src="/assets/logo.png" alt="logo" />
 								{/* <h1>SoloLearn</h1> */}
 							</div>
-							<h2> { isLogin
+							<h2> {isLogin
 								? 'Sign in to Sololearn'
 								: 'Become a member of our community!'
 							}
 							</h2>
 						</div>
-						{ isLogin
+						{isLogin
 							? (
 								<LoginFields
 									email={email}
@@ -138,7 +138,7 @@ class LoginBody extends Component {
 									socialId="1088597931155576"
 									language="en_US"
 									scope="public_profile,email"
-									responseHandler={() => {}}
+									responseHandler={() => { }}
 									xfbml
 									fields="id,email,name"
 									version="v2.5"
@@ -154,7 +154,7 @@ class LoginBody extends Component {
 									scope="profile"
 									prompt="select_account"
 									fetchBasicProfile={false}
-									responseHandler={() => {}}
+									responseHandler={() => { }}
 									buttonText="Login With Google"
 								/>
 							</div>

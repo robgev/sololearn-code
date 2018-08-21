@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { uniqBy } from 'lodash';
-import {
-	Paper, Dialog,
-	FlatButton, RaisedButton,
-	DropDownMenu, MenuItem,
-} from 'material-ui';
+import uniqBy from 'lodash/uniqBy';
+import Paper from 'material-ui/Paper';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 import { red500 } from 'material-ui/styles/colors';
 import { browserHistory } from 'react-router';
 import Layout from 'components/Layouts/GeneralLayout';
@@ -17,8 +18,6 @@ import './mySubmissionsStyles.scss';
 import actionContainerStyle from '../components/actionContainerStyle';
 
 // Utility funcs
-
-const equal = (obj1, obj2) => !Object.keys(obj1).some(key => obj1[key] !== obj2[key]);
 
 const getStringFromType = (type) => {
 	switch (type) {

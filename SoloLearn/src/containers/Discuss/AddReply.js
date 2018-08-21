@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 
 // Material UI components
-import { RaisedButton, Paper } from 'material-ui';
+import RaisedButton from 'material-ui/RaisedButton';
+import Paper from 'material-ui/Paper';
 
 import MentionInput from 'components/MentionInput';
 

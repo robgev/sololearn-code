@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 
 import { Link } from 'react-router';
-import { AutoComplete, IconButton, Paper } from 'material-ui';
+import AutoComplete from 'material-ui/AutoComplete';
+import IconButton from 'material-ui/IconButton';
+import Paper from 'material-ui/Paper';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import BookmarkIcon from 'material-ui/svg-icons/action/bookmark';

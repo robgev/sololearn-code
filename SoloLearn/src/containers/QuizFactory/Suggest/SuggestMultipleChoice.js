@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Paper, Checkbox, TextField, RaisedButton } from 'material-ui';
+import Paper from 'material-ui/Paper';
+import Checkbox from 'material-ui/Checkbox';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 import LanguageSelector from 'components/LanguageSelector';
 
 class SuggestMultipleChoice extends Component {

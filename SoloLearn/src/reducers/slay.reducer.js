@@ -8,7 +8,7 @@ import {
 	APPEND_COLLECTION_ITEMS,
 	SET_CURRENT_LESSON_COLLECTION,
 } from 'constants/ActionTypes';
-import { differenceBy } from 'lodash';
+import differenceBy from 'lodash/differenceBy';
 import { combineReducers } from 'redux';
 
 const safeAdd = (oldList, newList) => {

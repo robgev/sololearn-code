@@ -2,7 +2,7 @@ import {
 	SET_LEADERBOARD,
 	APPEND_LEADERBOARD_USERS,
 } from 'constants/ActionTypes';
-import { differenceBy } from 'lodash';
+import differenceBy from 'lodash/differenceBy';
 
 const safeAdd = (oldList, newList) => {
 	const appendedArticles = differenceBy(newList, oldList, 'userID');

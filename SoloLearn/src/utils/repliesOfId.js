@@ -1,4 +1,4 @@
-import { findIndex } from 'lodash';
+import findIndex from 'lodash/findIndex';
 
 const repliesOfId = (comments, id) => {
 	const firstReplyIndex = findIndex(comments, el => el.id === id) + 1;

@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { showError } from 'utils';
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 
 // i18n
 import { translate } from 'react-i18next';
@@ -126,17 +126,17 @@ class Toolbar extends PureComponent {
 		const { userCodeData: { userName, language } } = this.props;
 		if (language === 'web') {
 			const code =
-`<!-- Created by ${userName} -->
+				`<!-- Created by ${userName} -->
 
 ${this.props.code}
 `;
 			const cssCode =
-`/* Created by ${userName} */
+				`/* Created by ${userName} */
 
 ${this.props.cssCode}
 `;
 			const jsCode =
-`// Created by ${userName}
+				`// Created by ${userName}
 
 ${this.props.jsCode}
 `;
@@ -153,7 +153,7 @@ ${this.props.jsCode}
 		case 'php':
 		{
 			const code =
-`// Created by ${userName}
+						`// Created by ${userName}
 
 ${this.props.code}
 `;
@@ -163,7 +163,7 @@ ${this.props.code}
 		case 'rb':
 		{
 			const code =
-`# Created by ${userName}
+						`# Created by ${userName}
 
 ${this.props.code}
 `;
@@ -350,7 +350,7 @@ ${this.props.code}
 		return (
 			<div id="toolbar" style={{ ...styles.toolbar.base, ...(showWebOutput ? styles.toolbar.hide : {}) }}>
 				<div className="left" style={styles.toolbar.left}>
-					{ !inline && (
+					{!inline && (
 						<div>
 							<DropDownMenu
 								value={languageSelector}
@@ -379,7 +379,7 @@ ${this.props.code}
 							/>
 						</div>
 					)}
-					{	type === 'web' &&
+					{type === 'web' &&
 						<FlatButton
 							icon={<InsertLink />}
 							labelPosition="before"

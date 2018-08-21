@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { RaisedButton } from 'material-ui';
+import RaisedButton from 'material-ui/RaisedButton';
 
 const SignupFields = ({
 	name,
@@ -46,7 +46,7 @@ const SignupFields = ({
 		</div>
 		<div className="tos-disclaimer">
 			<p>
-						By signing up you agree to our <Link className="hoverable" to="/terms-of-service">Terms of Service.</Link>
+					By signing up you agree to our <Link className="hoverable" to="/terms-of-service">Terms of Service.</Link>
 			</p>
 		</div>
 		<RaisedButton

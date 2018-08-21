@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { RaisedButton } from 'material-ui';
+import RaisedButton from 'material-ui/RaisedButton';
 
 const LoginFields = ({
 	email,

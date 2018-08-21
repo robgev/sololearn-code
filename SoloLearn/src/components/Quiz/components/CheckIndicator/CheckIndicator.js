@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Paper } from 'material-ui';
+import Paper from 'material-ui/Paper';
 import Done from 'material-ui/svg-icons/action/done';
 import Clear from 'material-ui/svg-icons/content/clear';
 import { red500, green500 } from 'material-ui/styles/colors';
