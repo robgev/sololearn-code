@@ -32,7 +32,7 @@ const CourseBox = ({
 			</div>
 		}
 		<Link
-			to={`/learn/course/${name}`}
+			to={itemType === 5 ? `/learn/collection/${id}` : `/learn/course/${name}`}
 			className="course-card-wrapper"
 		>
 			<div className="image-wrapper" style={{ backgroundColor: color }}>

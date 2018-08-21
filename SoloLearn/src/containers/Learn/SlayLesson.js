@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -9,7 +9,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Comments from 'containers/Comments/CommentsBase';
 import LessonLayout from 'components/Layouts/LessonLayout';
 
-import { slayItemTypes } from 'constants/ItemTypes';
 import Service from 'api/service';
 import {
 	getLesson,
@@ -61,31 +60,21 @@ class SlayLesson extends PureComponent {
 		return count;
 	}
 
-	getParsedItemType = () => {
-		const { itemType } = this.props.params;
-		switch (itemType) {
-		case 'course-lesson':
-			return slayItemTypes.courseLesson;
-		case 'user-lesson':
-			return slayItemTypes.slayLesson;
-		default:
-			return slayItemTypes.slayLesson;
-		}
-	}
-
 	loadLesson = async (lessonId) => {
-		const { getCourseLesson, getLesson } = this.props;
-		const parsedItemType = this.getParsedItemType();
+		const { getCourseLesson, getLesson, pathname } = this.props;
+		const {
+			itemType, lessonName, pageNumber = 1,
+		} = this.props.params;
 		this.setState({ loading: true });
-		switch (parsedItemType) {
-		case slayItemTypes.courseLesson: {
+		switch (itemType) {
+		case 'course-lesson': {
 			await getCourseLesson(lessonId);
 			await this.getLessonsByAuthor();
 			const commentsCount = await this.loadCommentsCount();
 			this.setState({ loading: false, commentsCount });
 			break;
 		}
-		case slayItemTypes.slayLesson: {
+		case 'user-lesson': {
 			await getLesson(lessonId);
 			await this.getLessonsByAuthor();
 			const commentsCount = await this.loadCommentsCount();
@@ -95,7 +84,9 @@ class SlayLesson extends PureComponent {
 		default:
 			break;
 		}
-		document.title = `${this.props.activeLesson.name}`;
+		const { name } = this.props.activeLesson;
+		browserHistory.push(`/learn/lesson/${itemType}/${lessonId}/${lessonName || name}/${pageNumber}`);
+		document.title = `${name}`;
 		if (this.props.activeLesson.parts) {
 			ReactGA.ga('send', 'screenView', { screenName: 'Course Lesson Lesson Page' });
 		} else {
@@ -121,6 +112,7 @@ class SlayLesson extends PureComponent {
 			type,
 			parts,
 			level,
+			name,
 			badge,
 			userID,
 			content,
@@ -164,6 +156,7 @@ class SlayLesson extends PureComponent {
 								quizId={id}
 								type={type}
 								withToolbar
+								name={name}
 								parts={parts}
 								userData={userData}
 								itemType={itemType}
@@ -174,7 +167,7 @@ class SlayLesson extends PureComponent {
 								isBookmarked={isBookmarked}
 							/>
 							{nextLesson &&
-								<Link to={`/learn/lesson/${nextLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${nextLesson.id}/1`}>
+								<Link to={`/learn/lesson/${nextLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${nextLesson.id}/${nextLesson.name}/1`}>
 									<RaisedButton
 										labelColor="#fff"
 										backgroundColor="#8bc34a"

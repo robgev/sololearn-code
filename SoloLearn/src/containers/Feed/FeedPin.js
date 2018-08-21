@@ -221,7 +221,7 @@ class FeedPin extends Component {
 				url = `/discuss/${firstPost.id}`;
 			} else if (pin.lessons) {
 				const firstLesson = pin.lessons[0];
-				url = `/learn/lesson/${firstLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${firstLesson.id}/1`;
+				url = `/learn/lesson/${firstLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${firstLesson.id}/${firstLesson.name}/1`;
 			} else if (pin.userPosts) {
 				const firstPost = pin.userPosts[0];
 				url = `/userPost/${firstPost.id}`;

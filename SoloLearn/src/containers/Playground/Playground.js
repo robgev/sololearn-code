@@ -427,10 +427,8 @@ class Playground extends Component {
 
 	addResourceValueAfterTag = (code, value, tag) => {
 		const tagOpeningPosition = code.indexOf(tag);
-		// Closing bracket and newline make 2;
-		const insertPosition = tagOpeningPosition + tag.length + 2;
-		const precedingSubstr = code.slice(0, insertPosition);
-		const succeedingSubstr = code.slice(insertPosition);
+		const precedingSubstr = code.slice(0, tagOpeningPosition);
+		const succeedingSubstr = code.slice(tagOpeningPosition);
 		return (
 			`${precedingSubstr}
 	${value || ''}
@@ -448,8 +446,8 @@ ${succeedingSubstr}
 </head >
 						`;
 		const codeToBeAdded = hasTag ? value : headWrappedValue;
-		const tagToBeAddedAfter = hasTag ? '<head' : '<html';
-		return this.addResourceValueAfterTag(wrappedCode, codeToBeAdded, tagToBeAddedAfter);
+		const tagToBeAddedBefore = hasTag ? '</head' : '</html';
+		return this.addResourceValueAfterTag(wrappedCode, codeToBeAdded, tagToBeAddedBefore);
 	}
 
 	insertToHead = (value) => {

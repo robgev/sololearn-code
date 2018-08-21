@@ -8,6 +8,8 @@ import CodePreview from './CodePreview';
 import PostPreview from './PostPreview';
 import CoursePreview from './CoursePreview';
 
+const constructLink = (link, type) => (type === 'code' ? `/playground/${link.split('https://code.sololearn.com/')[1]}` : link);
+
 const PreviewBody = ({
 	id,
 	type,
@@ -31,7 +33,7 @@ const PreviewBody = ({
 };
 
 const PreviewItem = props => (
-	<Link to={props.link} className={`preview-container ${props.className}`}>
+	<Link to={constructLink(props.link, props.type)} className={`preview-container ${props.className}`}>
 		<PreviewBody {...props} />
 	</Link>
 );

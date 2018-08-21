@@ -20,11 +20,12 @@ class SlayLessonContent extends Component {
 
 	handleStepClick = (e) => {
 		const {
+			name,
 			quizId,
 			itemType,
 		} = this.props;
 		const currentStep = +e.currentTarget.getAttribute('value');
-		browserHistory.push(`/learn/lesson/${itemType === 3 ? 'course-lesson' : 'user-lesson'}/${quizId}/${currentStep + 1}`);
+		browserHistory.push(`/learn/lesson/${itemType === 3 ? 'course-lesson' : 'user-lesson'}/${quizId}/${name}/${currentStep + 1}`);
 		this.setState({ currentStep });
 	}
 
