@@ -40,7 +40,7 @@ const LessonTiles = ({
 						key={lesson.id}
 						style={{ animationDelay: `${index * 30}ms` }}
 						className={`lesson-item ${lessonState.stateClass}`}
-						{...(slayLessons ? { to: `/learn/lesson/${lesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${lesson.id}/1` } :
+						{...(slayLessons ? { to: `/learn/lesson/${lesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${lesson.id}/${lesson.name}/1` } :
 							{ onClick: () => onItemClick(lesson.id, lessonState, lesson.name) })
 						}
 					>
