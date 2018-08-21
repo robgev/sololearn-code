@@ -66,9 +66,11 @@ class Profile extends PureComponent {
 		});
 	}
 
-	handlePopupClose = () => {
+	handlePopupClose = (blob) => {
+		const { avatarUrl } = this.props.userProfile;
 		this.setState({
 			open: false,
+			image: blob ? URL.createObjectURL(blob) : avatarUrl,
 		});
 	}
 
@@ -125,9 +127,9 @@ class Profile extends PureComponent {
 						<ProfileAvatar
 							disabled
 							size={200}
+							avatarUrl={image}
 							userID={userProfile.id}
 							userName={userProfile.name}
-							avatarUrl={userProfile.avatarUrl}
 						/>
 						<Avatar
 							icon={<EditIcon />}

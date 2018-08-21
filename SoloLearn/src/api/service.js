@@ -42,6 +42,22 @@ class Service {
 		return user;
 	}
 
+	fileRequest = async (url, data) => {
+		if (
+			this.accessToken === null
+			|| Date.now() > this.accessTokenExpireTime) {
+			await this.getSession();
+		}
+		return this._request(`${AppDefaults.baseUrl}/api/${url}`, {
+			method: 'POST',
+			body: data,
+			headers: {
+				'Content-type': 'application/octet-stream',
+				Authorization: `Bearer ${this.accessToken}`,
+			},
+		});
+	}
+
 	request = async (url, body = {}) => {
 		if (
 			this.accessToken === null
