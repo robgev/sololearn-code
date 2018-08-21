@@ -1,82 +1,86 @@
 // React modules
 import React from 'react';
 import { Route, Redirect } from 'react-router';
+import { Loadable, redirector } from 'utils';
 
 // Layouts
 import MainLayout from 'components/Layouts/MainLayout';
-import Login from 'containers/Login';
 
-// Additional components
+const Login = Loadable({ loader: () => import('containers/Login') });
 
 // Slay
-import SlayHome from 'containers/Learn/SlayHome';
-import SlaySearch from 'containers/Learn/SlaySearch';
-import SlayLesson from 'containers/Learn/SlayLesson';
-import SlayDetailed from 'containers/Learn/SlayDetailed';
-import SlayBookmarks from 'containers/Learn/SlayBookmarks';
-import SlayMoreOnTopic from 'containers/Learn/SlayMoreOnTopic';
-import SlayMoreByAuthor from 'containers/Learn/SlayMoreByAuthor';
+const SlayHome = Loadable({ loader: () => import('containers/Learn/SlayHome') });
+const SlaySearch = Loadable({ loader: () => import('containers/Learn/SlayHome') });
+const SlayLesson = Loadable({ loader: () => import('containers/Learn/SlayLesson') });
+const SlayDetailed = Loadable({ loader: () => import('containers/Learn/SlayDetailed') });
+const SlayBookmarks = Loadable({ loader: () => import('containers/Learn/SlayBookmarks') });
+const SlayMoreOnTopic = Loadable({ loader: () => import('containers/Learn//SlayMoreOnTopic') });
+const SlayMoreByAuthor = Loadable({ loader: () => import('containers/Learn/SlayMoreByAuthor') });
 
 // Learn
-import Modules from 'containers/Learn/Modules';
-import SlayLessonsPage from 'containers/Learn/SlayLessonsPage';
-import Lessons from 'containers/Learn/Lessons';
-import QuizManager from 'containers/Learn/QuizManager';
-import Quiz from 'containers/Learn/Quiz';
+const Modules = Loadable({ loader: () => import('containers/Learn/Modules') });
+const SlayLessonsPage = Loadable({ loader: () => import('containers/Learn/SlayLessonsPage') });
+const Lessons = Loadable({ loader: () => import('containers/Learn/Lessons') });
+const QuizManager = Loadable({ loader: () => import('containers/Learn/QuizManager') });
+const Quiz = Loadable({ loader: () => import('containers/Learn/Quiz') });
 
 // Discuss
-import Questions from 'containers/Discuss/Questions';
-import Post from 'containers/Discuss/Post';
-import NewQuestion from 'containers/Discuss/NewQuestion';
-import EditQuestion from 'containers/Discuss/EditQuestion';
+const Questions = Loadable({ loader: () => import('containers/Discuss/Questions') });
+const Post = Loadable({ loader: () => import('containers/Discuss/Post') });
+const NewQuestion = Loadable({ loader: () => import('containers/Discuss/NewQuestion') });
+const EditQuestion = Loadable({ loader: () => import('containers/Discuss/EditQuestion') });
 
 // Playground
-import Codes from 'containers/Playground/CodesBase';
-import Playground from 'containers/Playground';
+const Codes = Loadable({ loader: () => import('containers/Playground/CodesBase') });
+const Playground = Loadable({ loader: () => import('containers/Playground') });
 
 // Notifications
-import Notifications from 'containers/Notifications/NotificationsView';
+const Notifications = Loadable({ loader: () => import('containers/Notifications/NotificationsView') });
 
 // Settings
-import Settings from 'containers/Settings';
+const Settings = Loadable({ loader: () => import('containers/Settings') });
 
 // Feed
-import Feed from 'containers/Feed/Feed';
+const Feed = Loadable({ loader: () => import('containers/Feed/Feed') });
 
 // Certificate
-import Certificate from 'containers/Certificate';
+const Certificate = Loadable({ loader: () => import('containers/Certificate') });
 
 // Profile
-import Profile from 'containers/Profile/Profile';
+const Profile = Loadable({ loader: () => import('containers/Profile/Profile') });
 
 // Leaderboards
-import Leaderboards from 'containers/Leaderboards';
+const Leaderboards = Loadable({ loader: () => import('containers/Leaderboards') });
 
 // Discover
-import DiscoverContainer from 'containers/Profile/DiscoverContainer';
+const DiscoverContainer = Loadable({ loader: () => import('containers/Profile/DiscoverContainer') });
 
-import Play from 'containers/Play';
+const Play = Loadable({ loader: () => import('containers/Play') });
 
-import NotFound from 'components/NotFound';
-import Privacy from 'components/StaticPages/Privacy';
-import Faq from 'components/StaticPages/Faq';
-import Contact from 'components/StaticPages/Contact';
-
-import redirector from 'utils/redirector';
+const NotFound = Loadable({ loader: () => import('components/NotFound') });
+const Privacy = Loadable({ loader: () => import('components/StaticPages/Privacy') });
+const Faq = Loadable({ loader: () => import('components/StaticPages/Faq') });
+const Contact = Loadable({ loader: () => import('components/StaticPages/Contact') });
 
 // Quiz factory
-import {
-	QuizFactoryMenu,
-	QuizFactorySuggestTypeSelector,
-	QuizFactoryMySubmissions,
-	QuizFactoryRate,
-} from 'containers/QuizFactory';
+const QuizFactoryMenu = Loadable({
+	loader: () => import('containers/QuizFactory').then(mod => mod.QuizFactoryMenu),
+});
+const QuizFactorySuggestTypeSelector = Loadable({
+	loader: () => import('containers/QuizFactory').then(mod => mod.QuizFactorySuggestTypeSelector),
+});
+const QuizFactoryMySubmissions = Loadable({
+	loader: () => import('containers/QuizFactory').then(mod => mod.QuizFactoryMySubmissions),
+});
+const QuizFactoryRate = Loadable({
+	loader: () => import('containers/QuizFactory').then(mod => mod.QuizFactoryRate),
+});
 
 // TODO: Playgroud gets language and codeID prop from Slay lesson (parent)
 export default ([
 	<Route path="/login" component={Login} />,
 	<Route path="/signup" component={Login} />,
-	<Route component={redirector(MainLayout)} key="mainLayoutRoutes">
+	<Route component={redirector(MainLayout)} key="mainLayoutRoutes" >
 		<Redirect exact path="/" to="/feed" />
 		<Route path="/learn" component={SlayHome} />
 		<Route path="/learn/search/:query" component={SlaySearch} />
