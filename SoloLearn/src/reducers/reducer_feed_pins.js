@@ -5,7 +5,7 @@ export default function (state = null, action) {
 	case GET_FEED_PINS:
 		return action.payload;
 	case RESET_LOCALE_DATA:
-		return [];
+		return null;
 	default:
 		return state;
 	}

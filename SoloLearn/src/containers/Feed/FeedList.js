@@ -47,6 +47,7 @@ class FeedList extends Component {
 			loadMore,
 			header = null,
 		} = this.props;
+		console.log(feedPins);
 		const { coursePopupOpen, courseId } = this.state;
 		return (
 			<div>
@@ -57,48 +58,50 @@ class FeedList extends Component {
 						(
 							<div>
 								{
-									feed.length === 0 && feedPins === null &&
-									<div style={{ height: '90vh', overflow: 'hidden' }}>
-										{header}
-										<FeedShimmer />
-									</div>
-								}
-								{
-									(feedPins !== null && feedPins.length > 0) && (
-										<div>
-											<div className="feed-pins">
-												{feedPins.map(pin => (
-													<FeedPin
-														pin={pin}
-														key={`pin${pin.id}`}
-														openCoursePopup={this.toggleCoursePopup}
-													/>
-												))}
+									feed.length === 0 && feedPins === null
+										? (
+											<div style={{ height: '90vh', overflow: 'hidden' }}>
+												{header}
+												<FeedShimmer />
 											</div>
-											<p className="sub-title" style={{ paddingTop: 5 }} key="separator">{t('feed.most-recent-title')}</p>
-										</div>
-									)
-								}
-								<InfiniteScroll
-									element="div"
-									hasMore={hasMore}
-									loadMore={loadMore}
-									header={feed.length !== 0 ? header : null}
-									style={{
-										display: 'flex',
-										flexDirection: 'column',
-									}}
-								>
-									{feed.map(feedItem => (
-										<FeedItem
-											key={feedItem.type === types.mergedChallange ?
-												`feedGroup${feedItem.toId}` :
-												`feedItem${feedItem.id}`}
-											feedItem={feedItem}
-											openCoursePopup={this.toggleCoursePopup}
-										/>
-									))}
-								</InfiniteScroll>
+										)
+										: (
+											<div>
+												<div>
+													<div className="feed-pins">
+														{feedPins.map(pin => (
+															<FeedPin
+																pin={pin}
+																key={`pin${pin.id}`}
+																openCoursePopup={this.toggleCoursePopup}
+															/>
+														))}
+													</div>
+													<p className="sub-title" style={{ paddingTop: 5 }} key="separator">{t('feed.most-recent-title')}</p>
+												</div>
+
+												<InfiniteScroll
+													element="div"
+													hasMore={hasMore}
+													loadMore={loadMore}
+													header={feed.length !== 0 ? header : null}
+													style={{
+														display: 'flex',
+														flexDirection: 'column',
+													}}
+												>
+													{feed.map(feedItem => (
+														<FeedItem
+															key={feedItem.type === types.mergedChallange ?
+																`feedGroup${feedItem.toId}` :
+																`feedItem${feedItem.id}`}
+															feedItem={feedItem}
+															openCoursePopup={this.toggleCoursePopup}
+														/>
+													))}
+												</InfiniteScroll>
+											</div>
+										)}
 								<Dialog
 									open={coursePopupOpen}
 									bodyStyle={{ padding: 15 }}
