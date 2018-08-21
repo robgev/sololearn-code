@@ -10,7 +10,7 @@ import {
 import {
 	codesSelector, codesFiltersSelector, codesHasMoreSelector,
 } from 'reducers/codes.reducer';
-import { showError } from 'utils';
+import { showError, objectDifference } from 'utils';
 
 import AddCodeButton from 'components/AddCodeButton';
 import Layout from 'components/Layouts/GeneralLayout';
@@ -36,7 +36,8 @@ class Codes extends Component {
 		document.title = 'Sololearn | Code Playground';
 		const { location, filters } = this.props;
 		const query = { ...filters, ...location.query };
-		browserHistory.replace({ ...location, query });
+		const changed = objectDifference({ language: '', orderBy: 4, query: '' }, query);
+		browserHistory.replace({ ...location, query: changed });
 		this.props.getSidebarCodes();
 	}
 	componentWillUpdate(nextProps) {

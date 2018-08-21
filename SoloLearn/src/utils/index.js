@@ -28,6 +28,7 @@ export { default as EnumNameMapper } from './enumNameMapper';
 export { default as groupFeedItems } from './groupFeedItems';
 export { default as Loadable } from './Loadable';
 export { default as redirector } from './redirector';
+export { default as objectDifference } from './objectDifference';
 
 const hash = pass => hmacsha1('password', pass).slice(0, -1);
 const checkWeb = alias => [ 'html', 'css', 'js' ].includes(alias);

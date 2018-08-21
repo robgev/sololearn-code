@@ -17,6 +17,7 @@ import MenuItem from 'material-ui/MenuItem';
 import Chip from 'material-ui/Chip';
 import { QuestionList } from 'components/Questions';
 import AddQuestionButton from 'components/AddQuestionButton';
+import { objectDifference } from 'utils';
 
 import DiscussSidebar from './DiscussSidebar';
 
@@ -37,7 +38,8 @@ class Questions extends Component {
 		document.title = 'Sololearn | Discuss';
 		const { location, filters } = this.props;
 		const query = { ...filters, ...location.query };
-		browserHistory.replace({ ...location, query });
+		const changed = objectDifference({ orderBy: 8, query: '' }, query);
+		browserHistory.replace({ ...location, query: changed });
 	}
 	componentWillUpdate(nextProps) {
 		// Source of truth is the route
