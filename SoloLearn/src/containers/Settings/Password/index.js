@@ -84,7 +84,6 @@ class Password extends PureComponent {
 						type="password"
 						name="oldPassword"
 						value={oldPassword}
-						autoComplete={false}
 						style={{ width: '100%' }}
 						onFocus={this.handleFocus}
 						onChange={this.handleChange}
@@ -96,7 +95,6 @@ class Password extends PureComponent {
 						name="newPassword"
 						value={newPassword}
 						errorText={errorText}
-						autoComplete={false}
 						onFocus={this.handleFocus}
 						onChange={this.handleChange}
 						readOnly={focusedName !== 'newPassword'}
@@ -108,7 +106,6 @@ class Password extends PureComponent {
 						type="password"
 						name="retypePass"
 						value={retypePass}
-						autoComplete={false}
 						errorText={errorText}
 						onFocus={this.handleFocus}
 						onChange={this.handleChange}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { Circle } from 'react-progressbar.js';
+import Progressbar from 'components/Progressbar';
 import 'styles/courseChip.scss';
 
 const CustomWrapper = ({ children, className }) => (
@@ -47,20 +47,7 @@ const CourseChip = ({
 				}}
 			>
 				{isCourse &&
-					<Circle
-						progress={progress}
-						options={{
-							color: '#9CCC65',
-							strokeWidth: 4,
-							trailColor: '#DCDCDE',
-							trailWidth: 4,
-						}}
-						containerStyle={{
-							width: size,
-							height: size,
-							position: 'absolute',
-						}}
-					/>
+					<Progressbar percentage={progress * 100} />
 				}
 				<img
 					src={iconUrl}
