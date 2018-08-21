@@ -89,7 +89,7 @@ class Comments extends Component {
 			index: this.comments.length, count: 3,
 		});
 		let withReplies;
-		const isFindingReply = comments[0].index === -1;
+		const isFindingReply = comments.length > 0 && comments[0].index === -1;
 		if (isFindingReply) {
 			// FindPostId is a reply id, have to format the replies
 			withReplies = [ new IComment({
