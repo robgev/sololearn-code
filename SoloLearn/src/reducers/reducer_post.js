@@ -1,4 +1,5 @@
-import { find, uniqBy } from 'lodash';
+import find from 'lodash/find';
+import uniqBy from 'lodash/uniqBy';
 import {
 	LOAD_DISCUSS_POST, LOAD_DISCUSS_POST_REPLIES,
 	LOAD_DISCUSS_POST_PREVIOUS_REPLIES, EMPTY_DISCUSS_POST_REPLIES,

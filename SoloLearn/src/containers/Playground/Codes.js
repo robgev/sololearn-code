@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { DropDownMenu, MenuItem } from 'material-ui';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 import {
 	getCodes, emptyCodes, setCodesFilters, getSidebarCodes,
 } from 'actions/playground';

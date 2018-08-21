@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Dialog, List, ListItem, Divider } from 'material-ui';
+import Dialog from 'material-ui/Dialog';
+import { List, ListItem } from 'material-ui/List';
 import LoadingOverlay from 'components/LoadingOverlay';
 import LanguageCard from 'components/LanguageCard';
 

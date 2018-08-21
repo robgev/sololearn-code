@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
-import { findKey } from 'lodash';
+import findKey from 'lodash/findKey';
 
 // i18n
 import { translate } from 'react-i18next';

@@ -6,6 +6,12 @@ import { Loadable, redirector } from 'utils';
 // Layouts
 import MainLayout from 'components/Layouts/MainLayout';
 
+import Modules from 'containers/Learn/Modules';
+import SlayLessonsPage from 'containers/Learn/SlayLessonsPage';
+import Lessons from 'containers/Learn/Lessons';
+import QuizManager from 'containers/Learn/QuizManager';
+import Quiz from 'containers/Learn/Quiz';
+
 const Login = Loadable({ loader: () => import('containers/Login') });
 
 // Slay
@@ -18,11 +24,11 @@ const SlayMoreOnTopic = Loadable({ loader: () => import('containers/Learn//SlayM
 const SlayMoreByAuthor = Loadable({ loader: () => import('containers/Learn/SlayMoreByAuthor') });
 
 // Learn
-const Modules = Loadable({ loader: () => import('containers/Learn/Modules') });
-const SlayLessonsPage = Loadable({ loader: () => import('containers/Learn/SlayLessonsPage') });
-const Lessons = Loadable({ loader: () => import('containers/Learn/Lessons') });
-const QuizManager = Loadable({ loader: () => import('containers/Learn/QuizManager') });
-const Quiz = Loadable({ loader: () => import('containers/Learn/Quiz') });
+// const Modules = Loadable({ loader: () => import('containers/Learn/Modules') });
+// const SlayLessonsPage = Loadable({ loader: () => import('containers/Learn/SlayLessonsPage') });
+// const Lessons = Loadable({ loader: () => import('containers/Learn/Lessons') });
+// const QuizManager = Loadable({ loader: () => import('containers/Learn/QuizManager') });
+// const Quiz = Loadable({ loader: () => import('containers/Learn/Quiz') });
 
 // Discuss
 const Questions = Loadable({ loader: () => import('containers/Discuss/Questions') });

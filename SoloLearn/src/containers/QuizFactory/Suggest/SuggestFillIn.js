@@ -9,7 +9,9 @@ import {
 	ContentState,
 	SelectionState,
 } from 'draft-js';
-import { Paper, RaisedButton, FlatButton } from 'material-ui';
+import Paper from 'material-ui/Paper';
+import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import LanguageSelector from 'components/LanguageSelector';
 
 // Util pure functions

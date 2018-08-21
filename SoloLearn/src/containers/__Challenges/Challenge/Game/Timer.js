@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { LinearProgress } from 'material-ui';
+import LinearProgress from 'material-ui/LinearProgress';
 
 const timeDifferenceInSeconds = (date1, date2) => (date1 - date2) / 1000;
 

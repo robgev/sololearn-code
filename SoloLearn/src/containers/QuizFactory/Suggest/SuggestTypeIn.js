@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Paper, TextField, RaisedButton } from 'material-ui';
+import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 import LanguageSelector from 'components/LanguageSelector';
 
 class SuggestTypeIn extends Component {

@@ -7,7 +7,8 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
 // Material UI components
-import { Paper, Divider } from 'material-ui';
+import Paper from 'material-ui/Paper';
+import Divider from 'material-ui/Divider';
 
 // Redux modules
 import { markReadInternal } from 'actions/profile';

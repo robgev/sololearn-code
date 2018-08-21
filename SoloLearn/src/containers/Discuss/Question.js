@@ -7,7 +7,10 @@ import { translate } from 'react-i18next';
 import Linkify from 'react-linkify';
 
 // Material UI components
-import { Paper, IconButton, IconMenu, MenuItem } from 'material-ui';
+import Paper from 'material-ui/Paper';
+import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
 import Snackbar from 'material-ui/Snackbar';
 import ArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
 import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';

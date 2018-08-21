@@ -5,7 +5,11 @@ import { connect } from 'react-redux';
 import Linkify from 'react-linkify';
 
 // Material UI components
-import { IconMenu, MenuItem, FlatButton, IconButton, Snackbar } from 'material-ui';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
+import Snackbar from 'material-ui/Snackbar';
 import ArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
 import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import AcceptedIcon from 'material-ui/svg-icons/navigation/check';

@@ -1,4 +1,4 @@
-import { last } from 'lodash';
+import last from 'lodash/last';
 import Service from 'api/service';
 import * as types from 'constants/ActionTypes';
 import {

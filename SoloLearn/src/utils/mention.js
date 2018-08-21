@@ -1,6 +1,6 @@
 import React from 'react';
 import Service from 'api/service';
-import { last } from 'lodash';
+import last from 'lodash/last';
 import { Link } from 'react-router';
 
 const mentionTypes = {
