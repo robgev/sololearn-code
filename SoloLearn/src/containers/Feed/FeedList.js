@@ -57,14 +57,14 @@ class FeedList extends Component {
 						(
 							<div>
 								{
-									feed.length === 0 &&
+									feed.length === 0 && feedPins === null &&
 									<div style={{ height: '90vh', overflow: 'hidden' }}>
 										{header}
 										<FeedShimmer />
 									</div>
 								}
 								{
-									(feedPins && feedPins.length > 0) && (
+									(feedPins !== null && feedPins.length > 0) && (
 										<div>
 											<div className="feed-pins">
 												{feedPins.map(pin => (
