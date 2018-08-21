@@ -48,6 +48,7 @@ class FeedItemsBase extends Component {
 		document.title = 'Sololearn | Feed';
 		ReactGA.ga('send', 'screenView', { screenName: 'Feed Page' });
 		if (!isLoaded) {
+			this.getFeedItems();
 			this.props.getPinnedFeedItems(null, null, null)
 				.catch(e => showError(e, 'Something went wrong when trying to fetch pins'));
 			this.props.getDiscoverSuggestions()

@@ -58,7 +58,7 @@ class FeedList extends Component {
 						(
 							<div>
 								{
-									feed.length === 0 && feedPins === null
+									feed.length === 0 || feedPins === null
 										? (
 											<div style={{ height: '90vh', overflow: 'hidden' }}>
 												{header}
