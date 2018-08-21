@@ -32,11 +32,13 @@ class Parser extends Component {
 
 	// static utility funcitons and regexes
 
-	static tagRegex = /\[(b|i|u|h1|h2|h3|note|code)(.*?)\]([\s\S\n]*?)\[\/\1\]/;
+	static tagRegex = /\[(b|i|u|h1|h2|h3|note|code|a)(.*?)\]([\s\S\n]*?)\[\/\1\]/;
 
 	static imgRegex = /\[img id="(\d+)" width="(\d+)%"\]/;
 
 	static codeRegex = /format="(\w+)"(?: codeId="(\d+)")?/;
+
+	static linkRegex = /href="(.+)"/;
 
 	static U = ({ children }) => <span style={{ textDecoration: 'underline' }}>{children}</span>;
 
@@ -64,6 +66,11 @@ class Parser extends Component {
 			</CodeBlock>
 		);
 	};
+
+	static Link = ({ children, strAttributes }) => {
+		const [ , link ] = Parser.linkRegex.exec(strAttributes);
+		return <a href={link}>{children}</a>;
+	}
 
 	static Image = ({ id, width }) =>
 		<img alt="" src={`https://api.sololearn.com/DownloadFile?id=${id}`} width={`${width}%`} />;
@@ -104,6 +111,9 @@ class Parser extends Component {
 				break;
 			case 'note':
 				result.push(<Parser.Note>{inner}</Parser.Note>);
+				break;
+			case 'a':
+				result.push(<Parser.Link strAttributes={args}>{inner}</Parser.Link>);
 				break;
 			case 'code':
 				result.push((
