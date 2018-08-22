@@ -2,7 +2,7 @@
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
-import { showError } from 'utils';
+import { showError, objectDifference } from 'utils';
 import {
 	getPosts, emptyPosts, setDiscussFilters,
 } from 'actions/discuss';
@@ -17,7 +17,6 @@ import MenuItem from 'material-ui/MenuItem';
 import Chip from 'material-ui/Chip';
 import { QuestionList } from 'components/Questions';
 import AddQuestionButton from 'components/AddQuestionButton';
-import { objectDifference } from 'utils';
 
 import DiscussSidebar from './DiscussSidebar';
 
