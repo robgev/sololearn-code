@@ -9,12 +9,6 @@ import ModBadge from 'components/ModBadge';
 import { numberFormatter, showError, determineBadge } from 'utils';
 import 'styles/components/UserCard.scss';
 
-const CustomWrapper = ({ children, className }) => (
-	<span className={className}>
-		{children}
-	</span>
-);
-
 @connect(null, { followSuggestion })
 class UserCard extends Component {
 handleFollow = () => {
@@ -32,18 +26,16 @@ render() {
 		level,
 		name,
 		badge,
-		withLink,
 		followers,
 		avatarUrl,
 		isFollowing,
 		className = '',
 		withFollowButton,
 	} = this.props;
-	const WrapperComponent = withLink ? Link : CustomWrapper;
 	const modBadge = determineBadge(badge);
 	return (
 		<div className={`discover-user-card-container ${className}`}>
-			<WrapperComponent to={`/profile/${id}`} className="profile-container">
+			<Link to={`/profile/${id}`} className="profile-container">
 				<div className="profile-avatar-wrapper">
 					{ avatarUrl
 						? <img src={avatarUrl} alt="avatar" className="profile-avatar" />
@@ -89,7 +81,7 @@ render() {
 						)
 					}
 				</div>
-			</WrapperComponent>
+			</Link>
 
 		</div>
 	);
