@@ -18,7 +18,7 @@ const NotFound = () => (
 			padding: 15,
 		}}
 		>
-			<div className="flex-centered">
+			<div className="flex-centered column">
 				<h1>Oops!</h1>
 				<h3>404 Not Found</h3>
 				<p>Sorry, an error has occured. Requested page not found</p>

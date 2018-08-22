@@ -93,9 +93,12 @@ html, body {
 
 .flex-centered {
 	display: flex;
-	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+.column {
+	flex-direction: column;
 }
 
 .load-more-button {

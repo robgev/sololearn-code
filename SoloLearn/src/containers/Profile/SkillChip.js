@@ -7,7 +7,7 @@ import { translate } from 'react-i18next';
 
 const SkillChips = ({ t, course, shouldShowLink }) => (
 	<div className="course">
-		<div className="course-progress">
+		<div className="course-progress flex-centered">
 			<Progressbar percentage={course.progress * 100} />
 			<img
 				alt={course.name}

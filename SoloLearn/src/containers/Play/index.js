@@ -18,7 +18,7 @@ const NotFound = () => (
 			padding: 15,
 		}}
 		>
-			<div className="flex-centered">
+			<div className="flex-centered column">
 				<h1>Under Construction</h1>
 				<h3>Play page is not ready yet.</h3>
 				<p>This page is under construction. It will be ready soon ;)</p>
