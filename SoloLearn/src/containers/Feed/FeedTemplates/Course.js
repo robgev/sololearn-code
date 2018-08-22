@@ -1,5 +1,5 @@
 // React modules
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 const styles = {
 	course: {
@@ -31,23 +31,28 @@ class Course extends Component {
 	}
 
 	render() {
-		const { course } = this.props;
+		const { course, date } = this.props;
 
 		return (
-			<div
-				tabIndex={0}
-				role="button"
-				className="course"
-				style={styles.course}
-				onClick={this.openCoursePopup}
-			>
-				<img
-					alt="course icon"
-					src={`https://api.sololearn.com/uploads/Courses/${course.id}.png`}
-					style={styles.courseIcon}
-				/>
-				<p style={styles.courseName}>{course.name}</p>
-			</div>
+			<Fragment>
+				<div
+					tabIndex={0}
+					role="button"
+					className="course"
+					style={styles.course}
+					onClick={this.openCoursePopup}
+				>
+					<img
+						alt="course icon"
+						src={`https://api.sololearn.com/uploads/Courses/${course.id}.png`}
+						style={styles.courseIcon}
+					/>
+					<p style={styles.courseName}>{course.name}</p>
+				</div>
+				<div className="feed-date-container">
+					<p className="date">{date}</p>
+				</div>
+			</Fragment>
 		);
 	}
 }

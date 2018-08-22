@@ -78,7 +78,6 @@ class DiscoverContainer extends PureComponent {
 						<div className="discover-wrapper">
 							{discoverSuggestions.map(suggestion => (
 								<UserCard
-									withLink
 									{...suggestion}
 									withFollowButton
 									key={suggestion.id}

@@ -8,7 +8,7 @@ import Radium from 'radium';
 import Paper from 'material-ui/Paper';
 
 // Additional data and components
-import { toSeoFriendly } from 'utils';
+import { updateDate } from 'utils';
 import { voteFeedPostItem, voteFeedCommentItem, voteFeedCodeItem } from 'actions/feed';
 import CourseCard from 'components/CourseCard';
 import FeedItemBase from './FeedItemBase';
@@ -79,13 +79,13 @@ class FeedItem extends Component {
 		switch (feedItem.type) {
 		case types.badgeUnlocked:
 			this.url = `/profile/${feedItem.user.id}/badges?badgeID=${feedItem.achievement.id}`;
-			return <Badge achievement={feedItem.achievement} />;
+			return <Badge date={updateDate(feedItem.date)} achievement={feedItem.achievement} />;
 		case types.courseStarted:
 			this.url = `/learn/course/${feedItem.course.name}`;
-			return <Course course={feedItem.course} openPopup={this.props.openCoursePopup} />;
+			return <Course date={updateDate(feedItem.date)} course={feedItem.course} openPopup={this.props.openCoursePopup} />;
 		case types.courseCompleted:
 			this.url = `/learn/course/${feedItem.course.name}`;
-			return <Course course={feedItem.course} openPopup={this.props.openCoursePopup} />;
+			return <Course date={updateDate(feedItem.date)} course={feedItem.course} openPopup={this.props.openCoursePopup} />;
 		case types.postedQuestion:
 			this.url = `/discuss/${feedItem.post.id}`;
 			this.votes = feedItem.post.votes;
@@ -134,7 +134,7 @@ class FeedItem extends Component {
 			);
 		case types.completedChallange:
 			this.url = `/profile/${feedItem.contest.player.id}`;
-			return <Challenge contest={feedItem.contest} />;
+			return <Challenge date={updateDate(feedItem.date)} contest={feedItem.contest} />;
 		case types.suggestions:
 			return <FeedSuggestions number={feedItem.number} />;
 		case types.postedLessonComment:
@@ -187,18 +187,21 @@ class FeedItem extends Component {
 		case types.lessonCreated:
 			this.url = `/learn/lesson/${feedItem.userLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${feedItem.userLesson.id}/${feedItem.userLesson.name}/1`;
 			return (
-				<CourseCard
-					small
-					itemType={2}
-					style={{ boxShadow: 'none' }}
-					id={feedItem.userLesson.id}
-					name={feedItem.userLesson.name}
-					color={feedItem.userLesson.color}
-					userID={feedItem.userLesson.userID}
-					iconUrl={feedItem.userLesson.iconUrl}
-					viewCount={feedItem.userLesson.viewCount}
-					comments={feedItem.userLesson.comments}
-				/>
+				<div className="feed-date-container">
+					<CourseCard
+						small
+						itemType={2}
+						style={{ boxShadow: 'none' }}
+						id={feedItem.userLesson.id}
+						name={feedItem.userLesson.name}
+						color={feedItem.userLesson.color}
+						userID={feedItem.userLesson.userID}
+						iconUrl={feedItem.userLesson.iconUrl}
+						viewCount={feedItem.userLesson.viewCount}
+						comments={feedItem.userLesson.comments}
+					/>
+					<p className="date">{updateDate(feedItem.date)}</p>
+				</div>
 			);
 		default:
 			return null;
@@ -234,7 +237,7 @@ class FeedItem extends Component {
 					<div
 						id="feed-items"
 						className={`merged-items-container ${this.state.isOpened ? 'open' : ''}`}
-						style={{ height: this.state.isOpened ? feedItem.groupedItems.length * 143 : 0 }}
+						style={{ height: this.state.isOpened ? feedItem.groupedItems.length * 159 : 0 }}
 					>
 						{feedItem.groupedItems.map(currentItem => (
 							<FeedItem

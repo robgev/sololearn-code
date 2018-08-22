@@ -1,5 +1,5 @@
 // React modules
-import React, { Component } from 'react';
+import React, { Fragment } from 'react';
 
 const styles = {
 	achievement: {
@@ -37,29 +37,24 @@ const styles = {
 	},
 };
 
-class Badge extends Component {
-	constructor(props) {
-		super(props);
-	}
-
-	render() {
-		const achievement = this.props.achievement;
-
-		return (
-			<div className="achievement" style={styles.achievement}>
-				<div
-					className="badge-icon"
-					style={{ ...styles.badge.base, backgroundColor: achievement.color }}
-				>
-					<img src="../../../assets/achievement.png" style={styles.badge.icon} />
-				</div>
-				<div className="details" style={styles.details}>
-					<p className="title" style={styles.title}>{achievement.title}</p>
-					<p className="description" style={styles.description}>{achievement.description}</p>
-				</div>
+const Badge = ({ date, achievement }) => (
+	<Fragment>
+		<div className="achievement" style={styles.achievement}>
+			<div
+				className="badge-icon"
+				style={{ ...styles.badge.base, backgroundColor: achievement.color }}
+			>
+				<img alt="achievement" src="/assets/achievement.png" style={styles.badge.icon} />
 			</div>
-		);
-	}
-}
+			<div className="details" style={styles.details}>
+				<p className="title" style={styles.title}>{achievement.title}</p>
+				<p className="description" style={styles.description}>{achievement.description}</p>
+			</div>
+		</div>
+		<div className="feed-date-container">
+			<p className="date">{date}</p>
+		</div>
+	</Fragment>
+);
 
 export default Badge;

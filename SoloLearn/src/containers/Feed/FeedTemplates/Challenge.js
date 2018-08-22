@@ -1,5 +1,5 @@
 // React modules
-import React from 'react';
+import React, { Fragment } from 'react';
 
 // Additional data and components
 import User from './User';
@@ -20,29 +20,35 @@ const styles = {
 };
 
 const Challenge = ({
+	date,
 	contest: {
 		id, courseID, player, opponent,
 	},
 }) => (
-	<div className="challenge" style={styles.challenge}>
-		<User
-			id={id}
-			disabled
-			user={player}
-			courseId={courseID}
-		/>
-		<div className="score" style={styles.score}>
-			<span>{player.score}</span>
-			<span> : </span>
-			<span>{opponent.score}</span>
+	<Fragment>
+		<div className="challenge" style={styles.challenge}>
+			<User
+				id={id}
+				disabled
+				user={player}
+				courseId={courseID}
+			/>
+			<div className="score" style={styles.score}>
+				<span>{player.score}</span>
+				<span> : </span>
+				<span>{opponent.score}</span>
+			</div>
+			<User
+				id={id}
+				disabled
+				user={opponent}
+				courseId={courseID}
+			/>
 		</div>
-		<User
-			id={id}
-			disabled
-			user={opponent}
-			courseId={courseID}
-		/>
-	</div>
+		<div className="feed-date-container">
+			<p className="date">{date}</p>
+		</div>
+	</Fragment>
 );
 
 export default Challenge;
