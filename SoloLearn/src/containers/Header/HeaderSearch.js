@@ -38,11 +38,11 @@ class HeaderSearch extends PureComponent {
 	}
 
 	closeSearch = () => {
-		this.setState({ searchOpened: false });
+		this.setState({ searchOpened: false, searchValue: '' });
 	}
 
 	handleMenuChange = (e, idx, searchArea) => {
-		this.setState({ searchArea });
+		this.setState({ searchArea, searchValue: '' });
 	}
 
 	handleSearchTextChange = (searchValue) => {
