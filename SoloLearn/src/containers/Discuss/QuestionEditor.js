@@ -54,10 +54,8 @@ class QuestionEditor extends Component {
 		}
 	}
 
-	// Collect tags into one array
 	addTag = (newTag) => {
-		const { tags } = this.state;
-		this.setState({ tags: [ ...tags, newTag ] });
+		this.setState(s => ({ tags: [ ...s.tags, newTag ] }));
 	}
 
 	handleDeleteTag = (tag) => {
