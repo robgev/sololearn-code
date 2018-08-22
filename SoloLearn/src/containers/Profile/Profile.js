@@ -59,7 +59,8 @@ class Profile extends Component {
 			this.followerPopupOpen = false;
 		}
 		if (tab !== this.activeTab) {
-			this.activeTab = tab;
+			browserHistory.replace(`/profile/${id}/${tab || 'activity'}`);
+			this.activeTab = tab || 'activity';
 		}
 	}
 

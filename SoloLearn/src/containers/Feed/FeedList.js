@@ -47,7 +47,6 @@ class FeedList extends Component {
 			loadMore,
 			header = null,
 		} = this.props;
-		console.log(feedPins);
 		const { coursePopupOpen, courseId } = this.state;
 		return (
 			<div>
@@ -70,16 +69,16 @@ class FeedList extends Component {
 												<div>
 													<div className="feed-pins">
 														{feedPins !== undefined &&
-														<React.Fragment>
-															{feedPins.map(pin => (
-																<FeedPin
-																	pin={pin}
-																	key={`pin${pin.id}`}
-																	openCoursePopup={this.toggleCoursePopup}
-																/>
-															))}
-															<p className="sub-title" style={{ paddingTop: 5 }} key="separator">{t('feed.most-recent-title')}</p>
-														</React.Fragment>
+															<React.Fragment>
+																{feedPins.map(pin => (
+																	<FeedPin
+																		pin={pin}
+																		key={`pin${pin.id}`}
+																		openCoursePopup={this.toggleCoursePopup}
+																	/>
+																))}
+																<p className="sub-title" style={{ paddingTop: 5 }} key="separator">{t('feed.most-recent-title')}</p>
+															</React.Fragment>
 														}
 													</div>
 												</div>
