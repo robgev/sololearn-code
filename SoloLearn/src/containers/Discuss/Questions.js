@@ -95,10 +95,11 @@ class Questions extends Component {
 									onChange={this.handleOrderByFilterChange}
 									labelStyle={{ height: 20, lineHeight: '20px' }}
 								>
+									<MenuItem value={10} primaryText={t('discuss.filter.hot-today')} />
 									<MenuItem value={8} primaryText={t('discuss.filter.trending')} />
+									<MenuItem value={9} primaryText={t('discuss.filter.your-network')} />
 									<MenuItem value={1} primaryText={t('discuss.filter.most-recent')} />
 									<MenuItem value={2} primaryText={t('discuss.filter.most-popular')} />
-									<MenuItem value={3} primaryText="Most Answered" />
 									<MenuItem value={4} primaryText={t('discuss.filter.unanswered')} />
 									<MenuItem value={5} primaryText={t('discuss.filter.my-questions')} />
 									<MenuItem value={6} primaryText={t('discuss.filter.my-answers')} />

@@ -6,8 +6,8 @@
   },
   "common": {
     "cancel-title": "Cancelar",
-		"remove-title": "Eliminar",
-		"confirm-title": "Confirmar",
+    "remove-title": "Eliminar",
+    "confirm-title": "Confirmar",
     "ok-title": "OK",
     "delete-title": "Borrar",
     "edit-action-title": "Editar",
@@ -34,8 +34,8 @@
     "post-action-title": "Publicar",
     "copy-text-action-title": "Copiar Texto",
     "report-action-title": "Reportar",
-		"deactivate-action-title": "Desactivar",
-		"report-more-hint": "Por favor, especifica el motive",
+    "deactivate-action-title": "Desactivar",
+    "report-more-hint": "Por favor, especifica el motive",
     "comments-format": "COMENTARIOS",
     "error": {
       "generic-title": "Error",
@@ -43,7 +43,7 @@
       "try-again-message": "Por favor intenta de nuevo en un momento."
     },
     "comment-format-one": "1 COMENTARIO",
-		"input_message_hint": "Escribe tu mensaje...",
+    "input_message_hint": "Escribe tu mensaje...",
     "comments": "COMENTARIOS",
     "saved-message": "Guardado",
     "save-action-title": "Guardar",
@@ -69,12 +69,12 @@
     "delete-comment-popup-message": "¿Estás seguro de que quieres borrar este comentario?",
     "replies-other": "Respuestas",
     "replies-one": "1 Respuesta",
-		"lesson_comment_request_removal_title": "Solicitar eliminación",
-		"lesson_comment_delete_message": "¿Estás seguro de que quieres borrar este comentario?",
-		"lesson_comment_remove_title": "Eliminar comentario",
-		"lesson_comment_remove_message": "¿Estás seguro de que quieres eliminar este comentario?",
-		"reply": "Contestar",
-		"add": "Agregar"
+    "lesson_comment_request_removal_title": "Solicitar eliminación",
+    "lesson_comment_delete_message": "¿Estás seguro de que quieres borrar este comentario?",
+    "lesson_comment_remove_title": "Eliminar comentario",
+    "lesson_comment_remove_message": "¿Estás seguro de que quieres eliminar este comentario?",
+    "reply": "Contestar",
+    "add": "Agregar"
   },
   "date": {
     "now-past": "justo ahora",
@@ -231,8 +231,8 @@
     "changes-saved-title": "Éxito",
     "changes-saved-message": "Tus datos se actualizaron con éxito.",
     "change-avatar-title": "Cambiar Avatar",
-		"country-section-title": "Ubicación",
-		"user-name": "Nombre"
+    "country-section-title": "Ubicación",
+    "user-name": "Nombre"
   },
   "country": {
     "title": "Ubicación",
@@ -272,8 +272,8 @@
     "feed-lessons": "Lecciones",
     "feed-challenges": "Desafíos",
     "feed-lesson-comments": "Comentarios de las Lecciones",
-		"feed-code-comments": "Comentarios al Código",
-		"feed-user-posts": "Publicaciones",
+    "feed-code-comments": "Comentarios al Código",
+    "feed-user-posts": "Publicaciones",
     "push-general-section-title": "General",
     "push-product-updates": "Actualizaciones del Producto",
     "push-profile-updates": "Actualizaciones de Perfil",
@@ -437,7 +437,8 @@
       "unanswered": "Sin Respuesta",
       "my-questions": "Mis Preguntas",
       "my-answers": "Mis Respuestas",
-      "title": "Ordenar por:"
+      "title": "Ordenar por:",
+      "hot-today": "Popular hoy"
     },
     "answers": {
       "filter": {
@@ -453,18 +454,18 @@
     "edit-answer-placeholder": "Tu respuesta",
     "answer-other-format": "RESPUESTAS",
     "answer-one-format": "RESPUESTA",
-		"following-title": "Ahora estás siguiendo este hilo",
-		"not-following-title": "No estás siguiendo este hilo",
-		"answer-accepted": "Marcado como la mejor respuesta",
+    "following-title": "Ahora estás siguiendo este hilo",
+    "not-following-title": "No estás siguiendo este hilo",
+    "answer-accepted": "Marcado como la mejor respuesta",
     "date-by-name-format": "por",
     "invalid-thread": "Pregunta no encontrada",
     "hide-post-popup-title": "Ocultar publicación",
     "hide-post-popup-message": "¿Estás seguro que deseas ocultar esta publicación?",
     "edited-by-format": "Editado por  ()",
-		"forum_remove_prompt_title": "Eliminar publicación",
-		"forum_remove_prompt_text": "¿Estás seguro que deseas eliminar esta publicación?",
-		"forum_request_removal_prompt_text": "¿Estás seguro de que deseas marcar esta entrada para su eliminación?",
-		"forum_request_removal_prompt_title": "Solicitar eliminación"
+    "forum_remove_prompt_title": "Eliminar publicación",
+    "forum_remove_prompt_text": "¿Estás seguro que deseas eliminar esta publicación?",
+    "forum_request_removal_prompt_text": "¿Estás seguro de que deseas marcar esta entrada para su eliminación?",
+    "forum_request_removal_prompt_title": "Solicitar eliminación"
   },
   "report": {
     "report-submitted-title": "Reporte Enviado",
@@ -480,18 +481,18 @@
     "challenge-report-option-4": "Fuera de tema",
     "challenge-report-option-5": "Otro"
   },
-	"deactivate": {
-		"deactivate-popup-title": "Por favor, selecciona el motivo de la desactivación",
-		"deactivate-option-1": "Lenguaje ofensivo",
-		"deactivate-option-2": "Entradas/comentarios/respuestas spam",
-		"deactivate-option-3": "Cuenta falsa",
-		"deactivate-option-4": "Actividad sospechosa en la sección Play",
-		"deactivate-option-5": "Otro",
-		"deactivate_successful_title": "Se ha enviado un informe para revisión",
-		"deactivate_successful_message": "Gracias por contribuir a la seguridad de SoloLearn",
-		"deactivate_instant_successful_title": "Perfil desactivado",
-		"deactivate_instant_successful_message": "Gracias por contribuir a la seguridad de SoloLearn"
-	},
+  "deactivate": {
+    "deactivate-popup-title": "Por favor, selecciona el motivo de la desactivación",
+    "deactivate-option-1": "Lenguaje ofensivo",
+    "deactivate-option-2": "Entradas/comentarios/respuestas spam",
+    "deactivate-option-3": "Cuenta falsa",
+    "deactivate-option-4": "Actividad sospechosa en la sección Play",
+    "deactivate-option-5": "Otro",
+    "deactivate_successful_title": "Se ha enviado un informe para revisión",
+    "deactivate_successful_message": "Gracias por contribuir a la seguridad de SoloLearn",
+    "deactivate_instant_successful_title": "Perfil desactivado",
+    "deactivate_instant_successful_message": "Gracias por contribuir a la seguridad de SoloLearn"
+  },
   "code": {
     "title": "Códigos",
     "filter": {
@@ -500,7 +501,8 @@
       "your-network": "Tu Red",
       "most-recent": "Más Recientes",
       "most-popular": "Más Populares",
-      "my-codes": "Mis Códigos"
+      "my-codes": "Mis Códigos",
+      "hot-today": "Popular hoy"
     },
     "language-picker-title": "Selecciona un lenguaje",
     "language-filter": {
@@ -586,9 +588,9 @@
     "challenge-pie-draw": "Empate",
     "challenge-pie-lost": "Perdiste",
     "challenges-section-title": "DESAFÍOS",
-		"profile_skills_gold_mod": "MODERADOR DE ORO",
-		"profile_skills_platinum_mod": "MODERADOR DE PLATINO",
-		"profile_skills_mod": "MODERADOR",
+    "profile_skills_gold_mod": "MODERADOR DE ORO",
+    "profile_skills_platinum_mod": "MODERADOR DE PLATINO",
+    "profile_skills_mod": "MODERADOR",
     "challenge-daily-performance": "Desempeño Diario"
   },
   "block": {

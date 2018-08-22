@@ -29,7 +29,7 @@ const hasMore = (state = true, action) => {
 	}
 };
 
-export const DEFAULT_CODES_FILTERS = { orderBy: 4, language: '', query: '' };
+export const DEFAULT_CODES_FILTERS = { orderBy: 6, language: '', query: '' };
 
 const filters = (state = DEFAULT_CODES_FILTERS, action) => {
 	switch (action.type) {

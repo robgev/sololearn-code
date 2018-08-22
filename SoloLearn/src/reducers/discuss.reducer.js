@@ -29,7 +29,7 @@ const hasMore = (state = true, action) => {
 	}
 };
 
-export const DEFAULT_DISCUSS_FILTERS = { orderBy: 8, query: '' };
+export const DEFAULT_DISCUSS_FILTERS = { orderBy: 10, query: '' };
 
 const filters = (state = DEFAULT_DISCUSS_FILTERS, action) => {
 	switch (action.type) {

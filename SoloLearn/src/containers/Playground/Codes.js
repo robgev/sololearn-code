@@ -105,7 +105,9 @@ class Codes extends Component {
 										autoWidth={false}
 										onChange={this.handleOrderByFilterChange}
 									>
+										<MenuItem value={6} primaryText={t('code.filter.hot-today')} />
 										<MenuItem value={4} primaryText={t('code.filter.trending')} />
+										<MenuItem value={5} primaryText={t('code.filter.your-network')} />
 										<MenuItem value={2} primaryText={t('code.filter.most-popular')} />
 										<MenuItem value={1} primaryText={t('code.filter.most-recent')} />
 										<MenuItem value={3} primaryText={t('code.filter.my-codes')} />

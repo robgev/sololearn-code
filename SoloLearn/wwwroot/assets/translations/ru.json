@@ -6,8 +6,8 @@
   },
   "common": {
     "cancel-title": "Отменить",
-		"remove-title": "Удалить",
-		"confirm-title": "Подтвердить",
+    "remove-title": "Удалить",
+    "confirm-title": "Подтвердить",
     "ok-title": "OK",
     "delete-title": "Удалить",
     "edit-action-title": "Изменить",
@@ -34,8 +34,8 @@
     "post-action-title": "Написать",
     "copy-text-action-title": "Копировать текст",
     "report-action-title": "Пожаловаться",
-		"deactivate-action-title": "Деактивировать",
-		"report-more-hint": "Пожалуйста, укажите причину",
+    "deactivate-action-title": "Деактивировать",
+    "report-more-hint": "Пожалуйста, укажите причину",
     "comments-format": "КОММЕНТОВ",
     "error": {
       "generic-title": "Ошибка",
@@ -43,7 +43,7 @@
       "try-again-message": "Пожалуйста, попробуйте ещё раз через пару минут."
     },
     "comment-format-one": "1 КОММЕНТ",
-		"input_message_hint": "Напишите Ваше сообщение…",
+    "input_message_hint": "Напишите Ваше сообщение…",
     "comments": "КОММЕНТОВ",
     "saved-message": "Сохранено",
     "save-action-title": "Сохранить",
@@ -69,12 +69,12 @@
     "delete-comment-popup-message": "Действительно хотите удалить этот комментарий?",
     "replies-other": "Ответов",
     "replies-one": "1 Ответ",
-		"lesson_comment_request_removal_title": "Запрос на удаление",
-		"lesson_comment_request_removal_message": "Вы уверены, что хотите отметить данный комментарий для удаления?",
-		"lesson_comment_remove_title": "Удалить комментарий",
-		"lesson_comment_remove_message": "Действительно хотите удалить этот комментарий?",
-		"reply": "Ответить",
-		"add": "Добавить"
+    "lesson_comment_request_removal_title": "Запрос на удаление",
+    "lesson_comment_request_removal_message": "Вы уверены, что хотите отметить данный комментарий для удаления?",
+    "lesson_comment_remove_title": "Удалить комментарий",
+    "lesson_comment_remove_message": "Действительно хотите удалить этот комментарий?",
+    "reply": "Ответить",
+    "add": "Добавить"
   },
   "date": {
     "now-past": "прямо сейчас",
@@ -231,8 +231,8 @@
     "changes-saved-title": "Сохранено",
     "changes-saved-message": "Ваши данные успешно обновлены.",
     "change-avatar-title": "Изменить аватар",
-		"country-section-title": "Местоположение",
-		"user-name": "Имя"
+    "country-section-title": "Местоположение",
+    "user-name": "Имя"
   },
   "country": {
     "title": "Местоположение",
@@ -272,8 +272,8 @@
     "feed-lessons": "Уроки",
     "feed-challenges": "Вызовы",
     "feed-lesson-comments": "Комментарии к урокам",
-		"feed-code-comments": "Комментарии к кодам",
-		"feed-user-posts": "Публикации",
+    "feed-code-comments": "Комментарии к кодам",
+    "feed-user-posts": "Публикации",
     "push-general-section-title": "Общие",
     "push-product-updates": "Обновления продукта",
     "push-profile-updates": "Обновления профиля",
@@ -437,7 +437,8 @@
       "unanswered": "Без ответа",
       "my-questions": "Мои вопросы",
       "my-answers": "Мои ответы",
-      "title": "Сортировать по:"
+      "title": "Сортировать по:",
+      "hot-today": "Новинки"
     },
     "answers": {
       "filter": {
@@ -453,18 +454,18 @@
     "edit-answer-placeholder": "Ваш ответ",
     "answer-other-format": "ОТВЕТОВ",
     "answer-one-format": "ОТВЕТ",
-		"following-title": "Вы подписались на эту тему",
-		"not-following-title": "Вы отписались от этой темы",
-		"answer-accepted": "Отмечен как наилучший ответ",
+    "following-title": "Вы подписались на эту тему",
+    "not-following-title": "Вы отписались от этой темы",
+    "answer-accepted": "Отмечен как наилучший ответ",
     "date-by-name-format": "",
     "invalid-thread": "Вопрос не найден",
     "hide-post-popup-title": "Скрыть пост",
     "hide-post-popup-message": "Вы уверены что хотите скрыть этот пост?",
     "edited-by-format": "Отредактировано:  ()",
-		"forum_remove_prompt_title": "Удалить",
-		"forum_remove_prompt_text": "Вы уверены что хотите удалить этот пост?",
-		"forum_request_removal_prompt_title": "Запрос на удаление",
-		"forum_request_removal_prompt_text": "Вы уверены, что хотите отметить данную публикацию для удаления?"
+    "forum_remove_prompt_title": "Удалить",
+    "forum_remove_prompt_text": "Вы уверены что хотите удалить этот пост?",
+    "forum_request_removal_prompt_title": "Запрос на удаление",
+    "forum_request_removal_prompt_text": "Вы уверены, что хотите отметить данную публикацию для удаления?"
   },
   "report": {
     "report-submitted-title": "Жалоба подтверждена",
@@ -480,18 +481,18 @@
     "challenge-report-option-4": "Не по теме",
     "challenge-report-option-5": "Другое"
   },
-	"deactivate": {
-		"deactivate-popup-title": "Выберите причину деактивации.",
-		"deactivate-option-1": "Ненормативная лексика",
-		"deactivate-option-2": "Спам в публикациях, комментариях или ответах ",
-		"deactivate-option-3": "Поддельный аккаунт",
-		"deactivate-option-4": "Подозрительная деятельность в разделе «Игра»",
-		"deactivate-option-5": "Другое",
-		"deactivate_successful_title": "Заявка отправлена",
-		"deactivate_successful_message": "Спасибо за ваш вклад в безопасность SoloLearn.",
-		"deactivate_instant_successful_title": "Профиль деактивирован",
-		"deactivate_instant_successful_message": "Спасибо за ваш вклад в безопасность SoloLearn."
-	},
+  "deactivate": {
+    "deactivate-popup-title": "Выберите причину деактивации.",
+    "deactivate-option-1": "Ненормативная лексика",
+    "deactivate-option-2": "Спам в публикациях, комментариях или ответах ",
+    "deactivate-option-3": "Поддельный аккаунт",
+    "deactivate-option-4": "Подозрительная деятельность в разделе «Игра»",
+    "deactivate-option-5": "Другое",
+    "deactivate_successful_title": "Заявка отправлена",
+    "deactivate_successful_message": "Спасибо за ваш вклад в безопасность SoloLearn.",
+    "deactivate_instant_successful_title": "Профиль деактивирован",
+    "deactivate_instant_successful_message": "Спасибо за ваш вклад в безопасность SoloLearn."
+  },
   "code": {
     "title": "Коды",
     "filter": {
@@ -500,7 +501,8 @@
       "your-network": "Ваша сеть",
       "most-recent": "Последние",
       "most-popular": "Популярные",
-      "my-codes": "Мои коды"
+      "my-codes": "Мои коды",
+      "hot-today": "Новинки"
     },
     "language-picker-title": "Выберите язык",
     "language-filter": {

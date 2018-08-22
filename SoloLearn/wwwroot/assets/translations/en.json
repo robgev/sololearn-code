@@ -436,7 +436,8 @@
 			"unanswered": "Unanswered",
 			"my-questions": "My Questions",
 			"my-answers": "My Answers",
-			"title": "Sort Posts by:"
+			"title": "Sort Posts by:",
+			"hot-today": "Hot Today"
 		},
 		"answers": {
 			"filter": {
@@ -499,7 +500,8 @@
 			"your-network": "Your Network",
 			"most-recent": "Most Recent",
 			"most-popular": "Most Popular",
-			"my-codes": "My Codes"
+			"my-codes": "My Codes",
+			"hot-today": "Hot Today"
 		},
 		"language-picker-title": "Choose a language",
 		"language-filter": {
