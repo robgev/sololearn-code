@@ -18,11 +18,14 @@ const SidebarCollection = ({
 			width: '100%',
 			paddingBottom: 0,
 			boxSizing: 'border-box',
+			borderBottom: '1px solid transparent',
 		}}
 		className="sidebar-collection-card"
 	>
 		<div style={{ color: 'rgba(0, 0, 0, .87)' }} className="meta-info">
-			<p>{ title }</p>
+			<div className="sidebar-title">
+				<p className="title" style={{ paddingBottom: 0 }}>{ title }</p>
+			</div>
 			{ !noViewMore &&
 				<Link className="hoverable" to={bookmarks ? 'learn/bookmarks' : `/learn/more/author/${userID}`} >
 					{t('common.loadMore')}

@@ -105,8 +105,8 @@ export const getBookmarkLessons = pagingData => async (dispatch) => {
 			await Service.request('/GetBookmarkedItems', pagingData);
 		dispatch({
 			type: pagingData.index ?
-				types.APPEND_COLLECTION_ITEMS :
-				types.SET_COLLECTION_ITEMS,
+				types.APPEND_BOOKMARK_COLLECTION_ITEMS :
+				types.SET_BOOKMARK_COLLECTION_ITEMS,
 			payload: lessons,
 		});
 		return lessons.length;

@@ -16,7 +16,7 @@ const Login = Loadable({ loader: () => import('containers/Login') });
 
 // Slay
 const SlayHome = Loadable({ loader: () => import('containers/Learn/SlayHome') });
-const SlaySearch = Loadable({ loader: () => import('containers/Learn/SlayHome') });
+const SlaySearch = Loadable({ loader: () => import('containers/Learn/SlaySearch') });
 const SlayLesson = Loadable({ loader: () => import('containers/Learn/SlayLesson') });
 const SlayDetailed = Loadable({ loader: () => import('containers/Learn/SlayDetailed') });
 const SlayBookmarks = Loadable({ loader: () => import('containers/Learn/SlayBookmarks') });

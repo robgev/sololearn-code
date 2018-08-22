@@ -7,6 +7,8 @@ import {
 	APPEND_LESSONS_BY_USER,
 	APPEND_COLLECTION_ITEMS,
 	SET_CURRENT_LESSON_COLLECTION,
+	SET_BOOKMARK_COLLECTION_ITEMS,
+	APPEND_BOOKMARK_COLLECTION_ITEMS,
 } from 'constants/ActionTypes';
 import differenceBy from 'lodash/differenceBy';
 import { combineReducers } from 'redux';
@@ -53,9 +55,9 @@ const filteredCollectionItems = (state = [], action) => {
 
 const bookmarks = (state = [], action) => {
 	switch (action.type) {
-	case SET_COLLECTION_ITEMS:
+	case SET_BOOKMARK_COLLECTION_ITEMS:
 		return action.payload;
-	case APPEND_COLLECTION_ITEMS:
+	case APPEND_BOOKMARK_COLLECTION_ITEMS:
 		return safeAdd(state, action.payload);
 	case RESET_LOCALE_DATA:
 		return [];

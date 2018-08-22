@@ -27,7 +27,7 @@ const CourseBox = ({
 }) => (
 	<div className="course-box-container">
 		{title &&
-				<div className="meta-info">
+		<div className="meta-info">
 					<p>{title}</p>
 				</div>
 		}
