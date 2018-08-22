@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import { sidebarQuestionsSelector } from 'reducers/discuss.reducer';
-import Divider from 'material-ui/Divider';
+import QAIcon from 'material-ui/svg-icons/action/question-answer';
+import { grey600 } from 'material-ui/styles/colors';
 import 'styles/Discuss/DiscussSidebar.scss';
 
 const mapStateToProps = state => ({
@@ -15,17 +16,19 @@ const DiscussSidebar = ({ items, t }) => (
 		<div className="sidebar-title">
 			<p className="title">{t('discuss.filter.hot-today')}</p>
 		</div>
-		{items.map((question, idx) => (
+		{items.map(question => (
 			<Fragment key={question.id}>
 				<p style={{ padding: '15px 0' }}>
 					<Link
 						to={`/discuss/${question.id}`}
-						style={{ color: '#636060', fontSize: 15 }}
+						style={{
+							display: 'flex', alignItems: 'center', color: grey600, fontSize: 15,
+						}}
 					>
+						<QAIcon style={{ flexShrink: 0, paddingRight: 5 }} color={grey600} />
 						{question.title}
 					</Link>
 				</p>
-				{idx !== items.length - 1 && <Divider />}
 			</Fragment>
 		))}
 	</div>
