@@ -8,7 +8,7 @@ import { numberFormatter } from 'utils';
 import 'styles/Feed/FeedSidebar.scss';
 
 const mapStateToProps = ({ discoverSuggestions }) => ({
-	suggestions: discoverSuggestions,
+	suggestions: discoverSuggestions.slice(0, 10),
 });
 
 const FeedSuggestions = ({ t, suggestions, followUser }) => (

@@ -9,7 +9,7 @@ import CollectionCard from 'components/CollectionCard';
 import SidebarCollectionCard from 'components/SidebarCollectionCard';
 
 const mapStateToProps = state => ({
-	bookmarks: state.slay.bookmarks,
+	bookmarks: state.slay.bookmarks.slice(0, 10),
 	collections: state.slay.slayCollections,
 });
 
