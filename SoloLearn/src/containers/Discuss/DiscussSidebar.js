@@ -1,31 +1,34 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
+import { translate } from 'react-i18next';
+import { sidebarQuestionsSelector } from 'reducers/discuss.reducer';
+import Divider from 'material-ui/Divider';
 import 'styles/Discuss/DiscussSidebar.scss';
 
-const DiscussSidebar = () => (
-	<div
-		style={{
-			padding: '15px 20px',
-			width: '100%',
-			boxSizing: 'border-box',
-		}}
-	>
+const mapStateToProps = state => ({
+	items: sidebarQuestionsSelector(state),
+});
+
+const DiscussSidebar = ({ items, t }) => (
+	<div style={{ padding: '15px 15px 0' }}>
 		<div className="sidebar-title">
-			<p className="title">Guidelines</p>
+			<p className="title">{t('discuss.filter.hot-today')}</p>
 		</div>
-		<p className="discuss-guidelines">- Post only programming-related QUESTIONS and ANSWERS;</p>
-
-		<p className="discuss-guidelines">- SEARCH for similar QUESTIONS or ANSWERS before posting;</p>
-
-		<p className="discuss-guidelines">- Include relevant TAGS;</p>
-
-		<p className="discuss-guidelines">- Follow community RULES: https://www.sololearn.com/Content-Creation-Guidelines/</p>
-
-		<p className="discuss-guidelines">
-			DO NOT
-			- Post spam/advertisement;
-			- Use inappropriate language.
-		</p>
+		{items.map((question, idx) => (
+			<Fragment key={question.id}>
+				<p style={{ padding: '15px 0' }}>
+					<Link
+						to={`/discuss/${question.id}`}
+						style={{ color: '#636060', fontSize: 15 }}
+					>
+						{question.title}
+					</Link>
+				</p>
+				{idx !== items.length - 1 && <Divider />}
+			</Fragment>
+		))}
 	</div>
 );
 
-export default DiscussSidebar;
+export default connect(mapStateToProps)(translate()(DiscussSidebar));
