@@ -40,13 +40,17 @@ class QuestionEditor extends Component {
 
 	static Chip = ({ value, handleRequestDelete, defaultStyle }, key) => (
 		<Chip style={defaultStyle} key={key} onRequestDelete={handleRequestDelete}>{value}</Chip>
-	)
+	);
+
+	static isEndingInNewline = str => str.match(/\n$/);
 
 	// Detect title change
 	onTitleChange = (_, title) => {
-		this.setState({ title });
-		if (title.length > 0 && this.state.titleErrorText !== '') {
-			this.setState({ titleErrorText: '' });
+		if (!QuestionEditor.isEndingInNewline(title)) {
+			this.setState({ title });
+			if (title.length > 0 && this.state.titleErrorText !== '') {
+				this.setState({ titleErrorText: '' });
+			}
 		}
 	}
 
