@@ -12,7 +12,7 @@ const mapStateToProps = state => ({
 });
 
 const PlaygroundSidebar = ({ t, sidebarItems, userID }) => (
-	<div className="feed-sidebar-suggestions">
+	<div style={{ padding: 15 }} >
 		<div className="sidebar-title">
 			<p className="title">{t('code.filter.my-codes')}</p>
 		</div>
