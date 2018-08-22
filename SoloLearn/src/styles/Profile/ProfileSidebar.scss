@@ -1,7 +1,10 @@
-.profile-sidebar-container {
-	display: flex;
-	justify-content: center;
-	.coming-soon {
-		font-size: 20px;
+.profile-sidebar-root {
+	padding: 15px;
+	.profile-sidebar-container {
+		display: flex;
+		justify-content: center;
+		.coming-soon {
+			font-size: 20px;
+		}
 	}
 }

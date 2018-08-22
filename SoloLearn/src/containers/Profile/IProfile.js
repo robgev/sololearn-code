@@ -13,6 +13,7 @@ class IProfile {
 		this.getData();
 		this.getQuestions();
 		this.getCodes();
+		this.getFeed();
 	}
 
 	@observable data = {};

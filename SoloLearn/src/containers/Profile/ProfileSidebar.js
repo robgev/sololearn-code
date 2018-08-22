@@ -2,7 +2,7 @@ import React from 'react';
 import 'styles/Profile/ProfileSidebar.scss';
 
 const ProfileSidebar = () => (
-	<div className="feed-sidebar-suggestions">
+	<div className="profile-sidebar-root">
 		<div className="sidebar-title">
 			<p className="title">Highlights</p>
 		</div>

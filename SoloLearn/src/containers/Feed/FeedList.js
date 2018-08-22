@@ -69,15 +69,19 @@ class FeedList extends Component {
 											<div>
 												<div>
 													<div className="feed-pins">
-														{feedPins.map(pin => (
-															<FeedPin
-																pin={pin}
-																key={`pin${pin.id}`}
-																openCoursePopup={this.toggleCoursePopup}
-															/>
-														))}
+														{feedPins !== undefined &&
+														<React.Fragment>
+															{feedPins.map(pin => (
+																<FeedPin
+																	pin={pin}
+																	key={`pin${pin.id}`}
+																	openCoursePopup={this.toggleCoursePopup}
+																/>
+															))}
+															<p className="sub-title" style={{ paddingTop: 5 }} key="separator">{t('feed.most-recent-title')}</p>
+														</React.Fragment>
+														}
 													</div>
-													<p className="sub-title" style={{ paddingTop: 5 }} key="separator">{t('feed.most-recent-title')}</p>
 												</div>
 
 												<InfiniteScroll
