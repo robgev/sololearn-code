@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+import Chip from 'material-ui/Chip';
 import ChipInput from 'material-ui-chip-input';
 
 // i18n
@@ -36,6 +37,10 @@ class QuestionEditor extends Component {
 			replyLength: 0,
 		};
 	}
+
+	static Chip = ({ value, handleRequestDelete, defaultStyle }, key) => (
+		<Chip style={defaultStyle} key={key} onRequestDelete={handleRequestDelete}>{value}</Chip>
+	)
 
 	// Detect title change
 	onTitleChange = (_, title) => {
@@ -87,9 +92,12 @@ class QuestionEditor extends Component {
 	}
 
 	// Customly render tag
-	renderChip = ({ value }, key) => (
-		<div key={key} style={styles.tag}>{value}</div>
-	)
+	handleChipBlur = (e) => {
+		const { value } = e.currentTarget;
+		if (value !== '') {
+			this.setState(s => ({ tags: [ ...s.tags, value ] }));
+		}
+	}
 
 	/* Mention input functions */
 	openReplyBox = () => {
@@ -100,12 +108,6 @@ class QuestionEditor extends Component {
 	}
 	handleBlur = () => {
 		if (this.state.replyLength <= 1) { this.closeReplyBox(); }
-	}
-	handleChipBlur = (e) => {
-		const { value } = e.currentTarget;
-		if (value !== '') {
-			this.setState(s => ({ tags: [ ...s.tags, value ] }));
-		}
 	}
 	onLengthChange = (replyLength) => {
 		if (this.mentionInput) {
@@ -162,7 +164,7 @@ class QuestionEditor extends Component {
 							style={styles.textField}
 							onBlur={this.handleChipBlur}
 							newChipKeyCodes={[ 13, 32 ]}
-							chipRenderer={this.renderChip}
+							chipRenderer={QuestionEditor.Chip}
 							dataSource={this.state.suggestions}
 							errorText={this.state.tagsErrorText}
 							onRequestAdd={this.addTag}
