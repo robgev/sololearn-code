@@ -8,9 +8,12 @@ import {
 	getCodes, emptyCodes, setCodesFilters, getSidebarCodes,
 } from 'actions/playground';
 import {
-	codesSelector, codesFiltersSelector, codesHasMoreSelector,
+	DEFAULT_CODES_FILTERS,
+	codesSelector,
+	codesFiltersSelector,
+	codesHasMoreSelector,
 } from 'reducers/codes.reducer';
-import { showError, objectDifference } from 'utils';
+import { showError, queryDifference, isObjectEqual } from 'utils';
 
 import AddCodeButton from 'components/AddCodeButton';
 import Layout from 'components/Layouts/GeneralLayout';
@@ -36,14 +39,18 @@ class Codes extends Component {
 		document.title = 'Sololearn | Code Playground';
 		const { location, filters } = this.props;
 		const query = { ...filters, ...location.query };
-		const changed = objectDifference({ language: '', orderBy: 4, query: '' }, query);
+		const changed = queryDifference(DEFAULT_CODES_FILTERS, query);
 		browserHistory.replace({ ...location, query: changed });
 		this.props.getSidebarCodes();
 	}
 	componentWillUpdate(nextProps) {
 		// Source of truth is the route
-		const { query } = nextProps.location;
-		this.props.setCodesFilters(query);
+		const { location } = nextProps;
+		if (!isObjectEqual(location.query, this.props.location.query)) {
+			const changed = queryDifference(DEFAULT_CODES_FILTERS, location.query);
+			browserHistory.replace({ ...location, query: changed });
+			this.props.setCodesFilters(location.query);
+		}
 	}
 	handleLanguageFilterChange = (_, __, language) => {
 		const { location } = this.props;

@@ -2,11 +2,12 @@
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
-import { showError, objectDifference } from 'utils';
+import { showError, queryDifference, isObjectEqual } from 'utils';
 import {
 	getPosts, emptyPosts, setDiscussFilters,
 } from 'actions/discuss';
 import {
+	DEFAULT_DISCUSS_FILTERS,
 	discussPostsSelector,
 	discussFiltersSelector,
 	discussHasMoreSelector,
@@ -37,13 +38,17 @@ class Questions extends Component {
 		document.title = 'Sololearn | Discuss';
 		const { location, filters } = this.props;
 		const query = { ...filters, ...location.query };
-		const changed = objectDifference({ orderBy: 8, query: '' }, query);
+		const changed = queryDifference(DEFAULT_DISCUSS_FILTERS, query);
 		browserHistory.replace({ ...location, query: changed });
 	}
 	componentWillUpdate(nextProps) {
 		// Source of truth is the route
-		const { query } = nextProps.location;
-		this.props.setDiscussFilters(query);
+		const { location } = nextProps;
+		if (!isObjectEqual(location.query, this.props.location.query)) {
+			const changed = queryDifference(DEFAULT_DISCUSS_FILTERS, location.query);
+			browserHistory.replace({ ...location, query: changed });
+			this.props.setDiscussFilters(location.query);
+		}
 	}
 	getPosts = () => {
 		this.props.getPosts()

@@ -29,7 +29,9 @@ const hasMore = (state = true, action) => {
 	}
 };
 
-const filters = (state = { orderBy: 4, language: '', query: '' }, action) => {
+export const DEFAULT_CODES_FILTERS = { orderBy: 4, language: '', query: '' };
+
+const filters = (state = DEFAULT_CODES_FILTERS, action) => {
 	switch (action.type) {
 	case SET_CODES_FILTERS:
 		return { ...state, ...action.payload };
