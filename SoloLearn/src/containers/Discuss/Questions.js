@@ -4,7 +4,7 @@ import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 import { showError, queryDifference, isObjectEqual } from 'utils';
 import {
-	getPosts, emptyPosts, setDiscussFilters,
+	getPosts, emptyPosts, setDiscussFilters, getSidebarQuestions,
 } from 'actions/discuss';
 import {
 	DEFAULT_DISCUSS_FILTERS,
@@ -28,7 +28,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-	getPosts, emptyPosts, setDiscussFilters,
+	getPosts, emptyPosts, setDiscussFilters, getSidebarQuestions,
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -40,6 +40,7 @@ class Questions extends Component {
 		const query = { ...filters, ...location.query };
 		const changed = queryDifference(DEFAULT_DISCUSS_FILTERS, query);
 		browserHistory.replace({ ...location, query: changed });
+		this.props.getSidebarQuestions();
 	}
 	componentWillUpdate(nextProps) {
 		// Source of truth is the route
@@ -95,7 +96,6 @@ class Questions extends Component {
 									onChange={this.handleOrderByFilterChange}
 									labelStyle={{ height: 20, lineHeight: '20px' }}
 								>
-									<MenuItem value={10} primaryText={t('discuss.filter.hot-today')} />
 									<MenuItem value={8} primaryText={t('discuss.filter.trending')} />
 									<MenuItem value={9} primaryText={t('discuss.filter.your-network')} />
 									<MenuItem value={1} primaryText={t('discuss.filter.most-recent')} />

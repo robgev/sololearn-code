@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { createSelector } from 'reselect';
 import uniqBy from 'lodash/uniqBy';
 import {
-	SET_POSTS, EMPTY_POSTS, REMOVE_POST, VOTE_POST,
+	SET_POSTS, EMPTY_POSTS, REMOVE_POST, VOTE_POST, SET_SIDEBAR_QUESTIONS,
 	MARK_DISCUSS_LIST_FINISHED, REQUEST_POSTS, SET_DISCUSS_FILTERS,
 } from 'constants/ActionTypes';
 
@@ -29,7 +29,7 @@ const hasMore = (state = true, action) => {
 	}
 };
 
-export const DEFAULT_DISCUSS_FILTERS = { orderBy: 10, query: '' };
+export const DEFAULT_DISCUSS_FILTERS = { orderBy: 8, query: '' };
 
 const filters = (state = DEFAULT_DISCUSS_FILTERS, action) => {
 	switch (action.type) {
@@ -66,11 +66,23 @@ const entities = (state = [], action) => {
 	}
 };
 
+const sidebarQuestions = (state = [], action) => {
+	switch (action.type) {
+	case SET_SIDEBAR_QUESTIONS:
+		return action.payload;
+	case REMOVE_POST:
+		return state.filter(q => q.id !== action.payload);
+	default:
+		return state;
+	}
+};
+
 export default combineReducers({
 	entities,
 	filters,
 	hasMore,
 	isFetching,
+	sidebarQuestions,
 });
 
 const discussReducerSelector = state => state.discuss;
@@ -78,6 +90,11 @@ const discussReducerSelector = state => state.discuss;
 export const discussPostsSelector = createSelector(
 	discussReducerSelector,
 	discuss => discuss.entities,
+);
+
+export const sidebarQuestionsSelector = createSelector(
+	discussReducerSelector,
+	discuss => discuss.sidebarQuestions,
 );
 
 export const discussFiltersSelector = createSelector(

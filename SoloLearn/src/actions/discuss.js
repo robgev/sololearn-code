@@ -5,6 +5,7 @@ import {
 	discussPostsSelector,
 	discussFiltersSelector,
 	isDiscussFetchingSelector,
+	sidebarQuestionsSelector,
 } from 'reducers/discuss.reducer';
 
 // Utils
@@ -65,6 +66,13 @@ export const setDiscussFilters = filters => (dispatch, getState) => {
 		});
 		dispatch(emptyPosts());
 	}
+};
+
+export const getSidebarQuestions = () => async (dispatch) => {
+	const { posts } = await Service.request('Discussion/Search', {
+		index: 0, query: '', count: 10, orderBy: 10,
+	});
+	dispatch({ type: types.SET_SIDEBAR_QUESTIONS, payload: posts });
 };
 
 // Single post actions
