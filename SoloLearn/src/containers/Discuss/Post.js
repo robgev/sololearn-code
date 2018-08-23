@@ -10,6 +10,7 @@ import Radium from 'radium';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
+import Dialog from 'material-ui/Dialog';
 
 // Redux modules
 import {
@@ -190,18 +191,14 @@ class Post extends Component {
 	}
 
 	deleteActions = [
-		{
-			componentType: FlatButton,
-			label: 'popupCancel',
-			primary: false,
-			actionCallback: this.closeDeletePopup,
-		},
-		{
-			componentType: FlatButton,
-			label: 'popupDelete',
-			primary: false,
-			actionCallback: this.remove,
-		},
+		<FlatButton
+			onClick={this.closeDeletePopup}
+			label={this.props.t('common.cancel-title')}
+		/>,
+		<FlatButton
+			onClick={this.remove}
+			label={this.props.t('common.delete-title')}
+		/>,
 	];
 
 	render() {
@@ -255,7 +252,12 @@ class Post extends Component {
 						/>
 					}
 				</div>
-
+				<Dialog
+					open={this.state.deletePopupOpened}
+					actions={this.deleteActions}
+				>
+					{t('discuss.delete-question-message')}
+				</Dialog>
 				{
 					this.state.deletePopupOpened &&
 					Popup.getPopup(
