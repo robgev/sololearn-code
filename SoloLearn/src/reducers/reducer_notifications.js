@@ -2,13 +2,13 @@ import {
 	MARK_READ,
 	MARK_ALL_READ,
 	RESET_LOCALE_DATA,
-	GET_NOTIFICATIONS,
+	SET_NOTIFICATIONS,
 	EMPTY_NOTIFICATIONS,
 } from 'constants/ActionTypes';
 
 export default (state = [], action) => {
 	switch (action.type) {
-	case GET_NOTIFICATIONS:
+	case SET_NOTIFICATIONS:
 		return [ ...state, ...action.payload ];
 	case MARK_ALL_READ:
 		return state.map(notification => ({ ...notification, isClicked: true }));

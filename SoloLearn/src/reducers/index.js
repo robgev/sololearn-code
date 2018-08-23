@@ -25,8 +25,7 @@ import discussPost from './reducer_post';
 import discuss from './discuss.reducer';
 
 // Notifications
-import notifications from './reducer_notifications';
-import notificationsCount from './reducer_notifications_count';
+import notifications from './notifications.reducer';
 
 // Feed
 import feed from './feed.reducer';
@@ -71,7 +70,6 @@ const reducers = combineReducers({
 	discussPost,
 	// Notifications
 	notifications,
-	notificationsCount,
 	// Feed
 	feed,
 	feedPins,

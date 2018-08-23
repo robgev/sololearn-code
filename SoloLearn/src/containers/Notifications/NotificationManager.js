@@ -10,15 +10,20 @@ import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 // Redux modules
 import {
 	setNotificationCount,
-	getNotificationCountInternal as getNotificationCount,
-} from 'actions/profile';
+	getNotificationCount,
+} from 'actions/notifications';
+import {
+	notificationsCountSelector,
+} from 'reducers/notifications.reducer';
 
 import 'styles/Notifications/index.scss';
 
 // Additional components
 import NotificationsPopup from './NotificationsPopup';
 
-const mapStateToProps = ({ notificationsCount }) => ({ notificationsCount });
+const mapStateToProps = state => ({
+	count: notificationsCountSelector(state),
+});
 
 const mapDispatchToProps = { getNotificationCount, setNotificationCount };
 
@@ -27,7 +32,13 @@ class NotificationManager extends PureComponent {
 	state = { isOpened: false };
 
 	componentDidMount() {
-		this.props.getNotificationCount();
+		this.interval = setInterval(() => {
+			this.props.getNotificationCount();
+		}, 60000);
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.interval);
 	}
 
 	toggleNotificationsOpen = () => {
@@ -37,7 +48,7 @@ class NotificationManager extends PureComponent {
 
 	render() {
 		const { isOpened } = this.state;
-		const { notificationsCount } = this.props;
+		const { count } = this.props;
 		return (
 			<div className="notifications-button-container">
 				<Badge
@@ -54,9 +65,9 @@ class NotificationManager extends PureComponent {
 						borderRadius: 8,
 						cursor: 'pointer',
 						backgroundColor: '#F44336',
-						visibility: notificationsCount <= 0 ? 'hidden' : 'initial',
+						visibility: count <= 0 ? 'hidden' : 'initial',
 					}}
-					badgeContent={notificationsCount}
+					badgeContent={count}
 					onClick={this.toggleNotificationsOpen}
 				>
 					<IconButton
@@ -66,7 +77,7 @@ class NotificationManager extends PureComponent {
 						<NotificationsIcon color="#fff" />
 					</IconButton>
 				</Badge>
-				{ isOpened &&
+				{isOpened &&
 					<NotificationsPopup
 						isOpened={isOpened}
 						toggleNotificationsOpen={this.toggleNotificationsOpen}

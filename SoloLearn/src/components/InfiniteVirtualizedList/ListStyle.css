@@ -1,8 +1,0 @@
-@keyframes fadeOut {
-	from { background-color: yellow };
-	to { background-color: white };
-}
-
-.fadeOut {
-	animation: 2s fadeOut;
-}
