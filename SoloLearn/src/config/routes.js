@@ -6,6 +6,8 @@ import { Loadable, redirector } from 'utils';
 // Layouts
 import MainLayout from 'components/Layouts/MainLayout';
 
+import Feed from 'containers/Feed/Feed';
+
 import Modules from 'containers/Learn/Modules';
 import SlayLessonsPage from 'containers/Learn/SlayLessonsPage';
 import Lessons from 'containers/Learn/Lessons';
@@ -45,9 +47,6 @@ const Notifications = Loadable({ loader: () => import('containers/Notifications/
 
 // Settings
 const Settings = Loadable({ loader: () => import('containers/Settings') });
-
-// Feed
-const Feed = Loadable({ loader: () => import('containers/Feed/Feed') });
 
 // Certificate
 const Certificate = Loadable({ loader: () => import('containers/Certificate') });
