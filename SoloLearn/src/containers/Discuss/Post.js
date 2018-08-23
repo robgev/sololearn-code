@@ -248,6 +248,7 @@ class Post extends Component {
 							loadReplies={this.getReplies}
 							loadPreviousReplies={this.getPreviousReplies}
 							orderBy={this.state.ordering}
+							selectedID={this.props.params.replyId || null}
 							ref={(replies) => { this._replies = replies; }}
 						/>
 					}
@@ -258,13 +259,6 @@ class Post extends Component {
 				>
 					{t('discuss.delete-question-message')}
 				</Dialog>
-				{
-					this.state.deletePopupOpened &&
-					Popup.getPopup(
-						Popup.generatePopupActions(this.deleteActions),
-						this.state.deletePopupOpened, this.closeDeletePopup, [ { key: 'postDeleteConfirmText', replacemant: '' } ],
-					)
-				}
 			</Layout>
 		);
 	}

@@ -34,6 +34,14 @@ class Replies extends Component {
 			canLoadMore: true,
 		};
 	}
+
+	componentDidUpdate(prevProps) {
+		const { selectedID } = this.props;
+		if (prevProps.replies.length === 0 && selectedID !== null) {
+			this.scrollToId(selectedID);
+		}
+	}
+
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.replies.length > 0 &&
 			nextProps.replies[0].index === 0 &&
@@ -57,7 +65,9 @@ class Replies extends Component {
 		}
 	}
 	scrollToId = (id) => {
-		this.replyRefs[id].getWrappedInstance().scrollIntoView();
+		if (this.replyRefs[id]) {
+			this.replyRefs[id].getWrappedInstance().scrollIntoView();
+		}
 	}
 
 	render() {
