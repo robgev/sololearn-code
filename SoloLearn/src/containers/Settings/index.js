@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactGA from 'react-ga';
 import { Link } from 'react-router';
+import Paper from 'material-ui/Paper';
 import NotFound from 'components/NotFound';
 import Layout from 'components/Layouts/GeneralLayout';
 
@@ -31,18 +32,20 @@ const Settings = ({ t, params: { settingID = 'profile' } }) => {
 	const SettingsComponent = SettingsMapping[settingID];
 	return SettingsComponent
 		? (
-			<Layout className="settings-container">
-				<div className="settings-sections">
-					<Link className="hoverable" to="/settings/profile">{t('settings.edit-profile')}</Link>
-					<Link className="hoverable" to="/settings/password">{t('settings.change-password')}</Link>
-					<Link className="hoverable" to="/settings/blocking">{t('settings.blocked-accounts')}</Link>
-					{/* <Link className="hoverable" to="/settings/weapons">{t('settings.manage-weapons')}</Link> */}
-					<Link className="hoverable" to="/settings/content">{t('settings.activity-feed')}</Link>
-					<Link className="hoverable" to="/settings/localization">{t('settings.language')}</Link>
-				</div>
-				<div className="settings-main">
-					<SettingsComponent />
-				</div>
+			<Layout noSidebar>
+				<Paper className="settings-container">
+					<div className="settings-sections">
+						<Link className="hoverable" to="/settings/profile">{t('settings.edit-profile')}</Link>
+						<Link className="hoverable" to="/settings/password">{t('settings.change-password')}</Link>
+						<Link className="hoverable" to="/settings/blocking">{t('settings.blocked-accounts')}</Link>
+						{/* <Link className="hoverable" to="/settings/weapons">{t('settings.manage-weapons')}</Link> */}
+						<Link className="hoverable" to="/settings/content">{t('settings.activity-feed')}</Link>
+						<Link className="hoverable" to="/settings/localization">{t('settings.language')}</Link>
+					</div>
+					<div className="settings-main">
+						<SettingsComponent />
+					</div>
+				</Paper>
 			</Layout>
 		)
 		: <NotFound />;
