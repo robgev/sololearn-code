@@ -10,7 +10,6 @@ const AddQuestionButton = () => (
 		top: 0,
 		bottom: 0,
 		right: 20,
-		zIndex: 1,
 	}}
 	>
 		<Link style={{ textDecoration: 'none' }} to="/discuss/new">
@@ -18,6 +17,7 @@ const AddQuestionButton = () => (
 				style={{
 					position: 'fixed',
 					bottom: 25,
+					zIndex: 1,
 				}}
 				zDepth={3}
 				secondary

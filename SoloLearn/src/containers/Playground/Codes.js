@@ -98,7 +98,7 @@ class Codes extends Component {
 										<MenuItem value="web" primaryText="Web" />
 									</DropDownMenu>
 									<DropDownMenu
-										style={{ height: 20, zIndex: 2 }}
+										style={{ height: 20, zIndex: 1 }}
 										iconStyle={{ height: 5, padding: 0 }}
 										labelStyle={{ height: 20, lineHeight: '20px' }}
 										className="mini-drop-down"

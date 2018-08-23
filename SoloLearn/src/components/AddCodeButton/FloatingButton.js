@@ -9,7 +9,6 @@ const FloatingButton = ({ onClick }) => (
 		top: 0,
 		bottom: 0,
 		right: 20,
-		zIndex: 1,
 	}}
 	>
 		<FloatingActionButton
@@ -18,6 +17,7 @@ const FloatingButton = ({ onClick }) => (
 			style={{
 				position: 'fixed',
 				bottom: 25,
+				zIndex: 1,
 			}}
 			onClick={onClick}
 		>
