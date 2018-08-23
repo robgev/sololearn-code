@@ -30,7 +30,7 @@ import PlaygroundTabs from './PlaygroundTabs';
 import Toolbar from './Toolbar';
 import Comments from '../Comments/CommentsBase';
 import OutputWindow from './OutputWindow';
-import BottomToolbar from './BottomToolbar';
+import TopToolbar from './TopToolbar';
 
 const styles = {
 	playground: {
@@ -663,7 +663,7 @@ ${succeedingSubstr}
 		const {
 			t,
 			inline,
-			withBottomToolbar,
+			withTopToolbar,
 		} = this.props;
 		console.log(this.props.params);
 
@@ -683,24 +683,23 @@ ${succeedingSubstr}
 				<LoadingOverlay /> :
 
 				<Layout
-					noSidebar={fullScreen || inline}
+					noSidebar
 					style={{
 						...((fullScreen || inline) ? { width: '100%', paddingRight: 0 } : {}),
 					}}
 					rootStyle={{
 						...((fullScreen || inline) ? { paddingTop: 0 } : {}),
 					}}
-					sidebarContent={
-						!(withBottomToolbar && shouldShowToolbar) ? null : (
-							<BottomToolbar
-								voteCode={this.voteCode}
-								codeData={latestSavedCodeData}
-								openComments={this.openComments}
-							/>
-						)
-					}
 				>
 					<div id="playground-container" style={styles.playgroundContainer}>
+						{
+							!(withTopToolbar && shouldShowToolbar) ? null : (
+								<TopToolbar
+									voteCode={this.voteCode}
+									codeData={latestSavedCodeData}
+									openComments={this.openComments}
+								/>
+							)}
 						<Paper id="playground" style={styles.playground.base}>
 							<div>
 								<PlaygroundTabs
@@ -767,7 +766,7 @@ ${succeedingSubstr}
 									handleLanguageChange={this.handleLanguageChange}
 								/>
 							</div>
-							{(withBottomToolbar && shouldShowToolbar && !fullScreen) &&
+							{(withTopToolbar && shouldShowToolbar && !fullScreen) &&
 								<Comments
 									id={id}
 									type={1}

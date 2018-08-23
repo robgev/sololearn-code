@@ -4,6 +4,7 @@ import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 import Service from 'api/service';
 import Toggle from 'material-ui/Toggle';
+import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import { red500 } from 'material-ui/styles/colors';
@@ -15,7 +16,7 @@ import UserTooltip from 'components/UserTooltip';
 import { determineAccessLevel } from 'utils';
 import { removeCode } from 'actions/playground';
 
-import 'styles/Playground/bottomToolbar.scss';
+import 'styles/Playground/topToolbar.scss';
 
 const mapStateToProps = state => ({
 	userId: state.userProfile.id,
@@ -28,7 +29,7 @@ const mapDispatchToProps = {
 
 @translate()
 @connect(mapStateToProps, mapDispatchToProps)
-class BottomToolbar extends PureComponent {
+class TopToolbar extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -75,7 +76,7 @@ class BottomToolbar extends PureComponent {
 			avatarUrl,
 		} = codeData;
 		return (
-			<div className="bottom-toolbar">
+			<Paper className="top-toolbar">
 				<div className="toolbar-left">
 					<div className="user-data">
 						<UserTooltip userData={codeData}>
@@ -156,9 +157,9 @@ class BottomToolbar extends PureComponent {
 					open={this.state.isDeleteModalOpen}
 					onRequestClose={this.toggleDeleteModal}
 				/>
-			</div>
+			</Paper>
 		);
 	}
 }
 
-export default BottomToolbar;
+export default TopToolbar;

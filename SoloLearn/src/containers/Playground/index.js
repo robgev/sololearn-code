@@ -5,7 +5,7 @@ import Playground from './Playground';
 const PlaygroundRoute = ({ params, location }) => (
 	<Playground
 		params={params}
-		withBottomToolbar
+		withTopToolbar
 		query={location.query}
 		basePath="/playground"
 	/>
