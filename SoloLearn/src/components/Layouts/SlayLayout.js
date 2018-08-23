@@ -4,6 +4,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import Sidebar from 'components/Sidebar';
 import BusyWrapper from 'components/BusyWrapper';
 import SlayHomeShimmer from 'components/Shimmers/SlayHomeShimmer';
+import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
 
 import 'styles/slayBase.scss';
 
@@ -76,7 +77,10 @@ const Layout = ({
 		</div>
 		{!noSidebar &&
 			<Sidebar>
-				{sidebarContent}
+				{ loading
+					? <SidebarShimmer />
+					: sidebarContent
+				}
 			</Sidebar>
 		}
 	</div>

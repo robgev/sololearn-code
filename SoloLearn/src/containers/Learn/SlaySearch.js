@@ -69,6 +69,7 @@ class SlayDetailed extends PureComponent {
 		const { lessons } = this.props;
 		return (
 			<SlayLayout
+				noSidebar
 				items={lessons}
 				loading={loading}
 				hasMore={hasMore}

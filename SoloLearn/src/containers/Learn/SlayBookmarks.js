@@ -59,6 +59,7 @@ class SlayHome extends PureComponent {
 				loading={loading}
 				hasMore={hasMore}
 				items={lessons}
+				title={t('store.bookmarks.title')}
 				loadMore={this.loadMore}
 				cardComponent={CodePenCard}
 				loadingComponent={SlayDetailedShimmer}

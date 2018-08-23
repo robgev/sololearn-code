@@ -2,6 +2,7 @@ import React from 'react';
 import Sidebar from 'components/Sidebar';
 import BusyWrapper from 'components/BusyWrapper';
 import CircularProgress from 'material-ui/CircularProgress';
+import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
 
 import 'styles/lessonLayout.scss';
 
@@ -26,7 +27,10 @@ const LessonLayout = ({
 			</BusyWrapper>
 		</div>
 		<Sidebar>
-			{sidebarContent}
+			{ loading
+				? <SidebarShimmer />
+				: sidebarContent
+			}
 		</Sidebar>
 	</div>
 );
