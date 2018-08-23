@@ -17,6 +17,7 @@ import { connect } from 'react-redux';
 
 import Layout from 'components/Layouts/GeneralLayout';
 import AddCodeButton from 'components/AddCodeButton';
+import FloatingButton from 'components/AddCodeButton/FloatingButton';
 import AddQuestionButton from 'components/AddQuestionButton';
 import BusyWrapper from 'components/BusyWrapper';
 import ProfileHeaderShimmer from 'components/Shimmers/ProfileHeaderShimmer';
@@ -156,7 +157,9 @@ class Profile extends Component {
 							loadMore={this.profile.getCodes}
 						/>
 						{data.id === userId &&
-							<AddCodeButton />
+							<AddCodeButton>
+								{ ({ togglePopup }) => <FloatingButton onClick={togglePopup} /> }
+							</AddCodeButton>
 						}
 					</div>
 				}

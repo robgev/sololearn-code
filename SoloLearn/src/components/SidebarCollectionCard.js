@@ -26,23 +26,25 @@ const SidebarCollection = ({
 			<div className="sidebar-title">
 				<p className="title" style={{ paddingBottom: 0 }}>{ title }</p>
 			</div>
-			{ !noViewMore &&
+			{ !noViewMore && items.length > 0 &&
 				<Link className="hoverable" to={bookmarks ? 'learn/bookmarks' : `/learn/more/author/${userID}`} >
 					{t('common.loadMore')}
 				</Link>
 			}
 		</div>
 		{
-			items.map(lessonItem => (
-				<CourseCard
-					minimal
-					{...lessonItem}
-					wrapperStyle={{ padding: 0 }}
-					className="collection-card-chip"
-					style={{ padding: 0, boxShadow: 'none' }}
-					key={`${lessonItem.name}-${lessonItem.id}`}
-				/>
-			))
+			items.length === 0
+				?	<p style={{ padding: '15px 0' }} className="flex-centered">{t('common.empty-list-message')}</p>
+				: items.map(lessonItem => (
+					<CourseCard
+						minimal
+						{...lessonItem}
+						wrapperStyle={{ padding: 0 }}
+						className="collection-card-chip"
+						style={{ padding: 0, boxShadow: 'none' }}
+						key={`${lessonItem.name}-${lessonItem.id}`}
+					/>
+				))
 		}
 	</div>
 );

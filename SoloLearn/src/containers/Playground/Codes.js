@@ -16,6 +16,7 @@ import {
 import { showError, queryDifference, isObjectEqual } from 'utils';
 
 import AddCodeButton from 'components/AddCodeButton';
+import FloatingButton from 'components/AddCodeButton/FloatingButton';
 import Layout from 'components/Layouts/GeneralLayout';
 
 import 'styles/Playground/CodesBase.scss';
@@ -119,7 +120,9 @@ class Codes extends Component {
 						hasMore={hasMore}
 						loadMore={this.getCodes}
 					/>
-					<AddCodeButton />
+					<AddCodeButton>
+						{ ({ togglePopup }) => <FloatingButton onClick={togglePopup} /> }
+					</AddCodeButton>
 				</div>
 			</Layout>
 		);
