@@ -44,9 +44,9 @@ const styles = {
 	},
 	defaultOutputContainer: {
 		base: {
-			position: 'relative',
+			position: 'absolute',
+			bottom: 0,
 			width: '100%',
-			margin: '20px auto',
 			display: 'none',
 		},
 		show: {
@@ -713,16 +713,31 @@ ${succeedingSubstr}
 									handleTabChange={this.handleTabChange}
 									fullScreenButtonAction={inline ? this.maximizeInlineCode : this.toggleFullScreen}
 								/>
-								<Editor
-									inline={inline}
-									code={code}
-									mode={mode}
-									theme={theme}
-									publicID={publicID}
-									fullScreen={fullScreen}
-									showWebOutput={showWebOutput}
-									handleEditorChange={this.handleEditorChange}
-								/>
+								<div style={{ position: 'relative' }}>
+									<Editor
+										inline={inline}
+										code={code}
+										mode={mode}
+										theme={theme}
+										publicID={publicID}
+										fullScreen={fullScreen}
+										showWebOutput={showWebOutput}
+										handleEditorChange={this.handleEditorChange}
+									/>
+									<Paper
+										className="default-output-container"
+										style={{
+											...styles.defaultOutputContainer.base,
+											...(showOutput && type === 'default' ? styles.defaultOutputContainer.show : {}),
+										}}
+									>
+										{!(isRunning && type === 'default') ? null
+											: <LoadingOverlay size={30} />
+										}
+										<div style={styles.outputHeader}>Output: </div>
+										<pre className="default-output" style={styles.defaultOutputContainer.defaultOutput} />
+									</Paper>
+								</div>
 								<OutputWindow
 									type={type}
 									showWebOutput={showWebOutput}
@@ -751,19 +766,6 @@ ${succeedingSubstr}
 									handleThemeChange={this.handleThemeChange}
 									handleLanguageChange={this.handleLanguageChange}
 								/>
-								<Paper
-									className="default-output-container"
-									style={{
-										...styles.defaultOutputContainer.base,
-										...(showOutput && type === 'default' ? styles.defaultOutputContainer.show : {}),
-									}}
-								>
-									{!(isRunning && type === 'default') ? null
-										: <LoadingOverlay size={30} />
-									}
-									<div style={styles.outputHeader}>Output: </div>
-									<pre className="default-output" style={styles.defaultOutputContainer.defaultOutput} />
-								</Paper>
 							</div>
 							{(withBottomToolbar && shouldShowToolbar && !fullScreen) &&
 								<Comments
