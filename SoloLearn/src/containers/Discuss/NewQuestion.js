@@ -10,6 +10,7 @@ import { addQuestion, emptyPosts, getPosts } from 'actions/discuss';
 import Layout from 'components/Layouts/GeneralLayout';
 
 import QuestionEditor from './QuestionEditor';
+import GuideLinesSidebar from './GuideLinesSidebar';
 
 const mapDispatchToProps = { addQuestion, emptyPosts, getPosts };
 
@@ -41,7 +42,11 @@ class NewQuestion extends Component {
 
 	render() {
 		return (
-			<Layout>
+			<Layout
+				sidebarContent={
+					<GuideLinesSidebar />
+				}
+			>
 				<QuestionEditor submit={this.submit} />
 			</Layout>
 		);
