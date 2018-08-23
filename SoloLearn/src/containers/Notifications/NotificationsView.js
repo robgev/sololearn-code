@@ -1,7 +1,8 @@
 // React modules
 import React from 'react';
-import Radium from 'radium';
+import { translate } from 'react-i18next';
 import Layout from 'components/Layouts/GeneralLayout';
+import DiscoverPeersSidebar from 'containers/Feed/FeedSidebar';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
@@ -12,10 +13,12 @@ import NotificationList from './NotificationList';
 
 import { NotificationsViewStyles as styles } from './styles';
 
-const Notifications = () => {
+const Notifications = ({ t }) => {
 	document.title = 'Sololearn | Notifications';
 	return (
-		<Layout>
+		<Layout
+			sidebarContent={<DiscoverPeersSidebar t={t} />}
+		>
 			<Paper>
 				<div className="notification-header" style={styles.notificationsHeader}>
 					<p className="notifications-title" style={styles.notificationsTitle}>Your Notifications</p>
@@ -27,4 +30,4 @@ const Notifications = () => {
 	);
 };
 
-export default Radium(Notifications);
+export default translate()(Notifications);
