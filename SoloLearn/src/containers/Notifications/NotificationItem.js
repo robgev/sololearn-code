@@ -33,7 +33,7 @@ class NotificationItem extends Component {
 			{this.generateContent()}
 		</div>
 	), {
-		position: 'bottom-left',
+		position: 'bottom-right',
 		transition: Slide,
 		autoClose: 2000,
 	})
