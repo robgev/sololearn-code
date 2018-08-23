@@ -34,12 +34,12 @@ class Header extends PureComponent {
 		// user already has the highest status, so we just
 		// show his xp as maxXp, which means no more progress to make
 		const nextMilestoneLevelIndex =
-			levels.slice(userLevel + 1).findIndex(lvl => lvl.status !== null);
+			levels.slice(userLevel).findIndex(lvl => lvl.status !== null);
 		[ this.currentBadge ] = badge.split('|');
 		if (nextMilestoneLevelIndex !== -1) {
 			// Restore index after slice
 			this.maxXp = levels[userLevel + nextMilestoneLevelIndex].maxXp;
-			this.nextMilestone = levels[userLevel + 1 + nextMilestoneLevelIndex].status;
+			this.nextMilestone = levels[userLevel + nextMilestoneLevelIndex].status;
 		} else {
 			this.maxXp = currentXp;
 			[ this.nextMilestone ] = badge.split('|');
