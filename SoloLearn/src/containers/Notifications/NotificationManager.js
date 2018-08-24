@@ -10,8 +10,9 @@ import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 // Redux modules
 import {
 	setNotificationCount,
-	getNotificationCount,
 	refreshNotifications,
+	getNotifications,
+	markRead,
 } from 'actions/notifications';
 import {
 	notificationsCountSelector,
@@ -20,6 +21,7 @@ import {
 import 'styles/Notifications/index.scss';
 
 // Additional components
+import NotificationToaster from './NotificationToaster'; // For static funcs
 import NotificationsPopup from './NotificationsPopup';
 
 const mapStateToProps = state => ({
@@ -27,19 +29,30 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-	getNotificationCount,
 	setNotificationCount,
 	refreshNotifications,
+	getNotifications,
+	markRead,
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
 class NotificationManager extends PureComponent {
+	static REFRESH_TIMEOUT = 20 * 1000;
+
 	state = { isOpened: false };
 
-	componentDidMount() {
+	async componentDidMount() {
+		await this.props.getNotifications();
 		this.interval = setInterval(() => {
-			this.props.refreshNotifications();
-		}, 60000);
+			this.props.refreshNotifications()
+				.then((notifications) => {
+					console.log(notifications);
+					notifications.forEach(notif => NotificationToaster.toast(
+						notif,
+						this.props.markRead,
+					));
+				});
+		}, NotificationManager.REFRESH_TIMEOUT);
 	}
 
 	componentWillUnmount() {

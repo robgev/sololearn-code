@@ -21,33 +21,27 @@ export const setNotificationCount = count => ({
 	payload: count,
 });
 
-export const getNotificationCount = () => async (dispatch) => {
-	const { count } = await Service.request('Profile/GetUnseenNotificationCount');
-	dispatch(setNotificationCount(count));
-};
-
 export const emptyNotifications = () => ({ type: types.EMPTY_NOTIFICATIONS });
 
-export const getNotifications = ({ fromId = null, toId = null, count = 20 } = {}) =>
+export const getNotifications = () =>
 	async (dispatch, getState) => {
 		// Avoid unnecessary fetches if already fetching
 		if (!isNotificationsFetchingSelector(getState())) {
 			dispatch({ type: types.REQUEST_NOTIFICATIONS });
 			const oldNotifications = notificationsSelector(getState());
-			const { notifications } = await Service.request(
-				'Profile/GetNotifications',
-				{
-					fromId: fromId === null && oldNotifications.length > 0
-						? oldNotifications[oldNotifications.length - 1].id
-						: null,
-					toId,
-					count,
-				},
-			);
-			if (notifications.length < count) {
+			const fromId = oldNotifications.length > 0
+				? oldNotifications[oldNotifications.length - 1].id
+				: null;
+			const fetchCount = 20;
+			const [ { count }, { notifications } ] = await Promise.all([
+				Service.request('Profile/GetUnseenNotificationCount'),
+				Service.request('Profile/GetNotifications', { fromId, count: fetchCount }),
+			]);
+			if (notifications.length < fetchCount) {
 				dispatch({ type: types.MARK_NOTIFICATIONS_LIST_FINISHED });
 			}
 			const groupedNotifs = groupNotificationItems(notifications);
+			dispatch(setNotificationCount(count));
 			dispatch({ type: types.SET_NOTIFICATIONS, payload: groupedNotifs });
 		}
 	};
@@ -60,15 +54,23 @@ export const markRead = (ids = null) => (dispatch) => {
 	Service.request('Profile/MarkNotificationsClicked', { ids });
 };
 
+export const markAllSeen = () => (_, getState) => {
+	const notifications = notificationsSelector(getState());
+	if (notifications.length > 0) {
+		Service.request('Profile/MarkNotificationsSeen', { fromId: notifications[0].id });
+	}
+};
+
 export const refreshNotifications = () =>
 	async (dispatch, getState) => {
-		dispatch(getNotificationCount());
 		const oldNotifications = notificationsSelector(getState());
 		const toId = oldNotifications.length > 0 ? oldNotifications[0].id : null;
-		const { notifications } = await Service.request(
-			'Profile/GetNotifications',
-			{ fromId: null, toId },
-		);
-		dispatch({ type: types.REFRESH_NOTIFICATIONS, payload: notifications });
-		return notifications;
+		const [ { count }, { notifications } ] = await Promise.all([
+			Service.request('Profile/GetUnseenNotificationCount'),
+			Service.request('Profile/GetNotifications', { fromId: null, toId, count: 20 }),
+		]);
+		const grouped = groupNotificationItems(notifications);
+		dispatch(setNotificationCount(count));
+		dispatch({ type: types.REFRESH_NOTIFICATIONS, payload: grouped });
+		return grouped;
 	};

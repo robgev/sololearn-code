@@ -1,5 +1,6 @@
 // React modules
 import React, { Component } from 'react';
+import Service from 'api/service';
 import Radium from 'radium';
 import { Link } from 'react-router';
 import { Motion, spring } from 'react-motion';
@@ -11,7 +12,7 @@ import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 
 // Redux modules
-import { markRead } from 'actions/notifications';
+import { markRead, markAllSeen } from 'actions/notifications';
 
 // Additional components
 import NotificationList from './NotificationList';
@@ -20,15 +21,14 @@ import { NotificationsPopupStyles as styles } from './styles';
 
 const RadiumLink = Radium(Link);
 
-const mapDispatchToProps = { markAllRead: markRead };
-
-// i18n
+const mapDispatchToProps = { markRead, markAllSeen };
 
 @connect(null, mapDispatchToProps)
 @translate()
 @Radium
 class NotificationPopup extends Component {
 	componentDidMount() {
+		this.props.markAllSeen();
 		document.addEventListener('click', this.handleDocumentClick);
 	}
 
@@ -45,6 +45,10 @@ class NotificationPopup extends Component {
 		}
 	}
 
+	markAllRead = () => {
+		this.props.markRead(null);
+	}
+
 	render() {
 		const { t } = this.props;
 		return (
@@ -58,7 +62,7 @@ class NotificationPopup extends Component {
 				{
 					interpolatingStyle =>
 						(
-							<div id="notifications" className="notifications" style={[styles.wrapper, interpolatingStyle]}>
+							<div id="notifications" className="notifications" style={[ styles.wrapper, interpolatingStyle ]}>
 								<div className="arrow" style={styles.arrow} />
 								<Paper className="notifications-container" style={styles.notificationsContainer}>
 									<div className="notification-header" style={styles.notificationsHeader}>
@@ -66,7 +70,7 @@ class NotificationPopup extends Component {
 										<button
 											type="button"
 											style={styles.notificationsHeaderButton}
-											onClick={() => this.props.markAllRead(null)}
+											onClick={this.markAllRead}
 										>
 											{t('notifications.mark-all-as-read-action-title')}
 										</button>
@@ -82,8 +86,9 @@ class NotificationPopup extends Component {
 											to="/notifications"
 											onClick={this.props.toggleNotificationsOpen}
 											style={styles.notificationsFooterButton}
-										>See All
-    									</RadiumLink>
+										>
+											See All
+										</RadiumLink>
 									</div>
 								</Paper>
 							</div>
