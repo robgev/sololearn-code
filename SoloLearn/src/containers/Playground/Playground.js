@@ -9,7 +9,7 @@ import { translate } from 'react-i18next';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'components/StyledDialog';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 

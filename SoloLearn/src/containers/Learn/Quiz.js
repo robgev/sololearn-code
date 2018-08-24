@@ -14,7 +14,7 @@ import Progress, { PointExchangeTypes } from 'api/progress';
 // Marterial UI components
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'components/StyledDialog';
 import Paper from 'material-ui/Paper';
 
 // Additional data and components

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'components/StyledDialog';
 import FlatButton from 'material-ui/FlatButton';
 import Service from 'api/service';
 import { deletePostInternal } from 'actions/discuss';

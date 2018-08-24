@@ -5,7 +5,7 @@ import React from 'react';
 import { translate } from 'react-i18next';
 
 // Material UI components
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'components/StyledDialog';
 import Toggle from 'material-ui/Toggle';
 import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';

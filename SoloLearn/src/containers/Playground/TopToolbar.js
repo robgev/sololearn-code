@@ -6,7 +6,7 @@ import Service from 'api/service';
 import Toggle from 'material-ui/Toggle';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'components/StyledDialog';
 import { red500 } from 'material-ui/styles/colors';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import ProfileAvatar from 'components/ProfileAvatar';

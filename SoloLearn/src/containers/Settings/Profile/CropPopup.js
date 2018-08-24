@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import AvatarEditor from 'react-cropper';
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'components/StyledDialog';
 import FlatButton from 'material-ui/FlatButton';
 
 import Service from 'api/service';

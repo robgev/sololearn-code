@@ -7,7 +7,7 @@ import { observer } from 'mobx-react';
 
 // Material UI components
 import { Tabs, Tab } from 'material-ui/Tabs';
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'components/StyledDialog';
 import IconButton from 'material-ui/IconButton';
 import Close from 'material-ui/svg-icons/content/clear';
 import { grey600 } from 'material-ui/styles/colors';

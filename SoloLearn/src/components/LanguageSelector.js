@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'components/StyledDialog';
 import { List, ListItem } from 'material-ui/List';
 import LoadingOverlay from 'components/LoadingOverlay';
 import LanguageCard from 'components/LanguageCard';
 
 const LanguageSelector = ({
-	courses, open, onChoose, onClose, filter, bodyStyle,
+	courses, open, onChoose, onClose, filter,
 }) => {
 	const filteredCourses = courses.filter(filter);
 	return (
@@ -16,7 +16,6 @@ const LanguageSelector = ({
 			title="Choose Language"
 			open={open}
 			onRequestClose={onClose}
-			contentStyle={{ maxWidth: 'none', width: '35%' }}
 			bodyStyle={{ border: 'none', paddingBottom: 10 }}
 		>
 			{filteredCourses.length === 0 ? <LoadingOverlay /> : null}

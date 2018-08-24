@@ -9,7 +9,7 @@ import PreviewItem from 'components/PreviewItem';
 import UserTooltip from 'components/UserTooltip';
 import IconMenu from 'material-ui/IconMenu';
 import FlatButton from 'material-ui/FlatButton';
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'components/StyledDialog';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';

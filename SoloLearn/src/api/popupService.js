@@ -2,7 +2,7 @@
 import React from 'react';
 
 // Material UI components
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'components/StyledDialog';
 import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';

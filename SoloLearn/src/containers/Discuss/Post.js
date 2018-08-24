@@ -10,7 +10,7 @@ import Radium from 'radium';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'components/StyledDialog';
 
 // Redux modules
 import {

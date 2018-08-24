@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import { connect } from 'react-redux';
 
 // Material UI components
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'components/StyledDialog';
 
 // Utils and defaults
 import types from 'defaults/appTypes';

@@ -4,7 +4,7 @@ import { browserHistory } from 'react-router';
 
 import Layout from 'components/Layouts/GeneralLayout';
 import LanguageSelector from 'components/LanguageSelector';
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'components/StyledDialog';
 import FlatButton from 'material-ui/FlatButton';
 import { OptionsCard } from './components';
 import Suggest from './Suggest/Suggest';

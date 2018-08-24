@@ -9,7 +9,7 @@ import { Motion, spring } from 'react-motion';
 import { connect } from 'react-redux';
 
 // Material UI components
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'components/StyledDialog';
 import FlatButton from 'material-ui/FlatButton';
 import LinearProgress from 'material-ui/LinearProgress';
 import Arrow from 'material-ui/svg-icons/hardware/keyboard-arrow-up';

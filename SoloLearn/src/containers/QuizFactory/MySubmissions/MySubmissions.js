@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import uniqBy from 'lodash/uniqBy';
 import Paper from 'material-ui/Paper';
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'components/StyledDialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
