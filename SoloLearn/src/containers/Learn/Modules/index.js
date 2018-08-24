@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
-import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
@@ -22,7 +21,7 @@ import Progress, { ProgressState } from 'api/progress';
 import BusyWrapper from 'components/BusyWrapper';
 import Layout from 'components/Layouts/GeneralLayout';
 
-import Popup from 'api/popupService';
+import Dialog from 'components/StyledDialog';
 
 import 'styles/Learn/Modules.scss';
 
@@ -92,7 +91,8 @@ class Modules extends Component {
 		this.props.toggleCourseInternal(courseId, enable);
 	}
 
-	resetProgress = (courseId) => {
+	resetProgress = () => {
+		const courseId = this.editableCourseId;
 		this.handleResetPopupClose();
 
 		const { skills } = this.props.userProfile;
@@ -120,28 +120,13 @@ class Modules extends Component {
 			params: { itemType, courseName },
 			isLoaded: isModuleLoaded,
 		} = this.props;
-		const { loading } = this.state;
+		const { loading, resetPopupOpened } = this.state;
 		if (!isModuleLoaded && this.props.userProfile.skills.length > 0) {
 			return <CircularProgress size={40} style={{ display: 'flex', alignItems: 'center', margin: 'auto' }} />;
 		}
 
 		const { modules, id } = course;
 		const userCourses = this.props.userProfile.skills;
-
-		const resetProgressActions = [
-			{
-				componentType: FlatButton,
-				label: 'popupCancel',
-				primary: false,
-				actionCallback: this.handleResetPopupClose,
-			},
-			{
-				componentType: FlatButton,
-				label: 'resetContinue',
-				primary: true,
-				actionCallback: () => { this.resetProgress(this.editableCourseId); },
-			},
-		];
 
 		return (
 			<Layout>
@@ -213,8 +198,22 @@ class Modules extends Component {
 							/>
 						</div>
 					}
+					<Dialog
+						open={resetPopupOpened}
+						actions={[
+							<FlatButton
+								label={t('common.cancel-title')}
+								onClick={this.handleResetPopupClose}
+							/>,
+							<FlatButton
+								label={t('learn.reset-course-popup-title')}
+								onClick={this.resetProgress}
+							/>,
+						]}
+					>
+						{t('learn.reset-course-popup-message')}
+					</Dialog>
 
-					{this.state.resetPopupOpened && Popup.getPopup(Popup.generatePopupActions(resetProgressActions), this.state.resetPopupOpened, this.handleResetPopupClose, [ { key: 'hintSkipConfirmText', replacemant: this.skipPrice } ])}
 				</BusyWrapper>
 			</Layout>
 		);
