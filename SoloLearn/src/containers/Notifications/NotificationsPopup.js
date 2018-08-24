@@ -37,61 +37,61 @@ class NotificationPopup extends Component {
 		document.removeEventListener('click', this.handleDocumentClick);
 	}
 
-    // Using fat arrow to bind to instance
-    handleDocumentClick = (e) => {
-    	const notificationsArea = document.getElementById('notifications');
-    	if (!notificationsArea.contains(e.target) && this.props.isOpened) {
-    		this.props.toggleNotificationsOpen();
-    	}
-    }
+	// Using fat arrow to bind to instance
+	handleDocumentClick = (e) => {
+		const notificationsArea = document.getElementById('notifications');
+		if (!notificationsArea.contains(e.target) && this.props.isOpened) {
+			this.props.toggleNotificationsOpen();
+		}
+	}
 
-    render() {
-    	const { t } = this.props;
-    	return (
-    		<Motion
-	defaultStyle={{ opacity: 0, top: 40 }}
-    			style={{
-    				opacity: spring(1),
-    				top: spring(31, { stiffness: 120, damping: 15 }),
-    			}}
-    		>
-    			{
-    				interpolatingStyle =>
-    					(
-	<div id="notifications" className="notifications" style={[ styles.wrapper, interpolatingStyle ]}>
-	<div className="arrow" style={styles.arrow} />
-    							<Paper className="notifications-container" style={styles.notificationsContainer}>
-    								<div className="notification-header" style={styles.notificationsHeader}>
-    									<p className="notifications-title" style={styles.notificationsTitle}>{t('notifications.title')}</p>
-    									<button
-    										type="button"
-    										style={styles.notificationsHeaderButton}
-	onClick={() => this.props.markAllRead(null)}
-    									>
-    										{t('notifications.mark-all-as-read-action-title')}
-    									</button>
-    								</div>
-    								<Divider />
-    								<NotificationList
-    									isPopup
-    									toggleNotificationsOpen={this.props.toggleNotificationsOpen}
-    								/>
-    								<Divider />
-    								<div className="notification-footer" style={styles.notificationsFooter}>
-    									<RadiumLink
-    										to="/notifications"
-    										onClick={this.props.toggleNotificationsOpen}
-    										style={styles.notificationsFooterButton}
-    									>See All
+	render() {
+		const { t } = this.props;
+		return (
+			<Motion
+				defaultStyle={{ opacity: 0, top: 40 }}
+				style={{
+					opacity: spring(1),
+					top: spring(31, { stiffness: 120, damping: 15 }),
+				}}
+			>
+				{
+					interpolatingStyle =>
+						(
+							<div id="notifications" className="notifications" style={[styles.wrapper, interpolatingStyle]}>
+								<div className="arrow" style={styles.arrow} />
+								<Paper className="notifications-container" style={styles.notificationsContainer}>
+									<div className="notification-header" style={styles.notificationsHeader}>
+										<p className="notifications-title" style={styles.notificationsTitle}>{t('notifications.title')}</p>
+										<button
+											type="button"
+											style={styles.notificationsHeaderButton}
+											onClick={() => this.props.markAllRead(null)}
+										>
+											{t('notifications.mark-all-as-read-action-title')}
+										</button>
+									</div>
+									<Divider />
+									<NotificationList
+										isPopup
+										toggleNotificationsOpen={this.props.toggleNotificationsOpen}
+									/>
+									<Divider />
+									<div className="notification-footer" style={styles.notificationsFooter}>
+										<RadiumLink
+											to="/notifications"
+											onClick={this.props.toggleNotificationsOpen}
+											style={styles.notificationsFooterButton}
+										>See All
     									</RadiumLink>
-    								</div>
-    							</Paper>
-    						</div>
-    					)
-    			}
-    		</Motion>
-    	);
-    }
+									</div>
+								</Paper>
+							</div>
+						)
+				}
+			</Motion>
+		);
+	}
 }
 
 export default NotificationPopup;

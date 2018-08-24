@@ -8,7 +8,7 @@ import { toast, Slide } from 'react-toastify';
 import { ListItem } from 'material-ui/List';
 
 // Redux modules
-import { markReadInternal } from 'actions/profile';
+import { markRead } from 'actions/notifications';
 
 // Utils And Defaults
 import types from 'defaults/appTypes';
@@ -18,7 +18,7 @@ import ProfileAvatar from 'components/ProfileAvatar';
 import { NotificationItemStyles as styles } from './styles';
 
 const mapDispatchToProps = {
-	markRead: markReadInternal,
+	markRead,
 };
 
 @connect(null, mapDispatchToProps)

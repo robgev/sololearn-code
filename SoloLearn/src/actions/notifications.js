@@ -59,3 +59,16 @@ export const markRead = (ids = null) => (dispatch) => {
 	else dispatch(markAllRead());
 	Service.request('Profile/MarkNotificationsClicked', { ids });
 };
+
+export const refreshNotifications = () =>
+	async (dispatch, getState) => {
+		dispatch(getNotificationCount());
+		const oldNotifications = notificationsSelector(getState());
+		const toId = oldNotifications.length > 0 ? oldNotifications[0].id : null;
+		const { notifications } = await Service.request(
+			'Profile/GetNotifications',
+			{ fromId: null, toId },
+		);
+		dispatch({ type: types.REFRESH_NOTIFICATIONS, payload: notifications });
+		return notifications;
+	};

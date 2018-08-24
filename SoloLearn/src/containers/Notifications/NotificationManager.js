@@ -11,6 +11,7 @@ import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import {
 	setNotificationCount,
 	getNotificationCount,
+	refreshNotifications,
 } from 'actions/notifications';
 import {
 	notificationsCountSelector,
@@ -25,7 +26,11 @@ const mapStateToProps = state => ({
 	count: notificationsCountSelector(state),
 });
 
-const mapDispatchToProps = { getNotificationCount, setNotificationCount };
+const mapDispatchToProps = {
+	getNotificationCount,
+	setNotificationCount,
+	refreshNotifications,
+};
 
 @connect(mapStateToProps, mapDispatchToProps)
 class NotificationManager extends PureComponent {
@@ -33,7 +38,7 @@ class NotificationManager extends PureComponent {
 
 	componentDidMount() {
 		this.interval = setInterval(() => {
-			this.props.getNotificationCount();
+			this.props.refreshNotifications();
 		}, 60000);
 	}
 
