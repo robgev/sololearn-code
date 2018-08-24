@@ -7,7 +7,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 const NotFound = () => (
 	<Layout
 		noSidebar
-		style={{ width: 820, paddingRight: 0 }}
 	>
 		<Paper style={{
 			display: 'flex',
