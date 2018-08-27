@@ -23,8 +23,8 @@ const mapDispatchToProps = {
 @connect(mapStateToProps, mapDispatchToProps)
 class SettingsMenu extends PureComponent {
 	singOut = () => {
-		this.props.logout()
-			.then(() => browserHistory.push('/login'));
+		browserHistory.push('/login');
+		this.props.logout();
 	}
 
 	goToSettings = () => {
