@@ -73,7 +73,8 @@ const ProfileAvatar = ({
 				<div className={`avatar-meta-info-container ${reversedOrder ? 'reversed' : ''}`}>
 					{withUserNameBox &&
 						<div>
-							<p className="avatar-user-name hoverable">{userName}
+							<p className="avatar-user-name hoverable">
+								<span className="avatar-user-name-wrapper">{userName}</span>
 								<ModBadge
 									badge={modBadge}
 									className="small"

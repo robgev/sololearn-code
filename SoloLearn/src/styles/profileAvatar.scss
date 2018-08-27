@@ -16,6 +16,12 @@
 			.profile-picture-container {
 				padding-bottom: 5px;
 			}
+			.avatar-meta-info-container {
+				width: 100%;
+				.avatar-user-name {
+					max-width: 70%;
+				}
+			}
 		}
 	}
 	.avatar-meta-info-container {
@@ -29,6 +35,11 @@
 			margin: 0 0 2px 0;
 			.badge-container.mod.small {
 				margin-left: 3px;
+			}
+			.avatar-user-name-wrapper {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
 			}
 		}
 		.avatar-date-text {

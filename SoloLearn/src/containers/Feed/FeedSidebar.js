@@ -3,21 +3,20 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import ProfileAvatar from 'components/ProfileAvatar';
-import { followSuggestion } from 'actions/discover';
 import { numberFormatter } from 'utils';
 import 'styles/Feed/FeedSidebar.scss';
 
 const mapStateToProps = ({ discoverSuggestions }) => ({
-	suggestions: discoverSuggestions.slice(0, 10),
+	suggestions: discoverSuggestions.slice(0, 7),
 });
 
-const FeedSuggestions = ({ t, suggestions, followUser }) => (
+const FeedSuggestions = ({ t, suggestions }) => (
 	<div className="feed-sidebar-suggestions">
 		<div className="sidebar-title">
 			<p className="title">{t('discover_peers.title')}</p>
 		</div>
 		{suggestions.map(({
-			id, name, avatarUrl, followers, level, isFollowing,
+			id, name, avatarUrl, followers, level,
 		}) => (
 			<div className="suggestion-container">
 				<ProfileAvatar
@@ -25,25 +24,26 @@ const FeedSuggestions = ({ t, suggestions, followUser }) => (
 					userID={id}
 					userName={name}
 					avatarUrl={avatarUrl}
+					avatarStyle={{ marginRight: 10 }}
 				/>
 				<div className="user-info">
 					<Link to={`/profile/${id}`} className="user-name hoverable">{name}</Link>
 					<p className="user-meta-info">{numberFormatter(followers)} Followers | Level {level} </p>
-					<FlatButton
-						secondary={isFollowing}
-						label={isFollowing ? 'Following' : 'Follow'}
-						style={{
-							height: 30,
-							width: '60%',
-							lineHeight: '30px',
-							border: '1px solid #EFEFEF',
-						}}
-						onClick={() => followUser({ id, isFollowing })}
-					/>
 				</div>
 			</div>
 		))}
+		{ suggestions && suggestions.length > 0 &&
+			<Link className="load-more" to="/discover">
+				<FlatButton
+					label={t('common.loadMore')}
+					style={{
+						height: 30,
+						lineHeight: '30px',
+					}}
+				/>
+			</Link>
+		}
 	</div>
 );
 
-export default connect(mapStateToProps, { followUser: followSuggestion })(FeedSuggestions);
+export default connect(mapStateToProps)(FeedSuggestions);

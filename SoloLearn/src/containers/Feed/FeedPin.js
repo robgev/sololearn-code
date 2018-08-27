@@ -89,8 +89,8 @@ const styles = {
 		display: 'inline-flex',
 		alignItems: 'center',
 		justifyContent: 'center',
-		width: '30px',
-		height: '30px',
+		width: '40px',
+		height: '40px',
 		fontSize: '12px',
 		color: '#fff',
 		margin: '0px 10px 0 0',
@@ -116,7 +116,6 @@ const styles = {
 		display: 'flex',
 		boxSizing: 'border-box',
 		width: '100%',
-		textAlign: 'center',
 		padding: '7px',
 	},
 

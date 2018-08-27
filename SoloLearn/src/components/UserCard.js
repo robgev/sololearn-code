@@ -43,7 +43,7 @@ render() {
 					}
 				</div>
 				<div className="profile-data">
-					<div>
+					<div className="profile-data-wrapper">
 
 						<div className="profile-name">
 							{name}

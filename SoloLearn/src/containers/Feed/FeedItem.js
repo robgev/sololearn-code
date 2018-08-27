@@ -1,5 +1,5 @@
 // React modules
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Radium from 'radium';
@@ -187,7 +187,7 @@ class FeedItem extends Component {
 		case types.lessonCreated:
 			this.url = `/learn/lesson/${feedItem.userLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${feedItem.userLesson.id}/${feedItem.userLesson.name}/1`;
 			return (
-				<div className="feed-date-container">
+				<Fragment>
 					<CourseCard
 						small
 						itemType={2}
@@ -200,8 +200,10 @@ class FeedItem extends Component {
 						viewCount={feedItem.userLesson.viewCount}
 						comments={feedItem.userLesson.comments}
 					/>
-					<p className="date">{updateDate(feedItem.date)}</p>
-				</div>
+					<div className="feed-date-container">
+						<p className="date">{updateDate(feedItem.date)}</p>
+					</div>
+				</Fragment>
 			);
 		default:
 			return null;
@@ -233,6 +235,9 @@ class FeedItem extends Component {
 							date={feedItem.date}
 							votes={this.votes}
 						/>
+						<div className="feed-date-container">
+							<p className="date">{updateDate(feedItem.date)}</p>
+						</div>
 					</Paper>
 					<div
 						id="feed-items"

@@ -5,12 +5,19 @@
 	.suggestion-container {
 		display: flex;
 		padding: 10px 0;
-		border-bottom: 1px solid #EFEFEF;
+		&:not(:last-of-type) {
+			border-bottom: 1px solid #EFEFEF;
+		}
 		.user-info {
+			display: flex;
 			width: 100%;
+			flex-direction: column;
+			justify-content: center;
+			overflow: hidden;
 			.user-name {
+				@extend %ellipsis;
 				font-size: 14px;
-				color: #8BC34A;
+				color: #607D8B;
 			}
 			.user-meta-info {
 				font-size: 12px;
@@ -18,5 +25,10 @@
 				padding-bottom: 5px;
 			}
 		}
+	}
+	.load-more {
+		display: flex;
+    width: 100%;
+    justify-content: center;
 	}
 }

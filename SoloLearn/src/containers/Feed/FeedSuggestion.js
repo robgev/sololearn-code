@@ -6,6 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { blueGrey900 } from 'material-ui/styles/colors';
 import ProfileAvatar from 'components/ProfileAvatar';
 import { followUserSuggestion } from 'actions/feed';
+import { numberFormatter } from 'utils';
 
 const styles = {
 	user: {
@@ -30,7 +31,7 @@ const styles = {
 
 	followers: {
 		fontSize: '11px',
-		color: '#8BC34A',
+		color: '#827E7E',
 	},
 
 	followButton: {
@@ -71,8 +72,9 @@ const FeedSuggestion = ({ suggestion, followUser }) => {
 				userID={id}
 				userName={name}
 				avatarUrl={avatarUrl}
+				style={{ width: '100%' }}
 			/>
-			<p style={styles.followers}>Followers {followers}</p>
+			<p style={styles.followers}>{numberFormatter(followers)} Followers</p>
 			<RaisedButton
 				labelColor="#fff"
 				secondary={isFollowing}
