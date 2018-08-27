@@ -25,7 +25,7 @@ const ModuleChip = ({
 					key={module.id}
 					className={`module-circle ${paperClassName}`}
 				>
-					<img className="module-image" alt={name} src={iconSource} />
+					<img className="module-image" alt='' src={iconSource} />
 				</Paper>
 				<span className="module-name">{name}</span>
 			</Link>
