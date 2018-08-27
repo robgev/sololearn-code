@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
-import Playground from 'containers/Playground/Playground';
+import Playground from 'containers/Playground/AsyncPlayground';
 
 // i18n
 import { translate } from 'react-i18next';

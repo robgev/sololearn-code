@@ -1,6 +1,6 @@
 // React modules
 import React from 'react';
-import Playground from './Playground';
+import Playground from './AsyncPlayground';
 
 const PlaygroundRoute = ({ params, location }) => (
 	<Playground

@@ -14,6 +14,9 @@ import Lessons from 'containers/Learn/Lessons';
 import QuizManager from 'containers/Learn/QuizManager';
 import Quiz from 'containers/Learn/Quiz';
 
+// Playground is code splitted (see: Playground/AsyncPlayground.js)
+import Playground from 'containers/Playground';
+
 const Login = Loadable({ loader: () => import('containers/Login') });
 
 // Slay
@@ -40,7 +43,6 @@ const EditQuestion = Loadable({ loader: () => import('containers/Discuss/EditQue
 
 // Playground
 const Codes = Loadable({ loader: () => import('containers/Playground/CodesBase') });
-const Playground = Loadable({ loader: () => import('containers/Playground') });
 
 // Notifications
 const Notifications = Loadable({ loader: () => import('containers/Notifications/NotificationsView') });
