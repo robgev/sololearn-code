@@ -89,13 +89,16 @@ class Codes extends Component {
 										onChange={this.handleLanguageFilterChange}
 									>
 										<MenuItem value="" primaryText={t('code.language-filter.all')} />
+										<MenuItem value="web" primaryText="Web" />
 										<MenuItem value="cpp" primaryText="C++" />
+										<MenuItem value="c" primaryText="C" />
 										<MenuItem value="cs" primaryText="C#" />
 										<MenuItem value="java" primaryText="Java" />
+										<MenuItem value="kt" primaryText="Kotlin" />
+										<MenuItem value="swift" primaryText="Swift" />
 										<MenuItem value="py" primaryText="Python" />
 										<MenuItem value="rb" primaryText="Ruby" />
 										<MenuItem value="php" primaryText="PHP" />
-										<MenuItem value="web" primaryText="Web" />
 									</DropDownMenu>
 									<DropDownMenu
 										style={{ height: 20, zIndex: 1 }}
@@ -121,7 +124,7 @@ class Codes extends Component {
 						loadMore={this.getCodes}
 					/>
 					<AddCodeButton>
-						{ ({ togglePopup }) => <FloatingButton onClick={togglePopup} /> }
+						{({ togglePopup }) => <FloatingButton onClick={togglePopup} />}
 					</AddCodeButton>
 				</div>
 			</Layout>
