@@ -21,14 +21,14 @@ const groupAllChallengesByUser = (searchedFeedItems, currentItem) => {
 
 export const forceOpenFeed = (firstFeedItem) => {
 	const forceOpenedItems = firstFeedItem.groupedItems.slice(0, 5);
-	const modifiedMergedChallengeGroup = firstFeedItem.groupedItems.length <= 5 ? [] : {
+	const modifiedMergedChallengeGroup = firstFeedItem.groupedItems.length <= 5 ? [] : [ {
 		...firstFeedItem,
 		toId: firstFeedItem.groupedItems[6].id,
 		date: firstFeedItem.groupedItems[6].date,
 		title: `has completed ${firstFeedItem.groupedItems.length - 5} challenges`,
 		groupedItems: firstFeedItem.groupedItems.slice(5),
-	};
-	const result = [ ...forceOpenedItems, modifiedMergedChallengeGroup ];
+	} ];
+	const result = [ ...forceOpenedItems, ...modifiedMergedChallengeGroup ];
 	return result;
 };
 
