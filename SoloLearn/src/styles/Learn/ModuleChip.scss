@@ -17,6 +17,7 @@
 				width: 100px;
 				background: #8BC34A !important;
 				transition: all ease-in 150ms;
+				position: relative;
 				.module-image {
 					margin: 5px;
 					height: 90px;
@@ -31,13 +32,17 @@
 				}
 				&.disabled {
 					background: #DDDDDD !important;
-					&:hover {
-						background: #D5D5D5 !important;
+					svg {
+						display: none;
 					}
 				}
 				&:hover {
-					background: #83BB42 !important;
-					box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px !important;
+					&:not(.disabled) {
+						box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px !important;
+						&:not(.active) {
+							background: #83BB42 !important;
+						}
+					}
 				}
 			}
 			.module-name {

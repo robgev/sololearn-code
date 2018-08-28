@@ -23,6 +23,7 @@ const ModuleChips = ({
 		{modules.map((module) => {
 			const moduleState = Progress.getModuleState(module);
 			const alignmentClass = ModuleAlignment.getName(module.alignment);
+			const completionPercent = Progress.getModuleProgress(module);
 			const { stateClass } = moduleState;
 			const iconSource =
 					`${AppDefaults.downloadHost}Modules/${courseId}/${module.id}${moduleState.visualState === ProgressState.Disabled ? '_disabled' : ''}.png`;
@@ -30,6 +31,7 @@ const ModuleChips = ({
 			return (
 				<ModuleChip
 					key={module.id}
+					completionPercent={completionPercent}
 					name={module.name}
 					iconSource={iconSource}
 					className={alignmentClass}

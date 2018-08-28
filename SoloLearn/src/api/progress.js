@@ -338,6 +338,16 @@ class ProgressManager {
 		return null;
 	}
 
+	getModuleProgress(module) {
+		let completedCount = 0;
+		module.lessons.forEach((lesson) => {
+			if (this.localProgress.some(p => p.lessonID === lesson.id && p.isCompleted)) {
+				completedCount += 1;
+			}
+		});
+		return (completedCount * 100) / module.lessons.length;
+	}
+
 	getLessonStateById(lessonId) {
 		return this.lessonStates[`l${lessonId}`] || null;
 	}
