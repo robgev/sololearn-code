@@ -25,7 +25,7 @@ export { replaceMention, getMentionsList, mentionUsers } from './mention';
 export { default as getCommonPrefix } from './getCommonPrefix';
 export { default as filterExisting } from './filterExisting';
 export { default as EnumNameMapper } from './enumNameMapper';
-export { default as groupFeedItems } from './groupFeedItems';
+export { default as groupFeedItems, forceOpenFeed } from './groupFeedItems';
 export { default as Loadable } from './Loadable';
 export { default as redirector } from './redirector';
 export { default as queryDifference } from './queryDifference';
@@ -51,8 +51,8 @@ export {
 	removeDups,
 	repliesOfId,
 	findBestRank,
-	toSeoFriendly,
 	shuffleArray,
+	toSeoFriendly,
 	updateMessage,
 	faultGenerator,
 	determineBadge,

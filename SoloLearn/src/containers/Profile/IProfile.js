@@ -1,6 +1,7 @@
 import { observable, action, computed } from 'mobx';
 import Service from 'api/service';
-import { filterExisting, groupFeedItems, showError } from 'utils';
+import { filterExisting, groupFeedItems, showError, forceOpenFeed } from 'utils';
+import feedTypes from 'defaults/appTypes';
 
 class IProfile {
 	constructor({ id }) {
@@ -107,11 +108,13 @@ class IProfile {
 						this.feed.hasMore = false;
 					}
 					const feedItems = groupFeedItems(feed);
-					const feedItemsCount = entities.length + feedItems.length;
-					const filtered = filterExisting(entities, feedItems);
+					const isFirstItemGrouppedChallenge = entities.length === 0 && feedItems.length && feedItems[0].type === feedTypes.mergedChallange;
+					const forceOpenedFeed = isFirstItemGrouppedChallenge ? forceOpenFeed(feedItems[0]) : feedItems;
+					const feedItemsCount = entities.length + forceOpenedFeed.length;
+					const filtered = filterExisting(entities, forceOpenedFeed);
 					this.feed.entities.push(...filtered);
 					if (feedItemsCount < count / 2 && this.feed.hasMore) {
-						const lastItem = feedItems[feedItems.length - 1];
+						const lastItem = forceOpenedFeed[forceOpenedFeed.length - 1];
 						if (lastItem !== undefined) {
 							this.getFeed();
 						}

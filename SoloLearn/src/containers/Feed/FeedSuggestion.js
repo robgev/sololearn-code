@@ -5,6 +5,7 @@ import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import { blueGrey900 } from 'material-ui/styles/colors';
 import ProfileAvatar from 'components/ProfileAvatar';
+import UserTooltip from 'components/UserTooltip';
 import { followUserSuggestion } from 'actions/feed';
 import { numberFormatter } from 'utils';
 
@@ -65,15 +66,17 @@ const FeedSuggestion = ({ suggestion, followUser }) => {
 
 	return (
 		<Paper className="user" style={styles.user}>
-			<ProfileAvatar
-				vertical
-				size={50}
-				withUserNameBox
-				userID={id}
-				userName={name}
-				avatarUrl={avatarUrl}
-				style={{ width: '100%' }}
-			/>
+			<UserTooltip userData={suggestion}>
+				<ProfileAvatar
+					vertical
+					size={50}
+					withUserNameBox
+					userID={id}
+					userName={name}
+					avatarUrl={avatarUrl}
+					style={{ width: '100%' }}
+				/>
+			</UserTooltip>
 			<p style={styles.followers}>{numberFormatter(followers)} Followers</p>
 			<RaisedButton
 				labelColor="#fff"

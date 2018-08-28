@@ -35,8 +35,9 @@ class Sidebar extends PureComponent {
 			window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
 		// "Cut" only bottom 300 px of the sidebar
 		this.threshold =
-			(this.sidebarElem.scrollHeight - document.body.clientHeight) + this.sidebarVisibleSize;
-		this.isScrollable = this.sidebarElem.scrollHeight > document.body.clientHeight;
+			((this.sidebarElem.scrollHeight + 20) - document.body.clientHeight) + this.sidebarVisibleSize;
+		// 20px added for padding top of the page (under the header)
+		this.isScrollable = (this.sidebarElem.scrollHeight + 20) >= document.body.clientHeight;
 		this.setState({ scrollTop });
 	}
 

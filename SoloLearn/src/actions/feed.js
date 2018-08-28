@@ -1,4 +1,4 @@
-import { showError, groupFeedItems } from 'utils';
+import { showError, groupFeedItems, forceOpenFeed } from 'utils';
 import Service from 'api/service';
 import * as types from 'constants/ActionTypes';
 import feedTypes from 'defaults/appTypes';
@@ -25,6 +25,8 @@ export const getFeedItemsInternal = () => async (dispatch, getState) => {
 		const response = await Service.request('Profile/GetFeed', { fromId, count: requestLimitCount });
 		const { length } = response.feed;
 		const feedItems = groupFeedItems(response.feed);
+		const isFirstItemGrouppedChallenge = feed.length === 0 && feedItems.length && feedItems[0].type === feedTypes.mergedChallange;
+		const forceOpenedFeed = isFirstItemGrouppedChallenge ? forceOpenFeed(feedItems[0]) : feedItems;
 		const feedItemsCount = feed.length + feedItems.length;
 		if (feed.length + length >= requestLimitCount * (1 + suggestionsBatch) &&
 			suggestionsBatch * 10 < discoverSuggestions.length) {
@@ -35,7 +37,7 @@ export const getFeedItemsInternal = () => async (dispatch, getState) => {
 			};
 			feedItems.push(suggestionsObj);
 		}
-		dispatch(getFeedItems(feedItems));
+		dispatch(getFeedItems(forceOpenedFeed));
 		// If after grouping challenges, we have less than the half of the elements
 		// We will send another GetFeed request
 		if (feedItemsCount < requestLimitCount / 2) {
@@ -45,7 +47,7 @@ export const getFeedItemsInternal = () => async (dispatch, getState) => {
 				dispatch(getFeedItemsInternal(startId));
 			}
 		}
-		if (length < requestLimitCount) {
+		if (length === 0) {
 			dispatch({ type: types.MARK_FEED_FINISHED });
 		}
 	} catch (e) {
