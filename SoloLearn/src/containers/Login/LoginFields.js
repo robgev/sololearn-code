@@ -10,15 +10,17 @@ const LoginFields = ({
 	handleEnter,
 }) => (
 	<div>
-		<div className="input-fields">
+		<form onSubmit={login} className="input-fields">
 			<input
 				value={email}
 				onChange={updateState}
 				onKeyPress={handleEnter}
 				name="email"
+				type="email"
 				placeholder="Email"
 			/>
 			<input
+				required
 				value={password}
 				onChange={updateState}
 				onKeyPress={handleEnter}
@@ -26,16 +28,16 @@ const LoginFields = ({
 				type="password"
 				placeholder="Password"
 			/>
-		</div>
+			<RaisedButton
+				type="submit"
+				primary
+				label="Sign In"
+				style={{ width: '40%' }}
+			/>
+		</form>
 		<div className="forgot-pass-container">
 			<Link to="/forgot" className="forgot-pass hoverable">Forgot Password?</Link>
 		</div>
-		<RaisedButton
-			primary
-			label="Sign In"
-			style={{ width: '40%' }}
-			onClick={login}
-		/>
 	</div>
 );
 
