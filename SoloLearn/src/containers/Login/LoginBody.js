@@ -135,7 +135,7 @@ class LoginBody extends Component {
 							<div className="social-login-element facebook-login">
 								<i className="fab fa-facebook-f" />
 								<FacebookLogin
-									socialId="1088597931155576"
+									socialId="153040644900826"
 									language="en_US"
 									scope="public_profile,email"
 									responseHandler={() => { }}
