@@ -46,7 +46,6 @@ class NotificationManager extends PureComponent {
 		this.interval = setInterval(() => {
 			this.props.refreshNotifications()
 				.then((notifications) => {
-					console.log(notifications);
 					notifications.forEach(notif => NotificationToaster.toast(
 						notif,
 						this.props.markRead,
