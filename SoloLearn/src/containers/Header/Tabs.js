@@ -22,7 +22,7 @@ const TabList = ({ pathname, t }) => (
 				className={`tab-item ${(!pathname.includes('/profile') && isActiveRoute(pathname, tab)) ? 'active' : ''}`}
 			>
 				<img className="tab-icon" alt="Tab icon" src={`/assets/${tab.imgUrl}`} />
-				{t(tab.name)}
+				<span>{t(tab.name)}</span>
 			</Link>
 		))
 		}

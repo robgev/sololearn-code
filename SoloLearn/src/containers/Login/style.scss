@@ -1,3 +1,5 @@
+@import '~styles/medias';
+
 .login-root-container {
 	.login-body-container {
 		display: flex;
@@ -137,7 +139,7 @@
 	}
 }
 
-@media screen and (max-width: 1024px) {
+@include for-until-desktop {
 	.login-root-container {
 		.login-body-container {
 			.inputs-container {
@@ -160,7 +162,7 @@
 	}
 }
 
-@media screen and (max-width: 736px) {
+@include for-until-tablet {
 	.login-root-container {
 		.login-body-container {
 			.artwork-container {

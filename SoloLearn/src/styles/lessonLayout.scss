@@ -1,3 +1,4 @@
+@import '~styles/medias';
 @import "./slayBase.scss";
 
 .slay-container {
@@ -23,6 +24,14 @@
 					color: #84BC4F;
 				}
 			}
+		}
+	}
+}
+
+@include for-until-tablet {
+	.slay-container {
+		.main-content {
+			width: 100%;
 		}
 	}
 }

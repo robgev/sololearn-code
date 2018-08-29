@@ -1,3 +1,5 @@
+@import '~styles/medias';
+
 .layout-container {
 	display: flex;
 	justify-content: center;
@@ -9,6 +11,19 @@
 		transition: all 150ms cubic-bezier(0.075, 0.82, 0.165, 1);
 		&.wide {
 			width: 930px; // main-content.width + main-content.padding-right + sidebar.width
+		}
+	}
+}
+
+@include for-until-tablet {
+	.layout-container {
+		.main-content {
+			padding-right: 0;
+			padding: 0 10px;
+			width: 100%;
+			&.wide {
+				width: 100%;
+			}
 		}
 	}
 }

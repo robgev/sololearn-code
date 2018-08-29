@@ -14,8 +14,8 @@ const collectionTypes = {
 };
 
 const generateBreakpoints = (numberOfItems, roundItems) => {
-	const breakpointValues = [ 1224, 768, 320 ];
-	const initialNumberOfShownItems = roundItems ? 3 : 2;
+	const breakpointValues = [ 1224, 768, 499, 320 ];
+	const initialNumberOfShownItems = roundItems ? 4 : 4;
 	return breakpointValues.map((currentPoint, index) => {
 		const slidesToShow = initialNumberOfShownItems - (index + 1);
 		return {

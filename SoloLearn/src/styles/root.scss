@@ -1,6 +1,7 @@
 @import "~slick-carousel/slick/slick.css";
 @import "~slick-carousel/slick/slick-theme.css";
 @import "utils";
+@import "medias";
 
 * {
   margin:0;
@@ -162,6 +163,12 @@ html, body {
 		.slick-arrow {
 			top: 40%;
 		}
+	}
+}
+
+@include for-until-tablet {
+	.sidebar-placeholder {
+		display: none;
 	}
 }
 
