@@ -1,5 +1,6 @@
 // React modules
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import HomeIcon from 'components/HomeIcon';
 import 'styles/header.scss';
@@ -9,6 +10,10 @@ import Search from './HeaderSearch';
 import TabList from './Tabs';
 import NotificationManager from '../Notifications/NotificationManager';
 import SettingsMenu from './HeaderSettingsMenu';
+
+const mapStateToProps = state => ({
+	isSignedIn: state.userProfile !== null,
+})
 
 // /codes/something/something splitted by / returns ["", "codes", ....] so we take
 // the element with the index 1 => current section.
@@ -22,7 +27,7 @@ const getCurrentSection = (pathName) => {
 	return validSectionNames.includes(sectionName) ? sectionName : defaultValue;
 };
 
-const Header = ({ pathname }) => (
+const Header = ({ pathname, isSignedIn }) => (
 	<div className="header">
 		<div className="header-wrapper">
 			<div className="header-right">
@@ -33,11 +38,11 @@ const Header = ({ pathname }) => (
 				<TabList pathname={pathname} />
 			</div>
 			<div className="header-left">
-				<NotificationManager />
+				{isSignedIn && <NotificationManager />}
 				<SettingsMenu />
 			</div>
 		</div>
 	</div>
 );
 
-export default Header;
+export default connect(mapStateToProps)(Header);

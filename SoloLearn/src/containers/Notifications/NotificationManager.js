@@ -43,19 +43,22 @@ class NotificationManager extends PureComponent {
 
 	async componentDidMount() {
 		await this.props.getNotifications();
-		this.interval = setInterval(() => {
-			this.props.refreshNotifications()
-				.then((notifications) => {
-					notifications.forEach(notif => NotificationToaster.toast(
-						notif,
-						this.props.markRead,
-					));
-				});
-		}, NotificationManager.REFRESH_TIMEOUT);
+		this.refreshInterval = setInterval(
+			this.refreshNotifications,
+			NotificationManager.REFRESH_TIMEOUT,
+		);
 	}
 
 	componentWillUnmount() {
-		clearInterval(this.interval);
+		clearInterval(this.refreshInterval);
+	}
+
+	refreshNotifications = async () => {
+		const notifications = await this.props.refreshNotifications();
+		notifications.forEach(notif => NotificationToaster.toast(
+			notif,
+			this.props.markRead,
+		));
 	}
 
 	toggleNotificationsOpen = () => {
