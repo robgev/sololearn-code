@@ -1,6 +1,6 @@
 // React modules
 import React, { PureComponent } from 'react';
-import { browserHistory } from 'react-router';
+import { browserHistory, withRouter } from 'react-router';
 
 // i18n
 import { translate } from 'react-i18next';
@@ -12,6 +12,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 
+@withRouter
 @translate()
 class HeaderSearch extends PureComponent {
 	constructor(props) {
@@ -51,17 +52,18 @@ class HeaderSearch extends PureComponent {
 
 	handleSearch = () => {
 		const { searchValue } = this.state;
+		const { location } = this.props;
 		if (searchValue.trim()) { // Enter pressed and query is not empty
 			const { searchArea } = this.state;
 			switch (searchArea) {
 			case 'discuss':
-				browserHistory.push({ pathname: '/discuss', query: { query: searchValue } });
+				browserHistory.push({ pathname: '/discuss', query: { ...location.query, query: searchValue } });
 				break;
 			case 'learn':
 				browserHistory.push(`/learn/search/${searchValue}`);
 				break;
 			case 'codes':
-				browserHistory.push({ pathname: '/codes', query: { query: searchValue } });
+				browserHistory.push({ pathname: '/codes', query: { ...location.query, query: searchValue } });
 				break;
 			case 'users':
 				browserHistory.push(`/discover/${searchValue}`);
