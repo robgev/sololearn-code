@@ -23,14 +23,15 @@ class LoginContainer extends PureComponent {
 		autoClose: 2000,
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		document.title = 'Please log in';
 	}
 
 	checkToFeed = (err) => {
 		if (!err) {
 			if (browserHistory.getCurrentLocation().pathname === '/login') {
-				return browserHistory.push('/feed');
+				const { url = '/feed' } = this.props.location.query;
+				return browserHistory.push(url);
 			}
 		}
 		this.setState({ loading: false });

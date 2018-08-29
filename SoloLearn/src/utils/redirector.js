@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
+import { browserHistory, withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { getUserSelector } from 'reducers/reducer_user';
 
@@ -8,11 +8,14 @@ const mapStateToProps = state => ({
 });
 
 export default (Comp) => {
+	@withRouter
 	@connect(mapStateToProps)
 	class Redirector extends Component {
 		componentWillMount() {
 			if (!this.props.isUserLoaded) {
-				browserHistory.replace('/login');
+				const { location } = this.props;
+				const nextLocation = `${location.pathname}${location.search}`;
+				browserHistory.replace(`/login?url=${nextLocation}`);
 			}
 		}
 		render() {
