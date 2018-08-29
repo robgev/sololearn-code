@@ -40,6 +40,7 @@ class Codes extends Component {
 		document.title = 'Sololearn | Code Playground';
 		const { location, filters } = this.props;
 		const query = { ...filters, ...location.query };
+		this.props.setCodesFilters(query);
 		const changed = queryDifference(DEFAULT_CODES_FILTERS, query);
 		browserHistory.replace({ ...location, query: changed });
 		this.props.getSidebarCodes();
