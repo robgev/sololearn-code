@@ -36,23 +36,25 @@ class LoginContainer extends PureComponent {
 
 	alert = (msg, type = 'error') => {
 		if (!toast.isActive(this.toastId)) {
-			this.toastId = toast[type](`⚠️${msg}`);
+			this.toastId = toast[type](`${msg}`);
 		}
 	}
 
 	login = async (data) => {
 		try {
+			this.setState({ loading: true });
 			this.checkToFeed((await this.props.login(data)).err);
 		} catch (e) {
-			toast.error(`❌${e.message}`);
+			toast.error(`${e.message}`);
 		}
 	}
 
 	signup = async (data) => {
 		try {
+			this.setState({ loading: true });
 			this.checkToFeed((await this.props.signup(data).err));
 		} catch (e) {
-			toast.error(`❌${e.message}`);
+			toast.error(`${e.message}`);
 		}
 	}
 
