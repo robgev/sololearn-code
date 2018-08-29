@@ -34,7 +34,7 @@ const LoginFields = ({
 				primary
 				label="Sign In"
 				disabled={loading}
-				style={{ width: '40%' }}
+				style={{ width: '40%', alignSelf: 'flex-end' }}
 			/>
 		</form>
 		<div className="forgot-pass-container">

@@ -52,7 +52,7 @@ const SignupFields = ({
 				primary
 				disabled={loading}
 				label="Sign Up"
-				style={{ width: '40%' }}
+				style={{ width: '40%', alignSelf: 'flex-end' }}
 			/>
 		</form>
 		<div className="tos-disclaimer">
