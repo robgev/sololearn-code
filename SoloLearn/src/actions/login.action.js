@@ -8,6 +8,7 @@ export const logout = () => (dispatch) => {
 	Storage.clear();
 	dispatch(setUserProfile(null));
 	dispatch({ type: types.CLEAR_FEED });
+	dispatch({ type: types.LOGOUT });
 	return Service.request('Logout');
 };
 

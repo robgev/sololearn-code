@@ -13,7 +13,7 @@ const SignupFields = ({
 	handleEnter,
 }) => (
 	<div style={{ textAlign: 'right' }}>
-		<div className="input-fields">
+		<form onSubmit={signup} className="input-fields">
 			<input
 				value={name}
 				onChange={updateState}
@@ -22,6 +22,7 @@ const SignupFields = ({
 				placeholder="Name"
 			/>
 			<input
+				type="email"
 				value={email}
 				onChange={updateState}
 				onKeyPress={handleEnter}
@@ -29,6 +30,7 @@ const SignupFields = ({
 				placeholder="Email"
 			/>
 			<input
+				required
 				value={password}
 				onChange={updateState}
 				onKeyPress={handleEnter}
@@ -37,6 +39,7 @@ const SignupFields = ({
 				placeholder="Password"
 			/>
 			<input
+				required
 				value={retypePass}
 				onChange={updateState}
 				onKeyPress={handleEnter}
@@ -44,19 +47,19 @@ const SignupFields = ({
 				type="password"
 				placeholder="Retype Password"
 			/>
-		</div>
+			<RaisedButton
+				type="submit"
+				primary
+				disabled={loading}
+				label="Sign Up"
+				style={{ width: '40%' }}
+			/>
+		</form>
 		<div className="tos-disclaimer">
 			<p>
 					By signing up you agree to our <Link className="hoverable" to="/terms-of-service">Terms of Service.</Link>
 			</p>
 		</div>
-		<RaisedButton
-			primary
-			disabled={loading}
-			label="Sign Up"
-			style={{ width: '40%' }}
-			onClick={signup}
-		/>
 	</div>
 );
 

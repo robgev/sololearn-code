@@ -15,7 +15,8 @@ class LoginBody extends Component {
 		retypePass: '',
 	}
 
-	login = () => {
+	login = (e) => {
+		e.preventDefault();
 		const { email, password } = this.state;
 		if (email === '' || password === '') {
 			this.props.alert('Fields can\'t be empty', 'info');
@@ -23,7 +24,8 @@ class LoginBody extends Component {
 		this.props.login({ email, password });
 	}
 
-	signup = () => {
+	signup = (e) => {
+		e.preventDefault();
 		Object.values(this.state).forEach((value) => {
 			if (value === '') {
 				this.props.alert('Fields can\'t be empty', 'info');
