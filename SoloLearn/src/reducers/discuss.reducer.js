@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 import uniqBy from 'lodash/uniqBy';
 import {
 	SET_POSTS, EMPTY_POSTS, REMOVE_POST, VOTE_POST, SET_SIDEBAR_QUESTIONS,
-	MARK_DISCUSS_LIST_FINISHED, REQUEST_POSTS, SET_DISCUSS_FILTERS,
+	MARK_DISCUSS_LIST_FINISHED, REQUEST_POSTS, SET_DISCUSS_FILTERS, LOGOUT,
 } from 'constants/ActionTypes';
 
 const isFetching = (state = false, action) => {
@@ -12,6 +12,7 @@ const isFetching = (state = false, action) => {
 		return true;
 	case SET_POSTS:
 	case EMPTY_POSTS:
+	case LOGOUT:
 		return false;
 	default:
 		return state;
@@ -23,6 +24,7 @@ const hasMore = (state = true, action) => {
 	case MARK_DISCUSS_LIST_FINISHED:
 		return false;
 	case EMPTY_POSTS:
+	case LOGOUT:
 		return true;
 	default:
 		return state;
@@ -35,6 +37,8 @@ const filters = (state = DEFAULT_DISCUSS_FILTERS, action) => {
 	switch (action.type) {
 	case SET_DISCUSS_FILTERS:
 		return { ...state, ...action.payload };
+	case LOGOUT:
+		return DEFAULT_DISCUSS_FILTERS;
 	default:
 		return state;
 	}
@@ -47,6 +51,7 @@ const entities = (state = [], action) => {
 	case REMOVE_POST:
 		return state.filter(question => question.id !== action.payload);
 	case EMPTY_POSTS:
+	case LOGOUT:
 		return [];
 	case VOTE_POST:
 		// TODO: needs refactoring after Post state becomes local

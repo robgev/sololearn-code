@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { createSelector } from 'reselect';
 import uniqBy from 'lodash/uniqBy';
 import {
-	MARK_READ, MARK_ALL_READ, RESET_LOCALE_DATA,
+	MARK_READ, MARK_ALL_READ, RESET_LOCALE_DATA, LOGOUT,
 	SET_NOTIFICATIONS, EMPTY_NOTIFICATIONS, SET_NOTIFICATION_COUNT,
 	REQUEST_NOTIFICATIONS, REFRESH_NOTIFICATIONS, MARK_NOTIFICATIONS_LIST_FINISHED,
 } from 'constants/ActionTypes';
@@ -20,6 +20,7 @@ const entities = (state = [], action) => {
 	case MARK_ALL_READ:
 		return state.map(notification => ({ ...notification, isClicked: true }));
 	case EMPTY_NOTIFICATIONS:
+	case LOGOUT:
 	case RESET_LOCALE_DATA:
 		return [];
 	default:

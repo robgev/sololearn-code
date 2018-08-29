@@ -122,3 +122,4 @@ export const SET_SUGGESTION_CHALLENGE = 'SET_SUGGESTION_CHALLENGE';
 
 // General
 export const RESET_LOCALE_DATA = 'RESET_LOCALE_DATA';
+export const LOGOUT = 'LOGOUT';
