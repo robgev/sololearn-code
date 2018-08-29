@@ -59,7 +59,7 @@ class LoginBody extends Component {
 	}
 
 	render() {
-		const { isLogin } = this.props;
+		const { isLogin, loading } = this.props;
 		const {
 			email, password, name, retypePass,
 		} = this.state;
@@ -103,6 +103,7 @@ class LoginBody extends Component {
 							? (
 								<LoginFields
 									email={email}
+									loading={loading}
 									password={password}
 									login={this.login}
 									updateState={this.updateState}
@@ -113,7 +114,8 @@ class LoginBody extends Component {
 								<SignupFields
 									name={name}
 									email={email}
-									login={this.signup}
+									loading={loading}
+									signup={this.signup}
 									password={password}
 									retypePass={retypePass}
 									updateState={this.updateState}
@@ -127,7 +129,7 @@ class LoginBody extends Component {
 							secondary
 							style={{ width: '50%' }}
 							containerElement={<Link to={isLogin ? '/signup' : '/login'} />}
-							label={isLogin ? 'Don\'t have an account?' : 'Already have an account?'}
+							label={isLogin ? 'Create an account' : 'Login'}
 						/>
 					</div>
 					<div className="social-logins">

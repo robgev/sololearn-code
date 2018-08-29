@@ -6,12 +6,13 @@ const SignupFields = ({
 	name,
 	email,
 	signup,
+	loading,
 	password,
 	retypePass,
 	updateState,
 	handleEnter,
 }) => (
-	<div>
+	<div style={{ textAlign: 'right' }}>
 		<div className="input-fields">
 			<input
 				value={name}
@@ -51,6 +52,7 @@ const SignupFields = ({
 		</div>
 		<RaisedButton
 			primary
+			disabled={loading}
 			label="Sign Up"
 			style={{ width: '40%' }}
 			onClick={signup}

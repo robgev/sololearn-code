@@ -13,6 +13,10 @@ const mapDispatchToProps = {
 
 @connect(null, mapDispatchToProps)
 class LoginContainer extends PureComponent {
+	state = {
+		loading: false,
+	}
+
 	toastId = 0;
 	toastOptions = {
 		transition: Bounce,
@@ -29,6 +33,7 @@ class LoginContainer extends PureComponent {
 				return browserHistory.push('/feed');
 			}
 		}
+		this.setState({ loading: false });
 		return this.fault(err);
 	}
 
@@ -76,6 +81,7 @@ class LoginContainer extends PureComponent {
 					alert={this.alert}
 					login={this.login}
 					forgot={this.forgot}
+					loading={this.state.loading}
 				/>
 			</div>
 		);

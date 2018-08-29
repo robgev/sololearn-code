@@ -109,6 +109,7 @@
 						line-height: 40px;
 						font-size: 25px;
 						color: #fff;
+						flex-shrink: 0;
 						.login-component {
 							position: relative;
 							border: none;
@@ -134,3 +135,36 @@
 		}
 	}
 }
+
+@media screen and (max-width: 1024px) {
+	.login-root-container {
+		.login-body-container {
+			.inputs-container {
+				.social-logins {
+					.social-logins-wrapper {
+						flex-direction: column;
+						.social-login-element {
+							&.google-login {
+								margin-left: 0;
+							}
+							&.facebook-login {
+								margin-right: 0;
+								margin-bottom: 5px;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 736px) {
+	.login-root-container {
+		.login-body-container {
+			.artwork-container {
+				display: none;
+			}
+		}
+	}
+ }

@@ -5,11 +5,12 @@ import RaisedButton from 'material-ui/RaisedButton';
 const LoginFields = ({
 	email,
 	login,
+	loading,
 	password,
 	updateState,
 	handleEnter,
 }) => (
-	<div>
+	<div style={{ textAlign: 'right' }}>
 		<div className="input-fields">
 			<input
 				value={email}
@@ -33,6 +34,7 @@ const LoginFields = ({
 		<RaisedButton
 			primary
 			label="Sign In"
+			disabled={loading}
 			style={{ width: '40%' }}
 			onClick={login}
 		/>
