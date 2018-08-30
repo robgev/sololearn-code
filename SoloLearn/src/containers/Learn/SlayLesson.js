@@ -55,8 +55,8 @@ class SlayLesson extends PureComponent {
 	}
 
 	loadCommentsCount = async () => {
-		const { id, type } = this.props.activeLesson;
-		const { count } = await Service.request('Discussion/GetLessonCommentCount', { quizId: id, type });
+		const { id } = this.props.activeLesson;
+		const { count } = await Service.request('Discussion/GetUserLessonCommentCount', { lessonId: id });
 		return count;
 	}
 
