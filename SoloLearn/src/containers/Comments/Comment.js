@@ -238,7 +238,7 @@ class Comment extends Component {
 						isEditing, message, toggleEdit, id,
 					}) => (isEditing
 						? (
-							<div>
+							<div className="comment-input-toolbar">
 								<MentionInput
 									style={{ height: 50 }}
 									ref={(i) => { this.editMentionInput = i; }}
@@ -290,7 +290,7 @@ class Comment extends Component {
 				{
 					this.isReplyInputOpen
 					&& (
-						<div>
+						<div className="comment-input-toolbar">
 							<MentionInput
 								style={{ height: 50 }}
 								ref={(i) => { this.mentionInput = i; }}
@@ -299,7 +299,12 @@ class Comment extends Component {
 								onLengthChange={this.handleReplyLengthChange}
 								placeholder="Write a new answer"
 							/>
-							<FlatButton disabled={!this.replyCommentLength} label="Reply" onClick={this.addReply} />
+							<FlatButton
+								className="save-button"
+								disabled={!this.replyCommentLength}
+								label="Reply"
+								onClick={this.addReply}
+							/>
 							<Divider />
 						</div>
 					)
