@@ -46,14 +46,14 @@ class TypeIn extends Component {
 					{
 						disabled
 							? (
-								<div style={{ margin: 10 }}>
+								<span style={{ fontSize: 18 }}>
 									<span style={{ color: 'green' }}>
 										{getCommonPrefix(text, this.correctAnswer.text)}
 									</span>
 									<span style={{ color: 'red' }}>
 										{text.slice(getCommonPrefix(text, this.correctAnswer.text).length)}
 									</span>
-								</div>
+								</span>
 							) : <TextField
 								name="answer-placeholder"
 								maxLength={this.correctAnswer.text.length}

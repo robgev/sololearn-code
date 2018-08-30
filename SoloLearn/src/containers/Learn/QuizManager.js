@@ -244,7 +244,7 @@ class QuizManager extends Component {
 		} = this.props;
 		const { count } =
 			await Service.request('Discussion/GetLessonCommentCount', { quizId, type: isText ? 1 : 3 });
-		browserHistory.push(`/learn/course/${courseName}/${moduleName}/${activeLesson.name}/${number}`);
+		browserHistory.push(`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(activeLesson.name)}/${number}`);
 		this.setState({ commentsCount: count, commentsOpened: false });
 		this.props.selectQuiz({ id: quizId, number, isText });
 	}
