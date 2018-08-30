@@ -693,7 +693,7 @@ ${succeedingSubstr}
 				>
 					<div id="playground-container" style={styles.playgroundContainer}>
 						{
-							!(withTopToolbar && shouldShowToolbar) ? null : (
+							!(withTopToolbar && shouldShowToolbar && !fullScreen) ? null : (
 								<TopToolbar
 									voteCode={this.voteCode}
 									codeData={latestSavedCodeData}
