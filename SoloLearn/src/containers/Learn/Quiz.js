@@ -214,7 +214,7 @@ class Quiz extends Component {
 	}
 	tryAgain = () => {
 		this.quiz.tryAgain();
-		this.setState({ checkResult: null });
+		this.setState({ checkResult: null, isQuizComplete: false });
 	}
 	get checkBarOnClick() {
 		const { checkResult } = this.state;
