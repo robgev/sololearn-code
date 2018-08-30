@@ -68,6 +68,7 @@ const NotFound = Loadable({ loader: () => import('components/NotFound') });
 const Privacy = Loadable({ loader: () => import('components/StaticPages/Privacy') });
 const Faq = Loadable({ loader: () => import('components/StaticPages/Faq') });
 const Contact = Loadable({ loader: () => import('components/StaticPages/Contact') });
+const ToS = Loadable({ loader: () => import('components/StaticPages/TOS') });
 
 // Quiz factory
 const QuizFactoryMenu = Loadable({
@@ -87,6 +88,10 @@ const QuizFactoryRate = Loadable({
 export default ([
 	<Route path="/login" component={Login} />,
 	<Route path="/signup" component={Login} />,
+	<Route path="/privacy" component={Privacy} />,
+	<Route path="/faq" component={Faq} />,
+	<Route path="/contact" component={Contact} />,
+	<Route path="/terms-of-service" component={ToS} />,
 	<Route component={redirector(MainLayout)} key="mainLayoutRoutes" >
 		<Redirect exact path="/" to="/feed" />
 		<Route path="/learn" component={SlayHome} />
@@ -131,9 +136,6 @@ export default ([
 		<Route path="/quiz-factory/suggest/:type" component={QuizFactorySuggestTypeSelector} />
 		<Route path="/quiz-factory/rate/:courseId" component={QuizFactoryRate} />
 		<Route path="/quiz-factory/my-submissions" component={QuizFactoryMySubmissions} />
-		<Route path="/privacy" component={Privacy} />
-		<Route path="/faq" component={Faq} />
-		<Route path="/contact" component={Contact} />
 		<Route path="*" exact component={NotFound} />
 	</Route >,
 ]);
