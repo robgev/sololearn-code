@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
 import findKey from 'lodash/findKey';
+import SplitPane from 'react-split-pane';
 
 // i18n
 import { translate } from 'react-i18next';
@@ -44,8 +45,6 @@ const styles = {
 	},
 	defaultOutputContainer: {
 		base: {
-			position: 'absolute',
-			bottom: 0,
 			width: '100%',
 			display: 'none',
 		},
@@ -53,7 +52,6 @@ const styles = {
 			display: 'block',
 		},
 		defaultOutput: {
-			resize: 'vertical',
 			overflow: 'auto',
 			fontFamily: 'monospace',
 			border: '1px solid transparent',
@@ -712,30 +710,38 @@ ${succeedingSubstr}
 									handleTabChange={this.handleTabChange}
 									fullScreenButtonAction={inline ? this.maximizeInlineCode : this.toggleFullScreen}
 								/>
-								<div style={{ position: 'relative' }}>
-									<Editor
-										inline={inline}
-										code={code}
-										mode={mode}
-										theme={theme}
-										publicID={publicID}
-										fullScreen={fullScreen}
-										showWebOutput={showWebOutput}
-										handleEditorChange={this.handleEditorChange}
-									/>
-									<Paper
-										className="default-output-container"
-										style={{
-											...styles.defaultOutputContainer.base,
-											...(showOutput && type === 'default' ? styles.defaultOutputContainer.show : {}),
-										}}
+								<div style={{ position: 'relative', height: inline ? '300px' : fullScreen ? 'calc(100vh - 166px)' : '60vh' }}>
+									<SplitPane
+										maxSize={0}
+										primary="first"
+										split="horizontal"
+										allowResize={showOutput && type === 'default'}
+										defaultSize={showOutput && type === 'default' ? 'calc(100% - 200px)' : '100%'}
 									>
-										{!(isRunning && type === 'default') ? null
-											: <LoadingOverlay size={30} />
-										}
-										<div style={styles.outputHeader}>Output: </div>
-										<pre className="default-output" style={styles.defaultOutputContainer.defaultOutput} />
-									</Paper>
+										<Editor
+											inline={inline}
+											code={code}
+											mode={mode}
+											theme={theme}
+											publicID={publicID}
+											fullScreen={fullScreen}
+											showWebOutput={showWebOutput}
+											handleEditorChange={this.handleEditorChange}
+										/>
+										<Paper
+											className="default-output-container"
+											style={{
+												...styles.defaultOutputContainer.base,
+												...(showOutput && type === 'default' ? styles.defaultOutputContainer.show : {}),
+											}}
+										>
+											{!(isRunning && type === 'default') ? null
+												: <LoadingOverlay size={30} />
+											}
+											<div style={styles.outputHeader}>Output: </div>
+											<pre className="default-output" style={styles.defaultOutputContainer.defaultOutput} />
+										</Paper>
+									</SplitPane>
 								</div>
 								<OutputWindow
 									type={type}

@@ -1,5 +1,5 @@
 // React modules
-import React from 'react';
+import React, { Fragment } from 'react';
 import Radium, { Style } from 'radium';
 import AceEditor from 'react-ace';
 
@@ -23,6 +23,7 @@ const styles = {
 	editor: {
 		base: {
 			width: '100%',
+			height: '100%',
 			transform: 'translateZ(0)',
 		},
 		hide: {
@@ -68,7 +69,7 @@ const Editor = ({
 	showWebOutput,
 	handleEditorChange,
 }) => (
-	<div>
+	<Fragment>
 		{aceEditorStyle}
 		{aceLineStyle}
 		<AceEditor
@@ -78,7 +79,6 @@ const Editor = ({
 			theme={theme}
 			showPrintMargin={false}
 			mode={mode !== 'c' ? mode : 'c_cpp'}
-			height={inline ? '300px' : `${fullScreen ? 100 : 60}vh`}
 			setOptions={{
 				enableBasicAutocompletion: true,
 				enableLiveAutocompletion: true,
@@ -99,7 +99,7 @@ const Editor = ({
 				...(showWebOutput ? styles.editor.hide : {}),
 			}}
 		/>
-	</div>
+	</Fragment>
 );
 
 export default Radium(Editor);
