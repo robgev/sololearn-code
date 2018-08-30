@@ -13,7 +13,7 @@ class TypeIn extends Component {
 		this.input.focus();
 	}
 	_onChange = (_, text) => {
-		this.setState({ text });
+		this.setState({ text: text.toLowerCase() });
 		this.props.onChange({ isComplete: this.isComplete(text) });
 		if (text.length === this.correctAnswer.text.length) {
 			this.input.blur();

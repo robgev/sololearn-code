@@ -80,7 +80,8 @@ class FillIn extends Component {
 		}
 	}
 	_onAnswerChange = (text, inputId) => {
-		const inputs = this.state.inputs.map(i => (i.id === inputId ? { ...i, text } : i));
+		const inputs = this.state.inputs.map(i =>
+			(i.id === inputId ? { ...i, text: text.toLowerCase() } : i));
 		this.setState({ inputs });
 		this.props.onChange({ isComplete: this.isComplete(inputs) });
 	}

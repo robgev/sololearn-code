@@ -1,4 +1,5 @@
-import { MAP_LESSONS } from '../constants/ActionTypes';
+import { MAP_LESSONS } from 'constants/ActionTypes';
+import { toSeoFriendly } from 'utils';
 
 export default function (state = null, action) {
 	switch (action.type) {
@@ -16,7 +17,7 @@ export const getLessonByName = (state, name) => {
 	}
 	let res = null;
 	Object.values(lessonsMapping).forEach((lesson) => {
-		if (lesson.name === name) {
+		if (toSeoFriendly(lesson.name) === name) {
 			res = lesson;
 		}
 	});

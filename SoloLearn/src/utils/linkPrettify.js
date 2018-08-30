@@ -1,4 +1,4 @@
-const toSeoFriendly = (text, maxLength) => {
+const toSeoFriendly = (text, maxLength = 100) => {
 	if (text == null) return '';
 
 	const pattern = /[\w]+/g;

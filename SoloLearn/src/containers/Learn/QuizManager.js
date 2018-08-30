@@ -25,6 +25,7 @@ import { getLessonByName } from 'reducers/reducer_lessons';
 // Utils
 import Progress, { ProgressState } from 'api/progress';
 import Service from 'api/service';
+import { toSeoFriendly } from 'utils';
 
 // Additional data and components
 import Comments from 'containers/Comments/CommentsBase';
@@ -107,12 +108,12 @@ class QuizManager extends Component {
 						localProgress[localProgress.length - 1].lessonID :
 						lessons[0].id;
 					this.setActiveLesson(activeLessonId, activeModuleId);
-					browserHistory.replace(`/learn/course/${courseName}/${moduleName}/${lessonName}/${this.props.activeQuiz.number}`);
+					browserHistory.replace(`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(lessonName)}/${this.props.activeQuiz.number}`);
 				} else {
 					const { localProgress } = Progress;
 					const activeLessonId = localProgress[localProgress.length - 1].lessonID;
 					this.setActiveLesson(activeLessonId, moduleId);
-					browserHistory.replace(`/learn/course/${courseName}/${moduleName}/${lessonName}/${this.props.activeQuiz.number}`);
+					browserHistory.replace(`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(lessonName)}/${this.props.activeQuiz.number}`);
 				}
 			} else {
 				this.setActiveLesson(lessonId, moduleId);

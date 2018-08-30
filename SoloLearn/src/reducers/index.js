@@ -100,8 +100,9 @@ export const isLoaded = (state, componentName) => {
 		return (state.course && state.modulesMapping &&
 				state.lessonsMapping && state.activeModuleId) != null;
 	case 'quizzes':
-		return (state.course && state.modulesMapping &&
-				state.lessonsMapping && state.quizzesMapping && state.activeModuleId) != null;
+		return state.course !== null && state.modulesMapping !== null &&
+				state.lessonsMapping !== null && state.quizzesMapping !== null &&
+				state.activeModuleId !== null;
 	case 'discuss':
 		return state.questions.length > 0;
 	case 'discussPost':
