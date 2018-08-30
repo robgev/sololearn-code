@@ -28,8 +28,8 @@ const ModuleChip = ({
 					className={`module-circle flex-centered ${paperClassName}`}
 				>
 					<img className="module-image" alt="" src={iconSource} />
-					{completionPercent !== undefined &&
-							<Progressbar percentage={completionPercent} />
+					{completionPercent !== undefined && completionPercent !== 100 &&
+						<Progressbar percentage={completionPercent} />
 					}
 				</Paper>
 				<span className="module-name">{name}</span>
