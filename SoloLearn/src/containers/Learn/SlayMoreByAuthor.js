@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 
 import { getLessonsByAuthor } from 'actions/slay';
-import CourseCard from 'components/CourseCard';
+import CodePenCard from 'components/CodePenCard';
 import SlayLayout from 'components/Layouts/SlayLayout';
 
 // import 'styles/slayHome.scss';
@@ -54,17 +55,30 @@ class SlayMoreByAuthor extends PureComponent {
 
 	render() {
 		const { loading, hasMore } = this.state;
-		const { collectionCourses } = this.props;
+		const { t, collectionCourses, authorName } = this.props;
 		return (
 			<SlayLayout
+				paper
+				noSidebar
 				loading={loading}
 				hasMore={hasMore}
 				items={collectionCourses}
 				loadMore={this.loadMore}
-				cardComponent={CourseCard}
+				cardComponent={CodePenCard}
+				title={`${t('lesson.view-more-by-author')} ${authorName}`}
+				wrapperStyle={{
+					alignItems: 'initial',
+				}}
+				style={{
+					width: 'initial',
+					padding: 15,
+					flexDirection: 'row',
+					flexWrap: 'wrap',
+					justifyContent: 'flex-start',
+				}}
 			/>
 		);
 	}
 }
 
-export default SlayMoreByAuthor;
+export default translate()(SlayMoreByAuthor);
