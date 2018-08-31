@@ -329,7 +329,7 @@ class QuizManager extends Component {
 						{this.generateTimeline(quizzes, activeQuiz)}
 					</Stepper>
 					{childrenWithProps}
-					<Link to={{ pathname: '/discuss', query: { query: tags } }}>Q&A</Link>
+					<Link to={{ pathname: '/discuss', query: { query: tags !== null ? tags : course.language } }}>Q&A</Link>
 					{commentsOpened || activeQuiz.isText ?
 						<Comments
 							id={activeQuiz.id}
