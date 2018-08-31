@@ -8,9 +8,6 @@ import { observer } from 'mobx-react';
 // Material UI components
 import { Tabs, Tab } from 'material-ui/Tabs';
 import Dialog from 'components/StyledDialog';
-import IconButton from 'material-ui/IconButton';
-import Close from 'material-ui/svg-icons/content/clear';
-import { grey600 } from 'material-ui/styles/colors';
 
 // Additional data and components
 import UserList from './UserList';
@@ -33,6 +30,7 @@ const styles = {
 		flex: 1,
 	},
 	tabs: {
+		marginRight: 50,
 		backgroundColor: '#fff',
 	},
 	tab: {
@@ -62,8 +60,7 @@ class FollowersBase extends Component {
 			<Dialog
 				open={open}
 				onRequestClose={closePopup}
-			>
-				<div style={styles.container}>
+				header={
 					<div style={styles.header}>
 						<Tabs
 							style={styles.tabsWrapper}
@@ -82,10 +79,10 @@ class FollowersBase extends Component {
 								style={styles.tab}
 							/>
 						</Tabs>
-						<IconButton className="close" onClick={closePopup}>
-							<Close color={grey600} />
-						</IconButton>
 					</div>
+				}
+			>
+				<div style={styles.container}>
 					{	this.activeTab === TabTypes.Followers &&
 						<UserList
 							users={followers.entities}
