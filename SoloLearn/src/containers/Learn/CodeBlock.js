@@ -89,7 +89,20 @@ class CodeBlock extends Component {
 								labelStyle={styles.codeButtonLabel}
 							/>
 						</div> :
-						<div>
+						<div style={{ position: 'relative' }}>
+							<span style={{
+								position: 'absolute',
+								right: 5,
+								top: 5,
+								display: 'inline-block',
+								background: '#607D8B',
+								color: 'white',
+								padding: 2,
+								fontSize: 13,
+								borderRadius: 3,
+							}}
+							>{courseLanguage}
+							</span>
 							{children}
 							<FlatButton
 								label={t('learn.try-it-yourself')}
