@@ -5,7 +5,9 @@ import { shuffleArray } from 'utils';
 import quizType from './types';
 
 // Pure utils
-const formatAnswers = (answerText, selected, width, disabled, onClick) => {
+const formatAnswers = ({
+	answerText, selected, width, disabled, onClick, correctAnswers,
+}) => {
 	const regex = /\{(\d)}/;
 	return answerText
 		.split(regex).reduce((acc, curr, index) => (acc.isMark
@@ -20,7 +22,11 @@ const formatAnswers = (answerText, selected, width, disabled, onClick) => {
 							tabIndex={0}
 							style={{
 								width: `${width}em`,
-								color: disabled ? 'gray' : 'black',
+								color: disabled
+									? selected[curr] && selected[curr].text === correctAnswers[curr].text
+										? 'green'
+										: 'red'
+									: 'black',
 							}}
 						>{selected[curr] !== null ? selected[curr].text : ''}
 						</div>
@@ -103,7 +109,14 @@ class PlaceholderDnD extends Component {
 			<div className="question-container">
 				<p className="question-text">{this.question}</p>
 				<div className="fill-in-answers-container">
-					{formatAnswers(this.answerText, selected, this.longestAnswer, disabled, this.onClick)}
+					{formatAnswers({
+						answerText: this.answerText,
+						selected,
+						width: this.longestAnswer,
+						disabled,
+						onClick: this.onClick,
+						correctAnswers: this.correctAnswers,
+					})}
 				</div>
 				<div style={{ display: 'flex' }}>
 					{shuffled.map(answer => (
