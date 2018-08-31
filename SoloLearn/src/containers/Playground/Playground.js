@@ -663,8 +663,7 @@ ${succeedingSubstr}
 			inline,
 			withTopToolbar,
 		} = this.props;
-		console.log(this.props.params);
-
+		
 		const inputsPopupActions = [
 			<FlatButton
 				label={t('common.submit-action-title')}

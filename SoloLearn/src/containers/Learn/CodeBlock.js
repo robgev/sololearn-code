@@ -10,7 +10,7 @@ const styles = {
 	codeContainer: {
 		overflow: 'hidden',
 		margin: '10px 0',
-		padding: '5px 0 15px',
+		padding: '5px 0 5px',
 	},
 
 	codeBlock: {
