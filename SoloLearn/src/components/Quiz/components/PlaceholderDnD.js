@@ -57,10 +57,12 @@ class PlaceholderDnD extends Component {
 		};
 	}
 	onClick = (id) => {
-		if (isSelected(this.state.selected, id)) {
-			this._deselect(id);
-		} else {
-			this._select(id);
+		if (!this.props.disabled) {
+			if (isSelected(this.state.selected, id)) {
+				this._deselect(id);
+			} else {
+				this._select(id);
+			}
 		}
 	}
 	_select = (id) => {
