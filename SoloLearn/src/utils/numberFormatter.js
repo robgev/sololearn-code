@@ -1,7 +1,4 @@
-const roundToOneDigit = (number) => {
-	const factor = 10 ** 1;
-	return Math.round(number * factor) / factor;
-};
+const roundToOneDigit = number => Math.round(Math.floor(number * 10)) / 10;
 
 const numberFormatter = (number) => {
 	if (number < 1000) {
