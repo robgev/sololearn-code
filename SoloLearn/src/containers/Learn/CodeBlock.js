@@ -29,7 +29,6 @@ const styles = {
 
 	codeButton: {
 		float: 'right',
-		margin: '0 20px 0 0',
 	},
 
 	codeButtonLabel: {
