@@ -230,7 +230,7 @@ class QuizManager extends Component {
 		});
 	}
 
-	loadLessonLink = async (quizId, number, isText, state) => {
+	loadLessonLink = (quizId, number, isText, state) => {
 		if (state === ProgressState.Disabled) {
 			this.setState(this.state);
 			return;
@@ -242,10 +242,11 @@ class QuizManager extends Component {
 			},
 			activeLesson,
 		} = this.props;
-		const { count } =
-			await Service.request('Discussion/GetLessonCommentCount', { quizId, type: isText ? 1 : 3 });
+		Service.request('Discussion/GetLessonCommentCount', { quizId, type: isText ? 1 : 3 })
+			.then(({ count }) => {
+				this.setState({ commentsCount: count, commentsOpened: false });
+			});
 		browserHistory.push(`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(activeLesson.name)}/${number}`);
-		this.setState({ commentsCount: count, commentsOpened: false });
 		this.props.selectQuiz({ id: quizId, number, isText });
 	}
 
