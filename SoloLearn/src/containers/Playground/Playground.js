@@ -4,6 +4,7 @@ import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
 import findKey from 'lodash/findKey';
 import SplitPane from 'react-split-pane';
+import 'styles/Playground/SplitPaneStyles.scss';
 
 // i18n
 import { translate } from 'react-i18next';
