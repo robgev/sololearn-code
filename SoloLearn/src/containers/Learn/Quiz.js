@@ -18,7 +18,7 @@ import Dialog from 'components/StyledDialog';
 import Paper from 'material-ui/Paper';
 
 // Additional data and components
-import QuizAnswers, { CheckBar } from 'components/Quiz';
+import QuizAnswers, { CheckBar, TopBar } from 'components/Quiz';
 import LoadingOverlay from 'components/LoadingOverlay';
 import QuizText from '../Learn/QuizText';
 
@@ -149,10 +149,10 @@ class Quiz extends Component {
 		this.setState({ notAvailable: false });
 	}
 
-	check = () => {
-		const checkResult = this.quiz.check();
+	check = (force = false) => {
+		const checkResult = force ? true : this.quiz.check();
 		Progress.addResult(this.props.activeLessonId, this.props.activeQuiz.id, checkResult, 0);
-		this.setState({ checkResult });
+		this.setState({ checkResult, isQuizComplete: true });
 		this.props.openComments();
 	}
 
@@ -235,6 +235,20 @@ class Quiz extends Component {
 		}
 		return t('learn.buttons-try-again');
 	}
+	unlock = () => {
+		this.quiz.unlock();
+		this.check(true);
+	}
+	hint = () => {
+		if (this.quiz.hint()) {
+			this.check(true);
+		}
+	}
+	get isHintable() {
+		const { activeQuiz, quizzes } = this.props;
+		const { type } = quizzes[activeQuiz.id];
+		return type === 2 || type === 3;
+	}
 	render() {
 		const {
 			course,
@@ -306,6 +320,12 @@ class Quiz extends Component {
 		ReactGA.ga('send', 'screenView', { screenName: 'Lesson Quiz Page' });
 		return (
 			<div className="quiz" style={styles.wrapper}>
+				<TopBar
+					onUnlock={this.unlock}
+					onHint={this.hint}
+					hintable={this.isHintable}
+					disabled={checkResult !== null}
+				/>
 				<QuizAnswers
 					key={activeQuiz.id}
 					quiz={quiz}

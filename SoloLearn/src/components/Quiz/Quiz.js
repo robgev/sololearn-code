@@ -9,9 +9,7 @@ class Quiz extends Component {
 	unlock = () => {
 		this.quiz.unlock();
 	}
-	hint = () => {
-		this.quiz.hint();
-	}
+	hint = () => this.quiz.hint();
 	tryAgain = () => {
 		this.quiz.tryAgain();
 	}
