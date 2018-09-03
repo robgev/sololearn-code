@@ -36,14 +36,16 @@ const LoginFields = ({
 			<RaisedButton
 				type="submit"
 				primary
-				label="Sign In"
 				disabled={loading}
+				label={isForgot ? 'Send' : 'Sign In'}
 				style={{ width: '40%', alignSelf: 'flex-end' }}
 			/>
 		</form>
-		<div className="forgot-pass-container">
-			<Link to="/forgot" className="forgot-pass hoverable">Forgot Password?</Link>
-		</div>
+		{ !isForgot &&
+			<div className="forgot-pass-container">
+				<Link to="/forgot" className="forgot-pass hoverable">Forgot Password?</Link>
+			</div>
+		}
 	</div>
 );
 
