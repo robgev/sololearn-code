@@ -141,15 +141,16 @@ const lastNotForcedDown = (arr) => {
 	return last(notForcedDowns).index;
 };
 
-export const loadRepliesInternal = (orderBy, findPostId = null) => async (dispatch, getState) => {
-	const { discussPost: post } = getState();
-	const index = lastNotForcedDown(post.replies) + 1;
-	const posts = await fetchReplies({
-		postId: post.id, orderBy, index, findPostId,
-	});
-	dispatch(loadReplies(posts));
-	return posts.length;
-};
+export const loadRepliesInternal = ({ orderBy, postId = null, findPostId = null }) =>
+	async (dispatch, getState) => {
+		const { discussPost: post } = getState();
+		const index = lastNotForcedDown(post === null ? [] : post.replies) + 1;
+		const posts = await fetchReplies({
+			postId: postId === null ? post.id : postId, orderBy, index, findPostId,
+		});
+		dispatch(loadReplies(posts));
+		return posts.length;
+	};
 
 export const emptyReplies = () => ({
 	type: types.EMPTY_DISCUSS_POST_REPLIES,

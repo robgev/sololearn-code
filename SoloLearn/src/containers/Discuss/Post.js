@@ -34,7 +34,7 @@ import AddReply from './AddReply';
 import { PostStyles as styles } from './styles';
 
 const mapStateToProps = state => ({
-	isLoaded: isLoaded(state, 'discussPost'),
+	// isLoaded: isLoaded(state, 'discussPost'),
 	post: state.discussPost,
 	userId: state.userProfile.id,
 });
@@ -78,10 +78,6 @@ class Post extends Component {
 		const { params: oldParams } = this.props;
 		if (newParams.id !== oldParams.id) {
 			this.initialize();
-		} else if (newParams.replyId != null && newParams.replyId !== oldParams.replyId) {
-			this.props.emptyReplies();
-			await this.getReplies(newParams.replyId);
-			this._replies.getWrappedInstance().scrollToId(newParams.replyId);
 		}
 	}
 
@@ -94,10 +90,6 @@ class Post extends Component {
 			const { params } = this.props;
 			this.props.loadPost(null);
 			await this.props.loadPostInternal(params.id);
-			await this.getReplies(params.replyId);
-			if (params.replyId) {
-				this._replies.getWrappedInstance().scrollToId(params.replyId);
-			}
 			this.checkAlias(params.questionName);
 		} catch (e) {
 			showError(e, 'Something went wrong when trying to fetch post');
@@ -108,7 +100,11 @@ class Post extends Component {
 	getReplies = (replyId) => {
 		try {
 			const { ordering } = this.state;
-			return this.props.loadRepliesInternal(ordering, replyId);
+			return this.props.loadRepliesInternal({
+				postId: this.props.params.id,
+				ordering,
+				findPostId: replyId,
+			});
 		} catch (e) {
 			showError(e, 'Something went wrong when trying to fetch replies');
 		}
@@ -203,7 +199,7 @@ class Post extends Component {
 
 	render() {
 		const { post, t } = this.props;
-		if (!this.props.isLoaded) {
+		if (post === null) {
 			return <LoadingOverlay />;
 		}
 		const usersQuestion = post.userID === this.props.userId;
@@ -235,23 +231,19 @@ class Post extends Component {
 					style={styles.repliesWrapper}
 					ref={(repliesWrapper) => { this.repliesWrapper = repliesWrapper; }}
 				>
-					{
-						this.props.isLoaded &&
-						<Replies
-							key={this.state.ordering}
-							t={t}
-							replies={post.replies}
-							votePost={this.votePost}
-							scrollElement={this.repliesWrapper}
-							openDeletePopup={this.openDeletePopup}
-							isUsersQuestion={usersQuestion}
-							loadReplies={this.getReplies}
-							loadPreviousReplies={this.getPreviousReplies}
-							orderBy={this.state.ordering}
-							selectedID={this.props.params.replyId || null}
-							ref={(replies) => { this._replies = replies; }}
-						/>
-					}
+					<Replies
+						key={this.state.ordering}
+						t={t}
+						replies={post !== null ? post.replies : []}
+						votePost={this.votePost}
+						scrollElement={this.repliesWrapper}
+						openDeletePopup={this.openDeletePopup}
+						isUsersQuestion={usersQuestion}
+						loadReplies={this.getReplies}
+						loadPreviousReplies={this.getPreviousReplies}
+						orderBy={this.state.ordering}
+						selectedID={this.props.params.replyId || null}
+					/>
 				</div>
 				<Dialog
 					open={this.state.deletePopupOpened}

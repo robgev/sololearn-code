@@ -27,7 +27,7 @@ class Replies extends Component {
 		super(props);
 		this.replyRefs = {};
 		this.state = {
-			canLoadAbove: !!props.replies[0] && props.replies[0].index === 0,
+			canLoadAbove: false,
 			removalPopupOpen: false,
 			reportPopupOpen: false,
 			targetItem: null,
@@ -35,10 +35,14 @@ class Replies extends Component {
 		};
 	}
 
-	componentDidUpdate(prevProps) {
-		const { selectedID } = this.props;
-		if (prevProps.replies.length === 0 && selectedID !== null) {
-			this.scrollToId(selectedID);
+	async componentDidMount() {
+		const { loadReplies, selectedID } = this.props;
+		await loadReplies(selectedID);
+		if (selectedID !== null) {
+			this.scrollToId(parseInt(selectedID, 10));
+		}
+		if (this.props.replies.length && this.props.replies[0].index !== 0) {
+			this.setState({ canLoadAbove: true });
 		}
 	}
 
@@ -49,6 +53,7 @@ class Replies extends Component {
 			this.setState({ canLoadAbove: false });
 		}
 	}
+
 	toggleRemovalPopup = (targetItem = null) => {
 		const { removalPopupOpen } = this.state;
 		this.setState({ removalPopupOpen: !removalPopupOpen, targetItem });
@@ -90,6 +95,7 @@ class Replies extends Component {
 				<InfiniteScroll
 					loadMore={this.loadReplies}
 					hasMore={canLoadMore}
+					initialLoad={false}
 					loader={<CircularProgress
 						style={{ display: 'flex', alignItems: 'center', margin: 'auto' }}
 						key="circular-progress"
