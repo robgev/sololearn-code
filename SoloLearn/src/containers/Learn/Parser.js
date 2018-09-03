@@ -73,7 +73,12 @@ class Parser extends Component {
 	}
 
 	static Image = ({ id, width }) =>
-		<img alt="" src={`https://api.sololearn.com/DownloadFile?id=${id}`} width={`${width}%`} />;
+		(<img
+			alt=""
+			width={`${width}%`}
+			style={{ display: 'block', margin: '5px auto' }}
+			src={`https://api.sololearn.com/DownloadFile?id=${id}`}
+		/>);
 
 	static GlossaryItem = ({ glossaryText, children }) =>
 		<span style={{ color: 'blue' }} title={glossaryText}>{children}</span>
