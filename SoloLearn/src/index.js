@@ -41,7 +41,7 @@ class App extends PureComponent {
 	componentWillMount() {
 		Service.getSession()
 			.then((user) => {
-				if (user === null && !this.props.location.pathname.includes('login')) {
+				if (user === null && !window.location.pathname.includes('login')) {
 					browserHistory.replace('/login');
 				} else {
 					this.props.getUserProfileAsync();

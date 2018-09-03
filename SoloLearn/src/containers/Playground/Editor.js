@@ -63,9 +63,7 @@ const Editor = ({
 	code,
 	mode,
 	theme,
-	inline,
 	publicID,
-	fullScreen,
 	showWebOutput,
 	handleEditorChange,
 }) => (

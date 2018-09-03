@@ -632,8 +632,10 @@ ${succeedingSubstr}
 	}
 
 	maximizeInlineCode = () => {
-		const { params: { primary, secondary }, query } = this.props;
-		browserHistory.replace({ pathname: `/playground/${primary}/${secondary}`, query });
+		const { params: { primary, secondary }, query, basePath } = this.props;
+		console.log(basePath);
+		browserHistory.push(basePath);
+		browserHistory.push({ pathname: `/playground/${primary}/${secondary}`, query });
 	}
 
 	render() {
@@ -664,7 +666,7 @@ ${succeedingSubstr}
 			inline,
 			withTopToolbar,
 		} = this.props;
-		
+
 		const inputsPopupActions = [
 			<FlatButton
 				label={t('common.submit-action-title')}
