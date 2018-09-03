@@ -6,7 +6,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import Progress from 'api/progress';
 import Service from 'api/service';
-// import { loadCourseInternal } from 'actions/learn';
+import { loadCourseInternal } from 'actions/learn';
 import BusyWrapper from 'components/BusyWrapper';
 
 const mapStateToProps = state => ({
@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-	// loadCourseInternal
+	loadCourseInternal,
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -29,14 +29,14 @@ class Certificate extends PureComponent {
 		const { params: { id }, loadCourseInternal } = this.props;
 		const courseId = parseInt(id, 10);
 		if (!this.props.course) {
-			// await loadCourseInternal(courseId);
+			await loadCourseInternal(courseId);
 		}
 		const { modules } = this.props.course;
 		const lastModule = modules[modules.length - 1];
 		const { progress } = Progress.getModuleState(lastModule);
 		const isCourseFinished = progress === 100;
 		if (isCourseFinished) {
-			const imageStream = await Service.fetchRequest('/DownloadCertificate', { courseId });
+			const imageStream = await Service.request('/DownloadCertificate', { courseId });
 			const blob = new Blob([ imageStream ], { type: 'image/jpeg' });
 			const imageData = URL.createObjectURL(blob);
 			this.setState({
