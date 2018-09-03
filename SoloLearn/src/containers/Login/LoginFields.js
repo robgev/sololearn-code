@@ -5,13 +5,15 @@ import RaisedButton from 'material-ui/RaisedButton';
 const LoginFields = ({
 	email,
 	login,
+	forgot,
 	loading,
+	isForgot,
 	password,
 	updateState,
 	handleEnter,
 }) => (
 	<div style={{ textAlign: 'right' }}>
-		<form onSubmit={login} className="input-fields">
+		<form onSubmit={isForgot ? forgot : login} className="input-fields">
 			<input
 				value={email}
 				onChange={updateState}
@@ -20,15 +22,17 @@ const LoginFields = ({
 				type="email"
 				placeholder="Email"
 			/>
-			<input
-				required
-				value={password}
-				onChange={updateState}
-				onKeyPress={handleEnter}
-				name="password"
-				type="password"
-				placeholder="Password"
-			/>
+			{ !isForgot &&
+				<input
+					required
+					value={password}
+					onChange={updateState}
+					onKeyPress={handleEnter}
+					name="password"
+					type="password"
+					placeholder="Password"
+				/>
+			}
 			<RaisedButton
 				type="submit"
 				primary

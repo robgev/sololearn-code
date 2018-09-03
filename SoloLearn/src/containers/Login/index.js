@@ -73,15 +73,15 @@ class LoginContainer extends PureComponent {
 	}
 
 	render() {
-		const isLogin = this.props.location.pathname.includes('login');
+		const currentPage = this.props.location.pathname.split('/')[1];
 		return (
 			<div className="login-root-container">
 				<LoginBody
-					isLogin={isLogin}
 					signup={this.signup}
 					alert={this.alert}
 					login={this.login}
 					forgot={this.forgot}
+					currentPage={currentPage}
 					loading={this.state.loading}
 				/>
 			</div>

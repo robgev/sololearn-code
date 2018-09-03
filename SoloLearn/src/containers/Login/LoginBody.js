@@ -49,9 +49,10 @@ class LoginBody extends Component {
 	}
 
 	_handleEnter = (e) => {
-		const { isLogin } = this.props;
+		const { currentPage } = this.props;
 		if (e.key === 'Enter') {
-			if (isLogin) this.login();
+			if (currentPage === 'login') this.login();
+			else if (currentPage === 'forgot') this.forgot();
 			else this.signup();
 		}
 	}
@@ -61,7 +62,9 @@ class LoginBody extends Component {
 	}
 
 	render() {
-		const { isLogin, loading } = this.props;
+		const { currentPage, loading } = this.props;
+		const isLogin = currentPage === 'login';
+		const isForgot = currentPage === 'forgot';
 		const {
 			email, password, name, retypePass,
 		} = this.state;
@@ -97,17 +100,22 @@ class LoginBody extends Component {
 							</div>
 							<h2> {isLogin
 								? 'Sign in to Sololearn'
-								: 'Become a member of our community!'
+								: (isForgot
+									? 'Enter your email'
+									:	'Become a member of our community!'
+								)
 							}
 							</h2>
 						</div>
-						{isLogin
+						{isLogin || isForgot
 							? (
 								<LoginFields
 									email={email}
 									loading={loading}
-									password={password}
 									login={this.login}
+									isForgot={isForgot}
+									forgot={this.forgot}
+									password={password}
 									updateState={this.updateState}
 									handleEnter={this._handleEnter}
 								/>
