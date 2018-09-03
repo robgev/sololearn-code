@@ -31,10 +31,9 @@ const FeedSuggestions = ({ suggestions }) => (
 			arrows
 			draggable
 			dots={false}
-			centerMode
-			infinite
 			speed={500}
 			swipeToSlide
+			variableWidth
 			slidesToShow={3}
 			slidesToScroll={4}
 			responsive={generateBreakpoints(suggestions.length)}

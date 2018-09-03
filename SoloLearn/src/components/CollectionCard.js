@@ -65,12 +65,11 @@ const CollectionCard = ({
 			}
 			<Slider
 				arrows
-				infinite
 				draggable
-				centerMode
 				dots={false}
 				speed={500}
 				swipeToSlide
+				variableWidth
 				slidesToShow={slidesToShow}
 				className={`courses-list ${(isCourses || round) ? 'round' : ''}`}
 				responsive={generateBreakpoints(items.length, isCourses || round)}
