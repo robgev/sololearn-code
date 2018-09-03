@@ -10,6 +10,9 @@ const CommentsToolbar = ({
 		<p className="page-title">{count} {t('common.comments')}</p>
 		<DropDownMenu
 			value={value}
+			style={{ marginRight: -23 }}
+			anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+			targetOrigin={{ vertical: 'top', horizontal: 'right' }}
 			onChange={(_, __, val) => onChange(val)}
 		>
 			<MenuItem value={2} primaryText={t('comments.filter.most-popular')} />
