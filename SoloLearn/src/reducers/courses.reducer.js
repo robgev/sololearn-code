@@ -19,7 +19,7 @@ export default (state = [], action) => {
 export const getCoursesReducer = state => state.courses;
 
 export const getCourseByCourseName = (state, courseName) => {
-	if (state.course) {
+	if (state.course && state.course.name === courseName) {
 		return state.course;
 	}
 	const courses = getCoursesReducer(state);
