@@ -34,6 +34,7 @@ const FeedSuggestions = ({ suggestions }) => (
 			speed={500}
 			swipeToSlide
 			variableWidth
+			infinite={false}
 			slidesToShow={3}
 			slidesToScroll={4}
 			responsive={generateBreakpoints(suggestions.length)}
