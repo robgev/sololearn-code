@@ -42,7 +42,12 @@ class Parser extends Component {
 
 	static U = ({ children }) => <span style={{ textDecoration: 'underline' }}>{children}</span>;
 
-	static Note = ({ children }) => <div className="note">{children}</div>;
+	static Note = ({ children }) => (
+		<div className="note">
+			<img src="/assets/note_icon.png" alt="" />
+			{children}
+		</div>
+	);
 
 	static Code = ({
 		basePath,
@@ -76,7 +81,7 @@ class Parser extends Component {
 		(<img
 			alt=""
 			width={`${width}%`}
-			style={{ display: 'block', margin: '5px auto' }}
+			className="image"
 			src={`https://api.sololearn.com/DownloadFile?id=${id}`}
 		/>);
 
