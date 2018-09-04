@@ -153,11 +153,11 @@ class SlayLesson extends PureComponent {
 						<Paper style={{ padding: 15 }}>
 							<SlayLessonContent
 								date={date}
-								quizId={id}
 								type={type}
-								withToolbar
 								name={name}
 								parts={parts}
+								lessonId={id}
+								withAuthorInfo
 								userData={userData}
 								itemType={itemType}
 								textContent={content}

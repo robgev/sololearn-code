@@ -11,6 +11,7 @@ const SlayLessonToolbar = ({
 	userData, // User data contains avatarURL, userName and userID
 	timePassed,
 	isBookmarked,
+	withAuthorInfo,
 	toggleBookmark,
 }) => (
 	<div className="lesson-toolbar">
@@ -25,15 +26,17 @@ const SlayLessonToolbar = ({
 				}
 			</IconButton>
 		</div>
-		<div className="author-data">
-			<UserTooltip userData={userData}>
-				<ProfileAvatar
-					{...userData}
-					withUserNameBox
-					timePassed={timePassed}
-				/>
-			</UserTooltip>
-		</div>
+		{ withAuthorInfo &&
+			<div className="author-data">
+				<UserTooltip userData={userData}>
+					<ProfileAvatar
+						{...userData}
+						withUserNameBox
+						timePassed={timePassed}
+					/>
+				</UserTooltip>
+			</div>
+		}
 	</div>
 );
 

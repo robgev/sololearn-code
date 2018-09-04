@@ -27,7 +27,7 @@ class QuizText extends Component {
 	}
 
 	toggleBookmark = async () => {
-		const { quizId: id, itemType } = this.props;
+		const { lessonId: id, itemType = 3 } = this.props;
 		const { isBookmarked: bookmark } = this.state;
 		const { isBookmarked } =
 			await Service.request('/BookmarkLesson', { id, type: itemType, bookmark: !bookmark });
@@ -40,7 +40,7 @@ class QuizText extends Component {
 			date,
 			quizId,
 			userData,
-			withToolbar,
+			withAuthorInfo,
 			courseLanguage,
 		} = this.props;
 		return (
@@ -51,15 +51,14 @@ class QuizText extends Component {
 					text={this.props.textContent}
 					glossary={this.props.glossary}
 				/>
-				{withToolbar &&
-					<SlayLessonToolbar
-						id={quizId}
-						userData={userData}
-						isBookmarked={isBookmarked}
-						timePassed={updateDate(date)}
-						toggleBookmark={this.toggleBookmark}
-					/>
-    		}
+				<SlayLessonToolbar
+					id={quizId}
+					userData={userData}
+					isBookmarked={isBookmarked}
+					timePassed={updateDate(date)}
+					withAuthorInfo={withAuthorInfo}
+					toggleBookmark={this.toggleBookmark}
+				/>
 			</div>
 		);
 	}

@@ -256,6 +256,7 @@ class Quiz extends Component {
 			quizzes,
 			activeQuiz,
 			activeModule,
+			activeLessonId,
 			t,
 		} = this.props;
 		const { checkResult, isQuizComplete } = this.state;
@@ -274,6 +275,7 @@ class Quiz extends Component {
 						type={1}
 						key={quiz.id}
 						quizId={quiz.id}
+						lessonId={activeLessonId}
 						glossary={this.props.glossary}
 						textContent={quiz.textContent}
 						courseLanguage={course.language}
