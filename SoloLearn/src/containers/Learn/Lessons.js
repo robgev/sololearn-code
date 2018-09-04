@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
 // Marterial UI components
-import Paper from 'material-ui/Paper';
+import CircularProgress from 'material-ui/CircularProgress';
 import { ProgressState } from 'api/progress';
 import { getCourseByCourseName } from 'reducers/courses.reducer';
 
@@ -99,7 +99,7 @@ class Lessons extends Component {
 		} = this.props;
 
 		if (!isLoaded || !activeModule) {
-			return <div>Loading...</div>;
+			return <CircularProgress style={{ display: 'flex', alignItems: 'center', margin: 'auto' }} />;
 		}
 
 		const { lessons, name } = activeModule;
