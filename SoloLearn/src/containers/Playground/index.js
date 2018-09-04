@@ -1,5 +1,6 @@
 // React modules
 import React from 'react';
+import LoadingOverlay from 'components/LoadingOverlay';
 import Playground from './AsyncPlayground';
 
 const PlaygroundRoute = ({ params, location }) => (
@@ -8,6 +9,7 @@ const PlaygroundRoute = ({ params, location }) => (
 		withTopToolbar
 		query={location.query}
 		basePath="/playground"
+		loadingComponent={<LoadingOverlay />}
 	/>
 );
 

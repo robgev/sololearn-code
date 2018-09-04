@@ -85,7 +85,7 @@ const OverlaySaveActions = ({
 			primary
 			label={t('common.submit-action-title')}
 			disabled={!codeName}
-			onTouchTap={submitSave}
+			onClick={submitSave}
 		/>,
 	];
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
+import CircularProgress from 'material-ui/CircularProgress';
 import Playground from 'containers/Playground/AsyncPlayground';
 
 // i18n
@@ -80,6 +81,7 @@ class CodeBlock extends Component {
 								codeId={codeId}
 								basePath={basePath}
 								params={playgroundParams}
+								loadingComponent={<CircularProgress style={{ display: 'block', margin: '0 auto' }} />}
 							/>
 							<FlatButton
 								label={t('common.close-title')}

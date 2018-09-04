@@ -420,7 +420,6 @@ ${this.props.code}
 					/>
 					<OverlaySaveActions
 						{...this.state}
-						save={this.save}
 						submitSave={this.submitSave}
 						openSavePopup={this.openSavePopup}
 						handleSnackBarClose={this.handleSnackBarClose}

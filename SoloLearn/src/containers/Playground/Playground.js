@@ -25,7 +25,6 @@ import editorSettings from 'defaults/playgroundEditorSettings';
 import { checkWeb, showError } from 'utils';
 
 // Additional components
-import LoadingOverlay from 'components/LoadingOverlay';
 import Layout from 'components/Layouts/GeneralLayout';
 import Editor from './Editor';
 import PlaygroundTabs from './PlaygroundTabs';
@@ -665,6 +664,7 @@ ${succeedingSubstr}
 			t,
 			inline,
 			withTopToolbar,
+			loadingComponent,
 		} = this.props;
 
 		const inputsPopupActions = [
@@ -680,7 +680,7 @@ ${succeedingSubstr}
 
 		return (
 			isGettingCode ?
-				<LoadingOverlay /> :
+				loadingComponent :
 
 				<Layout
 					noSidebar
