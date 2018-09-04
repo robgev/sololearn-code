@@ -65,6 +65,7 @@ class QuizManager extends Component {
 
 	async componentDidMount() {
 		this._isMounted = true;
+		this.timeline = [];
 		const {
 			isLoaded,
 			loadCourseInternal,
@@ -124,6 +125,16 @@ class QuizManager extends Component {
 				this.setState({ commentsCount: count, loading: false });
 				document.title = `${this.props.activeLesson.name}`;
 			}
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (this.timeline.length && nextProps.params.quizNumber !== this.props.params.quizNumber) {
+			const number = parseInt(nextProps.params.quizNumber, 10);
+			const {
+				quizId, isText, state,
+			} = this.timeline.find(q => q.number === number);
+			this.loadLessonLink(quizId, number, isText, state);
 		}
 	}
 
@@ -202,7 +213,7 @@ class QuizManager extends Component {
 						: progressState.Disabled,
 			});
 		});
-
+		this.timeline = timeline;
 		return timeline.map((item, index) => {
 			const quizNumber = (parseInt(this.props.activeQuiz.number, 10) - 1);
 			const isActive = quizNumber === index;

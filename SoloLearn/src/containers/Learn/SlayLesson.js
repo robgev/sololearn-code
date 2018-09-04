@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
-import { Link, browserHistory } from 'react-router';
+import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -61,9 +61,9 @@ class SlayLesson extends PureComponent {
 	}
 
 	loadLesson = async (lessonId) => {
-		const { getCourseLesson, getLesson, pathname } = this.props;
+		const { getCourseLesson, getLesson } = this.props;
 		const {
-			itemType, lessonName, pageNumber = 1,
+			itemType = 1,
 		} = this.props.params;
 		this.setState({ loading: true });
 		switch (itemType) {
@@ -85,7 +85,6 @@ class SlayLesson extends PureComponent {
 			break;
 		}
 		const { name } = this.props.activeLesson;
-		browserHistory.push(`/learn/lesson/${itemType}/${lessonId}/${lessonName || name}/${pageNumber}`);
 		document.title = `${name}`;
 		if (this.props.activeLesson.parts) {
 			ReactGA.ga('send', 'screenView', { screenName: 'Course Lesson Lesson Page' });
