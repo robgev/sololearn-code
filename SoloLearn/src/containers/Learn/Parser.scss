@@ -11,6 +11,7 @@
     img {
       align-self: flex-start;
       width: 25px;
+      flex-shrink: 0;
       margin-right: 10px;
     }
   }

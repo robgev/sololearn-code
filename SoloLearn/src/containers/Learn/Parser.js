@@ -3,7 +3,7 @@ import { Tooltip } from 'react-tippy';
 import CodeBlock from './CodeBlock';
 import './Parser.scss';
 
-const wordBoundary = term => new RegExp(`(?:^|\\s|\\]|\\.|\\,)${term}(?:\\s|\\$|\\[|\\.|\\,)`, 'mi');
+const wordBoundary = term => new RegExp(`(?:^|\\s|\\]|\\.|\\,)${term}(?:\\s|\\$|\\[|\\.|\\,)`, 'm');
 
 const flattenGlossaryTerms = (arr) => {
 	const res = [];
@@ -46,7 +46,9 @@ class Parser extends Component {
 	static Note = ({ children }) => (
 		<div className="note">
 			<img src="/assets/note_icon.png" alt="" />
-			{children}
+			<div>
+				{children}
+			</div>
 		</div>
 	);
 
@@ -192,7 +194,7 @@ class Parser extends Component {
 				current = current.substring(index + match.length);
 			}
 		});
-		allItems.sort((a, b) => b.offset - a.offset);
+		allItems.sort((a, b) => a.offset - b.offset);
 		const result = [];
 		if (allItems.length === 0) {
 			return fullText;
@@ -204,7 +206,8 @@ class Parser extends Component {
 				el.item,
 			);
 			if (index === arr.length - 1) {
-				result.push(fullText.substring(start + el.offset + el.length));
+				const rest = fullText.substring(el.offset + el.length);
+				result.push(rest);
 			}
 		});
 		return result;
