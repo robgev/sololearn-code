@@ -282,7 +282,6 @@ class Quiz extends Component {
 					/>
 					<RaisedButton
 						label={t('learn.buttons-continue')}
-						style={styles.skipText}
 						labelColor="#fff"
 						backgroundColor="#8bc34a"
 						onClick={() =>
