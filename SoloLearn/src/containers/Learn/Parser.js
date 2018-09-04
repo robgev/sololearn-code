@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Tooltip } from 'react-tippy';
 import CodeBlock from './CodeBlock';
 import './Parser.scss';
 
@@ -85,8 +86,22 @@ class Parser extends Component {
 			src={`https://api.sololearn.com/DownloadFile?id=${id}`}
 		/>);
 
-	static GlossaryItem = ({ glossaryText, children }) =>
-		<span style={{ color: 'blue' }} title={glossaryText}>{children}</span>
+	static GlossaryItem = ({ glossaryText, children }) => (
+		<Tooltip
+			arrow
+			interactive
+			useContext
+			tabIndex="0"
+			theme="light"
+			position="top-start"
+			unmountHTMLWhenHide
+			html={glossaryText}
+		>
+			<span className="glossary">
+				{children}
+			</span>
+		</Tooltip>
+	);
 
 	// recursive parser
 	_parse = ({ text, courseLanguage, pathname }) => {
