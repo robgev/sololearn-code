@@ -152,6 +152,7 @@ class SlayLesson extends PureComponent {
 					<div style={{ width: '100%' }}>
 						<Paper style={{ padding: 15 }}>
 							<SlayLessonContent
+								t={t}
 								date={date}
 								type={type}
 								name={name}
