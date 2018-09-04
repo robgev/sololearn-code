@@ -1,11 +1,18 @@
 .parser-root {
   white-space: pre-wrap;
   .note {
+    display: flex;
+    align-items: center;
     border: solid 1px #ddd;
     margin: 10px 0;
-    background: #eeea87;
+    background: #EAEA6E;
     border-left: 5px solid #c9c54c;
     padding: 10px;
+    img {
+      align-self: flex-start;
+      width: 25px;
+      margin-right: 10px;
+    }
   }
   .code {
     border: solid 1px #ddd;
@@ -13,5 +20,9 @@
     background: #ecf0f1;
     border-left: 5px solid #589d32;
     padding: 10px;
+  }
+  .image {
+    display: block;
+    margin: 5px auto;
   }
 }
