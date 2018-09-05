@@ -52,7 +52,7 @@ const OverlayExecutionActions = ({
 			primary
 			label="Add"
 			disabled={!sourceUrl.length}
-			onTouchTap={addExternalSource}
+			onClick={addExternalSource}
 		/>,
 	];
 
