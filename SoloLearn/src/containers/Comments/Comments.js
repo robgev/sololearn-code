@@ -180,7 +180,6 @@ class Comments extends Component {
 	}
 
 	@action onLengthChange = (replyLength) => {
-		console.log(replyLength);
 		if (this.mentionInput) {
 			this.commentLength = replyLength;
 		}
