@@ -20,9 +20,11 @@ const LoginFields = ({
 				onKeyPress={handleEnter}
 				name="email"
 				type="email"
+				autoCapitalize="off"
+				autoCorrect="off"
 				placeholder="Email"
 			/>
-			{ !isForgot &&
+			{!isForgot && (
 				<input
 					required
 					value={password}
@@ -32,7 +34,7 @@ const LoginFields = ({
 					type="password"
 					placeholder="Password"
 				/>
-			}
+			)}
 			<RaisedButton
 				type="submit"
 				primary
@@ -41,11 +43,11 @@ const LoginFields = ({
 				style={{ width: '40%', alignSelf: 'flex-end' }}
 			/>
 		</form>
-		{ !isForgot &&
+		{!isForgot && (
 			<div className="forgot-pass-container">
 				<Link to="/forgot" className="forgot-pass hoverable">Forgot Password?</Link>
 			</div>
-		}
+		)}
 	</div>
 );
 

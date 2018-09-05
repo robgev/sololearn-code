@@ -28,6 +28,8 @@ const SignupFields = ({
 				onKeyPress={handleEnter}
 				name="email"
 				placeholder="Email"
+				autoCapitalize="off"
+				autoCorrect="off"
 			/>
 			<input
 				required
