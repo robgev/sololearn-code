@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { browserHistory } from 'react-router';
 import { toast, Bounce } from 'react-toastify';
 import { connect } from 'react-redux';
+import { faultGenerator } from 'utils';
 import { credentialsLogin, socialLogin, signup, forgotPassword, logout } from 'actions/login.action';
 
 import LoginBody from './LoginBody';
@@ -38,7 +39,7 @@ class LoginContainer extends PureComponent {
 		return this.fault(err);
 	}
 
-	fault = err => err.map(curr => this.alert(curr.split(/(?=[A-Z])/).join(' '), 'warn'))
+	fault = (err, type = 'warn') => err.map(curr => this.alert(curr.split(/(?=[A-Z])/).join(' '), type))
 
 	alert = (msg, type = 'error') => {
 		if (!toast.isActive(this.toastId)) {
@@ -51,7 +52,8 @@ class LoginContainer extends PureComponent {
 			this.setState({ loading: true });
 			this.checkToFeed((await this.props.credentialsLogin(data)).err);
 		} catch (e) {
-			toast.error(`${e.message}`);
+			this.setState({ loading: false });
+			this.fault(faultGenerator(e.data), 'error');
 		}
 	}
 
@@ -60,7 +62,8 @@ class LoginContainer extends PureComponent {
 			this.setState({ loading: true });
 			this.checkToFeed((await this.props.socialLogin(data)).err);
 		} catch (e) {
-			toast.error(`${e.message}`);
+			this.setState({ loading: false });
+			this.fault(faultGenerator(e.data), 'error');
 		}
 	}
 
@@ -69,7 +72,8 @@ class LoginContainer extends PureComponent {
 			this.setState({ loading: true });
 			this.checkToFeed((await this.props.signup(data).err));
 		} catch (e) {
-			toast.error(`${e.message}`);
+			this.setState({ loading: false });
+			this.fault(faultGenerator(e.data), 'error');
 		}
 	}
 
