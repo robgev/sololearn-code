@@ -57,6 +57,8 @@ const count = (state = 0, action) => {
 	switch (action.type) {
 	case SET_NOTIFICATION_COUNT:
 		return action.payload;
+	case EMPTY_NOTIFICATIONS:
+		return 0;
 	default:
 		return state;
 	}
