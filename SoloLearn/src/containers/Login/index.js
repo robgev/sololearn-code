@@ -2,13 +2,13 @@ import React, { PureComponent } from 'react';
 import { browserHistory } from 'react-router';
 import { toast, Bounce } from 'react-toastify';
 import { connect } from 'react-redux';
-import { login, signup, forgotPassword, logout } from 'actions/login.action';
+import { credentialsLogin, socialLogin, signup, forgotPassword, logout } from 'actions/login.action';
 
 import LoginBody from './LoginBody';
 import './style.scss';
 
 const mapDispatchToProps = {
-	login, signup, forgotPassword, logout,
+	credentialsLogin, socialLogin, signup, forgotPassword, logout,
 };
 
 @connect(null, mapDispatchToProps)
@@ -46,10 +46,19 @@ class LoginContainer extends PureComponent {
 		}
 	}
 
-	login = async (data) => {
+	credentialsLogin = async (data) => {
 		try {
 			this.setState({ loading: true });
-			this.checkToFeed((await this.props.login(data)).err);
+			this.checkToFeed((await this.props.credentialsLogin(data)).err);
+		} catch (e) {
+			toast.error(`${e.message}`);
+		}
+	}
+
+	socialLogin = async (data) => {
+		try {
+			this.setState({ loading: true });
+			this.checkToFeed((await this.props.socialLogin(data)).err);
 		} catch (e) {
 			toast.error(`${e.message}`);
 		}
@@ -79,7 +88,8 @@ class LoginContainer extends PureComponent {
 				<LoginBody
 					signup={this.signup}
 					alert={this.alert}
-					login={this.login}
+					credentialsLogin={this.credentialsLogin}
+					socialLogin={this.socialLogin}
 					forgot={this.forgot}
 					currentPage={currentPage}
 					loading={this.state.loading}

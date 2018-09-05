@@ -12,17 +12,27 @@ export const logout = () => (dispatch) => {
 	return Service.request('Logout');
 };
 
-export const login = ({ email, password }) => async (dispatch, getState) => {
+const prepareLogin = () => async (dispatch, getState) => {
 	const { userProfile } = getState();
-	try {
-		if (userProfile != null) await dispatch(logout());
-		const res = await Service.request('Login', { email, password: hash(password) });
-		if (res && res.error) return { err: faultGenerator(res.error.data) };
-		await dispatch(getUserProfileAsync());
-		return { err: false };
-	} catch (e) {
-		throw new Error(`Something went wrong when trying to login: ${e.message}`);
-	}
+	if (userProfile != null) await dispatch(logout());
+};
+
+const login = data => async (dispatch) => {
+	if (data && data.error) return { err: faultGenerator(data.error.data) };
+	await dispatch(getUserProfileAsync());
+	return { err: false };
+};
+
+export const socialLogin = ({ accessToken, service }) => async (dispatch) => {
+	await dispatch(prepareLogin());
+	const res = await Service.request('SocialAuthenticationWithAccessToken', { accessToken, service });
+	return dispatch(login(res));
+};
+
+export const credentialsLogin = ({ email, password }) => async (dispatch) => {
+	await dispatch(prepareLogin());
+	const res = await Service.request('Login', { email, password: hash(password) });
+	return dispatch(login(res));
 };
 
 export const signup = ({ name, email, pass }) => async (dispatch) => {

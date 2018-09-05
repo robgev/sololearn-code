@@ -21,7 +21,11 @@ class LoginBody extends Component {
 		if (email === '' || password === '') {
 			this.props.alert('Fields can\'t be empty', 'info');
 		}
-		this.props.login({ email, password });
+		this.props.credentialsLogin({ email, password });
+	}
+
+	facebookLoginRedirect = ({ accessToken }) => {
+		this.props.socialLogin({ accessToken, service: 'facebook' });
 	}
 
 	signup = (e) => {
@@ -102,7 +106,7 @@ class LoginBody extends Component {
 								? 'Sign in to Sololearn'
 								: (isForgot
 									? 'Enter your email'
-									:	'Become a member of our community!'
+									: 'Become a member of our community!'
 								)
 							}
 							</h2>
@@ -150,7 +154,7 @@ class LoginBody extends Component {
 									socialId="153040644900826"
 									language="en_US"
 									scope="public_profile,email"
-									responseHandler={() => { }}
+									responseHandler={this.facebookLoginRedirect}
 									xfbml
 									fields="id,email,name"
 									version="v2.5"
