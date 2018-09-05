@@ -103,6 +103,13 @@ class Comment extends Component {
 		}
 	}
 
+	@action onReplyBlur = () => {
+		if (this.mentionInput.getValue().length === 0) {
+			const { id, userID, userName } = this.props;
+			this.toggleReplyBox({ id, userID, userName });
+		}
+	}
+
 	@action addReply = async () => {
 		try {
 			const message = this.mentionInput.popValue();
@@ -292,6 +299,7 @@ class Comment extends Component {
 					&& (
 						<div className="comment-input-toolbar">
 							<MentionInput
+								onBlur={this.onReplyBlur}
 								style={{ height: 50 }}
 								ref={(i) => { this.mentionInput = i; }}
 								initText={this.initText}

@@ -1,6 +1,10 @@
 import Service from 'api/service';
 import * as types from 'constants/ActionTypes';
-import { isNotificationsFetchingSelector, notificationsSelector } from 'reducers/notifications.reducer';
+import {
+	isNotificationsFetchingSelector,
+	notificationsSelector,
+	notificationsCountSelector,
+} from 'reducers/notifications.reducer';
 
 const groupNotificationItems = (notifications) => {
 	const groupedNotifications = [];
@@ -64,13 +68,20 @@ export const markAllSeen = () => (_, getState) => {
 export const refreshNotifications = () =>
 	async (dispatch, getState) => {
 		const oldNotifications = notificationsSelector(getState());
+		const oldNotificationsCount = notificationsCountSelector(getState());
 		const toId = oldNotifications.length > 0 ? oldNotifications[0].id : null;
 		const [ { count }, { notifications } ] = await Promise.all([
 			Service.request('Profile/GetUnseenNotificationCount'),
 			Service.request('Profile/GetNotifications', { fromId: null, toId, count: 20 }),
 		]);
 		const grouped = groupNotificationItems(notifications);
-		dispatch(setNotificationCount(count));
-		dispatch({ type: types.REFRESH_NOTIFICATIONS, payload: grouped });
+		if (count < oldNotificationsCount) {
+			// Notifications have been seen on another device, reset all notifications
+			dispatch(emptyNotifications());
+			dispatch(getNotifications());
+		} else {
+			dispatch(setNotificationCount(count));
+			dispatch({ type: types.REFRESH_NOTIFICATIONS, payload: grouped });
+		}
 		return grouped;
 	};

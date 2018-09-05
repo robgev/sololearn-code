@@ -93,10 +93,10 @@ class Quiz extends Component {
 		isQuizComplete: false,
 	};
 
-	componentWillUnmount() {
-		this.props.selectLesson(null);
-		this.props.selectQuiz(null);
-	}
+	// componentWillUnmount() {
+	// 	this.props.selectLesson(null);
+	// 	this.props.selectQuiz(null);
+	// }
 
 	handleHint = () => {
 		if (Progress.consumePoints(this.props.activeModule.hintPrice)) {
