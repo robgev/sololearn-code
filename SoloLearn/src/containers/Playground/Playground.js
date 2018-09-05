@@ -25,6 +25,7 @@ import editorSettings from 'defaults/playgroundEditorSettings';
 import { checkWeb, showError } from 'utils';
 
 // Additional components
+import LoadingOverlay from 'components/LoadingOverlay';
 import Layout from 'components/Layouts/GeneralLayout';
 import Editor from './Editor';
 import PlaygroundTabs from './PlaygroundTabs';
@@ -151,6 +152,7 @@ class Playground extends Component {
 			type: 'web',
 			...codeData,
 			mode: 'html',
+			code: texts.html,
 			theme: 'monokai',
 			isGettingCode: false,
 			languageSelector: 'web',
