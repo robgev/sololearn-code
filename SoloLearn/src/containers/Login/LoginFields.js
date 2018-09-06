@@ -9,9 +9,10 @@ const LoginFields = ({
 	loading,
 	isForgot,
 	password,
+	alertType,
 	updateState,
 	handleEnter,
-	errorMessage,
+	alertMessage,
 	submitButtonRef,
 }) => (
 	<div style={{ textAlign: 'right' }}>
@@ -26,6 +27,7 @@ const LoginFields = ({
 				autoCapitalize="off"
 				autoCorrect="off"
 				placeholder="Email"
+				disabled={isForgot && loading}
 			/>
 			{!isForgot && (
 				<input
@@ -38,9 +40,9 @@ const LoginFields = ({
 					placeholder="Password"
 				/>
 			)}
-			{ errorMessage &&
-			<div className="error-message">
-				{errorMessage}
+			{ alertMessage &&
+			<div className={`alert-message ${alertType}`}>
+				{alertMessage}
 			</div>
 			}
 			<RaisedButton

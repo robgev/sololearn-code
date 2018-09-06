@@ -8,10 +8,11 @@ const SignupFields = ({
 	signup,
 	loading,
 	password,
+	alertType,
 	retypePass,
 	updateState,
 	handleEnter,
-	errorMessage,
+	alertMessage,
 	submitButtonRef,
 }) => (
 	<div style={{ textAlign: 'right' }}>
@@ -53,9 +54,9 @@ const SignupFields = ({
 				type="password"
 				placeholder="Retype Password"
 			/>
-			{ errorMessage &&
-			<div className="error-message">
-				{errorMessage}
+			{ alertMessage &&
+			<div className={`alert-message ${alertType}`}>
+				{alertMessage}
 			</div>
 			}
 			<RaisedButton

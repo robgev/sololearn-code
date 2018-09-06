@@ -15,12 +15,25 @@ const mapDispatchToProps = {
 @connect(null, mapDispatchToProps)
 class LoginContainer extends PureComponent {
 	state = {
+		type: 'error',
 		loading: false,
-		errorMessage: '',
+		alertMessage: '',
 	}
 
 	componentDidMount() {
 		document.title = 'Please log in';
+	}
+
+	componentWillReceiveProps(newProps) {
+		const currentPage = this.props.location.pathname.split('/')[1];
+		const newPage = newProps.location.pathname.split('/')[1];
+		if (newPage !== currentPage) {
+			this.setState({
+				type: 'error',
+				alertMessage: '',
+				loading: false,
+			});
+		}
 	}
 
 	checkToFeed = (err) => {
@@ -36,8 +49,8 @@ class LoginContainer extends PureComponent {
 
 	fault = err => err.map(curr => this.alert(curr.split(/(?=[A-Z])/).join(' ')))
 
-	alert = (errorMessage) => {
-		this.setState({ errorMessage });
+	alert = (alertMessage, type = 'error') => {
+		this.setState({ alertMessage, type });
 	}
 
 	credentialsLogin = async (data) => {
@@ -71,11 +84,14 @@ class LoginContainer extends PureComponent {
 	}
 
 	forgot = async (email) => {
+		this.setState({ loading: true });
 		const { err } = await this.props.forgotPassword(email);
 		// Will implement forgot password continuation later
 		if (err) {
 			this.fault(faultGenerator(err.data));
+			this.setState({ loading: false });
 		}
+		this.alert('Reset email sucessfully sent', 'info');
 	}
 
 	render() {
@@ -89,8 +105,9 @@ class LoginContainer extends PureComponent {
 					socialLogin={this.socialLogin}
 					forgot={this.forgot}
 					currentPage={currentPage}
+					alertType={this.state.type}
 					loading={this.state.loading}
-					errorMessage={this.state.errorMessage}
+					alertMessage={this.state.alertMessage}
 				/>
 			</div>
 		);

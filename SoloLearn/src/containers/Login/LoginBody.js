@@ -34,7 +34,7 @@ class LoginBody extends Component {
 		e.preventDefault();
 		const { email, password } = this.state;
 		if (email.trim() === '' || password.trim() === '') {
-			this.props.alert('Fields can\'t be empty', 'info');
+			this.props.alert('Fields can\'t be empty', 'error');
 		}
 		this.props.credentialsLogin({ email, password });
 	}
@@ -47,13 +47,13 @@ class LoginBody extends Component {
 		e.preventDefault();
 		Object.values(this.state).forEach((value) => {
 			if (value.trim() === '') {
-				this.props.alert('Fields can\'t be empty', 'info');
+				this.props.alert('Fields can\'t be empty', 'error');
 			}
 		});
 		if (this.state.password.length < 6) {
-			this.props.alert('Password should be at least 6 characters long', 'info');
+			this.props.alert('Password should be at least 6 characters long', 'error');
 		} else if (this.state.password !== this.state.retypePass) {
-			this.props.alert('Passwords don\'t match', 'info');
+			this.props.alert('Passwords don\'t match', 'error');
 		}
 		const { name, email, password: pass } = this.state;
 		this.props.signup({ name, email, pass });
@@ -62,8 +62,8 @@ class LoginBody extends Component {
 	forgot = (e) => {
 		e.preventDefault();
 		const { email } = this.state;
-		if (email === '') {
-			this.props.alert('Fields can\'t be empty', 'info');
+		if (email.trim() === '') {
+			this.props.alert('Fields can\'t be empty', 'error');
 		}
 		this.props.forgot(email);
 	}
@@ -81,7 +81,9 @@ class LoginBody extends Component {
 	}
 
 	render() {
-		const { currentPage, loading, errorMessage } = this.props;
+		const {
+ currentPage, loading, alertMessage, alertType 
+} = this.props;
 		const isLogin = currentPage === 'login';
 		const isForgot = currentPage === 'forgot';
 		const {
@@ -135,7 +137,8 @@ class LoginBody extends Component {
 									isForgot={isForgot}
 									forgot={this.forgot}
 									password={password}
-									errorMessage={errorMessage}
+									alertType={alertType}
+									alertMessage={alertMessage}
 									updateState={this.updateState}
 									handleEnter={this._handleEnter}
 									submitButtonRef={this.submitButton}
@@ -149,7 +152,8 @@ class LoginBody extends Component {
 									signup={this.signup}
 									password={password}
 									retypePass={retypePass}
-									errorMessage={errorMessage}
+									alertType={alertType}
+									alertMessage={alertMessage}
 									updateState={this.updateState}
 									handleEnter={this._handleEnter}
 									submitButtonRef={this.submitButton}

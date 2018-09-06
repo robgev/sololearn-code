@@ -30,6 +30,11 @@ const mapStateToProps = state => ({
 	isCoursesLoaded: state.courses.length > 0,
 });
 
+const shouldRedirect = (pathname) => {
+	const whiteList = [ 'login', 'signup', 'forgot', 'terms-of-service', 'contact', 'faq', 'privacy' ];
+	return !whiteList.find(routeName => pathname.includes(routeName));
+};
+
 @connect(mapStateToProps, { getCourses, getUserProfileAsync })
 class App extends PureComponent {
 	constructor(props) {
@@ -41,7 +46,7 @@ class App extends PureComponent {
 	componentWillMount() {
 		Service.getSession()
 			.then((user) => {
-				if (user === null && !window.location.pathname.includes('login')) {
+				if (user === null && shouldRedirect(window.location.pathname)) {
 					browserHistory.replace('/login');
 				} else {
 					this.props.getUserProfileAsync();

@@ -75,12 +75,17 @@
 						margin: 10px 0;
 						font-size: 18px;
 					}
-					.error-message {
-						color: #dd381d;
+					.alert-message {
 						font-size: 14px;
 						font-weight: 700;
 						text-align: left;
 						margin-bottom: 10px;
+						&.error {
+							color: #DD381D;
+						}
+						&.info {
+							color: #8BC34A;
+						}
 					}
 				}
 				.forgot-pass-container {
