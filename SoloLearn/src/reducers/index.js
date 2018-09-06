@@ -46,6 +46,9 @@ import discoverSuggestions from './discover.reducer';
 // Quiz factory
 import quizSubmission from './quizSubmission.reducer';
 
+// Search
+import searchBar from './searchBar.reducer';
+
 const reducers = combineReducers({
 	slay,
 	settings,
@@ -75,6 +78,8 @@ const reducers = combineReducers({
 	feedPins,
 	// Quiz factory
 	quizSubmission,
+	// Search
+	searchBar,
 });
 
 const initialStore = {

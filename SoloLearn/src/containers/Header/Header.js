@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import HomeIcon from 'components/HomeIcon';
 import 'styles/header.scss';
-import Search from './HeaderSearch';
+import Search from './SearchBar';
 
 // Additional components
 import TabList from './Tabs';
@@ -13,7 +13,7 @@ import SettingsMenu from './HeaderSettingsMenu';
 
 const mapStateToProps = state => ({
 	isSignedIn: state.userProfile !== null,
-})
+});
 
 // /codes/something/something splitted by / returns ["", "codes", ....] so we take
 // the element with the index 1 => current section.
@@ -34,7 +34,7 @@ const Header = ({ pathname, isSignedIn }) => (
 				<Link to="/feed" className="home-icon">
 					<HomeIcon />
 				</Link>
-				<Search currentSection={getCurrentSection(pathname)} />
+				<Search />
 				<TabList pathname={pathname} />
 			</div>
 			<div className="header-left">
