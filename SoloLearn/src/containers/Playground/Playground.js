@@ -673,7 +673,7 @@ ${succeedingSubstr}
 			<FlatButton
 				label={t('common.submit-action-title')}
 				primary
-				onTouchTap={this.runCodeWithInputs}
+				onClick={this.runCodeWithInputs}
 			/>,
 		];
 

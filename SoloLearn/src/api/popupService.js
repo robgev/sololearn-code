@@ -91,7 +91,7 @@ class PopupService {
 			<button.componentType
 				label={(texts[button.label] ? texts[button.label] : '')}
 				primary={button.isPrimary}
-				onTouchTap={button.actionCallback}
+				onClick={button.actionCallback}
 			/>
 		));
 	}
