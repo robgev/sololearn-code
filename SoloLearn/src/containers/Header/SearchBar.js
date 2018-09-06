@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router';
+import { withRouter, browserHistory } from 'react-router';
 
 import { connect } from 'react-redux';
 import {
@@ -43,13 +43,51 @@ class SearchBar extends Component {
 	};
 
 	componentDidUpdate(prevProps) {
-		if (this.props.isOpen && prevProps.isOpen === false) {
+		const {
+			isOpen, location, toggle, section,
+		} = this.props;
+		if (isOpen && prevProps.isOpen === false) {
 			this.searchInput.focus();
 		}
+		if (isOpen && location.pathname !== prevProps.location.pathname
+			&& section !== SearchBar.routeSectionMap[location.pathname]) {
+			toggle();
+		}
 	}
+
+	handleKeyDown = async (e) => {
+		if (e.keyCode === 13) {
+			this.handleSearch();
+		}
+	}
+
+	handleSearch = () => {
+		const { value, section } = this.props;
+		const { location } = this.props;
+		if (value.trim()) { // Enter pressed and query is not empty
+			switch (section) {
+			case SECTIONS.posts:
+				browserHistory.push({ pathname: '/discuss', query: { ...location.query, query: value } });
+				break;
+			case SECTIONS.lessons:
+				browserHistory.push(`/learn/search/${value}`);
+				break;
+			case SECTIONS.codes:
+				browserHistory.push({ pathname: '/codes', query: { ...location.query, query: value } });
+				break;
+			case SECTIONS.users:
+				browserHistory.push(`/discover/${value}`);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
 	onSectionChange = (_, __, section) => {
 		this.props.onSectionChange(section);
 	}
+
 	open = () => {
 		const { onSectionChange, toggle, location } = this.props;
 		const sectionPathname = location.pathname.split('/')[1];
@@ -59,6 +97,7 @@ class SearchBar extends Component {
 		}
 		toggle();
 	}
+
 	render() {
 		const {
 			value, section, isOpen,
@@ -103,7 +142,7 @@ class SearchBar extends Component {
 									hintText={t('search_bar.placeholder')}
 									underlineShow={false}
 									searchText={value}
-									onKeyPress={this.handleKeyPress}
+									onKeyDown={this.handleKeyDown}
 									onUpdateInput={onChange}
 									ref={(searchInput) => { this.searchInput = searchInput; }}
 								/>
