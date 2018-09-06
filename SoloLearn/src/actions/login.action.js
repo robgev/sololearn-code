@@ -46,10 +46,13 @@ export const signup = ({ name, email, pass }) => async (dispatch) => {
 	}
 };
 
-export const forgotPassword = email => () => Service.request('ForgotPassword', { email })
-	.then((res) => {
-		if (res && res.error) {
-			return { err: faultGenerator(res.error.data) };
-		}
+export const forgotPassword = email => async () => {
+	try {
+		const res = await Service.request('ForgotPassword', { email });
+		console.log(res);
+		if (res && res.error) return { err: faultGenerator(res.error.data) };
 		return { err: false };
-	});
+	} catch (e) {
+		throw new Error(`Something went wrong: ${e.message}`);
+	}
+};

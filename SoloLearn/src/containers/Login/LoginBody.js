@@ -8,17 +8,21 @@ import SignupFields from './SignupFields';
 import LoginFields from './LoginFields';
 
 class LoginBody extends Component {
-	state = {
-		email: '',
-		password: '',
-		name: '',
-		retypePass: '',
+	constructor(props) {
+		super(props);
+		this.state = {
+			email: '',
+			password: '',
+			name: '',
+			retypePass: '',
+		};
+		this.submitButton = React.createRef();
 	}
 
 	login = (e) => {
 		e.preventDefault();
 		const { email, password } = this.state;
-		if (email === '' || password === '') {
+		if (email.trim() === '' || password.trim() === '') {
 			this.props.alert('Fields can\'t be empty', 'info');
 		}
 		this.props.credentialsLogin({ email, password });
@@ -31,20 +35,21 @@ class LoginBody extends Component {
 	signup = (e) => {
 		e.preventDefault();
 		Object.values(this.state).forEach((value) => {
-			if (value === '') {
+			if (value.trim() === '') {
 				this.props.alert('Fields can\'t be empty', 'info');
 			}
 		});
 		if (this.state.password.length < 6) {
 			this.props.alert('Password should be at least 6 characters long', 'info');
-		} else if (this.state.password !== this.state.passwordRepeat) {
+		} else if (this.state.password !== this.state.retypePass) {
 			this.props.alert('Passwords don\'t match', 'info');
 		}
 		const { name, email, password: pass } = this.state;
 		this.props.signup({ name, email, pass });
 	}
 
-	forgot = () => {
+	forgot = (e) => {
+		e.preventDefault();
 		const { email } = this.state;
 		if (email === '') {
 			this.props.alert('Fields can\'t be empty', 'info');
@@ -53,11 +58,10 @@ class LoginBody extends Component {
 	}
 
 	_handleEnter = (e) => {
-		const { currentPage } = this.props;
 		if (e.key === 'Enter') {
-			if (currentPage === 'login') this.login();
-			else if (currentPage === 'forgot') this.forgot();
-			else this.signup();
+			// Get the material-ui button, go to the underlying
+			// DOM element and perform a programmatical click
+			this.submitButton.current.refs.container.button.click();
 		}
 	}
 
@@ -66,7 +70,7 @@ class LoginBody extends Component {
 	}
 
 	render() {
-		const { currentPage, loading } = this.props;
+		const { currentPage, loading, errorMessage } = this.props;
 		const isLogin = currentPage === 'login';
 		const isForgot = currentPage === 'forgot';
 		const {
@@ -120,8 +124,10 @@ class LoginBody extends Component {
 									isForgot={isForgot}
 									forgot={this.forgot}
 									password={password}
+									errorMessage={errorMessage}
 									updateState={this.updateState}
 									handleEnter={this._handleEnter}
+									submitButtonRef={this.submitButton}
 								/>
 							)
 							: (
@@ -132,8 +138,10 @@ class LoginBody extends Component {
 									signup={this.signup}
 									password={password}
 									retypePass={retypePass}
+									errorMessage={errorMessage}
 									updateState={this.updateState}
 									handleEnter={this._handleEnter}
+									submitButtonRef={this.submitButton}
 								/>
 							)
 						}

@@ -11,10 +11,13 @@ const SignupFields = ({
 	retypePass,
 	updateState,
 	handleEnter,
+	errorMessage,
+	submitButtonRef,
 }) => (
 	<div style={{ textAlign: 'right' }}>
 		<form onSubmit={signup} className="input-fields">
 			<input
+				required
 				value={name}
 				onChange={updateState}
 				onKeyPress={handleEnter}
@@ -22,6 +25,7 @@ const SignupFields = ({
 				placeholder="Name"
 			/>
 			<input
+				required
 				type="email"
 				value={email}
 				onChange={updateState}
@@ -49,17 +53,23 @@ const SignupFields = ({
 				type="password"
 				placeholder="Retype Password"
 			/>
+			{ errorMessage &&
+			<div className="error-message">
+				{errorMessage}
+			</div>
+			}
 			<RaisedButton
 				type="submit"
 				primary
 				disabled={loading}
 				label="Sign Up"
+				ref={submitButtonRef}
 				style={{ width: '40%', alignSelf: 'flex-end' }}
 			/>
 		</form>
 		<div className="tos-disclaimer">
 			<p>
-					By signing up you agree to our <Link className="hoverable" to="/terms-of-service">Terms of Service.</Link>
+					By signing up you agree to our <Link className="hoverable" target="_blank" to="/terms-of-service">Terms of Service.</Link>
 			</p>
 		</div>
 	</div>

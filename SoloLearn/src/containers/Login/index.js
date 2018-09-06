@@ -16,12 +16,7 @@ const mapDispatchToProps = {
 class LoginContainer extends PureComponent {
 	state = {
 		loading: false,
-	}
-
-	toastId = 0;
-	toastOptions = {
-		transition: Bounce,
-		autoClose: 2000,
+		errorMessage: '',
 	}
 
 	componentDidMount() {
@@ -39,12 +34,10 @@ class LoginContainer extends PureComponent {
 		return this.fault(err);
 	}
 
-	fault = (err, type = 'warn') => err.map(curr => this.alert(curr.split(/(?=[A-Z])/).join(' '), type))
+	fault = err => err.map(curr => this.alert(curr.split(/(?=[A-Z])/).join(' ')))
 
-	alert = (msg, type = 'error') => {
-		if (!toast.isActive(this.toastId)) {
-			this.toastId = toast[type](`${msg}`);
-		}
+	alert = (errorMessage) => {
+		this.setState({ errorMessage });
 	}
 
 	credentialsLogin = async (data) => {
@@ -53,7 +46,7 @@ class LoginContainer extends PureComponent {
 			this.checkToFeed((await this.props.credentialsLogin(data)).err);
 		} catch (e) {
 			this.setState({ loading: false });
-			this.fault(faultGenerator(e.data), 'error');
+			this.fault(faultGenerator(e.data));
 		}
 	}
 
@@ -63,7 +56,7 @@ class LoginContainer extends PureComponent {
 			this.checkToFeed((await this.props.socialLogin(data)).err);
 		} catch (e) {
 			this.setState({ loading: false });
-			this.fault(faultGenerator(e.data), 'error');
+			this.fault(faultGenerator(e.data));
 		}
 	}
 
@@ -73,7 +66,7 @@ class LoginContainer extends PureComponent {
 			this.checkToFeed((await this.props.signup(data).err));
 		} catch (e) {
 			this.setState({ loading: false });
-			this.fault(faultGenerator(e.data), 'error');
+			this.fault(faultGenerator(e.data));
 		}
 	}
 
@@ -81,7 +74,7 @@ class LoginContainer extends PureComponent {
 		const { err } = await this.props.forgotPassword(email);
 		// Will implement forgot password continuation later
 		if (err) {
-			this.fault(err);
+			this.fault(faultGenerator(err.data));
 		}
 	}
 
@@ -97,6 +90,7 @@ class LoginContainer extends PureComponent {
 					forgot={this.forgot}
 					currentPage={currentPage}
 					loading={this.state.loading}
+					errorMessage={this.state.errorMessage}
 				/>
 			</div>
 		);

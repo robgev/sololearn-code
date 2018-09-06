@@ -11,10 +11,13 @@ const LoginFields = ({
 	password,
 	updateState,
 	handleEnter,
+	errorMessage,
+	submitButtonRef,
 }) => (
 	<div style={{ textAlign: 'right' }}>
 		<form onSubmit={isForgot ? forgot : login} className="input-fields">
 			<input
+				required
 				value={email}
 				onChange={updateState}
 				onKeyPress={handleEnter}
@@ -35,10 +38,16 @@ const LoginFields = ({
 					placeholder="Password"
 				/>
 			)}
+			{ errorMessage &&
+			<div className="error-message">
+				{errorMessage}
+			</div>
+			}
 			<RaisedButton
 				type="submit"
 				primary
 				disabled={loading}
+				ref={submitButtonRef}
 				label={isForgot ? 'Send' : 'Sign In'}
 				style={{ width: '40%', alignSelf: 'flex-end' }}
 			/>

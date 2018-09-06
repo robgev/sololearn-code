@@ -1,5 +1,5 @@
 const Faults = {
-	WrongCredentials: 1,
+	InvalidUsernameOrPassword: 1,
 	NotActivated: 2,
 	IncorrectEmail: 4,
 	IncorrectName: 8,
