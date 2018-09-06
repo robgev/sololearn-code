@@ -5,8 +5,9 @@ import {
 	discussPostsSelector,
 	discussFiltersSelector,
 	isDiscussFetchingSelector,
-	sidebarQuestionsSelector,
 } from 'reducers/discuss.reducer';
+import { setSearchValue, toggleSearch, onSearchSectionChange } from 'actions/searchBar';
+import { SECTIONS } from 'reducers/searchBar.reducer';
 
 // Utils
 import { toSeoFriendly } from 'utils';
@@ -59,7 +60,13 @@ export const setDiscussFilters = filters => (dispatch, getState) => {
 	if (filters.orderBy) {
 		formattedFilters.orderBy = parseInt(filters.orderBy, 10);
 	}
-	if (Object.keys(formattedFilters).some(key => formattedFilters[key] !== oldFilters[key])) {
+	if (filters.query && filters.query !== oldFilters.query) {
+		dispatch(toggleSearch({ open: true }));
+		dispatch(setSearchValue(filters.query));
+		dispatch(onSearchSectionChange(SECTIONS.posts));
+	}
+	const keys = Object.keys(formattedFilters);
+	if (keys.length === 0 || keys.some(key => formattedFilters[key] !== oldFilters[key])) {
 		dispatch({
 			type: types.SET_DISCUSS_FILTERS,
 			payload: formattedFilters,

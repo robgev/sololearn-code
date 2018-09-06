@@ -15,7 +15,6 @@ import {
 import Layout from 'components/Layouts/GeneralLayout';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-import Chip from 'material-ui/Chip';
 import { QuestionList } from 'components/Questions';
 import AddQuestionButton from 'components/AddQuestionButton';
 
@@ -52,6 +51,9 @@ class Questions extends Component {
 			this.props.setDiscussFilters(location.query);
 		}
 	}
+	componentWillUnmount() {
+		this.props.setDiscussFilters({ query: '' });
+	}
 	getPosts = () => {
 		this.props.getPosts()
 			.catch((e) => {
@@ -85,10 +87,6 @@ class Questions extends Component {
 							}}
 							>
 								<p className="page-title">{t('discuss.title')}</p>
-								<div style={{ display: 'flex', alignItems: 'center', marginLeft: 15 }}>
-									{filters.query !== '' &&
-										<Chip onRequestDelete={this.removeQuery}>{filters.query}</Chip>}
-								</div>
 								<DropDownMenu
 									style={{ height: 20, zIndex: 1 }}
 									value={filters.orderBy}

@@ -54,6 +54,9 @@ class Codes extends Component {
 			this.props.setCodesFilters(location.query);
 		}
 	}
+	componentWillUnmount() {
+		this.props.setCodesFilters({ query: '' });
+	}
 	handleLanguageFilterChange = (_, __, language) => {
 		const { location } = this.props;
 		browserHistory.push({ ...location, query: { ...location.query, language } });

@@ -3,7 +3,7 @@ import { withRouter, browserHistory } from 'react-router';
 
 import { connect } from 'react-redux';
 import {
-	onSearchChange, toggleSearch, onSearchSectionChange,
+	setSearchValue, toggleSearch, onSearchSectionChange,
 } from 'actions/searchBar';
 import {
 	SECTIONS,
@@ -26,7 +26,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-	onChange: onSearchChange,
+	onChange: setSearchValue,
 	toggle: toggleSearch,
 	onSectionChange: onSearchSectionChange,
 };
@@ -49,9 +49,9 @@ class SearchBar extends Component {
 		if (isOpen && prevProps.isOpen === false) {
 			this.searchInput.focus();
 		}
-		if (isOpen && location.pathname !== prevProps.location.pathname
+		if (location.pathname !== prevProps.location.pathname
 			&& section !== SearchBar.routeSectionMap[location.pathname]) {
-			toggle();
+			toggle({ open: false });
 		}
 	}
 
@@ -89,13 +89,19 @@ class SearchBar extends Component {
 	}
 
 	open = () => {
-		const { onSectionChange, toggle, location } = this.props;
+		const {
+			onSectionChange, toggle, location, isOpen,
+		} = this.props;
+		if (isOpen) {
+			toggle({ open: false });
+			return;
+		}
 		const sectionPathname = location.pathname.split('/')[1];
 		const section = SearchBar.routeSectionMap[sectionPathname];
 		if (section !== undefined) {
 			onSectionChange(section);
 		}
-		toggle();
+		toggle({ open: true });
 	}
 
 	render() {
