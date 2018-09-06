@@ -19,6 +19,17 @@ class LoginBody extends Component {
 		this.submitButton = React.createRef();
 	}
 
+	componentWillReceiveProps(newProps) {
+		if (newProps.currentPage !== this.props.currentPage && newProps.currentPage === 'signup') {
+			this.setState({
+				email: '',
+				password: '',
+				name: '',
+				retypePass: '',
+			});
+		}
+	}
+
 	login = (e) => {
 		e.preventDefault();
 		const { email, password } = this.state;
