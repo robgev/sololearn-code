@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
@@ -6,9 +6,6 @@ import { observer } from 'mobx-react';
 import { observable, action } from 'mobx';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import Dialog from 'components/StyledDialog';
-import IconButton from 'material-ui/IconButton';
-import Close from 'material-ui/svg-icons/content/clear';
-import { grey600 } from 'material-ui/styles/colors';
 import UserList from 'containers/Profile/UserList';
 import { determineAccessLevel, numberFormatter } from 'utils';
 import ILikes from './ILikes';
@@ -56,80 +53,69 @@ class Likes extends Component {
 			upvotes, downvotes, getUpvotes, getDownvotes, onFollow,
 		} = this.likes;
 		return (
-			<div
-				onClick={this.toggleOpen}
-				onKeyPress={this.handleKeyPress}
-				role="button"
-				tabIndex={0}
-				className={`likes-container ${className}`}
-			>
-				{(votes > 0 && hasPlus) && '+'}{numberFormatter(votes)}
+			<Fragment>
+				<div
+					onClick={this.toggleOpen}
+					onKeyPress={this.handleKeyPress}
+					role="button"
+					tabIndex={0}
+					className={`likes-container ${className}`}
+				>
+					{(votes > 0 && hasPlus) && '+'}{numberFormatter(votes)}
+				</div>
 				<Dialog
 					open={this.open}
+					header={
+						<div style={{ display: 'flex' }}>
+							<Tabs
+								style={{ flex: 1 }}
+								onChange={this.handleTabChange}
+								inkBarContainerStyle={!canAccessDownvotes ? { display: 'none' } : null}
+								tabItemContainerStyle={{ marginRight: 50, backgroundColor: '#fff' }}
+								value={canAccessDownvotes ? this.activeTab : TabTypes.upvotes}
+							>
+								<Tab
+									label="Upvotes"
+									value={TabTypes.upvotes}
+									style={{ color: 'rgba(107, 104, 104, 0.8)' }}
+								/>
+								{ canAccessDownvotes &&
+								<Tab
+									label="Downvotes"
+									value={TabTypes.downvotes}
+									style={{ color: 'rgba(107, 104, 104, 0.8)' }}
+								/>
+								}
+							</Tabs>
+						</div>
+					}
 					onRequestClose={this.toggleOpen}
 				>
 					<div style={{
-						position: 'relative',
 						height: 500,
+						position: 'relative',
 						overflowY: 'auto',
 					}}
 					>
-						{
-							canAccessDownvotes
-								? (
-									<div>
-										<div style={{ display: 'flex' }}>
-											<Tabs
-												style={{ flex: 1 }}
-												value={this.activeTab}
-												onChange={this.handleTabChange}
-												tabItemContainerStyle={{ backgroundColor: '#fff' }}
-											>
-												<Tab
-													label="Upvotes"
-													value={TabTypes.upvotes}
-													style={{ color: 'rgba(107, 104, 104, 0.8)' }}
-												/>
-												<Tab
-													label="Downvotes"
-													value={TabTypes.downvotes}
-													style={{ color: 'rgba(107, 104, 104, 0.8)' }}
-												/>
-											</Tabs>
-											<IconButton className="close" onClick={this.toggleOpen}>
-												<Close color={grey600} />
-											</IconButton>
-										</div>
-										{this.activeTab === TabTypes.upvotes &&
-											<UserList
-												users={upvotes.entities}
-												hasMore={upvotes.hasMore}
-												loadMore={getUpvotes}
-												onFollowClick={onFollow}
-											/>
-										}
-										{this.activeTab === TabTypes.downvotes &&
-											<UserList
-												users={downvotes.entities}
-												hasMore={downvotes.hasMore}
-												loadMore={getDownvotes}
-												onFollowClick={onFollow}
-											/>
-										}
-									</div>
-								)
-								: (
-									<UserList
-										users={upvotes.entities}
-										hasMore={upvotes.hasMore}
-										loadMore={getUpvotes}
-										onFollowClick={onFollow}
-									/>
-								)
+						{this.activeTab === TabTypes.upvotes &&
+							<UserList
+								users={upvotes.entities}
+								hasMore={upvotes.hasMore}
+								loadMore={getUpvotes}
+								onFollowClick={onFollow}
+							/>
+						}
+						{this.activeTab === TabTypes.downvotes &&
+							<UserList
+								users={downvotes.entities}
+								hasMore={downvotes.hasMore}
+								loadMore={getDownvotes}
+								onFollowClick={onFollow}
+							/>
 						}
 					</div>
 				</Dialog>
-			</div>
+			</Fragment>
 		);
 	}
 }
