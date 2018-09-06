@@ -714,7 +714,7 @@ ${succeedingSubstr}
 									handleTabChange={this.handleTabChange}
 									fullScreenButtonAction={inline ? this.maximizeInlineCode : this.toggleFullScreen}
 								/>
-								<div style={{ position: 'relative', height: inline ? '300px' : fullScreen ? 'calc(100vh - 166px)' : '60vh' }}>
+								<div style={{ position: 'relative', height: showWebOutput ? 0 : inline ? '300px' : fullScreen ? 'calc(100vh - 166px)' : '60vh' }}>
 									<SplitPane
 										maxSize={0}
 										primary="first"
