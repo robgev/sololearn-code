@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import i18n from 'i18next';
 
 import { resetLocaleData } from 'actions/settings';
 import Service from 'api/service';
@@ -9,31 +8,17 @@ import Storage from 'api/storage';
 
 import LanguageSelector from './LanguageSelector';
 
-@connect(null, { resetLocaleData })
+const mapStateToProps = state => ({ locale: state.locale });
+
+@connect(mapStateToProps, { resetLocaleData })
 @translate()
 class Profile extends PureComponent {
-	constructor(props) {
-		super(props);
-		const locale = Storage.load('locale') || 'en';
-		this.state = {
-			locale,
-		};
-	}
-
 	handleLocaleChange = (_, __, locale) => {
-		this.setState({ locale });
-		Storage.save('locale', locale);
-		Service.setLocale(locale);
-		Service.getSession();
-		i18n.changeLanguage(locale, (err) => {
-			if (err) { console.log('something went wrong loading', err); }
-		});
 		this.props.resetLocaleData(locale);
 	}
 
 	render() {
-		const { locale } = this.state;
-		const { t } = this.props;
+		const { t, locale } = this.props;
 		return (
 			<div className="profile-settings-container">
 				<LanguageSelector
