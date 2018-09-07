@@ -37,7 +37,10 @@ class Replies extends Component {
 
 	async componentDidMount() {
 		const { loadReplies, selectedID } = this.props;
-		await loadReplies(selectedID);
+		const count = await loadReplies(selectedID);
+		if (count === 0) {
+			this.setState({ canLoadMore: false });
+		}
 		if (selectedID !== null) {
 			this.scrollToId(parseInt(selectedID, 10));
 		}
