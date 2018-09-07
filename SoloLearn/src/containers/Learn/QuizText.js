@@ -1,6 +1,6 @@
 // React modules
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
+import { browserHistory, withRouter } from 'react-router';
 import { translate } from 'react-i18next';
 
 import Service from 'api/service';
@@ -16,12 +16,23 @@ const styles = {
 	},
 };
 
+const constructBasePathname = (pathname, params) => {
+	if (params.primary || params.secondary) {
+		return pathname.replace(`/${params.primary}`, '').replace(`/${params.secondary}`, '');
+	}
+	return pathname;
+};
+
 class QuizText extends Component {
 	constructor(props) {
 		super(props);
-		const { pathname } = browserHistory.getCurrentLocation();
+		const { pathname } = props.location;
+		const basePath = constructBasePathname(pathname, props.params);
+		if (pathname !== basePath) {
+			browserHistory.replace(basePath);
+		}
 		this.state = {
-			pathname,
+			basePath,
 			isBookmarked: props.isBookmarked,
 		};
 	}
@@ -35,7 +46,7 @@ class QuizText extends Component {
 	}
 
 	render() {
-		const { pathname, isBookmarked } = this.state;
+		const { basePath, isBookmarked } = this.state;
 		const {
 			date,
 			quizId,
@@ -46,7 +57,7 @@ class QuizText extends Component {
 		return (
 			<div className="text-container" style={styles.textContainer}>
 				<Parser
-					pathname={pathname}
+					basePath={basePath}
 					courseLanguage={courseLanguage}
 					text={this.props.textContent}
 					glossary={this.props.glossary}
@@ -64,4 +75,4 @@ class QuizText extends Component {
 	}
 }
 
-export default translate()(QuizText);
+export default withRouter(translate()(QuizText));
