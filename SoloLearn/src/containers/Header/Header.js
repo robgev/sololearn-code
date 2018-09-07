@@ -2,30 +2,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import Storage from 'api/storage';
 import HomeIcon from 'components/HomeIcon';
 import 'styles/header.scss';
 import Search from './SearchBar';
 
 // Additional components
 import TabList from './Tabs';
-import NotificationManager from '../Notifications/NotificationManager';
+import Notifications from '../Notifications';
 import SettingsMenu from './HeaderSettingsMenu';
 
 const mapStateToProps = state => ({
 	isSignedIn: state.userProfile !== null,
 });
-
-// /codes/something/something splitted by / returns ["", "codes", ....] so we take
-// the element with the index 1 => current section.
-const getCurrentSection = (pathName) => {
-	// We have the case of play which has no menu item so we need to check the case
-	// Of the result being 'contests'. In that case we will pick a default value.
-	// Change if you can think of any other solution
-	const defaultValue = 'learn';
-	const sectionName = pathName.split('/')[1];
-	const validSectionNames = [ 'codes', 'discuss', 'users', 'learn' ];
-	return validSectionNames.includes(sectionName) ? sectionName : defaultValue;
-};
 
 const Header = ({ pathname, isSignedIn }) => (
 	<div className="header">
@@ -38,7 +27,7 @@ const Header = ({ pathname, isSignedIn }) => (
 				<TabList pathname={pathname} />
 			</div>
 			<div className="header-left">
-				{isSignedIn && <NotificationManager />}
+				{isSignedIn && <Notifications />}
 				<SettingsMenu />
 			</div>
 		</div>

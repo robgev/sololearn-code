@@ -5,6 +5,8 @@ import {
 	codesFiltersSelector,
 	isCodesFetchingSelector,
 } from 'reducers/codes.reducer';
+import { setSearchValue, toggleSearch, onSearchSectionChange } from 'actions/searchBar';
+import { SECTIONS } from 'reducers/searchBar.reducer';
 
 export const removeCode = id => (dispatch) => {
 	dispatch({
@@ -58,7 +60,13 @@ export const setCodesFilters = filters => (dispatch, getState) => {
 	if (filters.orderBy) {
 		formattedFilters.orderBy = parseInt(filters.orderBy, 10);
 	}
-	if (Object.keys(formattedFilters).some(key => formattedFilters[key] !== oldFilters[key])) {
+	if (filters.query && filters.query !== oldFilters.query) {
+		dispatch(toggleSearch({ open: true }));
+		dispatch(setSearchValue(filters.query));
+		dispatch(onSearchSectionChange(SECTIONS.codes));
+	}
+	const keys = Object.keys(formattedFilters);
+	if (keys.length === 0 || keys.some(key => formattedFilters[key] !== oldFilters[key])) {
 		dispatch({
 			type: types.SET_CODES_FILTERS,
 			payload: formattedFilters,

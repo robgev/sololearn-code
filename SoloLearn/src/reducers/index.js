@@ -49,6 +49,9 @@ import quizSubmission from './quizSubmission.reducer';
 // Search
 import searchBar from './searchBar.reducer';
 
+// Localization
+import locale from './locale.reducer';
+
 const reducers = combineReducers({
 	slay,
 	settings,
@@ -80,6 +83,8 @@ const reducers = combineReducers({
 	quizSubmission,
 	// Search
 	searchBar,
+	// Localization
+	locale,
 });
 
 const initialStore = {

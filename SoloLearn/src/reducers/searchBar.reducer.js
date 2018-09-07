@@ -18,7 +18,7 @@ const value = (state = '', action) => {
 const isOpen = (state = false, action) => {
 	switch (action.type) {
 	case TOGGLE_SEARCH_BAR:
-		return !state;
+		return action.payload;
 	default:
 		return state;
 	}

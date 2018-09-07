@@ -18,7 +18,6 @@ const TabList = ({ pathname, t }) => (
 			<Link
 				key={tab.id}
 				to={tab.url}
-				onClick={pathname === '/discuss' && tab.url === '/discuss' ? e => e.preventDefault() : () => { }}
 				className={`tab-item ${(!pathname.includes('/profile') && isActiveRoute(pathname, tab)) ? 'active' : ''}`}
 			>
 				<img className="tab-icon" alt="Tab icon" src={`/assets/${tab.imgUrl}`} />

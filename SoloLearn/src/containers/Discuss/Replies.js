@@ -37,7 +37,10 @@ class Replies extends Component {
 
 	async componentDidMount() {
 		const { loadReplies, selectedID } = this.props;
-		await loadReplies(selectedID);
+		const count = await loadReplies(selectedID);
+		if (count < 20) {
+			this.setState({ canLoadMore: false });
+		}
 		if (selectedID !== null) {
 			this.scrollToId(parseInt(selectedID, 10));
 		}
@@ -65,7 +68,7 @@ class Replies extends Component {
 	}
 	loadReplies = async () => {
 		const length = await this.props.loadReplies();
-		if (length === 0) {
+		if (length < 20) {
 			this.setState({ canLoadMore: false });
 		}
 	}

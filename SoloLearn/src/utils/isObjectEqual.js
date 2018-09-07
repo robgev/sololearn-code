@@ -5,6 +5,11 @@ const isObjectEqual = (obj1, obj2) => {
 			isEqual = false;
 		}
 	});
+	Object.keys(obj2).forEach((key) => {
+		if (obj1[key] !== obj2[key]) {
+			isEqual = false;
+		}
+	});
 	return isEqual;
 };
 

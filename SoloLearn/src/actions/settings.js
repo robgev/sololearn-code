@@ -1,10 +1,20 @@
 import Service from 'api/service';
+import Storage from 'api/storage';
+import i18n from 'i18next';
 import omit from 'lodash/omit';
 import * as types from 'constants/ActionTypes';
 
-export const resetLocaleData = () => ({
-	type: types.RESET_LOCALE_DATA,
-});
+export const resetLocaleData = (locale) => {
+	Storage.save('locale', locale);
+	Service.setLocale(locale);
+	Service.getSession();
+	i18n.changeLanguage(locale, (err) => {
+		if (err) { console.log('something went wrong loading', err); }
+	});
+	return	{
+		type: types.RESET_LOCALE_DATA, payload: locale,
+	};
+};
 
 export const getSettings = () => async (dispatch) => {
 	const { settings } = await Service.request('GetSettings');

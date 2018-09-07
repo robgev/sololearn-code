@@ -194,7 +194,11 @@ class Comments extends Component {
 	render() {
 		return (
 			<div className="comments-container">
-				<CommentsToolbar count={this.commentsCount} value={this.orderBy} onChange={this.changeOrder} />
+				<CommentsToolbar
+					count={this.commentsCount}
+					value={this.orderBy}
+					onChange={this.changeOrder}
+				/>
 				<MentionInput
 					style={{ height: 50 }}
 					placeholder="Write a new comment"

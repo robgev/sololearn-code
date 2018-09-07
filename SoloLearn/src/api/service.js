@@ -11,11 +11,15 @@ class Service {
 		this.getSessionPromise = null;
 		this.accessToken = null;
 		this.accessTokenExpireTime = 0;
+		this.locale = Storage.load('locale') || 'en';
 	}
 	setAccessToken = (accessToken, expiresIn) => {
 		this.accessToken = accessToken;
 		// Date.now() returns timestamp in miliseconds
 		this.accessTokenExpireTime = Date.now() + (expiresIn * 1000);
+	}
+	setLocale = (locale) => {
+		this.locale = locale;
 	}
 	_request = (url, options) =>
 		fetch(url, { ...options, credentials: 'include' })
@@ -74,9 +78,9 @@ class Service {
 		});
 	}
 
-	getSession = (locale = Storage.load('locale') || 'en') => {
+	getSession = () => {
 		if (this.getSessionPromise === null) {
-			this.getSessionPromise = this._getSession(locale)
+			this.getSessionPromise = this._getSession(this.locale)
 				.then((res) => {
 					this.getSessionPromise = null;
 					return res; // Need to read in index.js file to see if getSession returned a user

@@ -36,7 +36,7 @@ export const DEFAULT_DISCUSS_FILTERS = { orderBy: 8, query: '' };
 const filters = (state = DEFAULT_DISCUSS_FILTERS, action) => {
 	switch (action.type) {
 	case SET_DISCUSS_FILTERS:
-		return { ...state, ...action.payload };
+		return { ...DEFAULT_DISCUSS_FILTERS, ...action.payload };
 	case LOGOUT:
 		return DEFAULT_DISCUSS_FILTERS;
 	default:
