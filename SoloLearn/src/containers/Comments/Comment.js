@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { action, observable, computed } from 'mobx';
 import { observer } from 'mobx-react';
+import Linkify from 'react-linkify';
 import FlatButton from 'material-ui/FlatButton';
 import Divider from 'material-ui/Divider';
 import CircularProgress from 'material-ui/CircularProgress';
 import MentionInput from 'components/MentionInput';
 import { replaceMention, showError, determineAccessLevel } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
+import MyAvatar from './MyAvatar';
 import CommentList from './CommentList';
 import CommentView from './CommentView';
 import IComment from './IComment';
 import { filterExisting } from './comments.utils';
-import Linkify from 'react-linkify';
 
 const mapStateToProps = ({ userProfile }) => ({
 	userProfile,
@@ -246,14 +247,17 @@ class Comment extends Component {
 					}) => (isEditing
 						? (
 							<div className="comment-input-toolbar">
-								<MentionInput
-									style={{ height: 50 }}
-									ref={(i) => { this.editMentionInput = i; }}
-									getUsers={this.props.commentsAPI.getMentionUsers}
-									initText={message}
-									onLengthChange={this.handleEditLengthChange}
-									placeholder="Write a new comment"
-								/>
+								<div className="input-bar reply-input">
+									<MyAvatar />
+									<MentionInput
+										style={{ height: 50 }}
+										ref={(i) => { this.editMentionInput = i; }}
+										getUsers={this.props.commentsAPI.getMentionUsers}
+										initText={message}
+										onLengthChange={this.handleEditLengthChange}
+										placeholder="Write a new comment"
+									/>
+								</div>
 								<FlatButton
 									label="Edit"
 									disabled={!this.editCommentLength}
@@ -298,15 +302,18 @@ class Comment extends Component {
 					this.isReplyInputOpen
 					&& (
 						<div className="comment-input-toolbar">
-							<MentionInput
-								onBlur={this.onReplyBlur}
-								style={{ height: 50 }}
-								ref={(i) => { this.mentionInput = i; }}
-								initText={this.initText}
-								getUsers={this.props.commentsAPI.getMentionUsers}
-								onLengthChange={this.handleReplyLengthChange}
-								placeholder="Write a new answer"
-							/>
+							<div className="input-bar reply-input">
+								<MyAvatar />
+								<MentionInput
+									onBlur={this.onReplyBlur}
+									style={{ height: 50 }}
+									ref={(i) => { this.mentionInput = i; }}
+									initText={this.initText}
+									getUsers={this.props.commentsAPI.getMentionUsers}
+									onLengthChange={this.handleReplyLengthChange}
+									placeholder="Write a new answer"
+								/>
+							</div>
 							<FlatButton
 								className="save-button"
 								disabled={!this.replyCommentLength}

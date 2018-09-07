@@ -6,6 +6,7 @@ import { withRouter } from 'react-router';
 import MentionInput from 'components/MentionInput';
 import FlatButton from 'material-ui/FlatButton';
 
+import MyAvatar from './MyAvatar';
 import CommentsAPI from './comments.api';
 import CommentList from './CommentList';
 import IComment from './IComment';
@@ -199,13 +200,16 @@ class Comments extends Component {
 					value={this.orderBy}
 					onChange={this.changeOrder}
 				/>
-				<MentionInput
-					style={{ height: 50 }}
-					placeholder="Write a new comment"
-					ref={(i) => { this.mentionInput = i; }}
-					onLengthChange={this.onLengthChange}
-					getUsers={this.commentsAPI.getMentionUsers}
-				/>
+				<div className="input-bar">
+					<MyAvatar />
+					<MentionInput
+						style={{ height: 50 }}
+						placeholder="Write a new comment"
+						ref={(i) => { this.mentionInput = i; }}
+						onLengthChange={this.onLengthChange}
+						getUsers={this.commentsAPI.getMentionUsers}
+					/>
+				</div>
 				<FlatButton
 					label="Comment"
 					onClick={this.addComment}
