@@ -325,23 +325,25 @@ class QuizManager extends Component {
 
 		return (
 			<Layout>
-				<Paper className="quiz-container" style={{ padding: 15 }}>
-					<div className="lesson-breadcrumbs">
-						<Link className="hoverable" to={`/learn/course/${courseName}`}>
-							{course.name} &gt; {' '}
-						</Link>
-						<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}`}>
-							{activeModule.name} &gt; {' '}
-						</Link>
-						<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}/${activeLesson.name}/1`}>
-							{activeLesson.name}
-						</Link>
+				<Paper className="quiz-container">
+					<div style={{ padding: 15 }}>
+						<div className="lesson-breadcrumbs">
+							<Link className="hoverable" to={`/learn/course/${courseName}`}>
+								{course.name} &gt; {' '}
+							</Link>
+							<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}`}>
+								{activeModule.name} &gt; {' '}
+							</Link>
+							<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}/${activeLesson.name}/1`}>
+								{activeLesson.name}
+							</Link>
+						</div>
+						<Stepper activeStep={parseInt(this.props.activeQuiz.number, 10) - 1}>
+							{this.generateTimeline(quizzes, activeQuiz)}
+						</Stepper>
+						{childrenWithProps}
+						<Link to={{ pathname: '/discuss', query: { query: tags !== null ? tags : course.language } }}>Q&A</Link>
 					</div>
-					<Stepper activeStep={parseInt(this.props.activeQuiz.number, 10) - 1}>
-						{this.generateTimeline(quizzes, activeQuiz)}
-					</Stepper>
-					{childrenWithProps}
-					<Link to={{ pathname: '/discuss', query: { query: tags !== null ? tags : course.language } }}>Q&A</Link>
 					{commentsOpened || activeQuiz.isText ?
 						<Comments
 							id={activeQuiz.id}
