@@ -485,6 +485,8 @@ export const ReplyStyles = {
 		margin: '0 0 0 5px',
 	},
 	editor: {
+		display: 'flex',
+		flexDirection: 'column',
 		position: 'relative',
 		padding: '0 0 10px 0',
 	},
@@ -493,9 +495,8 @@ export const ReplyStyles = {
 		fontSize: '13px',
 	},
 	textFieldCoutner: {
-		position: 'absolute',
-		bottom: 0,
-		right: 0,
+		alignSelf: 'flex-end',
+		marginTop: '10px',
 		fontSize: '13px',
 		fontWeight: '500',
 	},
