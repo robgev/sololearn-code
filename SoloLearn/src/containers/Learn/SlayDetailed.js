@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 
-import { getCollectionItems, setSelectedCollection } from 'actions/slay';
+import { getCollectionItems, setSelectedCollection, getLessonCollections } from 'actions/slay';
 import CodePenCard from 'components/CodePenCard';
 import CourseBox from 'components/CourseBox';
 import SlayLayout from 'components/Layouts/SlayLayout';
@@ -12,11 +12,12 @@ import SlayDetailedShimmer from 'components/Shimmers/SlayDetailedShimmer';
 
 const mapStateToProps = state => ({
 	courses: state.courses,
+	collections: state.slay.slayCollections,
 	selectedCollection: state.slay.selectedCollection,
 	collectionCourses: state.slay.filteredCollectionItems,
 });
 
-const mapDispatchToProps = { getCollectionItems, setSelectedCollection };
+const mapDispatchToProps = { getLessonCollections, getCollectionItems, setSelectedCollection };
 
 @connect(mapStateToProps, mapDispatchToProps)
 class SlayDetailed extends PureComponent {
@@ -35,10 +36,13 @@ class SlayDetailed extends PureComponent {
 		// Need to rewrite this part after architecture change.
 		// We don't need to have this much of difference between
 		// initial SL lessons and slay lessons
-		const { params } = this.props;
+		const { params, collections } = this.props;
 		const { startIndex, loadCount } = this.state;
 		const collectionId = parseInt(params.collectionId, 10);
 		if (collectionId !== 1) { // 1 stands for Default SoloLearn lessons
+			if (collections.length === 0 && collectionId === -1) {
+				await this.props.getLessonCollections({ index: 0, count: 1 });
+			}
 			await this.props.setSelectedCollection(collectionId);
 			const length =
 				await this.props.getCollectionItems(collectionId, { index: startIndex, count: loadCount });

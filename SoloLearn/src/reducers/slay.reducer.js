@@ -10,18 +10,13 @@ import {
 	SET_BOOKMARK_COLLECTION_ITEMS,
 	APPEND_BOOKMARK_COLLECTION_ITEMS,
 } from 'constants/ActionTypes';
-import differenceBy from 'lodash/differenceBy';
+import uniqBy from 'lodash/uniqBy';
 import { combineReducers } from 'redux';
-
-const safeAdd = (oldList, newList) => {
-	const appendedArticles = differenceBy(newList, oldList, 'id');
-	return [ ...oldList, ...appendedArticles ];
-};
 
 const slayCollections = (state = [], action) => {
 	switch (action.type) {
 	case SET_LESSON_COLLECTIONS:
-		return safeAdd(state, action.payload);
+		return uniqBy([ ...state, ...action.payload ], 'id');
 	case RESET_LOCALE_DATA:
 		return [];
 	default:

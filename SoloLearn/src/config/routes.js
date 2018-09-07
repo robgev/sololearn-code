@@ -103,7 +103,7 @@ export default ([
 		<Route path="/learn/more/:collectionId" component={SlayDetailed} />
 
 		<Route path="/learn/collection/:collectionId" component={SlayLessonsPage} />
-		<Route path="/learn/lesson/:itemType/:lessonId(/:lessonName)(/:pageNumber)(/:language(/:codeID))" component={SlayLesson} />
+		<Route path="/learn/lesson/:itemType/:lessonId(/:lessonName)(/:pageNumber)(/:primary(/:secondary))" component={SlayLesson} />
 		<Route path="/learn/course/:courseName" component={Modules} />
 		<Route path="/learn/course/:courseName/:moduleName" component={Lessons} />
 		<Route path="/learn/course/:courseName/:moduleName/:lessonName" component={QuizManager}>

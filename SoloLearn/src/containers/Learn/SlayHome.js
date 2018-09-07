@@ -32,7 +32,7 @@ class SlayHome extends PureComponent {
 	async componentWillMount() {
 		const { startIndex, loadCount } = this.state;
 		const { collections, getLessonCollections } = this.props;
-		if (!collections.length) {
+		if (collections.length < 10) {
 			await this.props.getBookmarkLessons({ index: startIndex, count: loadCount });
 			const length = await getLessonCollections({ index: startIndex, count: loadCount }) - 1;
 			this.setState({
