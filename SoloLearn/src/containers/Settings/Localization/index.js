@@ -23,11 +23,12 @@ class Profile extends PureComponent {
 	handleLocaleChange = (_, __, locale) => {
 		this.setState({ locale });
 		Storage.save('locale', locale);
-		Service.getSession(locale);
+		Service.setLocale(locale);
+		Service.getSession();
 		i18n.changeLanguage(locale, (err) => {
 			if (err) { console.log('something went wrong loading', err); }
 		});
-		this.props.resetLocaleData();
+		this.props.resetLocaleData(locale);
 	}
 
 	render() {

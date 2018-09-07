@@ -2,13 +2,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import Storage from 'api/storage';
 import HomeIcon from 'components/HomeIcon';
 import 'styles/header.scss';
 import Search from './SearchBar';
 
 // Additional components
 import TabList from './Tabs';
-import NotificationManager from '../Notifications/NotificationManager';
+import Notifications from '../Notifications';
 import SettingsMenu from './HeaderSettingsMenu';
 
 const mapStateToProps = state => ({
@@ -26,7 +27,7 @@ const Header = ({ pathname, isSignedIn }) => (
 				<TabList pathname={pathname} />
 			</div>
 			<div className="header-left">
-				{isSignedIn && <NotificationManager />}
+				{isSignedIn && <Notifications />}
 				<SettingsMenu />
 			</div>
 		</div>
