@@ -37,7 +37,7 @@
 	.comment-bottom-toolbar {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: flex-start;
 		padding-left: 45px;
 		.comment-reply-actions {
 			display: flex;

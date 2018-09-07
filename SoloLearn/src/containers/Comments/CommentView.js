@@ -143,25 +143,24 @@ class CommenView extends Component {
 						onDownvote={downvote}
 					/>
 					<div className="comment-reply-actions">
-						{
-							parentID === null && (
-								<div>
-									<FlatButton
-										style={{ height: 30, lineHeight: '30px' }}
-										labelStyle={{ fontSize: 13 }}
-										label={`${replies} ${replies === 1 ? t('comments.reply') : t('comments.replies-other')}`}
-										disabled={replies === 0}
-										onClick={onRepliesButtonClick}
-									/>
-								</div>
-							)
-						}
 						<FlatButton
 							style={{ height: 30, lineHeight: '30px' }}
 							labelStyle={{ fontSize: 13 }}
 							label="Reply"
 							onClick={this.onReply}
 						/>
+						{
+							parentID === null && replies !== 0 && (
+								<div>
+									<FlatButton
+										style={{ height: 30, lineHeight: '30px' }}
+										labelStyle={{ fontSize: 13 }}
+										label={`${replies} ${replies === 1 ? t('comments.reply') : t('comments.replies-other')}`}
+										onClick={onRepliesButtonClick}
+									/>
+								</div>
+							)
+						}
 					</div>
 				</div>
 				<Dialog
