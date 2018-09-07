@@ -38,7 +38,7 @@ class Replies extends Component {
 	async componentDidMount() {
 		const { loadReplies, selectedID } = this.props;
 		const count = await loadReplies(selectedID);
-		if (count === 0) {
+		if (count <  20) {
 			this.setState({ canLoadMore: false });
 		}
 		if (selectedID !== null) {
@@ -68,7 +68,7 @@ class Replies extends Component {
 	}
 	loadReplies = async () => {
 		const length = await this.props.loadReplies();
-		if (length === 0) {
+		if (length < 20) {
 			this.setState({ canLoadMore: false });
 		}
 	}

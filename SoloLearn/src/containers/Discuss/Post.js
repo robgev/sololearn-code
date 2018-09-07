@@ -233,6 +233,7 @@ class Post extends Component {
 				>
 					<Replies
 						key={this.state.ordering}
+						ref={(node) => { this._replies = node; }}
 						t={t}
 						replies={post !== null ? post.replies : []}
 						votePost={this.votePost}
