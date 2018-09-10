@@ -45,7 +45,18 @@ export default ({
 	challenges, preview, courses, loadMore, hasMore,
 }) => (
 	challenges !== null && challenges.length === 0
-		? <div>No challenges found</div>
+		? (
+			<div
+				style={{
+					height: 300,
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+				}}
+			>
+					No challenges found
+			</div>
+		)
 		: (
 			<BusyWrapper
 				paper

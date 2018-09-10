@@ -261,7 +261,7 @@ class MySubmissions extends Component {
 						</div>
 					) : null}
 				</Dialog>
-			</Layout >
+			</Layout>
 		);
 	}
 }
