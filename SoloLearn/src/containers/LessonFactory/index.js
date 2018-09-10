@@ -19,7 +19,7 @@ const ComingSoon = () => (
 		>
 			<div className="flex-centered column">
 				<h1>Under Construction</h1>
-				<h3>Play page is not ready yet.</h3>
+				<h3>Lesson Factory page is not ready yet.</h3>
 				<p>This page is under construction. It will be ready soon {';)'}</p>
 			</div>
 			<Link to="/">

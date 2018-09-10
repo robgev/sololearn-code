@@ -63,6 +63,7 @@ const Leaderboards = Loadable({ loader: () => import('containers/Leaderboards') 
 const DiscoverContainer = Loadable({ loader: () => import('containers/Profile/DiscoverContainer') });
 
 const Play = Loadable({ loader: () => import('containers/Play') });
+const LessonFactory = Loadable({ loader: () => import('containers/LessonFactory') });
 
 const NotFound = Loadable({ loader: () => import('components/NotFound') });
 const Privacy = Loadable({ loader: () => import('components/StaticPages/Privacy') });
@@ -119,6 +120,7 @@ export default ([
 		</Route> */}
 
 		<Route path="/play" component={Play} />
+		<Route path="/lesson-factory" component={LessonFactory} />
 		<Route path="/codes" component={Codes} />
 		<Route path="/settings(/:settingID)" component={Settings} />
 		<Route path="/playground(/:primary)(/:secondary)" component={Playground} />

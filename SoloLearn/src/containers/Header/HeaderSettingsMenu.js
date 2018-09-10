@@ -35,6 +35,10 @@ class SettingsMenu extends PureComponent {
 		browserHistory.push('/leaderboards');
 	}
 
+	goToLessonFactory = () => {
+		browserHistory.push('/lesson-factory');
+	}
+
 	goToQuizFactory = () => {
 		browserHistory.push('/quiz-factory');
 	}
@@ -67,6 +71,7 @@ class SettingsMenu extends PureComponent {
 					/>
 					<MenuItem
 						primaryText="Lesson Factory"
+						onClick={this.goToLessonFactory}
 					/>
 					<MenuItem
 						primaryText="Quiz Factory"
