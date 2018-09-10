@@ -16,6 +16,7 @@ import Service from 'api/service';
 
 // Additional components
 import MentionInput from 'components/MentionInput';
+import LoadingButton from 'components/LoadingButton';
 
 import 'styles/Discuss/NewQuestion.scss';
 import { NewQuestionStyles as styles } from './styles';
@@ -35,6 +36,7 @@ class QuestionEditor extends Component {
 			suggestions: [],
 			isReplyBoxOpen: false,
 			replyLength: 0,
+			submitLoading: false,
 		};
 	}
 
@@ -90,6 +92,7 @@ class QuestionEditor extends Component {
 				this.mentionInput.getValue(),
 				this.state.tags,
 			);
+			this.setState({ submitLoading: true });
 		}
 	}
 
@@ -120,7 +123,7 @@ class QuestionEditor extends Component {
 
 	render() {
 		const { t } = this.props;
-		const { isReplyBoxOpen, replyLength } = this.state;
+		const { isReplyBoxOpen, replyLength, submitLoading } = this.state;
 		return (
 			<Paper className="new-question" id="new-question" style={styles.container}>
 				<h2 style={styles.heading}>{t('question.title')}</h2>
@@ -176,7 +179,14 @@ class QuestionEditor extends Component {
 						/>
 					</div>
 					<div className="editor-actions" style={styles.editorActions}>
-						<FlatButton type="submit" label={t('common.post-action-title')} primary onClick={this.handleSubmit} />
+						<LoadingButton
+							raised
+							loading={submitLoading}
+							type="submit"
+							label={t('common.post-action-title')}
+							primary
+							onClick={this.handleSubmit}
+						/>
 					</div>
 				</div>
 			</Paper>
