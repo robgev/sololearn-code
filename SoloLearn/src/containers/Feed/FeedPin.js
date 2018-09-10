@@ -297,6 +297,7 @@ class FeedPin extends Component {
 
 	render() {
 		const { pin } = this.props;
+		console.log(pin);
 
 		return (
 			<div className="feed-pin-wrapper" style={styles.feedPinWrapper}>

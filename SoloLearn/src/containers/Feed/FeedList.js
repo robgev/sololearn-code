@@ -51,13 +51,13 @@ class FeedList extends Component {
 		return (
 			<div>
 				{
-					feed.length === 0 && !hasMore
+					(feed.length === 0 && feedPins && feedPins.length === 0 && !hasMore)
 						? <p style={{ textAlign: 'center', height: 120 }}>No Activity</p>
 						:
 						(
 							<div>
 								{
-									feed.length === 0 || feedPins === null
+									hasMore && (feed.length === 0 || feedPins === null)
 										? (
 											<div style={{ height: '90vh', overflow: 'hidden' }}>
 												{header}
@@ -68,7 +68,7 @@ class FeedList extends Component {
 											<div>
 												<div>
 													<div className="feed-pins">
-														{feedPins !== undefined &&
+														{feedPins !== undefined && feedPins.length !== 0 &&
 															<React.Fragment>
 																{feedPins.map(pin => (
 																	<FeedPin
@@ -82,27 +82,30 @@ class FeedList extends Component {
 														}
 													</div>
 												</div>
-
-												<InfiniteScroll
-													element="div"
-													hasMore={hasMore}
-													loadMore={loadMore}
-													header={feed.length !== 0 ? header : null}
-													style={{
-														display: 'flex',
-														flexDirection: 'column',
-													}}
-												>
-													{feed.map(feedItem => (
-														<FeedItem
-															key={feedItem.type === types.mergedChallange ?
-																`feedGroup${feedItem.toId}` :
-																`feedItem${feedItem.id}`}
-															feedItem={feedItem}
-															openCoursePopup={this.toggleCoursePopup}
-														/>
-													))}
-												</InfiniteScroll>
+												{ feed.length === 0 && !hasMore
+													? <p style={{ textAlign: 'center', height: 120 }}>No Activity</p>
+													:
+													<InfiniteScroll
+														element="div"
+														hasMore={hasMore}
+														loadMore={loadMore}
+														header={feed.length !== 0 ? header : null}
+														style={{
+															display: 'flex',
+															flexDirection: 'column',
+														}}
+													>
+														{feed.map(feedItem => (
+															<FeedItem
+																key={feedItem.type === types.mergedChallange ?
+																	`feedGroup${feedItem.toId}` :
+																	`feedItem${feedItem.id}`}
+																feedItem={feedItem}
+																openCoursePopup={this.toggleCoursePopup}
+															/>
+														))}
+													</InfiniteScroll>
+												}
 											</div>
 										)}
 								<Dialog
