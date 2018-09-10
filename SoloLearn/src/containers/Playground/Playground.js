@@ -307,7 +307,7 @@ class Playground extends Component {
 
 	// Change web tabs
 	handleTabChange = (mode) => {
-		const { basePath, query } = this.props;
+		const { basePath, query, inline } = this.props;
 		const code = this.getTabCodeData(mode);
 		const { codeType, publicID } = this.state;
 		const { alias } = editorSettings[mode];
@@ -322,7 +322,9 @@ class Playground extends Component {
 			languageSelector: 'web',
 			userCodeLanguage: 'web',
 		});
-		browserHistory.replace({ pathname: `${link}${alias}`, query });
+		if (!inline) {
+			browserHistory.replace({ pathname: `${link}${alias}`, query });
+		}
 	}
 
 	handleEditorChange = (editorValue) => {
