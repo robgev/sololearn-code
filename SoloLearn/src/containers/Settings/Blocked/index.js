@@ -61,7 +61,7 @@ class Blocked extends PureComponent {
 			<BusyWrapper
 				isBusy={loading}
 				style={{ minHeight: '60vh' }}
-				wrapperClassName="blocked-settings-container"
+				wrapperClassName={`blocked-settings-container ${!blockedUsers.length ? 'center-vertical' : ''}`}
 				loadingComponent={
 					<CircularProgress
 						size={100}

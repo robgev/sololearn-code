@@ -94,7 +94,6 @@ class Password extends PureComponent {
 						type="password"
 						name="newPassword"
 						value={newPassword}
-						errorText={errorText}
 						onFocus={this.handleFocus}
 						onChange={this.handleChange}
 						readOnly={focusedName !== 'newPassword'}

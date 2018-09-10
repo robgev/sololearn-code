@@ -59,6 +59,9 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: flex-start;
+			&.center-vertical {
+				justify-content: center
+			}
 		}
 		.arsenal-settings-container {
 			.language-card-container {

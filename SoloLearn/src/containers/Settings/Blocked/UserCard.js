@@ -24,7 +24,7 @@ const UserCard = ({
 	avatarUrl,
 	blockedState,
 }) => (
-	<div className="user-card-container">
+	<div className="user-card-container" style={{ display: 'flex', justifyContent: 'space-between' }}>
 		<ProfileAvatar
 			disabled
 			userID={id}
