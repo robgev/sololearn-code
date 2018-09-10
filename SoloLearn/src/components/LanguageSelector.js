@@ -16,7 +16,7 @@ const LanguageSelector = ({
 			title="Choose Language"
 			open={open}
 			onRequestClose={onClose}
-			bodyStyle={{ border: 'none', paddingBottom: 10 }}
+			bodyStyle={{ border: 'none', padding: 0}}
 		>
 			{filteredCourses.length === 0 ? <LoadingOverlay /> : null}
 			<List>

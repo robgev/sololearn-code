@@ -74,7 +74,7 @@ class MultipleChoice extends Component {
 								>
 									{answer.text}
 								</ListItem>
-								{index !== shuffled.length - 1 && <Divider />}
+								<Divider />
 							</div>
 						))
 					}

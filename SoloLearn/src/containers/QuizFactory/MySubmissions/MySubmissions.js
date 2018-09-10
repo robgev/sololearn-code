@@ -231,14 +231,12 @@ class MySubmissions extends Component {
 				>
 					{previewChallenge !== null ? (
 						<div>
-							<Paper>
-								<Quiz
-									quiz={previewChallenge}
-									onChange={this.checkComplete}
-									disabled={checkResult !== null}
-									ref={(q) => { this.quiz = q; }}
-								/>
-							</Paper>
+							<Quiz
+								quiz={previewChallenge}
+								onChange={this.checkComplete}
+								disabled={checkResult !== null}
+								ref={(q) => { this.quiz = q; }}
+							/>
 							<CheckBar
 								onClick={this.checkBarOnClick}
 								disabled={!isQuizComplete}

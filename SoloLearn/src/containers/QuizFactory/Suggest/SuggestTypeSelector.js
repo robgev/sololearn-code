@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Dialog from 'material-ui/Dialog';
+import Dialog from 'components/StyledDialog';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
 import { browserHistory } from 'react-router';
@@ -129,14 +129,12 @@ class SuggestTypeSelector extends Component {
 				>
 					{previewQuiz !== null ? (
 						<div>
-							<Paper>
-								<Quiz
-									quiz={previewQuiz}
-									onChange={this.checkComplete}
-									disabled={checkResult !== null}
-									ref={(q) => { this.quiz = q; }}
-								/>
-							</Paper>
+							<Quiz
+								quiz={previewQuiz}
+								onChange={this.checkComplete}
+								disabled={checkResult !== null}
+								ref={(q) => { this.quiz = q; }}
+							/>
 							<CheckBar
 								onClick={this.checkBarOnClick}
 								disabled={!isQuizComplete}

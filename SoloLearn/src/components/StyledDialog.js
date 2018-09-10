@@ -21,7 +21,7 @@ const StylesDialog = ({
 		<IconButton
 			className="close"
 			onClick={onRequestClose}
-			style={{ position: 'absolute', top: 0, right: 0 }}
+			style={{ position: 'absolute', top: -5, right: -5 }}
 		>
 			<Close color={grey600} />
 		</IconButton>
@@ -30,7 +30,7 @@ const StylesDialog = ({
 				{header}
 			</div>
 		</div>
-		<div>
+		<div style={{ padding: '10px 20px 20px 20px' }}>
 			{children}
 		</div>
 	</Dialog>
