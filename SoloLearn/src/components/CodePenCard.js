@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import Progressbar from 'components/Progressbar';
 import { slayItemTypes } from 'constants/ItemTypes';
+import LinearProgress from 'material-ui/LinearProgress';
+import { getLanguageColor } from 'utils';
 
 import 'styles/components/CodePenCard.scss';
 import ViewStats from './ViewStats';
@@ -20,32 +22,47 @@ const CodePenCard = ({
 	skills,
 	iconUrl,
 	itemType,
-	isCourses,
+	language,
 	viewCount,
 	comments,
 }) => (
 	<div className="code-pen-container">
 		{title &&
-				<div className="meta-info">
-					<p>{title}</p>
-				</div>
+		<div className="meta-info">
+			<p>{title}</p>
+		</div>
 		}
 		<Link
-			to={`/learn/lesson/${itemType === slayItemTypes.courseLesson ? 'course-lesson' : 'user-lesson'}/${id}/${name}/1`}
+			to={
+				itemType === slayItemTypes.course
+					? `/learn/course/${name}`
+					: `/learn/lesson/${itemType === slayItemTypes.courseLesson ? 'course-lesson' : 'user-lesson'}/${id}/${name}/1`}
 			className="code-pen-wrapper"
 		>
-			<div className="image-wrapper" style={{ backgroundColor: color }}>
-				{(itemType === slayItemTypes.course
-						|| isCourses) &&
-						<Progressbar percentage={getProgress(skills, id) * 100} />
+			<div className="image-wrapper" style={{ backgroundColor: itemType === slayItemTypes.course ? getLanguageColor(language) : color }}>
+				{itemType === slayItemTypes.course &&
+					<LinearProgress
+						color="#8BC34A"
+						mode="determinate"
+						value={getProgress(skills, id) * 100}
+						style={{
+							position: 'absolute',
+							bottom: 52,
+							backgroundColor: '#DCDCDE',
+							borderRadius: 0,
+						}}
+					/>
 				}
 				<img
-					src={iconUrl}
 					alt="Course Icon"
-					className={`card-image ${itemType === slayItemTypes.course || isCourses ? 'round' : ''}`}
+					className="card-image"
+					src={itemType === slayItemTypes.course
+						? `https://api.sololearn.com/uploads/Courses/${id}_web.png`
+						: iconUrl
+					}
 				/>
 				<div className="info-container">
-					<span className={`course-name ${isCourses ? 'centered' : ''}`} title={name}>{name}</span>
+					<span className="course-name" title={name}>{name}</span>
 					{(Number.isInteger(viewCount)
 							&& Number.isInteger(comments)) &&
 							<ViewStats

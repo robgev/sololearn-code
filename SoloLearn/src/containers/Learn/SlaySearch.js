@@ -2,8 +2,9 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { searchLessons } from 'actions/slay';
-import CourseCard from 'components/CourseCard';
+import CodePenCard from 'components/CodePenCard';
 import SlayLayout from 'components/Layouts/SlayLayout';
+import SlayDetailedShimmer from 'components/Shimmers/SlayDetailedShimmer';
 
 const mapStateToProps = state => ({ lessons: state.slay.filteredCollectionItems });
 
@@ -38,17 +39,17 @@ class SlayDetailed extends PureComponent {
 	}
 
 	async componentWillReceiveProps(newProps) {
-		const { startIndex, loadCount } = this.state;
+		const { loadCount } = this.state;
 		const { params } = this.props;
 		const { params: { query } } = newProps;
 		if (params.query !== query) {
-			this.setState({ loading: true });
+			this.setState({ loading: true, startIndex: 0 });
 			const length =
-				await this.props.searchLessons(query, { index: startIndex, count: loadCount });
+				await this.props.searchLessons(query, { index: 0, count: loadCount });
 			this.setState({
 				loading: false,
 				hasMore: length === loadCount,
-				startIndex: startIndex + loadCount,
+				startIndex: loadCount,
 			});
 		}
 	}
@@ -69,12 +70,24 @@ class SlayDetailed extends PureComponent {
 		const { lessons } = this.props;
 		return (
 			<SlayLayout
+				paper
 				noSidebar
 				items={lessons}
 				loading={loading}
 				hasMore={hasMore}
 				loadMore={this.loadMore}
-				cardComponent={CourseCard}
+				cardComponent={CodePenCard}
+				loadingComponent={SlayDetailedShimmer}
+				wrapperStyle={{
+					alignItems: 'initial',
+				}}
+				style={{
+					width: 'initial',
+					padding: 15,
+					flexDirection: 'row',
+					flexWrap: 'wrap',
+					justifyContent: 'flex-start',
+				}}
 			/>
 		);
 	}

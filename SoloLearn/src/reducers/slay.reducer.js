@@ -40,7 +40,7 @@ const filteredCollectionItems = (state = [], action) => {
 	case SET_COLLECTION_ITEMS:
 		return action.payload;
 	case APPEND_COLLECTION_ITEMS:
-		return safeAdd(state, action.payload);
+		return uniqBy([ ...state, ...action.payload ], 'id');
 	case RESET_LOCALE_DATA:
 		return [];
 	default:

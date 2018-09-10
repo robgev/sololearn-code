@@ -8,14 +8,18 @@ const ViewStats = ({
 	color, views, comments, iconStyle,
 }) => (
 	<div className="view-stats">
-		<div className="stat-group">
-			<ViewsIcon color={color || grey500} style={{ height: 20, width: 20, ...iconStyle }} />
-			<p>{ numberFormatter(views) }</p>
-		</div>
-		<div className="stat-group">
-			<CommentsIcon color={color || grey500} style={{ height: 20, width: 20, ...iconStyle }} />
-			<p>{ numberFormatter(comments) }</p>
-		</div>
+		{ views > 0 &&
+			<div className="stat-group">
+				<ViewsIcon color={color || grey500} style={{ height: 20, width: 20, ...iconStyle }} />
+				<p>{ numberFormatter(views) }</p>
+			</div>
+		}
+		{ comments > 0 &&
+			<div className="stat-group">
+				<CommentsIcon color={color || grey500} style={{ height: 20, width: 20, ...iconStyle }} />
+				<p>{ numberFormatter(comments) }</p>
+			</div>
+		}
 	</div>
 );
 
