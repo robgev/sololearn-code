@@ -76,8 +76,12 @@ class Parser extends Component {
 	};
 
 	static Link = ({ children, strAttributes }) => {
-		const [ , link ] = Parser.linkRegex.exec(strAttributes);
-		return <a href={link}>{children}</a>;
+		const [ , fullLink ] = Parser.linkRegex.exec(strAttributes);
+		if (fullLink.includes('sololearn.com')) {
+			const userLessonId = fullLink.substring(fullLink.lastIndexOf('/') + 1);
+			return <a href={`/learn/lesson/user-lesson/${userLessonId}`}>{children}</a>;
+		}
+		return <a href={fullLink}>{children}</a>;
 	}
 
 	static Image = ({ id, width }) =>
