@@ -21,17 +21,20 @@ class Profile extends PureComponent {
 		this.props.onRequestClose(blob);
 	}
 
+	onRequestClose = () => {
+		this.props.onRequestClose();
+	}
+
 	render() {
 		const {
 			t,
 			open,
 			image,
-			onRequestClose,
 		} = this.props;
 		const actions = [
 			<FlatButton
 				primary
-				onClick={onRequestClose}
+				onClick={this.onRequestClose}
 				label={t('common.cancel-title')}
 			/>,
 			<FlatButton
@@ -45,7 +48,7 @@ class Profile extends PureComponent {
 				open={open}
 				actions={actions}
 				title="Edit the image"
-				onRequestClose={onRequestClose}
+				onRequestClose={this.onRequestClose}
 				className="avatar-cropper-container"
 			>
 				<AvatarEditor

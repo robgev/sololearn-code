@@ -33,6 +33,9 @@
 				flex-direction: column;
 				width: 100%;
 			}
+			.settings-button {
+				align-self: flex-end;
+			}
 			.image-group {
 				.profile-image-container {
 					position: relative;

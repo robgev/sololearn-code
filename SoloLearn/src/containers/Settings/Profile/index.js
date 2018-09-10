@@ -78,14 +78,19 @@ class Profile extends PureComponent {
 		const {
 			name,
 			email,
+			image,
 			countryCode,
 		} = this.state;
+		const { avatarUrl } = this.props.userProfile;
 		const {
 			name: oldName,
 			email: oldEmail,
 			countryCode: oldCountryCode,
 		} = this.props.userProfile;
-		return name.trim() !== oldName || email.trim() !== oldEmail || countryCode !== oldCountryCode;
+		return name.trim() !== oldName
+							|| email.trim() !== oldEmail
+							|| countryCode !== oldCountryCode
+							|| image !== avatarUrl;
 	}
 
 	submitSettings = async () => {
