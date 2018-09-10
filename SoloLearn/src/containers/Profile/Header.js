@@ -127,6 +127,7 @@ class Header extends Component {
 				</div>
 				<div className="profile-header-details">
 					<ProfileAvatar
+						disabled
 						size={130}
 						withBorder
 						userID={profile.id}
