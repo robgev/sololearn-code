@@ -33,6 +33,14 @@ const getStatus = (status) => {
 	}
 };
 
+const getQuestionTitle = (question) => {
+	const indexOfFormat = question.indexOf(question.match(/\[!\w+!]/));
+	if (indexOfFormat === -1) {
+		return question;
+	}
+	return question.substring(0, indexOfFormat);
+};
+
 export default ({
 	challenges, preview, courses, loadMore, hasMore,
 }) => (
@@ -82,7 +90,11 @@ export default ({
 										{getStatus(quiz.status).text.toUpperCase()}
 									</div>
 								}
-								primaryText={<div className="primary-text">{quiz.question.replace(/\[!\w+!]/, '')}</div>}
+								primaryText={
+									<div className="primary-text">
+										{getQuestionTitle(quiz.question)}
+									</div>
+								}
 								key={quiz.id}
 								secondaryText={getTypeString(quiz.type)}
 							/>

@@ -9,9 +9,6 @@ class TypeIn extends Component {
 		text: '',
 	}
 	correctAnswer = this.props.quiz.answers[0];
-	componentDidMount() {
-		this.input.focus();
-	}
 	_onChange = (_, text) => {
 		this.setState({ text: text.toLowerCase() });
 		this.props.onChange({ isComplete: this.isComplete(text) });
@@ -46,15 +43,16 @@ class TypeIn extends Component {
 					{
 						disabled
 							? (
-								<span style={{ fontSize: 18 }}>
-									<span style={{ color: 'green' }}>
-										{getCommonPrefix(text, this.correctAnswer.text)}
-									</span>
-									<span style={{ color: 'red' }}>
-										{text.slice(getCommonPrefix(text, this.correctAnswer.text).length)}
-									</span>
+								<span
+									style={{
+										fontSize: 18,
+										color: text === this.correctAnswer.text ? 'green' : 'red',
+									}}
+								>
+									{text}
 								</span>
 							) : <TextField
+								autoFocus
 								name="answer-placeholder"
 								maxLength={this.correctAnswer.text.length}
 								style={{ width: `${this.correctAnswer.text.length}em` }}

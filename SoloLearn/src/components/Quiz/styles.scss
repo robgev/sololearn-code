@@ -14,12 +14,14 @@
 		word-wrap: break-word; /* IE */
 	}
 	.placeholder-container {
+		margin: 20px;
 		text-align: center;
 	}
 	.fill-in-answers-container {
 		margin: 20px;
 		.fill-in-item {
 			font-family: monospace;
+			font-size: 18px;
 		}
 		* {
 			word-break: break-all;

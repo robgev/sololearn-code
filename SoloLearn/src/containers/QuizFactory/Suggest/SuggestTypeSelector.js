@@ -66,7 +66,7 @@ class SuggestTypeSelector extends Component {
 	}
 	closePreview = () => {
 		this.setPreview(null);
-		this.setState({ checkResult: null });
+		this.setState({ checkResult: null, isQuizComplete: false });
 	}
 	handleSubmit = () => {
 		this.setState({ isSubmitting: true });

@@ -9,6 +9,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import { red500 } from 'material-ui/styles/colors';
 import { browserHistory } from 'react-router';
+import { queryDifference, isObjectEqual } from 'utils';
 import Layout from 'components/Layouts/GeneralLayout';
 import Quiz, { CheckBar } from 'components/Quiz';
 import { setSuggestionChallenge } from 'actions/quizFactory';
@@ -40,6 +41,8 @@ const mapDispatchToProps = {
 
 @connect(mapStateToProps, mapDispatchToProps)
 class MySubmissions extends Component {
+	static DEFAULT_FILTERS = { courseId: null, status: null }
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -48,42 +51,44 @@ class MySubmissions extends Component {
 			previewChallenge: null,
 			checkResult: null,
 			isDeletePopupOpen: false,
-			filters: {
-				courseId: null,
-				status: null,
-			},
+			filters: MySubmissions.DEFAULT_FILTERS,
 		};
-		document.title = 'Sololearn | My Submissions';
 	}
-	componentWillMount() {
+	componentDidMount() {
+		document.title = 'Sololearn | Discuss';
 		this._isMounted = true;
-		const { status = null, courseId = null } = this.props.location.query;
-		this.setState({
-			filters: {
-				status: status === null ? null : parseInt(status, 10),
-				courseId: courseId === null ? null : parseInt(courseId, 10),
-			},
-		});
-		this.fetchSubmissions({ status, courseId }, null);
+		const { location } = this.props;
+		this.setFilters(location.query);
+		const changed = queryDifference(MySubmissions.DEFAULT_FILTERS, location.query);
+		browserHistory.replace({ ...location, query: changed });
 	}
-	componentDidUpdate(nextProps) {
-		const { filters } = this.state;
-		const { query: currQuery } = this.props.location;
-		const { query: nextQuery } = nextProps.location;
-		const statusChanged = currQuery.status !== nextQuery.status;
-		const courseIdChanged = currQuery.courseId !== nextQuery.courseId;
-		if (courseIdChanged) {
-			filters.courseId = currQuery.courseId === null ? null : parseInt(currQuery.courseId, 10);
+	componentWillUpdate(nextProps) {
+		// Source of truth is the route
+		const { location } = nextProps;
+		if (!isObjectEqual(location.query, this.props.location.query)) {
+			const changed = queryDifference(MySubmissions.DEFAULT_FILTERS, location.query);
+			browserHistory.push({ ...location, query: changed });
+			this.setFilters(location.query);
 		}
-		if (statusChanged) {
-			filters.status = currQuery.status === null ? null : parseInt(currQuery.status, 10);
+	}
+	setFilters = (filters) => {
+		const { filters: oldFilters } = this.state;
+		const formattedFilters = { ...filters };
+		if (filters.courseId) {
+			formattedFilters.courseId = parseInt(filters.courseId, 10);
 		}
-		if (statusChanged || courseIdChanged) {
-			// eslint-disable-next-line
-			this.setState({ filters, challenges: null });
+		if (filters.status) {
+			formattedFilters.status = parseInt(filters.status, 10);
+		}
+		const keys = Object.keys(formattedFilters);
+		if (keys.length === 0 || keys.some(key => formattedFilters[key] !== oldFilters[key])) {
+			this.setState({
+				filters: { ...MySubmissions.DEFAULT_FILTERS, ...formattedFilters },
+				challenges: null,
+			});
 			this.fetchSubmissions(filters, null);
 		}
-	}
+	};
 	fetchSubmissions = async (filters = this.state.filters, challenges = this.state.challenges) => {
 		const index = challenges !== null ? challenges.length : 0;
 		const newChallenges = await getMySubmissions({ ...filters, index });

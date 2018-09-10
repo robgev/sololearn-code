@@ -47,7 +47,12 @@ class SuggestMultipleChoice extends Component {
 	makeQuiz = () => {
 		const { answers, question, language } = this.state;
 		return {
-			type: 1, answers: answers.filter(a => a.text !== ''), question, courseID: language.id,
+			type: 1,
+			answers: answers
+				.filter(a => a.text !== '')
+				.map(a => ({ ...a, text: a.text.trim() })),
+			courseID: language.id,
+			question,
 		};
 	}
 	preview = () => {
@@ -55,7 +60,7 @@ class SuggestMultipleChoice extends Component {
 	}
 	isComplete = () => {
 		const { question, language } = this.state;
-		const answers = this.state.answers.filter(a => a.text !== '');
+		const answers = this.state.answers.filter(a => a.text.trim() !== '');
 		return question !== '' && answers.length >= 2 && answers.some(a => a.isCorrect) && language !== null;
 	}
 	render() {

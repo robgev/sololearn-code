@@ -17,14 +17,11 @@ const formatAnswers = (answerText, inputs, onChange, disabled, addRefOnIndex, fo
 						{
 							disabled
 								? (
-									<span style={{ fontSize: 18 }}>
-										<span className="fill-in-item" style={{ color: 'green' }}>
-											{getCommonPrefix(inputs[curr].text, inputs[curr].correct)}
-										</span>
-										<span className="fill-in-item" style={{ color: 'red' }}>
-											{inputs[curr].text
-												.slice(getCommonPrefix(inputs[curr].text, inputs[curr].correct).length)}
-										</span>
+									<span
+										className="fill-in-item"
+										style={{ color: inputs[curr].text === inputs[curr].correct ? 'green' : 'red' }}
+									>
+										{inputs[curr].text}
 									</span>
 								)
 								: <TextField
@@ -65,6 +62,9 @@ class FillIn extends Component {
 	question = this.props.quiz.question.split(/\[!\w+!]/)[0];
 	answerText = this.props.quiz.question.split(/\[!\w+!]/)[1];
 	componentDidMount() {
+		this.initialFocus();
+	}
+	initialFocus = () => {
 		if (this.inputRefs[0] != null) {
 			this.inputRefs[0].focus();
 		}
@@ -92,6 +92,9 @@ class FillIn extends Component {
 				.map(answer => ({
 					correct: answer.text, id: answer.id, text: '', properties: answer.properties,
 				})),
+		}, () => {
+			// Let the input fields mount before focusing the first one
+			setTimeout(this.initialFocus, 0);
 		});
 	}
 	check = () => !this.state.inputs.some(a => a.correct !== a.text)
