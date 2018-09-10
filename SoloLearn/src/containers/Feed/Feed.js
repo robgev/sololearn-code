@@ -95,7 +95,9 @@ class FeedItemsBase extends Component {
 			>
 				<div className="feed-items-wrapper">
 					<Header profile={userProfile} levels={levels} />
-					<p className="sub-title">{t('feed.title')}</p>
+					{ (feedPins === null || feedPins.length) &&
+						<p className="sub-title">{t('feed.title')}</p>
+					}
 					<FeedList
 						feed={feed}
 						feedPins={feedPins}
