@@ -8,7 +8,6 @@ import Paper from 'material-ui/Paper';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
-import CircularProgress from 'material-ui/CircularProgress';
 import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 
 import { getLeaderboard } from 'actions/leaderboards';
@@ -193,6 +192,7 @@ class Leaderboards extends PureComponent {
 							backgroundColor="#78909C"
 							style={{ borderRadius: 100 }}
 							buttonStyle={{ borderRadius: 100 }}
+							overlayStyle={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
 							label={`${t(`leaderboard.action.${userId === this.props.userId ? 'find-me' : 'find-them'}`)} ${userRank}`}
 							icon={<ArrowDown />}
 						/>
