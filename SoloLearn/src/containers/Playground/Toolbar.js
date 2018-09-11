@@ -324,6 +324,25 @@ ${this.props.code}
 		});
 	}
 
+	determineResetButtonState = () => {
+		const {
+			code,
+			mode,
+			jsCode,
+			cssCode,
+			userCodeData,
+		} = this.props;
+		switch (mode) {
+		case 'css':
+			return userCodeData.cssCode === cssCode;
+		case 'js':
+		case 'javascript':
+			return userCodeData.jsCode === jsCode;
+		default:
+			return userCodeData.sourceCode === code;
+		}
+	}
+
 	render() {
 		const {
 			t,
@@ -406,6 +425,7 @@ ${this.props.code}
 					}
 					<FlatButton
 						label={t('code_playground.actions.reset-code')}
+						disabled={this.determineResetButtonState()}
 						style={styles.codeAction.reset}
 						onClick={resetEditorValue}
 					/>
