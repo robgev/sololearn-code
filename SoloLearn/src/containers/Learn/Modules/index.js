@@ -25,6 +25,7 @@ import Dialog from 'components/StyledDialog';
 
 import 'styles/Learn/Modules.scss';
 
+import UserProgressToolbar from '../UserProgressToolbar';
 import ModuleChips from './ModuleChips';
 import ModuleChip from './ModuleChip';
 import Certificate from './Certificate';
@@ -129,7 +130,9 @@ class Modules extends Component {
 		const userCourses = this.props.userProfile.skills;
 
 		return (
-			<Layout>
+			<Layout
+				sidebarContent={<UserProgressToolbar />}
+			>
 				<BusyWrapper
 					paper
 					isBusy={loading}

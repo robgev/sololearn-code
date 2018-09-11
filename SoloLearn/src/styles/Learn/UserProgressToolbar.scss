@@ -1,0 +1,50 @@
+.user-progress-toolbar {
+	padding: 15px;
+	.main-user-info {
+		display: flex;
+		width: 100%;
+		align-items: center;
+		.details {
+			padding-left: 10px;
+			.user-name {
+				font-size: 16px;
+				font-weight: 500;
+				color: #5d5b5b;
+			}
+		}
+	}
+	.leaderboard-link {
+		font-size: 14px;
+		text-align: center;
+	}
+	.user-level-info {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		.level-graph-container {
+			display: flex;
+			flex: 1 0 auto;
+			margin: 0 10px;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			position: relative;
+			.level-graph-text {
+				font-size: 20px;
+				color: #5d5b5b;
+				font-weight: 500;
+			}
+			.CircularProgressbar {
+				top: 0;
+				left: 0;
+			}
+		}
+		.xp-remaining {
+			text-align: center;
+		}
+		p {
+			color: #5d5b5b;
+			font-size: 15px;
+		}
+	}
+}
