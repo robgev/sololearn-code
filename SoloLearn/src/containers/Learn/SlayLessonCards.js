@@ -6,6 +6,7 @@ import BusyWrapper from 'components/BusyWrapper';
 
 import 'styles/Learn/Lessons.scss';
 import LessonTiles from './LessonTiles';
+import UserProgressToolbar from './UserProgressToolbar';
 
 const SlayLessonCards = ({
 	t,
@@ -14,7 +15,9 @@ const SlayLessonCards = ({
 	loading,
 }) => (
 
-	<Layout>
+	<Layout
+		sidebarContent={<UserProgressToolbar />}
+	>
 		<BusyWrapper
 			isBusy={loading}
 			style={{

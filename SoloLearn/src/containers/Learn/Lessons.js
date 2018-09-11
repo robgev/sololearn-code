@@ -24,8 +24,9 @@ import Layout from 'components/Layouts/GeneralLayout';
 
 import 'styles/Learn/Lessons.scss';
 
-import { LessonType } from './QuizManager';
 import LessonTiles from './LessonTiles';
+import { LessonType } from './QuizManager';
+import UserProgressToolbar from './UserProgressToolbar';
 
 const mapStateToProps = (state, ownProps) => ({
 	isLoaded: isLoaded(state, 'lessons'),
@@ -105,7 +106,9 @@ class Lessons extends Component {
 		const { lessons, name } = activeModule;
 
 		return (
-			<Layout>
+			<Layout
+				sidebarContent={<UserProgressToolbar />}
+			>
 				<div className="lessons-container">
 					<div className="lesson-breadcrumbs">
 						<Link className="hoverable" to={`/learn/course/${courseName}`}>

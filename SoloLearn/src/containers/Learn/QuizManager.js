@@ -31,6 +31,7 @@ import Layout from 'components/Layouts/GeneralLayout';
 import LoadingOverlay from 'components/LoadingOverlay';
 
 import StepIcon from './StepIcon';
+import UserProgressToolbar from './UserProgressToolbar';
 
 export const LessonType = {
 	Checkpoint: 0,
@@ -357,7 +358,9 @@ class QuizManager extends Component {
 		);
 
 		return (
-			<Layout>
+			<Layout
+				sidebarContent={<UserProgressToolbar />}
+			>
 				<Paper className="quiz-container">
 					<div style={{ padding: 15 }}>
 						<div className="lesson-breadcrumbs">
