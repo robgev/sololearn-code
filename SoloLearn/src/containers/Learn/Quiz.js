@@ -150,7 +150,7 @@ class Quiz extends Component {
 	}
 
 	check = (force = false) => {
-		const checkResult = force ? true : this.quiz.check();
+		const checkResult = force === true ? true : this.quiz.check();
 		Progress.addResult(this.props.activeLessonId, this.props.activeQuiz.id, checkResult, 0);
 		this.setState({ checkResult, isQuizComplete: true });
 		this.props.openComments();
@@ -172,7 +172,7 @@ class Quiz extends Component {
 				const nextQuiz = lesson.quizzes[quizIndex + 1];
 				this.props
 					.loadLessonLink(nextQuiz.id, parseInt(activeQuizData.number, 10) + 1, nextisText, 2);
-				this.setState({ checkResult: null });
+				this.setState({ checkResult: null, isQuizComplete: false });
 			} else {
 				const { lessons } = this.props.activeModule;
 				const module = this.props.activeModule;
@@ -190,7 +190,7 @@ class Quiz extends Component {
 					}
 				} else {
 					// Else show lessons
-					this.setState({ checkResult: null });
+					this.setState({ checkResult: null, isQuizComplete: false });
 					browserHistory.push(`/learn/course/${this.props.params.courseName}/${this.props.params.moduleName}`);
 				}
 				// return;

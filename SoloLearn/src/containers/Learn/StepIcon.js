@@ -1,30 +1,19 @@
 import React from 'react';
-import CheckCircle from 'material-ui/svg-icons/action/check-circle';
 import SvgIcon from 'material-ui/SvgIcon';
 
-const iconStyle = {
-	display: 'block',
-	fontSize: 24,
-	width: 24,
-	height: 24,
-};
-
 const StepIcon = ({ active, completed, text }) => {
-	if (completed) {
-		return (
-			<CheckCircle
-				color="#8BC34A"
-				style={iconStyle}
-			/>
-		);
-	}
-
+	const size = active ? 24 : 20;
 	return (
 		<SvgIcon
-			color={active ? '#607D8B' : '#9E9E9E'}
-			style={iconStyle}
+			color={active ? '#607D8B' : completed ? '#8BC34A' : '#9E9E9E'}
+			style={{
+				display: 'block',
+				fontSize: 24,
+				width: size,
+				height: size,
+			}}
 		>
-			<circle cx="12" cy="12" r={active ? 12 : 10} />
+			<circle cx="12" cy="12" r={size / 2} />
 			<text
 				x="12"
 				y="16"
@@ -32,7 +21,7 @@ const StepIcon = ({ active, completed, text }) => {
 				fontSize="12"
 				fill="#fff"
 			>
-				{text}
+				{completed ? '✔' : text}
 			</text>
 		</SvgIcon>
 	);

@@ -112,6 +112,7 @@ class Parser extends Component {
 	// recursive parser
 	_parse = ({ text, courseLanguage, basePath }) => {
 		let current = text;
+		let idx = 0;
 		const result = [];
 		if (!Parser.tagRegex.test(current)) {
 			return this.noTagParse(current);
@@ -121,34 +122,36 @@ class Parser extends Component {
 			const [ match, tag, args, innerText ] = regexed;
 			result.push(this.noTagParse(current.substring(0, current.indexOf(match))));
 			const inner = this._parse({ text: innerText, courseLanguage, basePath });
+			idx += 1;
 			switch (tag) {
 			case 'b':
-				result.push(<b>{inner}</b>);
+				result.push(<b key={idx}>{inner}</b>);
 				break;
 			case 'i':
-				result.push(<i>{inner}</i>);
+				result.push(<i key={idx}>{inner}</i>);
 				break;
 			case 'u':
-				result.push(<Parser.U>{inner}</Parser.U>);
+				result.push(<Parser.U key={idx}>{inner}</Parser.U>);
 				break;
 			case 'h1':
-				result.push(<h1>{inner}</h1>);
+				result.push(<h1 key={idx}>{inner}</h1>);
 				break;
 			case 'h2':
-				result.push(<h2>{inner}</h2>);
+				result.push(<h2 key={idx}>{inner}</h2>);
 				break;
 			case 'h3':
-				result.push(<h3>{inner}</h3>);
+				result.push(<h3 key={idx}>{inner}</h3>);
 				break;
 			case 'note':
-				result.push(<Parser.Note>{inner}</Parser.Note>);
+				result.push(<Parser.Note key={idx}>{inner}</Parser.Note>);
 				break;
 			case 'a':
-				result.push(<Parser.Link strAttributes={args}>{inner}</Parser.Link>);
+				result.push(<Parser.Link key={idx} strAttributes={args}>{inner}</Parser.Link>);
 				break;
 			case 'code':
 				result.push((
 					<Parser.Code
+						key={idx}
 						basePath={basePath}
 						courseLanguage={courseLanguage}
 						strAttributes={args}
@@ -184,14 +187,14 @@ class Parser extends Component {
 			return fullText;
 		}
 		const allItems = [];
-		this.filteredGlossary.forEach(({ text, pattern, term }) => {
+		this.filteredGlossary.forEach(({ text, pattern, term }, key) => {
 			const patternRegExp = pattern !== null ? new RegExp(pattern) : wordBoundary(term);
 			let current = fullText;
 			while (patternRegExp.test(current)) {
 				const [ match ] = patternRegExp.exec(current);
 				const index = current.indexOf(match);
 				allItems.push({
-					item: <Parser.GlossaryItem glossaryText={text}>{match}</Parser.GlossaryItem>,
+					item: <Parser.GlossaryItem key={key} glossaryText={text}>{match}</Parser.GlossaryItem>,
 					offset: index + fullText.indexOf(current),
 					length: match.length,
 				});
@@ -219,12 +222,14 @@ class Parser extends Component {
 	noTagParse = (text) => {
 		let current = text;
 		const result = [];
+		let idx = 0;
 		while (Parser.imgRegex.test(current)) {
 			const [ match, id, width ] = Parser.imgRegex.exec(current);
 			const index = current.indexOf(match);
+			idx += 1;
 			result.push(
 				this.parseGlossary(current.substring(0, index)),
-				<Parser.Image id={id} width={width} />,
+				<Parser.Image key={idx} id={id} width={width} />,
 			);
 			current = current.substring(index + match.length);
 		}
