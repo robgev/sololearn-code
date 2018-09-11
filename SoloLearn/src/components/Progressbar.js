@@ -1,9 +1,9 @@
 import React from 'react';
 import CircularProgressbar from 'react-circular-progressbar';
 
-const Progressbar = ({ percentage, style }) => (
+const Progressbar = ({ percentage, style, strokeWidth = 3 }) => (
 	<CircularProgressbar
-		strokeWidth={3}
+		strokeWidth={strokeWidth}
 		styles={{
 			root: { position: 'absolute', width: '110%', ...style },
 			path: { stroke: '#9CCC65' },

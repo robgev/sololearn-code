@@ -20,7 +20,7 @@ const UserProgressToolbar = ({
 		<div className="user-progress-toolbar">
 			<div className="main-user-info">
 				<ProfileAvatar
-					size={50}
+					size={80}
 					badge={profile.badge}
 					userID={profile.id}
 					userName={profile.name}
@@ -36,13 +36,14 @@ const UserProgressToolbar = ({
 			</div>
 			<LeaderboardString />
 			<div className="user-level-info">
-				<p>{ profile.xp } XP</p>
+				<p style={{ textAlign: 'right' }}>{ profile.xp } XP</p>
 				<div className="level-graph-container">
 					<div style={{ paddingTop: '100%' }} />
 					<div className="level-graph-text">
-						{t('common.user-level')} {profile.level}
+						{t('common.user-level')} <span>{profile.level}</span>
 					</div>
 					<Progressbar
+						strokeWidth={15}
 						style={{ width: '100%' }}
 						percentage={100 - percentageRemaining}
 					/>
@@ -51,6 +52,20 @@ const UserProgressToolbar = ({
 					<p>{ levels[profile.level - 1].maxXp - profile.xp } XP</p>
 					<p>to Level { levels[profile.level].number }</p>
 				</div>
+			</div>
+			<div className="user-activity-info">
+				<Link to={`/profile/${profile.id}/codes`} className="user-activity-tab">
+					<p className="activity-number">{profile.codes}</p>
+					<p className="activity-text">{t('profile.tab.codes')}</p>
+				</Link>
+				<Link to={`/profile/${profile.id}/discussion`} className="user-activity-tab">
+					<p className="activity-number">{profile.posts}</p>
+					<p className="activity-text">{t('profile.tab.posts')}</p>
+				</Link>
+				<Link to={`/profile/${profile.id}/skills`} className="user-activity-tab">
+					<p className="activity-number">{profile.skills ? profile.skills.length : 0}</p>
+					<p className="activity-text">{t('profile.tab.skills')}</p>
+				</Link>
 			</div>
 		</div>
 	);

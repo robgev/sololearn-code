@@ -3,36 +3,52 @@
 	.main-user-info {
 		display: flex;
 		width: 100%;
+		flex-direction: column;
 		align-items: center;
 		.details {
-			padding-left: 10px;
+			padding-top: 10px;
+			text-align: center;
 			.user-name {
 				font-size: 16px;
 				font-weight: 500;
 				color: #5d5b5b;
 			}
+			.user-level {
+				font-size: 14px;
+				color: rgba(0, 0, 0, 0.5);
+			}
 		}
 	}
 	.leaderboard-link {
 		font-size: 14px;
-		text-align: center;
+		justify-content: center;
+		margin: 10px 0;
 	}
 	.user-level-info {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: center;
+		padding-top: 5px;
+		> * {
+			flex: 1;
+		}
 		.level-graph-container {
 			display: flex;
-			flex: 1 0 auto;
+			width: 70px;
 			margin: 0 10px;
 			justify-content: center;
 			align-items: center;
 			text-align: center;
 			position: relative;
 			.level-graph-text {
-				font-size: 20px;
+				text-transform: uppercase;
+				font-size: 14px;
 				color: #5d5b5b;
 				font-weight: 500;
+				width: 45px;
+				> span {
+					font-size: 16px;
+				}
 			}
 			.CircularProgressbar {
 				top: 0;
@@ -40,11 +56,33 @@
 			}
 		}
 		.xp-remaining {
-			text-align: center;
+			text-align: left;
 		}
 		p {
 			color: #5d5b5b;
-			font-size: 15px;
+			font-size: 13px;
+		}
+	}
+	.user-activity-info {
+		display: flex;
+		padding-top: 15px;
+		.user-activity-tab {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			flex: 1;
+			.activity-number {
+				font-size: 20px;
+				color: #5d5b5b;
+			}
+			.activity-text {
+				color: #5d5b5b;
+				font-size: 13px;
+			}
+			&:not(:last-of-type) {
+				border-right: 1px solid rgba(0, 0, 0, 0.2);
+			}
 		}
 	}
 }

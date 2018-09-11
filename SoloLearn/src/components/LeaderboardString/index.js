@@ -54,6 +54,7 @@ class LeaderboardString extends Component {
 	render() {
 		return (
 			<Link to="/leaderboards" className="leaderboard-link hoverable">
+				<img className="learboards-goblet" src="/assets/rank_goblet.png" alt="g" />
 				{this.getLeaderboardString()}
 			</Link>
 		);
