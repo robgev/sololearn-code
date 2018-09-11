@@ -4,12 +4,10 @@ import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 
 // Material UI components
-import {
-	Step,
-	Stepper,
-	StepLabel,
-} from 'material-ui/Stepper';
 import Paper from 'material-ui/Paper';
+
+import { ProgressBar, Step } from 'react-step-progress-bar';
+import 'react-step-progress-bar/styles.css';
 
 // Redux modules
 import { isLoaded } from 'reducers';
@@ -224,38 +222,55 @@ class QuizManager extends Component {
 		if (timeline.length < 3) {
 			return null;
 		}
+		const count = timeline.length / 2;
 		return (
-			<Stepper>
-				{
-					timeline
-						.filter(el => el.isText)
-						.map((item, index) => {
-							const isActive = item.quizId === activeQuizId;
-							return (
-								<Step
-									value={index}
-									key={item.key}
-									onClick={() =>
-										this.loadLessonLink(item.quizId, item.number, item.isText, item.state)}
-								>
-									<StepLabel
-										icon={
-											<StepIcon
-												text={index + 1}
-												active={isActive}
-												completed={item.isCompleted && item.state !== ProgressState.Active}
-											/>
+			<div
+				style={{
+					margin: '20px auto 0px auto',
+					width: `${((count * 3) + ((count - 1) * 5))}%`,
+				}}
+			>
+				<ProgressBar
+					height={7}
+					percent={100 * (Math.floor(quizNumber / 2) / (count - 1))}
+					filledBackground="#8BC34A"
+				>
+					{
+						timeline
+							.filter(el => el.isText)
+							.map((item, index) => {
+								const isActive = item.quizId === activeQuizId;
+								return (
+									<Step>
+										{() => (
+											<div
+												key={item.key}
+												tabIndex={0}
+												role="button"
+												onClick={() =>
+													this.loadLessonLink(item.quizId, item.number, item.isText, item.state)}
+												style={{
+													// paddingLeft: index === 0 ? 0 : 14,
+													// paddingRight: index === timeline.length - 1 ? 0 : 14,
+													backgroundColor: 'white',
+													cursor: 'pointer',
+												}}
+											>
+												<StepIcon
+													key={item.key}
+													text={index + 1}
+													active={isActive}
+													completed={item.isCompleted && item.state !== ProgressState.Active}
+												/>
+											</div>
+										)
 										}
-										style={{
-											paddingLeft: index === 0 ? 0 : 14,
-											paddingRight: index === timeline.length - 1 ? 0 : 14,
-										}}
-									/>
-								</Step>
-							);
-						})
-				}
-			</Stepper>
+									</Step>
+								);
+							})
+					}
+				</ProgressBar>
+			</div>
 		);
 	}
 
