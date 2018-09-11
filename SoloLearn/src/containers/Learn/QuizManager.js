@@ -39,6 +39,11 @@ export const LessonType = {
 	Quiz: 1,
 };
 
+const isQuizCompleted = ({ quizID, lessonProgress }) => {
+	if (lessonProgress === null) return false;
+	return lessonProgress.quizzes.find(el => el.quizID === quizID).isCompleted;
+};
+
 const mapStateToProps = (state, ownProps) => ({
 	isLoaded: isLoaded(state, 'quizzes'),
 	course: state.course,
@@ -174,8 +179,6 @@ class QuizManager extends Component {
 				activeQuizIndex++;
 			}
 		}
-
-		const progressState = ProgressState;
 		const isCheckpoint = lesson.type === LessonType.Checkpoint;
 		// let currentIndex = 0;
 
@@ -193,10 +196,11 @@ class QuizManager extends Component {
 					index,
 					number: (index * 2) + 1,
 					state: isCurrent
-						? progressState.Active
+						? ProgressState.Active
 						: isCompleted
-							? progressState.Normal
-							: progressState.Disabled,
+							? ProgressState.Normal
+							: ProgressState.Disabled,
+					isCompleted: isQuizCompleted({ quizID: quiz.id, lessonProgress: progress }),
 				});
 			}
 			timeline.push({
@@ -207,38 +211,52 @@ class QuizManager extends Component {
 				index,
 				number: isCheckpoint ? (index + 1) * 2 : index + 1,
 				state: isCurrent
-					? progressState.Active
+					? ProgressState.Active
 					: isCompleted
-						? progressState.Normal
-						: progressState.Disabled,
+						? ProgressState.Normal
+						: ProgressState.Disabled,
+				isCompleted: isQuizCompleted({ quizID: quiz.id, lessonProgress: progress }),
 			});
 		});
 		this.timeline = timeline;
-		return timeline.map((item, index) => {
-			const quizNumber = (parseInt(this.props.activeQuiz.number, 10) - 1);
-			const isActive = quizNumber === index;
-			return (
-				<Step
-					value={index}
-					key={item.key}
-					onClick={() => this.loadLessonLink(item.quizId, item.number, item.isText, item.state)}
-				>
-					<StepLabel
-						icon={
-							<StepIcon
-								text={index + 1}
-								active={isActive}
-								completed={quizNumber > index}
-							/>
-						}
-						style={{
-							paddingLeft: index === 0 ? 0 : 14,
-							paddingRight: index === timeline.length - 1 ? 0 : 14,
-						}}
-					/>
-				</Step>
-			);
-		});
+		const quizNumber = (parseInt(this.props.activeQuiz.number, 10) - 1);
+		const activeQuizId = timeline[quizNumber].quizId;
+		if (timeline.length < 3) {
+			return null;
+		}
+		return (
+			<Stepper>
+				{
+					timeline
+						.filter(el => el.isText)
+						.map((item, index) => {
+							const isActive = item.quizId === activeQuizId;
+							return (
+								<Step
+									value={index}
+									key={item.key}
+									onClick={() =>
+										this.loadLessonLink(item.quizId, item.number, item.isText, item.state)}
+								>
+									<StepLabel
+										icon={
+											<StepIcon
+												text={index + 1}
+												active={isActive}
+												completed={item.isCompleted && item.state !== ProgressState.Active}
+											/>
+										}
+										style={{
+											paddingLeft: index === 0 ? 0 : 14,
+											paddingRight: index === timeline.length - 1 ? 0 : 14,
+										}}
+									/>
+								</Step>
+							);
+						})
+				}
+			</Stepper>
+		);
 	}
 
 	loadLessonLink = (quizId, number, isText, state) => {
@@ -338,9 +356,7 @@ class QuizManager extends Component {
 								{activeLesson.name}
 							</Link>
 						</div>
-						<Stepper activeStep={parseInt(this.props.activeQuiz.number, 10) - 1}>
-							{this.generateTimeline(quizzes, activeQuiz)}
-						</Stepper>
+						{this.generateTimeline(quizzes, activeQuiz)}
 						{childrenWithProps}
 						<Link to={{ pathname: '/discuss', query: { query: tags !== null ? tags : course.language } }}>Q&A</Link>
 					</div>
