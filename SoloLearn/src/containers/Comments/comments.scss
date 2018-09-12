@@ -13,7 +13,9 @@
 		margin-left: 30px;
 	}
 	.editor {
-		width: 100%;
+		max-width: 100%;
+		width: inherit;
+		word-break: break-word;
 	}
 	.comments-toolbar-container {
 		display: flex;

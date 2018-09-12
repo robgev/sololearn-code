@@ -47,7 +47,7 @@ class AddReply extends Component {
 						onFocus={this.openReplyBox}
 						onBlur={this.handleBlur}
 						onLengthChange={this.onLengthChange}
-						style={isReplyBoxOpen ? { height: 100 } : { height: 50 }}
+						style={isReplyBoxOpen ? { height: 100 } : {}}
 						getUsers={{ type: 'discuss', params: { postId: this.props.postId } }}
 						submit={this.props.save}
 						placeholder={!isReplyBoxOpen && replyLength === 0 ? 'Write a new answer' : ''}

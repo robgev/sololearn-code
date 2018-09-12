@@ -6,7 +6,6 @@ import { Provider, connect } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import DevTools from 'mobx-react-devtools';
 import { Router, browserHistory } from 'react-router';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Theme from 'defaults/theme';
@@ -21,7 +20,6 @@ import 'react-circular-progressbar/dist/styles.css';
 import routes from './config/routes';
 import './i18n';
 
-injectTapEventPlugin();
 ReactGA.initialize('UA-42641357-240');
 ReactGA.set({ appName: 'SoloLearn', appVersion: '0.1' });
 ReactGA.ga('require', 'displayfeatures');

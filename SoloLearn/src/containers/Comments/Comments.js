@@ -203,7 +203,6 @@ class Comments extends Component {
 				<div className="input-bar">
 					<MyAvatar />
 					<MentionInput
-						style={{ height: 50 }}
 						placeholder="Write a new comment"
 						ref={(i) => { this.mentionInput = i; }}
 						onLengthChange={this.onLengthChange}
