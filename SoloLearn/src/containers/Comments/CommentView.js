@@ -12,6 +12,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'components/StyledDialog';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
+import { grey500 } from 'material-ui/styles/colors';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { updateDate, generatePreviews } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
@@ -82,7 +83,7 @@ class CommenView extends Component {
 					<div className="comment-meta-info">
 						<p className="comment-date">{updateDate(date)}</p>
 						<IconMenu
-							iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+							iconButtonElement={<IconButton><MoreVertIcon color={grey500} /></IconButton>}
 							anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
 							targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 						>

@@ -22,14 +22,14 @@ const VoteControls = ({
 		<IconButton
 			className="icon-button up"
 			style={{
-				width: 32,
-				height: 32,
+				width: 36,
+				height: 36,
 				padding: 4,
 				...buttonStyle,
 			}}
 			iconStyle={{
-				width: 24,
-				height: 24,
+				width: 28,
+				height: 28,
 			}}
 			onClick={onUpvote}
 		>
@@ -43,14 +43,14 @@ const VoteControls = ({
 		<IconButton
 			className="icon-button down"
 			style={{
-				width: 32,
-				height: 32,
+				width: 36,
+				height: 36,
 				padding: 4,
 				...buttonStyle,
 			}}
 			iconStyle={{
-				width: 24,
-				height: 24,
+				width: 28,
+				height: 28,
 			}}
 			onClick={onDownvote}
 		>

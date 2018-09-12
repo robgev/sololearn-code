@@ -218,7 +218,6 @@ class Post extends Component {
 								underlineStyle={{ display: 'none' }}
 								value={this.state.ordering}
 								onChange={this.handleFilterChange}
-								autoWidth={false}
 							>
 								<MenuItem value={1} primaryText="Votes" />
 								<MenuItem value={2} primaryText="Date" />

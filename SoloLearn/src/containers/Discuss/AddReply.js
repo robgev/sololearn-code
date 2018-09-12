@@ -52,7 +52,7 @@ class AddReply extends Component {
 						submit={this.props.save}
 						placeholder={!isReplyBoxOpen && replyLength === 0 ? 'Write a new answer' : ''}
 					/>
-					<span style={styles.textFieldCoutner}>{2048 - replyLength} characters remaining</span>
+					<span style={styles.textFieldCoutner}>{replyLength}/2048</span>
 				</div>
 				<div style={styles.editorActions}>
 					<RaisedButton

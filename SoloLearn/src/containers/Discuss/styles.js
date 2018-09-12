@@ -20,7 +20,7 @@ export const AddReplyStyles = {
 		bottom: 0,
 		right: 0,
 		fontSize: '13px',
-		fontWeight: '500',
+		color: '#777',
 	},
 	editorActions: {
 		textAlign: 'right',
@@ -70,7 +70,7 @@ export const EditQuestionStyles = {
 		bottom: 0,
 		right: 0,
 		fontSize: '13px',
-		fontWeight: '500',
+		color: '#777',
 	},
 	editorActions: {
 		textAlign: 'right',
@@ -109,7 +109,7 @@ export const NewQuestionStyles = {
 		bottom: 0,
 		right: 0,
 		fontSize: '13px',
-		fontWeight: '500',
+		color: '#777',
 	},
 	editorActions: {
 		textAlign: 'right',
@@ -137,7 +137,7 @@ export const PostStyles = {
 		margin: '20 auto',
 	},
 	repliesData: {
-		padding: '5px 25px',
+		padding: '5px 10px',
 		paddingBottom: 4,
 		display: 'flex',
 		alignItems: 'center',
@@ -174,7 +174,6 @@ export const PostStyles = {
 	},
 	repliesFilter: {
 		height: '25px',
-		width: 100,
 	},
 	repliesWrapper: {
 		position: 'relative',
@@ -211,13 +210,13 @@ export const QuestionStyles = {
 	vote: {
 		button: {
 			base: {
-				width: '32px',
-				height: '32px',
+				width: '36px',
+				height: '36px',
 				padding: '4px',
 			},
 			icon: {
-				width: '24px',
-				height: '24px',
+				width: '28px',
+				height: '28px',
 			},
 		},
 		text: {
@@ -403,13 +402,13 @@ export const ReplyStyles = {
 	vote: {
 		button: {
 			base: {
-				width: '32px',
-				height: '32px',
+				width: '36px',
+				height: '36px',
 				padding: '4px',
 			},
 			icon: {
-				width: '24px',
-				height: '24px',
+				width: '28px',
+				height: '28px',
 			},
 		},
 		text: {
@@ -459,9 +458,6 @@ export const ReplyStyles = {
 			width: '20px',
 			height: '20px',
 		},
-		margin: {
-			margin: '0 0 0 10px',
-		},
 	},
 	authorDetails: {
 		float: 'right',
@@ -498,7 +494,7 @@ export const ReplyStyles = {
 		alignSelf: 'flex-end',
 		marginTop: '10px',
 		fontSize: '13px',
-		fontWeight: '500',
+		color: '#777',
 	},
 	editorActions: {
 		textAlign: 'right',

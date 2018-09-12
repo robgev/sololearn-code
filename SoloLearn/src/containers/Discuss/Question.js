@@ -115,6 +115,15 @@ class Question extends Component {
 						>
 							<ArrowDown color={question.vote === -1 ? blueGrey500 : grey500} />
 						</IconButton>
+						<IconButton
+							className="follow hoverable-icon"
+							style={styles.followButton.base}
+							menuStyle={{ width: 100 }}
+							iconStyle={styles.followButton.icon}
+							onClick={this.handleFollowing}
+						>
+							<FollowIcon color={question.isFollowing ? blueGrey500 : grey500} />
+						</IconButton>
 					</div>
 					<div className="details" style={styles.details}>
 						<p className="title" style={styles.title}>{question.title}</p>
@@ -139,7 +148,7 @@ class Question extends Component {
 						))}
 					</div>
 					<IconMenu
-						iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+						iconButtonElement={<IconButton><MoreVertIcon color={grey500} /></IconButton>}
 						anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
 						targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 					>
@@ -184,15 +193,7 @@ class Question extends Component {
 					</IconMenu>
 				</div>
 				<div className="additional-details" style={styles.additionalDetails}>
-					<IconButton
-						className="follow hoverable-icon"
-						style={styles.followButton.base}
-						iconStyle={styles.followButton.icon}
-						onClick={this.handleFollowing}
-					>
-						<FollowIcon color={question.isFollowing ? blueGrey500 : grey500} />
-					</IconButton>
-					<UserTooltip userData={question}>
+					<UserTooltip style={{ marginLeft: 'auto' }} userData={question}>
 						<DiscussAuthor
 							reversedOrder
 							withUserNameBox

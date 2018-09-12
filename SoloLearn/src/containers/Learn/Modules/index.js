@@ -10,6 +10,7 @@ import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import { grey500 } from 'material-ui/styles/colors';
 
 import { loadCourseInternal, toggleCourseInternal, toggleCourse, selectModule } from 'actions/learn';
 import { getCourseByCourseName } from 'reducers/courses.reducer';
@@ -156,7 +157,7 @@ class Modules extends Component {
 									<p className="course-name">{course.name}</p>
 									<IconMenu
 										className="course-actions"
-										iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+										iconButtonElement={<IconButton><MoreVertIcon color={grey500} /></IconButton>}
 										anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
 										targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 									>

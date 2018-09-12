@@ -12,6 +12,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import LinearProgress from 'material-ui/LinearProgress';
 import Person from 'material-ui/svg-icons/social/person';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import { grey500 } from 'material-ui/styles/colors';
 
 // Redux modules
 import { blockUser } from 'actions/settings';
@@ -101,7 +102,7 @@ class Header extends Component {
 							/>
 							<IconMenu
 								iconButtonElement={
-									<IconButton><MoreVertIcon /></IconButton>
+									<IconButton><MoreVertIcon color={grey500} /></IconButton>
 								}
 								anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
 								targetOrigin={{ horizontal: 'right', vertical: 'top' }}

@@ -4,6 +4,7 @@ import 'styles/components/UserTooltip.scss';
 import UserCard from './UserCard';
 
 const UserTooltip = ({
+	style,
 	follow,
 	children,
 	userData: {
@@ -19,6 +20,7 @@ const UserTooltip = ({
 		arrow
 		interactive
 		useContext
+		style={style}
 		tabIndex="0"
 		theme="light"
 		position="top-start"

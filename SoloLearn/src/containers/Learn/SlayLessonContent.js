@@ -9,6 +9,7 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import { grey500 } from 'material-ui/styles/colors';
 import ReportItemTypes from 'constants/ReportItemTypes';
 import ReportPopup from 'components/ReportPopup';
 
@@ -88,7 +89,7 @@ class SlayLessonContent extends Component {
 								padding: 0,
 							}}
 						>
-							<MoreVertIcon />
+							<MoreVertIcon color={grey500} />
 						</IconButton>
 					}
 					style={{ position: 'absolute', top: 0, right: 0 }}

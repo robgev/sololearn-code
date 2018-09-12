@@ -169,12 +169,29 @@ class Reply extends Component {
 						<IconButton className="downvote hoverable-icon" style={styles.vote.button.base} iconStyle={styles.vote.button.icon} onClick={() => { this.props.votePost(reply, -1); }}>
 							<ArrowDown color={reply.vote === -1 ? blueGrey500 : grey500} />
 						</IconButton>
+						{
+							(this.props.isUsersQuestion || accessLevel > 1) ?
+								<IconButton
+									className="follow hoverable-icon"
+									style={styles.bestAnswerButton.base}
+									iconStyle={styles.bestAnswerButton.icon}
+									onClick={this.toggleAccepted}
+								>
+									<AcceptedIcon color={reply.isAccepted ? lightGreen500 : grey500} />
+								</IconButton>
+								:
+								reply.isAccepted &&
+								<AcceptedIcon
+									color={lightGreen500}
+									style={{ ...styles.bestAnswerButton.icon }}
+								/>
+						}
 					</div>
 					<div className="details" style={!this.state.isEditing ? styles.details.base : [ styles.details.base, styles.details.editing ]}>{this.getEditableArea()}</div>
 					{
 						!this.state.isEditing &&
 						<IconMenu
-							iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+							iconButtonElement={<IconButton><MoreVertIcon color={grey500} /></IconButton>}
 							anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
 							targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 						>
@@ -214,24 +231,7 @@ class Reply extends Component {
 				{
 					!this.state.isEditing &&
 					<div className="additional-details" style={styles.additionalDetails}>
-						{
-							(this.props.isUsersQuestion || accessLevel > 1) ?
-								<IconButton
-									className="follow hoverable-icon"
-									style={styles.bestAnswerButton.base}
-									iconStyle={styles.bestAnswerButton.icon}
-									onClick={this.toggleAccepted}
-								>
-									<AcceptedIcon color={reply.isAccepted ? lightGreen500 : grey500} />
-								</IconButton>
-								:
-								reply.isAccepted &&
-								<AcceptedIcon
-									color={lightGreen500}
-									style={{ ...styles.bestAnswerButton.icon, ...styles.bestAnswerButton.margin }}
-								/>
-						}
-						<UserTooltip userData={reply}>
+						<UserTooltip style={{ marginLeft: 'auto' }} userData={reply}>
 							<ProfileAvatar
 								reversedOrder
 								withUserNameBox
@@ -240,7 +240,6 @@ class Reply extends Component {
 								userID={reply.userID}
 								avatarUrl={reply.avatarUrl}
 								userName={reply.userName}
-								style={{ marginLeft: 'auto' }}
 								timePassed={updateDate(reply.date)}
 							/>
 						</UserTooltip>
