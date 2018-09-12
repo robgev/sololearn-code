@@ -194,6 +194,7 @@ class Parser extends Component {
 				const [ match ] = patternRegExp.exec(current);
 				const index = current.indexOf(match);
 				allItems.push({
+					// eslint-disable-next-line react/no-array-index-key
 					item: <Parser.GlossaryItem key={key} glossaryText={text}>{match}</Parser.GlossaryItem>,
 					offset: index + fullText.indexOf(current),
 					length: match.length,
