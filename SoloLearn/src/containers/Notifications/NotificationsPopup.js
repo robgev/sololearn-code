@@ -1,6 +1,5 @@
 // React modules
 import React, { Component } from 'react';
-import Service from 'api/service';
 import Radium from 'radium';
 import { Link } from 'react-router';
 import { Motion, spring } from 'react-motion';

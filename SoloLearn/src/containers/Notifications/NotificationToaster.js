@@ -39,27 +39,32 @@ class NotificationToaster extends Component {
 		onClick();
 	}
 
-	static getTitleUser = (title, pattern, notification) => {
-		const href = `/profile/${notification.actionUser.id}`;
-		return title.replace(pattern, `<a href=${href} class="hoverable" style="text-decoration:none;color:#8BC34A;font-weight:500;">${notification.actionUser.name}</a>`);
+	static getTitle = (fullTitle, notification) => {
+		if (fullTitle.includes('{other}')) {
+			return fullTitle.replace('{other}', notification.groupedItems.length);
+		}
+		const pattern = /({action_user}|{opponent}|{main})/.exec(fullTitle);
+		if (pattern !== null) {
+			const href = `/profile/${notification.actionUser.id}`;
+			const link = (
+				<a
+					style={{ color: '#8BC34A', textDecoration: 'none' }}
+					className="hoverable"
+					href={href}
+				>{notification.actionUser.name}
+				</a>
+			);
+			const splitTitle = fullTitle.split(pattern[0]);
+			return [ splitTitle[0], link, splitTitle[1] ];
+		}
+		return fullTitle;
 	}
 
 	static generateContent = (notification) => {
-		let notificationTitle =
+		const notificationTitle =
 			notification.groupedItems.length > 1 ? notification.message : notification.title;
 
-		if (notificationTitle.includes('{action_user}')) {
-			notificationTitle = NotificationToaster.getTitleUser(notificationTitle, '{action_user}', notification);
-		}
-		if (notificationTitle.includes('{opponent}')) {
-			notificationTitle = NotificationToaster.getTitleUser(notificationTitle, '{opponent}', notification);
-		}
-		if (notificationTitle.includes('{main}')) {
-			notificationTitle = NotificationToaster.getTitleUser(notificationTitle, '{main}', notification);
-		}
-		if (notificationTitle.includes('{other}')) {
-			notificationTitle = notificationTitle.replace('{other}', notification.groupedItems.length);
-		}
+		const title = NotificationToaster.getTitle(notificationTitle, notification);
 
 		return (
 			<div className="notification-content" style={styles.notificationContent}>
@@ -84,8 +89,9 @@ class NotificationToaster extends Component {
 					<p
 						className="title"
 						style={styles.title}
-						dangerouslySetInnerHTML={{ __html: notificationTitle }}
-					/>
+					>
+						{title}
+					</p>
 					<div>
 						<span className="date" style={styles.date}>{updateDate(notification.date)}</span>
 						{!notification.isClicked && <span style={styles.notClickedIcon} />}
