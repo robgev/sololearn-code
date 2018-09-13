@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 
-import Layout from 'components/Layouts/GeneralLayout';
 import LanguageSelector from 'components/LanguageSelector';
 import Dialog from 'components/StyledDialog';
 import FlatButton from 'material-ui/FlatButton';
 import { OptionsCard } from './components';
+import Layout from './Layout';
 import Suggest from './Suggest/Suggest';
 import { getReviewCourseIds } from './api';
 

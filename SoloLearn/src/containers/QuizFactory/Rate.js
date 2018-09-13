@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Layout from 'components/Layouts/GeneralLayout';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
@@ -9,6 +8,7 @@ import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
 import Quiz, { CheckIndicator } from 'components/Quiz';
 import { showError } from 'utils';
+import Layout from './Layout';
 import { getReviewChallenge, voteChallenge } from './api';
 import './rateStyles.scss';
 
