@@ -12,8 +12,14 @@
 		display: flex;
 		flex-direction: column;
 		.challenge {
-			min-height: 20%;
+			min-height: 300px;
 			align-self: stretch;
+			.no-challenge-found {
+				height: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
 		}
 		.center-loading {
 			align-items: center;

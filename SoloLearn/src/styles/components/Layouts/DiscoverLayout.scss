@@ -1,5 +1,6 @@
 .discover-container {
 	padding: 7px;
+	min-height: 300px;
 	.discover-busy-wrapper {
 		justify-content: initial;
 		.card-title {
@@ -15,5 +16,10 @@
 	.discover-wrapper {
 		display: flex;
 		flex-wrap: wrap;
+		.no-user-found {
+			min-height: 50vh;
+			display: flex;
+			align-items: center;
+		}
 	}
 }

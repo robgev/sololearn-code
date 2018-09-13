@@ -51,6 +51,7 @@ class NotificationToaster extends Component {
 					style={{ color: '#8BC34A', textDecoration: 'none' }}
 					className="hoverable"
 					href={href}
+					key="profile-link"
 				>{notification.actionUser.name}
 				</a>
 			);
