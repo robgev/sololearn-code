@@ -18,7 +18,7 @@ export const getReviewCourseIds = () =>
 
 export const getReviewChallenge = courseId =>
 	Service.request('Challenge/GetReviewChallenge', { courseId })
-		.then(res => res.challenge);
+		.then(res => res.challenge || null);
 
 export const voteChallenge = (challengeId, vote) =>
 	Service.request('Challenge/VoteChallenge', { challengeId, vote });

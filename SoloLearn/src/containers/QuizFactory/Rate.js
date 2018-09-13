@@ -20,6 +20,7 @@ class Rate extends Component {
 			voteOpen: false,
 			isQuizComplete: false,
 			checkResult: null,
+			isFetching: false,
 		};
 		document.title = 'Sololearn | Rate Quizes';
 		this.preloaded = null;
@@ -49,8 +50,9 @@ class Rate extends Component {
 			this.preload();
 			this.setState({ challenge: preloaded });
 		} else {
+			this.setState({ isFetching: true });
 			const challenge = await getReviewChallenge(this.props.params.courseId);
-			this.setState({ challenge });
+			this.setState({ challenge, isFetching: false });
 		}
 	}
 	preload = async () => {
@@ -95,21 +97,27 @@ class Rate extends Component {
 	}
 	render() {
 		const {
-			challenge, voteOpen, checkResult, isQuizComplete,
+			challenge, voteOpen, checkResult, isQuizComplete, isFetching,
 		} = this.state;
 		return (
 			<Layout className="rate-container">
 				<div className="challenge-container">
 					<Paper className="challenge">
 						{
-							challenge !== null ?
-								<Quiz
-									key={challenge.id} // need for remounting if preloaded
-									quiz={challenge}
-									onChange={this.onChange}
-									disabled={checkResult !== null}
-									ref={(q) => { this.quiz = q; }}
-								/> : <CircularProgress size={40} style={{ display: 'flex' }} className="center-loading" />
+							challenge !== null
+								? (
+									<Quiz
+										key={challenge.id} // need for remounting if preloaded
+										quiz={challenge}
+										onChange={this.onChange}
+										disabled={checkResult !== null}
+										ref={(q) => { this.quiz = q; }}
+									/>
+								)
+								: isFetching
+									? <CircularProgress size={40} style={{ display: 'flex' }} className="center-loading" />
+									: <div className="no-challenge-found">No challenges found</div>
+
 						}
 					</Paper>
 					{challenge !== null ? (
