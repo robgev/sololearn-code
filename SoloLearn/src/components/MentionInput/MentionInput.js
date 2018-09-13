@@ -110,8 +110,8 @@ class MentionInput extends Component {
 
 	getBlocks = () => this.getEditorContent().blocks
 
-	focus = () => {
-		this.editor.focus();
+	focus = (options) => {
+		this.editor.focus(options);
 	};
 
 	getLength = () => this.state.editorState.getCurrentContent().getPlainText().length

@@ -11,6 +11,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'components/StyledDialog';
+import FloatingButton from 'components/AddCodeButton/FloatingButton';
 
 // Redux modules
 import {
@@ -63,6 +64,7 @@ class Post extends Component {
 		};
 
 		this.deletingPost = null;
+		this.inputRef = React.createRef();
 	}
 
 	async componentWillMount() {
@@ -169,6 +171,13 @@ class Post extends Component {
 		this.deletingPost = null;
 	}
 
+	handleFabClick = () => {
+		this.inputRef.current.test.scrollIntoView({ block: 'center', behavior: 'smooth' });
+		setTimeout(() => {
+			this.inputRef.current.mentionInput.focus({ preventScroll: true });
+		}, 250);
+	}
+
 	remove = () => {
 		const { deletingPost } = this;
 		this.closeDeletePopup();
@@ -205,7 +214,7 @@ class Post extends Component {
 		const usersQuestion = post.userID === this.props.userId;
 		return (
 			<Layout>
-				<div>
+				<div style={{ position: 'relative' }}>
 					<Question question={post} votePost={this.votePost} remove={this.openDeletePopup} />
 					<div style={styles.repliesData}>
 						<p style={styles.answersCount}>{post.answers}{post.answers === 1 ? ' ANSWER' : ' ANSWERS'}</p>
@@ -225,7 +234,7 @@ class Post extends Component {
 						</div>
 					</div>
 				</div>
-				<AddReply save={this.addReply} postId={this.props.post.id} />
+				<AddReply t={t} ref={this.inputRef} save={this.addReply} postId={this.props.post.id} />
 				<div
 					style={styles.repliesWrapper}
 					ref={(repliesWrapper) => { this.repliesWrapper = repliesWrapper; }}
@@ -244,6 +253,7 @@ class Post extends Component {
 						orderBy={this.state.ordering}
 						selectedID={this.props.params.replyId || null}
 					/>
+					<FloatingButton onClick={this.handleFabClick} />
 				</div>
 				<Dialog
 					open={this.state.deletePopupOpened}
