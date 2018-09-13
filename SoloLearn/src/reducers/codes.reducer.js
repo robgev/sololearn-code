@@ -58,7 +58,7 @@ const entities = (state = [], action) => {
 	}
 };
 
-const sidebarCodes = (state = [], action) => {
+const sidebarCodes = (state = null, action) => {
 	switch (action.type) {
 	case SET_SIDEBAR_CODES:
 		return action.payload;
