@@ -19,21 +19,19 @@ const mapDispatchToProps = { getDiscoverSuggestions };
 @connect(mapStateToProps, mapDispatchToProps)
 @translate()
 class DiscoverContainer extends PureComponent {
-	constructor(props) {
-		super(props);
-		this.state = {
-			loading: true,
-		};
-	}
+	state = {
+		loading: true,
+	};
 
-	componentWillMount() {
+	componentDidMount() {
+		document.title = 'SoloLearn | Discover';
 		this.handleQuery(this.props.params.query);
-		document.title = 'Sololearn | Discover';
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (this.props.params.query !== nextProps.params.query) {
-			this.handleQuery(nextProps.params.query);
+	componentDidUpdate(prevProps) {
+		const { query } = this.props.params;
+		if (query !== prevProps.params.query) {
+			this.handleQuery(query);
 		}
 	}
 
@@ -41,9 +39,10 @@ class DiscoverContainer extends PureComponent {
 		try {
 			this.setState({ loading: true });
 			await this.props.getDiscoverSuggestions(query);
-			this.setState({ loading: false });
 		} catch (e) {
 			showError(e, 'Error while trying to get user list');
+		} finally {
+			this.setState({ loading: false });
 		}
 	}
 
@@ -76,14 +75,18 @@ class DiscoverContainer extends PureComponent {
 						}
 					>
 						<div className="discover-wrapper">
-							{discoverSuggestions.map(suggestion => (
-								<UserCard
-									{...suggestion}
-									withFollowButton
-									key={suggestion.id}
-									badge={suggestion.badge}
-								/>
-							))}
+							{
+								discoverSuggestions.length === 0
+									? <div className="no-user-found">No users found</div>
+									: discoverSuggestions.map(suggestion => (
+										<UserCard
+											{...suggestion}
+											withFollowButton
+											key={suggestion.id}
+											badge={suggestion.badge}
+										/>
+									))
+							}
 						</div>
 					</BusyWrapper>
 				</Paper>
