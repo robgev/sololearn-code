@@ -2,12 +2,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
-import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
-import InfiniteScroll from 'react-infinite-scroller';
 
 import { determineAccessLevel } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
+import InfiniteScroll from 'components/InfiniteScroll';
 import ReportPopup from 'components/ReportPopup';
 // import InfiniteVirtualizedList from 'components/InfiniteVirtualizedList';
 
@@ -89,7 +88,7 @@ class Replies extends Component {
 			return <div style={{ marginTop: 10 }}>No replies</div>;
 		}
 		return (
-			<Paper style={styles.container}>
+			<div style={styles.container}>
 				{canLoadAbove && replies.length > 0 &&
 					<RaisedButton
 						label="Load more"
@@ -133,7 +132,7 @@ class Replies extends Component {
 					itemId={targetItem ? targetItem.id : 0}
 					onRequestClose={this.toggleRemovalPopup}
 				/>
-			</Paper>
+			</div>
 		);
 	}
 }

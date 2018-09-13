@@ -34,6 +34,7 @@ class AddReply extends Component {
 		this.props.save(this.mentionInput.popValue());
 	}
 	render() {
+		const { t } = this.props;
 		const { isReplyBoxOpen, replyLength } = this.state;
 		return (
 			<Paper
@@ -57,7 +58,7 @@ class AddReply extends Component {
 				<div style={styles.editorActions}>
 					<RaisedButton
 						disabled={replyLength > 2048 || replyLength === 0}
-						label="Save"
+						label={t('common.post-action-title')}
 						primary
 						onClick={this.save}
 					/>

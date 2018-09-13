@@ -6,6 +6,7 @@ export const AddReplyStyles = {
 		boxSizing: 'border-box',
 		borderBottomLeftRadius: 0,
 		borderBottomRightRadius: 0,
+		borderBottom: '1px solid #F3F3F3',
 	},
 	editor: {
 		position: 'relative',
@@ -507,6 +508,5 @@ export const RepliesStyles = {
 		overflowY: 'hidden',
 		borderRadius: 0,
 		borderTop: '4px solid white',
-		boxShadow: 'rgba(0, 0, 0, 0.12) 0px 6px 6px, rgba(0, 0, 0, 0.12) 0px 4px 4px',
 	},
 };
