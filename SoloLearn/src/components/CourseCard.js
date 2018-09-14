@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
-import { getCourseNameById } from 'utils';
+import { getCourseNameById, toSeoFriendly } from 'utils';
 import { slayItemTypes } from 'constants/ItemTypes';
 
 import 'styles/courseCard.scss';
@@ -28,15 +28,16 @@ const CourseCard = ({
 	wrapperStyle,
 }) => (
 	<Paper style={style} className={`course-card-container ${small ? 'small' : ''} ${className || ''}`}>
-		{title &&
-			<div className="meta-info">
-				<p>{ title }</p>
-			</div>
+		{
+			title &&
+				<div className="meta-info">
+					<p>{title}</p>
+				</div>
 		}
 		<Link
 			to={
 				itemType === slayItemTypes.course || isCourses ?
-					`/learn/course/${getCourseNameById(courses, id)}` :
+					`/learn/course/${toSeoFriendly(getCourseNameById(courses, id))}` :
 					`/learn/lesson/${itemType === slayItemTypes.courseLesson ? 'course-lesson' : 'user-lesson'}/${id}/${name}/1`
 			}
 			style={wrapperStyle}
@@ -60,11 +61,11 @@ const CourseCard = ({
 				>
 					{userName}
 				</Link>
-				{ (!minimal && (Number.isInteger(viewCount) && Number.isInteger(comments))) &&
-					<ViewStats
-						views={viewCount}
-						comments={comments}
-					/>
+				{(!minimal && (Number.isInteger(viewCount) && Number.isInteger(comments))) &&
+						<ViewStats
+							views={viewCount}
+							comments={comments}
+						/>
 				}
 			</div>
 		</Link>

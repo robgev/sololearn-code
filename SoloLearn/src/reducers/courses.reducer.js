@@ -1,4 +1,5 @@
 import { LOAD_COURSES, RESET_LOCALE_DATA } from 'constants/ActionTypes';
+import { toSeoFriendly } from 'utils';
 
 const addIconLinks = courses => courses.map(singleCourse => ({
 	...singleCourse,
@@ -19,9 +20,9 @@ export default (state = [], action) => {
 export const getCoursesReducer = state => state.courses;
 
 export const getCourseByCourseName = (state, courseName) => {
-	if (state.course && state.course.name === courseName) {
+	if (state.course && toSeoFriendly(state.course.alias) === courseName) {
 		return state.course;
 	}
 	const courses = getCoursesReducer(state);
-	return courses.find(c => c.name === courseName);
+	return courses.find(c => toSeoFriendly(c.alias) === courseName);
 };

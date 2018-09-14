@@ -1,4 +1,5 @@
-import { LOAD_COURSE, RESET_LOCALE_DATA } from '../constants/ActionTypes';
+import { LOAD_COURSE, RESET_LOCALE_DATA } from 'constants/ActionTypes';
+import { toSeoFriendly } from 'utils';
 
 export default function (state = null, action) {
 	switch (action.type) {
@@ -13,5 +14,5 @@ export default function (state = null, action) {
 
 export const isCourseLoaded = (state, courseName) => {
 	const { course } = state;
-	return course !== null && course.name === courseName;
+	return course !== null && toSeoFriendly(course.alias) === courseName;
 };

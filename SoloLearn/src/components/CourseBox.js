@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import Progressbar from 'components/Progressbar';
-import { toSeoFriendly } from 'utils';
 import { slayItemTypes } from 'constants/ItemTypes';
 
 import 'styles/courseBox.scss';

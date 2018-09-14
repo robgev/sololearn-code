@@ -1,4 +1,5 @@
-import { MAP_MODULES } from '../constants/ActionTypes';
+import { MAP_MODULES } from 'constants/ActionTypes';
+import { toSeoFriendly } from 'utils';
 
 export default function (state = null, action) {
 	switch (action.type) {
@@ -16,7 +17,7 @@ export const getModuleByName = (state, name) => {
 	}
 	let res = null;
 	Object.values(state.modulesMapping).forEach((module) => {
-		if (module.name === name) {
+		if (toSeoFriendly(module.name) === name) {
 			res = module;
 		}
 	});
