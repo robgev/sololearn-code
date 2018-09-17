@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import LinearProgress from 'material-ui/LinearProgress';
-import { numberFormatter } from 'utils';
+import { numberFormatter, toSeoFriendly } from 'utils';
 import 'styles/Feed/CoursePopup.scss';
 
 const CoursePopup = ({
@@ -36,7 +36,7 @@ const CoursePopup = ({
 				</div>
 			</div>
 			<div className="course-popup-actions">
-				<Link to={`/learn/course/${name}`}>
+				<Link to={`/learn/course/${toSeoFriendly(name)}`}>
 					<FlatButton
 						primary
 						label={t('learn.open-course-action-tite')}

@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Progressbar from 'components/Progressbar';
-import { getCourseAliasByName } from 'reducers/courses.reducer';
 import { toSeoFriendly } from 'utils';
 import 'styles/courseChip.scss';
 

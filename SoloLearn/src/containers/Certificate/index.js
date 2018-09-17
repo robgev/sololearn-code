@@ -6,6 +6,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import Progress from 'api/progress';
 import Service from 'api/service';
+import { toSeoFriendly } from 'utils';
 import { loadCourseInternal } from 'actions/learn';
 import BusyWrapper from 'components/BusyWrapper';
 
@@ -54,7 +55,7 @@ class Certificate extends PureComponent {
 		const { params: { id }, courses } = this.props;
 		const courseId = parseInt(id, 10);
 		const { name } = courses.find(singleCourse => singleCourse.id === courseId);
-		browserHistory.replace(`/learn/course/${name}`);
+		browserHistory.replace(`/learn/course/${toSeoFriendly(name)}`);
 	}
 
 	render() {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { toSeoFriendly } from 'utils';
 import Progressbar from 'components/Progressbar';
 import { slayItemTypes } from 'constants/ItemTypes';
 
@@ -26,7 +27,7 @@ const CourseBox = ({
 		</div>
 		}
 		<Link
-			to={itemType === 5 ? `/learn/collection/${id}` : `/learn/course/${name}`}
+			to={itemType === 5 ? `/learn/collection/${id}` : `/learn/course/${toSeoFriendly(name)}`}
 			className="course-card-wrapper"
 		>
 			<div className="image-wrapper" style={{ backgroundColor: color }}>

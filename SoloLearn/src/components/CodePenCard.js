@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import Progressbar from 'components/Progressbar';
 import { slayItemTypes } from 'constants/ItemTypes';
 import LinearProgress from 'material-ui/LinearProgress';
-import { getLanguageColor } from 'utils';
+import { getLanguageColor, toSeoFriendly } from 'utils';
 
 import 'styles/components/CodePenCard.scss';
 import ViewStats from './ViewStats';
@@ -35,7 +34,7 @@ const CodePenCard = ({
 		<Link
 			to={
 				itemType === slayItemTypes.course
-					? `/learn/course/${name}`
+					? `/learn/course/${toSeoFriendly(name)}`
 					: `/learn/lesson/${itemType === slayItemTypes.courseLesson ? 'course-lesson' : 'user-lesson'}/${id}/${name}/1`}
 			className="code-pen-wrapper"
 		>

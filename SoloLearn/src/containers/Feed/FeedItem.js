@@ -8,7 +8,7 @@ import Radium from 'radium';
 import Paper from 'material-ui/Paper';
 
 // Additional data and components
-import { updateDate } from 'utils';
+import { updateDate, toSeoFriendly } from 'utils';
 import { voteFeedPostItem, voteFeedCommentItem, voteFeedCodeItem } from 'actions/feed';
 import CourseCard from 'components/CourseCard';
 import FeedItemBase from './FeedItemBase';
@@ -81,10 +81,10 @@ class FeedItem extends Component {
 			this.url = `/profile/${feedItem.user.id}/badges?badgeID=${feedItem.achievement.id}`;
 			return <Badge date={updateDate(feedItem.date)} achievement={feedItem.achievement} />;
 		case types.courseStarted:
-			this.url = `/learn/course/${feedItem.course.name}`;
+			this.url = `/learn/course/${toSeoFriendly(feedItem.course.name)}`;
 			return <Course date={updateDate(feedItem.date)} course={feedItem.course} openPopup={this.props.openCoursePopup} />;
 		case types.courseCompleted:
-			this.url = `/learn/course/${feedItem.course.name}`;
+			this.url = `/learn/course/${toSeoFriendly(feedItem.course.name)}`;
 			return <Course date={updateDate(feedItem.date)} course={feedItem.course} openPopup={this.props.openCoursePopup} />;
 		case types.postedQuestion:
 			this.url = `/discuss/${feedItem.post.id}`;
@@ -140,7 +140,7 @@ class FeedItem extends Component {
 		case types.postedLessonComment:
 		case types.postedLessonCommentReply:
 			// this.url = `/learn/${feedItem.course.alias}/${feedItem.course.id}`;
-			this.url = `/learn/course/${feedItem.course.name}?commentID=${feedItem.comment.id}`;
+			this.url = `/learn/course/${toSeoFriendly(feedItem.course.name)}?commentID=${feedItem.comment.id}`;
 			return (
 				<div>
 					<Comment url={this.url} comment={feedItem.comment} />
