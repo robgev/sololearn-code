@@ -7,28 +7,23 @@ import { slayItemTypes } from 'constants/ItemTypes';
 import 'styles/courseBox.scss';
 import ViewStats from './ViewStats';
 
-const getProgress = (skills, courseId) => {
-	const skill = skills.find(({ id }) => id === courseId);
-	return skill ? skill.progress : 0;
-};
-
 const CourseBox = ({
 	id,
 	title,
 	name,
 	color,
-	skills,
 	iconUrl,
 	itemType,
 	isCourses,
 	viewCount,
 	comments,
+	progress,
 }) => (
 	<div className="course-box-container">
 		{title &&
 		<div className="meta-info">
-					<p>{title}</p>
-				</div>
+			<p>{title}</p>
+		</div>
 		}
 		<Link
 			to={itemType === 5 ? `/learn/collection/${id}` : `/learn/course/${name}`}
@@ -37,7 +32,7 @@ const CourseBox = ({
 			<div className="image-wrapper" style={{ backgroundColor: color }}>
 				{(itemType === slayItemTypes.course
 						|| isCourses) &&
-						<Progressbar percentage={getProgress(skills, id) * 100} />
+						<Progressbar percentage={progress * 100} />
 				}
 				<img
 					src={iconUrl}
@@ -60,6 +55,6 @@ const CourseBox = ({
 	</div>
 );
 
-const mapStateToProps = state => ({ courses: state.courses, skills: state.userProfile.skills });
+const mapStateToProps = state => ({ courses: state.courses });
 
 export default connect(mapStateToProps, null)(CourseBox);
