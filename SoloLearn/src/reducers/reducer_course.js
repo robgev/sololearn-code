@@ -14,5 +14,5 @@ export default function (state = null, action) {
 
 export const isCourseLoaded = (state, courseName) => {
 	const { course } = state;
-	return course !== null && toSeoFriendly(course.alias) === courseName;
+	return course !== null && toSeoFriendly(course.name) === courseName;
 };

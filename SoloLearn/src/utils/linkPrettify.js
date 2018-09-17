@@ -1,5 +1,8 @@
-const toSeoFriendly = (text, maxLength = 100) => {
-	if (text == null) return '';
+const replaceWithAliases = text => text.replace(/\+/g, 'p').replace(/#/g, 'sharp');
+
+const toSeoFriendly = (initialText, maxLength = 100) => {
+	if (initialText == null) return '';
+	const text = replaceWithAliases(initialText);
 
 	const pattern = /[\w]+/g;
 	let match = null;
