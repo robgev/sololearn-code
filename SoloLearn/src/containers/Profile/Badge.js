@@ -83,7 +83,7 @@ class Badge extends Component {
 					<img
 						alt="Achievement badge"
 						style={styles.badge.icon}
-						src="../../../assets/achievement.png"
+						src={achievement.icon}
 					/>
 				</div>
 				<div className="details" style={styles.details}>
