@@ -4,7 +4,7 @@ import { translate } from 'react-i18next';
 import { Link } from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import { sidebarCodesSelector } from 'reducers/codes.reducer';
-import CodeSidebarShimmer from 'components/Shimmers/CodeSidebarShimmer';
+import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
 import AddCodeButton from 'components/AddCodeButton';
 
 import CodeItem from './CodeItem';
@@ -20,7 +20,7 @@ const PlaygroundSidebar = ({ t, sidebarItems, userID }) => (
 			<p className="title">{t('code.filter.my-codes')}</p>
 		</div>
 		{sidebarItems === null
-			? <CodeSidebarShimmer />
+			? <SidebarShimmer round noTitle />
 			:	sidebarItems.length === 0
 				?	(
 					<div style={{ padding: '15px 0' }} className="flex-centered column">

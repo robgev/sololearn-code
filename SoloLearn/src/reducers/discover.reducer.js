@@ -1,6 +1,6 @@
 import { SET_DISCOVER_SUGGESTIONS, FOLLOW_USER_SUGGESTION, LOGOUT } from 'constants/ActionTypes';
 
-export default function (state = [], action) {
+export default function (state = null, action) {
 	switch (action.type) {
 	case SET_DISCOVER_SUGGESTIONS:
 		return action.payload;

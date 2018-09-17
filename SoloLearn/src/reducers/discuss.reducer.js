@@ -71,7 +71,7 @@ const entities = (state = [], action) => {
 	}
 };
 
-const sidebarQuestions = (state = [], action) => {
+const sidebarQuestions = (state = null, action) => {
 	switch (action.type) {
 	case SET_SIDEBAR_QUESTIONS:
 		return action.payload;
