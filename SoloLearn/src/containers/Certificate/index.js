@@ -37,7 +37,7 @@ class Certificate extends PureComponent {
 		const { progress } = Progress.getModuleState(lastModule);
 		const isCourseFinished = progress === 100;
 		if (isCourseFinished) {
-			const imageStream = await Service.request('/DownloadCertificate', { courseId });
+			const imageStream = await Service.imageRequest('/DownloadCertificate', { courseId });
 			const blob = new Blob([ imageStream ], { type: 'image/jpeg' });
 			const imageData = URL.createObjectURL(blob);
 			this.setState({
@@ -71,7 +71,14 @@ class Certificate extends PureComponent {
 				}
 			>
 				<div>
-					<img src={imageData} alt="Certificate" />
+					<img
+						style={{
+							margin: '5px auto',
+							height: 'calc(100vh - 65px)',
+						}}
+						src={imageData}
+						alt="Certificate"
+					/>
 				</div>
 			</BusyWrapper>
 		);

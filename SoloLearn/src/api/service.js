@@ -78,6 +78,36 @@ class Service {
 		});
 	}
 
+	imageRequest = async (url, body = {}) => {
+		if (
+			this.accessToken === null
+			|| Date.now() > this.accessTokenExpireTime) {
+			await this.getSession();
+		}
+		const options = {
+			method: 'POST',
+			body: JSON.stringify(body),
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: `Bearer ${this.accessToken}`,
+			},
+			credentials: 'include',
+		};
+		return fetch(`${AppDefaults.baseUrl}/api/${url}`, options)
+			.then(res => res.blob())
+			.then((res) => {
+				console.log(res);
+				if (res.error) {
+					throw res.error;
+				}
+				return res;
+			})
+			.catch((e) => {
+				console.error(e);
+				throw e;
+			});
+	}
+
 	getSession = () => {
 		if (this.getSessionPromise === null) {
 			this.getSessionPromise = this._getSession(this.locale)
