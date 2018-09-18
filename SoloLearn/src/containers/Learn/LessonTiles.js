@@ -32,13 +32,13 @@ const LessonTiles = ({
 				<CSSTransition
 					key={lesson.id}
 					classNames="lesssons-in"
-					timeout={150 + (index * 30)}
+					timeout={150 + ((index % 20) * 30)}
 				>
 					<Container
 						tabIndex={0}
 						role="button"
 						key={lesson.id}
-						style={{ animationDelay: `${index * 30}ms` }}
+						style={{ animationDelay: `${(index % 20) * 30}ms` }}
 						className={`lesson-item ${lessonState.stateClass}`}
 						{...(slayLessons ? { to: `/learn/lesson/${lesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${lesson.id}/${lesson.name}/1` } :
 							{ onClick: () => onItemClick(lesson.id, lessonState, lesson.name) })
