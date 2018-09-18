@@ -34,6 +34,7 @@ class SlayHome extends PureComponent {
 		const { collections, getLessonCollections } = this.props;
 		if (collections.length < 10) {
 			await this.props.getBookmarkLessons({ index: startIndex, count: loadCount });
+			// -1 for lesson collection with id -1 (round items)
 			const length = await getLessonCollections({ index: startIndex, count: loadCount }) - 1;
 			this.setState({
 				loading: false,
@@ -46,7 +47,8 @@ class SlayHome extends PureComponent {
 				startIndex: startIndex + collections.length,
 				// If number of collections is divisible by the number
 				// of items we get on every load, then there is 1 more collection
-				hasMore: collections.length % loadCount === 0,
+				// Same -1 as mentioned above
+				hasMore: (collections.length - 1) % loadCount === 0,
 			});
 		}
 		ReactGA.ga('send', 'screenView', { screenName: 'Home Store Page' });
