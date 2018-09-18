@@ -11,27 +11,27 @@ const UserData = ({ name, xp }) => (
 );
 
 const UserCard = ({
-	id,
 	xp,
 	name,
-	alltime,
 	level,
 	rank,
+	userID,
+	alltime,
 	rangeXp,
 	avatarUrl,
 }) => (
 	<div className="user-card-container">
 		<UserTooltip
 			userData={{
-				id,
 				level,
+				userID,
 				avatarUrl,
 				userName: name,
 			}}
 		>
 			<ProfileAvatar
 				disabled
-				userID={id}
+				userID={userID}
 				level={level}
 				userName={name}
 				avatarUrl={avatarUrl}
