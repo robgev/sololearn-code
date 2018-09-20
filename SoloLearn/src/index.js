@@ -61,7 +61,7 @@ class App extends PureComponent {
 		return this.state.isLoading
 			? null
 			: (
-				<div>
+				<React.Fragment>
 					<DevTools />
 					<Router onUpdate={() => window.scrollTo(0, 0)} history={browserHistory} routes={routes} />
 					<ToastContainer
@@ -74,7 +74,7 @@ class App extends PureComponent {
 						position="bottom-right"
 						autoClose={2000}
 					/>
-				</div>
+				</React.Fragment>
 			);
 	}
 }

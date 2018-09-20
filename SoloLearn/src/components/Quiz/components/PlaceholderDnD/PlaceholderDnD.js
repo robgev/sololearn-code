@@ -1,44 +1,11 @@
 import React, { Component } from 'react';
+import { DragDropContextProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import PropTypes from 'prop-types';
-import Chip from 'material-ui/Chip';
 import { shuffleArray } from 'utils';
-import quizType from './types';
-
-// Pure utils
-const formatAnswers = ({
-	answerText, selected, width, disabled, onClick, correctAnswers,
-}) => {
-	const regex = /\{(\d)}/;
-	return answerText
-		.split(regex).reduce((acc, curr, index) => (acc.isMark
-			? ({
-				result: [ ...acc.result,
-				// eslint-disable-next-line react/no-array-index-key
-					<div key={index} style={{ display: 'inline-block' }}>
-						<div
-							onClick={() => onClick(selected[curr].id)}
-							className="placeholder-dnd-item fill-in-item"
-							role="button"
-							tabIndex={0}
-							style={{
-								width: `${width}em`,
-								color: disabled
-									? selected[curr] && selected[curr].text === correctAnswers[curr].text
-										? 'green'
-										: 'red'
-									: 'black',
-							}}
-						>{selected[curr] !== null ? selected[curr].text : ''}
-						</div>
-					</div>,
-				],
-				isMark: false,
-			})
-			: ({
-				// eslint-disable-next-line react/no-array-index-key
-				result: [ ...acc.result, <span className="fill-in-item" style={{ whiteSpace: 'pre-wrap' }} key={index}>{curr}</span> ], isMark: true,
-			})), { result: [], isMark: false }).result;
-};
+import Answers from './Answers';
+import DraggableChip from './DraggableChip';
+import quizType from '../types';
 
 const getNotNulls = arr => arr.filter(a => a !== null);
 
@@ -47,10 +14,10 @@ const isSelected = (selected, id) => getNotNulls(selected).some(s => s.id === id
 class PlaceholderDnD extends Component {
 	constructor(props) {
 		super(props);
-		[ this.question, this.answerText ] = props.quiz.question.split(/\[!\w+!]/);
+		[this.question, this.answerText] = props.quiz.question.split(/\[!\w+!]/);
 		this.correctAnswers = props.quiz.answers.filter(a => a.isCorrect);
 		this.longestAnswer = this.correctAnswers // get max length to make all placeholders equal
-			.reduce((l, { text: { length } }) => Math.max(l, length), 0);
+			.reduce((l, { text: { length } }) => Math.max(l, length), 0) * 0.75;
 		this.state = {
 			shuffled: shuffleArray(props.quiz.answers),
 			selected: new Array(this.correctAnswers.length).fill(null),
@@ -64,6 +31,14 @@ class PlaceholderDnD extends Component {
 				this._select(id);
 			}
 		}
+	}
+	moveTo = (id, index) => {
+		this.setState((state, props) => {
+			const { selected } = state;
+			selected[index] = props.quiz.answers.find(a => a.id === id);
+			this.props.onChange({ isComplete: this.isComplete(selected) });
+			return { selected };
+		});
 	}
 	_select = (id) => {
 		const { selected } = this.state;
@@ -108,33 +83,36 @@ class PlaceholderDnD extends Component {
 		const { disabled } = this.props;
 		const { selected, shuffled } = this.state;
 		return (
-			<div className="question-container">
-				<p className="question-text">{this.question}</p>
-				<div className="fill-in-answers-container">
-					{formatAnswers({
-						answerText: this.answerText,
-						selected,
-						width: this.longestAnswer,
-						disabled,
-						onClick: this.onClick,
-						correctAnswers: this.correctAnswers,
-					})}
+			<DragDropContextProvider backend={HTML5Backend}>
+				<div className="question-container">
+					<p className="question-text">{this.question}</p>
+					<div className="fill-in-answers-container">
+						<Answers
+							answerText={this.answerText}
+							selected={selected}
+							width={this.longestAnswer}
+							isDisabled={disabled}
+							onClick={this.onClick}
+							correctAnswers={this.correctAnswers}
+						/>
+					</div>
+					<div style={{ display: 'flex' }}>
+						{shuffled.map(answer => (
+							<DraggableChip
+								answer={answer}
+								key={answer.id}
+								isSelected={isSelected(selected, answer.id)}
+								onDrop={this.moveTo}
+								onClick={this.onClick}
+								style={{
+									margin: 5,
+									cursor: 'pointer',
+								}}
+							/>
+						))}
+					</div>
 				</div>
-				<div style={{ display: 'flex' }}>
-					{shuffled.map(answer => (
-						<Chip
-							key={answer.id}
-							onClick={() => this.onClick(answer.id)}
-							labelColor={isSelected(selected, answer.id) ? '#8BC34A' : 'black'}
-							style={{
-								margin: 5,
-								cursor: 'pointer',
-							}}
-						>{answer.text}
-						</Chip>
-					))}
-				</div>
-			</div >
+			</DragDropContextProvider>
 		);
 	}
 }

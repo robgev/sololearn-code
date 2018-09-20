@@ -1,0 +1,1 @@
+export default 'PLACEHOLDER_DND_DRAG_DROP_TYPE';
