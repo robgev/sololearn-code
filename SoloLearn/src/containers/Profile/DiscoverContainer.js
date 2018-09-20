@@ -4,17 +4,25 @@ import { translate } from 'react-i18next';
 import CircularProgress from 'material-ui/CircularProgress';
 import Paper from 'material-ui/Paper';
 
-import { getDiscoverSuggestions } from 'actions/discover';
+import { getDiscoverSuggestions, removeSearchSuggestions } from 'actions/discover';
 import UserCard from 'components/UserCard';
 import BusyWrapper from 'components/BusyWrapper';
 import Layout from 'components/Layouts/GeneralLayout';
 import { showError } from 'utils';
+import {
+	discoverIdsSelector,
+	discoverEntitiesSelector,
+	discoverSearchIdsSelector,
+} from 'reducers/discover.reducer.js';
 
 import 'styles/components/Layouts/DiscoverLayout.scss';
 
-const mapStateToProps = ({ discoverSuggestions }) => ({ discoverSuggestions });
+const mapStateToProps = (state, { params: { query } }) => ({
+	discoverEntities: discoverEntitiesSelector(state),
+	discoverIds: query ? discoverSearchIdsSelector(state) : discoverIdsSelector(state),
+});
 
-const mapDispatchToProps = { getDiscoverSuggestions };
+const mapDispatchToProps = { removeSearchSuggestions, getDiscoverSuggestions };
 
 @connect(mapStateToProps, mapDispatchToProps)
 @translate()
@@ -35,6 +43,10 @@ class DiscoverContainer extends PureComponent {
 		}
 	}
 
+	componentWillUnmount = () => {
+		this.props.removeSearchSuggestions();
+	}
+
 	handleQuery = async (query) => {
 		try {
 			this.setState({ loading: true });
@@ -48,7 +60,7 @@ class DiscoverContainer extends PureComponent {
 
 	render() {
 		const { loading } = this.state;
-		const { t, discoverSuggestions } = this.props;
+		const { t, discoverIds, discoverEntities } = this.props;
 		return (
 			<Layout noSidebar>
 				<Paper
@@ -76,14 +88,13 @@ class DiscoverContainer extends PureComponent {
 					>
 						<div className="discover-wrapper">
 							{
-								discoverSuggestions.length === 0
+								discoverIds.length === 0
 									? <div className="no-user-found">No users found</div>
-									: discoverSuggestions.map(suggestion => (
+									: discoverIds.map(id => (
 										<UserCard
-											{...suggestion}
+											key={id}
 											withFollowButton
-											key={suggestion.id}
-											badge={suggestion.badge}
+											{...discoverEntities[id]}
 										/>
 									))
 							}

@@ -28,8 +28,8 @@ export const getFeedItemsInternal = () => async (dispatch, getState) => {
 		const isFirstItemGrouppedChallenge = feed.length === 0 && feedItems.length && feedItems[0].type === feedTypes.mergedChallange;
 		const forceOpenedFeed = isFirstItemGrouppedChallenge ? forceOpenFeed(feedItems[0]) : feedItems;
 		const feedItemsCount = feed.length + feedItems.length;
-		if (feed.length + length >= requestLimitCount * (1 + suggestionsBatch) && discoverSuggestions &&
-			suggestionsBatch * 10 < discoverSuggestions.length) {
+		if (feed.length + length >= requestLimitCount * (1 + suggestionsBatch) && discoverSuggestions.entities &&
+			suggestionsBatch * 10 < discoverSuggestions.ids.length) {
 			const suggestionsObj = {
 				number: suggestionsBatch,
 				type: feedTypes.suggestions,

@@ -2,12 +2,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Slider from 'react-slick';
+import { discoverIdsSelector, getEntitiesByIds } from 'reducers/discover.reducer.js';
 
 // Additional data and components
 import FeedSuggestion from './FeedSuggestion';
 
-const mapStateToProps = ({ discoverSuggestions }, { number }) => ({
-	suggestions: discoverSuggestions.slice(number * 10, (number * 10) + 10),
+const mapStateToProps = (state, { number }) => ({
+	suggestions: getEntitiesByIds(
+		state,
+		discoverIdsSelector(state).slice(number * 10, (number * 10) + 10),
+	),
 });
 
 const generateBreakpoints = () => {

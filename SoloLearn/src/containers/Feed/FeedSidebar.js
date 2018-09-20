@@ -5,37 +5,42 @@ import FlatButton from 'material-ui/FlatButton';
 import ProfileAvatar from 'components/ProfileAvatar';
 import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
 import { numberFormatter } from 'utils';
+import { discoverIdsSelector, discoverEntitiesSelector } from 'reducers/discover.reducer.js';
 import 'styles/Feed/FeedSidebar.scss';
 
-const mapStateToProps = ({ discoverSuggestions }) => ({
-	suggestions: discoverSuggestions,
+const mapStateToProps = state => ({
+	discoverIds: discoverIdsSelector(state),
+	discoverEntities: discoverEntitiesSelector(state),
 });
 
-const FeedSuggestions = ({ t, suggestions }) => (
+const FeedSuggestions = ({ t, discoverIds, discoverEntities }) => (
 	<div className="feed-sidebar-suggestions">
 		<div className="sidebar-title">
 			<p className="title">{t('discover_peers.title')}</p>
 		</div>
-		{suggestions === null
+		{discoverEntities === null
 			? <SidebarShimmer round noTitle />
-			: suggestions.slice(0, 7).map(({
-				id, name, avatarUrl, followers, level,
-			}) => (
-				<div className="suggestion-container">
-					<ProfileAvatar
-						size={50}
-						userID={id}
-						userName={name}
-						avatarUrl={avatarUrl}
-						avatarStyle={{ marginRight: 10 }}
-					/>
-					<div className="user-info">
-						<Link to={`/profile/${id}`} className="user-name hoverable">{name}</Link>
-						<p className="user-meta-info">{numberFormatter(followers)} Followers | Level {level} </p>
+			: discoverIds.slice(0, 7).map((id) => {
+				const {
+					name, avatarUrl, followers, level,
+				} = discoverEntities[id];
+				return (
+					<div className="suggestion-container">
+						<ProfileAvatar
+							size={50}
+							userID={id}
+							userName={name}
+							avatarUrl={avatarUrl}
+							avatarStyle={{ marginRight: 10 }}
+						/>
+						<div className="user-info">
+							<Link to={`/profile/${id}`} className="user-name hoverable">{name}</Link>
+							<p className="user-meta-info">{numberFormatter(followers)} Followers | Level {level} </p>
+						</div>
 					</div>
-				</div>
-			))}
-		{ suggestions && suggestions.length > 0 &&
+				);
+			})}
+		{ discoverEntities && discoverIds.length > 0 &&
 			<Link className="load-more" to="/discover">
 				<FlatButton
 					label={t('common.loadMore')}
