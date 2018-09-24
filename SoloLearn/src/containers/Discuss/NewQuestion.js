@@ -47,7 +47,7 @@ class NewQuestion extends Component {
 					<GuideLinesSidebar />
 				}
 			>
-				<QuestionEditor submit={this.submit} />
+				<QuestionEditor isNew submit={this.submit} />
 			</Layout>
 		);
 	}

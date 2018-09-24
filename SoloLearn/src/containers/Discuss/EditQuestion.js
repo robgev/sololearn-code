@@ -72,7 +72,7 @@ class NewQuestion extends Component {
 				{
 					loading
 						? <CircularProgress style={{ display: 'flex', alignItems: 'center', margin: 'auto' }} />
-						: <QuestionEditor submit={this.submit} post={post} />
+						: <QuestionEditor isNew={false} submit={this.submit} post={post} />
 				}
 			</Layout>
 		);
