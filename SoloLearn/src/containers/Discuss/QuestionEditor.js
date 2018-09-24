@@ -1,6 +1,8 @@
 // React modules
 import React, { Component } from 'react';
 
+import throttle from 'lodash/throttle';
+
 // Material UI components
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
@@ -25,8 +27,6 @@ import { NewQuestionStyles as styles } from './styles';
 class QuestionEditor extends Component {
 	constructor(props) {
 		super(props);
-		this.maxQuestionLength = 1024;
-		this.maxTitleLength = 128;
 		const { post } = props;
 		this.state = {
 			title: post !== null ? post.title : '',
@@ -37,8 +37,13 @@ class QuestionEditor extends Component {
 			isReplyBoxOpen: false,
 			replyLength: 0,
 			submitLoading: false,
+			query: '',
 		};
 	}
+
+	static maxTagsLength = 10;
+	static maxQuestionLength = 1024;
+	static maxTitleLength = 128;
 
 	static Chip = ({ value, handleRequestDelete, defaultStyle }, key) => (
 		<Chip style={defaultStyle} key={key} onRequestDelete={handleRequestDelete}>{value}</Chip>
@@ -57,25 +62,38 @@ class QuestionEditor extends Component {
 	}
 
 	addTag = (newTag) => {
-		this.setState(s => ({ tags: [ ...s.tags, newTag ] }));
+		this.setState(s => {
+			if (s.tags.length !== 10) {
+				return { tags: [...s.tags, newTag] };
+			} else {
+				return { tagsErrorText: "Can't add more tags" }
+			}
+		});
 	}
 
 	handleDeleteTag = (tag) => {
-		this.setState(s => ({ tags: s.tags.filter(t => t !== tag) }));
+		this.setState(s => ({ tags: s.tags.filter(t => t !== tag), tagsErrorText: '' }));
 	}
 
 	// Get search suggestions
 	handleUpdateInput = async (query) => {
+		this.setState({ query });
 		if (query.length > 0) {
 			this.setState({ tagsErrorText: '' });
 		}
-		if (query.length < 2 && this.state.suggestions.length > 0) {
+		if (query.length < 2) {
 			this.setState({ suggestions: [] });
 		} else {
-			const { tags: suggestions } = await Service.request('Discussion/getTags', { query });
-			this.setState({ suggestions });
+			this.getSuggestions(query);
 		}
 	}
+
+	getSuggestions = throttle(async (query) => {
+		const { tags: suggestions } = await Service.request('Discussion/getTags', { query });
+		if (this.state.query === query) {
+			this.setState({ suggestions });
+		}
+	}, 1000);
 
 	// Add question form submit
 	handleSubmit = () => {
@@ -100,7 +118,7 @@ class QuestionEditor extends Component {
 	handleChipBlur = (e) => {
 		const { value } = e.currentTarget;
 		if (value !== '') {
-			this.setState(s => ({ tags: [ ...s.tags, value ] }));
+			this.setState(s => ({ tags: [...s.tags, value] }));
 		}
 	}
 
@@ -137,12 +155,12 @@ class QuestionEditor extends Component {
 							onChange={this.onTitleChange}
 							errorText={this.state.titleErrorText}
 							floatingLabelText={t('question.title-placeholder')}
-							maxLength={this.maxTitleLength}
+							maxLength={QuestionEditor.maxTitleLength}
 						/>
 						<span
 							style={styles.textFieldCoutner}
 						>
-							{this.state.title.length} / {this.maxTitleLength}
+							{this.state.title.length} / {QuestionEditor.maxTitleLength}
 						</span>
 					</div>
 					<div className="question-data" style={styles.questionData}>
@@ -154,12 +172,12 @@ class QuestionEditor extends Component {
 							onLengthChange={this.onLengthChange}
 							getUsers={{ type: 'discuss' }}
 							placeholder={!isReplyBoxOpen && replyLength === 0 ? t('question.message-placeholder') : ''}
-							maxLength={this.maxQuestionLength}
+							maxLength={QuestionEditor.maxQuestionLength}
 						/>
 						<span
 							style={styles.textFieldCoutner}
 						>
-							{replyLength} / {this.maxQuestionLength}
+							{replyLength} / {QuestionEditor.maxQuestionLength}
 						</span>
 					</div>
 					<div className="question-data" style={styles.questionData}>
@@ -168,7 +186,7 @@ class QuestionEditor extends Component {
 							value={this.state.tags}
 							style={styles.textField}
 							onBlur={this.handleChipBlur}
-							newChipKeyCodes={[ 13, 32 ]}
+							newChipKeyCodes={[13, 32]}
 							chipRenderer={QuestionEditor.Chip}
 							dataSource={this.state.suggestions}
 							errorText={this.state.tagsErrorText}
@@ -177,6 +195,11 @@ class QuestionEditor extends Component {
 							onRequestDelete={this.handleDeleteTag}
 							floatingLabelText={t('question.tags-placeholder')}
 						/>
+						<span
+							style={styles.textFieldCoutner}
+						>
+							{this.state.tags.length} / {QuestionEditor.maxTagsLength}
+						</span>
 					</div>
 					<div className="editor-actions" style={styles.editorActions}>
 						<LoadingButton
