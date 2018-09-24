@@ -224,7 +224,7 @@ class Question extends Component {
 					autoHideDuration={1500}
 					open={followSnackbarOpen}
 					onRequestClose={this.handleSnackbarClose}
-					message={question.isFollowing ? t('discuss.answer-accepted') : t('discuss.not-following-title')}
+					message={question.isFollowing ? t('discuss.following-title') : t('discuss.not-following-title')}
 				/>
 			</Paper>
 		);
