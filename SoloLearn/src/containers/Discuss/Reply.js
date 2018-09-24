@@ -47,11 +47,12 @@ class Reply extends Component {
 		replyLength: 0,
 		animate: false,
 		snackbarOpen: false,
+		trimmedLength: 0,
 	};
 
-	onLengthChange = (replyLength) => {
+	onLengthChange = (replyLength, trimmedLength) => {
 		if (this.mentionInput) {
-			this.setState({ replyLength });
+			this.setState({ replyLength, trimmedLength });
 		}
 	}
 
@@ -78,8 +79,8 @@ class Reply extends Component {
 			);
 		}
 
-		const { replyLength } = this.state;
-		const saveDisabled = replyLength === 0;
+		const { replyLength, trimmedLength } = this.state;
+		const saveDisabled = trimmedLength === 0;
 
 		return (
 			[
@@ -153,7 +154,7 @@ class Reply extends Component {
 				className={`reply ${this.state.animate ? 'animate' : ''}`}
 				key={reply.id}
 				style={(reply.isAccepted && !this.state.isEditing)
-					? [ styles.reply.base, styles.reply.accepted ]
+					? [styles.reply.base, styles.reply.accepted]
 					: styles.reply.base}
 			>
 				<div className="details-wrapper" style={styles.detailsWrapper}>
@@ -187,7 +188,7 @@ class Reply extends Component {
 								/>
 						}
 					</div>
-					<div className="details" style={!this.state.isEditing ? styles.details.base : [ styles.details.base, styles.details.editing ]}>{this.getEditableArea()}</div>
+					<div className="details" style={!this.state.isEditing ? styles.details.base : [styles.details.base, styles.details.editing]}>{this.getEditableArea()}</div>
 					{
 						!this.state.isEditing &&
 						<IconMenu

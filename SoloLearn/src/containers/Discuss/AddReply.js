@@ -14,6 +14,7 @@ class AddReply extends Component {
 	state = {
 		isReplyBoxOpen: false,
 		replyLength: 0,
+		trimmedLength: 0,
 	}
 	openReplyBox = () => {
 		this.setState({ isReplyBoxOpen: true });
@@ -24,9 +25,9 @@ class AddReply extends Component {
 	handleBlur = () => {
 		if (this.state.replyLength <= 1) { this.closeReplyBox(); }
 	}
-	onLengthChange = (replyLength) => {
+	onLengthChange = (replyLength, trimmedLength) => {
 		if (this.mentionInput) {
-			this.setState({ replyLength });
+			this.setState({ replyLength, trimmedLength });
 		}
 	}
 	save = () => {
@@ -35,7 +36,7 @@ class AddReply extends Component {
 	}
 	render() {
 		const { t } = this.props;
-		const { isReplyBoxOpen, replyLength } = this.state;
+		const { isReplyBoxOpen, replyLength, trimmedLength } = this.state;
 		return (
 			<Paper
 				id="add-reply"
@@ -57,7 +58,7 @@ class AddReply extends Component {
 				</div>
 				<div style={styles.editorActions}>
 					<RaisedButton
-						disabled={replyLength > 2048 || replyLength === 0}
+						disabled={replyLength > 2048 || trimmedLength === 0}
 						label={t('common.post-action-title')}
 						primary
 						onClick={this.save}

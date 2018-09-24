@@ -22,7 +22,7 @@ const makeEditableContent = (text) => {
 		slots.forEach((slot) => {
 			// as current block text can change we need to get it each time
 			const { text: blockText } = contentState.getBlockForKey(currBlockKey);
-			const [ , id, name ] = slot.match(singleMentionRegex);
+			const [, id, name] = slot.match(singleMentionRegex);
 			const contentStateWithEntity = contentState.createEntity(
 				'mention',
 				'SEGMENTED',
@@ -62,7 +62,7 @@ class MentionInput extends Component {
 
 	onChange = (editorState) => {
 		this.setState({ editorState }, () => {
-			this.props.onLengthChange(this.getLength());
+			this.props.onLengthChange(this.getLength(), this.getTrimmedLength());
 		});
 	};
 
@@ -114,7 +114,11 @@ class MentionInput extends Component {
 		this.editor.focus(options);
 	};
 
-	getLength = () => this.state.editorState.getCurrentContent().getPlainText().length
+	getText = () => this.state.editorState.getCurrentContent().getPlainText()
+
+	getLength = () => this.getText().length
+
+	getTrimmedLength = () => this.getText().trim().length
 
 	popValue = () => {
 		const value = this.getValue();
@@ -136,7 +140,7 @@ class MentionInput extends Component {
 
 	render() {
 		const { MentionSuggestions } = this.mentionPlugin;
-		const plugins = [ this.mentionPlugin ];
+		const plugins = [this.mentionPlugin];
 
 		return (
 			<div

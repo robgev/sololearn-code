@@ -140,8 +140,8 @@ class QuestionEditor extends Component {
 	/* End mention input functions */
 
 	render() {
-		const { t } = this.props;
-		const { isReplyBoxOpen, replyLength, submitLoading, isNew } = this.state;
+		const { t, isNew } = this.props;
+		const { isReplyBoxOpen, replyLength, submitLoading } = this.state;
 		return (
 			<Paper className="new-question" id="new-question" style={styles.container}>
 				<h2 style={styles.heading}>{isNew ? t('question.title') : t('discuss.editTitle')}</h2>
