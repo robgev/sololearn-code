@@ -16,14 +16,13 @@ const mapDispatchToProps = { addQuestion, emptyPosts, getPosts };
 
 @connect(null, mapDispatchToProps)
 class NewQuestion extends Component {
-	constructor() {
-		super();
+	componentDidMount() {
+		this._isMounted = true;
 		document.title = 'Create a new question';
-		this._isUnmounted = false;
 	}
 
 	componentWillUnmount() {
-		this._isUnmounted = true;
+		this._isMounted = false;
 	}
 
 	submit = (title, description, tags) => {
@@ -31,7 +30,7 @@ class NewQuestion extends Component {
 			.then(({ id, alias }) => {
 				this.props.emptyPosts();
 				this.props.getPosts();
-				if (!this._isUnmounted) {
+				if (this._isMounted) {
 					browserHistory.push(`/discuss/${id}/${alias}`);
 				}
 			})

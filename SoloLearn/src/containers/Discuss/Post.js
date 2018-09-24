@@ -83,10 +83,6 @@ class Post extends Component {
 		}
 	}
 
-	componentWillUnmount() {
-		this.props.loadPost(null);
-	}
-
 	initialize = async () => {
 		try {
 			const { params } = this.props;

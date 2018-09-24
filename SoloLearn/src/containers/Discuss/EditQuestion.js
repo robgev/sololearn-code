@@ -12,6 +12,7 @@ import Layout from 'components/Layouts/GeneralLayout';
 import CircularProgress from 'material-ui/CircularProgress';
 
 import QuestionEditor from './QuestionEditor';
+import GuideLinesSidebar from './GuideLinesSidebar';
 
 const mapStateToProps = state => ({
 	defaultsLoaded: defaultsLoaded(state),
@@ -26,21 +27,13 @@ const mapDispatchToProps = {
 
 @connect(mapStateToProps, mapDispatchToProps)
 class NewQuestion extends Component {
-	constructor(props) {
-		super(props);
-		this.state = { loading: !props.isLoaded };
+	async componentDidMount() {
+		this._isMounted = true;
 		document.title = 'Create a new question';
-		this._isUnmounted = false;
-	}
-
-	async componentWillMount() {
 		const { params } = this.props;
 		if (!this.props.isLoaded) {
 			try {
 				await this.props.loadPostInternal(params.id);
-				if (!this._isUnmounted) {
-					this.setState({ loading: false });
-				}
 			} catch (e) {
 				showError(e, 'Something went wrong when trying to fetch post');
 			}
@@ -48,14 +41,14 @@ class NewQuestion extends Component {
 	}
 
 	componentWillUnmount() {
-		this._isUnmounted = true;
+		this._isMounted = false;
 	}
 
 	submit = (title, description, tags) => {
 		const { id: postId } = this.props.post;
 		this.props.editQuestion(postId, title, description, tags)
 			.then(({ id, alias }) => {
-				if (!this._isUnmounted) {
+				if (this._isMounted) {
 					browserHistory.push(`/discuss/${id}/${alias}`);
 				}
 			})
@@ -65,12 +58,15 @@ class NewQuestion extends Component {
 	}
 
 	render() {
-		const { post } = this.props;
-		const { loading } = this.state;
+		const { post, isLoaded } = this.props;
 		return (
-			<Layout>
+			<Layout
+				sidebarContent={
+					<GuideLinesSidebar />
+				}
+			>
 				{
-					loading
+					!isLoaded
 						? <CircularProgress style={{ display: 'flex', alignItems: 'center', margin: 'auto' }} />
 						: <QuestionEditor isNew={false} submit={this.submit} post={post} />
 				}
