@@ -13,7 +13,7 @@ const specs = {
 		return {};
 	},
 	canDrag(props) {
-		return !props.isSelected;
+		return !props.isDisabled;
 	},
 	endDrag(props, monitor) {
 		const dropField = monitor.getDropResult();

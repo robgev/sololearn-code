@@ -102,6 +102,7 @@ class PlaceholderDnD extends Component {
 								answer={answer}
 								key={answer.id}
 								isSelected={isSelected(selected, answer.id)}
+								isDisabled={isSelected(selected, answer.id) || disabled}
 								onDrop={this.moveTo}
 								onClick={this.onClick}
 								style={{
