@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 // import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
+import { hash } from 'utils';
 
 import { updateProfile } from 'actions/settings';
 
@@ -46,8 +47,8 @@ class Password extends PureComponent {
 		if (retypePass === newPassword) {
 			this.setState({ snackbarOpen: true, isSaving: true });
 			await this.props.updateProfile({
-				oldPassword,
-				newPassword,
+				oldPassword: hash(oldPassword),
+				newPassword: hash(newPassword),
 			});
 			this.setState({ isSaving: false });
 		} else {
