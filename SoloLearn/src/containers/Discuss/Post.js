@@ -172,10 +172,10 @@ class Post extends Component {
 	}
 
 	handleFabClick = () => {
-		this.inputRef.current.test.scrollIntoView({ block: 'center', behavior: 'smooth' });
+		this.inputRef.current.editor.scrollIntoView({ block: 'center' });
 		setTimeout(() => {
 			this.inputRef.current.mentionInput.focus({ preventScroll: true });
-		}, 250);
+		}, 100);
 	}
 
 	remove = () => {

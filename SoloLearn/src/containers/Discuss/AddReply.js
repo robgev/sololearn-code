@@ -42,7 +42,7 @@ class AddReply extends Component {
 				className="add-reply"
 				style={styles.container}
 			>
-				<div style={styles.editor}>
+				<div ref={(node) => { this.editor = node; }} style={styles.editor}>
 					<MentionInput
 						ref={(input) => { this.mentionInput = input; }}
 						onFocus={this.openReplyBox}
