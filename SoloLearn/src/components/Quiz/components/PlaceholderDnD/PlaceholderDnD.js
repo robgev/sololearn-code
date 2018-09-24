@@ -17,7 +17,7 @@ class PlaceholderDnD extends Component {
 		[this.question, this.answerText] = props.quiz.question.split(/\[!\w+!]/);
 		this.correctAnswers = props.quiz.answers.filter(a => a.isCorrect);
 		this.longestAnswer = this.correctAnswers // get max length to make all placeholders equal
-			.reduce((l, { text: { length } }) => Math.max(l, length), 0) * 0.75;
+			.reduce((l, { text: { length } }) => Math.max(l, length), 0);
 		this.state = {
 			shuffled: shuffleArray(props.quiz.answers),
 			selected: new Array(this.correctAnswers.length).fill(null),
