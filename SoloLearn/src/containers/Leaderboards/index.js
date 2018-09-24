@@ -3,14 +3,16 @@ import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
 import { translate } from 'react-i18next';
+import isEqual from 'lodash/isEqual';
 
 import Paper from 'material-ui/Paper';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import CircularProgress from 'material-ui/CircularProgress';
 
-import { getLeaderboard } from 'actions/leaderboards';
+import { getLeaderboard, loadMore } from 'actions/leaderboards';
 
 import Layout from 'components/Layouts/GeneralLayout';
 import BusyWrapper from 'components/BusyWrapper';
@@ -41,7 +43,7 @@ const sendGoogleEvent = (mode) => {
 const mapStateToProps =
 	({ leaderboards, userProfile: { id: userId } }) => ({ leaderboards, userId });
 
-@connect(mapStateToProps, { getLeaderboard })
+@connect(mapStateToProps, { getLeaderboard, loadMore })
 @translate()
 class Leaderboards extends PureComponent {
 	constructor(props) {
@@ -56,7 +58,9 @@ class Leaderboards extends PureComponent {
 			range,
 			userRank: -1,
 			loading: true,
-			scrollToIndex: 0,
+			startIndex: 0,
+			loadCount: 20,
+			hasMore: true,
 			shouldHideButton: false,
 			userId: calculatedUserId,
 		};
@@ -65,19 +69,27 @@ class Leaderboards extends PureComponent {
 	}
 
 	async componentWillMount() {
-		const { mode, range, userId } = this.state;
-		await this.props.getLeaderboard({
+		const {
+			mode, range, userId, startIndex, loadCount,
+		} = this.state;
+		const length = await this.props.getLeaderboard({
 			mode,
 			range,
 			userId,
-			index: 0,
-			count: 20,
+			index: startIndex,
+			count: loadCount,
 		}); // The last two are provisional params for initial load of all time leaderboard
 		const userRank = this.findRank();
-		this.setState({ loading: false, userRank });
+		this.setState({
+			userRank,
+			loading: false,
+			startIndex: length,
+			hasMore: length === loadCount,
+		});
 	}
 
 	async componentWillReceiveProps(newProps) {
+		const { loadCount } = this.state;
 		const { params: newParams, leaderboards: newLeaderboards } = newProps;
 		const { params, leaderboards } = this.props;
 		if (newParams.mode !== params.mode || newParams.range !== params.range) {
@@ -85,14 +97,33 @@ class Leaderboards extends PureComponent {
 			const mode = parseInt(newParams.mode, 10);
 			const range = parseInt(newParams.range, 10);
 			this.setState({ loading: true, mode, range });
-			await this.props.getLeaderboard({ ...newParams, index: 0, count: 20 });
-		} else if (newLeaderboards.length !== leaderboards.length) {
+			const length = await this.props.getLeaderboard({ ...newParams, index: 0, count: 20 });
+			this.setState({ startIndex: length, hasMore: length === loadCount });
+		} else if (newLeaderboards.length !== leaderboards.length
+			|| !isEqual(newLeaderboards, leaderboards)) {
 			const userRank = this.findRank(newLeaderboards);
 			this.setState({ loading: false, userRank });
 		}
 	}
 
-	handleChange = (event, index, range) => {
+	handleNextFetch = async () => {
+		const {
+			startIndex, loadCount, mode, userId,
+		} = this.state;
+		const length = await this.props.loadMore({
+			mode,
+			userId,
+			range: 0,
+			count: loadCount,
+			index: startIndex,
+		});
+		this.setState({
+			hasMore: length === loadCount,
+			startIndex: startIndex + length,
+		});
+	}
+
+	handleChange = (_, __, range) => {
 		const { mode = 1, userId } = this.state;
 		browserHistory.replace(`/leaderboards/${userId}/${mode}/${range}`);
 	}
@@ -106,12 +137,8 @@ class Leaderboards extends PureComponent {
 	}
 
 	scrollTo = () => {
-		const { userId, range, userRank } = this.state;
-		if (range === 0) {
-			this.infiniteBoard.getWrappedInstance().scrollTo(userRank);
-		} else {
-			document.getElementById(`user-card-${userId}`).scrollIntoView({ block: 'center', behavior: 'smooth' });
-		}
+		const { userId } = this.state;
+		document.getElementById(`user-card-${userId}`).scrollIntoView({ block: 'center', behavior: 'smooth' });
 	}
 
 	onScrollVisibility = (shouldHideButton) => {
@@ -125,8 +152,8 @@ class Leaderboards extends PureComponent {
 			range,
 			userId,
 			loading,
+			hasMore,
 			userRank,
-			scrollToIndex,
 			shouldHideButton,
 		} = this.state;
 
@@ -169,12 +196,11 @@ class Leaderboards extends PureComponent {
 					>
 						{ range === 0 ?
 							<InfiniteLeaderboard
-								mode={mode}
 								userId={userId}
+								hasMore={hasMore}
 								leaderboards={leaderboards}
-								scrollToIndex={scrollToIndex}
+								loadMore={this.handleNextFetch}
 								onScrollVisibility={this.onScrollVisibility}
-								ref={(infiniteBoard) => { this.infiniteBoard = infiniteBoard; }}
 							/> :
 							<LeaderboardCard
 								userId={userId}
@@ -184,21 +210,32 @@ class Leaderboards extends PureComponent {
 							/>
 						}
 						{ (userRank > 0 && !shouldHideButton) &&
-						<RaisedButton
-							labelColor="#FFFFFF"
-							onClick={this.scrollTo}
-							labelPosition="before"
-							className="scroll-button"
-							backgroundColor="#78909C"
-							style={{ borderRadius: 100 }}
-							buttonStyle={{ borderRadius: 100 }}
-							overlayStyle={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-							label={`${t(`leaderboard.action.${userId === this.props.userId ? 'find-me' : 'find-them'}`)} ${userRank}`}
-							icon={<ArrowDown />}
-						/>
+							<div
+								className="scroll-button-container"
+							>
+								<RaisedButton
+									labelColor="#FFFFFF"
+									onClick={this.scrollTo}
+									labelPosition="before"
+									className="scroll-button"
+									backgroundColor="#78909C"
+									style={{ borderRadius: 100 }}
+									buttonStyle={{ borderRadius: 100 }}
+									overlayStyle={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+									label={`${t(`leaderboard.action.${userId === this.props.userId ? 'find-me' : 'find-them'}`)} ${userRank}`}
+									icon={<ArrowDown />}
+								/>
+							</div>
 						}
 					</BusyWrapper>
 				</Paper>
+				{
+					hasMore && leaderboards.length !== 0 &&
+					<CircularProgress
+						size={40}
+						style={{ display: 'flex', alignItems: 'center', margin: '10px auto' }}
+					/>
+				}
 			</Layout>
 		);
 	}

@@ -4,7 +4,7 @@ import Paper from 'material-ui/Paper';
 import InfiniteScroll from 'react-infinite-scroller';
 
 const InfiniteScrollWrapper = ({
-	children, element: Element, header, threshold, containerStyle, style, ...rest
+	children, element: Element, header, threshold, containerStyle, style, withLoader, ...rest
 }) => (
 	<div style={containerStyle}>
 		<Element style={style}>
@@ -18,7 +18,7 @@ const InfiniteScrollWrapper = ({
 			</InfiniteScroll>
 		</Element>
 		{
-			rest.hasMore && children.length !== 0 &&
+			rest.hasMore && children.length !== 0 && withLoader &&
 				<CircularProgress
 					size={40}
 					style={{ display: 'flex', alignItems: 'center', margin: '10px auto' }}
@@ -32,6 +32,7 @@ InfiniteScrollWrapper.defaultProps = {
 	header: null,
 	threshold: 500,
 	style: null,
+	withLoader: true,
 };
 
 export default InfiniteScrollWrapper;
