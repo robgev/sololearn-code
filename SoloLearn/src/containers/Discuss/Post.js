@@ -254,6 +254,7 @@ class Post extends Component {
 				<Dialog
 					open={this.state.deletePopupOpened}
 					actions={this.deleteActions}
+					onRequestClose={this.closeDeletePopup}
 				>
 					{t('discuss.delete-question-message')}
 				</Dialog>
