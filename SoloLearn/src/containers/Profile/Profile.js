@@ -69,9 +69,6 @@ class Profile extends Component {
 		this.activeTab = activeTab;
 		const { location } = this.props;
 		location.pathname = `/profile/${this.props.params.id}/${this.activeTab}`;
-		if (activeTab !== 'badges') {
-			location.query = {};
-		}
 		browserHistory.replace(location);
 		ReactGA.ga('send', 'screenView', { screenName: `Profile ${capitalize(this.activeTab)} Page` });
 	}
