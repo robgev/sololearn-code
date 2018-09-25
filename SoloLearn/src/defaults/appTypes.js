@@ -22,12 +22,14 @@ const types = {
 	postedLessonCommentReply: 204,
 	upvotePost: 205,
 	upvoteComment: 206,
+	mentionPost: 208,
 
 	postedCode: 301,
 	upvoteCode: 302,
 	postedCodeComment: 303,
 	postedCodeCommentReply: 304,
 	upvoteCodeComment: 305,
+	mentionCodeComment: 309,
 
 	startedChallange: 401,
 	completedChallange: 402,

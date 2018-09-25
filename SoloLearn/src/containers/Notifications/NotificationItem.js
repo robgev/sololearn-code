@@ -17,18 +17,11 @@ const mapDispatchToProps = { markRead };
 
 @connect(null, mapDispatchToProps)
 class NotificationItem extends Component {
-	toggleToast = () => NotificationToaster.toast(
-		this.props.notification,
-		this.props.markRead,
-		this.props.handleOpenIfPopup,
-	);
-
 	render() {
 		const generatedContent = NotificationToaster.generateContent(this.props.notification);
 		return (
 			<ListItem
 				containerElement="div"
-				onClick={this.toggleToast}
 				className="notification-item"
 				style={styles.notificationItem}
 				innerDivStyle={styles.notificationItemInner}

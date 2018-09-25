@@ -1,11 +1,11 @@
 // General modules
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import { toast, Slide } from 'react-toastify';
 
 // Utils And Defaults
 import types from 'defaults/appTypes';
-import { updateDate, toSeoFriendly } from 'utils';
+import { updateDate, toSeoFriendly, stopPropagation } from 'utils';
 import ProfileAvatar from 'components/ProfileAvatar';
 
 import { NotificationItemStyles as styles } from './styles';
@@ -35,7 +35,7 @@ class NotificationToaster extends Component {
 			});
 		}
 		markRead(ids);
-		NotificationToaster.openNotificationLink(notification);
+		browserHistory.push(NotificationToaster.getNotificationLink(notification));
 		onClick();
 	}
 
@@ -45,15 +45,16 @@ class NotificationToaster extends Component {
 		}
 		const pattern = /({action_user}|{opponent}|{main})/.exec(fullTitle);
 		if (pattern !== null) {
-			const href = `/profile/${notification.actionUser.id}`;
 			const link = (
-				<a
-					style={{ color: '#8BC34A', textDecoration: 'none' }}
-					className="hoverable"
-					href={href}
+				<Link
 					key="profile-link"
-				>{notification.actionUser.name}
-				</a>
+					className="hoverable"
+					onClick={stopPropagation}
+					to={`/profile/${notification.actionUser.id}`}
+					style={{ color: '#8BC34A', textDecoration: 'none' }}
+				>
+					{notification.actionUser.name}
+				</Link>
 			);
 			const splitTitle = fullTitle.split(pattern[0]);
 			return [ splitTitle[0], link, splitTitle[1] ];
@@ -66,9 +67,10 @@ class NotificationToaster extends Component {
 			notification.groupedItems.length > 1 ? notification.message : notification.title;
 
 		const title = NotificationToaster.getTitle(notificationTitle, notification);
+		const link = NotificationToaster.getNotificationLink(notification);
 
 		return (
-			<div className="notification-content" style={styles.notificationContent}>
+			<Link to={link} className="notification-content" style={styles.notificationContent}>
 				{
 					notification.type === types.badgeUnlocked ?
 						<div style={{ ...styles.badge.base, backgroundColor: notification.achievement.color }}>
@@ -98,52 +100,48 @@ class NotificationToaster extends Component {
 						{!notification.isClicked && <span style={styles.notClickedIcon} />}
 					</div>
 				</div>
-			</div>
+			</Link>
 		);
 	}
 
-	static openNotificationLink = (notification) => {
+	static getNotificationLink = (notification) => {
 		switch (notification.type) {
 		case types.completedChallange:
 		case types.startedChallange:
-		case types.challangeReviewRejected:
-			browserHistory.push(`/challenge/${notification.contest.id}`);
-			break;
+			return `/challenge/${notification.contest.id}`;
 		case types.postedQuestion:
-			browserHistory.push(`/discuss/${notification.post.id}`);
-			break;
+			return `/discuss/${notification.post.id}`;
 		case types.upvotePost:
-			browserHistory.push(notification.post.parentID
+		case types.mentionPost:
+			return notification.post.parentID
 				? `/discuss/${notification.post.id}/answer`
-				: `/discuss/${notification.post.parentID}/answer/${notification.post.id}`);
-			break;
+				: `/discuss/${notification.post.parentID}/answer/${notification.post.id}`;
 		case types.postedAnswer:
-			browserHistory.push(`/discuss/${notification.post.parentID}/answer/${notification.post.id}`);
-			break;
+			return `/discuss/${notification.post.parentID}/answer/${notification.post.id}`;
 		case types.following:
 		case types.friendJoined:
-			browserHistory.push(`/profile/${notification.actionUser.id}`);
-			break;
+		case types.leveledUp:
+			return `/profile/${notification.actionUser.id}`;
 		case types.badgeUnlocked:
-			browserHistory.push(`/profile/${notification.user.id}/badges?badgeID=${notification.achievement.id}`);
-			break;
+			return `/profile/${notification.user.id}/badges?badgeID=${notification.achievement.id}`;
 		case types.postedCodeComment:
 		case types.postedCodeCommentReply:
 		case types.upvoteCodeComment:
-			browserHistory.push(`/playground/${notification.code.publicID}?commentID=${notification.codeComment.id}`);
-			break;
+		case types.mentionCodeComment:
+			return `/playground/${notification.code.publicID}?commentID=${notification.codeComment.id}`;
 		case types.postedUserLessonComment:
 		case types.postedUserLessonCommentReply:
 		case types.upvoteUserLessonComment:
-			browserHistory.push(`/learn/lesson/${notification.userLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${notification.userLesson.id}/${notification.userLesson.name}/1?commentID=${notification.userLessonComment.id}`);
-			break;
+			return `/learn/lesson/${notification.userLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${notification.userLesson.id}/${notification.userLesson.name}/1?commentID=${notification.userLessonComment.id}`;
 		case types.postedLessonComment:
 		case types.postedLessonCommentReply:
 		case types.upvoteComment:
-			browserHistory.push(`/learn/course/${toSeoFriendly(notification.course.name)}?commentID=${notification.comment.id}`);
-			break;
+			return `/learn/course/${toSeoFriendly(notification.course.name)}?commentID=${notification.comment.id}`;
+		case types.challangeReviewRejected:
+		case types.challangeReviewPublished:
+			return '/quiz-factory/my-submissions';
 		default:
-			break;
+			throw new Error('Unknown notification link');
 		}
 	}
 }

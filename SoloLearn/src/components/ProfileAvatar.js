@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import Avatar from 'material-ui/Avatar';
 
-import { determineBadge, determineBadgeColor } from 'utils';
+import { determineBadge, determineBadgeColor, stopPropagation } from 'utils';
 import AvatarColors from 'constants/AvatarColors';
 
 import 'styles/profileAvatar.scss';
@@ -17,7 +17,6 @@ const ProfileAvatar = ({
 	badge,
 	userID,
 	vertical,
-	disabled,
 	size = 30,
 	userName,
 	avatarUrl,
@@ -27,6 +26,7 @@ const ProfileAvatar = ({
 	avatarStyle,
 	reversedOrder,
 	sideComponent,
+	disabled = false,
 	withUserNameBox,
 }) => {
 	const ConditionalContainer = disabled ? DisabledContainer : Link;
@@ -36,6 +36,7 @@ const ProfileAvatar = ({
 		<ConditionalContainer
 			style={style}
 			to={`/profile/${userID}`}
+			onClick={stopPropagation}
 			className="avatar-container"
 		>
 			<div className={`avatar-wrapper ${vertical ? 'vertical' : ''} ${className || ''}`}>

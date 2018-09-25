@@ -31,6 +31,7 @@ export { default as redirector } from './redirector';
 export { default as queryDifference } from './queryDifference';
 export { default as isObjectEqual } from './isObjectEqual';
 export { default as normalize } from './normalizr';
+export { default as stopPropagation } from './stopPropagation';
 
 const hash = pass => hmacsha1('password', pass).slice(0, -1);
 const checkWeb = alias => [ 'html', 'css', 'js' ].includes(alias);
