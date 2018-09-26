@@ -129,6 +129,9 @@ class NotificationToaster extends Component {
 		case types.upvoteCodeComment:
 		case types.mentionCodeComment:
 			return `/playground/${notification.code.publicID}?commentID=${notification.codeComment.id}`;
+		case types.postedCode:
+		case types.upvoteCode:
+			return `/playground/${notification.code.publicID}`;
 		case types.postedUserLessonComment:
 		case types.postedUserLessonCommentReply:
 		case types.upvoteUserLessonComment:
