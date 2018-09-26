@@ -48,7 +48,13 @@ const entities = (state = null, action) => {
 	case LOGOUT:
 		return [];
 	case FOLLOW_USER_SUGGESTION:
-		return { ...state, [action.payload.userId]: action.payload.isFollowing };
+		return {
+			...state,
+			[action.payload.userId]: {
+				...state[action.payload.userId],
+				isFollowing: action.payload.isFollowing,
+			},
+		};
 	default:
 		return state;
 	}
