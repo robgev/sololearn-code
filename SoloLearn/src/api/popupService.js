@@ -4,7 +4,6 @@ import React from 'react';
 // Material UI components
 import Dialog from 'components/StyledDialog';
 import Paper from 'material-ui/Paper';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import CorrectIcon from 'material-ui/svg-icons/action/done';
 import WrongIcon from 'material-ui/svg-icons/content/clear';

@@ -215,7 +215,8 @@
 		"sound-message": "Enable in-app sounds.",
 		"location-services-title": "Location Services",
 		"location-services-message": "Allow app to use your location and provide more personalized experience.",
-		"language": "Language"
+		"language": "Language",
+		"edit-photo": "Edit Photo"
 	},
 	"edit_account": {
 		"choose-from-library-action-title": "Choose from library",
@@ -399,7 +400,7 @@
 	"feed": {
 		"title": "Activity Feed",
 		"most-recent-title": "Most Recent",
-		"groupped-chellenge-format": "has completed  challenges",
+		"groupped-chellenge-format": "has completed {{challengesCount}} challenges",
 		"suggestions": "Suggestions",
 		"new-activity-title": "New Activity",
 		"discover-peers-title": "It's Lonely Here",
@@ -575,7 +576,7 @@
 		"view-certificate": "VIEW CERTIFICATE",
 		"status-plus-rank": "STATUS + RANK",
 		"languages": "LANGUAGES",
-		"cooming-soon": "Coming Soon",
+		"coming-soon": "Coming Soon",
 		"no-chart-data-placeholder": "NOT ENOUGH DATA",
 		"chart-coder": "Coder",
 		"chart-contributor": "Contributor",

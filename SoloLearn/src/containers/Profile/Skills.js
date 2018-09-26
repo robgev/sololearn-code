@@ -90,7 +90,7 @@ class Skills extends PureComponent {
 								mode="determinate"
 								className="progress"
 							/>
-							<span className="status">{status}</span>
+							<span className="status">{t(`profile.status-${status}`)}</span>
 						</div>
 					</div>
 				</Paper>

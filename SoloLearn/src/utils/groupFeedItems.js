@@ -1,4 +1,5 @@
 import feedTypes from 'defaults/appTypes';
+import i18n from 'i18n';
 
 const groupAllChallengesByUser = (searchedFeedItems, currentItem) => {
 	const allChallenges = searchedFeedItems.filter(currentlyCheckedItem =>
@@ -10,7 +11,7 @@ const groupAllChallengesByUser = (searchedFeedItems, currentItem) => {
 			id: allChallenges[challengesCount - 1].id,
 			toId: currentItem.id,
 			date: currentItem.date,
-			title: `has completed ${challengesCount} challenges`,
+			title: i18n.t('feed.groupped-chellenge-format', { challengesCount }),
 			user: currentItem.user,
 			groupedItems: allChallenges,
 			type: 444,
@@ -21,11 +22,12 @@ const groupAllChallengesByUser = (searchedFeedItems, currentItem) => {
 
 export const forceOpenFeed = (firstFeedItem) => {
 	const forceOpenedItems = firstFeedItem.groupedItems.slice(0, 5);
+	const challengesCount = firstFeedItem.groupedItems.length - 5;
 	const modifiedMergedChallengeGroup = firstFeedItem.groupedItems.length <= 5 ? [] : [ {
 		...firstFeedItem,
 		toId: firstFeedItem.groupedItems[5].id,
 		date: firstFeedItem.groupedItems[5].date,
-		title: `has completed ${firstFeedItem.groupedItems.length - 5} challenges`,
+		title: i18n.t('feed.groupped-chellenge-format', { challengesCount }),
 		groupedItems: firstFeedItem.groupedItems.slice(5),
 	} ];
 	const result = [ ...forceOpenedItems, ...modifiedMergedChallengeGroup ];

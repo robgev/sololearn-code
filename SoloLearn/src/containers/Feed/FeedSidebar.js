@@ -35,7 +35,14 @@ const FeedSuggestions = ({ t, discoverIds, discoverEntities }) => (
 						/>
 						<div className="user-info">
 							<Link to={`/profile/${id}`} className="user-name hoverable">{name}</Link>
-							<p className="user-meta-info">{numberFormatter(followers)} Followers | Level {level} </p>
+
+							<p className="user-meta-info">
+								{
+									followers === 1
+										? `1 ${t('user-followers-one')}`
+										: `${numberFormatter(followers)} ${t('common.user-followers')}`
+								} | {t('common.user-level')} {numberFormatter(level)}
+							</p>
 						</div>
 					</div>
 				);

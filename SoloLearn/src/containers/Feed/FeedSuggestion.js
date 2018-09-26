@@ -1,5 +1,6 @@
 // React modules
 import React from 'react';
+import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -55,7 +56,7 @@ const mapDispatchToProps = {
 	followUser: followUserSuggestion,
 };
 
-const FeedSuggestion = ({ suggestion, followUser }) => {
+const FeedSuggestion = ({ t, suggestion, followUser }) => {
 	const {
 		id,
 		name,
@@ -77,14 +78,20 @@ const FeedSuggestion = ({ suggestion, followUser }) => {
 					style={{ width: '100%' }}
 				/>
 			</UserTooltip>
-			<p style={styles.followers}>{numberFormatter(followers)} Followers</p>
+			<p style={styles.followers}>
+				{
+					followers === 1
+						? `1 ${t('user-followers-one')}`
+						: `${numberFormatter(followers)} ${t('common.user-followers')}`
+				}
+			</p>
 			<RaisedButton
 				labelColor="#fff"
 				secondary={isFollowing}
 				backgroundColor={blueGrey900}
 				style={styles.followButton.base}
 				labelStyle={styles.followButton.label}
-				label={isFollowing ? 'Following' : 'Follow'}
+				label={isFollowing ? t('common.user-following') : t('common.follow-user')}
 				buttonStyle={styles.followButton.button}
 				onClick={() => followUser({ id, isFollowing })}
 			/>
@@ -92,4 +99,4 @@ const FeedSuggestion = ({ suggestion, followUser }) => {
 	);
 };
 
-export default connect(null, mapDispatchToProps)(FeedSuggestion);
+export default connect(null, mapDispatchToProps)(translate()(FeedSuggestion));

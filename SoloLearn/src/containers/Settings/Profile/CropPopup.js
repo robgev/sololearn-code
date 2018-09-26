@@ -47,7 +47,7 @@ class Profile extends PureComponent {
 			<Dialog
 				open={open}
 				actions={actions}
-				title="Edit the image"
+				title={t('settings.edit-photo')}
 				onRequestClose={this.onRequestClose}
 				className="avatar-cropper-container"
 			>

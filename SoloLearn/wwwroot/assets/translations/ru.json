@@ -215,7 +215,8 @@
     "sound-message": "Включить звук в приложении.",
     "location-services-title": "Определение местоположения",
     "location-services-message": "Разрешить использовать Ваше местоположение",
-    "language": "Язык"
+		"language": "Язык",
+		"edit-photo": "Редактировать фото"
   },
   "edit_account": {
     "choose-from-library-action-title": "Выберите из библиотеки",
@@ -399,7 +400,7 @@
   "feed": {
     "title": "Лента",
     "most-recent-title": "Последние",
-    "groupped-chellenge-format": "завершил  матчей",
+    "groupped-chellenge-format": "завершил {{challengesCount}} матчей",
     "suggestions": "Предложения",
     "discover-peers-titile": "Здесь одиноко",
     "discover-peers-message": "Следите за активностью друзей и получайте обновления!",
@@ -577,7 +578,7 @@
     "view-certificate": "ВАШ СЕРТИФИКАТ",
     "status-plus-rank": "СТАТУС + РЕЙТИНГ",
     "languages": "ЯЗЫКИ",
-    "cooming-soon": "Скоро",
+    "coming-soon": "Скоро",
     "no-chart-data-placeholder": "НЕДОСТАТОЧНО ДАННЫХ",
     "chart-coder": "Кодинг",
     "chart-contributor": "Содействие",

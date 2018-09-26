@@ -21,7 +21,7 @@ const Notifications = ({ t }) => {
 		>
 			<Paper>
 				<div className="notification-header" style={styles.notificationsHeader}>
-					<p className="notifications-title" style={styles.notificationsTitle}>Your Notifications</p>
+					<p className="notifications-title" style={styles.notificationsTitle}>{t('notifications.title')}</p>
 				</div>
 				<Divider />
 				<NotificationList isPopup={false} />

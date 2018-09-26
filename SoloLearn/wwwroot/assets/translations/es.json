@@ -215,7 +215,8 @@
     "sound-message": "Habilitar sonidos dentro de la aplicación.",
     "location-services-title": "Servicios de Localización",
     "location-services-message": "Permitir a la aplicación usar tu localización y ofrecer una experiencia más personalizada.",
-    "language": "Idioma"
+		"language": "Idioma",
+		"edit-photo": "Editar foto"
   },
   "edit_account": {
     "choose-from-library-action-title": "Elige de la biblioteca",
@@ -399,7 +400,7 @@
   "feed": {
     "title": "Actividad Reciente",
     "most-recent-title": "Más Reciente",
-    "groupped-chellenge-format": "completó  desafío",
+    "groupped-chellenge-format": "completó {{challengesCount}} desafío",
     "suggestions": "Sugerencias",
     "discover-peers-titile": "Está muy sólo aquí",
     "discover-peers-message": "¡Sigue a otros y recibe notificaciones!",
@@ -577,7 +578,7 @@
     "view-certificate": "VER CERTIFICADO",
     "status-plus-rank": "Estatus + Rango",
     "languages": "IDIOMAS",
-    "cooming-soon": "Próximamente",
+    "coming-soon": "Próximamente",
     "no-chart-data-placeholder": "SIN DATOS SUFICIENTES",
     "chart-coder": "Programador",
     "chart-contributor": "Colaborador",

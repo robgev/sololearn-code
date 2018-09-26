@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import RaisedButton from 'material-ui/RaisedButton';
 import AvatarColors from 'constants/AvatarColors';
 
@@ -10,6 +11,7 @@ import { numberFormatter, showError, determineBadge } from 'utils';
 import 'styles/components/UserCard.scss';
 
 @connect(null, { followSuggestion })
+@translate()
 class UserCard extends Component {
 	handleFollow = (event) => {
 		// Disables redirect to /profile/:id on button click
@@ -25,6 +27,7 @@ class UserCard extends Component {
 
 	render() {
 		const {
+			t,
 			id,
 			level,
 			name,
@@ -64,12 +67,14 @@ class UserCard extends Component {
 							</div>
 							{(followers || followers === 0) &&
 								<div className="profile-followers">
-									{numberFormatter(followers)} Followers
+									{ followers === 1
+										? `1 ${t('user-followers-one')}`
+										: `${numberFormatter(followers)} ${t('common.user-followers')}`}
 								</div>
 							}
 							{(level || level === 0) &&
 								<div className="profile-followers">
-									Level {numberFormatter(level)}
+									{t('common.user-level')} {numberFormatter(level)}
 								</div>
 							}
 						</div>
@@ -81,11 +86,11 @@ class UserCard extends Component {
 								style={{ height: 28, marginBottom: 5 }}
 								buttonStyle={{ height: 28, lineHeight: '28px' }}
 								className="user-card-follow-button"
-								label={isFollowing ? 'Following' : 'Follow'}
+								label={isFollowing ? t('common.user-following') : t('common.follow-user')}
 							/> : (
 								<Link to={`/profile/${id}`} className="user-card-follow-button">
 									<RaisedButton
-										label="View Profile"
+										label={t('profile.show-profile')}
 									/>
 								</Link>
 							)

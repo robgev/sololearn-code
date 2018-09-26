@@ -1,5 +1,8 @@
 import moment from 'moment';
+import 'moment/locale/ru';
+import 'moment/locale/es';
 import i18n from 'i18n';
+
 const updateDate = (date) => {
 	moment.locale(i18n.language);
 	const postDate = moment.utc(date);

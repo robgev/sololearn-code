@@ -69,8 +69,8 @@ class Header extends PureComponent {
 								style={{ backgroundColor: '#dedede' }}
 							/>
 							<div className="user-status-wrapper">
-								<span className="user-status">{this.currentBadge}</span>
-								<span className="user-status">{this.nextMilestone}</span>
+								<span className="user-status">{t(`profile.status-${this.currentBadge}`)}</span>
+								<span className="user-status">{t(`profile.status-${this.nextMilestone}`)}</span>
 							</div>
 						</div>
 					</div>
