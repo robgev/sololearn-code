@@ -52,7 +52,7 @@ class AddReply extends Component {
 						style={isReplyBoxOpen ? { height: 100 } : {}}
 						getUsers={{ type: 'discuss', params: { postId: this.props.postId } }}
 						submit={this.props.save}
-						placeholder={!isReplyBoxOpen && replyLength === 0 ? 'Write a new answer' : ''}
+						placeholder={!isReplyBoxOpen && replyLength === 0 ? t('discuss.new-answer-placeholder') : ''}
 					/>
 					<span style={styles.textFieldCoutner}>{replyLength}/2048</span>
 				</div>

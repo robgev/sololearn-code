@@ -111,7 +111,7 @@ class SearchBar extends Component {
 		} = this.props;
 		return (
 			<Localize>
-				{t => (
+				{({ t }) => (
 					<div className="header-search-container">
 						<IconButton
 							onClick={this.open}

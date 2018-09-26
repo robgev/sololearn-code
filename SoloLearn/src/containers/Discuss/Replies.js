@@ -8,7 +8,7 @@ import { determineAccessLevel } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
 import InfiniteScroll from 'components/InfiniteScroll';
 import ReportPopup from 'components/ReportPopup';
-// import InfiniteVirtualizedList from 'components/InfiniteVirtualizedList';
+import Localize from 'components/Localize';
 
 // Additional components
 import Reply from './Reply';
@@ -85,7 +85,7 @@ class Replies extends Component {
 			removalPopupOpen, reportPopupOpen, targetItem, canLoadMore, canLoadAbove,
 		} = this.state;
 		if (replies.length === 0 && !canLoadMore && !canLoadAbove) {
-			return <div style={{ marginTop: 10 }}>No replies</div>;
+			return <Localize>{({ t }) => <div style={{ marginTop: 10 }}>{t("common.empty-list-message")}</div>}</Localize>;
 		}
 		return (
 			<div style={styles.container}>

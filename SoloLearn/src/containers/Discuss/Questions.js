@@ -79,7 +79,6 @@ class Questions extends Component {
 				}
 			>
 				<div style={{ position: 'relative' }}>
-
 					<QuestionList
 						header={
 							<div style={{

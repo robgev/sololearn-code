@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { translate } from 'react-i18next';
-import { sidebarQuestionsSelector } from 'reducers/discuss.reducer';
+import { sidebarQuestionsSelector, isDiscussSidebarEmpty } from 'reducers/discuss.reducer';
 import QAIcon from 'material-ui/svg-icons/action/question-answer';
 import { grey600 } from 'material-ui/styles/colors';
 import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
@@ -10,14 +10,15 @@ import 'styles/Discuss/DiscussSidebar.scss';
 
 const mapStateToProps = state => ({
 	items: sidebarQuestionsSelector(state),
+	isEmpty: isDiscussSidebarEmpty(state),
 });
 
-const DiscussSidebar = ({ items, t }) => (
+const DiscussSidebar = ({ isEmpty, items, t }) => (
 	<div style={{ padding: '15px 15px 0' }}>
 		<div className="sidebar-title">
 			<p className="title">{t('discuss.filter.hot-today')}</p>
 		</div>
-		{items === null
+		{isEmpty
 			? <SidebarShimmer noTitle />
 			: items.map(question => (
 				<Fragment key={question.id}>

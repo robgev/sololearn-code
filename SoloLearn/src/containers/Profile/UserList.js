@@ -1,14 +1,15 @@
 import React from 'react';
 import { observer } from 'mobx-react';
+import { translate } from 'react-i18next';
 import CircularProgress from 'material-ui/CircularProgress';
 import InfiniteScroll from 'react-infinite-scroller';
 import FollowItem from './FollowItem';
 
 const UserList = observer(({
-	users, hasMore, loadMore, onFollowClick,
+	t, users, hasMore, loadMore, onFollowClick,
 }) => (
 	users.length === 0 && !hasMore
-		? <div>Nothing found</div>
+		? <div>{t("common.empty-list-message")}</div>
 		: (
 			<InfiniteScroll
 				threshold={100}
@@ -34,4 +35,4 @@ const UserList = observer(({
 		)
 ));
 
-export default UserList;
+export default translate()(UserList);

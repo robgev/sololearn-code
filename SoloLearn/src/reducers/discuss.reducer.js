@@ -71,7 +71,7 @@ const entities = (state = [], action) => {
 	}
 };
 
-const sidebarQuestions = (state = null, action) => {
+const sidebarQuestions = (state = [], action) => {
 	switch (action.type) {
 	case SET_SIDEBAR_QUESTIONS:
 		return action.payload;
@@ -100,6 +100,11 @@ export const discussPostsSelector = createSelector(
 export const sidebarQuestionsSelector = createSelector(
 	discussReducerSelector,
 	discuss => discuss.sidebarQuestions,
+);
+
+export const isDiscussSidebarEmpty = createSelector(
+	discussReducerSelector,
+	discuss => discuss.sidebarQuestions.length === 0
 );
 
 export const discussFiltersSelector = createSelector(
