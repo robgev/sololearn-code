@@ -791,7 +791,11 @@
 			"bookmarks-message": "Get easy and offline access anytime"
 		}
 	},
+	"lesson-factory": {
+		"title": "Lesson Factory"
+	},
 	"factory": {
+		"title": "Quiz Factory",
 		"suggest_quiz": "Suggest a Quiz",
 		"suggest_quiz_description": "Get an exclusive \"Creator\" badge for 20 created and published quizzes",
 		"rate_submissions": "Rate Submissions",

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import IconMenu from 'material-ui/IconMenu';
@@ -21,6 +22,7 @@ const mapDispatchToProps = {
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
+@translate()
 class SettingsMenu extends PureComponent {
 	singOut = () => {
 		browserHistory.push('/login');
@@ -44,7 +46,12 @@ class SettingsMenu extends PureComponent {
 	}
 
 	render() {
-		const { avatarUrl, userName, userID } = this.props;
+		const {
+			t,
+			userID,
+			avatarUrl,
+			userName,
+		} = this.props;
 		return !(avatarUrl || userName) ? null : (
 			<div className="header-settings-menu-container">
 				<ProfileAvatar
@@ -66,23 +73,23 @@ class SettingsMenu extends PureComponent {
 					}
 				>
 					<MenuItem
-						primaryText="Leaderboards"
+						primaryText={t('leaderboard.title')}
 						onClick={this.goToLeaderboards}
 					/>
 					<MenuItem
-						primaryText="Lesson Factory"
+						primaryText={t('lesson-factory.title')}
 						onClick={this.goToLessonFactory}
 					/>
 					<MenuItem
-						primaryText="Quiz Factory"
+						primaryText={t('factory.title')}
 						onClick={this.goToQuizFactory}
 					/>
 					<MenuItem
-						primaryText="Settings"
+						primaryText={t('settings.title')}
 						onClick={this.goToSettings}
 					/>
 					<MenuItem
-						primaryText="Sign out"
+						primaryText={t('settings.signout-action-title')}
 						onClick={this.singOut}
 					/>
 				</IconMenu>

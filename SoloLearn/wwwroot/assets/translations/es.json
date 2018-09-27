@@ -797,8 +797,12 @@
       "bookmarks-title": "Añade tus lecciones preferidas a Favoritos",
       "bookmarks-message": "Acceso sencillo y offline en cualquier momento"
     }
-  },
+	},
+	"lesson-factory": {
+		"title": "Fábrica de Lecciones"
+	},
   "factory": {
+		"title": "Fábrica de Exámenes",
     "suggest_quiz": "Sugiere un Examen",
     "suggest_quiz_description": "Obtén una insignia exclusiva de \\Creador\\ por 20 exámenes creados y publicados",
     "rate_submissions": "Califica las preguntas enviadas",
