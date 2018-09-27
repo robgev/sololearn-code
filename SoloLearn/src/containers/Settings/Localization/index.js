@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
 import { resetLocaleData } from 'actions/settings';
-import Service from 'api/service';
-import Storage from 'api/storage';
 
 import LanguageSelector from './LanguageSelector';
 

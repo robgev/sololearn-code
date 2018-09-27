@@ -2,6 +2,7 @@ import i18n from 'i18next';
 import Backend from 'i18next-xhr-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { reactI18nextModule } from 'react-i18next';
+import Storage from 'api/storage';
 
 i18n
 	.use(Backend)
@@ -32,6 +33,9 @@ i18n
 		react: {
 			wait: true,
 		},
+	})
+	.changeLanguage(Storage.load('locale') || 'en', (err) => {
+		if (err) { console.log('something went wrong loading', err); }
 	});
 
 export default i18n;

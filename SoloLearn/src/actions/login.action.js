@@ -5,7 +5,9 @@ import { hash, faultGenerator } from 'utils';
 import { setUserProfile, getUserProfileAsync } from './profile';
 
 export const logout = () => (dispatch) => {
+	const localeBackup = Storage.load('locale');
 	Storage.clear();
+	Storage.save('locale', localeBackup);
 	dispatch(setUserProfile(null));
 	dispatch({ type: types.CLEAR_FEED });
 	dispatch({ type: types.LOGOUT });
