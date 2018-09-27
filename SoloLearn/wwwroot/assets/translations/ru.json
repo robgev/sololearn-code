@@ -122,8 +122,8 @@
   },
   "auth": {
     "create-new-account-title": "Создать Профиль",
-		"signin-title": "Войти",
-		"signin-message": "Войдите на SoloLearn",
+    "signin-title": "Войти",
+    "signin-message": "Войдите на SoloLearn",
     "facebook-signin-title": "Войти через Facebook",
     "google-signin-title": "Войти через Google",
     "email-placeholder": "Эл. адрес",
@@ -132,7 +132,7 @@
     "invalid-email": "Предоставленный электронный адрес недействителен.",
     "invalid-password": "Пароль должен содержать не менее 6 символов.",
     "activate-account-title": "Активизировать профиль",
-		"activate-account-message": "Пожалуйста, активизируйте Ваш профиль. Инструкции по активации отправлены на Вашу эл. почту.",
+    "activate-account-message": "Пожалуйста, активизируйте Ваш профиль. Инструкции по активации отправлены на Вашу эл. почту.",
     "activate-account-success": "Инструкции по активации отправлены на Вашу эл. почту."
   },
   "activate_account": {
@@ -180,10 +180,10 @@
       "device-not-found-title": "Произошла непредвиденная ошибка.",
       "social-conflict-title": "Данный профиль уже связан с другим пользователем",
       "generic-title": "Не удалось зарегистрироваться. Пожалуйста, повторите попытку."
-		},
-		"tos": "правилами оказываемых услуг",
-		"tos-message": "Регистрируясь, вы соглашайтесь с ",
-		"invalid-name": "Неверное имя.",
+    },
+    "tos": "правилами оказываемых услуг",
+    "tos-message": "Регистрируясь, вы соглашайтесь с ",
+    "invalid-name": "Неверное имя.",
     "passwords-not-match": "Пароли не совпадают",
     "create-new-account-title": "Создать Профиль",
     "name-placeholder": "Имя",
@@ -219,8 +219,8 @@
     "sound-message": "Включить звук в приложении.",
     "location-services-title": "Определение местоположения",
     "location-services-message": "Разрешить использовать Ваше местоположение",
-		"language": "Язык",
-		"edit-photo": "Редактировать фото"
+    "language": "Язык",
+    "edit-photo": "Редактировать фото"
   },
   "edit_account": {
     "choose-from-library-action-title": "Выберите из библиотеки",
@@ -433,8 +433,8 @@
   },
   "discuss": {
     "title": "Обсуждения",
-		"editTitle": "Изменить вопрос",
-		"votes-title": "Оценки",
+    "editTitle": "Изменить вопрос",
+    "votes-title": "Оценки",
     "filter": {
       "trending": "Интересные",
       "your-network": "Ваша сеть",
@@ -845,6 +845,7 @@
     "no-submissions-text": "Вы еще не создали ни одного теста.",
     "status-filter-label": "Статус:",
     "quiz.leave-alert-message": "Все изменения будут потеряны",
-    "quiz.leave-alert-title": "Выйти"
+    "quiz.leave-alert-title": "Выйти",
+    "highlight": "Отметить"
   }
 }

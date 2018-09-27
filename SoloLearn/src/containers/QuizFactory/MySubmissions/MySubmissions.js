@@ -57,7 +57,6 @@ class MySubmissions extends Component {
 		};
 	}
 	componentDidMount() {
-		document.title = 'Sololearn | Discuss';
 		this._isMounted = true;
 		const { location } = this.props;
 		this.setFilters(location.query);

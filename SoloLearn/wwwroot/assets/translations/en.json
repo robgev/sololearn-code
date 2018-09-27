@@ -839,6 +839,7 @@
 		"no-submissions-text": "You have not submitted a quiz yet.",
 		"create-a-quiz": "Create a Quiz",
 		"quiz.leave-alert-title": "Quit",
-		"quiz.leave-alert-message": "All changes will be lost."
+		"quiz.leave-alert-message": "All changes will be lost.",
+		"highlight": "Mark"
 	}
 }

@@ -180,7 +180,7 @@ class SuggestFillIn extends Component {
 				<Paper className="container editor-box">
 					<div className="title-with-button">
 						<span className="title">{t('factory.quiz-fill-in-the-blanks-answer-title')}</span>
-						<FlatButton label="Mark" secondary onClick={this.markHighlighted} disabled={!isMarkEnabled} />
+						<FlatButton label={t('factory.highlight')} secondary onClick={this.markHighlighted} disabled={!isMarkEnabled} />
 					</div>
 					<div className="editor" onClick={this.focusEditor} role="button" tabIndex={0}>
 						<Editor
