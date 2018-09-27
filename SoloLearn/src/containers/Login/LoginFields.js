@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 
 const LoginFields = ({
+	t,
 	email,
 	login,
 	forgot,
@@ -26,8 +27,8 @@ const LoginFields = ({
 				type="email"
 				autoCapitalize="off"
 				autoCorrect="off"
-				placeholder="Email"
 				disabled={isForgot && loading}
+				placeholder={t('auth.email-placeholder')}
 			/>
 			{!isForgot && (
 				<input
@@ -37,7 +38,7 @@ const LoginFields = ({
 					onKeyPress={handleEnter}
 					name="password"
 					type="password"
-					placeholder="Password"
+					placeholder={t('auth.password-placeholder')}
 				/>
 			)}
 			{ alertMessage &&
@@ -50,13 +51,13 @@ const LoginFields = ({
 				primary
 				disabled={loading}
 				ref={submitButtonRef}
-				label={isForgot ? 'Send' : 'Sign In'}
+				label={t(isForgot ? 'forgot_password.send-title' : 'auth.signin-title')}
 				style={{ width: '40%', alignSelf: 'flex-end' }}
 			/>
 		</form>
 		{!isForgot && (
 			<div className="forgot-pass-container">
-				<Link to="/forgot" className="forgot-pass hoverable">Forgot Password?</Link>
+				<Link to="/forgot" className="forgot-pass hoverable">{t('login.forgot-password-title')}</Link>
 			</div>
 		)}
 	</div>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { translate } from 'react-i18next';
 import HomeIcon from 'components/HomeIcon';
 import { Link } from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -7,6 +8,7 @@ import { GoogleLogin } from 'react-google-login-component';
 import SignupFields from './SignupFields';
 import LoginFields from './LoginFields';
 
+@translate()
 class LoginBody extends Component {
 	constructor(props) {
 		super(props);
@@ -31,10 +33,11 @@ class LoginBody extends Component {
 	}
 
 	login = (e) => {
+		const { t } = this.props;
 		e.preventDefault();
 		const { email, password } = this.state;
 		if (email.trim() === '' || password.trim() === '') {
-			this.props.alert('Fields can\'t be empty', 'error');
+			this.props.alert(t('login.error.wrong-credentials-title'), 'error');
 		}
 		this.props.credentialsLogin({ email, password });
 	}
@@ -44,26 +47,28 @@ class LoginBody extends Component {
 	}
 
 	signup = (e) => {
+		const { t } = this.props;
 		e.preventDefault();
 		Object.values(this.state).forEach((value) => {
 			if (value.trim() === '') {
-				this.props.alert('Fields can\'t be empty', 'error');
+				this.props.alert(t('login.error.wrong-credentials-title'), 'error');
 			}
 		});
 		if (this.state.password.length < 6) {
-			this.props.alert('Password should be at least 6 characters long', 'error');
+			this.props.alert(t('auth.invalid-password'), 'error');
 		} else if (this.state.password !== this.state.retypePass) {
-			this.props.alert('Passwords don\'t match', 'error');
+			this.props.alert(t('register.passwords-not-match'), 'error');
 		}
 		const { name, email, password: pass } = this.state;
 		this.props.signup({ name, email, pass });
 	}
 
 	forgot = (e) => {
+		const { t } = this.props;
 		e.preventDefault();
 		const { email } = this.state;
 		if (email.trim() === '') {
-			this.props.alert('Fields can\'t be empty', 'error');
+			this.props.alert(t('register.error.incorrect-email-title'), 'error');
 		}
 		this.props.forgot(email);
 	}
@@ -82,8 +87,8 @@ class LoginBody extends Component {
 
 	render() {
 		const {
- currentPage, loading, alertMessage, alertType 
-} = this.props;
+			t, currentPage, loading, alertMessage, alertType,
+		} = this.props;
 		const isLogin = currentPage === 'login';
 		const isForgot = currentPage === 'forgot';
 		const {
@@ -96,19 +101,19 @@ class LoginBody extends Component {
 					<div className="artwork-info">
 						<div className="info-item">
 							<img src="/assets/tab_learn.png" alt="logo" />
-							<p>Learn to code</p>
+							<p>{t('onboarding.learn-message')}</p>
 						</div>
 						<div className="info-item">
 							<img src="/assets/tab_play.png" alt="logo" />
-							<p>Challenge your friends in programming battles</p>
+							<p>{t('onboarding.play-message')}</p>
 						</div>
 						<div className="info-item">
 							<img src="/assets/tab_practice.png" alt="logo" />
-							<p>Write code and share it with millions of users</p>
+							<p>{t('onboarding.code-message')}</p>
 						</div>
 						<div className="info-item">
 							<img src="/assets/tab_discuss.png" alt="logo" />
-							<p>Ask questions to the community</p>
+							<p>{t('onboarding.discuss-message')}</p>
 						</div>
 					</div>
 				</div>
@@ -119,18 +124,19 @@ class LoginBody extends Component {
 								<img src="/assets/logo.png" alt="logo" />
 								{/* <h1>SoloLearn</h1> */}
 							</div>
-							<h2> {isLogin
-								? 'Sign in to Sololearn'
+							<h2> {t(isLogin
+								? 'auth.signin-message'
 								: (isForgot
-									? 'Enter your email'
-									: 'Become a member of our community!'
-								)
+									? 'forgot_password.message'
+									: 'auth.create-new-account-title'
+								))
 							}
 							</h2>
 						</div>
 						{isLogin || isForgot
 							? (
 								<LoginFields
+									t={t}
 									email={email}
 									loading={loading}
 									login={this.login}
@@ -146,6 +152,7 @@ class LoginBody extends Component {
 							)
 							: (
 								<SignupFields
+									t={t}
 									name={name}
 									email={email}
 									loading={loading}
@@ -166,7 +173,7 @@ class LoginBody extends Component {
 							secondary
 							style={{ width: '50%' }}
 							containerElement={<Link to={isLogin ? '/signup' : '/login'} />}
-							label={isLogin ? 'Create an account' : 'Login'}
+							label={t(isLogin ? 'register.create-new-account-title' : 'auth.signin-title')}
 						/>
 					</div>
 					<div className="social-logins">
@@ -182,7 +189,7 @@ class LoginBody extends Component {
 									fields="id,email,name"
 									version="v2.5"
 									className="login-component"
-									buttonText="Login With Facebook"
+									buttonText={t('auth.facebook-signin-title')}
 								/>
 							</div>
 							<div className="social-login-element google-login">
@@ -194,7 +201,7 @@ class LoginBody extends Component {
 									prompt="select_account"
 									fetchBasicProfile={false}
 									responseHandler={() => { }}
-									buttonText="Login With Google"
+									buttonText={t('auth.google-signin-title')}
 								/>
 							</div>
 						</div>

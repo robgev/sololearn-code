@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { browserHistory } from 'react-router';
-import { toast, Bounce } from 'react-toastify';
+import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import { faultGenerator } from 'utils';
 import { credentialsLogin, socialLogin, signup, forgotPassword, logout } from 'actions/login.action';
@@ -13,6 +13,7 @@ const mapDispatchToProps = {
 };
 
 @connect(null, mapDispatchToProps)
+@translate()
 class LoginContainer extends PureComponent {
 	state = {
 		type: 'error',
@@ -21,7 +22,7 @@ class LoginContainer extends PureComponent {
 	}
 
 	componentDidMount() {
-		document.title = 'Please log in';
+		document.title = this.props.t('auth.signin-title');
 	}
 
 	componentWillReceiveProps(newProps) {
@@ -84,6 +85,7 @@ class LoginContainer extends PureComponent {
 	}
 
 	forgot = async (email) => {
+		const { t } = this.props;
 		this.setState({ loading: true });
 		const { err } = await this.props.forgotPassword(email);
 		// Will implement forgot password continuation later
@@ -91,7 +93,7 @@ class LoginContainer extends PureComponent {
 			this.fault(faultGenerator(err.data));
 			this.setState({ loading: false });
 		}
-		this.alert('Reset email sucessfully sent', 'info');
+		this.alert(t('forgot_password.email-sent-message'), 'info');
 	}
 
 	render() {

@@ -122,6 +122,7 @@
 	"auth": {
 		"create-new-account-title": "Create new Account",
 		"signin-title": "Sign in",
+		"signin-message": "Sign in to SoloLearn",
 		"facebook-signin-title": "Sign in with Facebook",
 		"google-signin-title": "Sign in with Google",
 		"email-placeholder": "E-mail",
@@ -179,6 +180,8 @@
 			"social-conflict-title": "This account is already connected to another user",
 			"generic-title": "Could not sign up. Please try again."
 		},
+		"tos": "Terms of Use",
+		"tos-message": "By signing up you agree to our ",
 		"invalid-name": "The provided name is not valid.",
 		"passwords-not-match": "Passwords do not match.",
 		"create-new-account-title": "Create new Account",

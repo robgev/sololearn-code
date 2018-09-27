@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 
 const SignupFields = ({
+	t,
 	name,
 	email,
 	signup,
@@ -23,7 +24,7 @@ const SignupFields = ({
 				onChange={updateState}
 				onKeyPress={handleEnter}
 				name="name"
-				placeholder="Name"
+				placeholder={t('register.name-placeholder')}
 			/>
 			<input
 				required
@@ -32,9 +33,9 @@ const SignupFields = ({
 				onChange={updateState}
 				onKeyPress={handleEnter}
 				name="email"
-				placeholder="Email"
 				autoCapitalize="off"
 				autoCorrect="off"
+				placeholder={t('auth.email-placeholder')}
 			/>
 			<input
 				required
@@ -43,7 +44,7 @@ const SignupFields = ({
 				onKeyPress={handleEnter}
 				name="password"
 				type="password"
-				placeholder="Password"
+				placeholder={t('auth.password-placeholder')}
 			/>
 			<input
 				required
@@ -52,7 +53,7 @@ const SignupFields = ({
 				onKeyPress={handleEnter}
 				name="retypePass"
 				type="password"
-				placeholder="Retype Password"
+				placeholder={t('register.retype-password-placeholder')}
 			/>
 			{ alertMessage &&
 			<div className={`alert-message ${alertType}`}>
@@ -63,14 +64,14 @@ const SignupFields = ({
 				type="submit"
 				primary
 				disabled={loading}
-				label="Sign Up"
 				ref={submitButtonRef}
+				label={t('register.signup-button-title')}
 				style={{ width: '40%', alignSelf: 'flex-end' }}
 			/>
 		</form>
 		<div className="tos-disclaimer">
 			<p>
-					By signing up you agree to our <Link className="hoverable" target="_blank" to="/terms-of-service">Terms of Service.</Link>
+				{t('register.tos-message')}<Link className="hoverable" target="_blank" to="/terms-of-service">{t('register.tos')}.</Link>
 			</p>
 		</div>
 	</div>
