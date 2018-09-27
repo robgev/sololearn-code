@@ -116,6 +116,10 @@ class Profile extends PureComponent {
 		}
 	}
 
+	clearImage = (e) => {
+		e.target.value = null;
+	}
+
 	render() {
 		const {
 			open,
@@ -147,6 +151,7 @@ class Profile extends PureComponent {
 							type="file"
 							name="image"
 							className="image-field"
+							onClick={this.clearImage}
 							onChange={this.handleNewImage}
 							ref={(input) => { this._input = input; }}
 						/>
