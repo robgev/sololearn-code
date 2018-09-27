@@ -63,7 +63,7 @@ export const updateProfile = newProfileData => async (dispatch) => {
 };
 
 export const updateAvatar = imageData => async (dispatch) => {
-	const { avatarUrl } = await Service.request('UpdateAvatar', imageData);
+	const { avatarUrl } = await Service.fileRequest('UpdateAvatar', imageData);
 	// I hope I will get new avatarUrl, if so,
 	dispatch({
 		type: types.UPDATE_PROFILE_DATA,
