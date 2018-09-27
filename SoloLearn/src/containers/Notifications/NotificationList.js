@@ -1,7 +1,6 @@
 // React modules
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
-import Radium from 'radium';
 import { connect } from 'react-redux';
 
 // Material UI components
@@ -101,4 +100,4 @@ class NotificationList extends Component {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Radium(NotificationList));
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationList);

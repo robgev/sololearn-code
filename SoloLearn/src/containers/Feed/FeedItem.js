@@ -2,7 +2,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import Radium from 'radium';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
@@ -54,7 +53,6 @@ const mapDispatchToProps = {
 };
 
 @connect(null, mapDispatchToProps)
-@Radium
 class FeedItem extends Component {
 	constructor(props) {
 		super(props);

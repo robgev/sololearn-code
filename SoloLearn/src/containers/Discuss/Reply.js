@@ -1,6 +1,5 @@
 // General modules
 import React, { Component } from 'react';
-import Radium from 'radium';
 import { connect } from 'react-redux';
 import Linkify from 'react-linkify';
 
@@ -40,7 +39,6 @@ const mapDispatchToProps = {
 };
 
 @connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })
-@Radium
 class Reply extends Component {
 	state = {
 		isEditing: false,
@@ -153,9 +151,10 @@ class Reply extends Component {
 				ref={(node) => { this.node = node; }}
 				className={`reply ${this.state.animate ? 'animate' : ''}`}
 				key={reply.id}
-				style={(reply.isAccepted && !this.state.isEditing)
-					? [styles.reply.base, styles.reply.accepted]
-					: styles.reply.base}
+				style={{
+					...styles.reply.base,
+					...((reply.isAccepted && !this.state.isEditing) ? styles.reply.accepted : {}),
+				}}
 			>
 				<div className="details-wrapper" style={styles.detailsWrapper}>
 					<div className="stats" style={styles.stats}>
@@ -188,7 +187,12 @@ class Reply extends Component {
 								/>
 						}
 					</div>
-					<div className="details" style={!this.state.isEditing ? styles.details.base : [styles.details.base, styles.details.editing]}>{this.getEditableArea()}</div>
+					<div
+						className="details"
+						style={{ ...styles.details.base, ...(!this.state.isEditing ? {} : styles.details.editing) }}
+					>
+						{this.getEditableArea()}
+					</div>
 					{
 						!this.state.isEditing &&
 						<IconMenu

@@ -1,7 +1,6 @@
 // React modules
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import Radium from 'radium';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
@@ -156,7 +155,15 @@ class FeedPin extends Component {
 
 		return pin.codes.map(code => (
 			<Link to={`/playground/${code.publicID}`} className="code" style={styles.code} key={`pinCode ${code.id} ${pin.id}`}>
-				<div className="language" style={[ styles.languageIcon, { backgroundColor: getLanguageColor(code.language) } ]}>{code.language}</div>
+				<div
+					className="language"
+					style={{
+						...styles.languageIcon,
+						backgroundColor: getLanguageColor(code.language),
+					}}
+				>
+					{code.language}
+				</div>
 				<div style={styles.codeInfo}>
 					<p style={styles.codeName}>{code.name}</p>
 					<p style={styles.codeAuthor}>{code.userName}</p>
@@ -343,4 +350,4 @@ class FeedPin extends Component {
 	}
 }
 
-export default Radium(FeedPin);
+export default FeedPin;

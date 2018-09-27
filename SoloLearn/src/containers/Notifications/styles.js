@@ -102,9 +102,6 @@ export const NotificationListStyles = {
 		fontWeight: 500,
 		textDecoration: 'none',
 		color: '#607d8b',
-		':hover': {
-			textDecoration: 'underline',
-		},
 	},
 };
 
@@ -141,9 +138,6 @@ export const NotificationsPopupStyles = {
 		outline: 'none',
 		color: '#607d8b',
 		cursor: 'pointer',
-		// ':hover': {
-		//    textDecoration: 'underline'
-		// }
 	},
 
 	notificationsTitle: {
@@ -166,9 +160,6 @@ export const NotificationsPopupStyles = {
 		fontWeight: 500,
 		textDecoration: 'none',
 		color: '#607d8b',
-		// ':hover': {
-		//    textDecoration: 'underline'
-		// }
 	},
 };
 

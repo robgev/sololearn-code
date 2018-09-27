@@ -1,7 +1,6 @@
 // React modules
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import Radium from 'radium';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import Linkify from 'react-linkify';
@@ -52,7 +51,6 @@ const mapDispatchToProps = {
 
 @connect(mapStateToProps, mapDispatchToProps)
 @translate()
-@Radium
 class Question extends Component {
 	state = {
 		reportPopupOpen: false,

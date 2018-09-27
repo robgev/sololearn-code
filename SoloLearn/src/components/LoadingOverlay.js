@@ -1,6 +1,5 @@
 // React modules
 import React from 'react';
-import Radium from 'radium';
 
 // Material UI components
 import CircularProgress from 'material-ui/CircularProgress';
@@ -64,4 +63,4 @@ const LoadingOverlay = (props) => {
 	);
 };
 
-export default Radium(LoadingOverlay);
+export default LoadingOverlay;

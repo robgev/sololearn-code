@@ -5,7 +5,6 @@ import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { toast } from 'react-toastify';
-import Radium from 'radium';
 // Material UI components
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -19,11 +18,7 @@ import {
 	emptyReplies, votePostInternal, deletePostInternal, loadPost,
 	addReply,
 } from 'actions/discuss';
-import { isLoaded } from 'reducers';
 import { showError } from 'utils';
-
-// Popups
-import Popup from 'api/popupService';
 
 // Additional components
 import LoadingOverlay from 'components/LoadingOverlay';
@@ -53,7 +48,6 @@ const mapDispatchToProps = {
 
 @connect(mapStateToProps, mapDispatchToProps)
 @translate()
-@Radium
 class Post extends Component {
 	constructor(props) {
 		super(props);

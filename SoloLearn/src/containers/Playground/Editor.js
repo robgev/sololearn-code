@@ -1,7 +1,7 @@
 // React modules
-import React, { Fragment } from 'react';
-import Radium, { Style } from 'radium';
+import React from 'react';
 import AceEditor from 'react-ace';
+import 'styles/Playground/Editor.scss';
 
 // Additional data and components (ACE Editor)
 import ace from 'brace';
@@ -32,33 +32,6 @@ const styles = {
 	},
 };
 
-const defaultFontRule =
-	'12px/normal \'Monaco\', \'Menlo\', \'Ubuntu Mono\', \'Consolas\', \'source-code-pro\', monospace';
-
-const aceEditorStyle = (
-	<Style
-		scopeSelector=".ace_editor"
-		rules={{
-			font: defaultFontRule,
-			div: {
-				font: defaultFontRule,
-			},
-		}}
-	/>
-);
-
-const aceLineStyle = (
-	<Style
-		scopeSelector=".ace_line"
-		rules={{
-			font: defaultFontRule,
-			span: {
-				font: defaultFontRule,
-			},
-		}}
-	/>
-);
-
 const Editor = ({
 	code,
 	mode,
@@ -67,37 +40,33 @@ const Editor = ({
 	showWebOutput,
 	handleEditorChange,
 }) => (
-	<Fragment>
-		{aceEditorStyle}
-		{aceLineStyle}
-		<AceEditor
-			wrapEnabled
-			value={code}
-			width="100%"
-			theme={theme}
-			showPrintMargin={false}
-			mode={mode !== 'c' ? mode : 'c_cpp'}
-			setOptions={{
-				enableBasicAutocompletion: true,
-				enableLiveAutocompletion: true,
-				enableSnippets: false,
-				showLineNumbers: true,
-				tabSize: 2,
-			}}
-			name={publicID}
-			onChange={handleEditorChange}
-			editorProps={{ $blockScrolling: Infinity }}
-			onLoad={(editor) => {
-				editor.focus();
-				editor.getSession().setUseWrapMode(true);
-				editor.getSession().setUndoManager(new ace.UndoManager());
-			}}
-			style={{
-				...styles.editor.base,
-				...(showWebOutput ? styles.editor.hide : {}),
-			}}
-		/>
-	</Fragment>
+	<AceEditor
+		wrapEnabled
+		value={code}
+		width="100%"
+		theme={theme}
+		showPrintMargin={false}
+		mode={mode !== 'c' ? mode : 'c_cpp'}
+		setOptions={{
+			enableBasicAutocompletion: true,
+			enableLiveAutocompletion: true,
+			enableSnippets: false,
+			showLineNumbers: true,
+			tabSize: 2,
+		}}
+		name={publicID}
+		onChange={handleEditorChange}
+		editorProps={{ $blockScrolling: Infinity }}
+		onLoad={(editor) => {
+			editor.focus();
+			editor.getSession().setUseWrapMode(true);
+			editor.getSession().setUndoManager(new ace.UndoManager());
+		}}
+		style={{
+			...styles.editor.base,
+			...(showWebOutput ? styles.editor.hide : {}),
+		}}
+	/>
 );
 
-export default Radium(Editor);
+export default Editor;

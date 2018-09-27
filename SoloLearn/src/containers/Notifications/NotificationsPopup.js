@@ -1,6 +1,5 @@
 // React modules
 import React, { Component } from 'react';
-import Radium from 'radium';
 import { Link } from 'react-router';
 import { Motion, spring } from 'react-motion';
 import { connect } from 'react-redux';
@@ -18,13 +17,10 @@ import NotificationList from './NotificationList';
 
 import { NotificationsPopupStyles as styles } from './styles';
 
-const RadiumLink = Radium(Link);
-
 const mapDispatchToProps = { markRead, markAllSeen };
 
 @connect(null, mapDispatchToProps)
 @translate()
-@Radium
 class NotificationPopup extends Component {
 	componentDidMount() {
 		this.props.markAllSeen();
@@ -61,7 +57,7 @@ class NotificationPopup extends Component {
 				{
 					interpolatingStyle =>
 						(
-							<div id="notifications" className="notifications" style={[ styles.wrapper, interpolatingStyle ]}>
+							<div id="notifications" className="notifications" style={{ ...styles.wrapper, ...interpolatingStyle }}>
 								<div className="arrow" style={styles.arrow} />
 								<Paper className="notifications-container" style={styles.notificationsContainer}>
 									<div className="notification-header" style={styles.notificationsHeader}>
@@ -81,13 +77,14 @@ class NotificationPopup extends Component {
 									/>
 									<Divider />
 									<div className="notification-footer" style={styles.notificationsFooter}>
-										<RadiumLink
+										<Link
+											className="hoverable"
 											to="/notifications"
 											onClick={this.props.toggleNotificationsOpen}
 											style={styles.notificationsFooterButton}
 										>
-											See All
-										</RadiumLink>
+											{t('notifications.see-all')}
+										</Link>
 									</div>
 								</Paper>
 							</div>
