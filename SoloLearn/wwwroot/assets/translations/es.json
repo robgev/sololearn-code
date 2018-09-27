@@ -801,7 +801,7 @@
   },
   "factory": {
     "suggest_quiz": "Sugiere un Examen",
-    "suggest_quiz_description": "Obtén una insignia exclusiva de \\Creador\\ por 20 exámenes creados y publicados",
+    "suggest_quiz_description": "Obtén una insignia exclusiva de \"Creador\" por 20 exámenes creados y publicados",
     "rate_submissions": "Califica las preguntas enviadas",
     "rate_submissions_description": "Califica exámenes sugeridos por la comunidad. Revisaremos y publicaremos los más votados.",
     "my_submissions": "Mis exámenes enviados",
