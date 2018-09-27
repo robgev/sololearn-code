@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import AvatarEditor from 'react-cropper';
 import Dialog from 'components/StyledDialog';
 import FlatButton from 'material-ui/FlatButton';
-
-import Service from 'api/service';
+import { updateAvatar } from 'actions/settings';
 
 import 'cropperjs/dist/cropper.css';
 import 'styles/Settings/Profile/CropPopup.scss';
 
+@connect(null, { updateAvatar })
 class Profile extends PureComponent {
 	setEditorRef = (editor) => {
 		if (editor) this.editor = editor;
@@ -17,7 +18,7 @@ class Profile extends PureComponent {
 		const dataUrl = this.editor.getCroppedCanvas().toDataURL();
 		const data = await fetch(dataUrl);
 		const blob = await data.blob();
-		Service.fileRequest('UpdateAvatar', blob);
+		this.props.updateAvatar(blob);
 		this.props.onRequestClose(blob);
 	}
 

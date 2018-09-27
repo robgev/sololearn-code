@@ -63,12 +63,12 @@ export const updateProfile = newProfileData => async (dispatch) => {
 };
 
 export const updateAvatar = imageData => async (dispatch) => {
-	const response = await Service.request('UpdateAvatar', imageData);
+	const { avatarUrl } = await Service.request('UpdateAvatar', imageData);
 	// I hope I will get new avatarUrl, if so,
-	// dispatch({
-	// 	type: types.UPDATE_PROFILE_DATA,
-	// 	payload: { avatarUrl },
-	// });
+	dispatch({
+		type: types.UPDATE_PROFILE_DATA,
+		payload: { avatarUrl },
+	});
 };
 
 export const blockUser = blockData => async (dispatch) => {
