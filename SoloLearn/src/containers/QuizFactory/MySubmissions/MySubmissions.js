@@ -247,16 +247,16 @@ class MySubmissions extends Component {
 								status={this.state.checkResult}
 							/>
 							<Dialog
-								title="Delete Submission"
+								title={t('factory.delete-submission-title')}
 								contentStyle={{ width: '50%' }}
 								open={this.state.isDeletePopupOpen}
 								actions={[
-									<FlatButton label="cancel" onClick={this.toggleDeletePopup} primary />,
-									<FlatButton label="delete" onClick={this.handleDelete} labelStyle={{ color: red500 }} />,
+									<FlatButton label={t('common.cancel-title')} onClick={this.toggleDeletePopup} primary />,
+									<FlatButton label={t('common.delete-title')} onClick={this.handleDelete} labelStyle={{ color: red500 }} />,
 								]}
 								onRequestClose={this.toggleDeletePopup}
 							>
-								Are you sure?
+								{t('factory.delete-submission-message')}
 							</Dialog>
 						</div>
 					) : null}

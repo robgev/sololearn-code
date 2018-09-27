@@ -55,7 +55,7 @@ const ChallengesList = ({
 					alignItems: 'center',
 				}}
 			>
-					No challenges found
+				{t('common.empty-list-message')}
 			</div>
 		)
 		: (
