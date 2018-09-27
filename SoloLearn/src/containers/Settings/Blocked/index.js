@@ -64,7 +64,7 @@ class Blocked extends PureComponent {
 				wrapperClassName={`blocked-settings-container ${!blockedUsers.length ? 'center-vertical' : ''}`}
 				loadingComponent={
 					<CircularProgress
-						size={100}
+						size={50}
 					/>
 				}
 			>

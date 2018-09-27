@@ -37,7 +37,7 @@ class Content extends PureComponent {
 				wrapperClassName="content-settings-container"
 				loadingComponent={
 					<CircularProgress
-						size={100}
+						size={50}
 					/>
 				}
 			>
