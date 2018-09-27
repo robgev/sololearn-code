@@ -74,23 +74,25 @@ class Profile extends PureComponent {
 		});
 	}
 
-	requiresUpdate() {
+	shouldDisable() {
 		const {
 			name,
 			email,
 			image,
 			countryCode,
 		} = this.state;
-		const { avatarUrl } = this.props.userProfile;
 		const {
+			avatarUrl,
 			name: oldName,
 			email: oldEmail,
 			countryCode: oldCountryCode,
 		} = this.props.userProfile;
-		return name.trim() !== oldName
-							|| email.trim() !== oldEmail
-							|| countryCode !== oldCountryCode
-							|| image !== avatarUrl;
+		return (name.trim() === oldName.trim()
+							&& email.trim() === oldEmail.trim()
+							&& countryCode === oldCountryCode
+							&& image === avatarUrl)
+							|| email.trim() === ''
+							|| name.trim() === '';
 	}
 
 	submitSettings = async () => {
@@ -181,7 +183,7 @@ class Profile extends PureComponent {
 					<FlatButton
 						primary
 						onClick={this.submitSettings}
-						disabled={!this.requiresUpdate()}
+						disabled={this.shouldDisable()}
 						label={t('common.save-action-title')}
 					/>
 				</div>
