@@ -397,7 +397,8 @@
     "no-social-button": "NADA QUE MOSTRAR"
   },
   "notifications": {
-    "mark-all-as-read-action-title": "Marcar todo como leído",
+		"mark-all-as-read-action-title": "Marcar todo como leído",
+		"see-all": "Ver todas",
     "title": "Notificaciones"
   },
   "feed": {

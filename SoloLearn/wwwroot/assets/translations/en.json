@@ -398,6 +398,7 @@
 	},
 	"notifications": {
 		"mark-all-as-read-action-title": "Mark all as Read",
+		"see-all": "See All",
 		"title": "Notifications"
 	},
 	"feed": {

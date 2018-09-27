@@ -397,7 +397,8 @@
     "no-social-button": "ПОДПИСАТЬСЯ НА ЕДИНОМЫШЛЕННИКОВ"
   },
   "notifications": {
-    "mark-all-as-read-action-title": "Пометить все как прочитанное",
+		"mark-all-as-read-action-title": "Пометить все как прочитанное",
+		"see-all": "Показать все",
     "title": "Уведомления"
   },
   "feed": {
