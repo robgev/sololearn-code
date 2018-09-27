@@ -1,14 +1,16 @@
-$font: 12px normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+$fontSize: 12px;
+$fontLineHeight: normal;
+$fontStack: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
 .ace_editor {
-	font: $font;
+	font: $fontSize/$fontLineHeight $fontStack;
 	div {
-		font: $font;
+		font: $fontSize/$fontLineHeight $fontStack;
 	}
 }
 
 .ace_line {
-	font: $font;
+	font: $fontSize/$fontLineHeight $fontStack;
 	span {
-		font: $font;
+		font: $fontSize/$fontLineHeight $fontStack;
 	}
 }
