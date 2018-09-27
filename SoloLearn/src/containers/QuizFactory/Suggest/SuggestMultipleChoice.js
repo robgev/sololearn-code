@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper';
 import Checkbox from 'material-ui/Checkbox';
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import LanguageSelector from 'components/LanguageSelector';
+import Localize from 'components/Localize';
+import LanguageSelectorTab from './LanguageSelectorTab';
+import QuestionInput from './QuestionInput';
+import PreviewButton from './PreviewButton';
 
 class SuggestMultipleChoice extends Component {
 	state = {
-		isLanguageSelectorOpen: false,
 		language: null,
 		question: '',
 		answers: [
@@ -24,12 +25,8 @@ class SuggestMultipleChoice extends Component {
 			this.setState({ language, question, answers });
 		}
 	}
-	toggleLanguageSelector = () => {
-		this.setState(state => ({ isLanguageSelectorOpen: !state.isLanguageSelectorOpen }));
-	}
 	selectLanguage = (language) => {
 		this.setState({ language });
-		this.toggleLanguageSelector();
 	}
 	onQuestionChange = (e) => {
 		this.setState({ question: e.target.value });
@@ -65,62 +62,47 @@ class SuggestMultipleChoice extends Component {
 	}
 	render() {
 		const {
-			isLanguageSelectorOpen, language, question, answers,
+			language, question, answers,
 		} = this.state;
 		return (
-			<div className="quiz-factory">
-				<Paper onClick={this.toggleLanguageSelector} className="selected-language container">
-					<span className="title">Language</span>
-					<div className="with-image">
-						<span className="language-name">{language === null ? 'Select' : language.languageName}</span>
-						<img src="/assets/keyboard_arrow_right.svg" alt="" />
+			<Localize>
+				{({ t }) => (
+					<div className="quiz-factory">
+						<LanguageSelectorTab language={language} selectLanguage={this.selectLanguage} />
+						<QuestionInput question={question} onChange={this.onQuestionChange} />
+						<Paper className="container">
+							<span className="title">{t('factory.quiz-multiple-choice-answers-title')}</span>
+							<div className="answers">
+								{
+									answers.map(answer => (
+										<div
+											className="answer-item"
+											key={`option-${answer.id}`}
+										>
+											<TextField
+												name={`Answer field ${answer.id}`}
+												className="input"
+												value={answer.text}
+												placeholder={`${t('factory.quiz-option')} ${answer.id + 1}`}
+												onChange={e => this.onAnswerChange(answer.id, e.target.value)}
+											/>
+											<Checkbox
+												className="checkbox"
+												checked={answer.isCorrect}
+												onCheck={() => this.toggleAnswer(answer.id)}
+											/>
+										</div>
+									))
+								}
+							</div>
+						</Paper>
+						<PreviewButton
+							onClick={this.preview}
+							disabled={!this.isComplete()}
+						/>
 					</div>
-				</Paper>
-				<Paper className="question container">
-					<span className="title">Question</span>
-					<textarea value={question} onChange={this.onQuestionChange} placeholder="Type in Your Question" />
-				</Paper>
-				<Paper className="container">
-					<span className="title">Answers</span>
-					<div className="answers">
-						{
-							answers.map(answer => (
-								<div
-									className="answer-item"
-									key={`Option${answer.id}`}
-								>
-									<TextField
-										name={`Answer field ${answer.id}`}
-										className="input"
-										value={answer.text}
-										placeholder={`Option ${answer.id + 1}`}
-										onChange={e => this.onAnswerChange(answer.id, e.target.value)}
-									/>
-									<Checkbox
-										className="checkbox"
-										checked={answer.isCorrect}
-										onCheck={() => this.toggleAnswer(answer.id)}
-									/>
-								</div>
-							))
-						}
-					</div>
-				</Paper>
-				<LanguageSelector
-					open={isLanguageSelectorOpen}
-					onClose={this.toggleLanguageSelector}
-					onChoose={this.selectLanguage}
-					filter={course => course.isQuizFactoryEnabled}
-				/>
-				<RaisedButton
-					className="preview-button"
-					label="Preview"
-					fullWidth
-					primary
-					onClick={this.preview}
-					disabled={!this.isComplete()}
-				/>
-			</div>
+				)}
+			</Localize>
 		);
 	}
 }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { translate } from 'react-i18next';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
@@ -12,6 +13,7 @@ import Layout from './Layout';
 import { getReviewChallenge, voteChallenge } from './api';
 import './rateStyles.scss';
 
+@translate()
 class Rate extends Component {
 	constructor(props) {
 		super(props);
@@ -83,10 +85,11 @@ class Rate extends Component {
 	}
 	get checkBarLabel() {
 		const { checkResult } = this.state;
+		const { t } = this.props;
 		if (checkResult === null) {
-			return 'Check';
+			return t('learn.buttons-check');
 		}
-		return 'Try again';
+		return t('common.try-again-title');
 	}
 	get checkBarOnClick() {
 		const { checkResult } = this.state;
@@ -99,6 +102,7 @@ class Rate extends Component {
 		const {
 			challenge, voteOpen, checkResult, isQuizComplete, isFetching,
 		} = this.state;
+		const { t } = this.props;
 		return (
 			<Layout className="rate-container">
 				<div className="challenge-container">
@@ -116,7 +120,7 @@ class Rate extends Component {
 								)
 								: isFetching
 									? <CircularProgress size={40} style={{ display: 'flex' }} className="center-loading" />
-									: <div className="no-challenge-found">No challenges found</div>
+									: <div className="no-challenge-found">{t('common.empty-list-message')}</div>
 
 						}
 					</Paper>
@@ -125,7 +129,7 @@ class Rate extends Component {
 							<div>
 								<FlatButton
 									className="check-container-button"
-									label="Skip"
+									label={t('factory.skip-item-title')}
 									onClick={this.getChallenge}
 									primary
 								/>
@@ -145,7 +149,7 @@ class Rate extends Component {
 					<div className="vote-container">
 						<RaisedButton
 							className="button"
-							label="Like"
+							label={t('factory.button-like')}
 							labelPosition="after"
 							icon={<ThumbUp />}
 							onClick={this.like}
@@ -153,7 +157,7 @@ class Rate extends Component {
 						/>
 						<RaisedButton
 							className="button"
-							label="Dislike"
+							label={t('factory.button-dislike')}
 							labelPosition="before"
 							icon={<ThumbDown />}
 							onClick={this.dislike}

@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import LanguageSelector from 'components/LanguageSelector';
+import Localize from 'components/Localize';
+import LanguageSelectorTab from './LanguageSelectorTab';
+import QuestionInput from './QuestionInput';
+import PreviewButton from './PreviewButton';
 
 class SuggestTypeIn extends Component {
 	state = {
-		isLanguageSelectorOpen: false,
 		language: null,
 		question: '',
 		answer: '',
@@ -18,12 +19,8 @@ class SuggestTypeIn extends Component {
 			this.setState({ language, question, answer: answers[0].text });
 		}
 	}
-	toggleLanguageSelector = () => {
-		this.setState(state => ({ isLanguageSelectorOpen: !state.isLanguageSelectorOpen }));
-	}
 	selectLanguage = (language) => {
 		this.setState({ language });
-		this.toggleLanguageSelector();
 	}
 	onQuestionChange = (e) => {
 		this.setState({ question: e.target.value });
@@ -51,48 +48,33 @@ class SuggestTypeIn extends Component {
 	}
 	render() {
 		const {
-			isLanguageSelectorOpen, language, question, answer,
+			language, question, answer,
 		} = this.state;
 		return (
-			<div className="quiz-factory">
-				<Paper onClick={this.toggleLanguageSelector} className="selected-language container">
-					<span className="title">Language</span>
-					<div className="with-image">
-						<span className="language-name">{language === null ? 'Select' : language.languageName}</span>
-						<img src="/assets/keyboard_arrow_right.svg" alt="" />
-					</div>
-				</Paper>
-				<Paper className="question container">
-					<span className="title">Question</span>
-					<textarea value={question} onChange={this.onQuestionChange} placeholder="What is the output of this code?" />
-				</Paper>
-				<Paper className="container">
-					<span className="title">Answers</span>
-					<div className="answers">
-						<TextField
-							name="answer"
-							value={answer}
-							onChange={this.onAnswerChange}
-							fullWidth
-							placeholder="Type in the Correct Answer"
+			<Localize>
+				{({ t }) => (
+					<div className="quiz-factory">
+						<LanguageSelectorTab language={language} selectLanguage={this.selectLanguage} />
+						<QuestionInput question={question} onChange={this.onQuestionChange} />
+						<Paper className="container">
+							<span className="title">{t('factory.quiz-guess-the-output-answers-title')}</span>
+							<div className="answers">
+								<TextField
+									name="answer"
+									value={answer}
+									onChange={this.onAnswerChange}
+									fullWidth
+									placeholder={t('factory.quiz-answer-placeholder')}
+								/>
+							</div>
+						</Paper>
+						<PreviewButton
+							onClick={this.preview}
+							disabled={!this.isComplete()}
 						/>
 					</div>
-				</Paper>
-				<RaisedButton
-					label="Preview"
-					fullWidth
-					primary
-					className="preview-button"
-					onClick={this.preview}
-					disabled={!this.isComplete()}
-				/>
-				<LanguageSelector
-					open={isLanguageSelectorOpen}
-					onClose={this.toggleLanguageSelector}
-					onChoose={this.selectLanguage}
-					filter={course => course.isQuizFactoryEnabled}
-				/>
-			</div>
+				)}
+			</Localize>
 		);
 	}
 }

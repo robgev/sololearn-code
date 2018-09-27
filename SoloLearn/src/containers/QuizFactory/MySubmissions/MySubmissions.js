@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import uniqBy from 'lodash/uniqBy';
 import Paper from 'material-ui/Paper';
@@ -29,7 +30,7 @@ const getStringFromType = (type) => {
 	case 3:
 		return 'fill-in';
 	default:
-		throw new Error('Can\'t identiry type of submitted challenge');
+		throw new Error('Can\'t identify type of submitted challenge');
 	}
 };
 
@@ -39,6 +40,7 @@ const mapDispatchToProps = {
 	setSuggestionChallenge,
 };
 
+@translate()
 @connect(mapStateToProps, mapDispatchToProps)
 class MySubmissions extends Component {
 	static DEFAULT_FILTERS = { courseId: null, status: null }
@@ -152,10 +154,11 @@ class MySubmissions extends Component {
 	}
 	get checkBarLabel() {
 		const { checkResult } = this.state;
+		const { t } = this.props;
 		if (checkResult === null) {
-			return 'Check';
+			return t('learn.buttons-check');
 		}
-		return 'Try again';
+		return t('common.try-again-title');
 	}
 	get checkBarOnClick() {
 		const { checkResult } = this.state;
@@ -168,24 +171,24 @@ class MySubmissions extends Component {
 		const {
 			challenges, previewChallenge, checkResult, isQuizComplete, hasMore,
 		} = this.state;
-		const { courses } = this.props;
+		const { courses, t } = this.props;
 		const actions = [
-			<FlatButton onClick={this.closePreview} label="Cancel" primary />,
+			<FlatButton onClick={this.closePreview} label={t('common.cancel-title')} primary />,
 			previewChallenge !== null && previewChallenge.status === 2
 				? <FlatButton
-					label="Delete"
+					label={t('common.delete-title')}
 					onClick={this.toggleDeletePopup}
 					labelStyle={{ color: red500 }}
 				/> : null,
 			previewChallenge !== null && previewChallenge.status === 2
 				? <RaisedButton
-					label="Edit"
+					label={t('common.edit-action-title')}
 					onClick={this.handleEdit}
 					primary
 				/> : null,
 			previewChallenge !== null && previewChallenge.status === 3
 				? <RaisedButton
-					label="Clone"
+					label={t('factory.action-clone')}
 					onClick={this.handleEdit}
 					primary
 				/> : null,
@@ -193,21 +196,21 @@ class MySubmissions extends Component {
 		return (
 			<Layout className="my-submissions">
 				<Paper className="status-bar">
-					<span style={{ marginTop: 5 }}>Status:</span>
+					<span style={{ marginTop: 5 }}>{t('factory.status-filter-label')}</span>
 					<DropDownMenu
 						value={this.state.filters.status}
 						onChange={this.hanldeStatusFilterChange}
 					>
-						<MenuItem value={null} primaryText="All" />
-						<MenuItem value={1} primaryText="Pending" />
-						<MenuItem value={2} primaryText="Declined" />
-						<MenuItem value={3} primaryText="Approved" />
+						<MenuItem value={null} primaryText={t('factory.submission-all')} />
+						<MenuItem value={1} primaryText={t('factory.submission-pending')} />
+						<MenuItem value={2} primaryText={t('factory.submission-declined')} />
+						<MenuItem value={3} primaryText={t('factory.submission-approved')} />
 					</DropDownMenu>
 					<DropDownMenu
 						value={this.state.filters.courseId}
 						onChange={this.handleCourseIdFilterChange}
 					>
-						<MenuItem value={null} primaryText="All" />
+						<MenuItem value={null} primaryText={t('factory.submission-all')} />
 						{
 							this.props.courses
 								.filter(course => course.isQuizFactoryEnabled)

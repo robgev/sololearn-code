@@ -5,31 +5,36 @@ import Dialog from 'components/StyledDialog';
 import { List, ListItem } from 'material-ui/List';
 import LoadingOverlay from 'components/LoadingOverlay';
 import LanguageCard from 'components/LanguageCard';
+import Localize from 'components/Localize';
 
 const LanguageSelector = ({
 	courses, open, onChoose, onClose, filter,
 }) => {
 	const filteredCourses = courses.filter(filter);
 	return (
-		<Dialog
-			autoScrollBodyContent
-			title="Choose Language"
-			open={open}
-			onRequestClose={onClose}
-			bodyStyle={{ border: 'none', padding: 0}}
-		>
-			{filteredCourses.length === 0 ? <LoadingOverlay /> : null}
-			<List>
-				{filteredCourses.map((course, idx) => (
-					<div key={course.id} onClick={() => onChoose(course)} tabIndex={0} role="button">
-						<ListItem
-							primaryText={course.languageName}
-							leftIcon={<LanguageCard language={course.language} />}
-						/>
-					</div>
-				))}
-			</List>
-		</Dialog>
+		<Localize>
+			{({ t }) => (
+				<Dialog
+					autoScrollBodyContent
+					title={t('factory.quiz-choose-language-title')}
+					open={open}
+					onRequestClose={onClose}
+					bodyStyle={{ border: 'none', padding: 0}}
+				>
+					{filteredCourses.length === 0 ? <LoadingOverlay /> : null}
+					<List>
+						{filteredCourses.map((course, idx) => (
+							<div key={course.id} onClick={() => onChoose(course)} tabIndex={0} role="button">
+								<ListItem
+									primaryText={course.languageName}
+									leftIcon={<LanguageCard language={course.language} />}
+								/>
+							</div>
+						))}
+					</List>
+				</Dialog>
+			)}
+		</Localize>
 	);
 };
 
