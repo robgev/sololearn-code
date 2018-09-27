@@ -208,10 +208,10 @@ class Post extends Component {
 					<Question question={post} votePost={this.votePost} remove={this.openDeletePopup} />
 					<div style={styles.repliesData}>
 						<p style={styles.answersCount}>
-							{post.answers} {post.answers === 1 ? t("discuss.answer-one-format") : t("discuss.answer-other-format")}
+							{post.answers} {post.answers === 1 ? t('discuss.answer-one-format') : t('discuss.answer-other-format')}
 						</p>
 						<div style={styles.repliesFilterWrapper}>
-							<p style={styles.dropDownLabel}>{t("discuss.answers.filter.title")}</p>
+							<p style={styles.dropDownLabel}>{t('discuss.answers.filter.title')}</p>
 							<DropDownMenu
 								style={styles.repliesFilter}
 								iconStyle={styles.filterIcon}
@@ -220,8 +220,8 @@ class Post extends Component {
 								value={this.state.ordering}
 								onChange={this.handleFilterChange}
 							>
-								<MenuItem value={1} primaryText={t("discuss.answers.filter.vote")} />
-								<MenuItem value={2} primaryText={t("discuss.answers.filter.date")} />
+								<MenuItem value={1} primaryText={t('discuss.answers.filter.vote')} />
+								<MenuItem value={2} primaryText={t('discuss.answers.filter.date')} />
 							</DropDownMenu>
 						</div>
 					</div>

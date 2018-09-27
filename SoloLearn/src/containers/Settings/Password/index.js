@@ -25,6 +25,7 @@ class Password extends PureComponent {
 		newPassword: '',
 		focusedName: '',
 		isSaving: false,
+		oldPassErrorText: '',
 		snackbarOpen: false,
 	}
 
@@ -44,13 +45,17 @@ class Password extends PureComponent {
 			oldPassword,
 			newPassword,
 		} = this.state;
-		if (retypePass === newPassword) {
+		if (retypePass === newPassword && newPassword !== oldPassword) {
 			this.setState({ snackbarOpen: true, isSaving: true });
 			await this.props.updateProfile({
 				oldPassword: hash(oldPassword),
 				newPassword: hash(newPassword),
 			});
 			this.setState({ isSaving: false });
+		} else if (newPassword === oldPassword) {
+			// TODO: Change string when got localization
+			// Should be "Passwords should not match"
+			this.setState({ oldPassErrorText: t('register.passwords-not-match') });
 		} else {
 			this.setState({ errorText: t('register.passwords-not-match') });
 		}
@@ -76,6 +81,7 @@ class Password extends PureComponent {
 			newPassword,
 			snackbarOpen,
 			focusedName,
+			oldPassErrorText,
 		} = this.state;
 		const { t } = this.props;
 		return (
@@ -87,6 +93,7 @@ class Password extends PureComponent {
 						value={oldPassword}
 						style={{ width: '100%' }}
 						onFocus={this.handleFocus}
+						errorText={oldPassErrorText}
 						onChange={this.handleChange}
 						readOnly={focusedName !== 'oldPassword'}
 						floatingLabelText={t('auth.password-placeholder')}
