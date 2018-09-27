@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { translate } from 'react-i18next';
 import {
 	Editor,
 	EditorState,
@@ -10,9 +11,10 @@ import {
 	SelectionState,
 } from 'draft-js';
 import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
-import LanguageSelector from 'components/LanguageSelector';
+import LanguageSelectorTab from './LanguageSelectorTab';
+import QuestionInput from './QuestionInput';
+import PreviewButton from './PreviewButton';
 
 // Util pure functions
 
@@ -71,15 +73,18 @@ const makeEditableContent = (answerText, answers) => {
 	return contentState;
 };
 
+@translate()
 class SuggestFillIn extends Component {
-	state = {
-		isMarkEnabled: false,
-		language: null,
-		isLanguageSelectorOpen: false,
-		question: 'Fill in the blanks to ',
-		editorState: EditorState.createEmpty(new CompositeDecorator([
-			{ strategy: markedStrategy, component: Marked },
-		])),
+	constructor(props) {
+		super(props);
+		this.state = {
+			isMarkEnabled: false,
+			language: null,
+			question: props.t('factory.quiz-fill-in-the-blanks-question-title'),
+			editorState: EditorState.createEmpty(new CompositeDecorator([
+				{ strategy: markedStrategy, component: Marked },
+			])),
+		};
 	}
 	componentWillMount() {
 		if (this.props.init !== null) {
@@ -98,12 +103,8 @@ class SuggestFillIn extends Component {
 			});
 		}
 	}
-	toggleLanguageSelector = () => {
-		this.setState(state => ({ isLanguageSelectorOpen: !state.isLanguageSelectorOpen }));
-	}
 	selectLanguage = (language) => {
 		this.setState({ language });
-		this.toggleLanguageSelector();
 	}
 	onQuestionChange = (e) => {
 		this.setState({ question: e.target.value });
@@ -169,25 +170,17 @@ class SuggestFillIn extends Component {
 	}
 	render() {
 		const {
-			isLanguageSelectorOpen, language, question, editorState, isMarkEnabled,
+			language, question, editorState, isMarkEnabled,
 		} = this.state;
+		const { t } = this.props;
 		return (
 			<div className="quiz-factory">
-				<Paper onClick={this.toggleLanguageSelector} className="selected-language container">
-					<span className="title">Language</span>
-					<div className="with-image">
-						<span className="language-name">{language === null ? 'Select' : language.languageName}</span>
-						<img src="/assets/keyboard_arrow_right.svg" alt="" />
-					</div>
-				</Paper>
-				<Paper className="question container">
-					<span className="title">Question</span>
-					<textarea value={question} onChange={this.onQuestionChange} placeholder="Type in Your Question" />
-				</Paper>
+				<LanguageSelectorTab language={language} selectLanguage={this.selectLanguage} />
+				<QuestionInput question={question} onChange={this.onQuestionChange} />
 				<Paper className="container editor-box">
 					<div className="title-with-button">
-						<span className="title">Code</span>
-						<FlatButton label="Mark" secondary onClick={this.markHighlighted} disabled={!isMarkEnabled} />
+						<span className="title">{t('factory.quiz-fill-in-the-blanks-answer-title')}</span>
+						<FlatButton label={t('factory.highlight')} secondary onClick={this.markHighlighted} disabled={!isMarkEnabled} />
 					</div>
 					<div className="editor" onClick={this.focusEditor} role="button" tabIndex={0}>
 						<Editor
@@ -200,19 +193,9 @@ class SuggestFillIn extends Component {
 						/>
 					</div>
 				</Paper>
-				<RaisedButton
-					label="Preview"
-					fullWidth
-					primary
-					className="preview-button"
+				<PreviewButton
 					onClick={this.preview}
 					disabled={!this.isComplete()}
-				/>
-				<LanguageSelector
-					open={isLanguageSelectorOpen}
-					onClose={this.toggleLanguageSelector}
-					onChoose={this.selectLanguage}
-					filter={course => course.isQuizFactoryEnabled}
 				/>
 			</div>
 		);

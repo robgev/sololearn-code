@@ -1,4 +1,5 @@
 import React from 'react';
+import { translate } from 'react-i18next';
 import { List, ListItem } from 'material-ui/List';
 import CircularProgress from 'material-ui/CircularProgress';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -10,11 +11,11 @@ import LanguageCard from 'components/LanguageCard';
 const getTypeString = (type) => {
 	switch (type) {
 	case 1:
-		return 'Multiple Choice';
+		return 'factory.quiz-type-multiple-choice';
 	case 2:
-		return 'Guess the Output';
+		return 'factory.quiz-type-guess-the-output';
 	case 3:
-		return 'Fill in the Blank(s)';
+		return 'factory.quiz-type-fill-in-the-blanks';
 	default:
 		throw new Error('Can\'t identify type of submitted challenge');
 	}
@@ -23,11 +24,11 @@ const getTypeString = (type) => {
 const getStatus = (status) => {
 	switch (status) {
 	case 1:
-		return { text: 'Pending', color: '#BDBDBD' };
+		return { text: 'factory.submission-pending', color: '#BDBDBD' };
 	case 2:
-		return { text: 'Declined', color: '#D32F2F' };
+		return { text: 'factory.submission-declined', color: '#D32F2F' };
 	case 3:
-		return { text: 'Approved', color: '#9CCC65' };
+		return { text: 'factory.submission-approved', color: '#9CCC65' };
 	default:
 		throw new Error('Can\'t identify status of submitted challenge');
 	}
@@ -41,8 +42,8 @@ const getQuestionTitle = (question) => {
 	return question.substring(0, indexOfFormat);
 };
 
-export default ({
-	challenges, preview, courses, loadMore, hasMore,
+const ChallengesList = ({
+	challenges, preview, courses, loadMore, hasMore, t,
 }) => (
 	challenges !== null && challenges.length === 0
 		? (
@@ -54,7 +55,7 @@ export default ({
 					alignItems: 'center',
 				}}
 			>
-					No challenges found
+				{t('common.empty-list-message')}
 			</div>
 		)
 		: (
@@ -98,7 +99,7 @@ export default ({
 										className="status"
 										style={{ height: 'initial', width: 80, backgroundColor: getStatus(quiz.status).color }}
 									>
-										{getStatus(quiz.status).text.toUpperCase()}
+										{t(getStatus(quiz.status).text)}
 									</div>
 								}
 								primaryText={
@@ -107,7 +108,7 @@ export default ({
 									</div>
 								}
 								key={quiz.id}
-								secondaryText={getTypeString(quiz.type)}
+								secondaryText={t(getTypeString(quiz.type))}
 							/>
 						))}
 					</List>
@@ -115,3 +116,5 @@ export default ({
 			</BusyWrapper>
 		)
 );
+
+export default translate()(ChallengesList);
