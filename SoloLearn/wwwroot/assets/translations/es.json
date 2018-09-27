@@ -1,7 +1,7 @@
 {
   "Localizable": {},
-  "Created by Grigor Hakobyan on 3/26/17": {},
-  "Copyright © 2017 SoloLearn Inc": {
+  "Created by Robert Gevorgyan and Erik Davtyan": {},
+  "Copyright © 2018 SoloLearn Inc": {
     " All rights reserved": {}
   },
   "common": {
@@ -429,7 +429,8 @@
   },
   "discuss": {
     "title": "Discusión de Preguntas y Respuestas",
-    "editTitle": "Editar Publicación",
+		"editTitle": "Editar Publicación",
+		"votes-title": "Votos",
     "filter": {
       "trending": "Tendencia",
       "your-network": "Tu Red",
@@ -453,8 +454,8 @@
     "delete-question-message": "¿Estás seguro que deseas borrar esta publicación?",
     "new-answer-placeholder": "Escribir una nueva respuesta",
     "edit-answer-placeholder": "Tu respuesta",
-    "answer-other-format": "RESPUESTAS",
-    "answer-one-format": "RESPUESTA",
+    "answer-other-format": "Respuestas",
+    "answer-one-format": "Respuesta",
     "following-title": "Ahora estás siguiendo este hilo",
     "not-following-title": "No estás siguiendo este hilo",
     "answer-accepted": "Marcado como la mejor respuesta",

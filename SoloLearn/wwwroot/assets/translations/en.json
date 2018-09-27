@@ -1,7 +1,7 @@
 {
 	"Localizable": {},
-	"Created by Grigor Hakobyan on 3/26/17": {},
-	"Copyright © 2017 SoloLearn Inc": {
+	"Created by Robert Gevorgyan and Erik Davtyan": {},
+	"Copyright © 2018 SoloLearn Inc": {
 		" All rights reserved": {}
 	},
 	"common": {
@@ -429,6 +429,7 @@
 	"discuss": {
 		"title": "Q&A Discussions",
 		"editTitle": "Edit Post",
+		"votes-title": "Votes",
 		"filter": {
 			"trending": "Trending",
 			"your-network": "Your Network",
@@ -452,8 +453,8 @@
 		"delete-question-message": "Are you sure you want to delete this post?",
 		"new-answer-placeholder": "Write new answer",
 		"edit-answer-placeholder": "Your Answer",
-		"answer-other-format": "ANSWERS",
-		"answer-one-format": "ANSWER",
+		"answer-other-format": "Answers",
+		"answer-one-format": "Answer",
 		"following-title": "You are now following this Q&A thread",
 		"not-following-title": "You are no longer following this Q&A thread",
 		"answer-accepted": "Marked as the best answer",
