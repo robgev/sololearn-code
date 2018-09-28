@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { observable, action } from 'mobx';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
+import { PromiseButton } from 'components/LoadingButton';
 import ProfileAvatar from 'components/ProfileAvatar';
 import VoteControls from 'components/VoteControls';
 import ReportPopup from 'components/ReportPopup';
@@ -153,10 +154,10 @@ class CommenView extends Component {
 						{
 							parentID === null && replies !== 0 && (
 								<div>
-									<FlatButton
+									<PromiseButton
 										style={{ height: 30, lineHeight: '30px' }}
 										labelStyle={{ fontSize: 13 }}
-										label={`${replies} ${replies === 1 ? t('comments.reply') : t('comments.replies-other')}`}
+										label={replies === 1 ? t('comments.replies-one') : `${replies} ${t('comments.replies-other')}`}
 										onClick={onRepliesButtonClick}
 									/>
 								</div>

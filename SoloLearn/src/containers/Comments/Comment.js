@@ -53,10 +53,10 @@ class Comment extends Component {
 	onRepliesButtonClick = () => {
 		const c = this.props.comment;
 		if (c.repliesArray.length === 0) {
-			this.getRepliesBelow();
-		} else {
-			c.repliesArray = [];
+			return this.getRepliesBelow();
 		}
+		c.repliesArray = [];
+		return Promise.resolve();
 	}
 	selfDestruct = () => {
 		this.props.delete(this.props.comment.id);
