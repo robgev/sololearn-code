@@ -3,17 +3,22 @@ import Storage from 'api/storage';
 import i18n from 'i18next';
 import omit from 'lodash/omit';
 import * as types from 'constants/ActionTypes';
+import { getCourses } from './learn';
 
-export const resetLocaleData = (locale) => {
+export const resetLocaleData = locale => (dispatch) => {
+	Storage.clear(); // Clear previously saved courses and locale
 	Storage.save('locale', locale);
 	Service.setLocale(locale);
-	Service.getSession();
+	Service.getSession()
+		.then(() => {
+			dispatch(getCourses());
+		});
 	i18n.changeLanguage(locale, (err) => {
 		if (err) { console.log('something went wrong loading', err); }
 	});
-	return	{
+	dispatch({
 		type: types.RESET_LOCALE_DATA, payload: locale,
-	};
+	});
 };
 
 export const getSettings = () => async (dispatch) => {

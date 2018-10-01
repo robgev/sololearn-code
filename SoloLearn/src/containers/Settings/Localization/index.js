@@ -12,7 +12,9 @@ const mapStateToProps = state => ({ locale: state.locale });
 @translate()
 class Profile extends PureComponent {
 	handleLocaleChange = (_, __, locale) => {
-		this.props.resetLocaleData(locale);
+		if (this.props.locale !== locale) {
+			this.props.resetLocaleData(locale);
+		}
 	}
 
 	render() {
