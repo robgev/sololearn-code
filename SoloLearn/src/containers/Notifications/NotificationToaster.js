@@ -62,7 +62,7 @@ class NotificationToaster extends Component {
 		return fullTitle;
 	}
 
-	static generateContent = (notification) => {
+	static generateContent = (notification, onClick = () => {}) => {
 		const notificationTitle =
 			notification.groupedItems.length > 1 ? notification.message : notification.title;
 
@@ -70,7 +70,7 @@ class NotificationToaster extends Component {
 		const link = NotificationToaster.getNotificationLink(notification);
 
 		return (
-			<Link to={link} className="notification-content" style={styles.notificationContent}>
+			<Link onClick={onClick} to={link} className="notification-content" style={styles.notificationContent}>
 				{
 					notification.type === types.badgeUnlocked ?
 						<div style={{ ...styles.badge.base, backgroundColor: notification.achievement.color }}>

@@ -18,7 +18,8 @@ const mapDispatchToProps = { markRead };
 @connect(null, mapDispatchToProps)
 class NotificationItem extends Component {
 	render() {
-		const generatedContent = NotificationToaster.generateContent(this.props.notification);
+		const { notification, handleOpenIfPopup } = this.props;
+		const generatedContent = NotificationToaster.generateContent(notification, handleOpenIfPopup);
 		return (
 			<ListItem
 				containerElement="div"
