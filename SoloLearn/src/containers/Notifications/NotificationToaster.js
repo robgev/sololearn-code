@@ -113,8 +113,8 @@ class NotificationToaster extends Component {
 			return `/discuss/${notification.post.id}`;
 		case types.upvotePost:
 		case types.mentionPost:
-			return notification.post.parentID
-				? `/discuss/${notification.post.id}/answer`
+			return notification.post.parentID === null
+				? `/discuss/${notification.post.id}`
 				: `/discuss/${notification.post.parentID}/answer/${notification.post.id}`;
 		case types.postedAnswer:
 			return `/discuss/${notification.post.parentID}/answer/${notification.post.id}`;
