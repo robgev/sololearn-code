@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { translate } from 'react-i18next';
 import Paper from 'material-ui/Paper';
 import Checkbox from 'material-ui/Checkbox';
 import TextField from 'material-ui/TextField';
-import Localize from 'components/Localize';
 import LanguageSelectorTab from './LanguageSelectorTab';
 import QuestionInput from './QuestionInput';
 import PreviewButton from './PreviewButton';
 
+@translate()
 class SuggestMultipleChoice extends Component {
 	state = {
 		language: null,
@@ -49,7 +50,7 @@ class SuggestMultipleChoice extends Component {
 				.filter(a => a.text !== '')
 				.map(a => ({ ...a, text: a.text.trim() })),
 			courseID: language.id,
-			question,
+			question: question.trim(),
 		};
 	}
 	preview = () => {
@@ -58,51 +59,51 @@ class SuggestMultipleChoice extends Component {
 	isComplete = () => {
 		const { question, language } = this.state;
 		const answers = this.state.answers.filter(a => a.text.trim() !== '');
-		return question !== '' && answers.length >= 2 && answers.some(a => a.isCorrect) && language !== null;
+		return question.trim().length !== 0
+			&& answers.length >= 2
+			&& answers.some(a => a.isCorrect)
+			&& language !== null;
 	}
 	render() {
+		const { t } = this.props;
 		const {
 			language, question, answers,
 		} = this.state;
 		return (
-			<Localize>
-				{({ t }) => (
-					<div className="quiz-factory">
-						<LanguageSelectorTab language={language} selectLanguage={this.selectLanguage} />
-						<QuestionInput question={question} onChange={this.onQuestionChange} />
-						<Paper className="container">
-							<span className="title">{t('factory.quiz-multiple-choice-answers-title')}</span>
-							<div className="answers">
-								{
-									answers.map(answer => (
-										<div
-											className="answer-item"
-											key={`option-${answer.id}`}
-										>
-											<TextField
-												name={`Answer field ${answer.id}`}
-												className="input"
-												value={answer.text}
-												placeholder={`${t('factory.quiz-option')} ${answer.id + 1}`}
-												onChange={e => this.onAnswerChange(answer.id, e.target.value)}
-											/>
-											<Checkbox
-												className="checkbox"
-												checked={answer.isCorrect}
-												onCheck={() => this.toggleAnswer(answer.id)}
-											/>
-										</div>
-									))
-								}
-							</div>
-						</Paper>
-						<PreviewButton
-							onClick={this.preview}
-							disabled={!this.isComplete()}
-						/>
+			<div className="quiz-factory">
+				<LanguageSelectorTab language={language} selectLanguage={this.selectLanguage} />
+				<QuestionInput question={question} onChange={this.onQuestionChange} />
+				<Paper className="container">
+					<span className="title">{t('factory.quiz-multiple-choice-answers-title')}</span>
+					<div className="answers">
+						{
+							answers.map(answer => (
+								<div
+									className="answer-item"
+									key={`option-${answer.id}`}
+								>
+									<TextField
+										name={`Answer field ${answer.id}`}
+										className="input"
+										value={answer.text}
+										placeholder={`${t('factory.quiz-option')} ${answer.id + 1}`}
+										onChange={e => this.onAnswerChange(answer.id, e.target.value)}
+									/>
+									<Checkbox
+										className="checkbox"
+										checked={answer.isCorrect}
+										onCheck={() => this.toggleAnswer(answer.id)}
+									/>
+								</div>
+							))
+						}
 					</div>
-				)}
-			</Localize>
+				</Paper>
+				<PreviewButton
+					onClick={this.preview}
+					disabled={!this.isComplete()}
+				/>
+			</div>
 		);
 	}
 }

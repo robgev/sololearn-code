@@ -116,10 +116,14 @@ class SuggestFillIn extends Component {
 		this.editor.focus();
 	}
 	hasSelection = (editorState) => {
-		const selection = editorState.getSelection();
-		const start = selection.getStartOffset();
-		const end = selection.getEndOffset();
-		return start !== end;
+		const selectionState = editorState.getSelection();
+		const anchorKey = selectionState.getAnchorKey();
+		const currentContent = editorState.getCurrentContent();
+		const currentContentBlock = currentContent.getBlockForKey(anchorKey);
+		const start = selectionState.getStartOffset();
+		const end = selectionState.getEndOffset();
+		const selectedText = currentContentBlock.getText().slice(start, end);
+		return selectedText.trim().length !== 0;
 	}
 	markHighlighted = () => {
 		const { editorState } = this.state;
@@ -141,10 +145,12 @@ class SuggestFillIn extends Component {
 		}
 	}
 	getEditorContent = () => convertToRaw(this.state.editorState.getCurrentContent());
-	isComplete = () =>
-		this.state.language !== null &&
-		this.state.question.length !== 0 &&
-		this.getEditorContent().blocks.some(block => block.entityRanges.length !== 0);
+	isComplete = () => {
+		const { language, question } = this.state;
+		return language !== null
+			&& question.trim().length !== 0
+			&& this.getEditorContent().blocks.some(block => block.entityRanges.length !== 0);
+	}
 	makeQuiz = () => {
 		const { blocks } = this.getEditorContent();
 		const { answers, question } = blocks.reduce((acc, block) => {
@@ -161,7 +167,7 @@ class SuggestFillIn extends Component {
 				text: a, id, isCorrect: true, properties: { prefix: '', postfix: '' },
 			})),
 			courseID: this.state.language.id,
-			question: `${this.state.question}[!raw!]${question}`,
+			question: `${this.state.question.trim()}[!raw!]${question}`,
 			type: 3,
 		};
 	}
