@@ -41,7 +41,7 @@ class Header extends PureComponent {
 
 	render() {
 		const { profile, t } = this.props;
-		const { xp: currentXp } = profile;
+		const { xp: currentXp, rank } = profile;
 
 		return (
 			<Paper className="feed-header">
@@ -58,7 +58,7 @@ class Header extends PureComponent {
 						<Link to={`/profile/${profile.id}`}>
 							<p className="user-name hoverable">{profile.name}</p>
 						</Link>
-						<LeaderboardString />
+						<LeaderboardString ranks={rank} />
 						<div className="profile-progress-wrapper">
 							<LinearProgress
 								min={0}

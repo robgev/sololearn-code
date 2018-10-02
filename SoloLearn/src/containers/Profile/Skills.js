@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router';
 
 import Paper from 'material-ui/Paper';
 import MenuItem from 'material-ui/MenuItem';
@@ -7,12 +6,12 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import LinearProgress from 'material-ui/LinearProgress';
 import PolarChart from 'components/PolarChart';
 import ChallengeGraphs from 'components/ChallengeGraphs';
+import LeaderboardString from 'components/LeaderboardString';
+import { getCountryName, calculateProgress, determineBadge } from 'utils';
 
 // i18next
 import i18n from 'i18n';
 import { translate } from 'react-i18next';
-
-import { calculateProgress, determineBadge } from 'utils';
 import { PolarChartColors } from 'constants/ChartColors';
 import LanguageCodes from 'constants/LanguageCodes';
 import 'styles/Profile/skills.scss';
@@ -46,7 +45,7 @@ const createChartData = ranks => Object.keys(ranks)
 	}));
 
 const ModeratorStatus = ({ badge, t }) => {
-	const modBadge = determineBadge(badge);
+	const { modBadge } = determineBadge(badge);
 	return !modBadge ? null
 		: <div style={{ textTransform: 'uppercase' }}>{t(`skills.${modBadge}`)}</div>;
 };
@@ -57,7 +56,7 @@ class Skills extends PureComponent {
 		courseID: null,
 	}
 
-	handleCourseChange = (event, index, value) => this.setState({ courseID: value });
+	handleCourseChange = (_, __, value) => this.setState({ courseID: value });
 
 	render() {
 		const { courseID } = this.state;
@@ -78,9 +77,17 @@ class Skills extends PureComponent {
 					<p className="skills-header">{t('skills.status-plus-rank')}</p>
 					<ModeratorStatus t={t} badge={profile.badge} />
 					<div className="skills-details">
-						<Link to={`/leaderboards/${profile.id}`} className="leaderboard-link hoverable">
-							{t('leaderboard.rank.placeholder')}
-						</Link>
+						<LeaderboardString ranks={profile.rank} />
+						<div className="country-details">
+							<img
+								alt={profile.countryCode}
+								style={{ height: 'initial', width: 26 }}
+								src={`/assets/flags/${profile.countryCode.toLowerCase()}.png`}
+							/>
+							<p className="country-name">
+								{ getCountryName(profile.countryCode) }
+							</p>
+						</div>
 						<div className="skills-progress-wrapper">
 							<LinearProgress
 								min={0}

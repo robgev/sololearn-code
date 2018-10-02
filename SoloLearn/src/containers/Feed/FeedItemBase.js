@@ -34,7 +34,7 @@ const FeedItemBase = ({
 					</span>
 					<ModBadge
 						className="small"
-						badge={determineBadge(user.badge)}
+						badge={determineBadge(user.badge).modBadge}
 					/>
 				</Link>
 				{title}

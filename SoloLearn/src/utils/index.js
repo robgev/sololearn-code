@@ -32,13 +32,14 @@ export { default as queryDifference } from './queryDifference';
 export { default as isObjectEqual } from './isObjectEqual';
 export { default as normalize } from './normalizr';
 export { default as stopPropagation } from './stopPropagation';
+export { default as getCountryName } from './getCountryName';
 
 const hash = pass => hmacsha1('password', pass).slice(0, -1);
-const checkWeb = alias => ['html', 'css', 'js'].includes(alias);
-const removeDups = array => [...new Set(array)];
+const checkWeb = alias => [ 'html', 'css', 'js' ].includes(alias);
+const removeDups = array => [ ...new Set(array) ];
 const mandatory = () => { throw new Error('Missing parameter'); };
 const shuffleArray = arr =>
-	arr.map(a => [Math.random(), a]).sort((a, b) => a[0] - b[0]).map(a => a[1]);
+	arr.map(a => [ Math.random(), a ]).sort((a, b) => a[0] - b[0]).map(a => a[1]);
 
 export {
 	hash,

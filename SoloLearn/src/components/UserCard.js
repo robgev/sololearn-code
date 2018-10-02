@@ -38,7 +38,7 @@ class UserCard extends Component {
 			className = '',
 			withFollowButton,
 		} = this.props;
-		const modBadge = determineBadge(badge);
+		const { modBadge } = determineBadge(badge);
 		return (
 			<div className={`discover-user-card-container ${className}`}>
 				<Link to={`/profile/${id}`} style={{ textDecoration: 'none' }} className="profile-container">

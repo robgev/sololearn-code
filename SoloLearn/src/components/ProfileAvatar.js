@@ -30,7 +30,7 @@ const ProfileAvatar = ({
 	withUserNameBox,
 }) => {
 	const ConditionalContainer = disabled ? DisabledContainer : Link;
-	const modBadge = determineBadge(badge);
+	const { modBadge } = determineBadge(badge);
 	const modBadgeColor = determineBadgeColor(modBadge);
 	return (
 		<ConditionalContainer
@@ -68,6 +68,9 @@ const ProfileAvatar = ({
 							badge={modBadge}
 							className="big absolute"
 						/>
+					}
+					{
+
 					}
 				</div>
 				{sideComponent}

@@ -19,6 +19,14 @@
 				color: #607d8b;
 				text-decoration: none;
 			}
+			.country-details {
+				display: flex;
+				align-items: center;
+				margin-bottom: 5px;
+				img {
+					margin-right: 5px;
+				}
+			}
 			.skills-progress-wrapper {
 				text-align: right;
 				.progress {

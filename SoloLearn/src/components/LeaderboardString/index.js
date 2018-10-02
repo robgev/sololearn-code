@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { findBestRank } from 'utils';
-import { connect } from 'react-redux';
+import { findBestRank, getCountryName } from 'utils';
 import { translate } from 'react-i18next';
-import countries from 'constants/Countries.json';
 
 import './styles.scss';
 
-const mapStateToProps = state => ({
-	ranks: state.userProfile.rank,
-});
-
-@connect(mapStateToProps)
 @translate()
 class LeaderboardString extends Component {
 	getRightLocaleFormat = (key) => {
@@ -29,11 +22,6 @@ class LeaderboardString extends Component {
 		}
 	}
 
-	getCountryName = (countryCode) => {
-		const foundCountry = countries.find(c => c.code === countryCode);
-		return foundCountry ? foundCountry.name : '';
-	}
-
 	getLeaderboardString = () => {
 		const { ranks, t } = this.props;
 		if (ranks !== null) {
@@ -44,7 +32,7 @@ class LeaderboardString extends Component {
 				const numberFormat = key.endsWith('p') ? 'percent-format' : 'default-format';
 				return t(`${localePrefix}.${localeFormat}`, {
 					rank: t(`${localePrefix}.${numberFormat}`, { number: +rank.toFixed(2) }),
-					country: this.getCountryName(ranks.countryCode),
+					country: getCountryName(ranks.countryCode),
 				});
 			}
 		}
