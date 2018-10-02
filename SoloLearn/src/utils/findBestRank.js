@@ -1,4 +1,4 @@
-const findBestRank = ranks =>
+const findBestRank = (ranks = {}) =>
 	// We need to find one best rank
 	// And we also need the key for localization
 	Object.keys(ranks).reduce((best, key) => {
