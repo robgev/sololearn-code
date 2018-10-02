@@ -182,6 +182,7 @@ class IProfile {
 		const url = this.data.isFollowing ? 'Unfollow' : 'Follow';
 		Service.request(`Profile/${url}`, { id: this.data.id })
 			.catch(e => showError(e, `Something went wrong when trying to ${url.toLowerCase()}`));
+		this.data.followers += this.data.isFollowing ? -1 : 1;
 		this.data.isFollowing = !this.data.isFollowing;
 	}
 }
