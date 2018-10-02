@@ -9,7 +9,13 @@
 			display: flex;
 	    flex-direction: column;
 	    align-items: center;
-	    position: relative;
+			position: relative;
+			.level-badge {
+				position: absolute;
+				width: 35%;
+				bottom: 5%;
+				right: 5%;
+			}
 		}
 		&.vertical {
 			flex-direction: column;

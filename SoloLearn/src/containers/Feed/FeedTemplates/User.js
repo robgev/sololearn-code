@@ -35,7 +35,9 @@ const User = ({ user, disabled }) => {
 					level={user.level}
 					userID={user.id}
 					withUserNameBox
+					badge={user.badge}
 					disabled={disabled}
+					omitInlineModBadge
 					userName={user.name}
 					avatarUrl={user.avatarUrl}
 				/>

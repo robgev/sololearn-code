@@ -28,9 +28,10 @@ const ProfileAvatar = ({
 	sideComponent,
 	disabled = false,
 	withUserNameBox,
+	omitInlineModBadge = false,
 }) => {
 	const ConditionalContainer = disabled ? DisabledContainer : Link;
-	const { modBadge } = determineBadge(badge);
+	const { modBadge, levelBadge } = determineBadge(badge);
 	const modBadgeColor = determineBadgeColor(modBadge);
 	return (
 		<ConditionalContainer
@@ -63,6 +64,13 @@ const ProfileAvatar = ({
 						>{userName ? userName.toUpperCase().charAt(0) : ''}
 						</Avatar>
 					}
+					{ levelBadge && !(modBadge && withBorder) &&
+						<img
+							alt="LB"
+							className="level-badge"
+							src={`/assets/badge_${levelBadge}${withBorder ? '_profile' : ''}.png`}
+						/>
+					}
 					{ (withBorder && modBadge) &&
 						<ModBadge
 							badge={modBadge}
@@ -79,10 +87,12 @@ const ProfileAvatar = ({
 						<div>
 							<p className="avatar-user-name hoverable">
 								<span className="avatar-user-name-wrapper">{userName}</span>
-								<ModBadge
-									badge={modBadge}
-									className="small"
-								/>
+								{ !omitInlineModBadge &&
+									<ModBadge
+										badge={modBadge}
+										className="small"
+									/>
+								}
 							</p>
 						</div>
 					}
