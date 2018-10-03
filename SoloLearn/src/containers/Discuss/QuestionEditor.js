@@ -6,7 +6,6 @@ import throttle from 'lodash/throttle';
 // Material UI components
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
 import Chip from 'material-ui/Chip';
 import ChipInput from 'material-ui-chip-input';
 
@@ -62,12 +61,11 @@ class QuestionEditor extends Component {
 	}
 
 	addTag = (newTag) => {
-		this.setState(s => {
+		this.setState((s) => {
 			if (s.tags.length !== 10) {
-				return { tags: [...s.tags, newTag] };
-			} else {
-				return { tagsErrorText: "Can't add more tags" }
+				return { tags: [ ...s.tags, newTag ] };
 			}
+			return { tagsErrorText: 'Can\'t add more tags' };
 		});
 	}
 
@@ -118,7 +116,7 @@ class QuestionEditor extends Component {
 	handleChipBlur = (e) => {
 		const { value } = e.currentTarget;
 		if (value !== '') {
-			this.setState(s => ({ tags: [...s.tags, value] }));
+			this.setState(s => ({ tags: [ ...s.tags, value ] }));
 		}
 	}
 
@@ -186,7 +184,7 @@ class QuestionEditor extends Component {
 							value={this.state.tags}
 							style={styles.textField}
 							onBlur={this.handleChipBlur}
-							newChipKeyCodes={[13, 32]}
+							newChipKeyCodes={[ 13, 32 ]}
 							chipRenderer={QuestionEditor.Chip}
 							dataSource={this.state.suggestions}
 							errorText={this.state.tagsErrorText}
@@ -206,7 +204,7 @@ class QuestionEditor extends Component {
 							raised
 							loading={submitLoading}
 							type="submit"
-							label={t('common.post-action-title')}
+							label={isNew ? t('common.post-action-title') : t('common.save-action-title')}
 							primary
 							onClick={this.handleSubmit}
 						/>
