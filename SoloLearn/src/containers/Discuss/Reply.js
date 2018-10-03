@@ -196,6 +196,7 @@ class Reply extends Component {
 					{
 						!this.state.isEditing &&
 						<IconMenu
+							style={{ zIndex: 1 }}
 							iconButtonElement={<IconButton><MoreVertIcon color={grey500} /></IconButton>}
 							anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
 							targetOrigin={{ horizontal: 'right', vertical: 'top' }}
@@ -236,7 +237,7 @@ class Reply extends Component {
 				{
 					!this.state.isEditing &&
 					<div className="additional-details" style={styles.additionalDetails}>
-						<UserTooltip style={{ marginLeft: 'auto' }} userData={reply}>
+						<UserTooltip style={{ zIndex: 1, marginLeft: 'auto' }} userData={reply}>
 							<ProfileAvatar
 								reversedOrder
 								withUserNameBox
