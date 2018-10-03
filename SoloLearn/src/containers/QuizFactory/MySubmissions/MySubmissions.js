@@ -43,13 +43,17 @@ const mapDispatchToProps = {
 @translate()
 @connect(mapStateToProps, mapDispatchToProps)
 class MySubmissions extends Component {
-	static DEFAULT_FILTERS = { courseId: null, status: null }
+	static DEFAULT_FILTERS = {
+		count: 20, courseId: null, status: null, id: null,
+	}
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			challenges: null,
+			challenges: [],
 			hasMore: true,
+			isFetching: false,
+			hasHighlighted: false,
 			previewChallenge: null,
 			checkResult: null,
 			isDeletePopupOpen: false,
@@ -72,6 +76,17 @@ class MySubmissions extends Component {
 			this.setFilters(location.query);
 		}
 	}
+	componentDidUpdate() {
+		const { filters, challenges, hasHighlighted } = this.state;
+		if (challenges.length !== 0 && !hasHighlighted) {
+			this.scrollToID(filters.id);
+			// eslint-disable-next-line react/no-did-update-set-state
+			this.setState({ hasHighlighted: true });
+		}
+	}
+	scrollToID = (id) => {
+		this.challengesList.getWrappedInstance().scrollToID(id);
+	}
 	setFilters = (filters) => {
 		const { filters: oldFilters } = this.state;
 		const formattedFilters = { ...filters };
@@ -81,27 +96,34 @@ class MySubmissions extends Component {
 		if (filters.status) {
 			formattedFilters.status = parseInt(filters.status, 10);
 		}
+		if (filters.id) {
+			formattedFilters.id = parseInt(filters.id, 10);
+		}
 		const keys = Object.keys(formattedFilters);
 		if (keys.length === 0 || keys.some(key => formattedFilters[key] !== oldFilters[key])) {
 			this.setState({
 				filters: { ...MySubmissions.DEFAULT_FILTERS, ...formattedFilters },
-				challenges: null,
+				challenges: [],
+			}, () => {
+				this.fetchSubmissions();
 			});
-			this.fetchSubmissions(filters, null);
 		}
 	};
-	fetchSubmissions = async (filters = this.state.filters, challenges = this.state.challenges) => {
-		const index = challenges !== null ? challenges.length : 0;
-		const newChallenges = await getMySubmissions({ ...filters, index });
-		if (this._isMounted) {
-			if (newChallenges.length === 0) {
-				this.setState({ hasMore: false });
+	fetchSubmissions = async () => {
+		const { challenges, filters, isFetching } = this.state;
+		if (!isFetching) {
+			const index = challenges.length;
+			this.setState({ isFetching: true });
+			const newChallenges = await getMySubmissions({ ...filters, index });
+			if (this._isMounted) {
+				if (newChallenges.length === 0) {
+					this.setState({ hasMore: false });
+				}
+				this.setState(s => ({
+					isFetching: false,
+					challenges: uniqBy([ ...s.challenges, ...newChallenges ], 'id'),
+				}));
 			}
-			this.setState(s => ({
-				challenges: s.challenges === null
-					? newChallenges
-					: uniqBy([ ...s.challenges, ...newChallenges ], 'id'),
-			}));
 		}
 	}
 	preview = (challenge) => {
@@ -168,7 +190,7 @@ class MySubmissions extends Component {
 	}
 	render() {
 		const {
-			challenges, previewChallenge, checkResult, isQuizComplete, hasMore,
+			challenges, previewChallenge, checkResult, isQuizComplete, hasMore, isFetching,
 		} = this.state;
 		const { courses, t } = this.props;
 		const actions = [
@@ -219,10 +241,12 @@ class MySubmissions extends Component {
 					</DropDownMenu>
 				</Paper>
 				<ChallengesList
+					ref={(list) => { this.challengesList = list; }}
 					challenges={challenges}
 					courses={courses}
 					loadMore={this.fetchSubmissions}
 					hasMore={hasMore}
+					isFetching={isFetching}
 					preview={this.preview}
 				/>
 				<Dialog
