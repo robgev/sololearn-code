@@ -26,7 +26,7 @@ const calculateCoordsByIndex = (targetRadius, index) => {
 const CustomLabel = ({
 	text, datum, scale, dx, dy,
 }) => {
-	const LINE_LENGTH = 150;
+	const LINE_LENGTH = 100;
 	// The first two item have another direction, so we check if the index is smaller
 	// than 2 and assign direction value based on result -> -1 for left and 1 for right;
 	// This is done to make future calculations easier, like x coord of the text,
@@ -39,7 +39,7 @@ const CustomLabel = ({
 
 	return (
 		<g style={{ pointerEvents: 'none' }}>
-			<Line direction={direction} x={LineCoords.x} y={LineCoords.y} />
+			<Line direction={direction} length={LINE_LENGTH} x={LineCoords.x} y={LineCoords.y} />
 			<text
 				fill="white"
 				fontSize={5}
