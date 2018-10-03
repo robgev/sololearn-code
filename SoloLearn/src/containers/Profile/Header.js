@@ -5,6 +5,7 @@ import { observable, action } from 'mobx';
 import { observer } from 'mobx-react';
 
 // Material UI components
+import Snackbar from 'material-ui/Snackbar';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
@@ -46,6 +47,7 @@ class Header extends Component {
 	@observable isReportPopupOpen = false;
 	@observable isBlockPopupOpen = false;
 	@observable isDeactivationPopupOpen = false;
+	@observable isSnackbarOpen = false;
 
 	@action toggleReportPopup = () => {
 		this.isReportPopupOpen = !this.isReportPopupOpen;
@@ -53,6 +55,10 @@ class Header extends Component {
 
 	@action toggleBlockPopup = () => {
 		this.isBlockPopupOpen = !this.isBlockPopupOpen;
+	}
+
+	@action toggleSnackbar = () => {
+		this.isSnackbarOpen = !this.isSnackbarOpen;
 	}
 
 	@action toggleDeactivationPopup = () => {
@@ -66,6 +72,7 @@ class Header extends Component {
 			block: !profile.blockedState,
 		});
 		this.toggleBlockPopup();
+		this.toggleSnackbar();
 	}
 
 	render() {
@@ -169,6 +176,12 @@ class Header extends Component {
 					itemType={ReportItemTypes.profile}
 					onRequestClose={this.toggleDeactivationPopup}
 					accessLevel={accessLevel}
+				/>
+				<Snackbar
+					autoHideDuration={1500}
+					open={this.isSnackbarOpen}
+					onRequestClose={this.toggleSnackbar}
+					message={t('blocked.user.message')}
 				/>
 			</div>
 		);
