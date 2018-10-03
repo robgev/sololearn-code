@@ -62,25 +62,29 @@ class SearchBar extends Component {
 	}
 
 	handleSearch = () => {
-		const { value, section } = this.props;
-		const { location } = this.props;
-		if (value.trim()) { // Enter pressed and query is not empty
-			switch (section) {
-			case SECTIONS.posts:
-				browserHistory.push({ pathname: '/discuss', query: { ...location.query, query: value } });
-				break;
-			case SECTIONS.lessons:
-				browserHistory.push(`/learn/search/${value}`);
-				break;
-			case SECTIONS.codes:
-				browserHistory.push({ pathname: '/codes', query: { ...location.query, query: value } });
-				break;
-			case SECTIONS.users:
-				browserHistory.push(`/discover/${value}`);
-				break;
-			default:
-				break;
-			}
+		const { value, section, location } = this.props;
+		this.handleSearchRaw(value, section, location);
+	}
+
+	handleSearchRaw = (value, section, location) => {
+		const { query: _, ...restQuery } = location.query;
+		const query = { ...restQuery, ...(value.length === 0 ? {} : { query: value }) };
+		const linkVal = value.length === 0 ? '' : `/${value}`;
+		switch (section) {
+		case SECTIONS.posts:
+			browserHistory.push({ pathname: '/discuss', query });
+			break;
+		case SECTIONS.lessons:
+			browserHistory.push(`/learn/search${linkVal}`);
+			break;
+		case SECTIONS.codes:
+			browserHistory.push({ pathname: '/codes', query });
+			break;
+		case SECTIONS.users:
+			browserHistory.push(`/discover${linkVal}`);
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -94,6 +98,7 @@ class SearchBar extends Component {
 		} = this.props;
 		if (isOpen) {
 			toggle({ open: false });
+			this.handleSearchRaw('', this.props.section, location);
 			return;
 		}
 		const sectionPathname = location.pathname.split('/')[1];
