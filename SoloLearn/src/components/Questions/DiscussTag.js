@@ -1,14 +1,14 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router';
+import { Link } from 'react-router';
 
 import { DiscussTagStyles as styles } from './styles';
 
-const DiscussTag = ({ tag, index, location }) => (
+const DiscussTag = ({ tag, index }) => (
 	<div
 		style={index === 0 ? styles.base : { ...styles.base, ...styles.margin }}
 	>
 		<Link
-			to={{ pathname: '/discuss', query: { ...location.query, query: tag } }}
+			to={{ pathname: '/discuss', query: { query: tag } }}
 			style={styles.none}
 		>
 			{tag}
@@ -16,4 +16,4 @@ const DiscussTag = ({ tag, index, location }) => (
 	</div>
 );
 
-export default withRouter(DiscussTag);
+export default DiscussTag;
