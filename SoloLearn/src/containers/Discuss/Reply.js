@@ -89,7 +89,7 @@ class Reply extends Component {
 						onLengthChange={this.onLengthChange}
 						getUsers={{ type: 'discuss' }}
 					/>
-					<span style={styles.textFieldCoutner} key={`replyTextCounter${reply.id}`}>{2048 - this.state.replyLength}</span>
+					<span style={styles.textFieldCoutner} key={`replyTextCounter${reply.id}`}>{replyLength}/2048</span>
 				</div>,
 				<div key={`editorActions${reply.id}`} style={styles.editorActions}>
 					<FlatButton label={t('common.cancel-title')} onClick={() => this.closeEdit()} />

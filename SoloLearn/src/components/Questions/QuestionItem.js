@@ -1,5 +1,5 @@
 // React modules
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
 import UserTooltip from 'components/UserTooltip';
 import Localize from 'components/Localize';
