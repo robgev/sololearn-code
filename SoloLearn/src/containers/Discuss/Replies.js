@@ -85,54 +85,59 @@ class Replies extends Component {
 			removalPopupOpen, reportPopupOpen, targetItem, canLoadMore, canLoadAbove,
 		} = this.state;
 		if (replies.length === 0 && !canLoadMore && !canLoadAbove) {
-			return <Localize>{({ t }) => <div style={{ marginTop: 10 }}>{t("common.empty-list-message")}</div>}</Localize>;
+			return <Localize>{({ t }) => <div style={{ marginTop: 10 }}>{t('common.empty-list-message')}</div>}</Localize>;
 		}
 		return (
-			<div style={styles.container}>
-				{canLoadAbove && replies.length > 0 &&
-					<RaisedButton
-						label="Load more"
-						onClick={this.props.loadPreviousReplies}
-					/>}
-				<InfiniteScroll
-					loadMore={this.loadReplies}
-					hasMore={canLoadMore}
-					initialLoad={false}
-					loader={<CircularProgress
-						style={{ display: 'flex', alignItems: 'center', margin: 'auto' }}
-						key="circular-progress"
-						size={40}
-					/>}
-				>
-					{replies.map(reply => (
-						<Reply
-							key={reply.id}
-							ref={(node) => { this.replyRefs[reply.id] = node; }}
-							reply={reply}
-							t={this.props.t}
-							votePost={this.props.votePost}
-							remove={this.props.openDeletePopup}
-							toggleReportPopup={this.toggleReportPopup}
-							isUsersQuestion={this.props.isUsersQuestion}
-							toggleRemovalPopup={this.toggleRemovalPopup}
+			<Localize>{({ t }) =>
+				(
+					<div style={styles.container}>
+						{canLoadAbove && replies.length > 0 &&
+						<RaisedButton
+							label={t('common.loadMore')}
+							onClick={this.props.loadPreviousReplies}
+						/>}
+						<InfiniteScroll
+							loadMore={this.loadReplies}
+							hasMore={canLoadMore}
+							initialLoad={false}
+							loader={<CircularProgress
+								style={{ display: 'flex', alignItems: 'center', margin: 'auto' }}
+								key="circular-progress"
+								size={40}
+							/>}
+						>
+							{replies.map(reply => (
+								<Reply
+									key={reply.id}
+									ref={(node) => { this.replyRefs[reply.id] = node; }}
+									reply={reply}
+									t={this.props.t}
+									votePost={this.props.votePost}
+									remove={this.props.openDeletePopup}
+									toggleReportPopup={this.toggleReportPopup}
+									isUsersQuestion={this.props.isUsersQuestion}
+									toggleRemovalPopup={this.toggleRemovalPopup}
+								/>
+							))}
+						</InfiniteScroll>
+						<ReportPopup
+							open={reportPopupOpen}
+							itemType={ReportItemTypes.post}
+							itemId={targetItem ? targetItem.id : 0}
+							onRequestClose={this.toggleReportPopup}
 						/>
-					))}
-				</InfiniteScroll>
-				<ReportPopup
-					open={reportPopupOpen}
-					itemType={ReportItemTypes.post}
-					itemId={targetItem ? targetItem.id : 0}
-					onRequestClose={this.toggleReportPopup}
-				/>
-				<RemovalPopup
-					post={targetItem}
-					open={removalPopupOpen}
-					itemType={ReportItemTypes.post}
-					accessLevel={accessLevel}
-					itemId={targetItem ? targetItem.id : 0}
-					onRequestClose={this.toggleRemovalPopup}
-				/>
-			</div>
+						<RemovalPopup
+							post={targetItem}
+							open={removalPopupOpen}
+							itemType={ReportItemTypes.post}
+							accessLevel={accessLevel}
+							itemId={targetItem ? targetItem.id : 0}
+							onRequestClose={this.toggleRemovalPopup}
+						/>
+					</div>
+				)
+			}
+			</Localize>
 		);
 	}
 }

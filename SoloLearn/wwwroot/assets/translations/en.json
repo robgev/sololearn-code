@@ -15,6 +15,9 @@
 		"done-title": "Done",
 		"submit-action-title": "Submit",
 		"later-action-title": "Later",
+		"back-action-title": "Back",
+		"add-action-title": "Add",
+		"loading": "Loading...",
 		"close-title": "Close",
 		"try-again-title": "TRY AGAIN",
 		"no-connection-title": "No Connection",
@@ -28,6 +31,7 @@
 		"follow-user": "Follow",
 		"share-title": "Share",
 		"email-title": "Email",
+		"empty-activity-message": "No Activity",
 		"empty-list-message": "Nothing to show",
 		"rate": "Rate",
 		"loadMore": "View More",
@@ -51,7 +55,7 @@
 		"save-action-title": "Save",
 		"author-format": "by",
 		"success-title": "Success",
-		"no-results": "No Results",
+		"no-results": "No Results Found",
 		"follow-limit-reached": "You've hit a follow limit.",
 		"hide-title": "Hide"
 	},
@@ -118,6 +122,10 @@
 	},
 	"search_bar": {
 		"placeholder": "Search",
+		"lessons-title": "Lessons",
+		"codes-title": "Codes",
+		"posts-title": "Questions",
+		"users-title": "Users",
 		"cancel-button-title": "Cancel"
 	},
 	"auth": {
@@ -553,6 +561,7 @@
 		"no-output": "No output",
 		"output": "OUTPUT",
 		"popups-dont-save": "Don't Save",
+		"dark-theme": "Dark Theme",
 		"console": {
 			"title": "Console"
 		}
@@ -565,6 +574,7 @@
 			"skills": "SKILLS",
 			"badges": "BADGES"
 		},
+		"no-codes": "No Codes",
 		"edit-prfile": "EDIT PROFILE",
 		"challenge": "CHALLENGE",
 		"status-text-one": "more level to  status",
@@ -627,7 +637,7 @@
 			"answers-bonus": "ANSWERS BONUS",
 			"match-result": "MATCH\\nRESULT",
 			"total-xp": "TOTAL XP",
-			"reach-to-level": "XP to LEVEL",
+			"reach-to-level": "to LEVEL",
 			"rounds-summary-title": "ROUNDS SUMMARY",
 			"self-result-title": "YOU",
 			"opponent-result-title": "OPPONENT",
@@ -702,7 +712,7 @@
 		"achievement-unlocked": "Achievement Unlocked",
 		"hint-popup-title": "Hint",
 		"hint-not-enough-xp": "You don't have enough XP to use this feature",
-		"get-hint-format": "Use  XP of your  XP to get a hint.",
+		"get-hint-format": "Use {{price}} XP of your {{total}} XP to get a hint.",
 		"reset-course-popup-title": "Reset",
 		"reset-course-popup-message": "All your course progress, including challenge history, will be lost. Are you sure you want to continue?",
 		"module-locked-title": "Module locked",
@@ -717,6 +727,7 @@
 		"noImage-title": "Could not load image",
 		"add-courses-button-title": "ADD COURSES",
 		"add-courses-title": "No Courses\\n",
+		"more-on-topic": "More on the Topic",
 		"add-courses-message": "Start Learning Now!"
 	},
 	"logout": {

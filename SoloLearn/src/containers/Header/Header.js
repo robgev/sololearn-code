@@ -2,7 +2,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import Storage from 'api/storage';
 import HomeIcon from 'components/HomeIcon';
 import 'styles/header.scss';
 import Search from './SearchBar';

@@ -52,7 +52,7 @@ class FeedList extends Component {
 			<div>
 				{
 					(feed.length === 0 && feedPins && feedPins.length === 0 && !hasMore)
-						? <p style={{ textAlign: 'center', height: 120 }}>No Activity</p>
+						? <p style={{ textAlign: 'center', height: 120 }}>{t('common.empty-activity-message')}</p>
 						:
 						(
 							<div>
@@ -83,7 +83,7 @@ class FeedList extends Component {
 													</div>
 												</div>
 												{ feed.length === 0 && !hasMore
-													? <p style={{ textAlign: 'center', height: 120 }}>No Activity</p>
+													? <p style={{ textAlign: 'center', height: 120 }}>{t('common.empty-activity-message')}</p>
 													:
 													<InfiniteScroll
 														element="div"

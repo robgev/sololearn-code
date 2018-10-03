@@ -63,11 +63,9 @@ class Modules extends Component {
 	async componentWillMount() {
 		const {
 			course,
-			courses,
 			isLoaded,
 			selectModule,
 			loadCourseInternal,
-			params,
 		} = this.props;
 		this.setState({ loading: true });
 		if (!isLoaded) {
@@ -183,8 +181,8 @@ class Modules extends Component {
 								<ModuleChip
 									onClick={() => { }}
 									className="center"
-									name="More on the Topic"
 									paperClassName="normal"
+									name={t('learn.more-on-topic')}
 									linkAddress={`/learn/more-on/${id}`}
 									iconSource="https://api.sololearn.com/uploads/Courses/assets/more.png"
 								/>

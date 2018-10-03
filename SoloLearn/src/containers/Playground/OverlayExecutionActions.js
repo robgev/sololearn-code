@@ -1,5 +1,6 @@
 // React modules
 import React from 'react';
+import { translate } from 'react-i18next';
 
 // Material UI components
 import Dialog from 'components/StyledDialog';
@@ -39,6 +40,7 @@ const styles = {
 };
 
 const OverlayExecutionActions = ({
+	t,
 	sourceUrl,
 	selectedSource,
 	addExternalSource,
@@ -50,9 +52,9 @@ const OverlayExecutionActions = ({
 	const libraryPopupActions = [
 		<FlatButton
 			primary
-			label="Add"
 			disabled={!sourceUrl.length}
 			onClick={addExternalSource}
+			label={t('common.add-action-title')}
 		/>,
 	];
 
@@ -90,4 +92,4 @@ const OverlayExecutionActions = ({
 	);
 };
 
-export default OverlayExecutionActions;
+export default translate()(OverlayExecutionActions);

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import Dialog from 'components/StyledDialog';
 import FlatButton from 'material-ui/FlatButton';
 import { browserHistory } from 'react-router';
@@ -19,6 +20,7 @@ const mapStateToProps = ({ quizSubmission, courses }) => ({ quizSubmission, cour
 const mapDispatchToProps = { setSuggestionChallenge };
 
 @connect(mapStateToProps, mapDispatchToProps)
+@translate()
 class SuggestTypeSelector extends Component {
 	constructor(props) {
 		super(props);
@@ -96,11 +98,12 @@ class SuggestTypeSelector extends Component {
 		this.setState({ checkResult: null, isQuizComplete: false });
 	}
 	get checkBarLabel() {
+		const { t } = this.props;
 		const { checkResult } = this.state;
 		if (checkResult === null) {
-			return 'Check';
+			return t('learn.buttons-check');
 		}
-		return 'Try again';
+		return t('learn.buttons-try-again');
 	}
 	get checkBarOnClick() {
 		const { checkResult } = this.state;
@@ -110,12 +113,23 @@ class SuggestTypeSelector extends Component {
 		return this.tryAgain;
 	}
 	render() {
+		const { t } = this.props;
 		const {
 			previewQuiz, checkResult, isQuizComplete, isSubmitting,
 		} = this.state;
 		const actions = [
-			<FlatButton onClick={this.closePreview} label="Cancel" primary />,
-			<LoadingButton raised onClick={this.handleSubmit} label="Submit" primary loading={isSubmitting} />,
+			<FlatButton
+				primary
+				onClick={this.closePreview}
+				label={t('common.cancel-title')}
+			/>,
+			<LoadingButton
+				raised
+				primary
+				loading={isSubmitting}
+				onClick={this.handleSubmit}
+				label={t('common.submit-action-title')}
+			/>,
 		];
 		return (
 			<Layout>

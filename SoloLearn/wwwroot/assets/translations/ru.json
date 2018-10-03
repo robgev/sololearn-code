@@ -14,7 +14,10 @@
     "edit-action-title": "Изменить",
     "done-title": "Готово",
     "submit-action-title": "Подтвердить",
-    "later-action-title": "Позже",
+		"later-action-title": "Позже",
+		"back-action-title": "Назад",
+		"add-action-title": "Добавить",
+		"loading": "Загрузка...",
     "close-title": "Закрыть",
     "try-again-title": "ПОВТОРИТЬ",
     "no-connection-title": "Нет соединения",
@@ -27,7 +30,8 @@
     "user-followers": "Подписчиков",
     "follow-user": "Подписаться",
     "share-title": "Поделиться",
-    "email-title": "Эл. адрес",
+		"email-title": "Эл. адрес",
+		"empty-activity-message": "Нет активности",
     "empty-list-message": "Нечего отобразить",
     "rate": "Оценить",
     "platinum-status": "платина",
@@ -117,7 +121,11 @@
     "discuss": "Обсуждения"
   },
   "search_bar": {
-    "placeholder": "Поиск",
+		"placeholder": "Поиск",
+		"lessons-title": "Уроки",
+		"codes-title": "Коды",
+		"posts-title": "Вопросы",
+		"users-title": "Пользователи",
     "cancel-button-title": "Отменить"
   },
   "auth": {
@@ -554,7 +562,8 @@
       "reset-font-size": "Вернуть начальный размер шрифта"
     },
     "output": "ВЫВОД",
-    "popups-dont-save": "Не Сохранять",
+		"popups-dont-save": "Не Сохранять",
+		"dark-theme": "Темное оформление",
     "console": {
       "title": "Консоль"
     },
@@ -567,7 +576,8 @@
       "activity": "ЛЕНТА",
       "skills": "НАВЫКИ",
       "badges": "ЗНАЧКИ"
-    },
+		},
+		"no-codes": "Нет Кодов",
     "edit-prfile": "Редактировать",
     "challenge": "ВЫЗОВ",
     "status-text-one": "уровень до статуса",
@@ -630,7 +640,7 @@
       "answers-bonus": "ПРАВИЛЬНЫЕ \\nОТВЕТЫ",
       "match-result": "РЕЗУЛЬТАТ \\nМАТЧА",
       "total-xp": "ВСЕГО XP",
-      "reach-to-level": "XP до уровня",
+      "reach-to-level": "до уровня",
       "rounds-summary-title": "ИТОГ РАУНДОВ",
       "self-result-title": "ВЫ",
       "opponent-result-title": "ПРОТИВНИК",
@@ -690,10 +700,10 @@
       "unlock-popup-title": "Открыть ответ",
       "unlock-hint-popup-description-failed": "У Вас недостаточно XP для использования данной функции.",
       "unlock": {
-        "description": "Использовать  XP из  XP чтобы открыть правильный ответ."
+        "description": "Использовать {{price}} XP из {{total}} XP чтобы открыть правильный ответ."
       },
       "hint-popup-title": "Подсказка",
-      "hint-popup-description": "Использовать  XP из  XP чтобы получить подсказку.",
+      "hint-popup-description": "Использовать {{price}} XP из {{total}} XP чтобы получить подсказку.",
       "unlock-popup-ok-action-title": "Открыть ответ",
       "hint-popup-ok-action-title": "Получить подсказку",
       "reset-font-size": "Вернуть начальный размер шрифта"
@@ -709,7 +719,7 @@
     "achievement-unlocked": "Новое достижение",
     "hint-popup-title": "Подсказка",
     "hint-not-enough-xp": "У Вас недостаточно XP для использования данной функции.",
-    "get-hint-format": "Использовать  XP из  XP чтобы получить подсказку.",
+    "get-hint-format": "Использовать {{price}} XP из {{total}} XP чтобы получить подсказку.",
     "reset-course-popup-title": "Сброс",
     "reset-course-popup-message": "Весь Ваш прогресс будет потерян. Вы уверены что хотите продолжать?",
     "module-locked-title": "Модуль заблокирован",
@@ -723,7 +733,8 @@
     "noImage-tryAgain": "Повторить",
     "noImage-title": "Не удалось загрузить изображение.",
     "add-courses-button-title": "Добавить курсы",
-    "add-courses-title": "Нет курсов\\n",
+		"add-courses-title": "Нет курсов\\n",
+		"more-on-topic": "Больше по теме",
     "add-courses-message": "Начать учиться сейчас!"
   },
   "logout": {

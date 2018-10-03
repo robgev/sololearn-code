@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import { action, observable, computed } from 'mobx';
 import { observer } from 'mobx-react';
 import Linkify from 'react-linkify';
@@ -21,6 +22,7 @@ const mapStateToProps = ({ userProfile }) => ({
 });
 
 @connect(mapStateToProps, null, null, { withRef: true })
+@translate()
 @observer
 class Comment extends Component {
 	@observable isReplyInputOpen = false;
@@ -222,7 +224,7 @@ class Comment extends Component {
 	downvote = () => this.vote(-1);
 
 	render() {
-		const { userProfile, accessLevel } = this.props;
+		const { t, userProfile, accessLevel } = this.props;
 		const {
 			replies,
 			repliesArray,
@@ -255,11 +257,11 @@ class Comment extends Component {
 										getUsers={this.props.commentsAPI.getMentionUsers}
 										initText={message}
 										onLengthChange={this.handleEditLengthChange}
-										placeholder="Write a new comment"
+										placeholder={t('comments.write-comment-placeholder')}
 									/>
 								</div>
 								<FlatButton
-									label="Edit"
+									label={t('common.edit-action-title')}
 									disabled={!this.editCommentLength}
 									onClick={() => {
 										this.editComment({ message: this.editMentionInput.popValue(), id });
@@ -279,7 +281,7 @@ class Comment extends Component {
 						<div style={{ marginLeft: 30 }}>
 							{
 								this.hasRepliesAbove &&
-								<FlatButton label="Load more" onClick={this.getRepliesAbove} />
+								<FlatButton label={t('common.loadMore')} onClick={this.getRepliesAbove} />
 							}
 							<CommentList
 								comments={repliesArray}
@@ -291,7 +293,7 @@ class Comment extends Component {
 							{
 								repliesArray.length > 0 && repliesArray.length < replies &&
 								<FlatButton
-									label="Load more"
+									label={t('common.loadMore')}
 									onClick={this.getRepliesBelow}
 								/>
 							}
@@ -311,13 +313,13 @@ class Comment extends Component {
 									initText={this.initText}
 									getUsers={this.props.commentsAPI.getMentionUsers}
 									onLengthChange={this.handleReplyLengthChange}
-									placeholder="Write a new answer"
+									placeholder={t('comments.write-comment-placeholder')}
 								/>
 							</div>
 							<FlatButton
 								className="save-button"
 								disabled={!this.replyCommentLength}
-								label="Reply"
+								label={t('comments.reply')}
 								onClick={this.addReply}
 							/>
 							<Divider />

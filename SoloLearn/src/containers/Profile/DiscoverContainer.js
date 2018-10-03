@@ -89,7 +89,7 @@ class DiscoverContainer extends PureComponent {
 						<div className="discover-wrapper">
 							{
 								discoverIds.length === 0
-									? <div className="no-user-found">No users found</div>
+									? <div className="no-user-found">{t('common.no-results')}</div>
 									: discoverIds.map(id => (
 										<UserCard
 											key={id}

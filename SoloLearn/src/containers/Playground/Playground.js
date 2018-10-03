@@ -744,7 +744,7 @@ ${succeedingSubstr}
 											{!(isRunning && type === 'default') ? null
 												: <LoadingOverlay size={30} />
 											}
-											<div style={styles.outputHeader}>Output: </div>
+											<div style={styles.outputHeader}>{t('code.output')}</div>
 											<pre className="default-output" style={styles.defaultOutputContainer.defaultOutput} />
 										</Paper>
 									</SplitPane>

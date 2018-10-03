@@ -14,7 +14,10 @@
     "edit-action-title": "Editar",
     "done-title": "Listo",
     "submit-action-title": "Enviar",
-    "later-action-title": "Luego",
+		"later-action-title": "Luego",
+		"back-action-title": "Atrás",
+		"add-action-title": "Agregar",
+		"loading": "Cargando...",
     "close-title": "Cerrar",
     "try-again-title": "REINTENTO",
     "no-connection-title": "Sin conexión",
@@ -27,7 +30,8 @@
     "user-followers": "Seguidores",
     "follow-user": "Seguir",
     "share-title": "Compartir",
-    "email-title": "Correo electrónico",
+		"email-title": "Correo electrónico",
+		"empty-activity-message": "Sin actividad",
     "empty-list-message": "Nada que mostrar",
     "rate": "Calificar",
     "platinum-status": "platino",
@@ -117,7 +121,11 @@
     "discuss": "Discute"
   },
   "search_bar": {
-    "placeholder": "Buscar",
+		"placeholder": "Buscar",
+		"lessons-title": "Lecciones",
+		"codes-title": "Códigos",
+		"posts-title": "Preguntas",
+		"users-title": "Usuarios",
     "cancel-button-title": "Cancelar"
   },
   "auth": {
@@ -554,7 +562,8 @@
       "reset-font-size": "Restaurar tamaño de la fuente"
     },
     "output": "SALIDA",
-    "popups-dont-save": "No Guardes",
+		"popups-dont-save": "No Guardes",
+		"dark-theme": "Tema oscuro",
     "console": {
       "title": "Consola"
     },
@@ -567,7 +576,8 @@
       "activity": "ACTIVIDAD",
       "skills": "TALENTOS",
       "badges": "INSIGNIAS"
-    },
+		},
+		"no-codes": "Sin Códigos",
     "edit-prfile": "Editar Perfil",
     "challenge": "DESAFÍO",
     "status-text-one": "nivel más para la categoría",
@@ -630,7 +640,7 @@
       "answers-bonus": "BONUS \\nDE RESPUESTAS",
       "match-result": "RESULTADO \\nDE PARTIDO",
       "total-xp": "XP TOTALES",
-      "reach-to-level": "XP para NIVEL",
+      "reach-to-level": "para NIVEL",
       "rounds-summary-title": "RESUMEN DE RONDA",
       "self-result-title": "TÚ",
       "opponent-result-title": "OPONENTE",
@@ -690,10 +700,10 @@
       "unlock-popup-title": "Desbloquear Respuesta",
       "unlock-hint-popup-description-failed": "No tienes suficientes XP para usar ésto.",
       "unlock": {
-        "description": "Usa  XP de tus  XP para desbloquear la respuesta correcta."
+        "description": "Usa {{price}} XP de tus {{total}} XP para desbloquear la respuesta correcta."
       },
       "hint-popup-title": "Pista",
-      "hint-popup-description": "Usa  XP de tus  XP para obtener una pista.",
+      "hint-popup-description": "Usa {{price}} XP de tus {{total}} XP para obtener una pista.",
       "unlock-popup-ok-action-title": "Desbloquear Respuesta",
       "hint-popup-ok-action-title": "Obtener una Pista",
       "reset-font-size": "Restaurar tamaño de la fuente"
@@ -709,7 +719,7 @@
     "achievement-unlocked": "Logro desbloqueado!",
     "hint-popup-title": "Pista",
     "hint-not-enough-xp": "No tienes suficientes XP para usar ésto.",
-    "get-hint-format": "Usa  XP de tus  XP para obtener una pista.",
+    "get-hint-format": "Usa {{price}} XP de tus {{total}} XP para obtener una pista.",
     "reset-course-popup-title": "Reiniciar",
     "reset-course-popup-message": "Todo tu progreso se perderá. ¿Estás seguro que deseas continuar?",
     "module-locked-title": "Módulo Bloqueado",
@@ -723,7 +733,8 @@
     "noImage-tryAgain": "Reintento",
     "noImage-title": "No se pudo cargar la imagen.",
     "add-courses-button-title": "Añade cursos",
-    "add-courses-title": "Sin Cursos\\n",
+		"add-courses-title": "Sin Cursos\\n",
+		"more-on-topic": "Más sobre el tema",
     "add-courses-message": "¡Comienza tu aprendizaje ahora!"
   },
   "logout": {

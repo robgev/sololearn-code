@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Localize from 'components/Localize';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -7,14 +8,18 @@ const LoadingButton = ({
 }) => {
 	const Button = raised ? RaisedButton : FlatButton;
 	return (
-		<Button
-			{...{
-				style: { width: 120 },
-				label: loading ? 'Loading...' : label,
-				disabled: disabled || loading,
-				...rest,
-			}}
-		/>
+		<Localize>
+			{({ t }) => (
+				<Button
+					{...{
+						style: { width: 120 },
+						label: loading ? t('common.loading') : label,
+						disabled: disabled || loading,
+						...rest,
+					}}
+				/>
+			)}
+		</Localize>
 	);
 };
 

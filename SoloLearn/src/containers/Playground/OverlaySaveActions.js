@@ -106,11 +106,11 @@ const OverlaySaveActions = ({
 					id="codeName"
 					fullWidth
 					maxLength={100}
-					hintText="Code Name:"
 					style={styles.inputStyle}
 					value={codeName}
 					errorText={errorText}
 					onChange={handleCodeNameChange}
+					hintText={t('code_playground.popups.save-popup-code-name-placeholder')}
 				/>
 				<p style={styles.charactersRemaining}>{codeName.length}/100</p>
 				<Toggle

@@ -229,7 +229,7 @@ class Quiz extends Component {
 		const { checkResult } = this.state;
 		const { t } = this.props;
 		if (checkResult === null) {
-			return 'Check';
+			return t('learn.buttons-check');
 		} else if (checkResult === true) {
 			return t('learn.buttons-continue');
 		}
@@ -350,13 +350,12 @@ class Quiz extends Component {
 					{t('learn.popups.unlock.description', { price: this.props.activeModule.skipPrice, total: this.props.userXp })}
 				</Dialog>
 				<Dialog
-					title="Get a hint"
 					actions={hintActions}
 					open={this.state.hintOpened}
+					title={t('quiz.get-hint-message')}
 					onRequestClose={this.handleHintDialogClose}
 				>
-					Use
-					{this.props.activeModule.hintPrice} XP of you total {this.props.userXp} XP to get a hint
+					{t('learn.get-hint-format', { price: this.props.activeModule.skipPrice, total: this.props.userXp })}
 				</Dialog>
 			</div >
 		);

@@ -50,7 +50,7 @@ const UserProgressToolbar = ({
 				</div>
 				<div className="xp-remaining">
 					<p>{ levels[profile.level - 1].maxXp - profile.xp } XP</p>
-					<p>to Level { levels[profile.level].number }</p>
+					<p>{t('play.result.reach-to-level')} { levels[profile.level].number }</p>
 				</div>
 			</div>
 			<div className="user-activity-info">

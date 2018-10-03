@@ -75,7 +75,9 @@ class SearchBar extends Component {
 			browserHistory.push({ pathname: '/discuss', query });
 			break;
 		case SECTIONS.lessons:
-			browserHistory.push(`/learn/search${linkVal}`);
+			if (linkVal) {
+				browserHistory.push(`/learn/search${linkVal}`);
+			}
 			break;
 		case SECTIONS.codes:
 			browserHistory.push({ pathname: '/codes', query });
@@ -135,16 +137,16 @@ class SearchBar extends Component {
 							<DropDownMenu
 								autoWidth={false}
 								value={section}
-								style={{ height: 56, width: 140 }}
+								style={{ height: 56, width: 250 }}
 								labelStyle={{ color: 'white' }}
 								className="header-dropdown"
 								underlineStyle={{ border: 'none' }}
 								onChange={this.onSectionChange}
 							>
-								<MenuItem value={SECTIONS.lessons} primaryText="Lessons" />
-								<MenuItem value={SECTIONS.codes} primaryText="Codes" />
-								<MenuItem value={SECTIONS.posts} primaryText="Posts" />
-								<MenuItem value={SECTIONS.users} primaryText="Users" />
+								<MenuItem value={SECTIONS.lessons} primaryText={t('search_bar.lessons-title')} />
+								<MenuItem value={SECTIONS.codes} primaryText={t('search_bar.codes-title')} />
+								<MenuItem value={SECTIONS.posts} primaryText={t('search_bar.posts-title')} />
+								<MenuItem value={SECTIONS.users} primaryText={t('search_bar.users-title')} />
 							</DropDownMenu>
 							<div className="search-wrapper">
 								<AutoComplete

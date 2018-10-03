@@ -389,12 +389,12 @@ ${this.props.code}
 								<MenuItem value="swift" primaryText="Swift" />
 							</DropDownMenu>
 							<Checkbox
-								label="Dark Theme"
 								labelPosition="left"
 								style={styles.themeToggle}
 								checked={theme === 'monokai'}
 								iconStyle={styles.themeToggleIcon}
 								onCheck={handleThemeChange}
+								label={t('code_playground.dark-theme')}
 							/>
 						</div>
 					)}

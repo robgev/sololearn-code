@@ -44,6 +44,7 @@ class Likes extends Component {
 
 	render() {
 		const {
+			t,
 			votes,
 			hasPlus,
 			className,
@@ -75,13 +76,13 @@ class Likes extends Component {
 								value={canAccessDownvotes ? this.activeTab : TabTypes.upvotes}
 							>
 								<Tab
-									label="Upvotes"
+									label={t('upvotes.title')}
 									value={TabTypes.upvotes}
 									style={{ color: 'rgba(107, 104, 104, 0.8)' }}
 								/>
 								{ canAccessDownvotes &&
 								<Tab
-									label="Downvotes"
+									label={t('downvotes.title')}
 									value={TabTypes.downvotes}
 									style={{ color: 'rgba(107, 104, 104, 0.8)' }}
 								/>

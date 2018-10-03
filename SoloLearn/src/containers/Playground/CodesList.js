@@ -1,13 +1,18 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import Paper from 'material-ui/Paper';
+import { translate } from 'react-i18next';
 import InfiniteScroll from 'components/InfiniteScroll';
 import CodeShimmer from 'components/Shimmers/CodeShimmer';
 import 'styles/Playground/Codes.scss';
 import CodeItem from './CodeItem';
 
 const CodesList = observer(({
-	codes, loadMore, hasMore, header = null,
+	t,
+	codes,
+	hasMore,
+	loadMore,
+	header = null,
 }) => (
 	<div className="codes-wrapper">
 		{
@@ -15,7 +20,7 @@ const CodesList = observer(({
 				? (
 					<Paper style={{ padding: 15 }}>
 						{header}
-						<div className="no-codes-wrapper">No codes found</div>
+						<div className="no-codes-wrapper">{t('profile.no-codes')}</div>
 					</Paper>
 				)
 				: (
@@ -47,4 +52,4 @@ const CodesList = observer(({
 	</div>
 ));
 
-export default CodesList;
+export default translate()(CodesList);

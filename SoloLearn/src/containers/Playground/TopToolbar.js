@@ -58,6 +58,7 @@ class TopToolbar extends PureComponent {
 	render() {
 		const { isPublic } = this.state;
 		const {
+			t,
 			userId,
 			voteCode,
 			codeData,
@@ -106,15 +107,14 @@ class TopToolbar extends PureComponent {
 								<RaisedButton
 									labelColor="white"
 									icon={<DeleteIcon />}
-									label="Delete this code"
 									style={{ marginRight: 5 }}
 									backgroundColor={red500}
+									label={t('common.delete-title')}
 									onClick={this.toggleDeleteModal}
 								/>
 							}
 							{(userID === userId || accessLevel > 1) &&
 								<Toggle
-									label="Public:"
 									style={{ width: 50 }}
 									defaultToggled={isPublic}
 									onToggle={this.togglePublicState}
@@ -122,6 +122,7 @@ class TopToolbar extends PureComponent {
 									thumbStyle={{ backgroundColor: '#E0E0E0' }}
 									trackSwitchedStyle={{ backgroundColor: '#9CCC65' }}
 									thumbSwitchedStyle={{ backgroundColor: '#AED581' }}
+									label={t('code_playground.popups.save-popup-public-toggle-title')}
 								/>
 							}
 						</div>
@@ -139,16 +140,16 @@ class TopToolbar extends PureComponent {
 					}
 				</div>
 				<Dialog
-					title="Are you sure?"
+					title={t('code_playground.popups.delete-code-description')}
 					actions={[
 						<RaisedButton
-							label="Cancel"
 							secondary
+							label={t('common.cancel-title')}
 							onClick={this.toggleDeleteModal}
 						/>,
 						<RaisedButton
-							label="Delete"
 							primary
+							label={t('common.delete-title')}
 							onClick={this.deleteCurrentCode}
 						/>,
 					]

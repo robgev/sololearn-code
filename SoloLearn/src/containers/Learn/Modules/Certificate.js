@@ -1,8 +1,9 @@
 import React from 'react';
 import Progress from 'api/progress';
+import { translate } from 'react-i18next';
 import CourseChip from 'components/CourseChip';
 
-const Certificate = ({ modules, courseId }) => {
+const Certificate = ({ t, modules, courseId }) => {
 	const lastModule = modules[modules.length - 1];
 	const { progress } = Progress.getModuleState(lastModule);
 	const isCourseFinished = progress === 100;
@@ -11,9 +12,9 @@ const Certificate = ({ modules, courseId }) => {
 			<CourseChip
 				round
 				noBoxShadow
-				name="Certificate"
 				color="transparent"
 				paperStyle={{ width: 95 }}
+				name={t('certificate.title')}
 				wrapperStyle={{ padding: 0 }}
 				disabled={!isCourseFinished}
 				customLink={`/certificate/${courseId}`}
@@ -23,4 +24,4 @@ const Certificate = ({ modules, courseId }) => {
 	);
 };
 
-export default Certificate;
+export default translate()(Certificate);

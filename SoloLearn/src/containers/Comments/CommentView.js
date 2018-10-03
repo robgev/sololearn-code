@@ -148,7 +148,7 @@ class CommenView extends Component {
 						<FlatButton
 							style={{ height: 30, lineHeight: '30px' }}
 							labelStyle={{ fontSize: 13 }}
-							label="Reply"
+							label={t('comments.reply')}
 							onClick={this.onReply}
 						/>
 						{
@@ -170,12 +170,12 @@ class CommenView extends Component {
 					open={this.deleteOpen}
 					actions={[
 						<FlatButton
-							label="Delete"
+							label={t('common.delete-title')}
 							onClick={selfDestruct}
 							primary
 						/>,
 						<FlatButton
-							label="Cancel"
+							label={t('common.cancel-title')}
 							onClick={this.toggleDeleteDialog}
 							primary
 						/>,

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { observable, action, autorun, computed } from 'mobx';
 import { observer } from 'mobx-react';
 import { withRouter } from 'react-router';
+import { translate } from 'react-i18next';
 import MentionInput from 'components/MentionInput';
 import FlatButton from 'material-ui/FlatButton';
 
@@ -18,6 +19,7 @@ const mapStateToProps = ({ userProfile }) => ({ userProfile });
 
 @withRouter
 @connect(mapStateToProps)
+@translate()
 @observer
 class Comments extends Component {
 	commentsAPI = new CommentsAPI({
@@ -193,6 +195,7 @@ class Comments extends Component {
 	}
 
 	render() {
+		const { t } = this.props;
 		return (
 			<div className="comments-container">
 				<CommentsToolbar
@@ -203,10 +206,10 @@ class Comments extends Component {
 				<div className="input-bar">
 					<MyAvatar />
 					<MentionInput
-						placeholder="Write a new comment"
 						ref={(i) => { this.mentionInput = i; }}
 						onLengthChange={this.onLengthChange}
 						getUsers={this.commentsAPI.getMentionUsers}
+						placeholder={t('comments.write-comment-placeholder')}
 					/>
 				</div>
 				<FlatButton
@@ -216,11 +219,11 @@ class Comments extends Component {
 				/>
 				{
 					this.isOnReply &&
-					<FlatButton label="Back" onClick={this.reset} />
+					<FlatButton label={t('common.back-action-title')} onClick={this.reset} />
 				}
 				{
 					this.hasMoreAbove &&
-					<FlatButton label="Load more" onClick={this.getCommentsAbove} />
+					<FlatButton label={t('common.loadMore')} onClick={this.getCommentsAbove} />
 				}
 				<CommentList
 					commentsRef={this.addRef}
@@ -235,7 +238,7 @@ class Comments extends Component {
 					this.initial && this.comments.length > 0 && this.hasMore && !this.isOnReply
 					&& (
 						<FlatButton
-							label="Load more"
+							label={t('common.loadMore')}
 							onClick={this.unlockInitial}
 						/>
 					)
