@@ -66,11 +66,11 @@ class Profile extends PureComponent {
 		});
 	}
 
-	handlePopupClose = (blob) => {
+	handlePopupClose = (newUrl) => {
 		const { avatarUrl } = this.props.userProfile;
 		this.setState({
 			open: false,
-			image: blob ? URL.createObjectURL(blob) : avatarUrl,
+			image: newUrl || avatarUrl,
 		});
 	}
 
@@ -157,41 +157,44 @@ class Profile extends PureComponent {
 						/>
 					</div>
 				</div>
-				<div className="settings-group">
-					<TextField
-						name="name"
-						value={name}
-						style={{ width: '100%' }}
-						onChange={this.handleChange}
-						floatingLabelText={t('edit_account.user-name')}
+				<form onSubmit={this.submitSettings} className="settings-form-container">
+					<div className="settings-group">
+						<TextField
+							name="name"
+							value={name}
+							style={{ width: '100%' }}
+							onChange={this.handleChange}
+							floatingLabelText={t('edit_account.user-name')}
+						/>
+						<TextField
+							type="email"
+							name="email"
+							value={email}
+							style={{ width: '100%' }}
+							floatingLabelText={t('common.email-title')}
+							onChange={this.handleChange}
+						/>
+					</div>
+					<CountrySelector
+						t={t}
+						value={countryCode}
+						onChange={this.handleSelectionChange}
 					/>
-					<TextField
-						name="email"
-						value={email}
-						style={{ width: '100%' }}
-						floatingLabelText={t('common.email-title')}
-						onChange={this.handleChange}
-					/>
-				</div>
-				<CountrySelector
-					t={t}
-					value={countryCode}
-					onChange={this.handleSelectionChange}
-				/>
+					<div className="settings-button">
+						<FlatButton
+							primary
+							type="submit"
+							disabled={this.shouldDisable()}
+							label={t('common.save-action-title')}
+						/>
+					</div>
+				</form>
 				<CropPopup
 					t={t}
 					open={open}
 					image={image}
 					onRequestClose={this.handlePopupClose}
 				/>
-				<div className="settings-button">
-					<FlatButton
-						primary
-						onClick={this.submitSettings}
-						disabled={this.shouldDisable()}
-						label={t('common.save-action-title')}
-					/>
-				</div>
 				<Snackbar
 					open={snackbarOpen}
 					autoHideDuration={isSaving ? 5000 : 1000}

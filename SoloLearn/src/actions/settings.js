@@ -69,6 +69,7 @@ export const updateAvatar = imageData => async (dispatch) => {
 		type: types.UPDATE_PROFILE_DATA,
 		payload: { avatarUrl },
 	});
+	return avatarUrl;
 };
 
 export const blockUser = blockData => async (dispatch) => {
