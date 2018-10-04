@@ -85,15 +85,22 @@ class LoginContainer extends PureComponent {
 	}
 
 	forgot = async (email) => {
-		const { t } = this.props;
-		this.setState({ loading: true });
-		const { err } = await this.props.forgotPassword(email);
-		// Will implement forgot password continuation later
-		if (err) {
-			this.fault(faultGenerator(err.data));
+		try {
+			const { t } = this.props;
+			this.setState({ loading: true });
+			const { err } = await this.props.forgotPassword(email);
+			// Will implement forgot password continuation later
+			if (err) {
+				console.log(err);
+				this.fault(faultGenerator(err.data));
+				this.setState({ loading: false });
+			}
+			this.alert(t('forgot_password.email-sent-message'), 'info');
 			this.setState({ loading: false });
+		} catch (e) {
+			this.setState({ loading: false });
+			this.fault(faultGenerator(e.data));
 		}
-		this.alert(t('forgot_password.email-sent-message'), 'info');
 	}
 
 	render() {
