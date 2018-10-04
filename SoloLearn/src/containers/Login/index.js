@@ -77,7 +77,7 @@ class LoginContainer extends PureComponent {
 	signup = async (data) => {
 		try {
 			this.setState({ loading: true });
-			this.checkToFeed((await this.props.signup(data).err));
+			this.checkToFeed((await this.props.signup(data)).err);
 		} catch (e) {
 			this.setState({ loading: false });
 			this.fault(faultGenerator(e.data));

@@ -40,8 +40,7 @@ export const credentialsLogin = ({ email, password }) => async (dispatch) => {
 export const signup = ({ name, email, pass }) => async (dispatch) => {
 	const res = await Service.request('Register', { name, email, password: hash(pass) });
 	if (res && res.error) return { err: faultGenerator(res.error.data) };
-	dispatch(login({ email, pass }));
-	return { err: false };
+	return dispatch(login({ email, pass }));
 };
 
 export const forgotPassword = email => async () => {
