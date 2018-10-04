@@ -44,7 +44,7 @@ const QuestionItem = ({ question }) => (
 					</div>
 					<div className="question-item-author-details">
 						<span className="question-item-date">
-							{updateDate(question.date)} by {' '}
+							{updateDate(question.date)} {t('common.author-format')} {' '}
 						</span>
 						<UserTooltip userData={question}>
 							<span>
