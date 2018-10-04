@@ -63,6 +63,7 @@ class NotificationPopup extends Component {
 									<div className="notification-header" style={styles.notificationsHeader}>
 										<p className="notifications-title" style={styles.notificationsTitle}>{t('notifications.title')}</p>
 										<button
+											className="hoverable"
 											type="button"
 											style={styles.notificationsHeaderButton}
 											onClick={this.markAllRead}
