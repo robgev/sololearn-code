@@ -40,7 +40,8 @@ export const LessonType = {
 
 const isQuizCompleted = ({ quizID, lessonProgress }) => {
 	if (lessonProgress === null) return false;
-	return lessonProgress.quizzes.find(el => el.quizID === quizID).isCompleted;
+	const progress = lessonProgress.quizzes.find(el => el.quizID === quizID);
+	return progress !== undefined && progress.isCompleted;
 };
 
 const mapStateToProps = (state, ownProps) => ({
