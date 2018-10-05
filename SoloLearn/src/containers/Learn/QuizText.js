@@ -41,7 +41,7 @@ class QuizText extends Component {
 		const { lessonId: id, itemType = 3 } = this.props;
 		const { isBookmarked: bookmark } = this.state;
 		const { isBookmarked } =
-			await Service.request('/BookmarkLesson', { id, type: itemType, bookmark: !bookmark });
+			await Service.request('BookmarkLesson', { id, type: itemType, bookmark: !bookmark });
 		this.setState({ isBookmarked });
 	}
 

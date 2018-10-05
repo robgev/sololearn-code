@@ -4,7 +4,7 @@ import { discoverIdsSelector } from 'reducers/discover.reducer.js';
 import * as types from 'constants/ActionTypes';
 
 export const getDiscoverSuggestions = query => async (dispatch) => {
-	const response = await Service.request('/Profile/SearchUsers', { query });
+	const response = await Service.request('Profile/SearchUsers', { query });
 	if (query) {
 		dispatch({
 			type: types.SET_SEARCH_SUGGESTIONS,

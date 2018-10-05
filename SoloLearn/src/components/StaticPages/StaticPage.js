@@ -8,7 +8,7 @@ class StaticPage extends Component {
 	}
 
 	async componentWillMount() {
-		const { page } = await Service.request('/GetStaticPage', { alias: this.props.alias });
+		const { page } = await Service.request('GetStaticPage', { alias: this.props.alias });
 		this.setState({ content: page.pageContent });
 		document.title = page.title;
 	}

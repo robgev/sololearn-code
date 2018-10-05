@@ -3,7 +3,7 @@ import * as types from 'constants/ActionTypes';
 
 export const getLessonCollections = pagingData => async (dispatch) => {
 	try {
-		const { collections } = await Service.request('/GetCollections', pagingData);
+		const { collections } = await Service.request('GetCollections', pagingData);
 		dispatch({
 			type: types.SET_LESSON_COLLECTIONS,
 			payload: collections,
@@ -18,7 +18,7 @@ export const getLessonCollections = pagingData => async (dispatch) => {
 export const getCollectionItems = (collectionId, pagingData) => async (dispatch) => {
 	try {
 		const { lessons } =
-			await Service.request('/GetCollectionItems', { collectionId, ...pagingData });
+			await Service.request('GetCollectionItems', { collectionId, ...pagingData });
 		dispatch({
 			type: pagingData.index ?
 				types.APPEND_COLLECTION_ITEMS :
@@ -40,7 +40,7 @@ export const getMoreOnTopic = ({
 }) => async (dispatch) => {
 	try {
 		const { lessons } =
-			await Service.request('/GetCourseAdditionalLessons', {
+			await Service.request('GetCourseAdditionalLessons', {
 				courseId,
 				query,
 				index,
@@ -66,7 +66,7 @@ export const setSelectedCollection = collectionId => async (dispatch, getState) 
 		slayCollections.find(c => c.id === collectionId);
 	if (!currentCollection) {
 		const { collection } =
-			await Service.request('/GetCollection', { id: collectionId });
+			await Service.request('GetCollection', { id: collectionId });
 		dispatch({
 			type: types.SET_CURRENT_LESSON_COLLECTION,
 			payload: collection,
@@ -82,7 +82,7 @@ export const setSelectedCollection = collectionId => async (dispatch, getState) 
 export const searchLessons = (query, pagingData) => async (dispatch) => {
 	try {
 		const { lessons } =
-			await Service.request('/SearchLessons', { query, ...pagingData });
+			await Service.request('SearchLessons', { query, ...pagingData });
 		dispatch({
 			type: pagingData.index ?
 				types.APPEND_COLLECTION_ITEMS :
@@ -102,7 +102,7 @@ export const searchLessons = (query, pagingData) => async (dispatch) => {
 export const getBookmarkLessons = pagingData => async (dispatch) => {
 	try {
 		const { lessons } =
-			await Service.request('/GetBookmarkedItems', pagingData);
+			await Service.request('GetBookmarkedItems', pagingData);
 		dispatch({
 			type: pagingData.index ?
 				types.APPEND_BOOKMARK_COLLECTION_ITEMS :
@@ -118,7 +118,7 @@ export const getBookmarkLessons = pagingData => async (dispatch) => {
 
 export const getLesson = id => async (dispatch) => {
 	try {
-		const { lesson } = await Service.request('/GetLesson', { id });
+		const { lesson } = await Service.request('GetLesson', { id });
 		dispatch({
 			type: types.SET_ACTIVE_LESSON,
 			payload: lesson,
@@ -130,7 +130,7 @@ export const getLesson = id => async (dispatch) => {
 
 export const getCourseLesson = id => async (dispatch) => {
 	try {
-		const { lesson } = await Service.request('/GetCourseLesson', { id });
+		const { lesson } = await Service.request('GetCourseLesson', { id });
 		dispatch({
 			type: types.SET_ACTIVE_LESSON,
 			payload: lesson,
@@ -143,7 +143,7 @@ export const getCourseLesson = id => async (dispatch) => {
 export const getLessonsByAuthor = (excludeLessonId, userId, pagingData) => async (dispatch) => {
 	try {
 		const { lessons } =
-			await Service.request('/GetLessonsByAuthor', { excludeLessonId, userId, ...pagingData });
+			await Service.request('GetLessonsByAuthor', { excludeLessonId, userId, ...pagingData });
 		dispatch({
 			type: pagingData.index ?
 				types.APPEND_LESSONS_BY_USER :
