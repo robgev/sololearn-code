@@ -18,7 +18,7 @@ const styles = {
 
 const constructBasePathname = (pathname, params) => {
 	if (params.primary || params.secondary) {
-		return pathname.replace(`/${params.primary}`, '').replace(`/${params.secondary}`, '');
+		return pathname.replace(new RegExp(`/${params.primary}/${params.secondary}$`), '');
 	}
 	return pathname;
 };
