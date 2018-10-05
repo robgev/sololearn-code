@@ -27,7 +27,7 @@ class Comments extends Component {
 		id: this.props.id,
 		commentsType: this.props.commentsType,
 		orderBy: 2,
-		findPostId: this.props.location.query.commentID,
+		findPostId: parseInt(this.props.location.query.commentID, 10),
 	})
 
 	commentsRefs = {};
@@ -178,7 +178,7 @@ class Comments extends Component {
 
 	highlight = (id, replyId) => {
 		if (id !== null) {
-			this.commentsRefs[id].getWrappedInstance().scrollIntoView(replyId);
+			this.commentsRefs[id].getWrappedInstance().getWrappedInstance().scrollIntoView(replyId);
 		}
 	}
 

@@ -22,7 +22,7 @@ const mapStateToProps = ({ userProfile }) => ({
 });
 
 @connect(mapStateToProps, null, null, { withRef: true })
-@translate()
+@translate(null, { withRef: true })
 @observer
 class Comment extends Component {
 	@observable isReplyInputOpen = false;
@@ -102,7 +102,7 @@ class Comment extends Component {
 		if (replyId === null) {
 			this.commentRef.getWrappedInstance().scrollIntoView();
 		} else {
-			this.commentsRefs[replyId].getWrappedInstance().scrollIntoView();
+			this.commentsRefs[replyId].getWrappedInstance().getWrappedInstance().scrollIntoView();
 		}
 	}
 
