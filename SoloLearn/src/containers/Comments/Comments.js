@@ -88,6 +88,7 @@ class Comments extends Component {
 	}
 	@action initialRequest = async () => {
 		const { findPostId } = this.commentsAPI;
+		this.comments = [];
 		const comments = await this.commentsAPI.getComments({
 			index: this.comments.length, count: 3,
 		});
@@ -110,6 +111,14 @@ class Comments extends Component {
 			this.highlight(findPostId);
 		}
 		this.commentsAPI.findPostId = null;
+	}
+
+	componentDidUpdate(prevProps) {
+		const { commentID } = this.props.location.query;
+		if (commentID !== prevProps.location.query.commentID) {
+			this.commentsAPI.findPostId = commentID;
+			this.initialRequest();
+		}
 	}
 
 	// need to ignore default "page" arg by InfinteScroll, so can't pass getCommentsBelow
