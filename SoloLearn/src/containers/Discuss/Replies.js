@@ -41,7 +41,7 @@ class Replies extends Component {
 			this.setState({ canLoadMore: false });
 		}
 		if (selectedID !== null) {
-			this.scrollToId(parseInt(selectedID, 10));
+			this.scrollToID(parseInt(selectedID, 10));
 		}
 		if (this.props.replies.length && this.props.replies[0].index !== 0) {
 			this.setState({ canLoadAbove: true });
@@ -53,6 +53,15 @@ class Replies extends Component {
 			nextProps.replies[0].index === 0 &&
 			this.state.canLoadAbove) {
 			this.setState({ canLoadAbove: false });
+		}
+	}
+
+	componentDidUpdate(prevProps) {
+		const { selectedID } = this.props;
+		if (selectedID !== null && prevProps.selectedID !== selectedID) {
+			setTimeout(() => {
+				this.scrollToID(parseInt(selectedID, 10));
+			}, 0);
 		}
 	}
 
@@ -71,7 +80,7 @@ class Replies extends Component {
 			this.setState({ canLoadMore: false });
 		}
 	}
-	scrollToId = (id) => {
+	scrollToID = (id) => {
 		if (this.replyRefs[id]) {
 			this.replyRefs[id].getWrappedInstance().scrollIntoView();
 		}
@@ -92,10 +101,10 @@ class Replies extends Component {
 				(
 					<div style={styles.container}>
 						{canLoadAbove && replies.length > 0 &&
-						<RaisedButton
-							label={t('common.loadMore')}
-							onClick={this.props.loadPreviousReplies}
-						/>}
+							<RaisedButton
+								label={t('common.loadMore')}
+								onClick={this.props.loadPreviousReplies}
+							/>}
 						<InfiniteScroll
 							loadMore={this.loadReplies}
 							hasMore={canLoadMore}
