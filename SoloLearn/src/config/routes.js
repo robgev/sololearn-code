@@ -6,8 +6,10 @@ import { Loadable, redirector } from 'utils';
 // Layouts
 import MainLayout from 'components/Layouts/MainLayout';
 
+// Feed, no need to code split as this is the default page
 import Feed from 'containers/Feed/Feed';
 
+// Learn, no need to code split as the chunk is too small and most used
 import Modules from 'containers/Learn/Modules';
 import SlayLessonsPage from 'containers/Learn/SlayLessonsPage';
 import Lessons from 'containers/Learn/Lessons';
@@ -27,13 +29,6 @@ const SlayDetailed = Loadable({ loader: () => import('containers/Learn/SlayDetai
 const SlayBookmarks = Loadable({ loader: () => import('containers/Learn/SlayBookmarks') });
 const SlayMoreOnTopic = Loadable({ loader: () => import('containers/Learn//SlayMoreOnTopic') });
 const SlayMoreByAuthor = Loadable({ loader: () => import('containers/Learn/SlayMoreByAuthor') });
-
-// Learn
-// const Modules = Loadable({ loader: () => import('containers/Learn/Modules') });
-// const SlayLessonsPage = Loadable({ loader: () => import('containers/Learn/SlayLessonsPage') });
-// const Lessons = Loadable({ loader: () => import('containers/Learn/Lessons') });
-// const QuizManager = Loadable({ loader: () => import('containers/Learn/QuizManager') });
-// const Quiz = Loadable({ loader: () => import('containers/Learn/Quiz') });
 
 // Discuss
 const Questions = Loadable({ loader: () => import('containers/Discuss/Questions') });
@@ -110,15 +105,6 @@ export default ([
 		<Route path="/learn/course/:courseName/:moduleName/:lessonName" component={QuizManager}>
 			<Route path=":quizNumber(/:primary)(/:secondary)" component={Quiz} />
 		</Route>
-
-		{/* <Route path="/learn/slayLesson/:itemType/:lessonId/:pageNumber(/:language(/:codeID))" component={SlayLesson} />
-		<Redirect path="/courses/:courseName/:courseId/:itemType" to="/learn/:courseName/:courseId/:itemType" />
-		<Route path="/learn/:courseName/:courseId/:itemType" component={CourseMore} />
-		<Route path="/learn/:courseName/:courseId/:itemType/:moduleId(/:moduleName)" component={Lessons} />
-		<Route path="/learn/:courseName/:courseId/:itemType/:moduleId/:moduleName/:lessonId(/:lessonName)" component={QuizManager}>
-			<Route path=":quizNumber(/:primary)(/:secondary)" component={Quiz} />
-		</Route> */}
-
 		<Route path="/play" component={Play} />
 		<Route path="/lesson-factory" component={LessonFactory} />
 		<Route path="/codes" component={Codes} />

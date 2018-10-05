@@ -252,8 +252,6 @@ class QuizManager extends Component {
 												onClick={() =>
 													this.loadLessonLink(item.quizId, item.number, item.isText, item.state)}
 												style={{
-													// paddingLeft: index === 0 ? 0 : 14,
-													// paddingRight: index === timeline.length - 1 ? 0 : 14,
 													backgroundColor: 'white',
 													cursor: 'pointer',
 												}}

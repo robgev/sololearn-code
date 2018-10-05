@@ -15,19 +15,15 @@ import Progress, { PointExchangeTypes } from 'api/progress';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'components/StyledDialog';
-import Paper from 'material-ui/Paper';
 
 // Additional data and components
 import QuizAnswers, { CheckBar, TopBar } from 'components/Quiz';
 import LoadingOverlay from 'components/LoadingOverlay';
-import QuizText from '../Learn/QuizText';
-
-// i18n
+import QuizText from './QuizText';
 
 const styles = {
 	wrapper: {
 		position: 'relative',
-		// overflow: 'hidden',
 		display: 'flex',
 		flexDirection: 'column',
 	},
