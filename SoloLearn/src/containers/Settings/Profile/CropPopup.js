@@ -18,7 +18,7 @@ class Profile extends PureComponent {
 		const dataUrl = this.editor.getCroppedCanvas().toDataURL();
 		const data = await fetch(dataUrl);
 		const blob = await data.blob();
-		const avatarUrl = this.props.updateAvatar(blob);
+		const avatarUrl = await this.props.updateAvatar(blob);
 		this.props.onRequestClose(avatarUrl);
 	}
 
