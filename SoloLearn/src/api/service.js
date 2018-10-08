@@ -7,7 +7,6 @@ export const AppDefaults = {
 
 class Service {
 	constructor() {
-		this.accessToken = null;
 		this.getSessionPromise = null;
 		this.accessToken = null;
 		this.accessTokenExpireTime = 0;

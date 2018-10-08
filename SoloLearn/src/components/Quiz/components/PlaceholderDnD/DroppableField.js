@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { DropTarget } from 'react-dnd';
-import DraggableChip from './DraggableChip';
+import SelectedAnswer from './SelectedAnswer';
 import DRAG_TYPE from './dragType';
 
 const fieldSource = {
@@ -14,29 +14,32 @@ const collect = (connect, monitor) => ({
 	isOver: monitor.isOver,
 });
 
-class DroppableField extends Component {
-	render() {
-		const {
-			value, connectDropTarget, width, color, onClick,
-		} = this.props;
-		return connectDropTarget(
-			<div style={{ display: 'inline-block' }}>
-				<div
-					className="placeholder-dnd-item fill-in-item"
-					role="button"
-					tabIndex={0}
-					style={{
-						width: `${width}em`,
-						color,
-						cursor: value === null ? 'default' : 'pointer',
-					}}
-				>
-					{value !== null &&
-						<div onClick={() => onClick(value.id)}>{value.text}</div>}
-				</div>
-			</div>
-		);
-	}
-}
+const DroppableField = ({
+	value, connectDropTarget, width, color, onClick, isDisabled, onDrop,
+}) => connectDropTarget((
+	<div className="placeholder-dnd-item-wrapper">
+		<div
+			className="placeholder-dnd-item fill-in-item"
+			role="button"
+			tabIndex={0}
+			style={{
+				width: `${width}em`,
+				color,
+				cursor: value === null ? 'default' : 'pointer',
+			}}
+		>
+			{value !== null &&
+				<SelectedAnswer
+					onDrop={onDrop}
+					onClick={onClick}
+					answer={value}
+					key={value.id}
+					isSelected
+					isDisabled={isDisabled}
+				/>
+			}
+		</div>
+	</div>
+));
 
 export default DropTarget(DRAG_TYPE, fieldSource, collect)(DroppableField);

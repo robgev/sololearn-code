@@ -6,17 +6,18 @@ import { MultipleChoice, TypeIn, FillIn, PlaceholderDnD, Reorder } from './compo
 import './styles.scss';
 
 class Quiz extends Component {
+	quiz = React.createRef();
 	unlock = () => {
-		this.quiz.unlock();
+		this.quiz.current.unlock();
 	}
-	hint = () => this.quiz.hint();
+	hint = () => this.quiz.current.hint();
 	tryAgain = () => {
-		this.quiz.tryAgain();
+		this.quiz.current.tryAgain();
 	}
-	check = () => this.quiz.check();
+	check = () => this.quiz.current.check();
 	render() {
 		const { quiz } = this.props;
-		const forward = { ...this.props, ref: (c) => { this.quiz = c; } };
+		const forward = { ...this.props, ref: this.quiz };
 		switch (quiz.type) {
 		case 1:
 			return <MultipleChoice {...forward} />;

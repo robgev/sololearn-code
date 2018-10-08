@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { DragSource } from 'react-dnd';
-import Chip from 'material-ui/Chip';
 import DRAG_TYPE from './dragType';
 
 const collect = (connect, monitor) => ({
@@ -17,31 +16,19 @@ const specs = {
 	},
 	endDrag(props, monitor) {
 		const dropField = monitor.getDropResult();
+		props.onClick(props.answer.id);
 		if (dropField !== null) {
 			props.onDrop(props.answer.id, dropField.index);
 		}
 	},
 };
 
-class DraggableChip extends Component {
-	render() {
-		const {
-			connectDragSource, isSelected, answer, onClick, style,
-		} = this.props;
-		return connectDragSource(<div>
-			<Chip
-				labelColor={isSelected ? '#8BC34A' : 'black'}
-				style={style}
-				onClick={() => onClick(answer.id)}
-			>
-				{answer.text}
-			</Chip>
-                           </div>);
-	}
-}
+const SelectedAnswer = ({
+	connectDragSource, answer, onClick,
+}) => connectDragSource(<span onClick={() => onClick(answer.id)}>{answer.text}</span>);
 
 export default DragSource(
 	DRAG_TYPE,
 	specs,
 	collect,
-)(DraggableChip);
+)(SelectedAnswer);

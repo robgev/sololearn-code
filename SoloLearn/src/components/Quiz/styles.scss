@@ -22,15 +22,27 @@
 		.fill-in-item {
 			font-family: monospace;
 			font-size: 18px;
+			> span {
+				display: inline-block;
+				height: 17px;
+				font-size: 18px;
+			}
 		}
 		* {
 			word-break: break-all;
 		}
-		.placeholder-dnd-item {
-			border-bottom: 1px solid black;
-			text-align: center;
-			height: 20px;
-			margin: 0 2px;
+		.placeholder-dnd-item-wrapper {
+			display: inline-block;
+			.placeholder-dnd-item {
+				display: flex;
+				justify-content: center;
+				align-items: flex-end;
+				box-sizing: border-box;
+				border-bottom: 1px solid black;
+				text-align: center;
+				height: 20px;
+				margin: 0 2px;
+			}
 		}
 	}
 	.answer-input-field {

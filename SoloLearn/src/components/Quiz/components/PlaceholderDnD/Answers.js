@@ -10,7 +10,7 @@ class Answers extends Component {
 	}
 	render() {
 		const {
-			selected, width, isDisabled, onClick, correctAnswers,
+			selected, width, isDisabled, onClick, correctAnswers, onDrop,
 		} = this.props;
 		return this.splitAnswerText.map((el, idx) => {
 			if (idx % 2 !== 0) {
@@ -26,6 +26,8 @@ class Answers extends Component {
 								: 'red'
 							: 'black'
 						}
+						onDrop={onDrop}
+						isDisabled={isDisabled}
 						width={width}
 						value={selected[el]}
 					/>
@@ -35,8 +37,7 @@ class Answers extends Component {
 			return (
 				<span
 					className="fill-in-item"
-					style={{ whiteSpace: 'pre-wrap' }
-					}
+					style={{ whiteSpace: 'pre-wrap' }}
 					key={idx}
 				>
 					{el}
