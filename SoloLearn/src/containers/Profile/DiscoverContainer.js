@@ -86,7 +86,7 @@ class DiscoverContainer extends PureComponent {
 							/>
 						}
 					>
-						<div className="discover-wrapper">
+						<div className={`discover-wrapper ${discoverIds.length === 0 ? 'centered' : ''}`}>
 							{
 								discoverIds.length === 0
 									? <div className="no-user-found">{t('common.no-results')}</div>

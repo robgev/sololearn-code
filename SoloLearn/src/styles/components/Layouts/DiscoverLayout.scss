@@ -16,10 +16,14 @@
 	.discover-wrapper {
 		display: flex;
 		flex-wrap: wrap;
+		width: 100%;
 		.no-user-found {
 			min-height: 50vh;
 			display: flex;
 			align-items: center;
+		}
+		&.centered {
+			justify-content: center;
 		}
 	}
 }
