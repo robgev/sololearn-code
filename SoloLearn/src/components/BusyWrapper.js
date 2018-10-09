@@ -15,7 +15,7 @@ const BusyWrapper = ({
 	paper,
 	isBusy,
 	children,
-	className,
+	className = '',
 	noDisplay = true,
 	loadingComponent,
 	wrapperClassName = '',

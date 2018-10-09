@@ -8,6 +8,7 @@ import {
 	SET_WEAPON_SETTINGS,
 	UPDATE_WEAPON_SETTING,
 } from 'constants/ActionTypes';
+import uniqBy from 'lodash/uniqBy';
 import { combineReducers } from 'redux';
 
 const toggleUserBlock = (blockedUsers, { userId, block: blockedState }) => {
@@ -39,7 +40,7 @@ const filterSettings = allSettings =>
 const blockedUsers = (state = [], action) => {
 	switch (action.type) {
 	case SET_BLOCKED_USERS:
-		return action.payload;
+		return uniqBy([ ...state, ...action.payload ], 'id');
 	case UPDATE_BLOCKED_USERS:
 		return toggleUserBlock(state, action.payload);
 	default:

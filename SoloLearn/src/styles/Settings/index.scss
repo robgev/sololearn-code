@@ -61,9 +61,15 @@
 			}
 		}
 		.blocked-settings-container {
+			height: 100%;
+		}
+		.blocked-settings-wrapper {
 			display: flex;
 			flex-direction: column;
 			justify-content: flex-start;
+			.user-card-container {
+				margin-bottom: 5px;
+			}
 			&.center-vertical {
 				justify-content: center
 			}
