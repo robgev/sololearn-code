@@ -43,7 +43,10 @@ const capitalize = str => str.charAt(0).toUpperCase() + str.substr(1);
 @observer
 class Profile extends Component {
 	@observable activeTab = 'activity';
-	@observable profile = new IProfile({ id: this.props.params.id });
+	@observable profile = new IProfile({
+		id: parseInt(this.props.params.id, 10),
+		isMe: parseInt(this.props.params.id, 10) === this.props.userId,
+	});
 
 	@observable followerPopupOpen = false;
 
@@ -74,7 +77,11 @@ class Profile extends Component {
 	}
 
 	@action toggleFollowerPopup = () => {
-		this.followerPopupOpen = !this.followerPopupOpen;
+		const shouldBeOpen = !this.followerPopupOpen;
+		if (!shouldBeOpen) {
+			this.profile.clearFollowData();
+		}
+		this.followerPopupOpen = shouldBeOpen;
 	}
 
 	render() {
@@ -155,7 +162,7 @@ class Profile extends Component {
 						/>
 						{data.id === userId &&
 							<AddCodeButton>
-								{ ({ togglePopup }) => <FloatingButton onClick={togglePopup} /> }
+								{({ togglePopup }) => <FloatingButton onClick={togglePopup} />}
 							</AddCodeButton>
 						}
 					</div>

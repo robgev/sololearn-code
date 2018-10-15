@@ -9,11 +9,10 @@ const UserList = observer(({
 	t, users, hasMore, loadMore, onFollowClick,
 }) => (
 	users.length === 0 && !hasMore
-		? <div>{t("common.empty-list-message")}</div>
+		? <div>{t('common.empty-list-message')}</div>
 		: (
 			<InfiniteScroll
 				threshold={100}
-				initialLoad={users.length === 0}
 				element="div"
 				loader={<CircularProgress
 					key="Infinite loader"

@@ -4,8 +4,9 @@ import { filterExisting, groupFeedItems, showError, forceOpenFeed } from 'utils'
 import feedTypes from 'defaults/appTypes';
 
 class IProfile {
-	constructor({ id }) {
+	constructor({ id, isMe }) {
 		this._profileID = id;
+		this._isMe = isMe;
 		this.getQuestionsPromise = null;
 		this.getCodesPromise = null;
 		this.getFeedPromise = null;
@@ -29,14 +30,28 @@ class IProfile {
 		hasMore: true,
 	}
 
-	@observable followers = {
-		entities: [],
+	@observable followEntities = {}
+
+	@observable followersRaw = {
+		ids: [],
 		hasMore: true,
 	}
 
-	@observable followings = {
-		entities: [],
+	@computed get followers() {
+		const entities = this.followersRaw.ids.map(id => this.followEntities[id]);
+		const { hasMore } = this.followersRaw;
+		return { entities, hasMore };
+	}
+
+	@observable followingsRaw = {
+		ids: [],
 		hasMore: true,
+	}
+
+	@computed get followings() {
+		const entities = this.followingsRaw.ids.map(id => this.followEntities[id]);
+		const { hasMore } = this.followingsRaw;
+		return { entities, hasMore };
 	}
 
 	@observable feed = {
@@ -108,8 +123,13 @@ class IProfile {
 						this.feed.hasMore = false;
 					}
 					const feedItems = groupFeedItems(feed);
-					const isFirstItemGrouppedChallenge = entities.length === 0 && feedItems.length && feedItems[0].type === feedTypes.mergedChallange;
-					const forceOpenedFeed = isFirstItemGrouppedChallenge ? forceOpenFeed(feedItems[0]) : feedItems;
+					const isFirstItemGrouppedChallenge =
+						entities.length === 0
+						&& feedItems.length
+						&& feedItems[0].type === feedTypes.mergedChallange;
+					const forceOpenedFeed = isFirstItemGrouppedChallenge
+						? forceOpenFeed(feedItems[0])
+						: feedItems;
 					const feedItemsCount = entities.length + forceOpenedFeed.length;
 					const filtered = filterExisting(entities, forceOpenedFeed);
 					this.feed.entities.push(...filtered);
@@ -126,17 +146,21 @@ class IProfile {
 
 	@action getFollowers = () => {
 		if (this.getFollowersPromise === null) {
-			const index = this.followers.entities.length;
+			const index = this.followersRaw.ids.length;
 			const count = 20;
 			this.getFollowersPromise = Service.request('Profile/GetFollowers', {
 				id: this._profileID, index, count,
 			})
 				.then(({ users }) => {
 					if (users.length < count) {
-						this.followers.hasMore = false;
+						this.followersRaw.hasMore = false;
 					}
-					const filtered = filterExisting(this.followers.entities, users);
-					this.followers.entities.push(...filtered);
+					users.forEach((user) => {
+						this.followEntities[user.id] = user;
+						if (!this.followersRaw.ids.includes(user.id)) {
+							this.followersRaw.ids.push(user.id);
+						}
+					});
 					this.getFollowersPromise = null;
 				});
 		}
@@ -145,17 +169,21 @@ class IProfile {
 
 	@action getFollowings = () => {
 		if (this.getFollowingsPromise === null) {
-			const index = this.followings.entities.length;
+			const index = this.followingsRaw.ids.length;
 			const count = 20;
 			this.getFollowingsPromise = Service.request('Profile/GetFollowing', {
 				id: this._profileID, index, count,
 			})
 				.then(({ users }) => {
 					if (users.length < count) {
-						this.followings.hasMore = false;
+						this.followingsRaw.hasMore = false;
 					}
-					const filtered = filterExisting(this.followings.entities, users);
-					this.followings.entities.push(...filtered);
+					users.forEach((user) => {
+						this.followEntities[user.id] = user;
+						if (!this.followingsRaw.ids.includes(user.id)) {
+							this.followingsRaw.ids.push(user.id);
+						}
+					});
 					this.getFollowingsPromise = null;
 				});
 		}
@@ -164,26 +192,29 @@ class IProfile {
 
 	// Action for following someone is followers/followings list
 	@action onFollow = (id) => {
-		const follow1 = this.followers.entities.find(el => el.id === id);
-		const follow2 = this.followings.entities.find(el => el.id === id);
-		const follow = follow1 || follow2;
-		const url = follow.isFollowing ? 'Unfollow' : 'Follow';
-		Service.request(`Profile/${url}`, { id });
-		if (follow1) {
-			follow1.isFollowing = !follow1.isFollowing;
-		}
-		if (follow2) {
-			follow2.isFollowing = !follow2.isFollowing;
+		const shouldFollow = !this.followEntities[id].isFollowing;
+		Service.request(`Profile/${shouldFollow ? 'Follow' : 'Unfollow'}`, { id });
+		this.followEntities[id].isFollowing = shouldFollow;
+		if (this._isMe && shouldFollow) {
+			this.followingsRaw.ids.unshift(id);
 		}
 	}
 
 	// Action for following this.user
 	@action onFollowUser = () => {
 		const url = this.data.isFollowing ? 'Unfollow' : 'Follow';
-		Service.request(`Profile/${url}`, { id: this.data.id })
-			.catch(e => showError(e, `Something went wrong when trying to ${url.toLowerCase()}`));
+		Service.request(`Profile / ${url} `, { id: this.data.id })
+			.catch(e => showError(e, `Something went wrong when trying to ${url.toLowerCase()} `));
 		this.data.followers += this.data.isFollowing ? -1 : 1;
 		this.data.isFollowing = !this.data.isFollowing;
+	}
+
+	@action clearFollowData = () => {
+		this.followersRaw.ids = [];
+		this.followersRaw.hasMore = true;
+		this.followingsRaw.ids = [];
+		this.followingsRaw.hasMore = true;
+		this.followEntities = {};
 	}
 }
 
