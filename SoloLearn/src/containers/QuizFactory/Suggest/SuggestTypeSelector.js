@@ -139,6 +139,7 @@ class SuggestTypeSelector extends Component {
 					actions={actions}
 					onRequestClose={this.closePreview}
 					actionsContainerStyle={actionContainerStyle}
+					autoScrollBodyContent
 				>
 					{previewQuiz !== null ? (
 						<div>

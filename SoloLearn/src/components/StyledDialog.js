@@ -21,7 +21,7 @@ const StylesDialog = ({
 		<IconButton
 			className="close"
 			onClick={onRequestClose}
-			style={{ position: 'absolute', top: -5, right: -5 }}
+			style={{ position: 'absolute', top: -5, right: 0 }}
 		>
 			<Close color={grey600} />
 		</IconButton>
