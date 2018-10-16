@@ -46,7 +46,7 @@ class LoginBody extends Component {
 		this.props.socialLogin({ accessToken, service: 'facebook' });
 	}
 
-	signup = (e) => {
+	signup = async (e) => {
 		const { t } = this.props;
 		e.preventDefault();
 		Object.values(this.state).forEach((value) => {
@@ -60,7 +60,8 @@ class LoginBody extends Component {
 			this.props.alert(t('register.passwords-not-match'), 'error');
 		}
 		const { name, email, password: pass } = this.state;
-		this.props.signup({ name, email, pass });
+		await this.props.signup({ name, email, pass });
+		this.props.alert(t('auth.activate-account-success'), 'info');
 	}
 
 	forgot = (e) => {
