@@ -25,12 +25,14 @@ const styles = {
 @translate()
 class Badges extends PureComponent {
 	componentDidMount() {
-		if (this._selected) {
-			setTimeout(() => this._selected.scrollIntoView({
-				behavior: 'smooth',
-				block: 'center',
-			}), 0);
-		}
+		setTimeout(() => {
+			if (this._selected) {
+				this._selected.scrollIntoView({
+					behavior: 'smooth',
+					block: 'center',
+				});
+			}
+		}, 0);
 	}
 	render() {
 		const { t, badges, selectedId } = this.props;

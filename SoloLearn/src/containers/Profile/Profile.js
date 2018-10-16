@@ -63,16 +63,18 @@ class Profile extends Component {
 			this.followerPopupOpen = false;
 		}
 		if (tab !== this.activeTab) {
-			browserHistory.replace(`/profile/${id}/${tab || 'activity'}`);
+			const { location } = newProps;
+			browserHistory.replace({
+				...location,
+				pathname: `/profile/${id}/${tab || 'activity'}`,
+			});
 			this.activeTab = tab || 'activity';
 		}
 	}
 
 	@action handleTabChange = (activeTab) => {
 		this.activeTab = activeTab;
-		const { location } = this.props;
-		location.pathname = `/profile/${this.props.params.id}/${this.activeTab}`;
-		browserHistory.replace(location);
+		browserHistory.replace(`/profile/${this.props.params.id}/${this.activeTab}`);
 		ReactGA.ga('send', 'screenView', { screenName: `Profile ${capitalize(this.activeTab)} Page` });
 	}
 
@@ -191,7 +193,12 @@ class Profile extends Component {
 				}
 				{
 					this.activeTab === 'badges' && data.badges &&
-					<Badges badges={data.badges} selectedId={this.props.location.query.badgeID || 0} />}
+					<Badges
+						badges={data.badges}
+						key={this.props.location.query.badgeID || 0}
+						selectedId={this.props.location.query.badgeID || 0}
+					/>
+				}
 				<FollowersBase
 					open={this.followerPopupOpen}
 					profile={this.profile}
