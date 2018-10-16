@@ -98,7 +98,6 @@ class Password extends PureComponent {
 						value={oldPassword}
 						style={{ width: '100%' }}
 						onFocus={this.handleFocus}
-						errorText={oldPassErrorText}
 						onChange={this.handleChange}
 						readOnly={focusedName !== 'oldPassword'}
 						floatingLabelText={t('auth.password-placeholder')}
@@ -108,6 +107,7 @@ class Password extends PureComponent {
 						name="newPassword"
 						value={newPassword}
 						onFocus={this.handleFocus}
+						errorText={oldPassErrorText}
 						onChange={this.handleChange}
 						readOnly={focusedName !== 'newPassword'}
 						style={{ width: '100%', textTransform: 'capitalize' }}
