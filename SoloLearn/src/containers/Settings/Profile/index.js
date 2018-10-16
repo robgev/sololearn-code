@@ -95,7 +95,8 @@ class Profile extends PureComponent {
 							|| name.trim() === '';
 	}
 
-	submitSettings = async () => {
+	submitSettings = async (e) => {
+		e.preventDefault();
 		const {
 			name,
 			email,
