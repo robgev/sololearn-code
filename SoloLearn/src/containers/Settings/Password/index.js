@@ -46,7 +46,12 @@ class Password extends PureComponent {
 			newPassword,
 		} = this.state;
 		if (retypePass === newPassword && newPassword !== oldPassword) {
-			this.setState({ snackbarOpen: true, isSaving: true });
+			this.setState({
+				errorText: '',
+				isSaving: true,
+				snackbarOpen: true,
+				oldPassErrorText: '',
+			});
 			await this.props.updateProfile({
 				oldPassword: hash(oldPassword),
 				newPassword: hash(newPassword),
@@ -55,9 +60,9 @@ class Password extends PureComponent {
 		} else if (newPassword === oldPassword) {
 			// TODO: Change string when got localization
 			// Should be "Passwords should not match"
-			this.setState({ oldPassErrorText: t('register.passwords-not-match') });
+			this.setState({ errorText: '', oldPassErrorText: t('register.passwords-not-match') });
 		} else {
-			this.setState({ errorText: t('register.passwords-not-match') });
+			this.setState({ errorText: t('register.passwords-not-match'), oldPassErrorText: '' });
 		}
 	}
 
