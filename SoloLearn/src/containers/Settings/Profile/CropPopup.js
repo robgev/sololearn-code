@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import AvatarEditor from 'react-cropper';
 import Dialog from 'components/StyledDialog';
+import { PromiseButton } from 'components/LoadingButton';
 import FlatButton from 'material-ui/FlatButton';
 import { updateAvatar } from 'actions/settings';
 
@@ -38,9 +39,10 @@ class Profile extends PureComponent {
 				onClick={this.onRequestClose}
 				label={t('common.cancel-title')}
 			/>,
-			<FlatButton
+			<PromiseButton
 				primary
 				onClick={this.onCrop}
+				style={{ width: 'initial' }}
 				label={t('common.confirm-title')}
 			/>,
 		];
