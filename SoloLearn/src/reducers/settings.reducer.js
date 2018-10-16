@@ -11,15 +11,8 @@ import {
 import uniqBy from 'lodash/uniqBy';
 import { combineReducers } from 'redux';
 
-const toggleUserBlock = (blockedUsers, { userId, block: blockedState }) => {
-	const targetUserIndex = blockedUsers.findIndex(currentUser => currentUser.id === userId);
-	const targetUserData = blockedUsers[targetUserIndex];
-	return [
-		...blockedUsers.slice(0, targetUserIndex),
-		{ ...targetUserData, blockedState },
-		...blockedUsers.slice(targetUserIndex + 1),
-	];
-};
+const toggleUserBlock = (blockedUsers, { userId, block: blockedState }) =>
+	blockedUsers.map(user => (user.id === userId ? { ...user, blockedState } : user));
 
 const toggleLanguageSetting = (playSettings, { courseId, enable: isPlayEnabled }) => {
 	const targetLanguageSettingIndex =
