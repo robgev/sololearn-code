@@ -52,7 +52,7 @@ const LoginFields = ({
 				disabled={loading}
 				ref={submitButtonRef}
 				label={t(isForgot ? 'forgot_password.send-title' : 'auth.signin-title')}
-				style={{ width: '40%', alignSelf: 'flex-end' }}
+				style={{ minWidth: '40%', alignSelf: 'flex-end' }}
 			/>
 		</form>
 		{!isForgot && (

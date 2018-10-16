@@ -66,7 +66,7 @@ const SignupFields = ({
 				disabled={loading}
 				ref={submitButtonRef}
 				label={t('register.signup-button-title')}
-				style={{ width: '40%', alignSelf: 'flex-end' }}
+				style={{ minWidth: '40%', alignSelf: 'flex-end' }}
 			/>
 		</form>
 		<div className="tos-disclaimer">
