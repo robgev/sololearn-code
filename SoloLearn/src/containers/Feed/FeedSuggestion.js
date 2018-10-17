@@ -10,6 +10,8 @@ import UserTooltip from 'components/UserTooltip';
 import { followUserSuggestion } from 'actions/feed';
 import { numberFormatter } from 'utils';
 
+import 'styles/Feed/FeedSuggestion.scss';
+
 const styles = {
 	user: {
 		display: 'inline-flex',
@@ -76,6 +78,7 @@ const FeedSuggestion = ({ t, suggestion, followUser }) => {
 					userName={name}
 					avatarUrl={avatarUrl}
 					style={{ width: '100%' }}
+					className="feed-suggestion-avatar"
 				/>
 			</UserTooltip>
 			<p style={styles.followers}>

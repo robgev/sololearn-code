@@ -1,0 +1,14 @@
+.feed-suggestion-avatar {
+	&.vertical {
+		.avatar-meta-info-container {
+			.avatar-user-name {
+				max-width: 100% !important;
+				width: 100%;
+				.avatar-user-name-wrapper {
+					display: inline-block;
+					width: 100%;
+				}
+			}
+		}
+	}
+}
