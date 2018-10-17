@@ -46,6 +46,11 @@ class LoginBody extends Component {
 		this.props.socialLogin({ accessToken, service: 'facebook' });
 	}
 
+	googleLoginRedirect = (googleUser) => {
+		const { id_token: accessToken } = googleUser.getAuthResponse();
+		this.props.socialLogin({ accessToken, service: 'google' });
+	}
+
 	signup = async (e) => {
 		const { t } = this.props;
 		e.preventDefault();
@@ -201,7 +206,7 @@ class LoginBody extends Component {
 									scope="profile"
 									prompt="select_account"
 									fetchBasicProfile={false}
-									responseHandler={() => { }}
+									responseHandler={this.googleLoginRedirect}
 									buttonText={t('auth.google-signin-title')}
 								/>
 							</div>
