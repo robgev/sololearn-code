@@ -96,11 +96,13 @@ class QuestionEditor extends Component {
 	// Add question form submit
 	handleSubmit = () => {
 		const { t } = this.props;
-		const allowSubmit = this.state.title.length !== 0 && this.state.tags.length !== 0;
-		if (!allowSubmit) {
+		const { title, tags } = this.state;
+		const isTitleEmpty = title.trim().length === 0;
+		const isTagsEmpty = tags.length === 0;
+		if (isTitleEmpty || isTagsEmpty) {
 			this.setState({
-				titleErrorText: this.state.title.length === 0 ? t('question.invalid-title') : '',
-				tagsErrorText: this.state.tags.length === 0 ? t('question.empty-tags') : '',
+				titleErrorText: isTitleEmpty ? t('question.invalid-title') : '',
+				tagsErrorText: isTagsEmpty ? t('question.empty-tags') : '',
 			});
 		} else {
 			this.props.submit(
