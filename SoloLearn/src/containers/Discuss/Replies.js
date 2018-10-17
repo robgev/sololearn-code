@@ -106,6 +106,7 @@ class Replies extends Component {
 								onClick={this.props.loadPreviousReplies}
 							/>}
 						<InfiniteScroll
+							containerStyle={{ marginBottom: 75 }}
 							loadMore={this.loadReplies}
 							hasMore={canLoadMore}
 							initialLoad={false}
