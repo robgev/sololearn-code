@@ -4,10 +4,10 @@ import { Link } from 'react-router';
 import UserTooltip from 'components/UserTooltip';
 import Localize from 'components/Localize';
 // Utils
-import { removeDups, updateDate } from 'utils';
+import { updateDate } from 'utils';
 
 import 'styles/Discuss/QuestionItem.scss';
-import DiscussTag from './DiscussTag';
+import DiscussTags from './DiscussTags';
 
 const QuestionItem = ({ question }) => (
 	<Localize>
@@ -30,17 +30,7 @@ const QuestionItem = ({ question }) => (
 						<Link className="question-item-title-link hoverable" to={`/discuss/${question.id}`}>
 							{question.title}
 						</Link>
-						<div>
-							{
-								removeDups(question.tags).map((tag, index) => (
-									<DiscussTag
-										key={`${question.id} ${tag}`}
-										tag={tag}
-										index={index}
-									/>
-								))
-							}
-						</div>
+						<DiscussTags tags={question.tags} />
 					</div>
 					<div className="question-item-author-details">
 						<span className="question-item-date">

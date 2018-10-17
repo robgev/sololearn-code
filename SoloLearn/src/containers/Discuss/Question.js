@@ -26,7 +26,6 @@ import ReportItemTypes from 'constants/ReportItemTypes';
 import UserTooltip from 'components/UserTooltip';
 import {
 	updateDate,
-	removeDups,
 	replaceMention,
 	generatePreviews,
 	determineAccessLevel,
@@ -35,7 +34,7 @@ import {
 // Redux modules
 import { questionFollowingInternal } from 'actions/discuss';
 
-import DiscussTag from 'components/Questions/DiscussTag';
+import DiscussTags from 'components/Questions/DiscussTags';
 import RemovalPopup from './RemovalPopup';
 
 import { QuestionStyles as styles } from './styles';
@@ -125,12 +124,7 @@ class Question extends Component {
 					</div>
 					<div className="details" style={styles.details}>
 						<p className="title" style={styles.title}>{question.title}</p>
-						<div className="tags">
-							{
-								removeDups(question.tags).map((tag, index) =>
-									<DiscussTag tag={tag} index={index} key={tag} />)
-							}
-						</div>
+						<DiscussTags tags={question.tags} />
 						<pre className="message" style={styles.message}>
 							<Linkify>
 								<div style={{ overflowWrap: 'break-word' }}>
