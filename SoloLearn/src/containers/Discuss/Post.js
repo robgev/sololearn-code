@@ -114,7 +114,7 @@ class Post extends Component {
 	addReply = async (message) => {
 		try {
 			const id = await this.props.addReply(this.props.post.id, message, this.state.ordering === 1);
-			this._replies.getWrappedInstance().scrollToId(id);
+			this._replies.getWrappedInstance().scrollToID(id);
 		} catch (e) {
 			if (e.data) {
 				showError(e.data);
