@@ -33,10 +33,14 @@ class ReportPopup extends PureComponent {
 			accessLevel,
 			onRequestClose,
 			reportedUserId,
-			onSubmitFinished,
 		} = this.props;
 		const { reportReason, customReason } = this.state;
 		try {
+			this.setState({
+				reportReason: 11,
+				customReason: '',
+			});
+			onRequestClose();
 			if (accessLevel > 1) {
 				await Service.request('Profile/DeactivateUser', {
 					reason: reportReason,
@@ -51,14 +55,6 @@ class ReportPopup extends PureComponent {
 					itemId: reportedUserId,
 				});
 			}
-			this.setState({
-				reportReason: 11,
-				customReason: '',
-			});
-			if (typeof onSubmitFinished === 'function') {
-				onSubmitFinished();
-			}
-			onRequestClose();
 		} catch (e) {
 			console.log(e);
 		}

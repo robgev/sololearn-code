@@ -19,9 +19,9 @@ class RemovalPopup extends PureComponent {
 			accessLevel,
 			onRequestClose,
 			removedItemId,
-			onSubmitFinished,
 		} = this.props;
 		try {
+			onRequestClose();
 			if (accessLevel > 1) {
 				this.props.deletePostInternal(post);
 				if (post.parentID === null) {
@@ -34,10 +34,6 @@ class RemovalPopup extends PureComponent {
 					itemId: removedItemId,
 				});
 			}
-			if (typeof onSubmitFinished === 'function') {
-				onSubmitFinished();
-			}
-			onRequestClose();
 		} catch (e) {
 			console.log(e);
 		}

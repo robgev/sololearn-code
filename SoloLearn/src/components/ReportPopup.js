@@ -32,24 +32,20 @@ class ReportPopup extends PureComponent {
 			itemId,
 			itemType,
 			onRequestClose,
-			onSubmitFinished,
 		} = this.props;
 		const { reportReason, customReason } = this.state;
 		try {
+			this.setState({
+				reportReason: 1,
+				customReason: '',
+			});
+			onRequestClose();
 			await Service.request('ReportItem', {
 				itemId,
 				itemType,
 				reason: reportReason,
 				message: customReason,
 			});
-			this.setState({
-				reportReason: 1,
-				customReason: '',
-			});
-			if (typeof onSubmitFinished === 'function') {
-				onSubmitFinished();
-			}
-			onRequestClose();
 		} catch (e) {
 			console.log(e);
 		}
@@ -99,7 +95,7 @@ class ReportPopup extends PureComponent {
 						label={t('report.report-option-4')}
 					/>
 				</RadioButtonGroup>
-				{ reportReason === 0 &&
+				{reportReason === 0 &&
 					<div>
 						<TextField
 							value={customReason}
