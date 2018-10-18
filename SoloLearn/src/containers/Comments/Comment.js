@@ -96,6 +96,7 @@ class Comment extends Component {
 		comment.replies -= 1;
 		this.props.commentsAPI.deleteComment({ id })
 			.catch(e => showError(e, 'Something went wrong when trying to delete comment'));
+		this.props.onCommentDelete();
 	}
 
 	scrollIntoView = (replyId = null) => {
@@ -120,6 +121,7 @@ class Comment extends Component {
 			this.isReplyLoading = true;
 			await this.reply({ message });
 			this.isReplyLoading = false;
+			this.props.onCommentAdd();
 		} catch (e) {
 			this.isReplyLoading = false;
 			showError(e, 'Something went wrong when trying to reply');

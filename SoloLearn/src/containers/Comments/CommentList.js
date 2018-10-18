@@ -16,6 +16,8 @@ const CommentList = observer(props => (
 	>
 		{props.comments.map(comment => (
 			<Comment
+				onCommentAdd={props.onCommentAdd}
+				onCommentDelete={props.onCommentDelete}
 				ref={props.commentsRef(comment.id)}
 				delete={props.delete}
 				key={comment.id}

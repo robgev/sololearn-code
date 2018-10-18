@@ -76,6 +76,14 @@ class Comments extends Component {
 		this.dispose();
 	}
 
+	@action onCommentAdd = () => {
+		this.commentsCount = this.commentsCount + 1;
+	}
+
+	@action onCommentDelete = (val = 1) => {
+		this.commentsCount = this.commentsCount - val;
+	}
+
 	@action changeOrder = (val) => {
 		this.unlockInitial();
 		this.orderBy = val;
@@ -169,6 +177,7 @@ class Comments extends Component {
 		} = this.props.userProfile;
 		const message = this.mentionInput.popValue();
 		const { comment } = await this.commentsAPI.addComment({ message });
+		this.onCommentAdd();
 		const newComment = new IComment({
 			replies: 0,
 			vote: 0,
@@ -203,8 +212,11 @@ class Comments extends Component {
 
 	// Soft delete in case of mod level 1 reporting, hides the comment but doesn't send delete req
 	@action deleteComment = (id) => {
-		this.comments.splice(this.comments.findIndex(c => c.id === id), 1);
+		const index = this.comments.findIndex(c => c.id === id);
+		const countToRemove = this.comments[index].replies + 1;
+		this.comments.splice(index, 1);
 		this.commentsAPI.deleteComment({ id });
+		this.onCommentDelete(countToRemove);
 	}
 
 	render() {
@@ -239,6 +251,8 @@ class Comments extends Component {
 					<FlatButton label={t('common.loadMore')} onClick={this.getCommentsAbove} />
 				}
 				<CommentList
+					onCommentAdd={this.onCommentAdd}
+					onCommentDelete={this.onCommentDelete}
 					commentsRef={this.addRef}
 					delete={this.deleteComment}
 					comments={this.comments}
