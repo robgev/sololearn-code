@@ -7,7 +7,11 @@ const CommentsToolbar = ({
 	value, count, onChange, t,
 }) => (
 	<div className="comments-toolbar-container">
-		<p className="page-title">{count} {t('common.comments')}</p>
+		<p className="page-title">
+			{count === 1
+				? t('common.comment-format-one')
+				: `${count} ${t('common.comments')}`}
+		</p>
 		<DropDownMenu
 			value={value}
 			style={{ marginRight: -23 }}
