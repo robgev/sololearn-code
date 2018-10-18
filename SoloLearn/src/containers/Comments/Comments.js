@@ -86,12 +86,16 @@ class Comments extends Component {
 	@action unlockInitial = () => {
 		this.initial = false;
 	}
+	static DEFAULT_INITAL_COUNT = 3;
 	@action initialRequest = async () => {
 		const { findPostId } = this.commentsAPI;
 		this.comments = [];
 		const comments = await this.commentsAPI.getComments({
-			index: this.comments.length, count: 3,
+			index: this.comments.length, count: Comments.DEFAULT_INITAL_COUNT,
 		});
+		if (comments.length < Comments.DEFAULT_INITAL_COUNT) {
+			this.hasMore = false;
+		}
 		let withReplies;
 		const isFindingReply = comments.length > 0 && comments[0].index === -1;
 		if (isFindingReply) {
