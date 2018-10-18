@@ -4,7 +4,7 @@ import { observable, action, autorun, computed } from 'mobx';
 import { observer } from 'mobx-react';
 import { withRouter } from 'react-router';
 import { translate } from 'react-i18next';
-import MentionInput from 'components/MentionInput';
+import { CountingMentionInput } from 'components/MentionInput';
 import FlatButton from 'material-ui/FlatButton';
 
 import MyAvatar from './MyAvatar';
@@ -41,7 +41,7 @@ class Comments extends Component {
 	@observable commentsCount = this.props.commentsCount;
 	@observable hasMore = true;
 	@observable initial = true;
-	@observable commentLength = 0;
+	@observable isSubmitEnabled = false;
 
 	@computed get hasMoreAbove() {
 		return this.firstIndex > 0;
@@ -82,6 +82,10 @@ class Comments extends Component {
 
 	@action onCommentDelete = (val = 1) => {
 		this.commentsCount = this.commentsCount - val;
+	}
+
+	@action submitEnabledChange = (isSubmitEnabled) => {
+		this.isSubmitEnabled = isSubmitEnabled;
 	}
 
 	@action changeOrder = (val) => {
@@ -199,7 +203,7 @@ class Comments extends Component {
 	}
 
 	highlight = (id, replyId) => {
-		if (id !== null) {
+		if (id) {
 			this.commentsRefs[id].getWrappedInstance().getWrappedInstance().scrollIntoView(replyId);
 		}
 	}
@@ -230,9 +234,9 @@ class Comments extends Component {
 				/>
 				<div className="input-bar">
 					<MyAvatar />
-					<MentionInput
+					<CountingMentionInput
 						ref={(i) => { this.mentionInput = i; }}
-						onLengthChange={this.onLengthChange}
+						onSubmitEnabledChange={this.submitEnabledChange}
 						getUsers={this.commentsAPI.getMentionUsers}
 						placeholder={t('comments.write-comment-placeholder')}
 					/>
@@ -240,7 +244,7 @@ class Comments extends Component {
 				<FlatButton
 					label="Comment"
 					onClick={this.addComment}
-					disabled={!this.commentLength}
+					disabled={!this.isSubmitEnabled}
 				/>
 				{
 					this.isOnReply &&

@@ -7,7 +7,7 @@ import Linkify from 'react-linkify';
 import FlatButton from 'material-ui/FlatButton';
 import Divider from 'material-ui/Divider';
 import CircularProgress from 'material-ui/CircularProgress';
-import MentionInput from 'components/MentionInput';
+import { CountingMentionInput } from 'components/MentionInput';
 import { replaceMention, showError, determineAccessLevel } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
 import MyAvatar from './MyAvatar';
@@ -28,8 +28,8 @@ class Comment extends Component {
 	@observable isReplyInputOpen = false;
 	@observable isReplyLoading = false;
 	@observable initText = null;
-	@observable editCommentLength = 0;
-	@observable replyCommentLength = 0;
+	@observable isEditButtonEnabled = false;
+	@observable isReplyButtonEnabled = false;
 	@action toggleReplyBox = async ({ id, userID, userName }) => {
 		if (this.props.toggleReplyBox) {
 			// Reply case
@@ -214,12 +214,12 @@ class Comment extends Component {
 			.catch(e => showError(e, 'Something went wrong when trying to edit comment'));
 	}
 
-	@action handleEditLengthChange = (length) => {
-		this.editCommentLength = length;
+	@action editButtonEnabledChange = (isEditButtonEnabled) => {
+		this.isEditButtonEnabled = isEditButtonEnabled;
 	}
 
-	@action handleReplyLengthChange = (length) => {
-		this.replyCommentLength = length;
+	@action replyButtonEnabledChange = (isReplyButtonEnabled) => {
+		this.isReplyButtonEnabled = isReplyButtonEnabled;
 	}
 
 	upvote = () => this.vote(1);
@@ -253,18 +253,18 @@ class Comment extends Component {
 							<div className="comment-input-toolbar">
 								<div className="input-bar reply-input">
 									<MyAvatar />
-									<MentionInput
+									<CountingMentionInput
 										style={{ height: 50 }}
 										ref={(i) => { this.editMentionInput = i; }}
 										getUsers={this.props.commentsAPI.getMentionUsers}
 										initText={message}
-										onLengthChange={this.handleEditLengthChange}
+										onSubmitEnabledChange={this.editButtonEnabledChange}
 										placeholder={t('comments.write-comment-placeholder')}
 									/>
 								</div>
 								<FlatButton
 									label={t('common.edit-action-title')}
-									disabled={!this.editCommentLength}
+									disabled={!this.isEditButtonEnabled}
 									onClick={() => {
 										this.editComment({ message: this.editMentionInput.popValue(), id });
 										toggleEdit();
@@ -308,19 +308,19 @@ class Comment extends Component {
 						<div className="comment-input-toolbar">
 							<div className="input-bar reply-input">
 								<MyAvatar />
-								<MentionInput
+								<CountingMentionInput
 									onBlur={this.onReplyBlur}
 									style={{ height: 50 }}
 									ref={(i) => { this.mentionInput = i; }}
 									initText={this.initText}
 									getUsers={this.props.commentsAPI.getMentionUsers}
-									onLengthChange={this.handleReplyLengthChange}
+									onSubmitEnabledChange={this.replyButtonEnabledChange}
 									placeholder={t('comments.write-comment-placeholder')}
 								/>
 							</div>
 							<FlatButton
 								className="save-button"
-								disabled={!this.replyCommentLength}
+								disabled={!this.isReplyButtonEnabled}
 								label={t('comments.reply')}
 								onClick={this.addReply}
 							/>
