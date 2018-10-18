@@ -166,6 +166,7 @@ class CommenView extends Component {
 					</div>
 				</div>
 				<Dialog
+					onRequestClose={this.toggleDeleteDialog}
 					title={t('comments.lesson_comment_remove_title')}
 					open={this.deleteOpen}
 					actions={[
