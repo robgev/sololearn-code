@@ -1,7 +1,7 @@
 // General modules
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { observable, action } from 'mobx';
+import { observable, action, autorun } from 'mobx';
 import { observer } from 'mobx-react';
 
 // Material UI components
@@ -44,6 +44,16 @@ const mapDispatchToProps = {
 @translate()
 @observer
 class Header extends Component {
+	componentDidMount() {
+		this.dispose = autorun(() => {
+			if (this.props.profile.name) {
+				document.title = this.props.profile.name;
+			}
+		});
+	}
+	componentWillUnmount() {
+		this.dispose();
+	}
 	@observable isReportPopupOpen = false;
 	@observable isBlockPopupOpen = false;
 	@observable isDeactivationPopupOpen = false;
