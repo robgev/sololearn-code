@@ -10,7 +10,7 @@ const updateDate = (date) => {
 	const diffWeeks = currentDate.diff(postDate, 'weeks');
 
 	if (diffWeeks > 4) {
-		return postDate.format('Do MMMM YYYY');
+		return postDate.format('ll');
 	}
 	return currentDate.diff(postDate) <= 0
 		? 'a few seconds ago'
