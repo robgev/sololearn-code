@@ -171,13 +171,13 @@ class CommenView extends Component {
 					open={this.deleteOpen}
 					actions={[
 						<FlatButton
-							label={t('common.delete-title')}
-							onClick={selfDestruct}
+							label={t('common.cancel-title')}
+							onClick={this.toggleDeleteDialog}
 							primary
 						/>,
 						<FlatButton
-							label={t('common.cancel-title')}
-							onClick={this.toggleDeleteDialog}
+							label={t('common.delete-title')}
+							onClick={selfDestruct}
 							primary
 						/>,
 					]}
