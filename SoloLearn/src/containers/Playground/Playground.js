@@ -788,14 +788,14 @@ ${succeedingSubstr}
 							}
 							<Dialog
 								open={inputsPopupOpened}
-								title={texts.inputsPopupTitle}
 								titleStyle={styles.popupTitle}
 								bodyStyle={styles.popupBody}
 								actions={inputsPopupActions}
 								contentStyle={styles.popupContent}
 								onRequestClose={this.handleInputsPopupClose}
+								title={t('code_playground.alert.input-needs-title')}
 							>
-								<p style={styles.popupSubTitle}>{texts.savePopupSubTitle}</p>
+								<p style={styles.popupSubTitle}>{t('code_playground.alert.input-needs-message')}</p>
 								<TextField
 									multiLine
 									fullWidth
