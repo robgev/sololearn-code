@@ -132,9 +132,9 @@ class MentionInput extends Component {
 			const { text, entityRanges } = curr;
 			const mentionIndex = acc.mentionIndex + entityRanges.length;
 			const lineMentions = mentions.slice(acc.mentionIndex, mentionIndex);
-			return { result: `${acc.result}\n${mentionUsers(text, lineMentions, entityRanges)}`, mentionIndex };
+			return { result: `${acc.result}${mentionUsers(text, lineMentions, entityRanges)}\n`, mentionIndex };
 		}, { result: '', mentionIndex: 0 });
-		return result;
+		return result.trim();
 	}
 
 	render() {
