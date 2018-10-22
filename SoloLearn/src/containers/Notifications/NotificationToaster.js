@@ -143,6 +143,9 @@ class NotificationToaster extends Component {
 		case types.challangeReviewRejected:
 		case types.challangeReviewPublished:
 			return '/quiz-factory/my-submissions';
+		case types.lessonReviewRejected:
+		case types.lessonReviewPublished:
+			return '/lesson-factory/my-submissions';
 		default:
 			throw new Error('Unknown notification link');
 		}

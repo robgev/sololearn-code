@@ -16,6 +16,9 @@ const types = {
 	postedUserLessonCommentReply: 114,
 	upvoteUserLessonComment: 115,
 
+	lessonReviewRejected: 121,
+	lessonReviewPublished: 122,
+
 	postedQuestion: 201,
 	postedAnswer: 202,
 	postedLessonComment: 203,
