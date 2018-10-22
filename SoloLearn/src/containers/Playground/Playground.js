@@ -364,7 +364,7 @@ class Playground extends Component {
 			mode,
 			sourceCode: code,
 			showOutput: false,
-			languageSelector: mode,
+			languageSelector: selectedLanguage,
 			latestSavedCodeData: { ...latestSavedCodeData, language, code },
 		});
 	}
