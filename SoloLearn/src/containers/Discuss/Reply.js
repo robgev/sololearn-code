@@ -93,7 +93,13 @@ class Reply extends Component {
 				</div>,
 				<div key={`editorActions${reply.id}`} style={styles.editorActions}>
 					<FlatButton label={t('common.cancel-title')} onClick={() => this.closeEdit()} />
-					<FlatButton label={t('common.save-action-title')} primary disabled={saveDisabled} onClick={this.save} />
+					<FlatButton
+						style={{ zIndex: 1 }}
+						label={t('common.save-action-title')}
+						primary
+						disabled={saveDisabled}
+						onClick={this.save}
+					/>
 				</div>,
 			]
 		);
@@ -189,7 +195,10 @@ class Reply extends Component {
 					</div>
 					<div
 						className="details"
-						style={{ ...styles.details.base, ...(!this.state.isEditing ? {} : styles.details.editing) }}
+						style={{
+							...styles.details.base,
+							...(!this.state.isEditing ? {} : styles.details.editing),
+						}}
 					>
 						{this.getEditableArea()}
 					</div>
