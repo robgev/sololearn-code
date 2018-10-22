@@ -324,6 +324,24 @@ ${this.props.code}
 		});
 	}
 
+	checkDefaults = () => {
+		// Apparently some clever people decided that it's a good idea to have
+		// a big ass texts file where we can shove all the texts we have
+		// without encapsulating different parts.
+		// So we cannot do object.keys and we need to track the languages
+		// we have here.
+		const defaultKeys = [ 'c_cpp', 'java', 'php', 'html', 'python', 'csharp', 'ruby', 'swift', 'kotlin', 'c' ];
+		const { code, mode } = this.props;
+		// We go 1 by 1 on the possible languages and check if our code coincides
+		// with those languages' default values, because on language change
+		// we will always get the default codes. Now, if one of the default codes
+		// coincides with the code we "wrote" we also need to check if the mode we currently are on
+		// (the language we selected) is actually the language with which the code coincides
+		// so it won't enable reset button if we write default html code in say cpp mode.
+		// P.S. We should probably refactor this :/
+		return defaultKeys.reduce((acc, currentKey) => acc || (texts[currentKey] === code && mode === currentKey), false);
+	}
+
 	determineResetButtonState = () => {
 		const {
 			code,
@@ -332,6 +350,7 @@ ${this.props.code}
 			cssCode,
 			userCodeData,
 		} = this.props;
+		const isDefaultCode = this.checkDefaults();
 		switch (mode) {
 		case 'css':
 			return userCodeData.cssCode === cssCode;
@@ -339,7 +358,7 @@ ${this.props.code}
 		case 'javascript':
 			return userCodeData.jsCode === jsCode;
 		default:
-			return userCodeData.sourceCode === code;
+			return userCodeData.sourceCode === code || isDefaultCode;
 		}
 	}
 
