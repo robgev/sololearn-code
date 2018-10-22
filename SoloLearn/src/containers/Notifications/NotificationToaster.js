@@ -142,7 +142,7 @@ class NotificationToaster extends Component {
 			return `/learn/course/${toSeoFriendly(notification.course.name)}?commentID=${notification.comment.id}`;
 		case types.challangeReviewRejected:
 		case types.challangeReviewPublished:
-			return '/quiz-factory/my-submissions';
+			return `/quiz-factory/my-submissions?id=${notification.challenge.id}`;
 		case types.lessonReviewRejected:
 		case types.lessonReviewPublished:
 			return '/lesson-factory/my-submissions';
