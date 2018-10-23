@@ -69,9 +69,9 @@ class Post extends Component {
 		ReactGA.ga('send', 'screenView', { screenName: 'Discussion Thread Page' });
 	}
 
-	async componentWillReceiveProps(newProps) {
-		const { params: newParams } = newProps;
-		const { params: oldParams } = this.props;
+	async componentDidUpdate(prevProps) {
+		const { params: newParams } = this.props;
+		const { params: oldParams } = prevProps;
 		if (newParams.id !== oldParams.id) {
 			this.initialize();
 		}
@@ -161,7 +161,7 @@ class Post extends Component {
 		this.deletingPost = null;
 	}
 
-	handleFabClick = (e) => {
+	handleFabClick = () => {
 		this.inputRef.current.editor.scrollIntoView({ block: 'center' });
 		this.inputRef.current.mentionInput.forceFocus({ preventScroll: true });
 	}
