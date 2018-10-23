@@ -17,9 +17,13 @@ const mapDispatchToProps = { markRead };
 
 @connect(null, mapDispatchToProps)
 class NotificationItem extends Component {
+	onClick = () => {
+		this.props.markRead([ this.props.notification.id ]);
+		this.props.handleOpenIfPopup();
+	}
 	render() {
-		const { notification, handleOpenIfPopup } = this.props;
-		const generatedContent = NotificationToaster.generateContent(notification, handleOpenIfPopup);
+		const { notification } = this.props;
+		const generatedContent = NotificationToaster.generateContent(notification, this.onClick);
 		return (
 			<ListItem
 				containerElement="div"
