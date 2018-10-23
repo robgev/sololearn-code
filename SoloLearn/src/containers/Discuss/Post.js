@@ -161,11 +161,9 @@ class Post extends Component {
 		this.deletingPost = null;
 	}
 
-	handleFabClick = () => {
+	handleFabClick = (e) => {
 		this.inputRef.current.editor.scrollIntoView({ block: 'center' });
-		setTimeout(() => {
-			this.inputRef.current.mentionInput.focus({ preventScroll: true });
-		}, 100);
+		this.inputRef.current.mentionInput.forceFocus({ preventScroll: true });
 	}
 
 	remove = () => {
@@ -245,7 +243,9 @@ class Post extends Component {
 						orderBy={this.state.ordering}
 						selectedID={this.props.params.replyId || null}
 					/>
-					<FloatingButton onClick={this.handleFabClick} />
+					<div onMouseDown={this.handleFabClick}>
+						<FloatingButton />
+					</div>
 				</div>
 				<Dialog
 					open={this.state.deletePopupOpened}

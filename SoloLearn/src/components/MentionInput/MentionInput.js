@@ -51,6 +51,8 @@ class MentionInput extends Component {
 		this.mentionPlugin = createMentionPlugin({
 			mentionComponent: ({ children }) => <b>{children}</b>,
 		});
+		this.isFocused = false;
+		this.isFocusForced = false;
 		this.state = {
 			editorState: props.initText !== null
 				? EditorState.createWithContent(makeEditableContent(props.initText))
@@ -137,6 +139,34 @@ class MentionInput extends Component {
 		return result.trim();
 	}
 
+	// Call this when a click outside of the editor needs to focus it
+	forceFocus = (options) => {
+		if (this.isFocused) {
+			this.isFocusForced = true;
+		}
+		setTimeout(() => {
+			this.focus(options);
+		}, 0);
+		this.onFocus();
+	}
+
+	onFocus = () => {
+		this.isFocused = true;
+		this.props.onFocus();
+	}
+
+	onBlur = () => {
+		if (this.isFocusForced) {
+			this.isFocusForced = false;
+			setTimeout(() => {
+				this.focus();
+			}, 0);
+		} else {
+			this.isFocused = false;
+			this.props.onBlur();
+		}
+	}
+
 	render() {
 		const { MentionSuggestions } = this.mentionPlugin;
 		const plugins = [ this.mentionPlugin ];
@@ -151,8 +181,8 @@ class MentionInput extends Component {
 			>
 				<Editor
 					placeholder={this.props.placeholder}
-					onFocus={this.props.onFocus}
-					onBlur={this.props.onBlur}
+					onFocus={this.onFocus}
+					onBlur={this.onBlur}
 					editorState={this.state.editorState}
 					onChange={this.onChange}
 					plugins={plugins}
