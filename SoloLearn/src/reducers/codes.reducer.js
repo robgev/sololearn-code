@@ -36,7 +36,7 @@ export const DEFAULT_CODES_FILTERS = { orderBy: 6, language: '', query: '' };
 const filters = (state = DEFAULT_CODES_FILTERS, action) => {
 	switch (action.type) {
 	case SET_CODES_FILTERS:
-		return { ...DEFAULT_CODES_FILTERS, ...action.payload };
+		return action.payload;
 	case LOGOUT:
 		return DEFAULT_CODES_FILTERS;
 	default:

@@ -65,11 +65,14 @@ export const setDiscussFilters = filters => (dispatch, getState) => {
 		dispatch(setSearchValue(filters.query));
 		dispatch(onSearchSectionChange(SECTIONS.posts));
 	}
-	dispatch({
-		type: types.SET_DISCUSS_FILTERS,
-		payload: formattedFilters,
-	});
-	dispatch(emptyPosts());
+	const keys = Object.keys(formattedFilters);
+	if (keys.length === 0 || keys.some(key => formattedFilters[key] !== oldFilters[key])) {
+		dispatch({
+			type: types.SET_DISCUSS_FILTERS,
+			payload: formattedFilters,
+		});
+		dispatch(emptyPosts());
+	}
 };
 
 export const getSidebarQuestions = () => async (dispatch) => {

@@ -48,11 +48,11 @@ class Questions extends Component {
 		if (!isObjectEqual(location.query, this.props.location.query)) {
 			const changed = queryDifference(DEFAULT_DISCUSS_FILTERS, location.query);
 			browserHistory.replace({ ...location, query: changed });
-			this.props.setDiscussFilters(location.query);
+			this.props.setDiscussFilters({ ...DEFAULT_DISCUSS_FILTERS, ...location.query });
 		}
 	}
 	componentWillUnmount() {
-		this.props.setDiscussFilters({ query: '' });
+		this.props.setDiscussFilters({ ...this.props.filters, query: '' });
 	}
 	getPosts = () => {
 		this.props.getPosts()

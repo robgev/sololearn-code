@@ -51,11 +51,11 @@ class Codes extends Component {
 		if (!isObjectEqual(location.query, this.props.location.query)) {
 			const changed = queryDifference(DEFAULT_CODES_FILTERS, location.query);
 			browserHistory.replace({ ...location, query: changed });
-			this.props.setCodesFilters(location.query);
+			this.props.setCodesFilters({ ...DEFAULT_CODES_FILTERS, ...location.query });
 		}
 	}
 	componentWillUnmount() {
-		this.props.setCodesFilters({ query: '' });
+		this.props.setCodesFilters({ ...this.props.filters, query: '' });
 	}
 	handleLanguageFilterChange = (_, __, language) => {
 		const { location } = this.props;

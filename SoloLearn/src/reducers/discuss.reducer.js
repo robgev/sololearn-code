@@ -36,7 +36,7 @@ export const DEFAULT_DISCUSS_FILTERS = { orderBy: 8, query: '' };
 const filters = (state = DEFAULT_DISCUSS_FILTERS, action) => {
 	switch (action.type) {
 	case SET_DISCUSS_FILTERS:
-		return { ...DEFAULT_DISCUSS_FILTERS, ...action.payload };
+		return action.payload;
 	case LOGOUT:
 		return DEFAULT_DISCUSS_FILTERS;
 	default:
@@ -104,7 +104,7 @@ export const sidebarQuestionsSelector = createSelector(
 
 export const isDiscussSidebarEmpty = createSelector(
 	discussReducerSelector,
-	discuss => discuss.sidebarQuestions.length === 0
+	discuss => discuss.sidebarQuestions.length === 0,
 );
 
 export const discussFiltersSelector = createSelector(
