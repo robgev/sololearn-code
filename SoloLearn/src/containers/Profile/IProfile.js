@@ -1,6 +1,7 @@
 import { observable, action, computed } from 'mobx';
 import Service from 'api/service';
 import { filterExisting, groupFeedItems, showError, forceOpenFeed } from 'utils';
+import { getUrlByType } from 'actions/feed';
 import feedTypes from 'defaults/appTypes';
 
 class IProfile {
@@ -143,6 +144,24 @@ class IProfile {
 		}
 		return this.getFeedPromise;
 	}
+
+	@action voteFeedItem = ({
+		vote,
+		newVote,
+		targetId,
+		type: voteType,
+		id: feedItemId,
+		votes: totalVotes,
+	}) => {
+		const url = getUrlByType(voteType);
+		const userVote = vote === newVote ? 0 : newVote;
+		const votes = (totalVotes + userVote) - vote;
+		Service.request(url, { id: targetId, vote: userVote })
+			.catch(e => showError(e, 'Something went wrong when trying to vote'));
+		const feedItem = this.feed.entities.find(i => i.id === feedItemId);
+		feedItem.vote = userVote;
+		feedItem.votes = votes;
+	};
 
 	@action getFollowers = () => {
 		if (this.getFollowersPromise === null) {

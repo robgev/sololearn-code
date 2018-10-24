@@ -46,6 +46,7 @@ class FeedList extends Component {
 			feedPins,
 			loadMore,
 			header = null,
+			voteFeedItem,
 		} = this.props;
 		const { coursePopupOpen, courseId } = this.state;
 		return (
@@ -101,6 +102,7 @@ class FeedList extends Component {
 																	`feedGroup${feedItem.toId}` :
 																	`feedItem${feedItem.id}`}
 																feedItem={feedItem}
+																voteFeedItem={voteFeedItem}
 																openCoursePopup={this.toggleCoursePopup}
 															/>
 														))}

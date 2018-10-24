@@ -102,66 +102,48 @@ export const followUserSuggestion = ({ id, isFollowing }) => {
 	};
 };
 
-export const voteFeedPostItem = ({
-	vote,
-	id: feedItemId,
-	votes: totalVotes,
-	post: { id: postId },
-}, newVote) => (dispatch) => {
-	const userVote = vote === newVote ? 0 : newVote;
-	const votes = (totalVotes + userVote) - vote;
-	dispatch({
-		type: types.SET_FEED_ITEM_VOTE_DATA,
-		payload: {
-			votes,
-			vote: userVote,
-			id: feedItemId,
-		},
-	});
-	Service.request('Discussion/VotePost', { id: postId, vote: userVote })
-		.catch(e => showError(e, 'Something went wrong when trying to vote'));
+export const getUrlByType = (feedItemType) => {
+	switch (feedItemType) {
+	case feedTypes.postedQuestion:
+	case feedTypes.postedAnswer:
+		return 'Discussion/VotePost';
+	case feedTypes.postedCode:
+	case feedTypes.upvoteCode:
+		return 'Playground/VoteCode';
+	case feedTypes.postedLessonComment:
+	case feedTypes.postedLessonCommentReply:
+		return 'Discussion/VoteLessonComment';
+	case feedTypes.postedUserLessonComment:
+	case feedTypes.postedUserLessonCommentReply:
+		return 'Discussion/VoteUserLessonComment';
+	case feedTypes.postedCodeComment:
+	case feedTypes.postedCodeCommentReply:
+	case feedTypes.upvoteCodeComment:
+		return 'Discussion/VoteCodeComment';
+	default:
+		throw new Error('Unknown feedVoteItem type');
+	}
 };
 
-export const voteFeedCommentItem = ({
+export const voteFeedItem = ({
 	vote,
+	newVote,
+	targetId,
+	type: voteType,
 	id: feedItemId,
 	votes: totalVotes,
-	comment: { id: commentId },
-}, newVote, commentsType) => (dispatch) => {
+}) => {
+	const url = getUrlByType(voteType);
 	const userVote = vote === newVote ? 0 : newVote;
 	const votes = (totalVotes + userVote) - vote;
-	const url =
-		commentsType === 'lesson'
-			? 'Discussion/VoteLessonComment'
-			: 'Discussion/VoteCodeComment';
-	dispatch({
+	Service.request(url, { id: targetId, vote: userVote })
+		.catch(e => showError(e, 'Something went wrong when trying to vote'));
+	return {
 		type: types.SET_FEED_ITEM_VOTE_DATA,
 		payload: {
 			votes,
 			vote: userVote,
 			id: feedItemId,
 		},
-	});
-	Service.request(url, { id: commentId, vote: userVote })
-		.catch(e => showError(e, 'Something went wrong when trying to vote'));
-};
-
-export const voteFeedCodeItem = ({
-	vote,
-	id: feedItemId,
-	votes: totalVotes,
-	code: { id: codeId },
-}, newVote) => async (dispatch) => {
-	const userVote = vote === newVote ? 0 : newVote;
-	const votes = (totalVotes + userVote) - vote;
-	dispatch({
-		type: types.SET_FEED_ITEM_VOTE_DATA,
-		payload: {
-			votes,
-			vote: userVote,
-			id: feedItemId,
-		},
-	});
-	Service.request('Playground/VoteCode', { id: codeId, vote: userVote })
-		.catch(e => showError(e, 'Something went wrong when trying to vote'));
+	};
 };

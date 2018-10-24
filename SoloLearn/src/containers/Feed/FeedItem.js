@@ -1,14 +1,13 @@
 // React modules
 import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { observer } from 'mobx-react';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
 
 // Additional data and components
 import { updateDate, toSeoFriendly } from 'utils';
-import { voteFeedPostItem, voteFeedCommentItem, voteFeedCodeItem } from 'actions/feed';
 import CourseCard from 'components/CourseCard';
 import FeedItemBase from './FeedItemBase';
 import Badge from './FeedTemplates/Badge';
@@ -45,14 +44,7 @@ const styles = {
 		zIndex: 1,
 	},
 };
-
-const mapDispatchToProps = {
-	voteFeedCommentItem,
-	voteFeedPostItem,
-	voteFeedCodeItem,
-};
-
-@connect(null, mapDispatchToProps)
+@observer
 class FeedItem extends Component {
 	constructor(props) {
 		super(props);
@@ -70,9 +62,7 @@ class FeedItem extends Component {
 	renderFeedItem = () => {
 		const {
 			feedItem,
-			voteFeedPostItem,
-			voteFeedCodeItem,
-			voteFeedCommentItem,
+			voteFeedItem,
 		} = this.props;
 		switch (feedItem.type) {
 		case types.badgeUnlocked:
@@ -95,8 +85,8 @@ class FeedItem extends Component {
 					post={feedItem.post}
 					vote={feedItem.vote}
 					votes={feedItem.votes}
-					onUpvote={() => voteFeedPostItem(feedItem, 1)}
-					onDownvote={() => voteFeedPostItem(feedItem, -1)}
+					onUpvote={() => voteFeedItem({ ...feedItem, newVote: 1, targetId: feedItem.post.id })}
+					onDownvote={() => voteFeedItem({ ...feedItem, newVote: -1, targetId: feedItem.post.id })}
 				/>
 			);
 		case types.postedAnswer:
@@ -110,8 +100,8 @@ class FeedItem extends Component {
 					vote={feedItem.vote}
 					date={feedItem.date}
 					votes={feedItem.votes}
-					onUpvote={() => voteFeedPostItem(feedItem, 1)}
-					onDownvote={() => voteFeedPostItem(feedItem, -1)}
+					onUpvote={() => voteFeedItem({ ...feedItem, newVote: 1, targetId: feedItem.post.id })}
+					onDownvote={() => voteFeedItem({ ...feedItem, newVote: -1, targetId: feedItem.post.id })}
 				/>
 			);
 		case types.postedCode:
@@ -125,8 +115,8 @@ class FeedItem extends Component {
 						date={feedItem.date}
 						userVote={feedItem.vote}
 						totalVotes={feedItem.votes}
-						onUpvote={() => voteFeedCodeItem(feedItem, 1)}
-						onDownvote={() => voteFeedCodeItem(feedItem, -1)}
+						onUpvote={() => voteFeedItem({ ...feedItem, newVote: 1, targetId: feedItem.code.id })}
+						onDownvote={() => voteFeedItem({ ...feedItem, newVote: -1, targetId: feedItem.code.id })}
 					/>
 				</div>
 			);
@@ -146,8 +136,8 @@ class FeedItem extends Component {
 						date={feedItem.date}
 						userVote={feedItem.vote}
 						totalVotes={feedItem.votes}
-						onUpvote={() => voteFeedCommentItem(feedItem, 1)}
-						onDownvote={() => voteFeedCommentItem(feedItem, -1)}
+						onUpvote={() => voteFeedItem({ ...feedItem, newVote: 1, targetId: feedItem.comment.id })}
+						onDownvote={() => voteFeedItem({ ...feedItem, newVote: -1, targetId: feedItem.comment.id })}
 					/>
 				</div>
 			);
@@ -161,8 +151,8 @@ class FeedItem extends Component {
 						date={feedItem.date}
 						userVote={feedItem.vote}
 						totalVotes={feedItem.votes}
-						onUpvote={() => voteFeedCommentItem(feedItem, 1)}
-						onDownvote={() => voteFeedCommentItem(feedItem, -1)}
+						onUpvote={() => voteFeedItem({ ...feedItem, newVote: 1, targetId: feedItem.comment.id })}
+						onDownvote={() => voteFeedItem({ ...feedItem, newVote: -1, targetId: feedItem.comment.id })}
 					/>
 				</div>
 			);
@@ -177,8 +167,8 @@ class FeedItem extends Component {
 						date={feedItem.date}
 						userVote={feedItem.vote}
 						totalVotes={feedItem.votes}
-						onUpvote={() => voteFeedCommentItem(feedItem, 1)}
-						onDownvote={() => voteFeedCommentItem(feedItem, -1)}
+						onUpvote={() => voteFeedItem({ ...feedItem, newVote: 1, targetId: feedItem.comment.id })}
+						onDownvote={() => voteFeedItem({ ...feedItem, newVote: -1, targetId: feedItem.comment.id })}
 					/>
 				</div>
 			);

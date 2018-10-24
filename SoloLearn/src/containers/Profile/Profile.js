@@ -151,6 +151,7 @@ class Profile extends Component {
 							feed={feed.entities}
 							hasMore={feed.hasMore}
 							loadMore={this.profile.getFeed}
+							voteFeedItem={this.profile.voteFeedItem}
 						/>
 					</div>
 				}
