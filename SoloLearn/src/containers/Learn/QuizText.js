@@ -5,6 +5,7 @@ import { translate } from 'react-i18next';
 
 import Service from 'api/service';
 import { updateDate } from 'utils';
+import Snackbar from 'material-ui/Snackbar';
 import SlayLessonToolbar from './SlayLessonToolbar';
 import Parser from './Parser';
 
@@ -33,6 +34,7 @@ class QuizText extends Component {
 		}
 		this.state = {
 			basePath,
+			snackbarOpened: false,
 			isBookmarked: props.isBookmarked,
 		};
 	}
@@ -42,12 +44,19 @@ class QuizText extends Component {
 		const { isBookmarked: bookmark } = this.state;
 		const { isBookmarked } =
 			await Service.request('BookmarkLesson', { id, type: itemType, bookmark: !bookmark });
-		this.setState({ isBookmarked });
+		this.setState({ isBookmarked, snackbarOpened: true });
+	}
+
+	handleSnackBarClose = (reason) => {
+		if (reason !== 'clickaway') {
+			this.setState({ snackBarOpened: false });
+		}
 	}
 
 	render() {
-		const { basePath, isBookmarked } = this.state;
+		const { basePath, isBookmarked, snackbarOpened } = this.state;
 		const {
+			t,
 			date,
 			quizId,
 			userData,
@@ -69,6 +78,12 @@ class QuizText extends Component {
 					timePassed={updateDate(date)}
 					withAuthorInfo={withAuthorInfo}
 					toggleBookmark={this.toggleBookmark}
+				/>
+				<Snackbar
+					open={snackbarOpened}
+					autoHideDuration={1500}
+					onRequestClose={this.handleSnackbarClose}
+					message={isBookmarked ? t('lesson.bookmark-added') : t('lesson.bookmark-removed')}
 				/>
 			</div>
 		);

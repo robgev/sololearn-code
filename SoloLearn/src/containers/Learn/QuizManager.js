@@ -369,7 +369,7 @@ class QuizManager extends Component {
 							<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}`}>
 								{activeModule.name} &gt; {' '}
 							</Link>
-							<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}/${activeLesson.name}/1`}>
+							<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(activeLesson.name, 100)}/1`}>
 								{activeLesson.name}
 							</Link>
 						</div>
