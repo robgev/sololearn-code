@@ -6,6 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 const LoadingButton = ({
 	raised = false, label = 'label', loading = false, disabled = false, ...rest
 }) => {
+	const labelStyle = disabled || loading ? { labelStyle: { color: 'rgba(0, 0, 0, 0.3)' } } : {};
 	const Button = raised ? RaisedButton : FlatButton;
 	return (
 		<Localize>
@@ -16,6 +17,7 @@ const LoadingButton = ({
 						label: loading ? t('common.loading') : label,
 						disabled: disabled || loading,
 						...rest,
+						...labelStyle,
 					}}
 				/>
 			)}

@@ -144,7 +144,7 @@ class MySubmissions extends Component {
 			isDeletePopupOpen: false,
 			challenges: s.challenges.filter(challenge => challenge.id !== id),
 		}));
-		deleteChallenge(id);
+		return deleteChallenge(id);
 	}
 	hanldeStatusFilterChange = (_, __, status) => {
 		const { location } = this.props;
@@ -271,20 +271,20 @@ class MySubmissions extends Component {
 								label={this.checkBarLabel}
 								status={this.state.checkResult}
 							/>
-							<Dialog
-								title={t('factory.delete-submission-title')}
-								contentStyle={{ width: '50%' }}
-								open={this.state.isDeletePopupOpen}
-								actions={[
-									<FlatButton label={t('common.cancel-title')} onClick={this.toggleDeletePopup} primary />,
-									<FlatButton label={t('common.delete-title')} onClick={this.handleDelete} labelStyle={{ color: red500 }} />,
-								]}
-								onRequestClose={this.toggleDeletePopup}
-							>
-								{t('factory.delete-submission-message')}
-							</Dialog>
 						</div>
 					) : null}
+				</Dialog>
+				<Dialog
+					title={t('factory.delete-submission-title')}
+					contentStyle={{ width: '50%' }}
+					open={this.state.isDeletePopupOpen}
+					actions={[
+						<FlatButton label={t('common.cancel-title')} onClick={this.toggleDeletePopup} primary />,
+						<FlatButton label={t('common.delete-title')} onClick={this.handleDelete} labelStyle={{ color: red500 }} />,
+					]}
+					onRequestClose={this.toggleDeletePopup}
+				>
+					{t('factory.delete-submission-message')}
 				</Dialog>
 			</Layout>
 		);
