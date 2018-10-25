@@ -228,7 +228,7 @@ class QuizManager extends Component {
 		return (
 			<div
 				style={{
-					margin: '20px auto 0px auto',
+					margin: '20px auto',
 					width: `${((count * 3) + ((count - 1) * 5))}%`,
 				}}
 			>
