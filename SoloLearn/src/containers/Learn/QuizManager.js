@@ -353,6 +353,7 @@ class QuizManager extends Component {
 			child => React.cloneElement(child, {
 				loadLessonLink: this.loadLessonLink,
 				openComments: this.openComments,
+				activeLesson,
 			}),
 		);
 

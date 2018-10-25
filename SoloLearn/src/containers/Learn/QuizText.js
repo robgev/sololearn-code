@@ -1,9 +1,11 @@
 // React modules
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { browserHistory, withRouter } from 'react-router';
 import { translate } from 'react-i18next';
 
 import Service from 'api/service';
+import { toggleLessonBookmark } from 'actions/slay';
 import { updateDate } from 'utils';
 import Snackbar from 'material-ui/Snackbar';
 import SlayLessonToolbar from './SlayLessonToolbar';
@@ -24,6 +26,7 @@ const constructBasePathname = (pathname, params) => {
 	return pathname;
 };
 
+@connect(null, { toggleLessonBookmark })
 class QuizText extends Component {
 	constructor(props) {
 		super(props);
@@ -40,16 +43,16 @@ class QuizText extends Component {
 	}
 
 	toggleBookmark = async () => {
-		const { lessonId: id, itemType = 3 } = this.props;
+		const { activeLesson, itemType = 3 } = this.props;
 		const { isBookmarked: bookmark } = this.state;
-		const { isBookmarked } =
-			await Service.request('BookmarkLesson', { id, type: itemType, bookmark: !bookmark });
+		const isBookmarked =
+			await this.props.toggleLessonBookmark({ activeLesson, type: itemType, bookmark: !bookmark });
 		this.setState({ isBookmarked, snackbarOpened: true });
 	}
 
 	handleSnackBarClose = (reason) => {
 		if (reason !== 'clickaway') {
-			this.setState({ snackBarOpened: false });
+			this.setState({ snackbarOpened: false });
 		}
 	}
 

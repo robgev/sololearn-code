@@ -156,12 +156,12 @@ class SlayLesson extends PureComponent {
 								type={type}
 								name={name}
 								parts={parts}
-								lessonId={id}
 								withAuthorInfo
 								userData={userData}
 								itemType={itemType}
 								textContent={content}
 								pageNumber={pageNumber}
+								activeLesson={activeLesson}
 								courseLanguage={language}
 								commentsCount={comments}
 								isBookmarked={isBookmarked}

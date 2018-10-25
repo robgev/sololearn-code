@@ -2,8 +2,10 @@ import {
 	SET_ACTIVE_LESSON,
 	RESET_LOCALE_DATA,
 	SET_LESSONS_BY_USER,
+	ADD_BOOKMARK_ITEM,
 	SET_COLLECTION_ITEMS,
 	SET_LESSON_COLLECTIONS,
+	REMOVE_BOOKMARK_ITEM,
 	APPEND_LESSONS_BY_USER,
 	APPEND_COLLECTION_ITEMS,
 	SET_CURRENT_LESSON_COLLECTION,
@@ -53,7 +55,11 @@ const bookmarks = (state = [], action) => {
 	case SET_BOOKMARK_COLLECTION_ITEMS:
 		return action.payload;
 	case APPEND_BOOKMARK_COLLECTION_ITEMS:
-		return safeAdd(state, action.payload);
+		return uniqBy([ ...state, ...action.payload ], 'id');
+	case ADD_BOOKMARK_ITEM:
+		return [ action.payload, ...state ];
+	case REMOVE_BOOKMARK_ITEM:
+		return state.filter(l => l.id !== action.payload.id);
 	case RESET_LOCALE_DATA:
 		return [];
 	default:
@@ -77,7 +83,7 @@ const lessonsByUser = (state = [], action) => {
 	case SET_LESSONS_BY_USER:
 		return action.payload;
 	case APPEND_LESSONS_BY_USER:
-		return safeAdd(state, action.payload);
+		return uniqBy([ ...state, ...action.payload ], 'id');
 	case RESET_LOCALE_DATA:
 		return [];
 	default:
