@@ -254,6 +254,7 @@ class MySubmissions extends Component {
 					actions={actions}
 					onRequestClose={this.closePreview}
 					actionsContainerStyle={actionContainerStyle}
+					autoScrollBodyContent
 				>
 					{previewChallenge !== null ? (
 						<div>
