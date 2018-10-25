@@ -135,7 +135,7 @@ class NotificationToaster extends Component {
 		case types.postedUserLessonComment:
 		case types.postedUserLessonCommentReply:
 		case types.upvoteUserLessonComment:
-			return `/learn/lesson/${notification.userLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${notification.userLesson.id}/${notification.userLesson.name}/1?commentID=${notification.userLessonComment.id}`;
+			return `/learn/lesson/${notification.userLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${notification.userLesson.id}/${toSeoFriendly(notification.userLesson.name, 100)}/1?commentID=${notification.userLessonComment.id}`;
 		case types.postedLessonComment:
 		case types.postedLessonCommentReply:
 		case types.upvoteComment:

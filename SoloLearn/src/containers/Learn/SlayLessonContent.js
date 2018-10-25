@@ -12,6 +12,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { grey500 } from 'material-ui/styles/colors';
 import ReportItemTypes from 'constants/ReportItemTypes';
 import ReportPopup from 'components/ReportPopup';
+import { toSeoFriendly } from 'utils';
 
 import QuizText from './QuizText';
 import StepIcon from './StepIcon';
@@ -35,7 +36,7 @@ class SlayLessonContent extends Component {
 			itemType,
 		} = this.props;
 		const currentStep = +e.currentTarget.getAttribute('value');
-		browserHistory.push(`/learn/lesson/${itemType === 3 ? 'course-lesson' : 'user-lesson'}/${quizId}/${name}/${currentStep + 1}`);
+		browserHistory.push(`/learn/lesson/${itemType === 3 ? 'course-lesson' : 'user-lesson'}/${quizId}/${toSeoFriendly(name, 100)}/${currentStep + 1}`);
 		this.setState({ currentStep });
 	}
 

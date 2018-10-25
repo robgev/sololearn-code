@@ -35,7 +35,7 @@ const CodePenCard = ({
 			to={
 				itemType === slayItemTypes.course
 					? `/learn/course/${toSeoFriendly(name)}`
-					: `/learn/lesson/${itemType === slayItemTypes.courseLesson ? 'course-lesson' : 'user-lesson'}/${id}/${name}/1`}
+					: `/learn/lesson/${itemType === slayItemTypes.courseLesson ? 'course-lesson' : 'user-lesson'}/${id}/${toSeoFriendly(name, 100)}/1`}
 			className="code-pen-wrapper"
 		>
 			<div className="image-wrapper" style={{ backgroundColor: itemType === slayItemTypes.course ? getLanguageColor(language) : color }}>

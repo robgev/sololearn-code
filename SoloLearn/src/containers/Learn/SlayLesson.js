@@ -6,6 +6,7 @@ import { translate } from 'react-i18next';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { toSeoFriendly } from 'utils';
 import Comments from 'containers/Comments/CommentsBase';
 import LessonLayout from 'components/Layouts/LessonLayout';
 
@@ -167,7 +168,7 @@ class SlayLesson extends PureComponent {
 								isBookmarked={isBookmarked}
 							/>
 							{nextLesson &&
-								<Link to={`/learn/lesson/${nextLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${nextLesson.id}/${nextLesson.name}/1`}>
+								<Link to={`/learn/lesson/${nextLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${nextLesson.id}/${toSeoFriendly(nextLesson.name, 100)}/1`}>
 									<RaisedButton
 										labelColor="#fff"
 										backgroundColor="#8bc34a"
