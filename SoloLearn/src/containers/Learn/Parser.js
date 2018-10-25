@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Tooltip } from 'react-tippy';
+import { ExternalLink } from 'components/ExternalLink';
 import CodeBlock from './CodeBlock';
 import './Parser.scss';
 
@@ -81,7 +82,7 @@ class Parser extends Component {
 			const userLessonId = fullLink.substring(fullLink.lastIndexOf('/') + 1);
 			return <a href={`/learn/lesson/user-lesson/${userLessonId}`}>{children}</a>;
 		}
-		return <a href={fullLink}>{children}</a>;
+		return <ExternalLink href={fullLink}>{children}</ExternalLink>;
 	}
 
 	static Image = ({ id, width }) =>

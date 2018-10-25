@@ -10,7 +10,6 @@ import toSeoFriendly from './linkPrettify';
 import findBestRank from './findBestRank';
 import updateDate from './updateDate';
 import faultGenerator from './faultGenerator';
-import updateMessage from './messageFormatter';
 import generatePreviews from './generatePreviews';
 import numberFormatter from './numberFormatter';
 import getLanguageColor from './getLanguageColor';
@@ -56,7 +55,6 @@ export {
 	findBestRank,
 	shuffleArray,
 	toSeoFriendly,
-	updateMessage,
 	faultGenerator,
 	determineBadge,
 	generatePreviews,

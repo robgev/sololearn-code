@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import Linkify from 'react-linkify';
+import { ExternalLinkify } from 'components/ExternalLink';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
@@ -126,11 +126,11 @@ class Question extends Component {
 						<p className="title" style={styles.title}>{question.title}</p>
 						<DiscussTags tags={question.tags} />
 						<pre className="message" style={styles.message}>
-							<Linkify>
+							<ExternalLinkify>
 								<div style={{ overflowWrap: 'break-word' }}>
 									{replaceMention(question.message)}
 								</div>
-							</Linkify>
+							</ExternalLinkify>
 						</pre>
 						{previewsData.map(singlePreviewData => (
 							<PreviewItem

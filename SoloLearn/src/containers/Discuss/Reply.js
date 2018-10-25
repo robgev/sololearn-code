@@ -1,7 +1,7 @@
 // General modules
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Linkify from 'react-linkify';
+import { ExternalLinkify } from 'components/ExternalLink';
 
 // Material UI components
 import IconMenu from 'material-ui/IconMenu';
@@ -62,9 +62,9 @@ class Reply extends Component {
 			return (
 				<div>
 					<pre className="message" style={styles.message}>
-						<Linkify>
+						<ExternalLinkify>
 							{replaceMention(this.props.reply.message)}
-						</Linkify>
+						</ExternalLinkify>
 					</pre>
 					{previewsData.map(singlePreviewData => (
 						<PreviewItem

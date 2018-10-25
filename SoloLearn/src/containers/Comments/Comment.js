@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { action, observable, computed } from 'mobx';
 import { observer } from 'mobx-react';
-import Linkify from 'react-linkify';
+import { ExternalLinkify } from 'components/ExternalLink';
 import FlatButton from 'material-ui/FlatButton';
 import Divider from 'material-ui/Divider';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -273,9 +273,9 @@ class Comment extends Component {
 							</div>
 						)
 						: (
-							<Linkify>
+							<ExternalLinkify>
 								<p>{replaceMention(message)}</p>
-							</Linkify>
+							</ExternalLinkify>
 						))}
 				</CommentView>
 				{
