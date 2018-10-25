@@ -84,13 +84,11 @@ class Codes extends Component {
 								<p className="page-title">{t('code_playground.title')}</p>
 								<div className="playground-menus">
 									<DropDownMenu
-										autoWidth={false}
-										style={{ height: 20 }}
 										value={filters.language}
-										className="mini-drop-down"
-										iconStyle={{ height: 5, padding: 0 }}
-										labelStyle={{ height: 20, lineHeight: '20px' }}
 										onChange={this.handleLanguageFilterChange}
+										style={{ height: 20, zIndex: 1 }}
+										iconStyle={{ height: 20, padding: 0, top: -1 }}
+										labelStyle={{ height: 20, lineHeight: '20px' }}
 									>
 										<MenuItem value="" primaryText={t('code.language-filter.all')} />
 										<MenuItem value="web" primaryText="Web" />
@@ -105,13 +103,11 @@ class Codes extends Component {
 										<MenuItem value="php" primaryText="PHP" />
 									</DropDownMenu>
 									<DropDownMenu
-										style={{ height: 20, zIndex: 1 }}
-										iconStyle={{ height: 5, padding: 0 }}
-										labelStyle={{ height: 20, lineHeight: '20px' }}
-										className="mini-drop-down"
 										value={filters.orderBy}
-										autoWidth={false}
 										onChange={this.handleOrderByFilterChange}
+										style={{ height: 20, zIndex: 1 }}
+										iconStyle={{ height: 20, padding: 0, top: -1 }}
+										labelStyle={{ height: 20, lineHeight: '20px' }}
 									>
 										<MenuItem value={6} primaryText={t('code.filter.hot-today')} />
 										<MenuItem value={4} primaryText={t('code.filter.trending')} />

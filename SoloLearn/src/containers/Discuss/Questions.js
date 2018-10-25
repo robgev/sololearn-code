@@ -82,16 +82,15 @@ class Questions extends Component {
 					<QuestionList
 						header={
 							<div style={{
-								marginBottom: 10, display: 'flex', justifyContent: 'space-between',
+								display: 'flex', justifyContent: 'space-between',
 							}}
 							>
 								<p className="page-title">{t('discuss.title')}</p>
 								<DropDownMenu
-									style={{ height: 20, zIndex: 1 }}
 									value={filters.orderBy}
-									className="mini-drop-down"
-									iconStyle={{ height: 5, padding: 0 }}
 									onChange={this.handleOrderByFilterChange}
+									style={{ height: 20, zIndex: 1 }}
+									iconStyle={{ height: 20, padding: 0, top: -1 }}
 									labelStyle={{ height: 20, lineHeight: '20px' }}
 								>
 									<MenuItem value={8} primaryText={t('discuss.filter.trending')} />
