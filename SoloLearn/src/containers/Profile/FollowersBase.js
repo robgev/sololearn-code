@@ -21,7 +21,6 @@ const styles = {
 	container: {
 		position: 'relative',
 		height: 500,
-		overflowY: 'auto',
 	},
 	header: {
 		display: 'flex',
@@ -60,6 +59,7 @@ class FollowersBase extends Component {
 			<Dialog
 				open={open}
 				onRequestClose={closePopup}
+				autoScrollBodyContent
 				header={
 					<div style={styles.header}>
 						<Tabs
@@ -83,7 +83,7 @@ class FollowersBase extends Component {
 				}
 			>
 				<div style={styles.container}>
-					{	this.activeTab === TabTypes.Followers &&
+					{this.activeTab === TabTypes.Followers &&
 						<UserList
 							users={followers.entities}
 							hasMore={followers.hasMore}
