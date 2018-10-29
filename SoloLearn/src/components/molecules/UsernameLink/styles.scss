@@ -1,0 +1,11 @@
+@import '~styles/_colors';
+
+.molecule_username-link {
+	font-size: 14px;
+    color: $primaryColor;
+    text-decoration: none;
+}
+
+.molecule_username-link:hover {
+	text-decoration: underline;
+}
