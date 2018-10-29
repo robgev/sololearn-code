@@ -228,7 +228,7 @@ class QuizManager extends Component {
 		return (
 			<div
 				style={{
-					margin: '20px auto 0px auto',
+					margin: '20px auto',
 					width: `${((count * 3) + ((count - 1) * 5))}%`,
 				}}
 			>
@@ -353,6 +353,7 @@ class QuizManager extends Component {
 			child => React.cloneElement(child, {
 				loadLessonLink: this.loadLessonLink,
 				openComments: this.openComments,
+				activeLesson,
 			}),
 		);
 
@@ -369,7 +370,7 @@ class QuizManager extends Component {
 							<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}`}>
 								{activeModule.name} &gt; {' '}
 							</Link>
-							<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}/${activeLesson.name}/1`}>
+							<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(activeLesson.name, 100)}/1`}>
 								{activeLesson.name}
 							</Link>
 						</div>

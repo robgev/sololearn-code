@@ -7,7 +7,7 @@ import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
 
 // Utils
-import { getLanguageColor } from 'utils';
+import { getLanguageColor, toSeoFriendly } from 'utils';
 import PopupTypes from 'defaults/feedPopupTypes';
 import CourseCard from 'components/CourseCard';
 
@@ -227,7 +227,7 @@ class FeedPin extends Component {
 				url = `/discuss/${firstPost.id}`;
 			} else if (pin.lessons) {
 				const firstLesson = pin.lessons[0];
-				url = `/learn/lesson/${firstLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${firstLesson.id}/${firstLesson.name}/1`;
+				url = `/learn/lesson/${firstLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${firstLesson.id}/${toSeoFriendly(firstLesson.name, 100)}/1`;
 			} else if (pin.userPosts) {
 				const firstPost = pin.userPosts[0];
 				url = `/userPost/${firstPost.id}`;

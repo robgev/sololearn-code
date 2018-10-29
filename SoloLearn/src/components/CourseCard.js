@@ -38,7 +38,7 @@ const CourseCard = ({
 			to={
 				itemType === slayItemTypes.course || isCourses ?
 					`/learn/course/${toSeoFriendly(getCourseNameById(courses, id))}` :
-					`/learn/lesson/${itemType === slayItemTypes.courseLesson ? 'course-lesson' : 'user-lesson'}/${id}/${name}/1`
+					`/learn/lesson/${itemType === slayItemTypes.courseLesson ? 'course-lesson' : 'user-lesson'}/${id}/${toSeoFriendly(name, 100)}/1`
 			}
 			style={wrapperStyle}
 			className="course-card-wrapper"
@@ -62,7 +62,7 @@ const CourseCard = ({
 					{userName}
 				</Link>
 				{(!minimal && (Number.isInteger(viewCount) && Number.isInteger(comments))) &&
-						<ViewStats
+				<ViewStats
 							views={viewCount}
 							comments={comments}
 						/>

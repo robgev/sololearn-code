@@ -251,6 +251,7 @@ class Quiz extends Component {
 			// params,
 			quizzes,
 			activeQuiz,
+			activeLesson,
 			activeModule,
 			activeLessonId,
 			t,
@@ -271,7 +272,7 @@ class Quiz extends Component {
 						type={1}
 						key={quiz.id}
 						quizId={quiz.id}
-						lessonId={activeLessonId}
+						activeLesson={activeLesson}
 						glossary={this.props.glossary}
 						textContent={quiz.textContent}
 						courseLanguage={course.language}

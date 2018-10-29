@@ -93,7 +93,7 @@ class Likes extends Component {
 					onRequestClose={this.toggleOpen}
 				>
 					<div style={{
-						height: 500,
+						height: '50vh',
 						position: 'relative',
 						overflowY: 'auto',
 					}}

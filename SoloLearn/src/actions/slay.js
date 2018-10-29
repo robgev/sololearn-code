@@ -116,6 +116,18 @@ export const getBookmarkLessons = pagingData => async (dispatch) => {
 	}
 };
 
+export const toggleLessonBookmark = ({ activeLesson, type, bookmark }) => async (dispatch) => {
+	dispatch({
+		type: bookmark ?
+			types.ADD_BOOKMARK_ITEM :
+			types.REMOVE_BOOKMARK_ITEM,
+		payload: activeLesson,
+	});
+	const { isBookmarked } =
+		await Service.request('BookmarkLesson', { id: activeLesson.id, type, bookmark });
+	return isBookmarked;
+};
+
 export const getLesson = id => async (dispatch) => {
 	try {
 		const { lesson } = await Service.request('GetLesson', { id });

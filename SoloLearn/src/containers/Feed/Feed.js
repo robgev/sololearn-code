@@ -4,6 +4,7 @@ import ReactGA from 'react-ga';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import {
+	voteFeedItem,
 	getFeedItemsInternal,
 	getNewFeedItemsInternal,
 	getPinnedFeedItemsInternal,
@@ -30,6 +31,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
+	voteFeedItem,
 	getFeedItems: getFeedItemsInternal,
 	getPinnedFeedItems: getPinnedFeedItemsInternal,
 	getDiscoverSuggestions,
@@ -88,6 +90,7 @@ class FeedItemsBase extends Component {
 			hasMore,
 			userProfile,
 			levels,
+			voteFeedItem,
 		} = this.props;
 		return (
 			<Layout
@@ -101,6 +104,7 @@ class FeedItemsBase extends Component {
 						feedPins={feedPins}
 						hasMore={hasMore}
 						loadMore={this.getFeedItems}
+						voteFeedItem={voteFeedItem}
 					/>
 				</div>
 			</Layout>

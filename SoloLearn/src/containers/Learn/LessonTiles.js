@@ -5,6 +5,7 @@ import {
 } from 'react-transition-group';
 import Paper from 'material-ui/Paper';
 import { Link } from 'react-router';
+import { toSeoFriendly } from 'utils';
 
 import Progress, { ProgressState } from 'api/progress';
 import 'styles/Learn/LessonTiles.scss';
@@ -40,7 +41,7 @@ const LessonTiles = ({
 						key={lesson.id}
 						style={{ animationDelay: `${(index % 20) * 30}ms` }}
 						className={`lesson-item ${lessonState.stateClass}`}
-						{...(slayLessons ? { to: `/learn/lesson/${lesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${lesson.id}/${lesson.name}/1` } :
+						{...(slayLessons ? { to: `/learn/lesson/${lesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${lesson.id}/${toSeoFriendly(lesson.name, 100)}/1` } :
 							{ onClick: () => onItemClick(lesson.id, lessonState, lesson.name) })
 						}
 					>
