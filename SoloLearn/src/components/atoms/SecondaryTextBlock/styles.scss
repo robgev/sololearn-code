@@ -1,0 +1,8 @@
+@import '~styles/colors';
+
+$secondary-text-size: 11px;
+
+.atom_secondary-text-block {
+	font-size: $secondary-text-size;
+	color: $secondaryTextColor;
+}

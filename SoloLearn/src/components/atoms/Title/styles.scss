@@ -1,0 +1,8 @@
+@import '~styles/colors';
+$title-color: $mainTextColor;
+$title-size: 15px;
+
+.atom_title {
+  font-size: $title-size;
+  color: $title-color;
+}
