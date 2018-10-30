@@ -12,3 +12,5 @@ export { default as SecondaryTextBlock } from './SecondaryTextBlock';
 export { default as List } from './List';
 export { default as ListItem } from './ListItem';
 export { default as Image } from './Image';
+export { default as VerticalDivider } from './VerticalDivider';
+export { default as HorizontalDivider } from './HorizontalDivider';
