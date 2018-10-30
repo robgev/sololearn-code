@@ -1,10 +1,8 @@
 import React from 'react';
-import { List as Item } from 'material-ui/List';
+import MUIList from '@material-ui/core/List';
 
-const List = ({ className, ...props }) =>
-	<Item className={`atom_list ${className}`} {...props} />;
+const List = props => (
+	<MUIList {...props} disablePadding />
+);
 
-List.defaultProps = {
-	className: '',
-};
 export default List;
