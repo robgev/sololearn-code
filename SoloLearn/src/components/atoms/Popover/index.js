@@ -2,7 +2,7 @@ import React from 'react';
 import { Tooltip } from 'react-tippy';
 
 const Popover = ({ className, ...props }) =>
-	<Tooltip 
+	(<Tooltip
 		arrow
 		interactive
 		useContext
@@ -10,9 +10,9 @@ const Popover = ({ className, ...props }) =>
 		theme="light"
 		position="top-start"
 		unmountHTMLWhenHide
-		className={'atom_popover ' + className} 
-		{...props} 
-	/>;
+		className={`atom_popover ${className}`}
+		{...props}
+	/>);
 
 Popover.defaultProps = {
 	className: '',
