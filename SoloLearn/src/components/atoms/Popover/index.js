@@ -1,6 +1,5 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
-import './styles.scss';
 
 const Popover = ({ className, ...props }) =>
 	<Tooltip 
