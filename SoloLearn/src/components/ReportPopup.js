@@ -3,7 +3,8 @@ import { translate } from 'react-i18next';
 import Dialog from 'components/StyledDialog';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
-import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+import { RadioButtonGroup } from 'material-ui/RadioButton';
+import {RadioButton} from 'components/atoms';
 import Service from 'api/service';
 
 @translate()

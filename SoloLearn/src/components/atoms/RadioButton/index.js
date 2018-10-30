@@ -1,8 +1,8 @@
 import React from 'react';
-import { RadioButton as Radio } from 'material-ui/RadioButton';
+import Radio from '@material-ui/core/Radio';
 
-const RadioButton = ({ className, ...props }) =>
-	<Radio className={`atom_radio-button ${className}`} {...props} />;
+const RadioButton = ({ ...props }) =>
+	<Radio {...props} />;
 
 RadioButton.defaultProps = {
 	className: '',

@@ -14,3 +14,4 @@ export { default as ListItem } from './ListItem';
 export { default as Image } from './Image';
 export { default as VerticalDivider } from './VerticalDivider';
 export { default as HorizontalDivider } from './HorizontalDivider';
+export { default as SwitchToggle } from './SwitchToggle';
