@@ -11,3 +11,4 @@ export { default as TextBlock } from './TextBlock';
 export { default as SecondaryTextBlock } from './SecondaryTextBlock';
 export { default as List } from './List';
 export { default as ListItem } from './ListItem';
+export { default as Image } from './Image';
