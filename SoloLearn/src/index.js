@@ -1,5 +1,8 @@
 // React modules
 import React, { PureComponent } from 'react';
+import JssProvider from 'react-jss/lib/JssProvider';
+import { create } from 'jss';
+import { createGenerateClassName, jssPreset } from '@material-ui/core/styles';
 import ReactGA from 'react-ga';
 import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
@@ -79,11 +82,22 @@ class App extends PureComponent {
 	}
 }
 
-ReactDOM.render(
-	<Provider store={store}>
-		<MuiThemeProvider muiTheme={getMuiTheme(Theme)}>
-			<App />
-		</MuiThemeProvider>
-	</Provider>,
-	document.getElementById('app'),
-);
+const Index = () => {
+	const generateClassName = createGenerateClassName();
+	const jss = create({
+		...jssPreset(),
+		// We define a custom insertion point that JSS will look for injecting the styles in the DOM.
+		insertionPoint: document.getElementById('css-insertion-point'),
+	});
+	return (
+		<Provider store={store}>
+			<JssProvider jss={jss} generateClassName={generateClassName}>
+				<MuiThemeProvider muiTheme={getMuiTheme(Theme)}>
+					<App />
+				</MuiThemeProvider>
+			</JssProvider>
+		</Provider>
+	);
+};
+
+ReactDOM.render(<Index />, document.getElementById('app'),);
