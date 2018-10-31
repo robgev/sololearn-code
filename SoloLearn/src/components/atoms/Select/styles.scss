@@ -1,0 +1,6 @@
+@import '~styles/colors';
+
+
+.underline:after{
+	border-bottom-color: $primaryColor;
+}
