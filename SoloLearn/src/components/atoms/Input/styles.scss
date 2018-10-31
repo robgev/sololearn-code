@@ -1,0 +1,9 @@
+@import '~styles/colors';
+
+.atom_input {
+	width: 100px;
+
+	.underline:after{
+		border-bottom-color: $primaryColor;
+	}
+}

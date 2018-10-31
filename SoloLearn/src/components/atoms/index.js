@@ -15,3 +15,4 @@ export { default as Image } from './Image';
 export { default as VerticalDivider } from './VerticalDivider';
 export { default as HorizontalDivider } from './HorizontalDivider';
 export { default as SwitchToggle } from './SwitchToggle';
+export { default as Input } from './Input';
