@@ -1,13 +1,13 @@
 @import '~styles/colors';
-$heading-size: 15px;
-$heading-line-height: 11px;
-$heading-weight: 400;
-$heading-color: $primaryColor;
+$heading_size: 15px;
+$heading_line_height: 11px;
+$heading_weight: 400;
+$heading_color: $primaryColor;
 
 .atom_heading {
   text-transform: uppercase;
-	font-size: $heading-size;
-	line-height: $heading-line-height;
-  color: $heading-color;
-  font-weight: $heading-weight;
+	font-size: $heading_size;
+	line-height: $heading_line_height;
+  color: $heading_color;
+  font-weight: $heading_weight;
 }

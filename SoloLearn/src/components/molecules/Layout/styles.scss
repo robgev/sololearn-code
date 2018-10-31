@@ -1,0 +1,16 @@
+@import '~styles/medias';
+
+$layout_max_size: $desktop-media;
+$layouts_gap: 20px;
+
+.molecule_layout {
+	margin: auto;
+	padding: $layouts_gap;
+	max-width: $layout_max_size;
+	min-width: $phoneMedia;
+	&.with-sidebar {
+		display: grid;
+		grid-gap: $layouts_gap;
+		grid-template-columns: 3fr 1fr;
+	}
+}

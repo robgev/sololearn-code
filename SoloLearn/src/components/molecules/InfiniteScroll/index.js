@@ -1,23 +1,23 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import InfiniteScroll from 'react-infinite-scroller';
+import RInfiniteScroll from 'react-infinite-scroller';
 import Loading from '@material-ui/core/CircularProgress';
 
-const InfiniteScrollList = ({ children, isLoading, ...props }) => (
+const InfiniteScroll = ({ children, isLoading, ...props }) => (
 	<Fragment>
-		<InfiniteScroll
+		<RInfiniteScroll
 			{...props}
 		>
 			{children}
-		</InfiniteScroll>
+		</RInfiniteScroll>
 		{isLoading ? <Loading /> : null}
 	</Fragment>
 );
 
-InfiniteScrollList.propTypes = {
+InfiniteScroll.propTypes = {
 	hasMore: PropTypes.bool.isRequired,
 	isLoading: PropTypes.bool.isRequired,
 	loadMore: PropTypes.func.isRequired,
 };
 
-export default InfiniteScrollList;
+export default InfiniteScroll;
