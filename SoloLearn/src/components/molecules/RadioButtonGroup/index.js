@@ -1,28 +1,20 @@
 import React from 'react';
 import { RadioButton } from 'components/atoms';
-import {  RadioButtonGroup as Group } from 'material-ui/RadioButton';
+import MUIRadioGroup from '@material-ui/core/RadioGroup';
 import './styles.scss';
 
-const RadioButtonGroup = ({ className, items, children, ...props }) => {
-	let radioButtons = [];
-	if (!children) {
-		children = [];
-	}
-	if (items && items.length) {
-		radioButtons = items.map((item) => {
-			return (<RadioButton {...item}/>)
-		});
-	}
-	return (
-		<Group className={'molecule_radio-button-group ' + className} {...props}>
-			{
-				[...children, ...radioButtons]
-			}
-		</Group>
-	);
-}
+const RadioButtonGroup = ({
+	className, items, children, ...props
+}) => (
+	<MUIRadioGroup className={`molecule_radio-button-group ${className}`} {...props}>
+		{children}
+		{ items.map(item => <RadioButton {...item} />) }
+	</MUIRadioGroup>
+);
 
 RadioButtonGroup.defaultProps = {
 	className: '',
+	items: [],
 };
+
 export default RadioButtonGroup;

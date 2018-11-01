@@ -7,4 +7,5 @@ const TextBox = ({ className, ...props }) =>
 TextBox.defaultProps = {
 	className: '',
 };
+
 export default TextBox;

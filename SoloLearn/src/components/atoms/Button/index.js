@@ -1,12 +1,12 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+import MUIButton from '@material-ui/core/Button';
 
-const ButtonWrapper = ({ className, variant, ...props }) => (
-	<Button variant={variant} className={`atom_button ${className}`} {...props} />
+const Button = ({ className, variant, ...props }) => (
+	<MUIButton variant={variant} className={`atom_button ${className}`} {...props} />
 );
 
-ButtonWrapper.defaultProps = {
+Button.defaultProps = {
 	className: '',
 };
 
-export default ButtonWrapper;
+export default Button;

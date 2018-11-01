@@ -1,17 +1,12 @@
 import React from 'react';
-import Item from '@material-ui/core/Tabs';
-import './styles.scss';
+import MUITabs from '@material-ui/core/Tabs';
 
-const Tabs = ({ className, ...props }) =>
-	(<Item
-		className={`atom_tabs ${className}`}
-		classes={{indicator:'atom_tabs-indicator'}}
-		fullWidth
-		
-		{...props}
-	/>);
+const Tabs = ({ className, ...props }) => (
+	<MUITabs fullWidth {...props} />
+);
 
 Tabs.defaultProps = {
 	className: '',
 };
+
 export default Tabs;

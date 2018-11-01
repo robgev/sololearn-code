@@ -1,3 +1,5 @@
+@import '~styles/colors';
+
 .atom_vertical-divider {
-	border-left: 1px solid black;
+	border-left: 1px solid $secondary_text_color;
 }

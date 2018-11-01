@@ -1,10 +1,8 @@
 import React from 'react';
-import Item from '@material-ui/core/Checkbox';
+import MUICheckbox from '@material-ui/core/Checkbox';
 
-const Checkbox = ({ className, ...props }) =>
-	<Item className={`atom_checkbox ${className}`} {...props} />;
+const Checkbox = props => (
+	<MUICheckbox {...props} />
+);
 
-Checkbox.defaultProps = {
-	className: '',
-};
 export default Checkbox;

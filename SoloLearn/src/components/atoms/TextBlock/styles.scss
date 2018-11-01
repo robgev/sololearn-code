@@ -1,8 +1,9 @@
 @import '~styles/colors';
+@import '~styles/variables';
 
 .atom_text-block {
   text-transform: uppercase;
-	font-size: 15px;
-	line-height: 11px;
-	color: rgba(0, 0, 0, 0.5);
+	font-size: $secondary_text_size;
+	line-height: $secondary_text_size;
+	color: $secondary_text_color
 }

@@ -1,16 +1,8 @@
 import React from 'react';
-import Dropdown from '@material-ui/core/Select';
-import Input from '@material-ui/core/Input';
-import './styles.scss';
+import MUISelect from '@material-ui/core/Select';
 
-const Select = ({ ...props }) =>
-	(<Dropdown
-		input={
-			<Input classes={{
-           		underline: 'underline',
-          	}}
-			/>
-		}
-		{...props}
-	/>);
+const Select = props => (
+	<MUISelect {...props} />
+);
+
 export default Select;

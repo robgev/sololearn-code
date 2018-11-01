@@ -1,7 +1,10 @@
+@import '~styles/colors';
+@import '~styles/variables';
+
+$text_box_padding: 10px;
+
 .atom_text-box {
-	border: solid 1px #E0E0E0;
-	margin-top: 10px;
-	padding: 10px;
-	font-size: 16px;
-	font-weight: 300;
+	border: 1px solid $secondary_background_color;
+	padding: $text_box_padding;
+	font-size: $primary_text_size;
 }

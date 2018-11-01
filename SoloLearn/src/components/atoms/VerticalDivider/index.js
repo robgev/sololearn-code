@@ -7,4 +7,5 @@ const VerticalDivider = ({ className, ...props }) =>
 VerticalDivider.defaultProps = {
 	className: '',
 };
+
 export default VerticalDivider;

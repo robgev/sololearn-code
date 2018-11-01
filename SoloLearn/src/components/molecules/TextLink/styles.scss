@@ -1,7 +1,7 @@
-@import '~styles/_colors';
+@import '~styles/colors';
+@import '~styles/variables';
 
 .molecule_text-link {
-	font-size: 14px;
-    color: $secondaryColor;
-    text-decoration: none;
+	font-size: $link_size;
+  color: $secondary_color;
 }

@@ -1,9 +1,7 @@
-.molecule_ref-link {
-	font-size: 14px;
-    color: #1fbba6;
-    text-decoration: none;
-}
+@import '~styles/colors';
+@import '~styles/variables';
 
-.molecule_ref-link:hover {
-	text-decoration: underline;
+.molecule_ref-link {
+	font-size: $link_size;
+  color: $primary_color;
 }

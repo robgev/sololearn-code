@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tooltip } from 'react-tippy';
 
-const Popover = ({ className, ...props }) =>
-	(<Tooltip
+const Popover = ({ className, ...props }) => (
+	<Tooltip
 		arrow
 		interactive
 		useContext
@@ -12,9 +12,11 @@ const Popover = ({ className, ...props }) =>
 		unmountHTMLWhenHide
 		className={`atom_popover ${className}`}
 		{...props}
-	/>);
+	/>
+);
 
 Popover.defaultProps = {
 	className: '',
 };
+
 export default Popover;

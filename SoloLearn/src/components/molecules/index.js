@@ -6,3 +6,5 @@ export { default as InfiniteScroll } from './InfiniteScroll';
 export { Layout, LayoutWithSidebar } from './Layout';
 export { default as FlatButton } from './FlatButton';
 export { default as ProgressBar } from './ProgressBar';
+export { default as RaisedButton } from './RaisedButton';
+export { default as CloseButton } from './CloseButton';

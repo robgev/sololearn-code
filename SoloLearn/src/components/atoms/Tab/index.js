@@ -1,8 +1,8 @@
 import React from 'react';
-import Item from '@material-ui/core/Tab';
-import './styles.scss';
+import MUITab from '@material-ui/core/Tab';
 
-const Tab = ({ ...props }) =>
-	<Item classes={{root:'atom_tab'}} {...props} />;
+const Tab = ({ ...props }) => (
+	<MUITab classes={{ root: 'atom_tab' }} {...props} />
+);
 
 export default Tab;
