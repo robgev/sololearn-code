@@ -4,7 +4,7 @@ import { observable, action, autorun, computed } from 'mobx';
 import { observer } from 'mobx-react';
 import { withRouter } from 'react-router';
 import { translate } from 'react-i18next';
-import { CountingMentionInput } from 'components/MentionInput';
+import { CountingMentionInput } from 'components/organisms';
 import FlatButton from 'material-ui/FlatButton';
 
 import MyAvatar from './MyAvatar';

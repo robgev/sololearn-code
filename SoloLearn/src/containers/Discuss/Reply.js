@@ -23,7 +23,7 @@ import ProfileAvatar from 'components/ProfileAvatar';
 import PreviewItem from 'components/PreviewItem';
 import UserTooltip from 'components/UserTooltip';
 import { showError, updateDate, determineAccessLevel, generatePreviews, replaceMention } from 'utils';
-import MentionInput from 'components/MentionInput';
+import { MentionInput } from 'components/organisms';
 
 import { ReplyStyles as styles } from './styles';
 import './reply.scss';

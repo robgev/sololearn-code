@@ -7,7 +7,7 @@ import { ExternalLinkify } from 'components/ExternalLink';
 import FlatButton from 'material-ui/FlatButton';
 import Divider from 'material-ui/Divider';
 import CircularProgress from 'material-ui/CircularProgress';
-import { CountingMentionInput } from 'components/MentionInput';
+import { CountingMentionInput } from 'components/organisms';
 import { replaceMention, showError, determineAccessLevel } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
 import MyAvatar from './MyAvatar';

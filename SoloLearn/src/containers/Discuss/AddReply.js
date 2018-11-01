@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 
-import MentionInput from 'components/MentionInput';
+import { MentionInput } from 'components/organisms';
 
 import { AddReplyStyles as styles } from './styles';
 import './addReply.scss';

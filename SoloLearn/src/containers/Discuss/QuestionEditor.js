@@ -16,7 +16,7 @@ import { translate } from 'react-i18next';
 import Service from 'api/service';
 
 // Additional components
-import MentionInput from 'components/MentionInput';
+import { MentionInput } from 'components/organisms';
 import LoadingButton from 'components/LoadingButton';
 
 import 'styles/Discuss/NewQuestion.scss';

@@ -6,7 +6,7 @@ import createMentionPlugin from 'draft-js-mention-plugin';
 import { mentionUsers, getMentionsList } from 'utils';
 import 'draft-js-mention-plugin/lib/plugin.css';
 import 'draft-js/dist/Draft.css';
-
+import { Container } from 'components/atoms';
 import Entry from './Entry';
 import getCurrentSelectedLength from './getCurrentSelectedLength';
 import './editorStyles.scss';
@@ -172,7 +172,7 @@ class MentionInput extends Component {
 		const plugins = [ this.mentionPlugin ];
 
 		return (
-			<div
+			<Container
 				className={`editor ${this.props.className}`}
 				style={this.props.style}
 				onClick={this.focus}
@@ -195,7 +195,7 @@ class MentionInput extends Component {
 					suggestions={this.state.suggestions}
 					entryComponent={Entry}
 				/>
-			</div>
+			</Container>
 		);
 	}
 }
@@ -215,7 +215,7 @@ MentionInput.propTypes = {
 	getUsers: PropTypes.shape({
 		type: PropTypes.string.isRequired,
 		params: PropTypes.object,
-	}),
+	}).isRequired,
 	className: PropTypes.string,
 	onFocus: PropTypes.func,
 	onBlur: PropTypes.func,
