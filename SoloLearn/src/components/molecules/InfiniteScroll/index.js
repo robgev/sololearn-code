@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import RInfiniteScroll from 'react-infinite-scroller';
-import Loading from '@material-ui/core/CircularProgress';
+import { Loading } from 'components/atoms';
 
 const InfiniteScroll = ({ children, isLoading, ...props }) => (
 	<Fragment>
