@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Container = ({ className, ...props }) => (
+const Container = props => (
 	<div {...props} />
 );
 
