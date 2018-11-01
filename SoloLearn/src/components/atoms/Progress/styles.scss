@@ -1,0 +1,8 @@
+@import '~styles/colors';
+
+.atom_progress {
+	height: 13px;
+}
+.atom_progress-primary {
+	background-color: $secondaryColor;
+}

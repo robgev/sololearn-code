@@ -5,3 +5,4 @@ export { default as RadioButtonGroup } from './RadioButtonGroup';
 export { default as InfiniteScroll } from './InfiniteScroll';
 export { Layout, LayoutWithSidebar } from './Layout';
 export { default as FlatButton } from './FlatButton';
+export { default as ProgressBar } from './ProgressBar';

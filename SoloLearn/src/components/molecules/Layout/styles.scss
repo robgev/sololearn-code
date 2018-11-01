@@ -7,7 +7,7 @@ $layouts_gap: 20px;
 	margin: auto;
 	padding: $layouts_gap;
 	max-width: $layout_max_size;
-	min-width: $phoneMedia;
+	min-width: $phone_media;
 	&.with-sidebar {
 		display: grid;
 		grid-gap: $layouts_gap;

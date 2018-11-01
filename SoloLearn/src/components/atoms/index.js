@@ -22,3 +22,4 @@ export { default as CircularProgress } from './CircularProgress';
 export { default as Button } from './Button';
 export { default as IconButton } from './IconButton';
 export { default as Loading } from './Loading';
+export { default as Progress } from './Progress';
