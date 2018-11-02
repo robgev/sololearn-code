@@ -16,7 +16,6 @@ const Stepper = ({ height, ...props }) => {
 			percent={percent}
 			filledBackground="#8BC34A"
 			{...props}
-
 		/>
 	);
 };

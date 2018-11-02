@@ -11,7 +11,6 @@ const StepIcon = ({
 	return (
 		<SvgIcon
 			className={`${classes} ${className}`}
-
 		>
 			<circle cx="12" cy="12" r={size / 2} />
 			<text

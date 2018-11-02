@@ -8,6 +8,7 @@ const BreadCrumbs = ({ items, ...props }) => (
 			(
 				<Link
 					to={item.link}
+					key={item.link}
 				>
 					{`${item.text} ${ind !== items.length - 1 ? ' > ' : ''}`}
 				</Link>
