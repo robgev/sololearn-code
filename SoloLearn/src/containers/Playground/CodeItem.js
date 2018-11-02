@@ -11,7 +11,7 @@ import { grey500 } from 'material-ui/styles/colors';
 // Utils
 import { numberFormatter } from 'utils';
 import ProfileAvatar from 'components/ProfileAvatar';
-import LanguageIcon from 'components/LanguageIcon';
+import { LanguageLabel } from 'components/molecules';
 import UserTooltip from 'components/UserTooltip';
 
 import 'styles/Playground/CodeItem.scss';
@@ -35,7 +35,7 @@ const CodeItem = ({ code }) => (
 				{code.name}
 			</Link>
 			<div className="stats">
-				<LanguageIcon className="code-language-icon" language={code.language} />
+				<LanguageLabel className="code-language-icon" language={code.language} />
 				<div className="votes">
 					<Arrows
 						color={grey500}

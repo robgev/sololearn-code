@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import Paper from 'material-ui/Paper';
 import Service from 'api/service';
-import LanguageIcon from 'components/LanguageIcon';
+import { LanguageLabel } from 'components/molecules';
 
 class CodePreview extends PureComponent {
 	constructor() {
@@ -35,7 +35,7 @@ class CodePreview extends PureComponent {
 		} = codeData;
 		return (
 			<Paper className="preview-wrapper">
-				<LanguageIcon language={language} />
+				<LanguageLabel language={language} />
 				<div className="preview-info">
 					<p className="primary">{name}</p>
 					<p className="secondary">{userName}</p>
