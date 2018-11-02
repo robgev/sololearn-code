@@ -18,4 +18,5 @@ ProgressBar.defaultProps = {
 	minText: '',
 	maxText: '',
 };
+
 export default ProgressBar;
