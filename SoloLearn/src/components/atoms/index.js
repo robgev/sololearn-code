@@ -28,3 +28,8 @@ export { default as Tabs } from './Tabs';
 export { default as Step } from './Step';
 export { default as Stepper } from './Stepper';
 export { default as StepIcon } from './StepIcon';
+export { default as Popup } from './Popup';
+export { default as PopupActions } from './PopupActions';
+export { default as PopupContent } from './PopupContent';
+export { default as PopupContentText } from './PopupContentText';
+export { default as PopupTitle } from './PopupTitle';
