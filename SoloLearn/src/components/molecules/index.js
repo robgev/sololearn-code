@@ -8,3 +8,4 @@ export { default as FlatButton } from './FlatButton';
 export { default as ProgressBar } from './ProgressBar';
 export { default as RaisedButton } from './RaisedButton';
 export { default as CloseButton } from './CloseButton';
+export { default as IconWithText } from './IconWithText';

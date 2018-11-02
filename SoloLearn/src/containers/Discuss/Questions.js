@@ -12,7 +12,7 @@ import {
 	discussFiltersSelector,
 	discussHasMoreSelector,
 } from 'reducers/discuss.reducer';
-import Layout from 'components/Layouts/GeneralLayout';
+import { LayoutWithSidebar } from 'components/molecules';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import { QuestionList } from 'components/Questions';
@@ -73,8 +73,8 @@ class Questions extends Component {
 			t, posts, filters, hasMore,
 		} = this.props;
 		return (
-			<Layout
-				sidebarContent={
+			<LayoutWithSidebar
+				sidebar={
 					<DiscussSidebar />
 				}
 			>
@@ -109,7 +109,7 @@ class Questions extends Component {
 					/>
 					<AddQuestionButton />
 				</div>
-			</Layout>
+			</LayoutWithSidebar>
 		);
 	}
 }
