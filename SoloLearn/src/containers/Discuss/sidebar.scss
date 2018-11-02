@@ -1,9 +1,0 @@
-@import '~styles/colors';
-
-$link_color: $secondary_text_color;
-
-.discuss-sidebar {
-	.link:hover {
-		text-decoration-color: $link_color;
-	}
-}

@@ -6,7 +6,6 @@ import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
 import { PaperContainer, Heading, List, ListItem, SecondaryTextBlock, Link } from 'components/atoms';
 import { IconWithText } from 'components/molecules';
 import { QuestionAnswer } from 'components/icons';
-import './sidebar.scss';
 
 const mapStateToProps = state => ({
 	questions: sidebarQuestionsSelector(state),
@@ -14,7 +13,7 @@ const mapStateToProps = state => ({
 });
 
 const DiscussSidebar = ({ isEmpty, questions, t }) => (
-	<PaperContainer className="discuss-sidebar">
+	<PaperContainer>
 		<Heading>{t('discuss.filter.hot-today')}</Heading>
 		{isEmpty
 			? <SidebarShimmer noTitle />
@@ -22,7 +21,7 @@ const DiscussSidebar = ({ isEmpty, questions, t }) => (
 				<List>
 					{questions.map(question => (
 						<ListItem>
-							<Link className="link" to={`/discuss/${question.id}`}>
+							<Link to={`/discuss/${question.id}`}>
 								<IconWithText Icon={QuestionAnswer}>
 									<SecondaryTextBlock>{question.title}</SecondaryTextBlock>
 								</IconWithText>
