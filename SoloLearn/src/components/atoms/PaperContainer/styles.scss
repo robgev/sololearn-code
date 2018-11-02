@@ -1,5 +1,5 @@
-$padding: 20px;
+@import '~styles/variables';
 
 .atom_paper-container {
-  padding: $padding;
+  padding: $primary_gap_size;
 }
