@@ -25,3 +25,6 @@ export { default as Loading } from './Loading';
 export { default as Progress } from './Progress';
 export { default as Tab } from './Tab';
 export { default as Tabs } from './Tabs';
+export { default as Step } from './Step';
+export { default as Stepper } from './Stepper';
+export { default as StepIcon } from './StepIcon';
