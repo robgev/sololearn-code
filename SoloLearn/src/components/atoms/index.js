@@ -33,3 +33,4 @@ export { default as PopupActions } from './PopupActions';
 export { default as PopupContent } from './PopupContent';
 export { default as PopupContentText } from './PopupContentText';
 export { default as PopupTitle } from './PopupTitle';
+export { default as Label } from './Label';
