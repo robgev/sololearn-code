@@ -1,0 +1,18 @@
+.molecule_fab {
+	position: absolute;
+	width: 56px;
+	top: 0;
+	bottom: 0;
+	.molecule_fab-button-root {
+		position: fixed;
+		bottom: 25;
+		z-index: 1;
+	}
+	&.left {
+		left: 20px
+	}
+	&.right {
+		right: 20px;
+	}
+	j
+}
