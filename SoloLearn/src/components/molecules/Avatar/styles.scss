@@ -1,0 +1,84 @@
+.avatar-container {
+	display: inline-block;
+	text-decoration: none;
+	.avatar-wrapper {
+		display: flex;
+		align-items: center;
+		font-size: 12px;
+		.profile-picture-container {
+			display: flex;
+	    flex-direction: column;
+	    align-items: center;
+			position: relative;
+			.level-badge {
+				position: absolute;
+				width: 35%;
+				bottom: 5%;
+				right: 5%;
+			}
+		}
+		&.vertical {
+			flex-direction: column;
+			.profile-picture-container {
+				padding-bottom: 5px;
+			}
+			.avatar-meta-info-container {
+				width: 100%;
+				.avatar-user-name {
+					max-width: 70%;
+				}
+			}
+		}
+	}
+	.avatar-meta-info-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		.avatar-user-name {
+			display: inline-flex;
+			align-items: center;
+			color: #607D8B;
+			margin: 0 0 2px 0;
+			.badge-container.mod.small {
+				margin-left: 3px;
+			}
+			.avatar-user-name-wrapper {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+		}
+		.avatar-date-text {
+			color: #777;
+		}
+		&.reversed {
+			order: -1;
+			text-align: right;
+		}
+	}
+}
+
+.profile-avatar-user-card.profile-avatar-reset {
+	width: initial;
+	margin: 0;
+	border: none;
+	padding: 5px;
+	.profile-container {
+		width: 290px;
+		.profile-avatar-wrapper {
+			display: flex;
+			flex: 1;
+			.profile-avatar {
+				width: 95px;
+				height: 95px;
+			}
+		}
+		.profile-data {
+			flex: 2;
+			padding: 0px 10px;
+			.user-card-follow-button {
+				align-self: flex-end;
+			}
+		}
+	}
+}
