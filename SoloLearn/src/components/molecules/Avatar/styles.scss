@@ -5,17 +5,21 @@ $big-avatar-size: 200px;
 .avatar-container {
 	display: inline-block;
 	.profile-image {
+		font-size: 50%;
 		&.small {
 			height: $small-avatar-size;
 			width: $small-avatar-size;
+			font-size: $small-avatar-size / 2;
 		}
 		&.normal {
 			height: $normal-avatar-size;
 			width: $normal-avatar-size;
+			font-size: $normal-avatar-size / 2;
 		}
 		&.big {
 			height: $big-avatar-size;
 			width: $big-avatar-size;
+			font-size: $big-avatar-size / 2;
 		}
 	}
 }
