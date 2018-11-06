@@ -11,7 +11,7 @@ const Label = ({ className, backgroundColor, ...props }) => (
 
 Label.defaultProps = {
 	className: '',
-	backgroundColor: 'inherit', // Inherit parent's color if not provided
+	backgroundColor: 'unset', // Don't set any color if not provided
 };
 
 export default Label;

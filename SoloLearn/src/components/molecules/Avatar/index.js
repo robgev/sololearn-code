@@ -8,9 +8,9 @@ import AvatarColors from 'constants/AvatarColors';
 import './styles.scss';
 
 const Avatar = ({
-	big,
 	badge,
 	userID,
+	variant,
 	disabled,
 	avatarUrl,
 	userName,
@@ -31,7 +31,7 @@ const Avatar = ({
 				? (
 					<RoundImage
 						src={avatarUrl}
-						className={`profile-image ${big ? 'big' : ''} ${modBadge ? 'bordered' : ''}`}
+						className={`profile-image ${variant} ${modBadge ? 'bordered' : ''}`}
 						style={{
 							...(modBadge ? { border: `4px solid ${modBadgeColor}` } : {}),
 						}}
@@ -39,7 +39,7 @@ const Avatar = ({
 				)
 				: (
 					<RoundImage
-						className={`profile-image ${big ? 'big' : ''} ${modBadge ? 'bordered' : ''}`}
+						className={`profile-image ${variant} ${modBadge ? 'bordered' : ''}`}
 						style={{
 							backgroundColor: AvatarColors[userID % AvatarColors.length],
 							...(modBadge ? { border: `4px solid ${modBadgeColor}` } : {}),
@@ -54,9 +54,9 @@ const Avatar = ({
 };
 
 Avatar.defaultProps = {
-	big: false,
 	badge: null,
 	disabled: false,
+	variant: 'small',
 	userName: '',
 };
 
