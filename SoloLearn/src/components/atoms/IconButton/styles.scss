@@ -1,7 +1,8 @@
 @import '~styles/colors';
 
 .atom_icon-button-root {
-	&:hover {
+	&:hover,
+	&.active {
 		background: none;
 		color: $primary_color;
 	}
