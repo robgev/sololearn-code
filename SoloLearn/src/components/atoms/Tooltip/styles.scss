@@ -1,0 +1,66 @@
+@import '~styles/colors';
+@import '~styles/variables';
+
+.atom_tooltip-popper {
+	.atom_tooltip {
+		background: $white;
+		box-shadow: $shadow_1;
+		padding: $primary_gap_size;
+	}
+	.atom_tooltip-arrow {
+		position: absolute;
+		font-size: 7;
+		width: 3em;
+		height: 3em;
+		&:before {
+			content: "";
+			margin: auto;
+			display: block;
+			width: 0;
+			height: 0;
+			border-style: solid;
+		}
+	}
+	&[x-placement*="bottom"] 	.atom_tooltip-arrow {
+		top: 0;
+		left: 0;
+		margin-top: -0.9em;
+		width: 3em;
+		height: 1em;
+		&:before {
+			border-width: 0 1em 1em 1em;
+			border-color: transparent transparent $white transparent;
+		};
+	};
+	&[x-placement*="top"] 	.atom_tooltip-arrow {
+		bottom: 0;
+		left: 0;
+		margin-bottom: -0.9em;
+		width: 3em;
+		height: 1em;
+		&:before {
+			border-width: 1em 1em 0 1em;
+			border-color: $white transparent transparent transparent;
+		};
+	};
+	&[x-placement*="right"] 	.atom_tooltip-arrow {
+		left: 0;
+		margin-left: -0.9em;
+		height: 3em;
+		width: 1em;
+		&:before {
+			border-width: 1em 1em 1em 0;
+			border-color: transparent $white transparent transparent;
+		};
+	};
+	&[x-placement*="left"] 	.atom_tooltip-arrow {
+		right: 0;
+		margin-right: -0.9em;
+		height: 3em;
+		width: 1em;
+		&:before {
+			border-width: 1em 0 1em 1em;
+			border-color: transparent transparent transparent $white;
+		};
+	};
+}
