@@ -1,0 +1,23 @@
+@import '~styles/variables';
+
+.molecule_userTooltip-container {
+	display: flex;
+	.molecule_userTooltip-avatar {
+		width: $large-avatar-size;
+		height: $large-avatar-size;
+		flex-shrink: 0;
+		&.molecule_userTooltip-letter {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: $large-avatar-size / 2;
+		}
+	}
+	.molecule_userTooltip-user-data {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: space-around;
+		margin-left:  $primary_gap_size;
+	}
+}
