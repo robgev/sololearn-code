@@ -1,6 +1,4 @@
-$small-avatar-size: 40px;
-$normal-avatar-size: 60px;
-$big-avatar-size: 200px;
+@import '~styles/variables';
 
 .avatar-container {
 	display: inline-block;
@@ -17,9 +15,9 @@ $big-avatar-size: 200px;
 			font-size: $normal-avatar-size / 2;
 		}
 		&.big {
-			height: $big-avatar-size;
-			width: $big-avatar-size;
-			font-size: $big-avatar-size / 2;
+			height: $xtra-large-avatar-size;
+			width: $xtra-large-avatar-size;
+			font-size: $xtra-large-avatar-size / 2;
 		}
 	}
 }
