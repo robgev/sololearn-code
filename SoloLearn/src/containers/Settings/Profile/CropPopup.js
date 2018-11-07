@@ -1,9 +1,14 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import AvatarEditor from 'react-cropper';
-import Dialog from 'components/StyledDialog';
 import { PromiseButton } from 'components/LoadingButton';
-import FlatButton from 'material-ui/FlatButton';
+import { FlatButton } from 'components/molecules';
+import {
+	Popup,
+	PopupActions,
+	PopupContent,
+	PopupTitle
+} from 'components/atoms';
 import { updateAvatar } from 'actions/settings';
 
 import 'cropperjs/dist/cropper.css';
@@ -37,8 +42,9 @@ class Profile extends PureComponent {
 			<FlatButton
 				primary
 				onClick={this.onRequestClose}
-				label={t('common.cancel-title')}
-			/>,
+			>
+				{t('common.cancel-title')}
+			</FlatButton>,
 			<PromiseButton
 				primary
 				onClick={this.onCrop}
@@ -47,25 +53,31 @@ class Profile extends PureComponent {
 			/>,
 		];
 		return (
-			<Dialog
+			<Popup
 				open={open}
-				actions={actions}
-				title={t('settings.edit-photo')}
-				onRequestClose={this.onRequestClose}
-				className="avatar-cropper-container"
+				onClose={this.onRequestClose}
+				classes={{paper:'crop-dialog'}}
 			>
-				<AvatarEditor
-					src={image}
-					viewMode={3}
-					dragMode="move"
-					aspectRatio={1 / 1}
-					ref={this.setEditorRef}
-					minCropBoxWidth={256}
-					minCropBoxHeight={256}
-					toggleDragModeOnDblclick={false}
-					style={{ height: 400, width: '100%' }}
-				/>
-			</Dialog>
+				<PopupTitle>
+					{t('settings.edit-photo')}
+				</PopupTitle>
+				<PopupContent>
+					<AvatarEditor
+						src={image}
+						viewMode={3}
+						dragMode="move"
+						aspectRatio={1 / 1}
+						ref={this.setEditorRef}
+						minCropBoxWidth={256}
+						minCropBoxHeight={256}
+						toggleDragModeOnDblclick={false}
+						style={{ height: 400, width: '100%' }}
+					/>
+				</PopupContent>
+				<PopupActions>
+					{actions}
+				</PopupActions>
+			</Popup>
 		);
 	}
 }

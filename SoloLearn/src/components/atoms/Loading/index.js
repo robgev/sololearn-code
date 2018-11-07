@@ -1,12 +1,10 @@
 import React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const Loading = ({ className, size, ...props }) => (
-	<CircularProgress className={`atom_loading ${className}`} size={50} {...props} />
-);
+import './styles.scss';
 
-Loading.defaultProps = {
-	className: '',
-};
+const Loading = ({ ...props }) => (
+	<CircularProgress classes={{circle:'atom_loading'}} size={50} {...props} />
+);
 
 export default Loading;

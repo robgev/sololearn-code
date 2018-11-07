@@ -1,0 +1,13 @@
+@import '~styles/colors';
+.atom_switch {
+	.atom_switch_base {
+		color: $primary_color;
+		+ .atom_switch_bar {
+			background-color: $primary_color;
+		}
+	}
+	.atom_switch_checked {
+		color: $primary_color;
+	}
+	
+}

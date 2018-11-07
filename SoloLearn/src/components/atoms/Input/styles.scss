@@ -1,0 +1,11 @@
+@import '~styles/colors';
+
+.atom_input_underline:after {
+	border-bottom-color: $primary_color;
+}
+
+.atom_input_label {
+	&.atom_input_label_focused {
+		color: $primary_color;
+	}
+}

@@ -1,9 +1,13 @@
 import React from 'react';
 import ReactGA from 'react-ga';
-import { Link } from 'react-router';
-import Paper from 'material-ui/Paper';
+import { 
+	Link, 
+	PaperContainer, 
+	Container, 
+	SecondaryTextBlock 
+} from 'components/atoms';
 import NotFound from 'components/NotFound';
-import Layout from 'components/Layouts/GeneralLayout';
+import { Layout } from 'components/molecules';
 
 // i18n
 import { translate } from 'react-i18next';
@@ -32,20 +36,29 @@ const Settings = ({ t, params: { settingID = 'profile' } }) => {
 	const SettingsComponent = SettingsMapping[settingID];
 	return SettingsComponent
 		? (
-			<Layout noSidebar>
-				<Paper className="settings-container">
-					<div className="settings-sections">
-						<Link className="hoverable" to="/settings/profile">{t('settings.edit-profile')}</Link>
-						<Link className="hoverable" to="/settings/password">{t('settings.change-password')}</Link>
-						<Link className="hoverable" to="/settings/blocking">{t('settings.blocked-accounts')}</Link>
-						{/* <Link className="hoverable" to="/settings/weapons">{t('settings.manage-weapons')}</Link> */}
-						<Link className="hoverable" to="/settings/content">{t('settings.activity-feed')}</Link>
-						<Link className="hoverable" to="/settings/localization">{t('settings.language')}</Link>
-					</div>
-					<div className="settings-main">
+			<Layout>
+				<PaperContainer className="settings-container">
+					<Container className="settings-sections">
+						<Container className="settings-tab">
+							<Link to="/settings/profile"><SecondaryTextBlock>{t('settings.edit-profile')}</SecondaryTextBlock></Link>
+						</Container>
+						<Container className="settings-tab">
+							<Link to="/settings/password"><SecondaryTextBlock>{t('settings.change-password')}</SecondaryTextBlock></Link>
+						</Container>
+						<Container className="settings-tab">
+							<Link to="/settings/blocking"><SecondaryTextBlock>{t('settings.blocked-accounts')}</SecondaryTextBlock></Link>
+						</Container>
+						<Container className="settings-tab">
+							<Link to="/settings/content"><SecondaryTextBlock>{t('settings.activity-feed')}</SecondaryTextBlock></Link>
+						</Container>
+						<Container className="settings-tab">
+							<Link to="/settings/localization"><SecondaryTextBlock>{t('settings.language')}</SecondaryTextBlock></Link>
+						</Container>
+					</Container>
+					<Container className="settings-main">
 						<SettingsComponent />
-					</div>
-				</Paper>
+					</Container>
+				</PaperContainer>
 			</Layout>
 		)
 		: <NotFound />;

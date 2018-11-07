@@ -15,6 +15,8 @@ export const getProfileFeedItems = feedItems => ({
 
 export const clearProfileFeedItems = () => ({ type: types.CLEAR_PROFILE_FEED_ITEMS });
 
+export const clearFeedItems = () => ({ type: types.CLEAR_FEED });
+
 export const getFeedItemsInternal = () => async (dispatch, getState) => {
 	try {
 		const requestLimitCount = 20;

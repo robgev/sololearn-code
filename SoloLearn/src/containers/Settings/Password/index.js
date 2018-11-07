@@ -6,15 +6,13 @@ import { hash } from 'utils';
 
 import { updateProfile } from 'actions/settings';
 
-import Snackbar from 'material-ui/Snackbar';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import {
+	Container,
+	Input,
+	Snackbar
+} from 'components/atoms';
+import { FlatButton } from 'components/molecules';
 
-// const mapStateToProps = ({ userProfile }) => ({
-// 	userProfile,
-// });
-
-// @connect(mapStateToProps, { updateProfile })
 @connect(null, { updateProfile })
 @translate()
 class Password extends PureComponent {
@@ -90,57 +88,53 @@ class Password extends PureComponent {
 		} = this.state;
 		const { t } = this.props;
 		return (
-			<div className="profile-settings-container">
-				<div className="settings-group">
-					<TextField
+			<Container className="profile-settings-container">
+				<Container className="settings-group">
+					<Input
 						type="password"
 						name="oldPassword"
 						value={oldPassword}
-						style={{ width: '100%' }}
-						onFocus={this.handleFocus}
+						className='password_input'
 						onChange={this.handleChange}
-						readOnly={focusedName !== 'oldPassword'}
-						floatingLabelText={t('auth.password-placeholder')}
+						label={t('auth.password-placeholder')}
 					/>
-					<TextField
+					<Input
 						type="password"
 						name="newPassword"
 						value={newPassword}
-						onFocus={this.handleFocus}
-						errorText={oldPassErrorText}
+						helperText={oldPassErrorText}
+						FormHelperTextProps={{error:true}}
 						onChange={this.handleChange}
-						readOnly={focusedName !== 'newPassword'}
-						style={{ width: '100%', textTransform: 'capitalize' }}
-						floatingLabelText={t('chnage_password.new-password-placeholder')}
+						className='password_input'
+						label={t('chnage_password.new-password-placeholder')}
 					/>
-					<TextField
+					<Input
 						id="retypePass"
 						type="password"
 						name="retypePass"
 						value={retypePass}
-						errorText={errorText}
-						onFocus={this.handleFocus}
+						helperText={errorText}
+						FormHelperTextProps={{error:true}}
 						onChange={this.handleChange}
-						readOnly={focusedName !== 'retypePass'}
-						style={{ width: '100%', textTransform: 'capitalize' }}
-						floatingLabelText={t('chnage_password.confirm-password-placeholder')}
+						className='password_input'
+						label={t('chnage_password.confirm-password-placeholder')}
 					/>
-				</div>
-				<div className="settings-button">
+				</Container>
+				<Container className="password_button">
 					<FlatButton
-						primary
 						onClick={this.submitSettings}
-						label={t('common.save-action-title')}
 						disabled={!(oldPassword.trim() && newPassword.trim() && retypePass.trim())}
-					/>
-				</div>
+					>
+						{t('common.save-action-title')}
+					</FlatButton>
+				</Container>
 				<Snackbar
 					open={snackbarOpen}
 					autoHideDuration={isSaving ? 5000 : 1000}
-					onRequestClose={this.handleSnackBarClose}
+					onClose={this.handleSnackBarClose}
 					message={isSaving ? 'Saving New Settings' : t('code_playground.alert.saved-title')}
 				/>
-			</div>
+			</Container>
 		);
 	}
 }

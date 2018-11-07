@@ -5,15 +5,32 @@ import { translate } from 'react-i18next';
 
 import { updateProfile } from 'actions/settings';
 
-import Avatar from 'material-ui/Avatar';
 import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import EditIcon from 'material-ui/svg-icons/image/edit';
+import { Edit } from 'components/icons';
 import ProfileAvatar from 'components/ProfileAvatar';
+
+import {
+	Container,
+	Input
+} from 'components/atoms';
+import {
+	FlatButton,
+	RoundImage,
+	Avatar
+} from 'components/molecules';
 
 import CropPopup from './CropPopup';
 import CountrySelector from './CountrySelector';
+
+import countries from 'constants/Countries.json';
+
+//preload images for CountrySelector
+const images = countries.map(country => (
+	<img 
+		src={`/assets/flags/${country.code.toLowerCase()}.png`}
+	/>
+));
 
 const mapStateToProps = ({ userProfile }) => ({
 	userProfile,
@@ -50,7 +67,8 @@ class Profile extends PureComponent {
 		this.setState({ [name]: value });
 	}
 
-	handleSelectionChange = (_, __, countryCode) => {
+	handleSelectionChange = (event) => {
+		const countryCode = event.target.value;
 		this.setState({ countryCode });
 	}
 
@@ -133,21 +151,23 @@ class Profile extends PureComponent {
 		} = this.state;
 		const { t, userProfile } = this.props;
 		return (
-			<div className="profile-settings-container">
-				<div className="image-group">
-					<div className="profile-image-container">
-						<ProfileAvatar
+			<Container className="profile-settings-container">
+				<Container className="image-group">
+					<Container className="profile-image-container">
+						<Avatar
 							disabled
-							size={200}
+							variant='big'
 							avatarUrl={image}
 							userID={userProfile.id}
 							userName={userProfile.name}
 						/>
-						<Avatar
-							icon={<EditIcon />}
+						<RoundImage
 							onClick={this.handleInputOpen}
 							className="profile-edit-button"
-						/>
+						>
+							<Edit/>
+						</RoundImage>
+						
 						<input
 							type="file"
 							name="image"
@@ -156,39 +176,40 @@ class Profile extends PureComponent {
 							onChange={this.handleNewImage}
 							ref={(input) => { this._input = input; }}
 						/>
-					</div>
-				</div>
+					</Container>
+				</Container>
 				<form onSubmit={this.submitSettings} className="settings-form-container">
-					<div className="settings-group">
-						<TextField
+					<Container className="settings-group">
+						<Input
 							name="name"
 							value={name}
-							style={{ width: '100%' }}
+							className='settings-input'
 							onChange={this.handleChange}
-							floatingLabelText={t('edit_account.user-name')}
+							label={t('edit_account.user-name')}
 						/>
-						<TextField
+						<Input
 							type="email"
 							name="email"
 							value={email}
-							style={{ width: '100%' }}
-							floatingLabelText={t('common.email-title')}
+							className='settings-input'
+							label={t('common.email-title')}
 							onChange={this.handleChange}
 						/>
-					</div>
+					</Container>
 					<CountrySelector
 						t={t}
 						value={countryCode}
 						onChange={this.handleSelectionChange}
 					/>
-					<div className="settings-button">
+					<Container className="settings-button">
 						<FlatButton
 							primary
 							type="submit"
 							disabled={this.shouldDisable()}
-							label={t('common.save-action-title')}
-						/>
-					</div>
+						>
+						{t('common.save-action-title')}
+						</FlatButton>
+					</Container>
 				</form>
 				<CropPopup
 					t={t}
@@ -202,7 +223,14 @@ class Profile extends PureComponent {
 					onRequestClose={this.handleSnackBarClose}
 					message={isSaving ? 'Saving New Settings' : t('code_playground.alert.saved-title')}
 				/>
-			</div>
+
+				<Container 
+					style={{display:'none'}}
+					//preload images for CountrySelector
+				>
+					{images}
+				</Container> 
+			</Container>
 		);
 	}
 }

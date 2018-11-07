@@ -1,6 +1,12 @@
 import React from 'react';
-import MenuItem from 'material-ui/MenuItem';
-import SelectField from 'material-ui/SelectField';
+
+import {
+	Select,
+	MenuItem,
+	SecondaryTextBlock,
+	Container,
+	Image
+} from 'components/atoms';
 
 const translations = [
 	{
@@ -21,43 +27,34 @@ const translations = [
 ];
 
 const CountrySelector = ({ t, value, onChange }) => (
-	<SelectField
-		fullWidth
-		autoWidth
-		value={value}
-		onChange={onChange}
-		labelStyle={{ top: 15 }}
-		floatingLabelText={t('settings.language')}
-		selectionRenderer={(_, { type: RenderedMenuItem, props }) =>
-			(<RenderedMenuItem
-				{...props}
-				disabled
-				style={{
-					fontSize: 15,
-					minHeight: 32,
-					lineHeight: '38px',
-					color: 'rgba(0, 0, 0, 0.87)',
-				}}
-			/>)
-		}
-	>
-		{ translations.map(item =>
-			(
-				<MenuItem
-					key={item.name}
-					value={item.locale}
-					primaryText={item.name}
-					leftIcon={
-						<img
+	<Container className='settings_language_selector_container'>
+		<SecondaryTextBlock>{t('settings.language')}</SecondaryTextBlock>
+		<Select
+			fullWidth
+			autoWidth
+			value={value}
+			onChange={onChange}
+			label={t('settings.language')}
+			
+		>
+			{ translations.map(item =>
+				(
+
+					<MenuItem
+						key={item.name}
+						value={item.locale}
+					>
+						<Image
 							alt={item.name}
-							style={{ height: 'initial', width: 26 }}
+							className="settings_menu_item_image"
 							src={`/assets/flags/${item.code}.png`}
 						/>
-					}
-				/>
-			))
-		}
-	</SelectField>
+						{item.name}
+					</MenuItem>
+				))
+			}
+		</Select>
+	</Container>
 );
 
 export default CountrySelector;

@@ -1,52 +1,34 @@
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
-import ProfileAvatar from 'components/ProfileAvatar';
+import { Container, SecondaryTextBlock } from 'components/atoms';
+import {
+	Avatar,
+	RaisedButton,
+	UsernameLink
+} from 'components/molecules';
+import { UserCard as Card } from 'components/organisms';
 
 // i18n
 import { translate } from 'react-i18next';
 
-const UserData = ({
-	t, name, followers, level,
-}) => (
-	<div className="user-meta-data">
-		<p className="user-name">{ name }</p>
-		<p className="user-overview">{ followers } {t('common.user-followers')} | {t('common.user-level')} { level }</p>
-	</div>
-);
-
 const UserCard = ({
 	t,
-	id,
-	level,
-	name,
 	onBlock,
-	followers,
-	avatarUrl,
 	blockedState,
+	...user
 }) => (
-	<div className="user-card-container" style={{ display: 'flex', justifyContent: 'space-between' }}>
-		<ProfileAvatar
-			disabled
-			userID={id}
-			userName={name}
-			avatarUrl={avatarUrl}
-			className="user-info"
-			sideComponent={
-				<UserData
-					t={t}
-					name={name}
-					level={level}
-					followers={followers}
-				/>
-			}
+	<Container>
+		<Card
+			user={user}
+			t={t}
 		/>
 		<RaisedButton
+			style={{float:'right'}}
 			onClick={onBlock}
-			labelStyle={{ color: 'white' }}
 			label={blockedState ? t('common.unblock-user') : t('common.block-user')}
-			backgroundColor={blockedState ? '#84BC4F' : '#587581'}
-		/>
-	</div>
+		>
+			{blockedState ? t('common.unblock-user') : t('common.block-user')}
+		</RaisedButton>
+	</Container>
 );
 
 export default translate()(UserCard);

@@ -1,33 +1,52 @@
+@import '~styles/colors';
+
+$settings_section_width: 200px;
+
 .settings-container {
 	display: flex;
 	.settings-sections {
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
-		width: 200px;
-		a {
-			color: #607D8B;
+		width: $settings_section_width;
+		.settings-tab {
 			padding: 30px 10px;
-			border-top: 1px solid #F3F3F3;
-			&:first-child {
-				border-top: none
-			}
+			border-top: 1px solid $divider_color;
 		}
 	}
 	.settings-main {
 		width: 100%;
-		border: 1px solid #F3F3F3;
+		border: 1px solid $divider_color;
 		padding: 30px;
 		.setting-banner {
 			border-bottom: 1px solid gray;
 			margin-bottom: 10px;
 			padding: 5px;
 		}
+		.settings-input {
+			margin-top: 10px;
+		}
+		.settings_loading{
+				margin: auto;
+				display: block;
+			}
+
 		.profile-settings-container {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			width: 100%;
+
+			.password_input {
+				width: 100%;
+				text-transform: capitalize;
+				margin-top: 20px;
+			}
+
+			.password_button {
+				padding-top: 10px;
+			}
+
 			.settings-form-container {
 				display: flex;
 				flex-direction: column;
@@ -39,6 +58,7 @@
 				}
 				.settings-button {
 					align-self: flex-end;
+					margin-top:10px;
 				}
 			}
 			.image-group {
@@ -69,6 +89,8 @@
 			justify-content: flex-start;
 			.user-card-container {
 				margin-bottom: 5px;
+				display: flex; 
+				justify-content: space-between;
 			}
 			&.center-vertical {
 				justify-content: center
@@ -109,5 +131,24 @@
 				margin-bottom: 10px;
 			}
 		}
+		.settings_language_selector_container {
+			width: 100%;
+		}
+
+		.settings_country_selector_container {
+			width: 100%;
+			margin-top: 10px;
+		}
+
 	}
+}
+.settings_menu_item_image {
+	height: initial;
+	width: 26px;
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.crop-dialog {
+	max-width: none;
 }

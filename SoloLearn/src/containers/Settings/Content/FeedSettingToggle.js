@@ -1,20 +1,25 @@
 import React from 'react';
-import Toggle from 'material-ui/Toggle';
 import texts from 'texts';
+
+import {
+	Container,
+	SwitchToggle,
+	SecondaryTextBlock
+} from 'components/atoms';
 
 const FeedSettingToggle = ({
 	name,
 	onToggle,
 	isSettingOn,
 }) => (
-	<div className="content-card-container">
-		<p>{texts.feedItemNames[name]}</p>
-		<Toggle
-			style={{ width: 50 }}
-			onToggle={onToggle}
-			toggled={isSettingOn}
+	<Container className="content-card-container">
+		<SecondaryTextBlock>{texts.feedItemNames[name]}</SecondaryTextBlock>
+		<SwitchToggle
+			name={name}
+			onChange={onToggle}
+			checked={isSettingOn}
 		/>
-	</div>
+	</Container>
 );
 
 export default FeedSettingToggle;
