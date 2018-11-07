@@ -1,0 +1,8 @@
+@import '~styles/colors';
+@import '~styles/variables';
+
+.molecule_container-link {
+	&:hover {
+		text-decoration: none;
+	}
+}

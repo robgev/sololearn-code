@@ -89,7 +89,7 @@ export default ([
 	<Route path="/faq" component={Faq} />,
 	<Route path="/contact" component={Contact} />,
 	<Route path="/terms-of-service" component={ToS} />,
-	<Route component={redirector(MainLayout)} key="mainLayoutRoutes" >
+	<Route component={redirector(MainLayout)} key="mainLayoutRoutes">
 		<Redirect exact path="/" to="/feed" />
 		<Route path="/learn" component={SlayHome} />
 		<Route path="/learn/search/:query" component={SlaySearch} />
@@ -126,5 +126,5 @@ export default ([
 		<Route path="/quiz-factory/rate/:courseId" component={QuizFactoryRate} />
 		<Route path="/quiz-factory/my-submissions" component={QuizFactoryMySubmissions} />
 		<Route path="*" exact component={NotFound} />
-	</Route >,
+	</Route>,
 ]);

@@ -13,3 +13,4 @@ export { default as IconWithText } from './IconWithText';
 export { default as LanguageLabel } from './LanguageLabel';
 export { default as Avatar } from './Avatar';
 export { default as RoundImage } from './RoundImage';
+export { default as ContainerLink } from './ContainerLink';
