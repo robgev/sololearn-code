@@ -16,7 +16,6 @@ handleArrowRef = (node) => {
 
 render() {
 	const {
-		classes,
 		children,
 		className,
 		tooltipContent,
@@ -54,8 +53,13 @@ render() {
 }
 }
 
+Tooltip.defaultProps = {
+	className: '',
+};
+
 Tooltip.propTypes = {
-	classes: PropTypes.object.isRequired,
+	className: PropTypes.string,
+	tooltipContent: PropTypes.node.isRequired,
 };
 
 export default Tooltip;
