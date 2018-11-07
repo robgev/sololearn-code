@@ -91,6 +91,11 @@ $settings_section_width: 200px;
 				margin-bottom: 5px;
 				display: flex; 
 				justify-content: space-between;
+
+				.unblock-button {
+					float: right;
+					margin-top: 10px;
+				}
 			}
 			&.center-vertical {
 				justify-content: center
@@ -151,4 +156,9 @@ $settings_section_width: 200px;
 
 .crop-dialog {
 	max-width: none;
+}
+
+.unblock-button {
+	float: right;
+	margin-top: 10px;
 }

@@ -22,7 +22,7 @@ const UserCard = ({
 			t={t}
 		/>
 		<RaisedButton
-			style={{float:'right'}}
+			className='unblock-button'
 			onClick={onBlock}
 			label={blockedState ? t('common.unblock-user') : t('common.block-user')}
 		>
