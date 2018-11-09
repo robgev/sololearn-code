@@ -18,7 +18,7 @@ import findCommonPrefix from './findCommonPrefix';
 import getChallengeStatus from './getChallengeStatus';
 import getCourseNameById from './getCourseNameById';
 import determineAccessLevel from './determineAccessLevel';
-import determineBadge, { determineBadgeColor } from './modBadgeUtils';
+import determineBadge from './modBadgeUtils';
 
 export { replaceMention, getMentionsList, mentionUsers } from './mention';
 export { default as getCommonPrefix } from './getCommonPrefix';
@@ -64,6 +64,5 @@ export {
 	findCommonPrefix,
 	getChallengeStatus,
 	getCourseNameById,
-	determineBadgeColor,
 	determineAccessLevel,
 };

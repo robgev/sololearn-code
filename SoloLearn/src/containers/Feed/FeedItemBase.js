@@ -1,7 +1,6 @@
 // React modules
 import React from 'react';
 import { Link } from 'react-router';
-import { determineBadge } from 'utils';
 import ModBadge from 'components/ModBadge';
 import ProfileAvatar from 'components/ProfileAvatar';
 import UserTooltip from 'components/UserTooltip';
@@ -34,7 +33,7 @@ const FeedItemBase = ({
 					</span>
 					<ModBadge
 						className="small"
-						badge={determineBadge(user.badge).modBadge}
+						badge={user.badge}
 					/>
 				</Link>
 				{title}

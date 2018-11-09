@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import Avatar from 'material-ui/Avatar';
 
-import { determineBadge, determineBadgeColor, stopPropagation } from 'utils';
+import { determineBadge, stopPropagation } from 'utils';
 import AvatarColors from 'constants/AvatarColors';
 
 import 'styles/profileAvatar.scss';
@@ -32,7 +32,6 @@ const ProfileAvatar = ({
 }) => {
 	const ConditionalContainer = disabled ? DisabledContainer : Link;
 	const { modBadge, levelBadge } = determineBadge(badge);
-	const modBadgeColor = determineBadgeColor(modBadge);
 	return (
 		<ConditionalContainer
 			style={style}
@@ -48,7 +47,6 @@ const ProfileAvatar = ({
 							src={avatarUrl}
 							style={{
 								margin: '0 5px',
-								...((withBorder && modBadge) ? { border: `4px solid ${modBadgeColor}` } : {}),
 								...avatarStyle,
 							}}
 						/>
@@ -58,7 +56,6 @@ const ProfileAvatar = ({
 							style={{
 								margin: '0 5px',
 								backgroundColor: AvatarColors[userID % AvatarColors.length],
-								...((withBorder && modBadge) ? { border: `4px solid ${modBadgeColor}` } : {}),
 								...avatarStyle,
 							}}
 						>{userName ? userName.toUpperCase().charAt(0) : ''}

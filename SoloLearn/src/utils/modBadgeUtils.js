@@ -16,16 +16,3 @@ export default (rawBadge) => {
 		levelBadge,
 	};
 };
-
-export const determineBadgeColor = (badge) => {
-	switch (badge) {
-	case 'mod':
-		return '#AFAFAF';
-	case 'gold_mod':
-		return '#F3C207';
-	case 'platinum_mod':
-		return '#5B8BA2';
-	default:
-		return 'transparent';
-	}
-};
