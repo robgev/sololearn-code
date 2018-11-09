@@ -5,7 +5,6 @@
 	display: inline-flex;
   align-items: center;
   justify-content: center;
-	height: 14px;
 	font-size: $label_text_size;
-	padding: 1px ($label_text_size / 2);
+	padding: 2px ($label_text_size / 2);
 }

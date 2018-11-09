@@ -1,9 +1,8 @@
 import React from 'react';
 import './styles.scss';
 
-const Label = ({ className, backgroundColor, ...props }) => (
+const Label = ({ className, ...props }) => (
 	<span
-		style={{ backgroundColor }}
 		className={`atom_label ${className}`}
 		{...props}
 	/>
@@ -11,7 +10,6 @@ const Label = ({ className, backgroundColor, ...props }) => (
 
 Label.defaultProps = {
 	className: '',
-	backgroundColor: '', // Don't set any color if not provided
 };
 
 export default Label;
