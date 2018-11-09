@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { observer } from 'mobx-react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
@@ -21,6 +22,7 @@ const mapStateToProps = state => ({
 	canAccessDownvotes: determineAccessLevel(state.userProfile.accessLevel) > 2,
 });
 
+@observer
 @connect(mapStateToProps)
 @translate()
 class Likes extends Component {
@@ -36,7 +38,7 @@ class Likes extends Component {
 		const {
 			t,
 			open,
-			toggleOpen,
+			onClose,
 			canAccessDownvotes,
 		} = this.props;
 		const { activeTab } = this.state;
@@ -50,7 +52,7 @@ class Likes extends Component {
 		return (
 			<Popup
 				open={open}
-				onClose={toggleOpen}
+				onClose={onClose}
 			>
 				{/* style={{ display: 'flex' }} */}
 				<PopupTitle>

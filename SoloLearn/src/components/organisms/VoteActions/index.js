@@ -26,31 +26,28 @@ class VoteActions extends Component {
 		}
 	}
 
-	@action onUpvote = () => {
+	onUpvote = () => {
 		this.likes.vote({ newVote: 1 });
-		console.log('Heree');
-		this.props.onChange({ vote, newVote });
+		this.props.onChange({ vote: this.likes.userVote, newVote: 1 });
 	}
 
-	@action onDownvote = () => {
+	onDownvote = () => {
 		this.likes.vote({ newVote: -1 });
-		this.props.onChange({ vote, newVote });
+		this.props.onChange({ vote: this.likes.userVote, newVote: -1 });
 	}
 
 	render() {
 		const { vertical } = this.props;
-		const { userVote, voteCount } = this.likes;
 		return (
 			<Fragment>
 				<VoteButtons
 					vertical={vertical}
-					userVote={userVote}
-					voteCount={voteCount}
+					likes={this.likes}
 					onUpvote={this.onUpvote}
 					onDownvote={this.onDownvote}
 					onLabelClick={this.toggleOpen}
 				/>
-				<LikesPopup open={this.open} likes={this.likes} />
+				<LikesPopup open={this.open} likes={this.likes} onClose={this.toggleOpen} />
 			</Fragment>
 		);
 	}
@@ -58,7 +55,7 @@ class VoteActions extends Component {
 
 VoteActions.defaultProps = {
 	vertical: false,
-	onChange: () => {},
+	onChange: () => { },
 };
 
 VoteActions.propTypes = {

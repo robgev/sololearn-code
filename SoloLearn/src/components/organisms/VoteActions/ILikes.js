@@ -14,6 +14,10 @@ class ILikes {
 		this.getDownvotesPromise = null;
 	}
 
+	@observable userVote;
+
+	@observable voteCount;
+
 	@action empty = () => {
 		this.upvotes.entities = [];
 		this.upvotes.hasMore = true;
@@ -74,8 +78,7 @@ class ILikes {
 	}
 
 	@action vote = ({ newVote }) => {
-		// -1 - 1 % 2 is 0, 1 + 1 % 2 is 0, but 1 + 0 % 2 is 1, basically bitwise xor
-		const vote = (this.userVote + newVote) % 2;
+		const vote = this.userVote === newVote ? 0 : newVote;
 		this.voteCount = (this.voteCount + vote) - this.userVote;
 		this.userVote = vote;
 		Service.request(`${this.url('Vote')}`, { id: this.id, vote: this.userVote });
