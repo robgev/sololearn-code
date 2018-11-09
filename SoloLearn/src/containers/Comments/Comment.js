@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { action, observable, computed } from 'mobx';
 import { observer } from 'mobx-react';
-import { ExternalLinkify } from 'components/ExternalLink';
+import { Linkify } from 'components/molecules';
 import FlatButton from 'material-ui/FlatButton';
 import Divider from 'material-ui/Divider';
 import CircularProgress from 'material-ui/CircularProgress';
-import { CountingMentionInput } from 'components/organisms';
+import { CountingMentionInput, Mention } from 'components/organisms';
 import { replaceMention, showError, determineAccessLevel } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
 import MyAvatar from './MyAvatar';
@@ -273,9 +273,12 @@ class Comment extends Component {
 							</div>
 						)
 						: (
-							<ExternalLinkify>
-								<p>{replaceMention(message)}</p>
-							</ExternalLinkify>
+							<Linkify>
+								<Mention>
+									{message}
+								</Mention>
+								{/* <p>{replaceMention(message)}</p> */}
+							</Linkify>
 						))}
 				</CommentView>
 				{
