@@ -12,5 +12,6 @@ $layouts_gap: 20px;
 		display: grid;
 		grid-gap: $layouts_gap;
 		grid-template-columns: 5fr 2fr;
+		align-items: start;
 	}
 }
