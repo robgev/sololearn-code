@@ -1,0 +1,11 @@
+@import '~styles/variables';
+
+.organism_counting-mention-input {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	.counter {
+		margin: $primary_gap_size;
+		align-self: flex-end;
+	}
+}

@@ -1,3 +1,5 @@
+@import '~styles/variables';
+
 .mention {
   color: #4a85bb;
   text-decoration: none;
@@ -67,4 +69,10 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
+}
+
+.organism_mention {
+  .mention-link {
+    font-size: $primary_text_size;
+  }
 }

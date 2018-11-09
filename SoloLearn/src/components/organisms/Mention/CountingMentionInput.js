@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
+import { Container, SecondaryTextBlock } from 'components/atoms';
 import MentionInput from './MentionInput';
+import './countingMentionInput.scss';
 
 class CountingMentionInput extends Component {
 	static defaultProps = {
 		maxLength: 2048,
 		onSubmitEnabledChange: () => { }, // noop
-		containerStyle: { width: '100%' },
-		counterStyle: {},
 	}
 	constructor(props) {
 		super(props);
@@ -29,14 +29,16 @@ class CountingMentionInput extends Component {
 	render() {
 		const { containerStyle, counterStyle, ...rest } = this.props;
 		return (
-			<div style={containerStyle}>
+			<Container className="organism_counting-mention-input">
 				<MentionInput
 					ref={this.mentionInput}
 					onLengthChange={this.onLengthChange}
 					{...rest}
 				/>
-				<span style={counterStyle}>{this.state.charCount} / {this.props.maxLength}</span>
-			</div>
+				<SecondaryTextBlock className="counter">
+					{this.state.charCount} / {this.props.maxLength}
+				</SecondaryTextBlock>
+			</Container>
 		);
 	}
 }
