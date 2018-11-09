@@ -1,0 +1,66 @@
+@import '~styles/variables';
+@import '~styles/colors';
+
+.discuss_post {
+	.replies {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		.add-reply {
+			margin-bottom: $primary_gap_size;
+			display: flex;
+			flex-direction: column;
+			.post-button {
+				align-self: flex-end;
+				margin-bottom: $primary_gap_size;
+				&.enabled {
+					color: $white;
+					background-color: $primary_color;
+				}
+			}
+		}
+		.replies-toolbar {
+			display: flex;
+			justify-content: space-between;
+			margin: $primary_gap_size;
+		}
+	}
+	.post {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		.info {
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			.toolbar {
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-start;
+			}
+			.question {
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				align-items: flex-start;
+				.tags {
+					display: flex;
+					flex-direction: row;
+					flex-wrap: wrap;					
+				}
+			}
+		}
+		.user {
+			align-self: flex-end;
+			display: flex;
+			.name-date {
+				display: flex;
+				flex-direction: column;
+				margin-right: 5px;
+				text-align: end;
+			}
+		}
+	}
+}

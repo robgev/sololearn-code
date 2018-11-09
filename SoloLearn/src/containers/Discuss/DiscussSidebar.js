@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { sidebarQuestionsSelector, isDiscussSidebarEmpty } from 'reducers/discuss.reducer';
 import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
-import { PaperContainer, Heading, List, ListItem, SecondaryTextBlock, Link } from 'components/atoms';
+import { Container, Heading, List, ListItem, SecondaryTextBlock, Link } from 'components/atoms';
 import { IconWithText } from 'components/molecules';
 import { QuestionAnswer } from 'components/icons';
 
@@ -13,14 +13,14 @@ const mapStateToProps = state => ({
 });
 
 const DiscussSidebar = ({ isEmpty, questions, t }) => (
-	<PaperContainer>
+	<Container className="discuss-sidebar">
 		<Heading>{t('discuss.filter.hot-today')}</Heading>
 		{isEmpty
 			? <SidebarShimmer noTitle />
 			: (
 				<List>
 					{questions.map(question => (
-						<ListItem>
+						<ListItem key={question.id}>
 							<Link to={`/discuss/${question.id}`}>
 								<IconWithText Icon={QuestionAnswer}>
 									<SecondaryTextBlock>{question.title}</SecondaryTextBlock>
@@ -30,7 +30,7 @@ const DiscussSidebar = ({ isEmpty, questions, t }) => (
 					))}
 				</List>
 			)}
-	</PaperContainer>
+	</Container>
 );
 
 export default connect(mapStateToProps)(translate()(DiscussSidebar));
