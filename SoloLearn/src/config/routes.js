@@ -32,7 +32,7 @@ const SlayMoreByAuthor = Loadable({ loader: () => import('containers/Learn/SlayM
 
 // Discuss
 const Questions = Loadable({ loader: () => import('containers/Discuss/Questions') });
-const Post = Loadable({ loader: () => import('containers/Discuss/Post') });
+const Post = Loadable({ loader: () => import('containers/Discuss/Post/index') });
 const NewQuestion = Loadable({ loader: () => import('containers/Discuss/NewQuestion') });
 const EditQuestion = Loadable({ loader: () => import('containers/Discuss/EditQuestion') });
 
