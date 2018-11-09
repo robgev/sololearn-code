@@ -1,6 +1,6 @@
 export { default as UsernameLink } from './UsernameLink';
 export { default as TextLink } from './TextLink';
-export { default as RefLink } from './RefLink';
+export { Linkify, RefLink } from './RefLink';
 export { default as RadioButtonGroup } from './RadioButtonGroup';
 export { default as InfiniteScroll } from './InfiniteScroll';
 export { Layout, LayoutWithSidebar } from './Layout';
@@ -16,3 +16,4 @@ export { default as RoundImage } from './RoundImage';
 export { default as UserTooltip } from './UserTooltip';
 export { default as ContainerLink } from './ContainerLink';
 export { default as ModBadge } from './ModBadge';
+export { default as TagLabel } from './TagLabel';
