@@ -7,7 +7,7 @@ import AvatarColors from 'constants/AvatarColors';
 
 import { followSuggestion } from 'actions/discover';
 import ModBadge from 'components/ModBadge';
-import { numberFormatter, showError, determineBadge } from 'utils';
+import { numberFormatter, showError } from 'utils';
 import 'styles/components/UserCard.scss';
 
 @connect(null, { followSuggestion })
@@ -38,7 +38,6 @@ class UserCard extends Component {
 			className = '',
 			withFollowButton,
 		} = this.props;
-		const { modBadge } = determineBadge(badge);
 		return (
 			<div className={`discover-user-card-container ${className}`}>
 				<Link to={`/profile/${id}`} style={{ textDecoration: 'none' }} className="profile-container">
@@ -61,7 +60,7 @@ class UserCard extends Component {
 							<div className="profile-name">
 								{name}
 								<ModBadge
-									badge={modBadge}
+									badge={badge}
 									className="small"
 								/>
 							</div>

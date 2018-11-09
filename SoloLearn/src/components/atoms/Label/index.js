@@ -11,7 +11,7 @@ const Label = ({ className, backgroundColor, ...props }) => (
 
 Label.defaultProps = {
 	className: '',
-	backgroundColor: 'unset', // Don't set any color if not provided
+	backgroundColor: '', // Don't set any color if not provided
 };
 
 export default Label;

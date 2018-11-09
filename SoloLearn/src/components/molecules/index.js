@@ -15,3 +15,4 @@ export { default as Avatar } from './Avatar';
 export { default as RoundImage } from './RoundImage';
 export { default as UserTooltip } from './UserTooltip';
 export { default as ContainerLink } from './ContainerLink';
+export { default as ModBadge } from './ModBadge';
