@@ -1,8 +1,8 @@
 import React from 'react';
 import MUIMenuItem from '@material-ui/core/MenuItem';
 
-const MenuItem = props => (
-	<MUIMenuItem {...props} />
-);
+const MenuItem = React.forwardRef((props, ref) => (
+	<MUIMenuItem ref={ref} {...props} />
+));
 
 export default MenuItem;

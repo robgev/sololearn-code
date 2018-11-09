@@ -2,12 +2,13 @@ import React from 'react';
 import MUISelect from '@material-ui/core/Select';
 import './styles.scss';
 
-const Select = ({className, ...props}) => (
-	<MUISelect 
+const Select = React.forwardRef(({ className, ...props }, ref) => (
+	<MUISelect
+		ref={ref}
 		className={`atom_select ${className}`}
-		{...props} 
+		{...props}
 	/>
-);
+));
 
 Select.defaultProps = {
 	className: '',
