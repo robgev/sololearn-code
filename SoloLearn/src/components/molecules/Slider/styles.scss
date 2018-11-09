@@ -1,0 +1,44 @@
+@import '~styles/colors';
+
+.molecule_slider-root {
+  .carousel,
+  .carousel.carousel-slider {
+    .control-arrow {
+      z-index: 1;
+      &.control-disabled {
+        opacity: 0.3;
+      }
+      &:before {
+        color: $main_text_color;
+        border: none;
+        transition: opacity 0.2s;
+        font-family: "Material Icons";
+        font-size: 30px;
+        line-height: 30px;
+        opacity: 0.5;
+      }
+      &:not(.control-disabled) {
+        &:hover {
+          background: none;
+          &:before {
+            opacity: 1;
+          }
+        }
+      }
+    }
+
+    .control-prev {
+      &:before {
+        content: "chevron_left";
+        color: $main_text_color;
+      }
+    }
+
+    .control-next {
+      &:before {
+        content: "chevron_right";
+        color: $main_text_color;
+      }
+    }
+  }
+}
