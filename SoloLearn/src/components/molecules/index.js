@@ -17,3 +17,4 @@ export { default as UserTooltip } from './UserTooltip';
 export { default as ContainerLink } from './ContainerLink';
 export { default as ModBadge } from './ModBadge';
 export { default as TagLabel } from './TagLabel';
+export { default as Slider } from './Slider';

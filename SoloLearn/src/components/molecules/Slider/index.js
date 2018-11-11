@@ -1,14 +1,17 @@
 import React from 'react';
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import Carousel from 'react-slick';
+import './styles.scss';
 
-const Slider = props => (
+const Slider = ({ className, ...props }) => (
 	<Carousel
-		centerMode
-		showStatus={false}
-		showThumbs={false}
-		showIndicators={false}
-		className="molecule_slider-root"
+		arrows
+		draggable
+		dots={false}
+		speed={500}
+		swipeToSlide
+		variableWidth
+		infinite={false}
+		className={`molecule_slider-root ${className}`}
 		{...props}
 	/>
 );

@@ -1,8 +1,8 @@
 // React modules
 import React from 'react';
 import { connect } from 'react-redux';
-import Slider from 'react-slick';
-import { discoverIdsSelector, getEntitiesByIds } from 'reducers/discover.reducer.js';
+import { Slider } from 'components/molecules';
+import { discoverIdsSelector, getEntitiesByIds } from 'reducers/discover.reducer';
 
 // Additional data and components
 import FeedSuggestion from './FeedSuggestion';
@@ -32,13 +32,6 @@ const generateBreakpoints = () => {
 const FeedSuggestions = ({ suggestions }) => (
 	<div className="feed-suggestions" style={{ width: '97%', margin: '0 auto', marginBottom: 5 }}>
 		<Slider
-			arrows
-			draggable
-			dots={false}
-			speed={500}
-			swipeToSlide
-			variableWidth
-			infinite={false}
 			slidesToShow={3}
 			slidesToScroll={4}
 			responsive={generateBreakpoints()}

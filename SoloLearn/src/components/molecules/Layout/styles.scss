@@ -11,7 +11,7 @@ $layouts_gap: 20px;
 	&.with-sidebar {
 		display: grid;
 		grid-gap: $layouts_gap;
-		grid-template-columns: 5fr 2fr;
+		grid-template-columns: minmax(0, 5fr) 2fr;
 		align-items: start;
 	}
 }

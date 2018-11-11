@@ -1,44 +1,49 @@
 @import '~styles/colors';
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
 
-.molecule_slider-root {
-  .carousel,
-  .carousel.carousel-slider {
-    .control-arrow {
-      z-index: 1;
-      &.control-disabled {
-        opacity: 0.3;
-      }
-      &:before {
-        color: $main_text_color;
-        border: none;
-        transition: opacity 0.2s;
-        font-family: "Material Icons";
-        font-size: 30px;
-        line-height: 30px;
-        opacity: 0.5;
-      }
-      &:not(.control-disabled) {
-        &:hover {
-          background: none;
-          &:before {
-            opacity: 1;
-          }
-        }
-      }
-    }
+$arrow-size: 30px;
 
-    .control-prev {
-      &:before {
-        content: "chevron_left";
-        color: $main_text_color;
-      }
-    }
+.molecule_slider-root.slick-slider {
+	.slick-arrow {
+		z-index: 1;
+		&.slick-disabled {
+			opacity: .3;
+		}
+		&:before {
+			transition: opacity .2s;
+			font-family: 'Material Icons';
+			font-size: $arrow-size;
+			line-height: $arrow-size;
+			opacity: .5;
+		}
+		&:not(.slick-disabled){
+			&:hover {
+				&:before {
+					opacity: 1;
+				}
+			}
+		}
+	}
 
-    .control-next {
-      &:before {
-        content: "chevron_right";
-        color: $main_text_color;
-      }
-    }
-  }
+	.slick-prev, .slick-next {
+		width: $arrow-size;
+		height: $arrow-size;
+		&:before {
+			color: $main_text_color;
+		}
+	}
+
+	.slick-prev {
+		&:before {
+			content: 'chevron_left';
+		}
+	}
+
+	.slick-next {
+		&:before {
+			content: 'chevron_right';
+		}
+	}
 }
+

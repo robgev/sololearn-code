@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import Slider from 'react-slick';
+import { Slider } from 'components/molecules';
 import Paper from 'material-ui/Paper';
 import { translate } from 'react-i18next';
 
@@ -64,13 +64,6 @@ const CollectionCard = ({
 			<p className="course-description">{description}</p>
 			}
 			<Slider
-				arrows
-				draggable
-				dots={false}
-				speed={500}
-				swipeToSlide
-				variableWidth
-				infinite={false}
 				slidesToShow={slidesToShow}
 				className={`courses-list ${(isCourses || round) ? 'round' : ''}`}
 				responsive={generateBreakpoints(items.length, isCourses || round)}
