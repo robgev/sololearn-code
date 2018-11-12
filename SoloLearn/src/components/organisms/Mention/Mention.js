@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { TextBlock } from 'components/atoms';
-import { UsernameLink } from 'components/molecules';
+import { UsernameLink, Linkify } from 'components/molecules';
 
 class Mention extends PureComponent {
 	static itemTypes = {
@@ -30,10 +30,13 @@ class Mention extends PureComponent {
 	static Item = ({ item }) => {
 		switch (item.type) {
 		case Mention.itemTypes.TEXT:
+			// Have to linkify text here due to the nature of how linkification works
 			return (
-				<TextBlock>
-					{item.value}
-				</TextBlock>
+				<Linkify>
+					<TextBlock>
+						{item.value}
+					</TextBlock>
+				</Linkify>
 			);
 		case Mention.itemTypes.TAG:
 			return (
