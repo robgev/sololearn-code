@@ -82,6 +82,23 @@ export const getSidebarQuestions = () => async (dispatch) => {
 	dispatch({ type: types.SET_SIDEBAR_QUESTIONS, payload: posts });
 };
 
+// Single post actions that have side effects on list posts
+
+export const removePostFromList = id => ({
+	type: types.REMOVE_POST,
+	payload: id,
+});
+
+export const votePostInList = ({ id, vote, votes }) => ({
+	type: types.VOTE_POST,
+	payload: { id, vote, votes },
+});
+
+export const changePostRepliesCount = ({ id, countChange }) => ({
+	type: types.CHANGE_POST_REPLIES_COUNT,
+	payload: { id, countChange },
+});
+
 // Single post actions
 
 export const loadPost = post => ({
@@ -163,12 +180,12 @@ export const emptyReplies = () => ({
 	type: types.EMPTY_DISCUSS_POST_REPLIES,
 });
 
-const votePost = (id, isPrimary, vote, votes) => ({
-	type: types.VOTE_POST,
-	payload: {
-		id, isPrimary, vote, votes,
-	},
-});
+// const votePost = (id, isPrimary, vote, votes) => ({
+// 	type: types.VOTE_POST,
+// 	payload: {
+// 		id, isPrimary, vote, votes,
+// 	},
+// });
 
 export const votePostInternal = (post, vote) => (dispatch) => {
 	const userVote = post.vote === vote ? 0 : vote;
@@ -189,10 +206,10 @@ export const editPostInternal = (post, message) => {
 	return editPost(post.id, isPrimary, message);
 };
 
-export const deletePost = (id, isPrimary) => ({
-	type: types.DELETE_POST,
-	payload: { id, isPrimary },
-});
+// export const deletePost = (id, isPrimary) => ({
+// 	type: types.DELETE_POST,
+// 	payload: { id, isPrimary },
+// });
 
 export const deletePostInternal = (post) => {
 	const isPrimary = post.parentID === null;

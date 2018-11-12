@@ -4,6 +4,7 @@ import uniqBy from 'lodash/uniqBy';
 import {
 	SET_POSTS, EMPTY_POSTS, REMOVE_POST, VOTE_POST, SET_SIDEBAR_QUESTIONS,
 	MARK_DISCUSS_LIST_FINISHED, REQUEST_POSTS, SET_DISCUSS_FILTERS, LOGOUT,
+	CHANGE_POST_REPLIES_COUNT,
 } from 'constants/ActionTypes';
 
 const isFetching = (state = false, action) => {
@@ -54,18 +55,20 @@ const entities = (state = [], action) => {
 	case LOGOUT:
 		return [];
 	case VOTE_POST:
-		// TODO: needs refactoring after Post state becomes local
-		/* eslint-disable */
-			const {
-				vote, isPrimary, votes, id,
-			} = action.payload;
-			/* eslint-enable */
-		if (isPrimary) {
-			return state.map(post => (post.id === id
-				? { ...post, vote, votes }
-				: post));
-		}
-		return state;
+		return state.map(post => (post.id === action.payload.id
+			? {
+				...post,
+				vote: action.payload.vote,
+				votes: action.payload.votes,
+			}
+			: post));
+	case CHANGE_POST_REPLIES_COUNT:
+		return state.map(post => (post.id === action.payload.id
+			? {
+				...post,
+				answers: post.answers + action.payload.changeCount,
+			}
+			: post));
 	default:
 		return state;
 	}
