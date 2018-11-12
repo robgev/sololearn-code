@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
-const Container = props => (
-	<div {...props} />
-);
+const Container = forwardRef((props, ref) => (
+	<div ref={ref} {...props} />
+));
 
 export default Container;
