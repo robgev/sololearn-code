@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
+import { changePostRepliesCount, removePostFromList, votePostInList } from 'actions/discuss';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 import { LayoutWithSidebar } from 'components/molecules';
@@ -9,11 +12,35 @@ import IPost from './IPost';
 
 import './styles.scss';
 
-@observer
+const mapDispatchToProps = {
+	changePostRepliesCount,
+	removePostFromList,
+	votePostInList,
+};
+
+@connect(null, mapDispatchToProps)
 @translate()
+@observer
 class Post extends Component {
 	static defaultProps = {
 		replyID: null,
+	}
+
+	handleDelete = () => {
+		this.post.deletePost()
+			.then(removePostFromList)
+			.then(() => {
+				browserHistory.replace('/discuss');
+			});
+	}
+
+	handleVote = ({ vote, votes }) => {
+		this.props.votePostInList({ id: this.post.id, vote, votes });
+	}
+
+	handlePostRepliesCountChange = (countChange) => {
+		this.props.changePostRepliesCount({ id: this.post.id, countChange });
+		this.post.changeCount(countChange);
 	}
 
 	post = new IPost({ id: this.props.id })
@@ -35,12 +62,20 @@ class Post extends Component {
 				<Question
 					post={this.post.data}
 					onFollowClick={this.post.onFollow}
+					onVote={this.handleVote}
+					onDelete={this.handleDelete}
 				/>
-				<Replies
-					postID={id}
-					replyID={replyID}
-					count={this.post.count}
-				/>
+				{
+					this.post.data !== null
+					&& (
+						<Replies
+							postID={id}
+							replyID={replyID}
+							count={this.post.count}
+							onCountChange={this.handlePostRepliesCountChange}
+						/>
+					)
+				}
 			</LayoutWithSidebar>
 		);
 	}

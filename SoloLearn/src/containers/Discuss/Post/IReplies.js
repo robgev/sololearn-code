@@ -11,13 +11,11 @@ class IReplies {
 	static ORDER_BY_DATE = 2;
 
 	constructor({
-		postID, findPostID = null, userInfo,
+		postID, userInfo,
 	}) {
-		this.postID = postID;
-		this.findPostID = findPostID;
+		this.postID = parseInt(postID, 10);
 		// Have to give this to replies the current user makes { userName, avatarUrl }
 		this.userInfo = userInfo;
-		this.initial({ findPostID });
 		this.dispose = reaction(
 			() => this.orderBy,
 			() => {
@@ -33,15 +31,14 @@ class IReplies {
 
 	initial = ({ findPostID }) => {
 		if (findPostID === null) {
-			this.getReplies();
-		} else {
-			this.getRepliesByID(findPostID);
+			return this.getReplies();
 		}
+		return this.getRepliesByID(findPostID);
 	}
 
 	addReply = (message) => {
 		const { postID } = this;
-		Service.request('Discussion/CreateReply', { postID, message })
+		return Service.request('Discussion/CreateReply', { postID, message })
 			.then(this.handleAddedReply);
 	}
 
@@ -55,6 +52,10 @@ class IReplies {
 
 	@computed get isFetching() {
 		return this.getRepliesPromise !== null;
+	}
+
+	@computed get canLoadAbove() {
+		return this.entities.length > 0 && this.hasMore && this.firstIndex > 0;
 	}
 
 	@action setOrderBy = (orderBy) => {
@@ -140,7 +141,7 @@ class IReplies {
 		return this.getRepliesPromise;
 	};
 
-	@action getRpliesAbove = () => {
+	@action getRepliesAbove = () => {
 		if (this.getRepliesPromise === null) {
 			const { firstIndex, orderBy, postID } = this;
 			const index = firstIndex >= 20 ? firstIndex - 20 : 0;
@@ -155,6 +156,14 @@ class IReplies {
 				.finally(this.endGetRepliesRequest);
 		}
 	}
+
+	@action removeReply = (id) => {
+		this.entities = this.entities.filter(reply => reply.id !== id);
+	}
+
+	deleteReply = id =>
+		Service.request('Discussion/DeletePost', { id })
+			.then(() => this.removeReply(id))
 }
 
 export default IReplies;

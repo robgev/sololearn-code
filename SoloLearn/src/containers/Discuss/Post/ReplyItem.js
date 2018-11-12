@@ -1,51 +1,74 @@
-import React, { Fragment } from 'react';
+import React, { Component, Fragment, createRef } from 'react';
 import { observer } from 'mobx-react';
 import { ListItem, HorizontalDivider, Container } from 'components/atoms';
-import { Linkify } from 'components/molecules';
 import { VoteActions, Mention } from 'components/organisms';
+import Options from './Options';
 import Author from './Author';
 
-const ReplyItem = ({ reply }) => (
-	<Fragment>
-		<ListItem>
-			<Container className="post">
-				<Container className="info">
-					<Container className="toolbar">
-						<Container className="votes">
-							<VoteActions
-								id={reply.id}
-								type="post"
-								vertical
-								initialCount={reply.votes}
-								initialVote={reply.vote}
+@observer
+class ReplyItem extends Component {
+	state = {
+		isHighlighted: false,
+	}
+	postContainer = createRef();
+	highlight = () => {
+		this.postContainer.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		this.setState({ isHighlighted: true });
+		this.unhighlight = setTimeout(() => {
+			this.setState({ isHighlighted: false });
+		}, 2000);
+	}
+	componentWillUnmount() {
+		if (this.unhighlight) {
+			clearTimeout(this.unhighlight);
+		}
+	}
+	render() {
+		const { reply, deleteReply } = this.props;
+		return (
+			<Fragment>
+				<ListItem>
+					<Container ref={this.postContainer} className={`post ${this.state.isHighlighted ? 'animate-highlight' : ''}`}>
+						<Container className="info">
+							<Container className="toolbar">
+								<Container className="votes">
+									<VoteActions
+										id={reply.id}
+										type="post"
+										vertical
+										initialCount={reply.votes}
+										initialVote={reply.vote}
+									/>
+								</Container>
+							</Container>
+							<Container className="question">
+								<Container className="message">
+									<Mention text={reply.message} />
+								</Container>
+							</Container>
+							<Container className="options">
+								<Options
+									userID={reply.userID}
+									deletePost={deleteReply}
+								/>
+							</Container>
+						</Container>
+						<Container className="user">
+							<Author
+								level={reply.level}
+								badge={reply.badge}
+								userID={reply.userID}
+								avatarUrl={reply.avatarUrl}
+								userName={reply.userName}
+								date={reply.date}
 							/>
 						</Container>
 					</Container>
-					<Container className="question">
-						<Container className="message">
-							<Linkify>
-								<Mention text={reply.message} />
-							</Linkify>
-						</Container>
-					</Container>
-					<Container className="options">
-						options
-					</Container>
-				</Container>
-				<Container className="user">
-					<Author
-						level={reply.level}
-						badge={reply.badge}
-						userID={reply.userID}
-						avatarUrl={reply.avatarUrl}
-						userName={reply.userName}
-						date={reply.date}
-					/>
-				</Container>
-			</Container>
-		</ListItem>
-		<HorizontalDivider />
-	</Fragment>
-);
+				</ListItem>
+				<HorizontalDivider />
+			</Fragment>
+		);
+	}
+}
 
-export default observer(ReplyItem);
+export default ReplyItem;

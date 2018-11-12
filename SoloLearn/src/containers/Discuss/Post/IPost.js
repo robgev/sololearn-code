@@ -1,19 +1,12 @@
 import Service from 'api/service';
-import { observable, action, reaction, computed } from 'mobx';
+import { observable, action, computed } from 'mobx';
 
 class IPost {
 	static ORDER_BY_VOTE = 1;
 	static ORDER_BY_DATE = 2;
 
 	constructor({ id }) {
-		this.id = id;
-		this.dispose = reaction(
-			() => this.repliesOrderBy,
-			() => {
-				this.clearReplies();
-				this.getReplies();
-			},
-		);
+		this.id = parseInt(id, 10);
 	}
 
 	@observable getPostPromise = null;
@@ -29,6 +22,10 @@ class IPost {
 			return null;
 		}
 		return this.data.answers;
+	}
+
+	@action changeCount = (countChange) => {
+		this.data.answers += countChange;
 	}
 
 	@action handleGottenPost = ({ post }) => {
@@ -57,6 +54,8 @@ class IPost {
 		Service.request(`Discussion/${urlOption}`, { id: this.data.id })
 			.then(() => this.data.isFollowing);
 	}
+
+	deletePost = () => Service.request('Discussion/DeletePost', { id: this.id }).then(() => this.id)
 }
 
 export default IPost;

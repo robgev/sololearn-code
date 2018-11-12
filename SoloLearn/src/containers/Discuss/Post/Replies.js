@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { observer } from 'mobx-react';
 import { Container, List, PaperContainer, SecondaryTextBlock, Select, MenuItem } from 'components/atoms';
-import { InfiniteScroll } from 'components/molecules';
+import { InfiniteScroll, RaisedButton } from 'components/molecules';
 import AddReply from './AddReply';
 import ReplyItem from './ReplyItem';
 import IReplies from './IReplies';
 
-const mapStateToProps = ({ userProfile }) => ({ 
+const mapStateToProps = ({ userProfile }) => ({
 	userInfo: { userName: userProfile.name, avatarUrl: userProfile.avatarUrl },
 });
 
@@ -16,13 +16,39 @@ const mapStateToProps = ({ userProfile }) => ({
 @translate()
 @observer
 class Replies extends Component {
+	repliesRefs = {}
 	addReplyInput = React.createRef();
 
 	replies = new IReplies({
 		postID: this.props.postID,
-		findPostID: this.props.replyID,
 		userInfo: this.props.userInfo,
 	});
+
+	componentDidMount() {
+		const { replyID } = this.props;
+		if (replyID === null) {
+			this.replies.initial({ findPostID: null });
+		} else {
+			this.replies.initial({ findPostID: replyID })
+				.then(() => {
+					this.repliesRefs[replyID].highlight();
+				});
+		}
+	}
+
+	addReply = (message) => {
+		this.replies.addReply(message)
+			.then(() => {
+				this.props.onCountChange(1);
+			});
+	}
+
+	deleteReply = (id) => {
+		this.replies.deleteReply(id)
+			.then(() => {
+				this.props.onCountChange(-1);
+			});
+	}
 
 	componentWillUnmount() {
 		this.replies.dispose();
@@ -45,8 +71,8 @@ class Replies extends Component {
 							value={this.replies.orderBy}
 							onChange={this.onOrderChange}
 						>
-							<MenuItem value={IReplies.ORDER_BY_VOTE}>Vote</MenuItem>
-							<MenuItem value={IReplies.ORDER_BY_DATE}>Date</MenuItem>
+							<MenuItem value={IReplies.ORDER_BY_VOTE}>{t('discuss.answers.filter.vote')}</MenuItem>
+							<MenuItem value={IReplies.ORDER_BY_DATE}>{t('discuss.answers.filter.date')}</MenuItem>
 						</Select>
 					</Container>
 				</Container>
@@ -59,12 +85,23 @@ class Replies extends Component {
 					<PaperContainer>
 						<AddReply
 							postID={this.props.postID}
-							submit={this.replies.addReply}
+							submit={this.addReply}
 						/>
+						{this.replies.canLoadAbove
+							? <RaisedButton onClick={this.replies.getRepliesAbove}>Load above</RaisedButton>
+							: null
+						}
 						<List>
 							{
 								this.replies.entities.map(reply => (
-									<ReplyItem key={reply.id} reply={reply} />
+									<ReplyItem
+										ref={(replyView) => {
+											this.repliesRefs[reply.id] = replyView;
+										}}
+										key={reply.id}
+										reply={reply}
+										deleteReply={() => this.deleteReply(reply.id)}
+									/>
 								))
 							}
 						</List>

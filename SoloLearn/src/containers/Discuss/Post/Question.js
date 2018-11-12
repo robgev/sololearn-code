@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { PaperContainer, Container, Title, IconButton, Loading } from 'components/atoms';
-import { Linkify } from 'components/molecules';
 import { VoteActions, Mention } from 'components/organisms';
 import { Follow } from 'components/icons';
 import Author from './Author';
+import Options from './Options';
 import Tags from '../Tags';
 
 @observer
 class Question extends Component {
 	render() {
-		const { post, onFollowClick } = this.props;
+		const {
+			post, onVote, onDelete, onFollowClick,
+		} = this.props;
 		return (
 			<PaperContainer className="main-post">
 				{
@@ -27,6 +29,7 @@ class Question extends Component {
 												vertical
 												initialCount={post.votes}
 												initialVote={post.vote}
+												onChange={onVote}
 											/>
 										</Container>
 										<Container className="follow">
@@ -45,13 +48,14 @@ class Question extends Component {
 											<Tags tags={post.tags} />
 										</Container>
 										<Container className="message">
-											<Linkify>
-												<Mention text={post.message} />
-											</Linkify>
+											<Mention text={post.message} />
 										</Container>
 									</Container>
 									<Container className="options">
-										options
+										<Options
+											userID={post.userID}
+											deletePost={onDelete}
+										/>
 									</Container>
 								</Container>
 								<Container className="user">
