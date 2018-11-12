@@ -1,4 +1,5 @@
 @import "utils";
+@import '~styles/colors';
 @import "medias";
 
 * {
@@ -110,6 +111,19 @@ html, body {
 	&:hover {
 		text-decoration: underline;
 	}
+}
+
+@keyframes highlight {
+	from {
+		background-color: $highlight_color;
+	}
+	to {
+		background-color: $white;
+	}
+}
+
+.animate-highlight {
+	animation: highlight 1s ease-in;
 }
 
 @include for-until-tablet {
