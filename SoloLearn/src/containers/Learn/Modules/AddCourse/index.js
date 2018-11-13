@@ -2,6 +2,7 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { Container, TextBlock, SecondaryTextBlock } from 'components/atoms';
 import { RaisedButton } from 'components/molecules';
+import './styles.scss';
 
 const AddCourse = ({ t, onOpen }) => (
 	<Container className="no-courses">

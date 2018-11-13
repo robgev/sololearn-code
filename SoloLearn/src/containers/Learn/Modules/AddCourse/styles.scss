@@ -1,0 +1,11 @@
+.no-courses {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 250px;
+	margin:  0px auto;
+	.add-button {
+		width: 100%;
+	}
+}
