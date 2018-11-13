@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { PaperContainer, Container, Title, IconButton, Loading } from 'components/atoms';
+import { PaperContainer, Container, Title, IconButton, Loading, FlexBox } from 'components/atoms';
 import { VoteActions, Mention } from 'components/organisms';
 import { Follow } from 'components/icons';
 import Author from './Author';
@@ -17,7 +17,11 @@ class Question extends Component {
 			<PaperContainer className="main-post">
 				{
 					post === null
-						? <Loading />
+						? (
+							<FlexBox className="loading-question" align justify>
+								<Loading />
+							</FlexBox>
+						)
 						: (
 							<Container className="post">
 								<Container className="info">

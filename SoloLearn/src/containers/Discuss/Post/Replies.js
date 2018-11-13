@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { observer } from 'mobx-react';
-import { Container, List, PaperContainer, SecondaryTextBlock, Select, MenuItem } from 'components/atoms';
+import {
+	Container, List, PaperContainer,
+	SecondaryTextBlock, Select, MenuItem,
+	FlexBox, TextBlock,
+} from 'components/atoms';
 import { InfiniteScroll, RaisedButton } from 'components/molecules';
 import AddReply from './AddReply';
 import ReplyItem from './ReplyItem';
@@ -98,23 +102,32 @@ class Replies extends Component {
 							? <RaisedButton onClick={this.replies.getRepliesAbove}>Load above</RaisedButton>
 							: null
 						}
-						<List>
-							{
-								this.replies.entities.map(reply => (
-									<ReplyItem
-										ref={(replyView) => {
-											this.repliesRefs[reply.id] = replyView;
-										}}
-										editReply={this.replies.editReply(reply.id)}
-										askerID={askerID}
-										key={reply.id}
-										reply={reply}
-										deleteReply={() => this.deleteReply(reply.id)}
-										onAccept={() => this.replies.onAcceptReply(reply.id)}
-									/>
-								))
-							}
-						</List>
+						{this.replies.entities.length !== 0 || this.replies.isFetching
+							? (
+								<List>
+									{
+										this.replies.entities.map(reply => (
+											<ReplyItem
+												ref={(replyView) => {
+													this.repliesRefs[reply.id] = replyView;
+												}}
+												editReply={this.replies.editReply(reply.id)}
+												askerID={askerID}
+												key={reply.id}
+												reply={reply}
+												deleteReply={() => this.deleteReply(reply.id)}
+												onAccept={() => this.replies.onAcceptReply(reply.id)}
+											/>
+										))
+									}
+								</List>
+							)
+							: (
+								<FlexBox justify align className="empty-replies">
+									<TextBlock>{t('common.empty-list-message')}</TextBlock>
+								</FlexBox>
+							)
+						}
 					</PaperContainer>
 				</InfiniteScroll>
 			</Container>
