@@ -32,6 +32,9 @@ class CountingMentionInput extends Component {
 	focus = () => {
 		this.mentionInput.current.focus();
 	}
+	blur = () => {
+		this.mentionInput.current.blur();
+	}
 	isEmpty = () => this.getValue().trim().length === 0;
 	render() {
 		const { containerStyle, counterStyle, ...rest } = this.props;

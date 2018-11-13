@@ -115,6 +115,10 @@ class MentionInput extends Component {
 		this.editor.focus(options);
 	};
 
+	blur = () => {
+		this.editor.blur();
+	}
+
 	getText = () => this.state.editorState.getCurrentContent().getPlainText()
 
 	getLength = () => this.getText().length
