@@ -20,7 +20,7 @@ const Post = ({
 	isQuestion,
 	onChange,
 }) => (
-	<Container>
+	<Container className="feed-post-container">
 		<Link
 			to={url}
 			className="post"
