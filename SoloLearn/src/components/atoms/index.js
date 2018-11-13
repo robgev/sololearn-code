@@ -37,3 +37,4 @@ export { default as Label } from './Label';
 export { default as Snackbar } from './Snackbar';
 export { default as Tooltip } from './Tooltip';
 export { default as Menu } from './Menu';
+export { default as FlexBox } from './FlexBox';
