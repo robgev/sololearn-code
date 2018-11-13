@@ -59,7 +59,7 @@ class Replies extends Component {
 	}
 
 	render() {
-		const { count, t } = this.props;
+		const { count, t, askerID } = this.props;
 		return (
 			<Container className="replies">
 				<Container className="replies-toolbar">
@@ -98,9 +98,11 @@ class Replies extends Component {
 										ref={(replyView) => {
 											this.repliesRefs[reply.id] = replyView;
 										}}
+										askerID={askerID}
 										key={reply.id}
 										reply={reply}
 										deleteReply={() => this.deleteReply(reply.id)}
+										onAccept={() => this.replies.onAcceptReply(reply.id)}
 									/>
 								))
 							}

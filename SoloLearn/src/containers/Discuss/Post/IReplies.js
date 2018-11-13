@@ -99,9 +99,9 @@ class IReplies {
 		const replies = uniqBy([ ...oldReplies, ...newReplies ], reply => reply.id);
 		switch (orderBy) {
 		case IReplies.ORDER_BY_VOTE:
-			return replies.slice().sort((a, b) => b.votes - a.votes);
+			return replies.slice().sort((a, b) => a.isAccepted ? -1 : b.votes - a.votes);
 		case IReplies.ORDER_BY_DATE:
-			return replies.slice().sort((a, b) => new Date(b.date) - new Date(b.date));
+			return replies.slice().sort((a, b) => a.isAccepted ? -1 : new Date(b.date) - new Date(b.date));
 		default:
 			throw new Error('Couldn\'t identify replies order');
 		}
@@ -159,6 +159,12 @@ class IReplies {
 
 	@action removeReply = (id) => {
 		this.entities = this.entities.filter(reply => reply.id !== id);
+	}
+
+	@action onAcceptReply = id => {
+		const reply = this.entities.find(reply => reply.id === id);
+		reply.isAccepted = !reply.isAccepted;
+		Service.request('Discussion/ToggleAcceptedAnswer', { id, accepted: !reply.isAccepted });
 	}
 
 	deleteReply = id =>

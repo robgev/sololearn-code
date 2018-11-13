@@ -70,6 +70,7 @@ class Post extends Component {
 					&& (
 						<Replies
 							postID={id}
+							askerID={this.post.data.userID}
 							replyID={replyID}
 							count={this.post.count}
 							onCountChange={this.handlePostRepliesCountChange}

@@ -4,6 +4,7 @@ import { ListItem, HorizontalDivider, Container } from 'components/atoms';
 import { VoteActions, Mention } from 'components/organisms';
 import Options from './Options';
 import Author from './Author';
+import AcceptReply from './AcceptReply';
 
 @observer
 class ReplyItem extends Component {
@@ -24,11 +25,14 @@ class ReplyItem extends Component {
 		}
 	}
 	render() {
-		const { reply, deleteReply } = this.props;
+		const { reply, deleteReply, onAccept, askerID } = this.props;
 		return (
 			<Fragment>
 				<ListItem>
-					<Container ref={this.postContainer} className={`post ${this.state.isHighlighted ? 'animate-highlight' : ''}`}>
+					<Container
+						ref={this.postContainer}
+						className={`post ${this.state.isHighlighted ? 'animate-highlight' : ''} ${reply.isAccepted ? 'accepted' : ''}`}
+					>
 						<Container className="info">
 							<Container className="toolbar">
 								<Container className="votes">
@@ -38,6 +42,13 @@ class ReplyItem extends Component {
 										vertical
 										initialCount={reply.votes}
 										initialVote={reply.vote}
+									/>
+								</Container>
+								<Container>
+									<AcceptReply
+										askerID={askerID}
+										isAccepted={reply.isAccepted}
+										onClick={onAccept}
 									/>
 								</Container>
 							</Container>
