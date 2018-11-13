@@ -16,7 +16,7 @@ const mapStateToProps = state => ({
 });
 
 const Header = ({ pathname, isSignedIn }) => (
-	<div className="header">
+	<div className="header mui-fixed">
 		<div className="header-wrapper">
 			<div className="header-right">
 				<Link to="/feed" className="home-icon">

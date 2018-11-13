@@ -19,3 +19,4 @@ export { default as ModBadge } from './ModBadge';
 export { default as TagLabel } from './TagLabel';
 export { default as Slider } from './Slider';
 export { default as LevelBadge } from './LevelBadge';
+export { default as IconMenu } from './IconMenu';
