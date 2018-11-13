@@ -2,6 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Slider } from 'components/molecules';
+import { Container } from 'components/atoms';
 import { discoverIdsSelector, getEntitiesByIds } from 'reducers/discover.reducer';
 
 // Additional data and components
@@ -30,21 +31,21 @@ const generateBreakpoints = () => {
 };
 
 const FeedSuggestions = ({ suggestions }) => (
-	<div className="feed-suggestions" style={{ width: '97%', margin: '0 auto', marginBottom: 5 }}>
+	<Container className="feed-suggestions">
 		<Slider
 			slidesToShow={3}
 			slidesToScroll={4}
 			responsive={generateBreakpoints()}
 		>
 			{suggestions.map(suggestion => (
-				<div
+				<Container
 					key={`suggestion${suggestion.id}`}
 				>
 					<FeedSuggestion className="suggestion-wrapper" suggestion={suggestion} />
-				</div>
+				</Container>
 			))}
 		</Slider>
-	</div>
+	</Container>
 );
 
 export default connect(mapStateToProps)(FeedSuggestions);

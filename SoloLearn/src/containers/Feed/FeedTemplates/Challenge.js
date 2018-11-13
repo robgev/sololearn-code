@@ -1,23 +1,16 @@
 // React modules
 import React, { Fragment } from 'react';
-
 // Additional data and components
-import User from './User';
+import BottomToolbar from '../FeedBottomToolbar';
+import ProfileAvatar from '../ProfileAvatar';
+import {
+	Container,
+	TextBlock,
+	SecondaryTextBlock
+} from 'components/atoms';
+import { UsernameLink } from 'components/molecules';
 
-const styles = {
-	challenge: {
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-
-	score: {
-		fontSize: 25,
-		fontWeight: 500,
-		color: '#545454',
-		marginBottom: 10,
-	},
-};
+import 'styles/Feed/FeedTemplates/Challenge.scss';
 
 const Challenge = ({
 	date,
@@ -26,28 +19,28 @@ const Challenge = ({
 	},
 }) => (
 	<Fragment>
-		<div className="challenge" style={styles.challenge}>
-			<User
-				id={id}
-				disabled
-				user={player}
-				courseId={courseID}
-			/>
-			<div className="score" style={styles.score}>
-				<span>{player.score}</span>
-				<span> : </span>
-				<span>{opponent.score}</span>
-			</div>
-			<User
-				id={id}
-				disabled
-				user={opponent}
-				courseId={courseID}
-			/>
-		</div>
-		<div className="feed-date-container">
-			<p className="date">{date}</p>
-		</div>
+		<Container className="challenge">
+			<Container>
+				<ProfileAvatar 
+					user={player}
+				/>
+				<Container className="username">
+					<UsernameLink to={`/Profile/${player.id}`}>{player.name}</UsernameLink>
+				</Container>
+			</Container>
+			<Container>
+				<TextBlock className="score">{`${player.score} : ${opponent.score}`}</TextBlock>
+			</Container>
+			<Container>
+				<ProfileAvatar 
+					user={opponent}
+				/>
+				<Container className="username">
+					<UsernameLink to={`/Profile/${opponent.id}`}>{opponent.name}</UsernameLink>
+				</Container>
+			</Container>
+		</Container>
+		<BottomToolbar date={date} />
 	</Fragment>
 );
 

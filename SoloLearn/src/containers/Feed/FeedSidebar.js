@@ -1,11 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
-import FlatButton from 'material-ui/FlatButton';
-import ProfileAvatar from 'components/ProfileAvatar';
+import ProfileAvatar from './ProfileAvatar';
 import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
 import { numberFormatter } from 'utils';
 import { discoverIdsSelector, discoverEntitiesSelector } from 'reducers/discover.reducer.js';
+import {
+	Container,
+	Title,
+	Link,
+	SecondaryTextBlock,
+} from 'components/atoms';
+import { FlatButton, UsernameLink, } from 'components/molecules';
+
 import 'styles/Feed/FeedSidebar.scss';
 
 const mapStateToProps = state => ({
@@ -14,10 +20,10 @@ const mapStateToProps = state => ({
 });
 
 const FeedSuggestions = ({ t, discoverIds, discoverEntities }) => (
-	<div className="feed-sidebar-suggestions">
-		<div className="sidebar-title">
-			<p className="title">{t('discover_peers.title')}</p>
-		</div>
+	<Container className="feed-sidebar-suggestions">
+		<Container className="sidebar-title">
+			<Title className="title">{t('discover_peers.title')}</Title>
+		</Container>
 		{discoverEntities === null
 			? <SidebarShimmer round noTitle />
 			: discoverIds.slice(0, 7).map((id) => {
@@ -25,40 +31,32 @@ const FeedSuggestions = ({ t, discoverIds, discoverEntities }) => (
 					name, avatarUrl, followers, level,
 				} = discoverEntities[id];
 				return (
-					<div className="suggestion-container">
+					<Container className="suggestion-container">
 						<ProfileAvatar
-							size={50}
-							userID={id}
-							userName={name}
-							avatarUrl={avatarUrl}
-							avatarStyle={{ marginRight: 10 }}
+							user={discoverEntities[id]}
 						/>
-						<div className="user-info">
-							<Link to={`/profile/${id}`} className="user-name hoverable">{name}</Link>
+						<Container className="user-info">
+							<UsernameLink to={`/profile/${id}`} >{name}</UsernameLink>
 
-							<p className="user-meta-info">
+							<SecondaryTextBlock className="user-meta-info">
 								{
 									followers === 1
 										? `1 ${t('user-followers-one')}`
 										: `${numberFormatter(followers)} ${t('common.user-followers')}`
 								} | {t('common.user-level')} {numberFormatter(level)}
-							</p>
-						</div>
-					</div>
+							</SecondaryTextBlock>
+						</Container>
+					</Container>
 				);
 			})}
 		{ discoverEntities && discoverIds.length > 0 &&
 			<Link className="load-more" to="/discover">
-				<FlatButton
-					label={t('common.loadMore')}
-					style={{
-						height: 30,
-						lineHeight: '30px',
-					}}
-				/>
+				<FlatButton>
+					{t('common.loadMore')}
+				</FlatButton>
 			</Link>
 		}
-	</div>
+	</Container>
 );
 
 export default connect(mapStateToProps)(FeedSuggestions);

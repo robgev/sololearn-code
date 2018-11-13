@@ -1,7 +1,9 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import RInfiniteScroll from 'react-infinite-scroller';
-import { Loading } from 'components/atoms';
+import { Loading, Container } from 'components/atoms';
+
+import './styles.scss';
 
 const InfiniteScroll = ({ children, isLoading, ...props }) => (
 	<Fragment>
@@ -10,7 +12,7 @@ const InfiniteScroll = ({ children, isLoading, ...props }) => (
 		>
 			{children}
 		</RInfiniteScroll>
-		{isLoading ? <Loading /> : null}
+		{isLoading ?<Container className="molecule_infinit-scroll-loading"><Loading /></Container> : null}
 	</Fragment>
 );
 

@@ -1,27 +1,43 @@
 import React from 'react';
-import { Link } from 'react-router';
 import { truncate } from 'utils';
-import { grey700 } from 'material-ui/styles/colors';
-import QuoteIcon from 'material-ui/svg-icons/editor/format-quote';
+import BottomToolbarWithVotes from '../BottomToolbarWithVotes'
+import {
+	Container,
+	Link,
+	TextBlock,
+} from 'components/atoms';
+import { QuoteIcon } from 'components/icons';
 
 import 'styles/Feed/codeFeedItem.scss';
 
-const Comment = ({ comment, url }) => (
-	<div className="comment-item-container">
-		<Link to={url} className="comment-feed-item-wrapper">
-			<QuoteIcon
-				color={grey700}
-				style={{ flex: 'none', transform: 'scale(-1, -1)', alignSelf: 'flex-end' }}
-			/>
-			<p className="comment-text">
-				{truncate(comment.message, 200, 5, true)}
-			</p>
-			<QuoteIcon
-				color={grey700}
-				style={{ flex: 'none' }}
-			/>
-		</Link>
-	</div>
+const Comment = ({ 
+	comment,
+	url,
+	date,
+	userVote,
+	totalVotes,
+	onChange,
+	type,
+}) => (
+	<Container>
+		<Container className="comment-item-container">
+			<Link to={url} className="comment-feed-item-wrapper">
+				<QuoteIcon/>
+				<TextBlock className="comment-text">
+					{truncate(comment.message, 200, 5, true)}
+				</TextBlock>
+				<QuoteIcon/>
+			</Link>
+		</Container>
+		<BottomToolbarWithVotes
+			type={type}
+			date={date}
+			id={comment.id}
+			userVote={userVote}
+			totalVotes={totalVotes}
+			onChange={onChange}
+		/>
+	</Container>
 );
 
 export default Comment;

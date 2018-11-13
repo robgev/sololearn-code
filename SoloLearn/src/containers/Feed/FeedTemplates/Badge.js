@@ -1,59 +1,27 @@
 // React modules
 import React, { Fragment } from 'react';
-
-const styles = {
-	achievement: {
-		display: 'flex',
-		alignItems: 'center',
-	},
-
-	badge: {
-		base: {
-			height: '60px',
-			width: '60px',
-			display: 'inline-flex',
-			alignItems: 'center',
-			justifyContent: 'center',
-			flexShrink: 0,
-		},
-
-		icon: {
-			width: '80%',
-		},
-	},
-
-	details: {
-		color: '#545454',
-		padding: '10px 12px',
-	},
-
-	title: {
-		fontSize: '15px',
-		fontWeight: 500,
-	},
-
-	description: {
-		fontSize: '13px',
-	},
-};
+import {
+	Container,
+	Image,
+	SecondaryTextBlock
+} from 'components/atoms';
+import BottomToolbar from '../FeedBottomToolbar';
 
 const Badge = ({ date, achievement }) => (
 	<Fragment>
-		<div className="achievement" style={styles.achievement}>
-			<div
-				className="badge-icon"
-				style={{ ...styles.badge.base, backgroundColor: achievement.color }}
+		<Container className="achievement">
+			<Container
+				className="badge-base"
+				style={{ backgroundColor: achievement.color }}
 			>
-				<img alt="achievement" src="/assets/achievement.png" style={styles.badge.icon} />
-			</div>
-			<div className="details" style={styles.details}>
-				<p className="title" style={styles.title}>{achievement.title}</p>
-				<p className="description" style={styles.description}>{achievement.description}</p>
-			</div>
-		</div>
-		<div className="feed-date-container">
-			<p className="date">{date}</p>
-		</div>
+				<Image alt="achievement" src="/assets/achievement.png" classNmame="badge-icon" />
+			</Container>
+			<Container className="details" >
+				<SecondaryTextBlock className="title">{achievement.title}</SecondaryTextBlock>
+				<SecondaryTextBlock className="description">{achievement.description}</SecondaryTextBlock>
+			</Container>
+		</Container>
+		<BottomToolbar date={date} />
 	</Fragment>
 );
 

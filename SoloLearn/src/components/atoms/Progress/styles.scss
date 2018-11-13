@@ -1,0 +1,9 @@
+@import '~styles/colors';
+
+.atom_progress-color {
+	background-color: $secondary_color;
+}
+
+.atom_progress-bg-color {
+	background-color: $secondary_color_disabled;
+}

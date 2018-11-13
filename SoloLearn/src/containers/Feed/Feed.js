@@ -13,14 +13,14 @@ import {
 	getDiscoverSuggestions,
 } from 'actions/discover';
 import { feedSelector, feedHasMoreSelector } from 'reducers/feed.reducer';
-
-import Layout from 'components/Layouts/GeneralLayout';
-
-import 'styles/Feed/Feed.scss';
+import { LayoutWithSidebar } from 'components/molecules';
+import { Container, Title } from 'components/atoms';
 import { showError } from 'utils';
 import Header from './Header';
 import FeedList from './FeedList';
 import FeedSidebar from './FeedSidebar';
+
+import 'styles/Feed/Feed.scss';
 
 const mapStateToProps = state => ({
 	feed: feedSelector(state),
@@ -43,9 +43,10 @@ const mapDispatchToProps = {
 class FeedItemsBase extends Component {
 	state = {
 		hasNewItems: false,
+		loading: false,
 	};
 
-	componentWillMount() {
+	componentDidMount() {
 		const { isLoaded } = this.props;
 		document.title = 'Sololearn | Feed';
 		ReactGA.ga('send', 'screenView', { screenName: 'Feed Page' });
@@ -73,8 +74,11 @@ class FeedItemsBase extends Component {
 	}
 
 	getFeedItems = () => {
+		this.setState({loading: true});
 		this.props.getFeedItems()
+			.then(()=>{this.setState({loading: false});})
 			.catch(e => showError(e, 'Something went wrong when trying to get feed'));
+		
 	}
 
 	// Scroll to top of the feed
@@ -92,22 +96,24 @@ class FeedItemsBase extends Component {
 			levels,
 			voteFeedItem,
 		} = this.props;
+		const { loading } = this.state;
 		return (
-			<Layout
-				sidebarContent={<FeedSidebar t={t} />}
+			<LayoutWithSidebar
+				sidebar={<FeedSidebar t={t} />}
 			>
-				<div className="feed-items-wrapper">
+				<Container className="feed-items-wrapper">
 					<Header profile={userProfile} levels={levels} />
-					<p className="sub-title">{t('feed.title')}</p>
+					<Title className="sub-title">{t('feed.title')}</Title>
 					<FeedList
 						feed={feed}
 						feedPins={feedPins}
 						hasMore={hasMore}
+						loading={loading}
 						loadMore={this.getFeedItems}
 						voteFeedItem={voteFeedItem}
 					/>
-				</div>
-			</Layout>
+				</Container>
+			</LayoutWithSidebar>
 		);
 	}
 }

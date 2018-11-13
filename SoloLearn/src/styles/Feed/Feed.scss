@@ -3,6 +3,7 @@
 .feed-items-wrapper {
 	.sub-title {
 		@extend %title-text;
+		display: block;
 		padding: 15px 5px;
 		padding-bottom: 14px;
 	}

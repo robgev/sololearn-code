@@ -135,11 +135,10 @@ export const voteFeedItem = ({
 	id: feedItemId,
 	votes: totalVotes,
 }) => {
-	const url = getUrlByType(voteType);
+	
 	const userVote = vote === newVote ? 0 : newVote;
 	const votes = (totalVotes + userVote) - vote;
-	Service.request(url, { id: targetId, vote: userVote })
-		.catch(e => showError(e, 'Something went wrong when trying to vote'));
+	
 	return {
 		type: types.SET_FEED_ITEM_VOTE_DATA,
 		payload: {

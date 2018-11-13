@@ -6,10 +6,25 @@ import { VoteActions } from 'components/organisms';
 
 import 'styles/Feed/FeedBottomToolbar.scss';
 
-const FeedToolbar = ({ date }) => (
-	<Container className="feed-date-container">
+const FeedToolbar = ({
+	date,
+	userVote,
+	totalVotes,
+	type,
+	onChange,
+	id,
+}) => {
+	return (
+	<Container className="feed-toolbar-container">
+		<VoteActions
+			id={id}
+			type={type}
+			initialVote={userVote}
+			initialCount={totalVotes}
+			onChange={onChange}
+		/>
 		<SecondaryTextBlock className="date">{updateDate(date)}</SecondaryTextBlock>
 	</Container>
-);
+)};
 
 export default FeedToolbar;

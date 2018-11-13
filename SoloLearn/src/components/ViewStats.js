@@ -1,26 +1,27 @@
 import React from 'react';
 import { numberFormatter } from 'utils';
-import { grey500 } from 'material-ui/styles/colors';
-import ViewsIcon from 'material-ui/svg-icons/image/remove-red-eye';
-import CommentsIcon from 'material-ui/svg-icons/communication/comment';
+
+import { Views, Comment } from 'components/icons'; 
+import { Container, SecondaryTextBlock } from 'components/atoms';
+import 'styles/ViewStats.scss';
 
 const ViewStats = ({
 	color, views, comments, iconStyle,
 }) => (
-	<div className="view-stats">
+	<Container className="view-stats">
 		{ views > 0 &&
-			<div className="stat-group">
-				<ViewsIcon color={color || grey500} style={{ height: 20, width: 20, ...iconStyle }} />
-				<p>{ numberFormatter(views) }</p>
-			</div>
+			<Container className="stat-group">
+				<Views className="stat-icon"/>
+				<SecondaryTextBlock>{ numberFormatter(views) }</SecondaryTextBlock>
+			</Container>
 		}
 		{ comments > 0 &&
-			<div className="stat-group">
-				<CommentsIcon color={color || grey500} style={{ height: 20, width: 20, ...iconStyle }} />
-				<p>{ numberFormatter(comments) }</p>
-			</div>
+			<Container className="stat-group">
+				<Comment className="stat-icon"/>
+				<SecondaryTextBlock>{ numberFormatter(comments) }</SecondaryTextBlock>
+			</Container>
 		}
-	</div>
+	</Container>
 );
 
 export default ViewStats;

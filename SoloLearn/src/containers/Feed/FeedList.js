@@ -9,14 +9,18 @@ import Dialog from 'components/StyledDialog';
 
 // Utils and defaults
 import types from 'defaults/appTypes';
-import InfiniteScroll from 'components/InfiniteScroll';
 import FeedShimmer from 'components/Shimmers/FeedShimmer';
-
-import 'styles/Feed/FeedList.scss';
-
 import FeedPin from './FeedPin';
 import FeedItem from './FeedItem';
-import CoursePopup from './CoursePopup';
+import {
+	Container,
+	Title,
+	Popup,
+	PopupContent,
+} from 'components/atoms';
+import { InfiniteScroll, } from 'components/molecules'
+
+import 'styles/Feed/FeedList.scss';
 
 const mapStateToProps = state => ({
 	skills: state.userProfile.skills,
@@ -47,54 +51,49 @@ class FeedList extends Component {
 			loadMore,
 			header = null,
 			voteFeedItem,
+			loading,
 		} = this.props;
 		const { coursePopupOpen, courseId } = this.state;
 		return (
-			<div>
+			<Container>
 				{
 					(feed.length === 0 && feedPins && feedPins.length === 0 && !hasMore)
-						? <p style={{ textAlign: 'center', height: 120 }}>{t('common.empty-activity-message')}</p>
+						? <Title style={{ textAlign: 'center', display: 'block' }}>{t('common.empty-activity-message')}</Title>
 						:
 						(
-							<div>
+							<Container>
 								{
-									hasMore && (feed.length === 0 || feedPins === null)
+									hasMore && ( feedPins === null || feed.length === 0)
 										? (
-											<div style={{ height: '90vh', overflow: 'hidden' }}>
+											<Container>
 												{header}
 												<FeedShimmer />
-											</div>
+											</Container>
 										)
 										: (
-											<div>
-												<div>
-													<div className="feed-pins">
+											<Container>
+												<Container>
+													<Container className="feed-pins">
 														{feedPins !== undefined && feedPins.length !== 0 &&
 															<React.Fragment>
 																{feedPins.map(pin => (
 																	<FeedPin
 																		pin={pin}
 																		key={`pin${pin.id}`}
-																		openCoursePopup={this.toggleCoursePopup}
 																	/>
 																))}
-																<p className="sub-title" style={{ paddingTop: 5 }} key="separator">{t('feed.most-recent-title')}</p>
+																<Title className="sub-title" key="separator">{t('feed.most-recent-title')}</Title>
 															</React.Fragment>
 														}
-													</div>
-												</div>
+													</Container>
+												</Container>
 												{ feed.length === 0 && !hasMore
-													? <p style={{ textAlign: 'center', height: 120 }}>{t('common.empty-activity-message')}</p>
+													? <Title style={{ textAlign: 'center', height: 120 }}>{t('common.empty-activity-message')}</Title>
 													:
 													<InfiniteScroll
-														element="div"
 														hasMore={hasMore}
 														loadMore={loadMore}
-														header={feed.length !== 0 ? header : null}
-														style={{
-															display: 'flex',
-															flexDirection: 'column',
-														}}
+														isLoading={loading}
 													>
 														{feed.map(feedItem => (
 															<FeedItem
@@ -103,29 +102,16 @@ class FeedList extends Component {
 																	`feedItem${feedItem.id}`}
 																feedItem={feedItem}
 																voteFeedItem={voteFeedItem}
-																openCoursePopup={this.toggleCoursePopup}
 															/>
 														))}
 													</InfiniteScroll>
 												}
-											</div>
+											</Container>
 										)}
-								<Dialog
-									open={coursePopupOpen}
-									bodyStyle={{ padding: 15 }}
-									onRequestClose={this.toggleCoursePopup}
-								>
-									<CoursePopup
-										t={t}
-										skills={skills}
-										courses={courses}
-										courseId={courseId}
-									/>
-								</Dialog>
-							</div>
+							</Container>
 						)
 				}
-			</div>
+			</Container>
 		);
 	}
 }

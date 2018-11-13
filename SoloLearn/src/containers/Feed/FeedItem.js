@@ -1,6 +1,6 @@
 // React modules
 import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router';
+//import { Link } from 'react-router';
 import { observer } from 'mobx-react';
 
 // Material UI components
@@ -18,32 +18,17 @@ import Comment from './FeedTemplates/Comment';
 import Challenge from './FeedTemplates/Challenge';
 import FeedSuggestions from './FeedSuggestions';
 import BottomToolbar from './FeedBottomToolbar';
+import BottomToolbarWithVotes from './BottomToolbarWithVotes';
+import {
+	Container,
+	PaperContainer,
+	Link,
+} from 'components/atoms';
 
 // Utils and Defaults
 import types from '../../defaults/appTypes';
 
-const styles = {
-	feedItemWrapper: {
-		position: 'relative',
-	},
-	feedItem: {
-		cursor: 'pointer',
-		position: 'relative',
-		padding: 15,
-		marginBottom: 10,
-	},
-	linkStyle: {
-		display: 'block',
-		textDecoration: 'none',
-		color: '#000',
-		position: 'absolute',
-		left: 0,
-		right: 0,
-		top: 0,
-		bottom: 0,
-		zIndex: 1,
-	},
-};
+import 'styles/Feed/FeedItem.scss';
 @observer
 class FeedItem extends Component {
 	constructor(props) {
@@ -67,13 +52,13 @@ class FeedItem extends Component {
 		switch (feedItem.type) {
 		case types.badgeUnlocked:
 			this.url = `/profile/${feedItem.user.id}/badges?badgeID=${feedItem.achievement.id}`;
-			return <Badge date={updateDate(feedItem.date)} achievement={feedItem.achievement} />;
+			return <Badge date={feedItem.date} achievement={feedItem.achievement} />;
 		case types.courseStarted:
 			this.url = `/learn/course/${toSeoFriendly(feedItem.course.name)}`;
-			return <Course date={updateDate(feedItem.date)} course={feedItem.course} openPopup={this.props.openCoursePopup} />;
+			return <Course date={feedItem.date} course={feedItem.course} openPopup={this.props.openCoursePopup} />;
 		case types.courseCompleted:
 			this.url = `/learn/course/${toSeoFriendly(feedItem.course.name)}`;
-			return <Course date={updateDate(feedItem.date)} course={feedItem.course} openPopup={this.props.openCoursePopup} />;
+			return <Course date={feedItem.date} course={feedItem.course} openPopup={this.props.openCoursePopup} />;
 		case types.postedQuestion:
 			this.url = `/discuss/${feedItem.post.id}`;
 			this.votes = feedItem.post.votes;
@@ -85,8 +70,7 @@ class FeedItem extends Component {
 					post={feedItem.post}
 					vote={feedItem.vote}
 					votes={feedItem.votes}
-					onUpvote={() => voteFeedItem({ ...feedItem, newVote: 1, targetId: feedItem.post.id })}
-					onDownvote={() => voteFeedItem({ ...feedItem, newVote: -1, targetId: feedItem.post.id })}
+					onChange={(vote, newVote) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.post.id })}
 				/>
 			);
 		case types.postedAnswer:
@@ -100,8 +84,7 @@ class FeedItem extends Component {
 					vote={feedItem.vote}
 					date={feedItem.date}
 					votes={feedItem.votes}
-					onUpvote={() => voteFeedItem({ ...feedItem, newVote: 1, targetId: feedItem.post.id })}
-					onDownvote={() => voteFeedItem({ ...feedItem, newVote: -1, targetId: feedItem.post.id })}
+					onChange={(vote, newVote) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.post.id })}
 				/>
 			);
 		case types.postedCode:
@@ -109,77 +92,63 @@ class FeedItem extends Component {
 			this.url = `/playground/${feedItem.code.publicID}`;
 			this.votes = feedItem.code.votes;
 			return (
-				<div>
-					<Code code={feedItem.code} />
-					<BottomToolbar
-						date={feedItem.date}
-						userVote={feedItem.vote}
-						totalVotes={feedItem.votes}
-						onUpvote={() => voteFeedItem({ ...feedItem, newVote: 1, targetId: feedItem.code.id })}
-						onDownvote={() => voteFeedItem({ ...feedItem, newVote: -1, targetId: feedItem.code.id })}
-					/>
-				</div>
+				<Code code={feedItem.code}
+					date={feedItem.date}
+					userVote={feedItem.vote}
+					totalVotes={feedItem.votes}
+					onChange={(vote, newVote) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.code.id })}
+				/>
 			);
 		case types.completedChallange:
 			this.url = `/profile/${feedItem.contest.player.id}`;
-			return <Challenge date={updateDate(feedItem.date)} contest={feedItem.contest} />;
+			return <Challenge date={feedItem.date} contest={feedItem.contest} />;
 		case types.suggestions:
 			return <FeedSuggestions number={feedItem.number} />;
 		case types.postedLessonComment:
 		case types.postedLessonCommentReply:
-			// this.url = `/learn/${feedItem.course.alias}/${feedItem.course.id}`;
 			this.url = `/learn/course/${toSeoFriendly(feedItem.course.name)}?commentID=${feedItem.comment.id}`;
 			return (
-				<div>
-					<Comment url={this.url} comment={feedItem.comment} />
-					<BottomToolbar
-						date={feedItem.date}
-						userVote={feedItem.vote}
-						totalVotes={feedItem.votes}
-						onUpvote={() => voteFeedItem({ ...feedItem, newVote: 1, targetId: feedItem.comment.id })}
-						onDownvote={() => voteFeedItem({ ...feedItem, newVote: -1, targetId: feedItem.comment.id })}
-					/>
-				</div>
+				<Comment url={this.url} comment={feedItem.comment} 
+					date={feedItem.date}
+					type='lessonComment'
+					userVote={feedItem.vote}
+					totalVotes={feedItem.votes}
+					onChange={(vote, newVote) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.comment.id })}
+				/>
 			);
 		case types.postedUserLessonComment:
 		case types.postedUserLessonCommentReply:
 			this.url = `/learn/lesson/${feedItem.userLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${feedItem.userLesson.id}/${toSeoFriendly(feedItem.userLesson.name, 100)}/1?commentID=${feedItem.comment.id}`;
 			return (
-				<div>
-					<Comment url={this.url} comment={feedItem.comment} />
-					<BottomToolbar
-						date={feedItem.date}
-						userVote={feedItem.vote}
-						totalVotes={feedItem.votes}
-						onUpvote={() => voteFeedItem({ ...feedItem, newVote: 1, targetId: feedItem.comment.id })}
-						onDownvote={() => voteFeedItem({ ...feedItem, newVote: -1, targetId: feedItem.comment.id })}
-					/>
-				</div>
+				<Comment url={this.url} comment={feedItem.comment} 
+					date={feedItem.date}
+					type='userLessonComment'
+					userVote={feedItem.vote}
+					totalVotes={feedItem.votes}
+					onChange={(vote, newVote) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.comment.id })}
+				/>
 			);
 		case types.postedCodeComment:
 		case types.postedCodeCommentReply:
 		case types.upvoteCodeComment:
 			this.url = `/playground/${feedItem.code.publicID}?commentID=${feedItem.comment.id}`;
 			return (
-				<div>
-					<Comment url={this.url} comment={feedItem.comment} />
-					<BottomToolbar
-						date={feedItem.date}
-						userVote={feedItem.vote}
-						totalVotes={feedItem.votes}
-						onUpvote={() => voteFeedItem({ ...feedItem, newVote: 1, targetId: feedItem.comment.id })}
-						onDownvote={() => voteFeedItem({ ...feedItem, newVote: -1, targetId: feedItem.comment.id })}
-					/>
-				</div>
+				<Comment url={this.url} comment={feedItem.comment} 
+					date={feedItem.date}
+					type='codeComment'
+					userVote={feedItem.vote}
+					totalVotes={feedItem.votes}
+					onChange={(vote, newVote) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.comment.id })}
+				/>
 			);
 		case types.lessonCreated:
 			this.url = `/learn/lesson/${feedItem.userLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${feedItem.userLesson.id}/${toSeoFriendly(feedItem.userLesson.name, 100)}/1`;
 			return (
-				<Fragment>
+				<Container>
 					<CourseCard
 						small
 						itemType={2}
-						style={{ boxShadow: 'none' }}
+						className="course-card"
 						id={feedItem.userLesson.id}
 						name={feedItem.userLesson.name}
 						color={feedItem.userLesson.color}
@@ -188,10 +157,7 @@ class FeedItem extends Component {
 						viewCount={feedItem.userLesson.viewCount}
 						comments={feedItem.userLesson.comments}
 					/>
-					<div className="feed-date-container">
-						<p className="date">{updateDate(feedItem.date)}</p>
-					</div>
-				</Fragment>
+				</Container>
 			);
 		default:
 			return null;
@@ -200,20 +166,19 @@ class FeedItem extends Component {
 
 	render() {
 		const { feedItem } = this.props;
-
 		// Render only suggestions
 		if (feedItem.type === types.suggestions) {
 			return (
-				<div>
+				<Container>
 					{this.renderFeedItem()}
-				</div>
+				</Container>
 			);
 		} else if (feedItem.type === types.mergedChallange) {
 			return (
-				<div>
-					<Paper
+				<Container>
+					<PaperContainer
 						zDepth={1}
-						style={styles.feedItem}
+						className="feedItem"
 						onClick={this.handleChallengesOpen}
 					>
 						<FeedItemBase
@@ -223,11 +188,9 @@ class FeedItem extends Component {
 							date={feedItem.date}
 							votes={this.votes}
 						/>
-						<div className="feed-date-container">
-							<p className="date">{updateDate(feedItem.date)}</p>
-						</div>
-					</Paper>
-					<div
+						<BottomToolbar date={feedItem.date} />
+					</PaperContainer>
+					<Container
 						id="feed-items"
 						className={`merged-items-container ${this.state.isOpened ? 'open' : ''}`}
 						style={{ height: this.state.isOpened ? feedItem.groupedItems.length * 159 : 0 }}
@@ -241,13 +204,13 @@ class FeedItem extends Component {
 								openCoursePopup={this.props.openCoursePopup}
 							/>
 						))}
-					</div>
-				</div>
+					</Container>
+				</Container>
 			);
 		}
 		return (
-			<div style={styles.feedItemWrapper}>
-				<Paper zDepth={1} style={styles.feedItem}>
+			<Container className="feedItemWrapper">
+				<PaperContainer zDepth={1} className="feedItem">
 					<FeedItemBase
 						feedItemId={feedItem.id}
 						title={feedItem.title}
@@ -256,12 +219,9 @@ class FeedItem extends Component {
 					>
 						{this.renderFeedItem()}
 					</FeedItemBase>
-				</Paper>
-				<Link
-					to={this.url}
-					style={styles.linkStyle}
-				/>
-			</div>
+				</PaperContainer>
+				
+			</Container>
 		);
 	}
 }

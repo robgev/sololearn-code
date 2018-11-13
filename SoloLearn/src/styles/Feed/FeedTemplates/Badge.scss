@@ -1,0 +1,28 @@
+.achievement {
+	display: flex;
+	align-items: center;
+	.badge-base {
+		height: 60px;
+		width: 60px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+	}
+	.badge-icon {
+		width: 80%;
+	}
+	.details {
+		padding: 10px 12px;
+	}
+
+	.title {
+		font-size: 15px;
+		font-weight: 500;
+	}
+
+	.description {
+		font-size: 13px;
+	}
+}
+

@@ -1,46 +1,40 @@
 // React modules
 import React from 'react';
 import { Link } from 'react-router';
-import ModBadge from 'components/ModBadge';
-import ProfileAvatar from 'components/ProfileAvatar';
-import UserTooltip from 'components/UserTooltip';
+import ProfileAvatar from './ProfileAvatar';
+import { Container, TextBlock } from 'components/atoms';
+import {
+	UsernameLink,
+	ModBadge,
+	UserTooltip,
+} from 'components/molecules';
 
 import 'styles/Feed/FeedItemBase.scss';
 
 const FeedItemBase = ({
 	title, user, children,
 }) => (
-	<div className="feed-item-content">
-		<UserTooltip userData={user}>
-			<ProfileAvatar
-				size={40}
-				userID={user.id}
-				level={user.level}
-				badge={user.badge}
-				userName={user.name}
-				avatarUrl={user.avatarUrl}
-				avatarStyle={{ margin: 0 }}
-			/>
-		</UserTooltip>
-		<div className="wrapper">
-			<p className="feed-item-title">
-				<Link
+	<Container className="feed-item-content">
+		
+		<ProfileAvatar
+			user={user}
+		/>
+		<Container className="wrapper">
+			<TextBlock className="feed-item-title">
+				<UsernameLink
 					to={`/profile/${user.id}`}
 					className="user-name-link"
 				>
-					<span className="user-name-wrapper">
-						{`${user.name} `}
-					</span>
+					{user.name} &nbsp;
 					<ModBadge
-						className="small"
 						badge={user.badge}
 					/>
-				</Link>
+				</UsernameLink>
 				{title}
-			</p>
+			</TextBlock>
 			{children}
-		</div>
-	</div>
+		</Container>
+	</Container>
 );
 
 export default FeedItemBase;

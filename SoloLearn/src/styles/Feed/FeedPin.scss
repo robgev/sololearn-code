@@ -1,0 +1,118 @@
+.feed-pin-wrapper {
+	position: relative;
+
+	.linkStyle {
+		display: block;
+		text-decoration: none;
+		color: #000;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		z-dndex: 1;
+		cursor: pointer;
+	};
+
+	.heading {
+		padding: 15px 20px 10px 20px;
+	};
+
+	.title {
+		font-weight: 500;
+		margin-bottom: 5;
+		font-size: 18px;
+	};
+
+	.subTitle {
+		font-size: 14px;
+		color: #777;
+	};
+
+	.pinImage {
+		display: block;
+		width: 100%;
+	};
+
+	.courses {
+		padding: 7px;
+	};
+
+	.users {
+		display: flex;
+		text-align: center;
+		justify-content: center;
+		padding: 7px;
+	};
+
+	.codes {
+		box-sizing: border-box;
+		width: 100%;
+		padding: 7px;
+	};
+
+	.code {
+		display: flex;
+		align-items: center;
+		padding: 7px;
+		background-color: #eee;
+		margin: 0 0 5px 0;
+		position: relative;
+		z-index: 2;
+		text-decoration: none;
+	};
+
+	.languageIcon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		height: 40px;
+		font-size: 12px;
+		color: #fff;
+		margin: 0px 10px 0 0;
+	};
+
+	.codeName {
+		font-size: 13px;
+		color: #777;
+	};
+
+	.codeAuthor {
+		font-size: 12px;
+		color: #888;
+	};
+
+	.codeInfo {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	};
+
+	.posts {
+		display: flex;
+		box-sizing: border-box;
+		width: 100%;
+		padding: 7px;
+	};
+
+	.actions {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		padding: 5px;
+	};
+
+	.pinButton {
+		z-index: 2;
+	};
+
+	.feed-pin-course {
+		padding: 15px;
+		margin-bottom: 0px;
+		padding-bottom: 0px;
+		box-shadow: none;
+	}
+}
+
+	

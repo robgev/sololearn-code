@@ -1,10 +1,12 @@
 .feed-item-content {
 	display: flex;
 	align-items: flex-start;
-	.avatar-container {
-		position: relative;
-		text-decoration: none;
-		z-index: 2;
+	
+	.level-badge {
+		position: absolute;
+		width: 35%;
+		bottom: 5%;
+		right: 5%;
 	}
 	.wrapper {
 		margin: 0 0 0 10px;
@@ -39,5 +41,9 @@
 				color: rgb(84, 84, 84);
 			}
 		}
+	}
+
+	.course-card {
+		box-shadow: none;
 	}
 }

@@ -1,58 +1,37 @@
 // React modules
 import React, { Component, Fragment } from 'react';
+import { toSeoFriendly } from 'utils';
+import BottomToolbar from '../FeedBottomToolbar';
+import {
+	Container,
+	Image,
+	TextBlock,
+	Link,
+} from 'components/atoms';
 
-const styles = {
-	course: {
-		display: 'flex',
-		alignItems: 'center',
-		margin: '0 0 10px 0',
-		position: 'relative',
-		zIndex: 2,
-		textDecoration: 'none',
-	},
-
-	courseIcon: {
-		width: '60px',
-		height: '60px',
-	},
-
-	courseName: {
-		fontSize: '15px',
-		fontWeight: 500,
-		paddingLeft: 12,
-		color: 'rgb(84, 84, 84)',
-	},
-};
+import 'styles/Feed/FeedTemplates/Course.scss';
 
 class Course extends Component {
-	openCoursePopup = () => {
-		const { course } = this.props;
-		this.props.openPopup(course.id);
-	}
-
+	
 	render() {
-		const { course, date } = this.props;
+		const { course, date, showDate=true } = this.props;
 
 		return (
-			<Fragment>
-				<div
+			<Link to={`/learn/course/${toSeoFriendly(course.name)}`}>
+				<Container
 					tabIndex={0}
 					role="button"
 					className="course"
-					style={styles.course}
-					onClick={this.openCoursePopup}
 				>
-					<img
+					<Image
 						alt="course icon"
 						src={`https://api.sololearn.com/uploads/Courses/${course.id}.png`}
-						style={styles.courseIcon}
+						className="courseIcon"
 					/>
-					<p style={styles.courseName}>{course.name}</p>
-				</div>
-				<div className="feed-date-container">
-					<p className="date">{date}</p>
-				</div>
-			</Fragment>
+					<TextBlock className="courseName">{course.name}</TextBlock>
+				</Container>
+				{showDate && <BottomToolbar date={date} />}
+			</Link>
 		);
 	}
 }

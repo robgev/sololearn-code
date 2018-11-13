@@ -1,0 +1,27 @@
+@import '~styles/colors';
+
+.post {
+	display: flex;
+	width: inherit;
+	padding: 7px;
+	background-color: $background_color;
+	position: relative;
+	&:hover {
+		text-decoration: none;
+	}
+	
+}
+.quoteIcon {
+	&.base {
+		flex: none;
+	}
+	&.bottom {
+		transform: scale(-1 -1);
+		align-self: flex-end;
+	}
+}
+.postName {
+	margin: 0 10px;
+	flex: 2;
+	word-break: break-word;
+}

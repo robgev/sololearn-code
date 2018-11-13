@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Container } from 'components/atoms'
 import MUITooltip from '@material-ui/core/Tooltip';
 import './styles.scss';
 
@@ -23,32 +24,30 @@ render() {
 	} = this.props;
 
 	return (
-		<div>
-			<MUITooltip
-				interactive
-				title={
-					<React.Fragment>
-						{tooltipContent}
-						<span className="atom_tooltip-arrow" ref={this.handleArrowRef} />
-					</React.Fragment>
-				}
-				className={`atom_tooltip-root ${className}`}
-				classes={{ tooltip: 'atom_tooltip', popper: 'atom_tooltip-popper' }}
-				PopperProps={{
-					popperOptions: {
-						modifiers: {
-							arrow: {
-								enabled: Boolean(this.state.arrowRef),
-								element: this.state.arrowRef,
-							},
+		<MUITooltip
+			interactive
+			title={
+				<React.Fragment>
+					{tooltipContent}
+					<span className="atom_tooltip-arrow" ref={this.handleArrowRef} />
+				</React.Fragment>
+			}
+			className={`atom_tooltip-root ${className}`}
+			classes={{ tooltip: 'atom_tooltip', popper: 'atom_tooltip-popper' }}
+			PopperProps={{
+				popperOptions: {
+					modifiers: {
+						arrow: {
+							enabled: Boolean(this.state.arrowRef),
+							element: this.state.arrowRef,
 						},
 					},
-				}}
-				{...rest}
-			>
-				{children}
-			</MUITooltip>
-		</div>
+				},
+			}}
+			{...rest}
+		>
+			<Container>{children}</Container>
+		</MUITooltip>
 	);
 }
 }

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+//import { Link } from 'react-router';
 import { findBestRank, getCountryName } from 'utils';
 import { translate } from 'react-i18next';
+
+import { Image } from 'components/atoms';
+import { UsernameLink } from 'components/molecules';
 
 import './styles.scss';
 
@@ -41,10 +44,10 @@ class LeaderboardString extends Component {
 
 	render() {
 		return (
-			<Link to="/leaderboards" className="leaderboard-link hoverable">
-				<img className="learboards-goblet" src="/assets/rank_goblet.png" alt="g" />
+			<UsernameLink to="/leaderboards" className="leaderboard-link hoverable">
+				<Image className="learboards-goblet" src="/assets/rank_goblet.png" alt="g" />
 				{this.getLeaderboardString()}
-			</Link>
+			</UsernameLink>
 		);
 	}
 }

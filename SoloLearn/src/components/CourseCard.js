@@ -1,9 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router';
+//import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import Paper from 'material-ui/Paper';
+//import Paper from 'material-ui/Paper';
 import { getCourseNameById, toSeoFriendly } from 'utils';
 import { slayItemTypes } from 'constants/ItemTypes';
+
+import { Container, PaperContainer, Link, Image, SecondaryTextBlock, Title } from 'components/atoms';
 
 import 'styles/courseCard.scss';
 import ViewStats from './ViewStats';
@@ -27,12 +29,12 @@ const CourseCard = ({
 	className,
 	wrapperStyle,
 }) => (
-	<Paper style={style} className={`course-card-container ${small ? 'small' : ''} ${className || ''}`}>
+	<PaperContainer className={`course-card-container ${small ? 'small' : ''} ${className || ''}`}>
 		{
 			title &&
-				<div className="meta-info">
-					<p>{title}</p>
-				</div>
+				<Container className="meta-info">
+					<SecondaryTextBlock>{title}</SecondaryTextBlock>
+				</Container>
 		}
 		<Link
 			to={
@@ -40,21 +42,20 @@ const CourseCard = ({
 					`/learn/course/${toSeoFriendly(getCourseNameById(courses, id))}` :
 					`/learn/lesson/${itemType === slayItemTypes.courseLesson ? 'course-lesson' : 'user-lesson'}/${id}/${toSeoFriendly(name, 100)}/1`
 			}
-			style={wrapperStyle}
 			className="course-card-wrapper"
 		>
-			<div
+			<Container
 				style={{ backgroundColor: color }}
 				className={`course-card-image-container ${minimal ? 'minimal' : ''} ${itemType === slayItemTypes.course || isCourses ? 'round' : ''}`}
 			>
-				<img
+				<Image
 					src={iconUrl}
 					alt="Course Icon"
 					className="card-image"
 				/>
-			</div>
-			<div className="info-container">
-				<p className="hoverable">{name}</p>
+			</Container>
+			<Container className="info-container">
+				<Title className="hoverable">{name}</Title>
 				<Link
 					className="user-link hoverable"
 					to={`/profile/${userID}`}
@@ -67,9 +68,9 @@ const CourseCard = ({
 							comments={comments}
 						/>
 				}
-			</div>
+			</Container>
 		</Link>
-	</Paper>
+	</PaperContainer>
 );
 
 const mapStateToProps = state => ({ courses: state.courses });

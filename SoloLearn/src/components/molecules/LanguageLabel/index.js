@@ -5,7 +5,7 @@ import './styles.scss';
 
 const LanguageLabel = ({ language, className, ...props }) => (
 	<Label
-		backgroundColor={getLanguageColor(language)}
+		style={{backgroundColor:getLanguageColor(language)}}
 		className={`molecule_language-label ${className}`}
 		{...props}
 	>

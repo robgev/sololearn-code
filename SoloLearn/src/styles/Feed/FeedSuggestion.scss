@@ -1,12 +1,42 @@
-.feed-suggestion-avatar {
-	&.vertical {
-		.avatar-meta-info-container {
-			.avatar-user-name {
-				max-width: 100% !important;
-				width: 100%;
-				.avatar-user-name-wrapper {
-					display: inline-block;
-					width: 100%;
+.feed-suggestions {
+	margin-bottom: 10px;
+	.user {
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			flex-direction: column;
+			height: 140px;
+			width: 140px;
+			margin: 0 5px;
+		
+
+		.userName {
+			font-size: 13px;
+			margin: 0 0 5px 0;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+			width: 100px;
+		}
+
+		.followers {
+			font-size: 11px;
+			color: #827E7E;
+			display: inline-block;
+		}
+
+		.feed-suggestion-avatar {
+			&.vertical {
+				.avatar-meta-info-container {
+					.avatar-user-name {
+						max-width: 100% !important;
+						width: 100%;
+						.avatar-user-name-wrapper {
+							display: inline-block;
+							width: 100%;
+						}
+					}
 				}
 			}
 		}

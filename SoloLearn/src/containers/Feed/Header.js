@@ -1,14 +1,20 @@
 // React modules
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router';
 import { translate } from 'react-i18next';
-
-import Paper from 'material-ui/Paper';
-import LinearProgress from 'material-ui/LinearProgress';
-import RaisedButton from 'material-ui/RaisedButton';
-
-import ProfileAvatar from 'components/ProfileAvatar';
-import LeaderboardString from 'components/LeaderboardString';
+import ProfileAvatar from './ProfileAvatar';
+import LeaderboardString from 'components/LeaderboardString'
+import {
+	Container,
+	PaperContainer,
+	Link,
+	SecondaryTextBlock,
+	TextBlock,
+} from 'components/atoms';
+import {
+	RaisedButton,
+	UsernameLink,
+	ProgressBar,
+} from 'components/molecules';
 
 import 'styles/Feed/Header.scss';
 
@@ -44,45 +50,34 @@ class Header extends PureComponent {
 		const { xp: currentXp, rank } = profile;
 
 		return (
-			<Paper className="feed-header">
-				<div className="details-wrapper">
+			<PaperContainer className="feed-header">
+				<Container className="details-wrapper">
 					<ProfileAvatar
-						size={50}
-						badge={profile.badge}
-						userID={profile.id}
-						userName={profile.name}
-						avatarUrl={profile.avatarUrl}
-						avatarStyle={{ margin: 0 }}
+						user={profile}
 					/>
-					<div className="details">
-						<Link to={`/profile/${profile.id}`}>
-							<p className="user-name hoverable">{profile.name}</p>
-						</Link>
+					<Container className="details">
+						<UsernameLink to={`/profile/${profile.id}`}>
+							{profile.name}
+						</UsernameLink>
+						
 						<LeaderboardString ranks={rank} />
-						<div className="profile-progress-wrapper">
-							<LinearProgress
-								min={0}
-								color="#8BC34A"
-								max={this.maxXp}
-								value={currentXp}
-								mode="determinate"
-								style={{ backgroundColor: '#dedede' }}
+						<Container className="profile-progress-wrapper">
+							<ProgressBar
+								value={100 * currentXp / this.maxXp}
+								minText={t(`profile.status-${this.currentBadge}`)}
+								maxText={t(`profile.status-${this.nextMilestone}`)}
 							/>
-							<div className="user-status-wrapper">
-								<span className="user-status">{t(`profile.status-${this.currentBadge}`)}</span>
-								<span className="user-status">{t(`profile.status-${this.nextMilestone}`)}</span>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div className="actions">
-					<RaisedButton
-						secondary
-						label={t('discover_peers.title')}
-						containerElement={<Link to="/discover" />}
-					/>
-				</div>
-			</Paper>
+						</Container>
+					</Container>
+				</Container>
+				<Container className="actions">
+					<Link to="/discover">
+						<RaisedButton>
+							{t('discover_peers.title')}
+						</RaisedButton>
+					</Link>
+				</Container>
+			</PaperContainer>
 
 		);
 	}
