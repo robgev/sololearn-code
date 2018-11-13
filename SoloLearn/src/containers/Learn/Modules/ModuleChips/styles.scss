@@ -1,0 +1,54 @@
+@import '~styles/colors';
+@import '~styles/variables';
+
+.modules-chips-container {
+	display: flex;
+	flex-flow: row wrap;
+}
+.module-line-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	padding: $primary_gap_size 0;
+	.content {
+		display: flex;
+		flex-direction: column;
+		text-decoration: none;
+		justify-content: center;
+		align-items: center;
+		.module-circle {
+			border-radius: 100%;
+			transition: all ease-in 150ms;
+			position: relative;
+			.module-image {
+				height: 90px;
+				width: 90px;
+				pointer-events: none;
+			}
+			&.active {
+				background: $primary_color;
+				&:hover {
+					background: $primary_color_hover;
+					box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
+				}
+			}
+			&.disabled {
+				background: $secondary_background_color;
+				svg {
+					display: none;
+				}
+			}
+			&.normal {
+				background: $secondary_color;
+				&:hover {
+					background: $secondary_color_hover;
+					box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
+				}
+			}
+		}
+	}
+	&.none {
+		width: 50%;
+	}
+}

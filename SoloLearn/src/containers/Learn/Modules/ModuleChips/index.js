@@ -1,9 +1,11 @@
 import React from 'react';
+import { Container } from 'components/atoms';
 import { toSeoFriendly, EnumNameMapper } from 'utils';
 import { AppDefaults } from 'api/service';
 import Progress, { ProgressState } from 'api/progress';
 
 import ModuleChip from './ModuleChip';
+import './styles.scss';
 
 const ModuleAlignment = {
 	None: 0,
@@ -19,7 +21,7 @@ const ModuleChips = ({
 	courseId,
 	courseName,
 }) => (
-	<div className="modules-chips-container">
+	<Container className="modules-chips-container">
 		{modules.map((module) => {
 			const moduleState = Progress.getModuleState(module);
 			const alignmentClass = ModuleAlignment.getName(module.alignment);
@@ -31,18 +33,18 @@ const ModuleChips = ({
 			return (
 				<ModuleChip
 					key={module.id}
-					completionPercent={completionPercent}
+					state={stateClass}
 					name={module.name}
 					iconSource={iconSource}
 					className={alignmentClass}
-					paperClassName={stateClass}
+					completionPercent={completionPercent}
 					onClick={e => onClick(e, module.id, moduleState)}
-					linkAddress={`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(module.name)}`}
+					to={`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(module.name)}`}
 				/>
 			);
 		})}
 
-	</div>
+	</Container>
 );
 
 export default ModuleChips;

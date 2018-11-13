@@ -1,6 +1,8 @@
 $white: #FFFFFF;
 $primary_color : #607D8B;
+$primary_color_hover:#587583;
 $secondary_color: #8BC34A;
+$secondary_color_hover: #7EB63D;
 $main_text_color: #3A464B;
 $secondary_text_color: #7F7F7F;
 $user_name_color: $primary_color;
@@ -11,4 +13,4 @@ $mod_badge_color:  $secondary_text_color; // #AFAFAF
 $gold_mod_bagde_color: #F3C207;
 $platinum_mod_badge_color: $primary_color; // #5B8BA2
 $highlight_color: yellow;
-$secondary_color_disabled: #C4E0A2;
+$secondary_color_disabled: $background_color;
