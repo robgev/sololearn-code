@@ -166,6 +166,7 @@ render() {
 							<ModuleChip
 								state="normal"
 								className="center"
+								completionPercent={100}
 								to={`/learn/more-on/${id}`}
 								name={t('learn.more-on-topic')}
 								iconSource="https://api.sololearn.com/uploads/Courses/assets/more.png"
