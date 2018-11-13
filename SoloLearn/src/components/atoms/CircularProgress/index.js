@@ -1,18 +1,18 @@
 import React from 'react';
-import Progress from '@material-ui/core/CircularProgress';
+import CircularProgressbar from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 import './styles.scss';
 
 const CircularProgress = ({ className, ...props }) => (
-	<Progress
+	<CircularProgressbar
 		className={`atom_circular-progress ${className}`}
-		thickness={1.5}
-		variant="static"
 		{...props}
 	/>
 );
 
 CircularProgress.defaultProps = {
 	className: '',
+	strokeWidth: 3,
 };
 
 export default CircularProgress;

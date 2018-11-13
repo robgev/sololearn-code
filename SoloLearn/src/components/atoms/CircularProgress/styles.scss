@@ -1,9 +1,14 @@
 @import '~styles/colors';
 
 .atom_circular-progress {
-	height: 100%;
+	width: 110%;
+	height: 110%;
 	position: absolute;
-	top: 0px;
-	right: 0px;
 	color: $secondary_color;
+	.CircularProgressbar-path {
+		stroke: $secondary_color;
+	}
+	.CircularProgressbar-trail {
+		stroke: $secondary_background_color;
+	}
 }

@@ -30,7 +30,7 @@ const ModuleChip = ({
 			>
 				<RoundImage className="module-image" alt="" src={iconSource} />
 				{completionPercent !== 100 &&
-				<CircularProgress value={completionPercent} />
+				<CircularProgress percentage={completionPercent} />
 				}
 			</PaperContainer>
 			<SecondaryTextBlock>{name}</SecondaryTextBlock>

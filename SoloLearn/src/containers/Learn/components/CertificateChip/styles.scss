@@ -1,4 +1,6 @@
+@import '~styles/variables';
+
 .certificate-image {
-	height: 90px;
-	width: 90px;
+	height: $large-avatar-size;
+	width: $large-avatar-size;
 }

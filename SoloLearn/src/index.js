@@ -19,7 +19,6 @@ import Service from 'api/service';
 import 'styles/root.scss';
 import 'react-toastify/dist/ReactToastify.min.css';
 import 'react-tippy/dist/tippy.css';
-import 'react-circular-progressbar/dist/styles.css';
 import routes from './config/routes';
 import './i18n';
 
@@ -100,4 +99,4 @@ const Index = () => {
 	);
 };
 
-ReactDOM.render(<Index />, document.getElementById('app'),);
+ReactDOM.render(<Index />, document.getElementById('app') );

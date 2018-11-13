@@ -21,9 +21,10 @@
 			border-radius: 100%;
 			transition: all ease-in 150ms;
 			position: relative;
+			margin: $primary_gap_size;
 			.module-image {
-				height: 90px;
-				width: 90px;
+				height: $large-avatar-size;
+				width: $large-avatar-size;
 				pointer-events: none;
 			}
 			&.active {
