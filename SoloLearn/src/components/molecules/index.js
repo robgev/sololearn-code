@@ -21,3 +21,4 @@ export { default as Slider } from './Slider';
 export { default as LevelBadge } from './LevelBadge';
 export { default as IconMenu } from './IconMenu';
 export { default as ProfileAvatar } from './ProfileAvatar';
+export { default as FloatingActionButton } from './FloatingActionButton';
