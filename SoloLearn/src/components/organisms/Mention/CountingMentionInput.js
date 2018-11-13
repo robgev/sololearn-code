@@ -13,7 +13,14 @@ class CountingMentionInput extends Component {
 		this.mentionInput = React.createRef();
 		this.state = {
 			charCount: 0,
+			isExtended: false,
 		};
+	}
+	onFocus = () => {
+		this.setState({ isExtended: true });
+	}
+	onBlur = () => {
+		this.setState({ isExtended: false });
 	}
 	onLengthChange = (charCount) => {
 		this.setState({ charCount });
@@ -33,6 +40,9 @@ class CountingMentionInput extends Component {
 				<MentionInput
 					ref={this.mentionInput}
 					onLengthChange={this.onLengthChange}
+					onFocus={this.onFocus}
+					onBlur={this.onBlur}
+					className={this.state.isExtended ? 'expanded' : ''}
 					{...rest}
 				/>
 				<SecondaryTextBlock className="counter">

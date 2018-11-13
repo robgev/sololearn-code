@@ -1,5 +1,7 @@
 @import '~styles/variables';
 
+$expanded_editor_height: 200px;
+
 .organism_counting-mention-input {
 	width: 100%;
 	display: flex;
@@ -7,5 +9,8 @@
 	.counter {
 		margin: $primary_gap_size;
 		align-self: flex-end;
+	}
+	.expanded {
+		min-height: $expanded_editor_height;
 	}
 }
