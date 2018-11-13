@@ -1,7 +1,8 @@
 import React, { Component, Fragment, createRef } from 'react';
 import { observer } from 'mobx-react';
-import { ListItem, HorizontalDivider, Container } from 'components/atoms';
-import { VoteActions, Mention } from 'components/organisms';
+import { ListItem, HorizontalDivider, Container, FlexBox } from 'components/atoms';
+import { RaisedButton } from 'components/molecules';
+import { VoteActions, Mention, CountingMentionInput } from 'components/organisms';
 import Options from './Options';
 import Author from './Author';
 import AcceptReply from './AcceptReply';
@@ -10,8 +11,12 @@ import AcceptReply from './AcceptReply';
 class ReplyItem extends Component {
 	state = {
 		isHighlighted: false,
+		isEditing: false,
+		isEditEnabled: true,
 	}
 	postContainer = createRef();
+	editInput = createRef();
+
 	highlight = () => {
 		this.postContainer.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
 		this.setState({ isHighlighted: true });
@@ -19,13 +24,56 @@ class ReplyItem extends Component {
 			this.setState({ isHighlighted: false });
 		}, 2000);
 	}
+
+	toggleEdit = () => {
+		this.setState(s => ({ isEditing: !s.isEditing }));
+	}
+
+	setCanEdit = isEditEnabled => {
+		this.setState({ isEditEnabled });
+	}
+
+	edit = () => {
+		const message = this.editInput.current.popValue();
+		this.props.editReply(message);
+		this.toggleEdit();
+	}
+
 	componentWillUnmount() {
 		if (this.unhighlight) {
 			clearTimeout(this.unhighlight);
 		}
 	}
+
 	render() {
 		const { reply, deleteReply, onAccept, askerID } = this.props;
+		if (this.state.isEditing) {
+			return (
+				<FlexBox column className="editing-post">
+					<CountingMentionInput
+						getUsers={{ type: 'discuss', params: { postId: reply.id } }}
+						initText={reply.message}
+						ref={this.editInput}
+						onSubmitEnabledChange={this.setCanEdit}
+					/>
+					<Container className="buttons">
+						<RaisedButton
+							className="cancel"
+							onClick={this.toggleEdit}
+						>
+							Cancel
+						</RaisedButton>
+						<RaisedButton
+							className="edit"
+							onMouseDown={this.edit}
+							disabled={!this.state.isEditEnabled}
+						>
+							Edit
+						</RaisedButton>
+					</Container>
+				</FlexBox>
+			);
+		}
 		return (
 			<Fragment>
 				<ListItem>
@@ -61,6 +109,7 @@ class ReplyItem extends Component {
 								<Options
 									userID={reply.userID}
 									deletePost={deleteReply}
+									editPost={this.toggleEdit}
 								/>
 							</Container>
 						</Container>

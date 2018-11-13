@@ -93,6 +93,7 @@ class IReplies {
 	@action handleAddedReply = ({ post }) => {
 		const withUserInfo = { ...post, ...this.userInfo, vote: 0 };
 		this.entities = this.concatRepliesByOrder(this.entities, [ withUserInfo ], this.orderBy);
+		return withUserInfo.id;
 	}
 
 	concatRepliesByOrder = (oldReplies, newReplies, orderBy) => {
@@ -162,14 +163,32 @@ class IReplies {
 	}
 
 	@action onAcceptReply = id => {
-		const reply = this.entities.find(reply => reply.id === id);
-		reply.isAccepted = !reply.isAccepted;
-		Service.request('Discussion/ToggleAcceptedAnswer', { id, accepted: !reply.isAccepted });
+		const isAccepted = true;
+		this.entities.forEach(reply => {
+			if (reply.id === id) {
+				const isAccepted = !reply.isAccepted;
+				reply.isAccepted = isAccepted;
+			} else {
+				reply.isAccepted = false;
+			}
+		});
+		Service.request('Discussion/ToggleAcceptedAnswer', { id, accepted: isAccepted });
 	}
 
-	deleteReply = id =>
-		Service.request('Discussion/DeletePost', { id })
-			.then(() => this.removeReply(id))
+	@action _editReply = ({ id, message }) => {
+		const reply = this.entities.find(r => r.id === id);
+		reply.message = message;
+		return Service.request('Discussion/EditPost', { id, message });
+	}
+
+	editReply = id => message => {
+		return this._editReply({ id, message });
+	}
+
+	deleteReply = id => {
+		this.removeReply(id);
+		return Service.request('Discussion/DeletePost', { id })
+	}
 }
 
 export default IReplies;

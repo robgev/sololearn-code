@@ -26,9 +26,25 @@
 			margin: $primary_gap_size;
 		}
 	}
+	.editing-post {
+		align-items: flex-end;
+		width: 100%;
+		.buttons {
+			display: flex;
+			justify-content: flex-end;
+			.edit {
+				background-color: $primary_color;
+				color: $white;
+			}
+			.cancel {
+				margin-right: $secondary_gap_size;
+			}
+		}
+	}
 	.post {
 		display: flex;
 		flex-direction: column;
+		width: 100%;
 		&.accepted {
 			border-left: $secondary_gap_size solid $secondary_color;
 		}

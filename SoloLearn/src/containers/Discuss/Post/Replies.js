@@ -31,14 +31,21 @@ class Replies extends Component {
 		} else {
 			this.replies.initial({ findPostID: replyID })
 				.then(() => {
-					this.repliesRefs[replyID].highlight();
+					this.highlight(replyID);
 				});
+		}
+	}
+
+	highlight = replyID => {
+		if (this.repliesRefs[replyID]) {
+			this.repliesRefs[replyID].highlight();
 		}
 	}
 
 	addReply = (message) => {
 		this.replies.addReply(message)
-			.then(() => {
+			.then(id => {
+				this.highlight(id);
 				this.props.onCountChange(1);
 			});
 	}
@@ -98,6 +105,7 @@ class Replies extends Component {
 										ref={(replyView) => {
 											this.repliesRefs[reply.id] = replyView;
 										}}
+										editReply={this.replies.editReply(reply.id)}
 										askerID={askerID}
 										key={reply.id}
 										reply={reply}
