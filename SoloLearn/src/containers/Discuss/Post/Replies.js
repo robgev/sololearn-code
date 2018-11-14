@@ -123,7 +123,7 @@ class Replies extends Component {
 								</List>
 							)
 							: (
-								<FlexBox justify align className="empty-replies">
+								<FlexBox justify align className="empty-card-placeholder">
 									<TextBlock>{t('common.empty-list-message')}</TextBlock>
 								</FlexBox>
 							)

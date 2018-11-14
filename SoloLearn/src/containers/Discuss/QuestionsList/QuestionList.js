@@ -16,7 +16,7 @@ const QuestionList = ({ questions, t, isLoading }) => (
 			</List>
 		)
 		: (
-			<FlexBox justify align className="placeholder-card">
+			<FlexBox justify align className="empty-card-placeholder">
 				<TextBlock>{t('common.empty-list-message')}</TextBlock>
 			</FlexBox>
 		)

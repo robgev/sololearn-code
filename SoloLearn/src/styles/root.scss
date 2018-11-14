@@ -1,5 +1,6 @@
 @import "utils";
 @import '~styles/colors';
+@import '~styles/variables';
 @import "medias";
 
 * {
@@ -132,4 +133,8 @@ html, body {
 	}
 }
 
-
+.empty-card-placeholder {
+	min-height: $empty_card_size;
+	width: 100%;
+	height: 100%;
+}
