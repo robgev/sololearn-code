@@ -10,7 +10,8 @@ import { ToastContainer } from 'react-toastify';
 import DevTools from 'mobx-react-devtools';
 import { Router, browserHistory } from 'react-router';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import MuiThemeProviderOld from 'material-ui/styles/MuiThemeProvider';
 import Theme from 'defaults/theme';
 import { store } from 'reducers';
 import { getCourses } from 'actions/learn';
@@ -21,6 +22,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import 'react-tippy/dist/tippy.css';
 import routes from './config/routes';
 import './i18n';
+import theme from './theme';
 
 ReactGA.initialize('UA-42641357-240');
 ReactGA.set({ appName: 'SoloLearn', appVersion: '0.1' });
@@ -91,12 +93,14 @@ const Index = () => {
 	return (
 		<Provider store={store}>
 			<JssProvider jss={jss} generateClassName={generateClassName}>
-				<MuiThemeProvider muiTheme={getMuiTheme(Theme)}>
-					<App />
-				</MuiThemeProvider>
+				<MuiThemeProviderOld muiTheme={getMuiTheme(Theme)}>
+					<MuiThemeProvider theme={theme}>
+						<App />
+					</MuiThemeProvider>
+				</MuiThemeProviderOld>
 			</JssProvider>
 		</Provider>
 	);
 };
 
-ReactDOM.render(<Index />, document.getElementById('app') );
+ReactDOM.render(<Index />, document.getElementById('app'));
