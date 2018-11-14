@@ -58,7 +58,7 @@ class FeedList extends Component {
 			<Container>
 				{
 					(feed.length === 0 && feedPins && feedPins.length === 0 && !hasMore)
-						? <Title style={{ textAlign: 'center', display: 'block' }}>{t('common.empty-activity-message')}</Title>
+						? <Title className="empty-feed">{t('common.empty-activity-message')}</Title>
 						:
 						(
 							<Container>
@@ -74,7 +74,7 @@ class FeedList extends Component {
 											<Container>
 												<Container>
 													<Container className="feed-pins">
-														{feedPins !== undefined && feedPins.length !== 0 &&
+														{feedPins && feedPins.length !== 0 &&
 															<React.Fragment>
 																{feedPins.map(pin => (
 																	<FeedPin
@@ -88,7 +88,7 @@ class FeedList extends Component {
 													</Container>
 												</Container>
 												{ feed.length === 0 && !hasMore
-													? <Title style={{ textAlign: 'center', height: 120 }}>{t('common.empty-activity-message')}</Title>
+													? <Title className="empty-feed">{t('common.empty-activity-message')}</Title>
 													:
 													<InfiniteScroll
 														hasMore={hasMore}
