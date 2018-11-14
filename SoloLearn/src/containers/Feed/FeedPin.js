@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 // Utils
 import { getLanguageColor, toSeoFriendly } from 'utils';
 import PopupTypes from 'defaults/feedPopupTypes';
-import CourseCard from 'components/CourseCard';
+import { CourseCard } from 'containers/Learn/components';
 
 // Additional data and components
 import Course from './FeedTemplates/Course';
@@ -16,7 +16,7 @@ import {
 	Link,
 	Image,
 	Title,
-	SecondaryTextBlock
+	SecondaryTextBlock,
 } from 'components/atoms';
 import { FlatButton } from 'components/molecules';
 
@@ -57,7 +57,7 @@ class FeedPin extends Component {
 				</Container>
 				<Container >
 					<SecondaryTextBlock >{code.name}</SecondaryTextBlock>
-					<br/>
+					<br />
 					<SecondaryTextBlock >{code.userName}</SecondaryTextBlock>
 
 				</Container>
@@ -172,7 +172,7 @@ class FeedPin extends Component {
 					{pin.codes && <Container className="codes">{this.generateCodes()}</Container>}
 					{pin.lessons && <Container className="lessons" >{this.generateLessons()}</Container>}
 					{pin.posts && <Container className="posts" >{this.generatePosts()}</Container>}
-					
+
 					<Link to={this.getPinUrl()} className="actions" >
 						<FlatButton primary>
 							{pin.actionName}

@@ -7,7 +7,7 @@ import { sidebarCodesSelector } from 'reducers/codes.reducer';
 import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
 import AddCodeButton from 'components/AddCodeButton';
 
-import CodeItem from './CodeItem';
+import { CodeItem } from './components';
 
 const mapStateToProps = state => ({
 	userID: state.userProfile.id,

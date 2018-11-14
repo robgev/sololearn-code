@@ -1,8 +1,6 @@
 import React from 'react';
-import VoteControls from 'components/VoteControls';
 import { updateDate } from 'utils';
 import { SecondaryTextBlock, Container } from 'components/atoms';
-import { VoteActions } from 'components/organisms';
 
 import 'styles/Feed/FeedBottomToolbar.scss';
 

@@ -21,7 +21,7 @@ import AddCodeButton from 'components/AddCodeButton';
 import FloatingButton from 'components/AddCodeButton/FloatingButton';
 import BusyWrapper from 'components/BusyWrapper';
 import ProfileHeaderShimmer from 'components/Shimmers/ProfileHeaderShimmer';
-import CodesList from 'containers/Playground/CodesList';
+import { CodesList } from 'containers/Playground/components';
 import FeedList from 'containers/Feed/FeedList';
 import QuestionList from 'containers/Discuss/QuestionsList';
 import 'containers/Discuss/QuestionsList/styles.scss';

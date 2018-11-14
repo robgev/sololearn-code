@@ -1,0 +1,21 @@
+.codes-wrapper {
+	.bottom-loading {
+		opacity: 0;
+		width: 100%;
+		height: 50px;
+		position: relative;
+		visibility: hidden;
+		transition: opacity ease 300ms, -webkit-transform ease 300ms;
+		&.active {
+			opacity: 1;
+			visibility: visible;
+			transform: translateY(0);
+		}
+	}
+	.no-codes-wrapper {
+		display: flex;
+		height: 300px;
+		justify-content: center;
+		align-items: center;
+	}
+}
