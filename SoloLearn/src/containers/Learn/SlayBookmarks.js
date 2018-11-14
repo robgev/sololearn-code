@@ -1,14 +1,13 @@
 import React, { PureComponent } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
-
-import { getBookmarkLessons } from 'actions/slay';
-import CodePenCard from 'components/CodePenCard';
-import SlayLayout from 'components/Layouts/SlayLayout';
+import { translate } from 'react-i18next';
 import SlayDetailedShimmer from 'components/Shimmers/SlayDetailedShimmer';
 
+import { getBookmarkLessons } from 'actions/slay';
+import { CodePenCard, LayoutGenerator } from './components';
+
 // i18n
-import { translate } from 'react-i18next';
 
 const mapStateToProps = state => ({ lessons: state.slay.bookmarks });
 
@@ -53,7 +52,7 @@ class SlayHome extends PureComponent {
 		const { loading, hasMore } = this.state;
 		const { lessons, t } = this.props;
 		return (
-			<SlayLayout
+			<LayoutGenerator
 				paper
 				noSidebar
 				loading={loading}
@@ -75,7 +74,7 @@ class SlayHome extends PureComponent {
 				}}
 			>
 				{lessons.length ? null : <p>{t('common.empty-list-message')}</p>}
-			</SlayLayout>
+			</LayoutGenerator>
 		);
 	}
 }

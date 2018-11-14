@@ -1,11 +1,7 @@
 import React from 'react';
-import ProfileAvatar from 'components/ProfileAvatar';
-import UserTooltip from 'components/UserTooltip';
-
-import IconButton from 'material-ui/IconButton';
-import { grey500 } from 'material-ui/styles/colors';
-import BookmarkIcon from 'material-ui/svg-icons/action/bookmark';
-import BookmarkBorderIcon from 'material-ui/svg-icons/action/bookmark-border';
+import { Container, IconButton } from 'components/atoms';
+import { Avatar, UserTooltip } from 'components/molecules';
+import { 	Bookmark, BookmarkBorder } from 'components/icons';
 
 const SlayLessonToolbar = ({
 	userData, // User data contains avatarURL, userName and userID
@@ -14,30 +10,30 @@ const SlayLessonToolbar = ({
 	withAuthorInfo,
 	toggleBookmark,
 }) => (
-	<div className="lesson-toolbar">
-		<div className="lesson-data">
+	<Container className="lesson-toolbar">
+		<Container className="lesson-data">
 			<IconButton
 				onClick={toggleBookmark}
 				className="search-button hoverable-icon"
 			>
 				{ isBookmarked ?
-					<BookmarkIcon color={grey500} /> :
-					<BookmarkBorderIcon color={grey500} />
+					<Bookmark /> :
+					<BookmarkBorder />
 				}
 			</IconButton>
-		</div>
+		</Container>
 		{ withAuthorInfo &&
-			<div className="author-data">
+			<Container className="author-data">
 				<UserTooltip userData={userData}>
-					<ProfileAvatar
+					<Avatar
 						{...userData}
 						withUserNameBox
 						timePassed={timePassed}
 					/>
 				</UserTooltip>
-			</div>
+			</Container>
 		}
-	</div>
+	</Container>
 );
 
 export default SlayLessonToolbar;

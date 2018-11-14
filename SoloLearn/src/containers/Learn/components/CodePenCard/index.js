@@ -1,12 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { slayItemTypes } from 'constants/ItemTypes';
-import LinearProgress from 'material-ui/LinearProgress';
 import { getLanguageColor, toSeoFriendly } from 'utils';
 
-import 'styles/components/CodePenCard.scss';
-import ViewStats from './ViewStats';
+import { Container, Progress, Image, SecondaryTextBlock } from 'components/atoms';
+import { ContainerLink, ViewStats } from 'components/molecules';
 
 const getProgress = (skills, courseId) => {
 	const skill = skills.find(({ id }) => id === courseId);
@@ -15,7 +13,6 @@ const getProgress = (skills, courseId) => {
 
 const CodePenCard = ({
 	id,
-	title,
 	name,
 	color,
 	skills,
@@ -25,34 +22,19 @@ const CodePenCard = ({
 	viewCount,
 	comments,
 }) => (
-	<div className="code-pen-container">
-		{title &&
-		<div className="meta-info">
-			<p>{title}</p>
-		</div>
-		}
-		<Link
+	<Container className="code-pen-container">
+		<ContainerLink
 			to={
 				itemType === slayItemTypes.course
 					? `/learn/course/${toSeoFriendly(name)}`
 					: `/learn/lesson/${itemType === slayItemTypes.courseLesson ? 'course-lesson' : 'user-lesson'}/${id}/${toSeoFriendly(name, 100)}/1`}
 			className="code-pen-wrapper"
 		>
-			<div className="image-wrapper" style={{ backgroundColor: itemType === slayItemTypes.course ? getLanguageColor(language) : color }}>
+			<Container className="image-wrapper" style={{ backgroundColor: itemType === slayItemTypes.course ? getLanguageColor(language) : color }}>
 				{itemType === slayItemTypes.course &&
-					<LinearProgress
-						color="#8BC34A"
-						mode="determinate"
-						value={getProgress(skills, id) * 100}
-						style={{
-							position: 'absolute',
-							bottom: 52,
-							backgroundColor: '#DCDCDE',
-							borderRadius: 0,
-						}}
-					/>
+					<Progress value={getProgress(skills, id) * 100}	/>
 				}
-				<img
+				<Image
 					alt="Course Icon"
 					className="card-image"
 					src={itemType === slayItemTypes.course
@@ -60,8 +42,8 @@ const CodePenCard = ({
 						: iconUrl
 					}
 				/>
-				<div className="info-container">
-					<span className="course-name" title={name}>{name}</span>
+				<Container className="info-container">
+					<SecondaryTextBlock className="course-name" title={name}>{name}</SecondaryTextBlock>
 					{(Number.isInteger(viewCount)
 							&& Number.isInteger(comments)) &&
 							<ViewStats
@@ -71,12 +53,12 @@ const CodePenCard = ({
 								iconStyle={{ height: 18, width: 18 }}
 							/>
 					}
-				</div>
-			</div>
-		</Link>
-	</div>
+				</Container>
+			</Container>
+		</ContainerLink>
+	</Container>
 );
 
 const mapStateToProps = state => ({ courses: state.courses, skills: state.userProfile.skills });
 
-export default connect(mapStateToProps, null)(CodePenCard);
+export default connect(mapStateToProps)(CodePenCard);

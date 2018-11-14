@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Tooltip } from 'react-tippy';
 import { Linkify } from 'components/molecules';
 import CodeBlock from './CodeBlock';
-import './Parser.scss';
+import { SecondaryTextBlock, TextBlock, Container, Image } from 'components/atoms';
+import './styles.scss';
 
 const wordBoundary = term => new RegExp(`(?:^|\\s|\\]|\\.|\\,)${term}(?:\\s|\\$|\\[|\\.|\\,)`, 'm');
 
@@ -42,15 +43,15 @@ class Parser extends Component {
 
 	static linkRegex = /href="(.+)"/;
 
-	static U = ({ children }) => <span style={{ textDecoration: 'underline' }}>{children}</span>;
+	static U = ({ children }) => <TextBlock style={{ textDecoration: 'underline' }}>{children}</TextBlock>;
 
 	static Note = ({ children }) => (
-		<div className="note">
-			<img src="/assets/note_icon.png" alt="" />
-			<div>
+		<Container className="note">
+			<Image src="/assets/note_icon.png" alt="" />
+			<Container>
 				{children}
-			</div>
-		</div>
+			</Container>
+		</Container>
 	);
 
 	static Code = ({
@@ -71,7 +72,7 @@ class Parser extends Component {
 				format={codeFormat}
 				courseLanguage={courseLanguage}
 			>
-				<div className="code">{children}</div>
+				<Container className="code">{children}</Container>
 			</CodeBlock>
 		);
 	};
@@ -86,7 +87,7 @@ class Parser extends Component {
 	}
 
 	static Image = ({ id, width }) =>
-		(<img
+		(<Image
 			alt=""
 			width={`${width}%`}
 			className="image"
@@ -104,9 +105,9 @@ class Parser extends Component {
 			unmountHTMLWhenHide
 			html={glossaryText}
 		>
-			<span className="glossary">
+			<SecondaryTextBlock className="glossary">
 				{children}
-			</span>
+			</SecondaryTextBlock>
 		</Tooltip>
 	);
 
@@ -241,9 +242,9 @@ class Parser extends Component {
 	render() {
 		const { className, style } = this.props;
 		return (
-			<div className={`parser-root ${className}`} style={style}>
+			<Container className={`parser-root ${className}`} style={style}>
 				{this.parse()}
-			</div>
+			</Container>
 		);
 	}
 }

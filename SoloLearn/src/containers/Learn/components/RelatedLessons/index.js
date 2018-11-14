@@ -1,12 +1,9 @@
 import React from 'react';
-import CourseCard from 'components/CourseCard';
-import CollectionCard from 'components/CollectionCard';
-import SidebarCollectionCard from 'components/SidebarCollectionCard';
-
-import 'styles/relatedLessons.scss';
-
-// i18n
+import { CollectionCard, SidebarCollectionCard, CourseCard } from 'containers/Learn/components';
 import { translate } from 'react-i18next';
+import { Container } from 'components/atoms';
+
+import './styles.scss';
 
 const RelatedLessons = ({
 	t,
@@ -18,7 +15,7 @@ const RelatedLessons = ({
 	relevantLessons,
 	implementations,
 }) => (
-	<div className="related-container">
+	<Container className="related-container">
 		{	(implementations && !!implementations.length) &&
 			<CollectionCard
 				round
@@ -57,7 +54,7 @@ const RelatedLessons = ({
 			items={lessonsByUser.slice(0, 10)}
 		/>
 		}
-	</div>
+	</Container>
 );
 
 export default translate()(RelatedLessons);

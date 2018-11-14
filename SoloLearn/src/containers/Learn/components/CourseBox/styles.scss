@@ -1,7 +1,7 @@
-@import 'utils';
+@import '~styles/utils';
 
 .course-box-container {
-	width: calc(100% / 5 - 30px);
+	width: calc(100% / 5);
 	padding: 15px;
 	text-decoration: none;
 	.course-card-wrapper {

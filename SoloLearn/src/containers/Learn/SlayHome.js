@@ -4,9 +4,7 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
 import { getLessonCollections, getBookmarkLessons } from 'actions/slay';
-import SlayLayout from 'components/Layouts/SlayLayout';
-import CollectionCard from 'components/CollectionCard';
-import SidebarCollectionCard from 'components/SidebarCollectionCard';
+import { CollectionCard, LayoutGenerator, SidebarCollectionCard } from 'containers/Learn/components';
 
 const mapStateToProps = state => ({
 	bookmarks: state.slay.bookmarks.slice(0, 10),
@@ -35,7 +33,7 @@ class SlayHome extends PureComponent {
 		if (collections.length < 10) {
 			await this.props.getBookmarkLessons({ index: startIndex, count: loadCount });
 			// -1 for lesson collection with id -1 (round items)
-			const length = await getLessonCollections({ index: startIndex, count: loadCount }) - 1;
+			const length = await getLessonCollections({ index: startIndex, count: loadCount });
 			this.setState({
 				loading: false,
 				hasMore: length === loadCount,
@@ -48,13 +46,14 @@ class SlayHome extends PureComponent {
 				// If number of collections is divisible by the number
 				// of items we get on every load, then there is 1 more collection
 				// Same -1 as mentioned above
-				hasMore: (collections.length - 1) % loadCount === 0,
+				hasMore: collections.length % loadCount === 0,
 			});
 		}
 		ReactGA.ga('send', 'screenView', { screenName: 'Home Store Page' });
 	}
 
 	loadMore = async () => {
+		console.log('Loading More');
 		const { startIndex, loadCount } = this.state;
 		const length =
 			await this.props.getLessonCollections({ index: startIndex, count: loadCount });
@@ -67,8 +66,9 @@ class SlayHome extends PureComponent {
 	render() {
 		const { t, collections, bookmarks } = this.props;
 		const { loading, hasMore } = this.state;
+		console.log(hasMore, this.state.startIndex);
 		return (
-			<SlayLayout
+			<LayoutGenerator
 				noDisplay={false}
 				loading={loading}
 				hasMore={hasMore}

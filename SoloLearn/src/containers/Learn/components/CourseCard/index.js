@@ -1,20 +1,17 @@
 import React from 'react';
-//import { Link } from 'react-router';
 import { connect } from 'react-redux';
-//import Paper from 'material-ui/Paper';
 import { getCourseNameById, toSeoFriendly } from 'utils';
 import { slayItemTypes } from 'constants/ItemTypes';
 
 import { Container, PaperContainer, Link, Image, SecondaryTextBlock, Title } from 'components/atoms';
+import { ViewStats, UsernameLink } from 'components/molecules';
 
-import 'styles/courseCard.scss';
-import ViewStats from './ViewStats';
+import './styles.scss';
 
 const CourseCard = ({
 	id,
 	title,
 	name,
-	style,
 	color,
 	small,
 	userID,
@@ -27,7 +24,6 @@ const CourseCard = ({
 	viewCount,
 	comments,
 	className,
-	wrapperStyle,
 }) => (
 	<PaperContainer className={`course-card-container ${small ? 'small' : ''} ${className || ''}`}>
 		{
@@ -56,17 +52,14 @@ const CourseCard = ({
 			</Container>
 			<Container className="info-container">
 				<Title className="hoverable">{name}</Title>
-				<Link
-					className="user-link hoverable"
-					to={`/profile/${userID}`}
-				>
+				<UsernameLink to={`/profile/${userID}`}>
 					{userName}
-				</Link>
+				</UsernameLink>
 				{(!minimal && (Number.isInteger(viewCount) && Number.isInteger(comments))) &&
 				<ViewStats
-							views={viewCount}
-							comments={comments}
-						/>
+					views={viewCount}
+					comments={comments}
+				/>
 				}
 			</Container>
 		</Link>

@@ -31,7 +31,7 @@ import Progress, { ProgressState } from 'api/progress';
 
 import './styles.scss';
 
-import UserProgressToolbar from '../UserProgressToolbar';
+import { UserProgressToolbar } from '../components';
 import ModuleChips from './ModuleChips';
 import ModuleChip from './ModuleChips/ModuleChip';
 import Certificate from './Certificate';

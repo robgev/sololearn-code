@@ -3,12 +3,12 @@ import {
 	CSSTransition,
 	TransitionGroup,
 } from 'react-transition-group';
-import Paper from 'material-ui/Paper';
-import { Link } from 'react-router';
 import { toSeoFriendly } from 'utils';
+import { Container, PaperContainer, SecondaryTextBlock } from 'components/atoms';
+import { ContainerLink } from 'components/molecules';
 
 import Progress, { ProgressState } from 'api/progress';
-import 'styles/Learn/LessonTiles.scss';
+import './styles.scss';
 
 const LessonTiles = ({
 	t,
@@ -27,7 +27,7 @@ const LessonTiles = ({
 				} :
 				Progress.getLessonState(lesson);
 			const isDisabled = lessonState.visualState === ProgressState.Disabled;
-			const Container = slayLessons ? Link : 'div';
+			const WrapperComponent = slayLessons ? ContainerLink : Container;
 
 			return (
 				<CSSTransition
@@ -35,7 +35,7 @@ const LessonTiles = ({
 					classNames="lesssons-in"
 					timeout={150 + ((index % 20) * 30)}
 				>
-					<Container
+					<WrapperComponent
 						tabIndex={0}
 						role="button"
 						key={lesson.id}
@@ -45,31 +45,31 @@ const LessonTiles = ({
 							{ onClick: () => onItemClick(lesson.id, lessonState, lesson.name) })
 						}
 					>
-						<Paper
+						<PaperContainer
 							key={lesson.id}
-							zDepth={isDisabled ? 0 : 1}
+							elevation={isDisabled ? 0 : 1}
 							className={`lesson ${isDisabled ? 'disabled' : ''}`}
 						>
-							<div className="number">{`${index + 1}/${lessons.length}`}</div>
-							<div className="name">{lesson.name}</div>
+							<Container className="number">{`${index + 1}/${lessons.length}`}</Container>
+							<SecondaryTextBlock className="name">{lesson.name}</SecondaryTextBlock>
 							{ !slayLessons &&
-							<div className={`info ${lessonState.stateClass}`}>
-								<span>{lesson.quizzes.length} {t('learn.questions-format')}</span>
-							</div>
+							<Container className={`info ${lessonState.stateClass}`}>
+								<SecondaryTextBlock>{lesson.quizzes.length} {t('learn.questions-format')}</SecondaryTextBlock>
+							</Container>
 							}
 							{ slayLessons &&
-								<div className={`info ${lessonState.stateClass}`}>
-									<span>
+								<Container className={`info ${lessonState.stateClass}`}>
+									<SecondaryTextBlock>
 										{
 											lesson.comments === 1 ?
 												t('common.comment-format-one') :
 												`${lesson.comments} ${t('common.comments')}`
 										}
-									</span>
-								</div>
+									</SecondaryTextBlock>
+								</Container>
 							}
-						</Paper>
-					</Container>
+						</PaperContainer>
+					</WrapperComponent>
 				</CSSTransition>
 			);
 		})

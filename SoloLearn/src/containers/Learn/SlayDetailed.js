@@ -3,10 +3,8 @@ import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 
 import { getCollectionItems, setSelectedCollection, getLessonCollections } from 'actions/slay';
-import CodePenCard from 'components/CodePenCard';
-import CourseBox from 'components/CourseBox';
-import SlayLayout from 'components/Layouts/SlayLayout';
 import SlayDetailedShimmer from 'components/Shimmers/SlayDetailedShimmer';
+import { CodePenCard, CourseBox, LayoutGenerator } from './components';
 
 // import 'styles/slayHome.scss';
 
@@ -82,7 +80,7 @@ class SlayDetailed extends PureComponent {
 		const collectionId = parseInt(params.collectionId, 10);
 		const isCourses = collectionId === -1;
 		return (
-			<SlayLayout
+			<LayoutGenerator
 				paper
 				noSidebar
 				loading={loading}

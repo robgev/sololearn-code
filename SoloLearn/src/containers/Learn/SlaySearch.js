@@ -2,8 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { searchLessons } from 'actions/slay';
-import CodePenCard from 'components/CodePenCard';
-import SlayLayout from 'components/Layouts/SlayLayout';
+import { CodePenCard, LayoutGenerator } from './components';
 import SlayDetailedShimmer from 'components/Shimmers/SlayDetailedShimmer';
 
 const mapStateToProps = state => ({ lessons: state.slay.filteredCollectionItems });
@@ -69,7 +68,7 @@ class SlayDetailed extends PureComponent {
 		const { loading, hasMore } = this.state;
 		const { lessons } = this.props;
 		return (
-			<SlayLayout
+			<LayoutGenerator
 				paper
 				noSidebar
 				items={lessons}

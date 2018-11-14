@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { translate } from 'react-i18next';
-import CircularProgress from 'material-ui/CircularProgress';
-import Layout from 'components/Layouts/GeneralLayout';
-import BusyWrapper from 'components/BusyWrapper';
 
 import 'styles/Learn/Lessons.scss';
-import LessonTiles from './LessonTiles';
-import UserProgressToolbar from './UserProgressToolbar';
+import { Container, Loading } from 'components/atoms';
+import { LayoutWithSidebar } from 'components/molecules';
+import { LessonTiles, UserProgressToolbar } from './components';
 
 const SlayLessonCards = ({
 	t,
@@ -15,33 +13,25 @@ const SlayLessonCards = ({
 	loading,
 }) => (
 
-	<Layout
-		sidebarContent={<UserProgressToolbar />}
+	<LayoutWithSidebar
+		sidebar={<UserProgressToolbar />}
 	>
-		<BusyWrapper
-			isBusy={loading}
-			style={{
-				padding: 15,
-				minHeight: '60vh',
-				alignItems: 'initial',
-			}}
-			wrapperClassName="lessons-container"
-			loadingComponent={
-				<CircularProgress
-					size={100}
-				/>
-			}
-		>
-			<div className="lesson-breadcrumbs">
-				{name}
-			</div>
-			<LessonTiles
-				t={t}
-				slayLessons
-				lessons={lessons}
-			/>
-		</BusyWrapper>
-	</Layout>
+		{ loading
+			? <Loading />
+			: (
+				<Fragment>
+					<Container className="lesson-breadcrumbs">
+						{name}
+					</Container>
+					<LessonTiles
+						t={t}
+						slayLessons
+						lessons={lessons}
+					/>
+				</Fragment>
+			)
+		}
+	</LayoutWithSidebar>
 );
 
 export default translate()(SlayLessonCards);

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Paper from 'material-ui/Paper';
-import CourseChip from 'components/CourseChip';
-import { Container, PaperContainer, TextBlock, } from 'components/atoms';
+import { CourseChip } from 'containers/Learn/components';
+import { Container, PaperContainer, TextBlock } from 'components/atoms';
 
 const mapStateToProps = ({ courses }) => ({ courses });
 

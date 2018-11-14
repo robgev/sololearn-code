@@ -1,24 +1,8 @@
 import React from 'react';
-//import { Link } from 'react-router';
-//import Progressbar from 'components/Progressbar';
 import { toSeoFriendly } from 'utils';
-
-import {
-	Container,
-	Link,
-	Image,
-	Progress,
-	Title
-} from 'components/atoms';
-import { LanguageLabel } from 'components/molecules'
-
-import 'styles/courseChip.scss';
-
-const CustomWrapper = ({ children, className }) => (
-	<Container className={className}>
-		{children}
-	</Container>
-);
+import { Container, Image, CircularProgress, SecondaryTextBlock } from 'components/atoms';
+import { ContainerLink, LanguageLabel } from 'components/molecules';
+import './styles.scss';
 
 const CourseChip = ({
 	id,
@@ -39,7 +23,7 @@ const CourseChip = ({
 	wrapperStyle,
 	color = 'white',
 }) => {
-	const WrapperComponent = disabled ? CustomWrapper : Link;
+	const WrapperComponent = disabled ? Container : ContainerLink;
 	const roundItem = isCourse || round;
 	return (
 		<WrapperComponent
@@ -59,7 +43,7 @@ const CourseChip = ({
 				}}
 			>
 				{isCourse &&
-					<Progress value={progress * 100} />
+					<CircularProgress percentage={progress * 100} />
 				}
 				<Image
 					src={iconUrl}
@@ -70,12 +54,12 @@ const CourseChip = ({
 					className={`chip-image ${(roundItem) ? 'round' : ''}`}
 				/>
 				{(!(roundItem) && language) &&
-					<LanguageLabel language={language}/>
+					<LanguageLabel language={language} />
 				}
 			</Container>
 			{!noName &&
 				<Container className={`course-chip-info ${(roundItem) ? 'round-course-item' : ''}`}>
-					<Title className="course-name">{name}</Title>
+					<SecondaryTextBlock className="course-name">{name}</SecondaryTextBlock>
 				</Container>
 			}
 		</WrapperComponent>

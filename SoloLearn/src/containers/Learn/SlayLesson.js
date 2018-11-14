@@ -3,12 +3,11 @@ import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { translate } from 'react-i18next';
-import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
 
 import { toSeoFriendly } from 'utils';
 import Comments from 'containers/Comments/CommentsBase';
-import LessonLayout from 'components/Layouts/LessonLayout';
+import { PaperContainer, Container, Loading } from 'components/atoms';
+import { ContainerLink, LayoutWithSidebar, RaisedButton } from 'components/molecules';
 
 import Service from 'api/service';
 import {
@@ -17,7 +16,7 @@ import {
 	getLessonsByAuthor,
 } from 'actions/slay';
 
-import RelatedLessons from './RelatedLessons';
+import RelatedLessons from './components/RelatedLessons';
 import SlayLessonContent from './SlayLessonContent';
 
 const mapStateToProps = state => ({
@@ -134,23 +133,24 @@ class SlayLesson extends PureComponent {
 			userName,
 			id: userID,
 		};
-		return (
-			<LessonLayout
-				loading={loading}
-				sidebarContent={
-					<RelatedLessons
-						id={id}
-						userID={userID}
-						userName={userName}
-						nextLesson={nextLesson}
-						lessonsByUser={lessonsByUser}
-						relevantLessons={relevantLessons}
-					/>
-				}
-			>
-				{!loading &&
-					<div style={{ width: '100%' }}>
-						<Paper style={{ padding: 15 }}>
+		return loading
+			? <Loading />
+			: (
+				<LayoutWithSidebar
+					sidebar={
+						<RelatedLessons
+							id={id}
+							userID={userID}
+							userName={userName}
+							nextLesson={nextLesson}
+							lessonsByUser={lessonsByUser}
+							relevantLessons={relevantLessons}
+						/>
+					}
+				>
+					{!loading &&
+					<Container style={{ width: '100%' }}>
+						<PaperContainer style={{ padding: 15 }}>
 							<SlayLessonContent
 								t={t}
 								date={date}
@@ -168,13 +168,14 @@ class SlayLesson extends PureComponent {
 								isBookmarked={isBookmarked}
 							/>
 							{nextLesson &&
-								<Link to={`/learn/lesson/${nextLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${nextLesson.id}/${toSeoFriendly(nextLesson.name, 100)}/1`}>
+								<ContainerLink to={`/learn/lesson/${nextLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${nextLesson.id}/${toSeoFriendly(nextLesson.name, 100)}/1`}>
 									<RaisedButton
 										labelColor="#fff"
 										backgroundColor="#8bc34a"
-										label={t('learn.buttons-continue')}
-									/>
-								</Link>
+									>
+										{t('learn.buttons-continue')}
+									</RaisedButton>
+								</ContainerLink>
 							}
 							<Comments
 								id={id}
@@ -182,17 +183,17 @@ class SlayLesson extends PureComponent {
 								commentsType="userLesson"
 								commentsCount={commentsCount}
 							/>
-						</Paper>
+						</PaperContainer>
 						<RelatedLessons
 							id={id}
 							userID={userID}
 							userName={userName}
 							implementations={implementations}
 						/>
-					</div>
-				}
-			</LessonLayout>
-		);
+					</Container>
+					}
+				</LayoutWithSidebar>
+			);
 	}
 }
 

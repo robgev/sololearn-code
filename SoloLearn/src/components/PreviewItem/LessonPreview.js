@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
-//import Paper from 'material-ui/Paper';
 import Service from 'api/service';
-import CourseChip from 'components/CourseChip';
+import { CourseChip } from 'containers/Learn/components';
 import { Container, PaperContainer, TextBlock, SecondaryTextBlock } from 'components/atoms';
 
 class CodePreview extends PureComponent {

@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { Slider } from 'components/molecules';
-import Paper from 'material-ui/Paper';
 import { translate } from 'react-i18next';
+import { Title, SecondaryTextBlock, PaperContainer, Container } from 'components/atoms';
+import { Slider, TextLink } from 'components/molecules';
 
-import 'styles/collectionCard.scss';
-import CourseChip from './CourseChip';
+import { CourseChip } from 'containers/Learn/components';
+import './styles.scss';
 
 const collectionTypes = {
 	slayLessons: 1,
@@ -43,8 +42,8 @@ const CollectionCard = ({
 	const isCourses = type === collectionTypes.courses;
 	const slidesToShow = (isCourses || round) ? 3 : 2;
 	return (
-		<Paper
-			zDepth={1}
+		<PaperContainer
+			elevation={1}
 			style={{
 				padding: '15px 20px',
 				width: '100%',
@@ -52,16 +51,16 @@ const CollectionCard = ({
 				overflow: 'hidden',
 			}}
 		>
-			<div className={`meta-info ${!description ? 'big-padding-bottom' : ''}`}>
-				<p>{ name }</p>
+			<Container className={`meta-info ${!description ? 'big-padding-bottom' : ''}`}>
+				<Title>{ name }</Title>
 				{ !noViewMore &&
-				<Link className="hoverable" to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} >
+				<TextLink to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} >
 					{t('common.loadMore')}
-				</Link>
+				</TextLink>
 				}
-			</div>
+			</Container>
 			{ description &&
-			<p className="course-description">{description}</p>
+				<SecondaryTextBlock className="course-description">{description}</SecondaryTextBlock>
 			}
 			<Slider
 				slidesToShow={slidesToShow}
@@ -71,7 +70,7 @@ const CollectionCard = ({
 				{
 					items.map(lessonItem => (
 						lessonItem.itemType !== 4 &&
-							<div className="course-chip-wrapper" key={`${lessonItem.name}-${lessonItem.id}`}>
+							<Container className="course-chip-wrapper" key={`${lessonItem.name}-${lessonItem.id}`}>
 								<CourseChip
 									{...lessonItem}
 									round={round}
@@ -81,11 +80,11 @@ const CollectionCard = ({
 									noBoxShadow={!(isCourses && round)}
 									customLink={lessonItem.itemType === 5 ? `/learn/collection/${lessonItem.id}` : null}
 								/>
-							</div>
+							</Container>
 					))
 				}
 			</Slider>
-		</Paper>
+		</PaperContainer>
 	);
 };
 

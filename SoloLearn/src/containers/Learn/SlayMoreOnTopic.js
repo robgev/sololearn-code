@@ -3,8 +3,7 @@ import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 
 import { getMoreOnTopic, setSelectedCollection } from 'actions/slay';
-import CodePenCard from 'components/CodePenCard';
-import SlayLayout from 'components/Layouts/SlayLayout';
+import { CodePenCard, LayoutGenerator } from './components';
 import SlayDetailedShimmer from 'components/Shimmers/SlayDetailedShimmer';
 
 const mapStateToProps = state => ({
@@ -73,7 +72,7 @@ class SlayDetailed extends PureComponent {
 			collectionCourses,
 		} = this.props;
 		return (
-			<SlayLayout
+			<LayoutGenerator
 				paper
 				noSidebar
 				loading={loading}

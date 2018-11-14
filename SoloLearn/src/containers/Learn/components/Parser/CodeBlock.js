@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
-import FlatButton from 'material-ui/FlatButton';
-import CircularProgress from 'material-ui/CircularProgress';
+import { Container, CircularProgress } from 'components/atoms';
+import { FlatButton, LanguageLabel } from 'components/molecules';
 import Playground from 'containers/Playground/AsyncPlayground';
 
 // i18n
@@ -73,9 +73,9 @@ class CodeBlock extends Component {
 		const { playgroundOpened } = this.state;
 		if (codeId !== undefined) {
 			return (
-				<div className="code-container" style={styles.codeContainer}>
+				<Container className="code-container" style={styles.codeContainer}>
 					{playgroundOpened ?
-						<div>
+						<Container>
 							<Playground
 								inline
 								codeId={codeId}
@@ -84,38 +84,30 @@ class CodeBlock extends Component {
 								loadingComponent={<CircularProgress style={{ display: 'block', margin: '0 auto' }} />}
 							/>
 							<FlatButton
-								label={t('common.close-title')}
 								style={styles.codeButton}
 								className="shortcut-button"
 								onClick={this.closePlayground}
 								labelStyle={styles.codeButtonLabel}
-							/>
-						</div> :
-						<div style={{ position: 'relative' }}>
-							<span style={{
-								display: 'inline-block',
-								position: 'absolute',
-								right: 5,
-								top: 5,
-								background: '#607D8B',
-								color: 'white',
-								padding: 2,
-								fontSize: 13,
-								borderRadius: 3,
-							}}
-							>{courseLanguage}
-							</span>
+							>
+								{t('common.close-title')}
+							</FlatButton>
+						</Container> :
+						<Container style={{ position: 'relative' }}>
+							<LanguageLabel language={courseLanguage}>
+								{courseLanguage}
+							</LanguageLabel>
 							{children}
 							<FlatButton
-								label={t('learn.try-it-yourself')}
 								style={styles.codeButton}
 								className="shortcut-button"
 								onClick={this.openPlayground}
 								labelStyle={styles.codeButtonLabel}
-							/>
-						</div>
+							>
+								{t('learn.try-it-yourself')}
+							</FlatButton>
+						</Container>
 					}
-				</div>
+				</Container>
 			);
 		}
 

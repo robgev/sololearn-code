@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
-import InfiniteScroll from 'react-infinite-scroller';
-import CircularProgress from 'material-ui/CircularProgress';
+import { Loading } from 'components/atoms';
+import { InfiniteScroll } from 'components/molecules';
 import { getCollectionItems, setSelectedCollection } from 'actions/slay';
 
 import SlayLessonCards from './SlayLessonCards';
@@ -62,14 +62,7 @@ class SlayLessonsPage extends Component {
 				loadMore={this.loadMore}
 				loader={loading ?
 					null :
-					<CircularProgress
-						style={{
-							width: '100%',
-							paddingBottom: 15,
-							textAlign: 'center',
-						}}
-						key={collectionCourses.length ? collectionCourses[0].name : 'progress'}
-					/>
+					<Loading ey={collectionCourses.length ? collectionCourses[0].name : 'progress'} />
 				}
 			>
 				<SlayLessonCards

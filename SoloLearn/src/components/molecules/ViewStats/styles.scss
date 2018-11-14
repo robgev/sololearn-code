@@ -1,0 +1,9 @@
+@import '~styles/colors';
+
+$icon_size: 20px;
+
+.molecule_view-stats-icon {
+	height: $icon_size;
+	width: $icon_size;
+	color: $secondary_text_color;
+}

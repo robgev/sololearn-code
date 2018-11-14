@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
 import { getLessonsByAuthor } from 'actions/slay';
-import CodePenCard from 'components/CodePenCard';
-import SlayLayout from 'components/Layouts/SlayLayout';
+import { CodePenCard, LayoutGenerator } from './components';
 
 // import 'styles/slayHome.scss';
 
@@ -57,7 +56,7 @@ class SlayMoreByAuthor extends PureComponent {
 		const { loading, hasMore } = this.state;
 		const { t, collectionCourses, authorName } = this.props;
 		return (
-			<SlayLayout
+			<LayoutGenerator
 				paper
 				noSidebar
 				loading={loading}

@@ -12,7 +12,7 @@ const InfiniteScroll = ({ children, isLoading, ...props }) => (
 		>
 			{children}
 		</RInfiniteScroll>
-		{isLoading ?<Container className="molecule_infinit-scroll-loading"><Loading /></Container> : null}
+		{isLoading ? <Container className="molecule_infinit-scroll-loading"><Loading /></Container> : null}
 	</Fragment>
 );
 

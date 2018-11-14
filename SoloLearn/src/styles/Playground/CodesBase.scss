@@ -1,4 +1,5 @@
 @import '~styles/utils';
+@import '~styles/variables';
 
 .playground-codes-container {
 	position: relative;
@@ -7,9 +8,10 @@
 		justify-content: space-between;
 		align-items: flex-start;
 		padding-bottom: 0;
-		.page-title {
-			@extend %title-text;
-			line-height: 14px;
+		.playground-menus {
+			.playground-menu-spaced {
+				margin-right: $primary_gap_size;
+			}
 		}
 	}
 }

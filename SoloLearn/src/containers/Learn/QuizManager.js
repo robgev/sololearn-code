@@ -31,7 +31,7 @@ import Layout from 'components/Layouts/GeneralLayout';
 import LoadingOverlay from 'components/LoadingOverlay';
 
 import StepIcon from './StepIcon';
-import UserProgressToolbar from './UserProgressToolbar';
+import { UserProgressToolbar } from './components';
 
 export const LessonType = {
 	Checkpoint: 0,

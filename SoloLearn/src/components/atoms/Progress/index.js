@@ -5,7 +5,7 @@ import './styles.scss';
 const Progress = props => (
 	<LinearProgress
 		variant="determinate"
-		classes={{barColorPrimary: "atom_progress-color", colorPrimary: 'atom_progress-bg-color'}}
+		classes={{ barColorPrimary: 'atom_progress-color', colorPrimary: 'atom_progress-bg-color' }}
 		{...props}
 	/>
 );

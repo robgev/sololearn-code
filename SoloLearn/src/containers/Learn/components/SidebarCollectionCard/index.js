@@ -1,8 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 
-import CourseCard from './CourseCard';
+import { CourseCard } from 'containers/Learn/components';
+import { Container, Title, SecondaryTextBlock } from 'components/atoms';
+import { TextLink } from 'components/molecules';
 
 const SidebarCollection = ({
 	t,
@@ -12,7 +13,7 @@ const SidebarCollection = ({
 	bookmarks,
 	noViewMore = false,
 }) => (
-	<div
+	<Container
 		style={{
 			padding: 15,
 			width: '100%',
@@ -22,19 +23,19 @@ const SidebarCollection = ({
 		}}
 		className="sidebar-collection-card"
 	>
-		<div style={{ color: 'rgba(0, 0, 0, .87)' }} className="meta-info">
-			<div className="sidebar-title">
-				<p className="title" style={{ paddingBottom: 0 }}>{ title }</p>
-			</div>
+		<Container style={{ color: 'rgba(0, 0, 0, .87)' }} className="meta-info">
+			<Container className="sidebar-title">
+				<Title className="title" style={{ paddingBottom: 0 }}>{ title }</Title>
+			</Container>
 			{ !noViewMore && items.length > 0 &&
-				<Link className="hoverable" to={bookmarks ? 'learn/bookmarks' : `/learn/more/author/${userID}`} >
+				<TextLink to={bookmarks ? 'learn/bookmarks' : `/learn/more/author/${userID}`} >
 					{t('common.loadMore')}
-				</Link>
+				</TextLink>
 			}
-		</div>
+		</Container>
 		{
 			items.length === 0
-				?	<p style={{ padding: '15px 0' }} className="flex-centered">{t('common.empty-list-message')}</p>
+				?	<SecondaryTextBlock style={{ padding: '15px 0' }} className="flex-centered">{t('common.empty-list-message')}</SecondaryTextBlock>
 				: items.map(lessonItem => (
 					<CourseCard
 						minimal
@@ -46,7 +47,7 @@ const SidebarCollection = ({
 					/>
 				))
 		}
-	</div>
+	</Container>
 );
 
 export default translate()(SidebarCollection);

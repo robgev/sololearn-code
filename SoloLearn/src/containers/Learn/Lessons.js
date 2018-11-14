@@ -24,9 +24,8 @@ import Layout from 'components/Layouts/GeneralLayout';
 
 import 'styles/Learn/Lessons.scss';
 
-import LessonTiles from './LessonTiles';
+import { LessonTiles, UserProgressToolbar } from './components';
 import { LessonType } from './QuizManager';
-import UserProgressToolbar from './UserProgressToolbar';
 
 const mapStateToProps = (state, ownProps) => ({
 	isLoaded: isLoaded(state, 'lessons'),

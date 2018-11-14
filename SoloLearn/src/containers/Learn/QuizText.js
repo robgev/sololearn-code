@@ -9,7 +9,7 @@ import { toggleLessonBookmark } from 'actions/slay';
 import { updateDate } from 'utils';
 import Snackbar from 'material-ui/Snackbar';
 import SlayLessonToolbar from './SlayLessonToolbar';
-import Parser from './Parser';
+import { Parser } from './components';
 
 const styles = {
 	textContainer: {
