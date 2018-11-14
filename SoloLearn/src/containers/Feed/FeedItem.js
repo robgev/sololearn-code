@@ -1,14 +1,18 @@
 // React modules
-import React, { Component, Fragment } from 'react';
-//import { Link } from 'react-router';
+import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-
-// Material UI components
-import Paper from 'material-ui/Paper';
 
 // Additional data and components
 import { updateDate, toSeoFriendly } from 'utils';
-import CourseCard from 'components/CourseCard';
+import { CourseCard } from 'containers/Learn/components';
+import {
+	Container,
+	PaperContainer,
+} from 'components/atoms';
+import types from 'defaults/appTypes';
+
+import 'styles/Feed/FeedItem.scss';
+
 import FeedItemBase from './FeedItemBase';
 import Badge from './FeedTemplates/Badge';
 import Course from './FeedTemplates/Course';
@@ -18,17 +22,7 @@ import Comment from './FeedTemplates/Comment';
 import Challenge from './FeedTemplates/Challenge';
 import FeedSuggestions from './FeedSuggestions';
 import BottomToolbar from './FeedBottomToolbar';
-import BottomToolbarWithVotes from './BottomToolbarWithVotes';
-import {
-	Container,
-	PaperContainer,
-	Link,
-} from 'components/atoms';
 
-// Utils and Defaults
-import types from '../../defaults/appTypes';
-
-import 'styles/Feed/FeedItem.scss';
 @observer
 class FeedItem extends Component {
 	constructor(props) {
@@ -92,7 +86,8 @@ class FeedItem extends Component {
 			this.url = `/playground/${feedItem.code.publicID}`;
 			this.votes = feedItem.code.votes;
 			return (
-				<Code code={feedItem.code}
+				<Code
+					code={feedItem.code}
 					date={feedItem.date}
 					userVote={feedItem.vote}
 					totalVotes={feedItem.votes}
@@ -108,9 +103,11 @@ class FeedItem extends Component {
 		case types.postedLessonCommentReply:
 			this.url = `/learn/course/${toSeoFriendly(feedItem.course.name)}?commentID=${feedItem.comment.id}`;
 			return (
-				<Comment url={this.url} comment={feedItem.comment} 
+				<Comment
+					url={this.url}
+					comment={feedItem.comment}
 					date={feedItem.date}
-					type='lessonComment'
+					type="lessonComment"
 					userVote={feedItem.vote}
 					totalVotes={feedItem.votes}
 					onChange={(vote, newVote) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.comment.id })}
@@ -120,9 +117,11 @@ class FeedItem extends Component {
 		case types.postedUserLessonCommentReply:
 			this.url = `/learn/lesson/${feedItem.userLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${feedItem.userLesson.id}/${toSeoFriendly(feedItem.userLesson.name, 100)}/1?commentID=${feedItem.comment.id}`;
 			return (
-				<Comment url={this.url} comment={feedItem.comment} 
+				<Comment
+					url={this.url}
+					comment={feedItem.comment}
 					date={feedItem.date}
-					type='userLessonComment'
+					type="userLessonComment"
 					userVote={feedItem.vote}
 					totalVotes={feedItem.votes}
 					onChange={(vote, newVote) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.comment.id })}
@@ -133,9 +132,11 @@ class FeedItem extends Component {
 		case types.upvoteCodeComment:
 			this.url = `/playground/${feedItem.code.publicID}?commentID=${feedItem.comment.id}`;
 			return (
-				<Comment url={this.url} comment={feedItem.comment} 
+				<Comment
+					url={this.url}
+					comment={feedItem.comment}
 					date={feedItem.date}
-					type='codeComment'
+					type="codeComment"
 					userVote={feedItem.vote}
 					totalVotes={feedItem.votes}
 					onChange={(vote, newVote) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.comment.id })}
@@ -220,7 +221,7 @@ class FeedItem extends Component {
 						{this.renderFeedItem()}
 					</FeedItemBase>
 				</PaperContainer>
-				
+
 			</Container>
 		);
 	}

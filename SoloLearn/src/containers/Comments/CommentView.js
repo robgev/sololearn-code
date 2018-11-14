@@ -5,9 +5,6 @@ import { translate } from 'react-i18next';
 import { PromiseButton } from 'components/LoadingButton';
 import ReportPopup from 'components/ReportPopup';
 import PreviewItem from 'components/PreviewItem';
-import UserTooltip from 'components/UserTooltip';
-import IconButton from 'material-ui/IconButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { updateDate, generatePreviews } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
 import RemovalPopup from './RemovalPopup';
@@ -16,7 +13,7 @@ import {
 	Container,
 	SecondaryTextBlock,
 	MenuItem,
-	Popup, 
+	Popup,
 	PopupTitle,
 	PopupActions,
 	PopupContent,
@@ -26,9 +23,7 @@ import {
 	ProfileAvatar,
 	IconMenu,
 	FlatButton,
-	PrimaryButton,
-	
-} from 'components/molecules'
+} from 'components/molecules';
 
 import { VoteActions } from 'components/organisms';
 
@@ -75,7 +70,9 @@ class CommenView extends Component {
 			onVote, selfDestruct, onRepliesButtonClick,
 			t, children, onRequestRemoval, accessLevel,
 		} = this.props;
-		const userObj = {name: userName, id: userID, level, badge, avatarUrl}
+		const userObj = {
+			name: userName, id: userID, level, badge, avatarUrl,
+		};
 		const previewsData = generatePreviews(message);
 
 		return (
@@ -87,24 +84,26 @@ class CommenView extends Component {
 					<ProfileAvatar user={userObj} />
 					<Container className="comment-meta-info">
 						<SecondaryTextBlock className="comment-date">{updateDate(date)}</SecondaryTextBlock>
-						<IconMenu
-						>
+						<IconMenu >
 							{userID === userProfile.id &&
 								[
 									<MenuItem
 										key={`edit${id}`}
 										onClick={this.toggleEdit}
-									>{t('common.edit-action-title')}</MenuItem>,
+									>{t('common.edit-action-title')}
+									</MenuItem>,
 									<MenuItem
 										key={`remove${id}`}
 										onClick={this.toggleDeleteDialog}
-									>{t('common.delete-title')}</MenuItem>,
+									>{t('common.delete-title')}
+									</MenuItem>,
 								]
 							}
 							{userID !== userProfile.id &&
 								<MenuItem
 									onClick={this.toggleReportPopup}
-								>{t('common.report-action-title')}</MenuItem>
+								>{t('common.report-action-title')}
+								</MenuItem>
 							}
 							{userID !== userProfile.id &&
 								accessLevel > 0 &&
@@ -114,8 +113,8 @@ class CommenView extends Component {
 									{
 										(accessLevel === 1 &&
 										(commentsType !== 'lesson' && commentsType !== 'userLesson')) ?
-										t('discuss.forum_request_removal_prompt_title') :
-										t('discuss.forum_remove_prompt_title')
+											t('discuss.forum_request_removal_prompt_title') :
+											t('discuss.forum_remove_prompt_title')
 									}
 								</MenuItem>
 							}
@@ -139,7 +138,7 @@ class CommenView extends Component {
 						type={`${commentsType}Comment`}
 						initialVote={vote}
 						initialCount={votes}
-						onChange={(vote)=>{onVote(vote)}}
+						onChange={(vote) => { onVote(vote); }}
 					/>
 					<Container className="comment-reply-actions">
 						<FlatButton

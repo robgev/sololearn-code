@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
 import {
 	getCodes, emptyCodes, setCodesFilters, getSidebarCodes,
 } from 'actions/playground';
@@ -16,11 +14,11 @@ import {
 import { showError, queryDifference, isObjectEqual } from 'utils';
 
 import AddCodeButton from 'components/AddCodeButton';
-import FloatingButton from 'components/AddCodeButton/FloatingButton';
-import Layout from 'components/Layouts/GeneralLayout';
+import { Heading, Container, Select, MenuItem } from 'components/atoms';
+import { FloatingActionButton, LayoutWithSidebar } from 'components/molecules';
 
 import 'styles/Playground/CodesBase.scss';
-import CodesList from './CodesList';
+import { CodesList } from './components';
 import PlaygroundSidebar from './PlaygroundSidebar';
 
 const mapStateToProps = state => ({
@@ -74,60 +72,53 @@ class Codes extends Component {
 			codes, filters, hasMore, t,
 		} = this.props;
 		return (
-			<Layout
-				sidebarContent={<PlaygroundSidebar />}
-			>
-				<div className="playground-codes-container">
+			<LayoutWithSidebar sidebar={<PlaygroundSidebar />}>
+				<Container className="playground-codes-container">
 					<CodesList
 						header={
-							<div className="playground-codes-toolbar">
-								<p className="page-title">{t('code_playground.title')}</p>
-								<div className="playground-menus">
-									<DropDownMenu
-										value={filters.language}
+							<Container className="playground-codes-toolbar">
+								<Heading>{t('code_playground.title')}</Heading>
+								<Container className="playground-menus">
+									<Select
+										value={filters.language || 'all'}
+										className="playground-menu-spaced"
 										onChange={this.handleLanguageFilterChange}
-										style={{ height: 20, zIndex: 1 }}
-										iconStyle={{ height: 20, padding: 0, top: -1 }}
-										labelStyle={{ height: 20, lineHeight: '20px' }}
 									>
-										<MenuItem value="" primaryText={t('code.language-filter.all')} />
-										<MenuItem value="web" primaryText="Web" />
-										<MenuItem value="cpp" primaryText="C++" />
-										<MenuItem value="c" primaryText="C" />
-										<MenuItem value="cs" primaryText="C#" />
-										<MenuItem value="java" primaryText="Java" />
-										<MenuItem value="kt" primaryText="Kotlin" />
-										<MenuItem value="swift" primaryText="Swift" />
-										<MenuItem value="py" primaryText="Python" />
-										<MenuItem value="rb" primaryText="Ruby" />
-										<MenuItem value="php" primaryText="PHP" />
-									</DropDownMenu>
-									<DropDownMenu
+										<MenuItem value="all">{t('code.language-filter.all')}</MenuItem>
+										<MenuItem value="web">Web</MenuItem>
+										<MenuItem value="cpp">C++</MenuItem>
+										<MenuItem value="c">C</MenuItem>
+										<MenuItem value="cs">C#</MenuItem>
+										<MenuItem value="java">Java</MenuItem>
+										<MenuItem value="kt">Kotlin</MenuItem>
+										<MenuItem value="swift">Swift</MenuItem>
+										<MenuItem value="py">Python</MenuItem>
+										<MenuItem value="rb">Ruby</MenuItem>
+										<MenuItem value="php">PHP</MenuItem>
+									</Select>
+									<Select
 										value={filters.orderBy}
 										onChange={this.handleOrderByFilterChange}
-										style={{ height: 20, zIndex: 1 }}
-										iconStyle={{ height: 20, padding: 0, top: -1 }}
-										labelStyle={{ height: 20, lineHeight: '20px' }}
 									>
-										<MenuItem value={6} primaryText={t('code.filter.hot-today')} />
-										<MenuItem value={4} primaryText={t('code.filter.trending')} />
-										<MenuItem value={5} primaryText={t('code.filter.your-network')} />
-										<MenuItem value={2} primaryText={t('code.filter.most-popular')} />
-										<MenuItem value={1} primaryText={t('code.filter.most-recent')} />
-										<MenuItem value={3} primaryText={t('code.filter.my-codes')} />
-									</DropDownMenu>
-								</div>
-							</div>
+										<MenuItem value={6}>{t('code.filter.hot-today')}</MenuItem>
+										<MenuItem value={4}>{t('code.filter.trending')}</MenuItem>
+										<MenuItem value={5}>{t('code.filter.your-network')}</MenuItem>
+										<MenuItem value={2}>{t('code.filter.most-popular')}</MenuItem>
+										<MenuItem value={1}>{t('code.filter.most-recent')}</MenuItem>
+										<MenuItem value={3}>{t('code.filter.my-codes')}</MenuItem>
+									</Select>
+								</Container>
+							</Container>
 						}
 						codes={codes}
 						hasMore={hasMore}
 						loadMore={this.getCodes}
 					/>
 					<AddCodeButton>
-						{({ togglePopup }) => <FloatingButton onClick={togglePopup} />}
+						{({ togglePopup }) => <FloatingActionButton onClick={togglePopup} />}
 					</AddCodeButton>
-				</div>
-			</Layout>
+				</Container>
+			</LayoutWithSidebar>
 		);
 	}
 }

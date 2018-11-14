@@ -1,16 +1,15 @@
 // React modules
 import React from 'react';
-import { getLanguageColor, truncate } from 'utils';
-import BottomToolbarWithVotes from '../BottomToolbarWithVotes';
+import { truncate } from 'utils';
 import {
-	Container,
 	Link,
+	Container,
 	TextBlock,
-	SecondaryTextBlock
 } from 'components/atoms';
 import { LanguageLabel } from 'components/molecules';
 
 import 'styles/Feed/codeFeedItem.scss';
+import BottomToolbarWithVotes from '../BottomToolbarWithVotes';
 
 const Code = ({
 	code,
@@ -44,7 +43,7 @@ const Code = ({
 				</Link>
 			</Container>
 			<BottomToolbarWithVotes
-				type='code'
+				type="code"
 				id={code.id}
 				date={date}
 				userVote={userVote}

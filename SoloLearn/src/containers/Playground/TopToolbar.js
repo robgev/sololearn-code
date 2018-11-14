@@ -10,7 +10,7 @@ import Dialog from 'components/StyledDialog';
 import { red500 } from 'material-ui/styles/colors';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import ProfileAvatar from 'components/ProfileAvatar';
-import VoteControls from 'components/VoteControls';
+import { VoteActions } from 'components/organisms';
 import UserTooltip from 'components/UserTooltip';
 
 import { determineAccessLevel } from 'utils';
@@ -128,7 +128,7 @@ class TopToolbar extends PureComponent {
 						</div>
 					</div>
 					{!!id &&
-						<VoteControls
+						<VoteActions
 							userVote={vote}
 							totalVotes={votes}
 							key="voteControls"

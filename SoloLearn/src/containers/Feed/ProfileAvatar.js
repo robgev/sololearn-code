@@ -1,7 +1,7 @@
 import React from 'react';
 import { determineBadge } from 'utils';
 import { Container, Image } from 'components/atoms';
-import { Avatar, UserTooltip, } from 'components/molecules';
+import { Avatar, UserTooltip } from 'components/molecules';
 
 const ProfileAvatar = ({
 	user,
@@ -29,9 +29,9 @@ const ProfileAvatar = ({
 								src={`/assets/badge_${levelBadge}.png`}
 							/>
 						}
-						
+
 					</Container>
-					
+
 				</Container>
 			</Container>
 		</UserTooltip>
