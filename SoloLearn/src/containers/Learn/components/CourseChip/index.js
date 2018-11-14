@@ -1,7 +1,7 @@
 import React from 'react';
 import { toSeoFriendly } from 'utils';
 import { Container, Image, CircularProgress, SecondaryTextBlock } from 'components/atoms';
-import { ContainerLink, LanguageLabel } from 'components/molecules';
+import { ContainerLink } from 'components/molecules';
 import './styles.scss';
 
 const CourseChip = ({
@@ -54,7 +54,7 @@ const CourseChip = ({
 					className={`chip-image ${(roundItem) ? 'round' : ''}`}
 				/>
 				{(!(roundItem) && language) &&
-					<LanguageLabel language={language} />
+					<SecondaryTextBlock className="language-tag">{language}</SecondaryTextBlock>
 				}
 			</Container>
 			{!noName &&
