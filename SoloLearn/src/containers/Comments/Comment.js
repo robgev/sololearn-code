@@ -282,7 +282,7 @@ class Comment extends Component {
 				</CommentView>
 				{
 					repliesArray !== null && (
-						<Container style={{ marginLeft: 30 }}>
+						<Container >
 							{
 								this.hasRepliesAbove &&
 								<FlatButton onClick={this.getRepliesAbove}>
@@ -315,7 +315,7 @@ class Comment extends Component {
 								<ProfileAvatar user={userProfile} />
 								<CountingMentionInput
 									onBlur={this.onReplyBlur}
-									style={{ height: 50 }}
+									
 									ref={(i) => { this.mentionInput = i; }}
 									initText={this.initText}
 									getUsers={this.props.commentsAPI.getMentionUsers}

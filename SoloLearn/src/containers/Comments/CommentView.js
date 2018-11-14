@@ -151,8 +151,6 @@ class CommenView extends Component {
 							parentID === null && replies !== 0 && (
 								<Container>
 									<PromiseButton
-										style={{ height: 30, lineHeight: '30px' }}
-										labelStyle={{ fontSize: 13 }}
 										label={replies === 1 ? t('comments.replies-one') : `${replies} ${t('comments.replies-other')}`}
 										onClick={onRepliesButtonClick}
 									/>
