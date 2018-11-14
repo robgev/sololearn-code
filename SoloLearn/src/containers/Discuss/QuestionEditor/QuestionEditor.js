@@ -1,26 +1,13 @@
-// React modules
 import React, { Component } from 'react';
-
-import throttle from 'lodash/throttle';
-
-// Material UI components
-import Paper from 'material-ui/Paper';
-import TextField from 'material-ui/TextField';
-import Chip from 'material-ui/Chip';
+import Service from 'api/service';
+import { translate } from 'react-i18next';
 import ChipInput from 'material-ui-chip-input';
 
-// i18n
-import { translate } from 'react-i18next';
+import { PaperContainer, Input, Chip, Heading, FlexBox, SecondaryTextBlock } from 'components/atoms';
+import { RaisedButton } from 'components/molecules';
+import { CountingMentionInput } from 'components/organisms';
 
-// Service
-import Service from 'api/service';
-
-// Additional components
-import { MentionInput } from 'components/organisms';
-import LoadingButton from 'components/LoadingButton';
-
-import 'styles/Discuss/NewQuestion.scss';
-import { NewQuestionStyles as styles } from './styles';
+import './styles.scss';
 
 @translate()
 class QuestionEditor extends Component {
@@ -35,7 +22,6 @@ class QuestionEditor extends Component {
 			suggestions: [],
 			isReplyBoxOpen: false,
 			replyLength: 0,
-			submitLoading: false,
 			query: '',
 		};
 	}
@@ -45,16 +31,17 @@ class QuestionEditor extends Component {
 	static maxTitleLength = 128;
 
 	static Chip = ({ value, handleRequestDelete, defaultStyle }, key) => (
-		<Chip style={defaultStyle} key={key} onRequestDelete={handleRequestDelete}>{value}</Chip>
+		<Chip style={defaultStyle} label={value} key={key} onDelete={handleRequestDelete} />
 	);
 
 	static isEndingInNewline = str => str.match(/\n$/);
 
 	// Detect title change
-	onTitleChange = (_, title) => {
-		if (!QuestionEditor.isEndingInNewline(title)) {
+	onTitleChange = (e) => {
+		const { value: title } = e.currentTarget;
+		if (!QuestionEditor.isEndingInNewline(title) && title.length <= QuestionEditor.maxTitleLength) {
 			this.setState({ title });
-			if (title.length > 0 && this.state.titleErrorText !== '') {
+			if (title.length > 0) {
 				this.setState({ titleErrorText: '' });
 			}
 		}
@@ -86,12 +73,12 @@ class QuestionEditor extends Component {
 		}
 	}
 
-	getSuggestions = throttle(async (query) => {
+	getSuggestions = async (query) => {
 		const { tags: suggestions } = await Service.request('Discussion/getTags', { query });
 		if (this.state.query === query) {
 			this.setState({ suggestions });
 		}
-	}, 1000);
+	}
 
 	// Add question form submit
 	handleSubmit = () => {
@@ -105,12 +92,11 @@ class QuestionEditor extends Component {
 				tagsErrorText: isTagsEmpty ? t('question.empty-tags') : '',
 			});
 		} else {
-			this.props.submit(
-				this.state.title,
-				this.mentionInput.getValue(),
-				this.state.tags,
-			);
-			this.setState({ submitLoading: true });
+			this.props.submit({
+				title: this.state.title,
+				message: this.mentionInput.getValue(),
+				tags: this.state.tags,
+			});
 		}
 	}
 
@@ -141,50 +127,38 @@ class QuestionEditor extends Component {
 
 	render() {
 		const { t, isNew } = this.props;
-		const { isReplyBoxOpen, replyLength, submitLoading } = this.state;
+		const {
+			isReplyBoxOpen, replyLength, titleErrorText,
+		} = this.state;
 		return (
-			<Paper className="new-question" id="new-question" style={styles.container}>
-				<h2 style={styles.heading}>{isNew ? t('question.title') : t('discuss.editTitle')}</h2>
-				<div onSubmit={this.handleSubmit}>
-					<div className="question-data" style={styles.questionData}>
-						<TextField
+			<PaperContainer className="discuss_question-editor">
+				<FlexBox column>
+					<Heading>{isNew ? t('question.title') : t('discuss.editTitle')}</Heading>
+					<FlexBox column className="counting-input">
+						<Input
+							error={titleErrorText !== ''}
 							multiLine
 							fullWidth
 							value={this.state.title}
-							style={styles.textField}
 							onChange={this.onTitleChange}
-							errorText={this.state.titleErrorText}
-							floatingLabelText={t('question.title-placeholder')}
+							label={titleErrorText !== '' ? titleErrorText : t('question.title-placeholder')}
 							maxLength={QuestionEditor.maxTitleLength}
 						/>
-						<span
-							style={styles.textFieldCoutner}
-						>
+						<SecondaryTextBlock className="count">
 							{this.state.title.length} / {QuestionEditor.maxTitleLength}
-						</span>
-					</div>
-					<div className="question-data" style={styles.questionData}>
-						<MentionInput
-							ref={(input) => { this.mentionInput = input; }}
-							initText={this.props.post !== null ? this.props.post.message : null}
-							onFocus={this.openReplyBox}
-							onBlur={this.handleBlur}
-							onLengthChange={this.onLengthChange}
-							getUsers={{ type: 'discuss' }}
-							placeholder={!isReplyBoxOpen && replyLength === 0 ? t('question.message-placeholder') : ''}
-							maxLength={QuestionEditor.maxQuestionLength}
-						/>
-						<span
-							style={styles.textFieldCoutner}
-						>
-							{replyLength} / {QuestionEditor.maxQuestionLength}
-						</span>
-					</div>
-					<div className="question-data" style={styles.questionData}>
+						</SecondaryTextBlock>
+					</FlexBox>
+					<CountingMentionInput
+						ref={(input) => { this.mentionInput = input; }}
+						initText={this.props.post !== null ? this.props.post.message : null}
+						getUsers={{ type: 'discuss' }}
+						placeholder={!isReplyBoxOpen && replyLength === 0 ? t('question.message-placeholder') : ''}
+						maxLength={QuestionEditor.maxQuestionLength}
+					/>
+					<FlexBox column className="counting-input">
 						<ChipInput
 							fullWidth
 							value={this.state.tags}
-							style={styles.textField}
 							onBlur={this.handleChipBlur}
 							newChipKeyCodes={[ 13, 32 ]}
 							chipRenderer={QuestionEditor.Chip}
@@ -195,24 +169,18 @@ class QuestionEditor extends Component {
 							onRequestDelete={this.handleDeleteTag}
 							floatingLabelText={t('question.tags-placeholder')}
 						/>
-						<span
-							style={styles.textFieldCoutner}
-						>
+						<SecondaryTextBlock className="count">
 							{this.state.tags.length} / {QuestionEditor.maxTagsLength}
-						</span>
-					</div>
-					<div className="editor-actions" style={styles.editorActions}>
-						<LoadingButton
-							raised
-							loading={submitLoading}
-							type="submit"
-							label={isNew ? t('common.post-action-title') : t('common.save-action-title')}
-							primary
-							onClick={this.handleSubmit}
-						/>
-					</div>
-				</div>
-			</Paper>
+						</SecondaryTextBlock>
+					</FlexBox>
+					<RaisedButton
+						primary
+						onMouseDown={this.handleSubmit}
+					>
+						{isNew ? t('common.post-action-title') : t('common.save-action-title')}
+					</RaisedButton>
+				</FlexBox>
+			</PaperContainer>
 		);
 	}
 }

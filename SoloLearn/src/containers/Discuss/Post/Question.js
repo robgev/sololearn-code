@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import { observer } from 'mobx-react';
 import { PaperContainer, Container, Title, IconButton, Loading, FlexBox } from 'components/atoms';
 import { VoteActions, Mention } from 'components/organisms';
@@ -9,6 +10,9 @@ import Tags from '../Tags';
 
 @observer
 class Question extends Component {
+	editPost = () => {
+		browserHistory.push(`/discuss/edit/${this.props.post.id}`);
+	}
 	render() {
 		const {
 			post, onVote, onDelete, onFollowClick,
@@ -59,6 +63,7 @@ class Question extends Component {
 										<Options
 											userID={post.userID}
 											deletePost={onDelete}
+											editPost={this.editPost}
 										/>
 									</Container>
 								</Container>

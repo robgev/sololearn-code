@@ -4,7 +4,7 @@ import uniqBy from 'lodash/uniqBy';
 import {
 	SET_POSTS, EMPTY_POSTS, REMOVE_POST, VOTE_POST, SET_SIDEBAR_QUESTIONS,
 	MARK_DISCUSS_LIST_FINISHED, REQUEST_POSTS, SET_DISCUSS_FILTERS, LOGOUT,
-	CHANGE_POST_REPLIES_COUNT,
+	CHANGE_POST_REPLIES_COUNT, EDIT_POST,
 } from 'constants/ActionTypes';
 
 const isFetching = (state = false, action) => {
@@ -67,6 +67,12 @@ const entities = (state = [], action) => {
 			? {
 				...post,
 				answers: post.answers + action.payload.changeCount,
+			}
+			: post));
+	case EDIT_POST:
+		return state.map(post => (post.id === action.payload.id
+			? {
+				...post, ...action.payload,
 			}
 			: post));
 	default:

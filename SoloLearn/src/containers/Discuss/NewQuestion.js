@@ -1,20 +1,15 @@
-// React modules
 import React, { Component } from 'react';
+import Service from 'api/service';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
+import { emptyPosts } from 'actions/discuss';
 
-import { showError } from 'utils';
-import { addQuestion, emptyPosts, getPosts } from 'actions/discuss';
-
-// Additional components
-import Layout from 'components/Layouts/GeneralLayout';
+import { LayoutWithSidebar } from 'components/molecules';
 
 import QuestionEditor from './QuestionEditor';
 import GuideLinesSidebar from './GuideLinesSidebar';
 
-const mapDispatchToProps = { addQuestion, emptyPosts, getPosts };
-
-@connect(null, mapDispatchToProps)
+@connect(null, { emptyPosts })
 class NewQuestion extends Component {
 	componentDidMount() {
 		this._isMounted = true;
@@ -25,29 +20,25 @@ class NewQuestion extends Component {
 		this._isMounted = false;
 	}
 
-	submit = (title, description, tags) => {
-		this.props.addQuestion(title, description, tags)
-			.then(({ id, alias }) => {
+	submit = ({ title, message, tags }) => {
+		Service.request('Discussion/CreatePost', { title, message, tags })
+			.then(({ post }) => {
 				this.props.emptyPosts();
-				this.props.getPosts();
 				if (this._isMounted) {
-					browserHistory.push(`/discuss/${id}/${alias}`);
+					browserHistory.push(`/discuss/${post.id}`);
 				}
-			})
-			.catch((e) => {
-				showError(e.data, 'Something went wrong when trying to create question');
 			});
 	}
 
 	render() {
 		return (
-			<Layout
-				sidebarContent={
+			<LayoutWithSidebar
+				sidebar={
 					<GuideLinesSidebar />
 				}
 			>
 				<QuestionEditor isNew submit={this.submit} />
-			</Layout>
+			</LayoutWithSidebar>
 		);
 	}
 }
