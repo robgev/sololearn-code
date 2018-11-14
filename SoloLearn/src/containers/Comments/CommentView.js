@@ -3,21 +3,35 @@ import { observable, action } from 'mobx';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 import { PromiseButton } from 'components/LoadingButton';
-import ProfileAvatar from 'components/ProfileAvatar';
-import VoteControls from 'components/VoteControls';
 import ReportPopup from 'components/ReportPopup';
 import PreviewItem from 'components/PreviewItem';
 import UserTooltip from 'components/UserTooltip';
-import IconMenu from 'material-ui/IconMenu';
-import FlatButton from 'material-ui/FlatButton';
-import Dialog from 'components/StyledDialog';
-import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
-import { grey500 } from 'material-ui/styles/colors';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { updateDate, generatePreviews } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
 import RemovalPopup from './RemovalPopup';
+
+import {
+	Container,
+	SecondaryTextBlock,
+	MenuItem,
+	Popup, 
+	PopupTitle,
+	PopupActions,
+	PopupContent,
+	PopupContentText,
+} from 'components/atoms';
+import {
+	ProfileAvatar,
+	IconMenu,
+	FlatButton,
+	PrimaryButton,
+	
+} from 'components/molecules'
+
+import { VoteActions } from 'components/organisms';
+
 import './comment.scss';
 
 @translate(null, { withRef: true })
@@ -58,71 +72,57 @@ class CommenView extends Component {
 		} = this.props.comment;
 		const {
 			commentsType, userProfile,
-			upvote, downvote, selfDestruct, onRepliesButtonClick,
+			onVote, selfDestruct, onRepliesButtonClick,
 			t, children, onRequestRemoval, accessLevel,
 		} = this.props;
-
+		const userObj = {name: userName, id: userID, level, badge, avatarUrl}
 		const previewsData = generatePreviews(message);
 
 		return (
-			<div
+			<Container
 				ref={(node) => { this.mainDiv = node; }}
 				className={`comment-item ${this.highlighted ? 'animate' : ''}`}
 			>
-				<div className="comment-header">
-					<UserTooltip userData={this.props.comment}>
-						<ProfileAvatar
-							size={40}
-							withUserNameBox
-							level={level}
-							badge={badge}
-							userID={userID}
-							userName={userName}
-							avatarUrl={avatarUrl}
-						/>
-					</UserTooltip>
-					<div className="comment-meta-info">
-						<p className="comment-date">{updateDate(date)}</p>
+				<Container className="comment-header">
+					<ProfileAvatar user={userObj} />
+					<Container className="comment-meta-info">
+						<SecondaryTextBlock className="comment-date">{updateDate(date)}</SecondaryTextBlock>
 						<IconMenu
-							iconButtonElement={<IconButton><MoreVertIcon color={grey500} /></IconButton>}
-							anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-							targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 						>
 							{userID === userProfile.id &&
 								[
 									<MenuItem
-										primaryText={t('common.edit-action-title')}
 										key={`edit${id}`}
 										onClick={this.toggleEdit}
-									/>,
+									>{t('common.edit-action-title')}</MenuItem>,
 									<MenuItem
-										primaryText={t('common.delete-title')}
 										key={`remove${id}`}
 										onClick={this.toggleDeleteDialog}
-									/>,
+									>{t('common.delete-title')}</MenuItem>,
 								]
 							}
 							{userID !== userProfile.id &&
 								<MenuItem
-									primaryText={t('common.report-action-title')}
 									onClick={this.toggleReportPopup}
-								/>
+								>{t('common.report-action-title')}</MenuItem>
 							}
 							{userID !== userProfile.id &&
 								accessLevel > 0 &&
 								<MenuItem
 									onClick={this.toggleRemovalPopup}
-									primaryText={(accessLevel === 1 &&
+								>
+									{
+										(accessLevel === 1 &&
 										(commentsType !== 'lesson' && commentsType !== 'userLesson')) ?
 										t('discuss.forum_request_removal_prompt_title') :
 										t('discuss.forum_remove_prompt_title')
 									}
-								/>
+								</MenuItem>
 							}
 						</IconMenu>
-					</div>
+					</Container>
 
-				</div>
+				</Container>
 				{children({
 					isEditing: this.isEditing, message, toggleEdit: this.toggleEdit, id,
 				})}
@@ -133,57 +133,60 @@ class CommenView extends Component {
 						className="comment-preview"
 					/>
 				))}
-				<div className="comment-bottom-toolbar">
-					<VoteControls
+				<Container className="comment-bottom-toolbar">
+					<VoteActions
 						id={id}
 						type={`${commentsType}Comment`}
-						userVote={vote}
-						accessLevel={userProfile.accessLevel}
-						totalVotes={votes}
-						buttonStyle={{ height: 32, width: 32, padding: 0 }}
-						onUpvote={upvote}
-						onDownvote={downvote}
+						initialVote={vote}
+						initialCount={votes}
+						onChange={(vote)=>{onVote(vote)}}
 					/>
-					<div className="comment-reply-actions">
+					<Container className="comment-reply-actions">
 						<FlatButton
-							style={{ height: 30, lineHeight: '30px' }}
-							labelStyle={{ fontSize: 13 }}
-							label={t('comments.reply')}
 							onClick={this.onReply}
-						/>
+						>
+							{t('comments.reply')}
+						</FlatButton>
 						{
 							parentID === null && replies !== 0 && (
-								<div>
+								<Container>
 									<PromiseButton
 										style={{ height: 30, lineHeight: '30px' }}
 										labelStyle={{ fontSize: 13 }}
 										label={replies === 1 ? t('comments.replies-one') : `${replies} ${t('comments.replies-other')}`}
 										onClick={onRepliesButtonClick}
 									/>
-								</div>
+								</Container>
 							)
 						}
-					</div>
-				</div>
-				<Dialog
-					onRequestClose={this.toggleDeleteDialog}
-					title={t('comments.lesson_comment_remove_title')}
+					</Container>
+				</Container>
+
+				<Popup
+					onClose={this.toggleDeleteDialog}
 					open={this.deleteOpen}
-					actions={[
-						<FlatButton
-							label={t('common.cancel-title')}
-							onClick={this.toggleDeleteDialog}
-							primary
-						/>,
-						<FlatButton
-							label={t('common.delete-title')}
-							onClick={selfDestruct}
-							primary
-						/>,
-					]}
 				>
-					{t('comments.lesson_comment_remove_message')}
-				</Dialog>
+					<PopupTitle>{t('comments.lesson_comment_remove_title')}</PopupTitle>
+					<PopupContent>
+						<PopupContentText>{t('comments.lesson_comment_remove_message')}</PopupContentText>
+					</PopupContent>
+					<PopupActions>
+						<FlatButton
+							variant="contained"
+							onClick={this.toggleDeleteDialog}
+						>
+							{t('common.cancel-title')}
+						</FlatButton>
+						<FlatButton
+							variant="contained"
+							onClick={selfDestruct}
+						>
+							{t('common.delete-title')}
+						</FlatButton>,
+
+					</PopupActions>
+				</Popup>
+
 				<RemovalPopup
 					open={this.removalPopupOpen}
 					accessLevel={accessLevel}
@@ -198,7 +201,7 @@ class CommenView extends Component {
 					onRequestClose={this.toggleReportPopup}
 					itemType={ReportItemTypes[`${commentsType}Comment`]}
 				/>
-			</div>
+			</Container>
 		);
 	}
 }

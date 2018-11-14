@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import Paper from 'material-ui/Paper';
 import Service from 'api/service';
 import { LanguageLabel } from 'components/molecules';
+import { Container, PaperContainer, TextBlock, SecondaryTextBlock} from 'components/atoms';
 
 class CodePreview extends PureComponent {
 	constructor() {
@@ -34,13 +35,13 @@ class CodePreview extends PureComponent {
 			language, name, userName,
 		} = codeData;
 		return (
-			<Paper className="preview-wrapper">
+			<PaperContainer className="preview-wrapper">
 				<LanguageLabel language={language} />
-				<div className="preview-info">
-					<p className="primary">{name}</p>
-					<p className="secondary">{userName}</p>
-				</div>
-			</Paper>
+				<Container className="preview-info">
+					<TextBlock className="primary">{name}</TextBlock>
+					<SeconaryTextBlock className="secondary">{userName}</SeconaryTextBlock>
+				</Container>
+			</PaperContainer>
 		);
 	}
 }

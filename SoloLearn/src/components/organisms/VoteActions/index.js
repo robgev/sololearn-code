@@ -33,7 +33,7 @@ class VoteActions extends Component {
 
 	onDownvote = () => {
 		this.likes.vote({ newVote: -1 });
-		this.props.onChange({ vote: this.likes.userVote1, votes: this.likes.voteCount });
+		this.props.onChange({ vote: this.likes.userVote, votes: this.likes.voteCount });
 	}
 
 	render() {

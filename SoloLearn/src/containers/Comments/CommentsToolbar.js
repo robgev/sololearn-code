@@ -1,28 +1,29 @@
 import React from 'react';
 import { translate } from 'react-i18next';
-import MenuItem from 'material-ui/MenuItem';
-import DropDownMenu from 'material-ui/DropDownMenu';
+import {
+	Container,
+	MenuItem,
+	Select,
+	Title,
+} from 'components/atoms';
 
 const CommentsToolbar = ({
 	value, count, onChange, t,
 }) => (
-	<div className="comments-toolbar-container">
-		<p className="page-title">
+	<Container className="comments-toolbar-container">
+		<Title className="page-title">
 			{count === 1
 				? t('common.comment-format-one')
 				: `${count} ${t('common.comments')}`}
-		</p>
-		<DropDownMenu
+		</Title>
+		<Select
 			value={value}
-			style={{ marginRight: -23 }}
-			anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-			targetOrigin={{ vertical: 'top', horizontal: 'right' }}
-			onChange={(_, __, val) => onChange(val)}
+			onChange={(event) => onChange(event.target.value)}
 		>
-			<MenuItem value={2} primaryText={t('comments.filter.most-popular')} />
-			<MenuItem value={1} primaryText={t('comments.filter.most-recent')} />
-		</DropDownMenu>
-	</div>
+			<MenuItem value={2}>{t('comments.filter.most-popular')}</MenuItem>
+			<MenuItem value={1}>{t('comments.filter.most-recent')}</MenuItem>
+		</Select>
+	</Container>
 );
 
 export default translate()(CommentsToolbar);

@@ -3,14 +3,19 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { action, observable, computed } from 'mobx';
 import { observer } from 'mobx-react';
-import { Linkify } from 'components/molecules';
-import FlatButton from 'material-ui/FlatButton';
-import Divider from 'material-ui/Divider';
+import {
+	FlatButton,
+	ProfileAvatar,
+} from 'components/molecules';
 import CircularProgress from 'material-ui/CircularProgress';
 import { CountingMentionInput, Mention } from 'components/organisms';
+import {
+	Container,
+	HorizontalDivider,
+	Loading,
+} from 'components/atoms';
 import { replaceMention, showError, determineAccessLevel } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
-import MyAvatar from './MyAvatar';
 import CommentList from './CommentList';
 import CommentView from './CommentView';
 import IComment from './IComment';
@@ -222,9 +227,6 @@ class Comment extends Component {
 		this.isReplyButtonEnabled = isReplyButtonEnabled;
 	}
 
-	upvote = () => this.vote(1);
-	downvote = () => this.vote(-1);
-
 	render() {
 		const { t, userProfile, accessLevel } = this.props;
 		const {
@@ -232,13 +234,14 @@ class Comment extends Component {
 			repliesArray,
 		} = this.props.comment;
 		return (
-			<div>
+			<Container>
 				<CommentView
 					commentsType={this.props.commentsAPI.commentsType}
 					accessLevel={accessLevel}
 					comment={this.props.comment}
-					upvote={this.upvote}
-					downvote={this.downvote}
+					//upvote={this.upvote}
+					//downvote={this.downvote}
+					onVote={this.vote}
 					userProfile={userProfile}
 					onRepliesButtonClick={this.onRepliesButtonClick}
 					selfDestruct={this.selfDestruct}
@@ -250,9 +253,9 @@ class Comment extends Component {
 						isEditing, message, toggleEdit, id,
 					}) => (isEditing
 						? (
-							<div className="comment-input-toolbar">
-								<div className="input-bar reply-input">
-									<MyAvatar />
+							<Container className="comment-input-toolbar">
+								<Container className="input-bar reply-input">
+									<ProfileAvatar user={userProfile} />
 									<CountingMentionInput
 										style={{ height: 50 }}
 										ref={(i) => { this.editMentionInput = i; }}
@@ -261,32 +264,30 @@ class Comment extends Component {
 										onSubmitEnabledChange={this.editButtonEnabledChange}
 										placeholder={t('comments.write-comment-placeholder')}
 									/>
-								</div>
+								</Container>
 								<FlatButton
-									label={t('common.edit-action-title')}
 									disabled={!this.isEditButtonEnabled}
 									onClick={() => {
 										this.editComment({ message: this.editMentionInput.popValue(), id });
 										toggleEdit();
 									}}
-								/>
-							</div>
+								>
+									{t('common.edit-action-title')}
+								</FlatButton>
+							</Container>
 						)
 						: (
-							<Linkify>
-								<Mention>
-									{message}
-								</Mention>
-								{/* <p>{replaceMention(message)}</p> */}
-							</Linkify>
+							<Mention text={message} />
 						))}
 				</CommentView>
 				{
 					repliesArray !== null && (
-						<div style={{ marginLeft: 30 }}>
+						<Container style={{ marginLeft: 30 }}>
 							{
 								this.hasRepliesAbove &&
-								<FlatButton label={t('common.loadMore')} onClick={this.getRepliesAbove} />
+								<FlatButton onClick={this.getRepliesAbove}>
+									{t('common.loadMore')}
+								</FlatButton>
 							}
 							<CommentList
 								comments={repliesArray}
@@ -298,19 +299,20 @@ class Comment extends Component {
 							{
 								repliesArray.length > 0 && repliesArray.length < replies &&
 								<FlatButton
-									label={t('common.loadMore')}
 									onClick={this.getRepliesBelow}
-								/>
+								>
+									{t('common.loadMore')}
+								</FlatButton>
 							}
-						</div>
+						</Container>
 					)
 				}
 				{
 					this.isReplyInputOpen
 					&& (
-						<div className="comment-input-toolbar">
-							<div className="input-bar reply-input">
-								<MyAvatar />
+						<Container className="comment-input-toolbar">
+							<Container className="input-bar reply-input">
+								<ProfileAvatar user={userProfile} />
 								<CountingMentionInput
 									onBlur={this.onReplyBlur}
 									style={{ height: 50 }}
@@ -320,22 +322,25 @@ class Comment extends Component {
 									onSubmitEnabledChange={this.replyButtonEnabledChange}
 									placeholder={t('comments.write-comment-placeholder')}
 								/>
-							</div>
+							</Container>
 							<FlatButton
 								className="save-button"
 								disabled={!this.isReplyButtonEnabled}
-								label={t('comments.reply')}
 								onClick={this.addReply}
-							/>
-							<Divider />
-						</div>
+							>
+								{t('comments.reply')}
+							</FlatButton>
+							<HorizontalDivider />
+						</Container>
 					)
 				}
 				{
 					this.isReplyLoading
-					&& <CircularProgress style={{ display: 'flex', alignItems: 'center', margin: 'auto' }} />
+					&& <Container className="replay-loader">
+							<Loading />
+						</Container>
 				}
-			</div>
+			</Container>
 		);
 	}
 }

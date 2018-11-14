@@ -1,13 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router';
-import Progressbar from 'components/Progressbar';
+//import { Link } from 'react-router';
+//import Progressbar from 'components/Progressbar';
 import { toSeoFriendly } from 'utils';
+
+import {
+	Container,
+	Link,
+	Image,
+	Progress,
+	Title
+} from 'components/atoms';
+import { LanguageLabel } from 'components/molecules'
+
 import 'styles/courseChip.scss';
 
 const CustomWrapper = ({ children, className }) => (
-	<span className={className}>
+	<Container className={className}>
 		{children}
-	</span>
+	</Container>
 );
 
 const CourseChip = ({
@@ -41,7 +51,7 @@ const CourseChip = ({
 
 			to={customLink || (isCourse ? `/learn/course/${toSeoFriendly(name)}` : `/learn/lesson/${itemType === 3 ? 'course-lesson' : 'user-lesson'}/${id}/${toSeoFriendly(name, 100)}/1`)}
 		>
-			<div
+			<Container
 				className={`course-chip-image-container ${(roundItem) ? 'round' : ''} ${noBoxShadow ? '' : 'with-shadow'}`}
 				style={{
 					height: size,
@@ -49,9 +59,9 @@ const CourseChip = ({
 				}}
 			>
 				{isCourse &&
-					<Progressbar percentage={progress * 100} />
+					<Progress value={progress * 100} />
 				}
-				<img
+				<Image
 					src={iconUrl}
 					alt="Course Icon"
 					style={{
@@ -60,13 +70,13 @@ const CourseChip = ({
 					className={`chip-image ${(roundItem) ? 'round' : ''}`}
 				/>
 				{(!(roundItem) && language) &&
-					<span className="language-tag">{language}</span>
+					<LanguageLabel language={language}/>
 				}
-			</div>
+			</Container>
 			{!noName &&
-				<div className={`course-chip-info ${(roundItem) ? 'round-course-item' : ''}`}>
-					<p className="course-name">{name}</p>
-				</div>
+				<Container className={`course-chip-info ${(roundItem) ? 'round-course-item' : ''}`}>
+					<Title className="course-name">{name}</Title>
+				</Container>
 			}
 		</WrapperComponent>
 	);

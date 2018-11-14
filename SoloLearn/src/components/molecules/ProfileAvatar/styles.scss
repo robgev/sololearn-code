@@ -1,0 +1,23 @@
+.molecule_profile-avatar {
+	display: inline-block;
+	text-decoration: none;
+	
+	.avatar-wrapper {
+		display: flex;
+		align-items: center;
+		font-size: 12px;
+	}
+	.profile-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		position: relative;
+	}
+
+	.level-badge {
+		position: absolute;
+		width: 35%;
+		bottom: 5%;
+		right: 5%;
+	}
+}

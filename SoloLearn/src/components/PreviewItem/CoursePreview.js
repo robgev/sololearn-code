@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 import CourseChip from 'components/CourseChip';
+import { Container, PaperContainer, TextBlock, } from 'components/atoms';
 
 const mapStateToProps = ({ courses }) => ({ courses });
 
@@ -18,7 +19,7 @@ class CodePreview extends Component {
 			iconUrl, name,
 		} = this.courseData;
 		return (
-			<Paper className="preview-wrapper">
+			<PaperContainer className="preview-wrapper">
 				<CourseChip
 					disabled
 					noName
@@ -27,10 +28,10 @@ class CodePreview extends Component {
 					itemType={1}
 					iconUrl={iconUrl}
 				/>
-				<div className="preview-info">
-					<p className="primary">{name}</p>
-				</div>
-			</Paper>
+				<Container className="preview-info">
+					<TextBlock className="primary">{name}</TextBlock>
+				</Container>
+			</PaperContainer>
 		);
 	}
 }

@@ -1,7 +1,15 @@
 import React, { PureComponent } from 'react';
-import Paper from 'material-ui/Paper';
+//import Paper from 'material-ui/Paper';
 import Service from 'api/service';
-import ProfileAvatar from 'components/ProfileAvatar';
+//import ProfileAvatar from 'components/ProfileAvatar';
+
+import {
+	Container,
+	PaperContainer,
+	TextBlock,
+	SecondaryTextBlock,
+} from 'components/atoms';
+import { Avatar } from 'components/molecules';
 
 class PostPreview extends PureComponent {
 	constructor() {
@@ -35,20 +43,18 @@ class PostPreview extends PureComponent {
 		} = postData;
 		// Will need badge in future too. Destructure badge if needed.
 		return (
-			<Paper className="preview-wrapper">
-				<ProfileAvatar
+			<PaperContainer className="preview-wrapper">
+				<Avatar
 					disabled
-					size={40}
 					badge={badge}
 					avatarUrl={avatarUrl}
 					userName={userName}
-					avatarStyle={{ margin: '0 10px 0 0' }}
 				/>
-				<div className="preview-info">
-					<p className="primary">{title}</p>
-					<p className="secondary">{userName}</p>
-				</div>
-			</Paper>
+				<Container className="preview-info">
+					<TextBlock className="primary">{title}</TextBlock>
+					<SecondaryTextBlock className="secondary">{userName}</SecondaryTextBlock>
+				</Container>
+			</PaperContainer>
 		);
 	}
 }

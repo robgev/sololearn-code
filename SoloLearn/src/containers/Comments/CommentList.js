@@ -1,18 +1,16 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import InfiniteScroll from 'components/InfiniteScroll';
+import { InfiniteScroll } from 'components/molecules'
 import Comment from './Comment';
+
+import './CommentList.scss';
 
 const CommentList = observer(props => (
 	<InfiniteScroll
-		element="div"
 		loadMore={props.loadMore}
 		hasMore={props.infinite && props.hasMore}
-		containerStyle={{
-			display: 'flex',
-			width: '100%',
-			flexDirection: 'column',
-		}}
+		isLoading={props.loading}
+		className="comment-list"
 	>
 		{props.comments.map(comment => (
 			<Comment

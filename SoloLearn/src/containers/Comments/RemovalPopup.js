@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
-import Dialog from 'components/StyledDialog';
-import FlatButton from 'material-ui/FlatButton';
 import ReportItemTypes from 'constants/ReportItemTypes';
+import {
+	Popup,
+	PopupTitle,
+	PopupContent,
+	PopupContentText,
+	PopupActions,
+} from 'components/atoms';
+
+import { FlatButton } from 'components/molecules';
 
 @translate()
 class RemovalPopup extends Component {
@@ -36,34 +43,44 @@ class RemovalPopup extends Component {
 		const cannotRemove = accessLevel === 1 && (commentsType !== 'lesson' && commentsType !== 'userLesson');
 		const actions = [
 			<FlatButton
-				primary
+				variant="contained"
 				onClick={this.requestRemoval}
-				label={cannotRemove ?
+			>
+				{cannotRemove ?
 					t('common.confirm-title') :
 					t('common.remove-title')
 				}
-			/>,
+			</FlatButton>,
 			<FlatButton
-				primary
+				variant="contained"
 				onClick={onRequestClose}
-				label={t('common.cancel-title')}
-			/>,
+			>
+				{t('common.cancel-title')}
+			</FlatButton>,
 		];
 		return (
-			<Dialog
+			<Popup
 				open={open}
-				actions={actions}
-				onRequestClose={onRequestClose}
-				title={cannotRemove ?
-					t('comments.lesson_comment_request_removal_title') :
-					t('comments.lesson_comment_remove_title')
-				}
+				onClose={onRequestClose}
 			>
-				{cannotRemove ?
-					t('comments.lesson_comment_request_removal_message') :
-					t('comments.lesson_comment_remove_message')
-				}
-			</Dialog>
+				<PopupTitle>
+					{cannotRemove ?
+						t('comments.lesson_comment_request_removal_title') :
+						t('comments.lesson_comment_remove_title')
+					}
+				</PopupTitle>
+				<PopupContent>
+					<PopupContentText>
+						{cannotRemove ?
+							t('comments.lesson_comment_request_removal_message') :
+							t('comments.lesson_comment_remove_message')
+						}
+					</PopupContentText>
+				</PopupContent>
+				<PopupActions>
+					{actions}
+				</PopupActions>
+			</Popup>
 		);
 	}
 }

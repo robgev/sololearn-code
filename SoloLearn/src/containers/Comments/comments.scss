@@ -9,14 +9,12 @@
 		width: 100%;
 		justify-content: flex-start;
 	}
-	.reply-input {
-		margin-left: 30px;
+	
+	.replay-loader {
+		display: flex;
+		justify-content: center;
 	}
-	.editor {
-		max-width: 100%;
-		width: inherit;
-		word-break: break-word;
-	}
+	
 	.comments-toolbar-container {
 		display: flex;
 		justify-content: space-between;

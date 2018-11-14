@@ -5,14 +5,14 @@ import { observer } from 'mobx-react';
 import { withRouter } from 'react-router';
 import { translate } from 'react-i18next';
 import { CountingMentionInput } from 'components/organisms';
-import FlatButton from 'material-ui/FlatButton';
-
-import MyAvatar from './MyAvatar';
 import CommentsAPI from './comments.api';
 import CommentList from './CommentList';
 import IComment from './IComment';
 import CommentsToolbar from './CommentsToolbar';
 import { filterExisting } from './comments.utils';
+import { ProfileAvatar, FlatButton } from 'components/molecules';
+import { Container } from 'components/atoms';
+
 import './comments.scss';
 
 const mapStateToProps = ({ userProfile }) => ({ userProfile });
@@ -41,6 +41,7 @@ class Comments extends Component {
 	@observable commentsCount = this.props.commentsCount;
 	@observable hasMore = true;
 	@observable initial = true;
+	@observable loading = false;
 	@observable isSubmitEnabled = false;
 
 	@computed get hasMoreAbove() {
@@ -148,9 +149,11 @@ class Comments extends Component {
 
 	@action getCommentsBelow = async () => {
 		const count = 20;
+		this.loading = true;
 		const comments = await this.commentsAPI.getComments({
 			index: this.comments.length, count,
 		});
+		this.loading = false;
 		if (comments.length < count) {
 			this.hasMore = false;
 		}
@@ -165,9 +168,11 @@ class Comments extends Component {
 		const { firstIndex } = this;
 		const index = firstIndex > 20 ? firstIndex - 20 : 0;
 		const count = firstIndex - index;
+		this.loading = true;
 		const comments = await this.commentsAPI.getComments({
 			index, count,
 		});
+		this.loading = false;
 		const filtered = filterExisting(this.comments, comments);
 		const withReplies = filtered.map(comment =>
 			new IComment({ ...comment, repliesArray: [] }));
@@ -224,35 +229,40 @@ class Comments extends Component {
 	}
 
 	render() {
-		const { t } = this.props;
+		const { t, userProfile } = this.props;
 		return (
-			<div className="comments-container">
+			<Container className="comments-container">
 				<CommentsToolbar
 					count={this.commentsCount}
 					value={this.orderBy}
 					onChange={this.changeOrder}
 				/>
-				<div className="input-bar">
-					<MyAvatar />
+				<Container className="input-bar">
+					<ProfileAvatar user={userProfile}/>
 					<CountingMentionInput
 						ref={(i) => { this.mentionInput = i; }}
 						onSubmitEnabledChange={this.submitEnabledChange}
 						getUsers={this.commentsAPI.getMentionUsers}
 						placeholder={t('comments.write-comment-placeholder')}
 					/>
-				</div>
+				</Container>
 				<FlatButton
-					label="Comment"
 					onClick={this.addComment}
 					disabled={!this.isSubmitEnabled}
-				/>
+				>
+					Comment
+				</FlatButton>
 				{
 					this.isOnReply &&
-					<FlatButton label={t('common.back-action-title')} onClick={this.reset} />
+					<FlatButton onClick={this.reset} >
+						{t('common.back-action-title')}
+					</FlatButton>
 				}
 				{
 					this.hasMoreAbove &&
-					<FlatButton label={t('common.loadMore')} onClick={this.getCommentsAbove} />
+					<FlatButton onClick={this.getCommentsAbove}>
+						{t('common.loadMore')}
+					</FlatButton>
 				}
 				<CommentList
 					onCommentAdd={this.onCommentAdd}
@@ -262,6 +272,7 @@ class Comments extends Component {
 					comments={this.comments}
 					loadMore={this.loadMore}
 					hasMore={this.hasMore && !this.initial && !this.isOnReply}
+					loading={this.loading}
 					infinite
 					commentsAPI={this.commentsAPI}
 				/>
@@ -269,12 +280,13 @@ class Comments extends Component {
 					this.initial && this.comments.length > 0 && this.hasMore && !this.isOnReply
 					&& (
 						<FlatButton
-							label={t('common.loadMore')}
 							onClick={this.unlockInitial}
-						/>
+						>
+							{t('common.loadMore')}
+						</FlatButton>
 					)
 				}
-			</div>
+			</Container>
 		);
 	}
 }
