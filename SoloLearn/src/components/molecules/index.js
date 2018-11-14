@@ -20,9 +20,6 @@ export { default as TagLabel } from './TagLabel';
 export { default as Slider } from './Slider';
 export { default as LevelBadge } from './LevelBadge';
 export { default as IconMenu } from './IconMenu';
-<<<<<<< HEAD
 export { default as ProfileAvatar } from './ProfileAvatar';
-=======
 export { default as ViewStats } from './ViewStats';
->>>>>>> [General:Rewrite] Rewrite learn and move components to their usage spots
 export { default as FloatingActionButton } from './FloatingActionButton';
