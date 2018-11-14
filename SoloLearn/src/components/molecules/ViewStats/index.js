@@ -1,25 +1,25 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { numberFormatter } from 'utils';
 import { Views, Comment } from 'components/icons';
-import { Container, SecondaryTextBlock } from 'components/atoms';
+import { FlexBox, Container, SecondaryTextBlock } from 'components/atoms';
 
 import './styles.scss';
 
 const ViewStats = ({	views, comments }) => (
-	<Fragment>
+	<FlexBox align justify >
 		{ views > 0 &&
-			<Container className="molecule_view-stats">
+			<FlexBox align justify className="molecule_view-stats">
 				<Views className="molecule_view-stats-icon" />
 				<SecondaryTextBlock>{ numberFormatter(views) }</SecondaryTextBlock>
-			</Container>
+			</FlexBox>
 		}
 		{ comments > 0 &&
-			<Container className="molecule_view-stats">
+			<FlexBox align justify>
 				<Comment className="molecule_view-stats-icon" />
 				<SecondaryTextBlock>{ numberFormatter(comments) }</SecondaryTextBlock>
-			</Container>
+			</FlexBox>
 		}
-	</Fragment>
+	</FlexBox>
 );
 
 export default ViewStats;

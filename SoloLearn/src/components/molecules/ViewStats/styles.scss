@@ -1,6 +1,11 @@
 @import '~styles/colors';
+@import '~styles/variables';
 
 $icon_size: 20px;
+
+.molecule_view-stats {
+	margin-right: $secondary_gap_size;
+}
 
 .molecule_view-stats-icon {
 	height: $icon_size;
