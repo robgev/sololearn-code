@@ -21,7 +21,6 @@ import activeQuiz from './reducer_active_quiz';
 import codes from './codes.reducer';
 
 // Discuss
-import discussPost from './reducer_post';
 import discuss from './discuss.reducer';
 
 // Notifications
@@ -73,7 +72,6 @@ const reducers = combineReducers({
 	codes,
 	// Discuss
 	discuss,
-	discussPost,
 	// Notifications
 	notifications,
 	// Feed
