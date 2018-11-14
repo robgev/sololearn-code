@@ -14,20 +14,21 @@ import { grey600 } from 'material-ui/styles/colors';
 
 // Redux modules
 import { connect } from 'react-redux';
-
+import { PaperContainer } from 'components/atoms';
+import { InfiniteScroll } from 'components/molecules';
 import Layout from 'components/Layouts/GeneralLayout';
 import AddCodeButton from 'components/AddCodeButton';
 import FloatingButton from 'components/AddCodeButton/FloatingButton';
-import AddQuestionButton from 'components/AddQuestionButton';
 import BusyWrapper from 'components/BusyWrapper';
 import ProfileHeaderShimmer from 'components/Shimmers/ProfileHeaderShimmer';
 import CodesList from 'containers/Playground/CodesList';
 import FeedList from 'containers/Feed/FeedList';
+import QuestionList from 'containers/Discuss/QuestionsList';
+import 'containers/Discuss/QuestionsList/styles.scss';
 
 import 'styles/Profile/index.scss';
 
 // Additional data and components
-import { QuestionList } from 'components/Questions';
 import Header from './Header';
 import Skills from './Skills';
 import Badges from './Badges';
@@ -171,17 +172,21 @@ class Profile extends Component {
 					</div>
 				}
 				{
-					this.activeTab === 'discussion' &&
-					<div className="discussion-wrapper section">
-						<QuestionList
-							questions={questions.entities}
+					this.activeTab === 'discussion' && (
+						<InfiniteScroll
 							hasMore={questions.hasMore}
+							isLoading={this.profile.isQuestionsFetching}
 							loadMore={this.profile.getQuestions}
-						/>
-						{data.id === userId &&
-							<AddQuestionButton />
-						}
-					</div>
+						>
+							{/* <AddButton /> */}
+							<PaperContainer className="discuss_questions-list">
+								<QuestionList
+									questions={questions.entities}
+									isLoading={this.profile.isQuestionsFetching}
+								/>
+							</PaperContainer>
+						</InfiniteScroll>
+					)
 				}
 				{
 					this.activeTab === 'skills' &&

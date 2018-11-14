@@ -40,7 +40,7 @@ class Replies extends Component {
 		}
 	}
 
-	highlight = replyID => {
+	highlight = (replyID) => {
 		if (this.repliesRefs[replyID]) {
 			this.repliesRefs[replyID].highlight();
 		}
@@ -48,7 +48,7 @@ class Replies extends Component {
 
 	addReply = (message) => {
 		this.replies.addReply(message)
-			.then(id => {
+			.then((id) => {
 				this.highlight(id);
 				this.props.onCountChange(1);
 			});

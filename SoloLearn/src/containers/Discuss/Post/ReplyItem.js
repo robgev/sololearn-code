@@ -29,7 +29,7 @@ class ReplyItem extends Component {
 		this.setState(s => ({ isEditing: !s.isEditing }));
 	}
 
-	setCanEdit = isEditEnabled => {
+	setCanEdit = (isEditEnabled) => {
 		this.setState({ isEditEnabled });
 	}
 
@@ -46,7 +46,9 @@ class ReplyItem extends Component {
 	}
 
 	render() {
-		const { reply, deleteReply, onAccept, askerID } = this.props;
+		const {
+			reply, deleteReply, onAccept, askerID,
+		} = this.props;
 		if (this.state.isEditing) {
 			return (
 				<FlexBox column className="editing-post">

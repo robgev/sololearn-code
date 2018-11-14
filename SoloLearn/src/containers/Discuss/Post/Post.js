@@ -26,6 +26,8 @@ class Post extends Component {
 		replyID: null,
 	}
 
+	post = new IPost({ id: this.props.id })
+
 	handleDelete = () => {
 		this.post.deletePost()
 			.then(removePostFromList)
@@ -42,8 +44,6 @@ class Post extends Component {
 		this.props.changePostRepliesCount({ id: this.post.id, countChange });
 		this.post.changeCount(countChange);
 	}
-
-	post = new IPost({ id: this.props.id })
 
 	componentDidMount() {
 		this.post.getPost()

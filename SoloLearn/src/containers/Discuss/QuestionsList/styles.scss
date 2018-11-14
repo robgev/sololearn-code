@@ -1,0 +1,23 @@
+@import '~styles/variables';
+@import '~styles/colors';
+
+.discuss_questions-list {
+	position: relative;
+	.toolbar {
+		justify-content: space-between;
+		align-items: center;
+	}
+	.question {
+		width: 100%;
+		.number-with-text {
+			margin-right: $secondary_gap_size;
+		}
+		.author {
+			z-index: 1;
+			align-self: flex-end;
+			.text {
+				font-size: $link_size;
+			}
+		}
+	}
+}

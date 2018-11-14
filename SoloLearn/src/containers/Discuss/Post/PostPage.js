@@ -3,9 +3,20 @@ import { browserHistory } from 'react-router';
 import Post from './Post';
 
 class PostPage extends Component {
+	_isMounted;
 	setRouteAlias = (alias) => {
 		const { id, replyId = '' } = this.props.params;
-		browserHistory.replace(`/discuss/${id}/${alias}/${replyId}`);
+		if (this._isMounted) {
+			browserHistory.replace(`/discuss/${id}/${alias}/${replyId}`);
+		}
+	}
+
+	componentDidMount() {
+		this._isMounted = true;
+	}
+
+	componentWillUnmount() {
+		this._isMounted = false;
 	}
 
 	render() {

@@ -11,19 +11,18 @@ import {
 	discussPostsSelector,
 	discussFiltersSelector,
 	discussHasMoreSelector,
+	isDiscussFetchingSelector,
 } from 'reducers/discuss.reducer';
-import { LayoutWithSidebar } from 'components/molecules';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
-import { QuestionList } from 'components/Questions';
-import AddQuestionButton from 'components/AddQuestionButton';
-
-import DiscussSidebar from './DiscussSidebar';
+import { Heading, PaperContainer, FlexBox, Select, MenuItem } from 'components/atoms';
+import { LayoutWithSidebar, InfiniteScroll } from 'components/molecules';
+import QuestionList, { Sidebar, AddQuestionButton } from './QuestionsList';
+import './QuestionsList/styles.scss';
 
 const mapStateToProps = state => ({
 	posts: discussPostsSelector(state),
 	filters: discussFiltersSelector(state),
 	hasMore: discussHasMoreSelector(state),
+	isFetching: isDiscussFetchingSelector(state),
 });
 
 const mapDispatchToProps = {
@@ -60,7 +59,8 @@ class Questions extends Component {
 				showError(e, 'Something went wrong when trying to fetch questions');
 			});
 	}
-	handleOrderByFilterChange = (_, __, orderBy) => {
+	handleOrderByFilterChange = (e) => {
+		const orderBy = e.target.value;
 		const { location } = this.props;
 		browserHistory.push({ ...location, query: { ...location.query, orderBy } });
 	}
@@ -70,45 +70,40 @@ class Questions extends Component {
 	}
 	render() {
 		const {
-			t, posts, filters, hasMore,
+			t, posts, filters, hasMore, isFetching,
 		} = this.props;
 		return (
 			<LayoutWithSidebar
 				sidebar={
-					<DiscussSidebar />
+					<Sidebar />
 				}
 			>
-				<div style={{ position: 'relative' }}>
-					<QuestionList
-						header={
-							<div style={{
-								display: 'flex', justifyContent: 'space-between',
-							}}
+				<InfiniteScroll
+					hasMore={hasMore}
+					isLoading={isFetching}
+					loadMore={this.getPosts}
+				>
+					<PaperContainer className="discuss_questions-list">
+						<FlexBox className="toolbar">
+							<Heading>{t('discuss.title')}</Heading>
+							<Select
+								className="select"
+								value={filters.orderBy}
+								onChange={this.handleOrderByFilterChange}
 							>
-								<p className="page-title">{t('discuss.title')}</p>
-								<DropDownMenu
-									value={filters.orderBy}
-									onChange={this.handleOrderByFilterChange}
-									style={{ height: 20, zIndex: 1 }}
-									iconStyle={{ height: 20, padding: 0, top: -1 }}
-									labelStyle={{ height: 20, lineHeight: '20px' }}
-								>
-									<MenuItem value={8} primaryText={t('discuss.filter.trending')} />
-									<MenuItem value={9} primaryText={t('discuss.filter.your-network')} />
-									<MenuItem value={1} primaryText={t('discuss.filter.most-recent')} />
-									<MenuItem value={2} primaryText={t('discuss.filter.most-popular')} />
-									<MenuItem value={4} primaryText={t('discuss.filter.unanswered')} />
-									<MenuItem value={5} primaryText={t('discuss.filter.my-questions')} />
-									<MenuItem value={6} primaryText={t('discuss.filter.my-answers')} />
-								</DropDownMenu>
-							</div>
-						}
-						questions={posts}
-						hasMore={hasMore}
-						loadMore={this.getPosts}
-					/>
-					<AddQuestionButton />
-				</div>
+								<MenuItem value={8}>{t('discuss.filter.trending')}</MenuItem>
+								<MenuItem value={9}>{t('discuss.filter.your-network')}</MenuItem>
+								<MenuItem value={1}>{t('discuss.filter.most-recent')}</MenuItem>
+								<MenuItem value={2}>{t('discuss.filter.most-popular')}</MenuItem>
+								<MenuItem value={4}>{t('discuss.filter.unanswered')}</MenuItem>
+								<MenuItem value={5}>{t('discuss.filter.my-questions')}</MenuItem>
+								<MenuItem value={6}>{t('discuss.filter.my-answers')}</MenuItem>
+							</Select>
+						</FlexBox>
+						<QuestionList isLoading={isFetching} questions={posts} />
+						<AddQuestionButton />
+					</PaperContainer>
+				</InfiniteScroll>
 			</LayoutWithSidebar>
 		);
 	}

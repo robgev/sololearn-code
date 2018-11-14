@@ -19,6 +19,12 @@ class IProfile {
 		this.getFeed();
 	}
 
+	@observable getQuestionsPromise = null;
+
+	@computed get isQuestionsFetching() {
+		return this.getQuestionsPromise !== null;
+	}
+
 	@observable data = {};
 
 	@observable questions = {
