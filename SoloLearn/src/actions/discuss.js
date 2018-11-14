@@ -99,6 +99,11 @@ export const changePostRepliesCount = ({ id, countChange }) => ({
 	payload: { id, countChange },
 });
 
+export const editPostInList = postInfo => ({
+	type: types.EDIT_POST,
+	payload: postInfo,
+});
+
 // Single post actions
 
 export const loadPost = post => ({
@@ -187,14 +192,6 @@ export const emptyReplies = () => ({
 // 	},
 // });
 
-export const votePostInternal = (post, vote) => (dispatch) => {
-	const userVote = post.vote === vote ? 0 : vote;
-	const votes = (post.votes + userVote) - post.vote;
-	const isPrimary = post.parentID === null;
-	dispatch(votePost(post.id, isPrimary, userVote, votes));
-	return Service.request('Discussion/VotePost', { id: post.id, vote: userVote });
-};
-
 export const editPost = (id, isPrimary, message) => ({
 	type: types.EDIT_POST,
 	payload: { id, isPrimary, message },
@@ -210,18 +207,6 @@ export const editPostInternal = (post, message) => {
 // 	type: types.DELETE_POST,
 // 	payload: { id, isPrimary },
 // });
-
-export const deletePostInternal = (post) => {
-	const isPrimary = post.parentID === null;
-	return (dispatch) => {
-		// dispatch(emptyQuestions());
-		if (!isPrimary) {
-			dispatch(deletePost(post.id, isPrimary));
-			return Service.request('Discussion/DeletePost', { id: post.id });
-		}
-		return dispatch(removePost(post.id));
-	};
-};
 
 export const addQuestion = (title, message, tags) => async (dispatch) => {
 	const res = await Service.request('Discussion/CreatePost', { title, message, tags });

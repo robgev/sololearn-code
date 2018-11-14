@@ -1,6 +1,5 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
 import { IconButton } from 'components/atoms';
 import { Accepted } from 'components/icons';
 import { determineAccessLevel } from 'utils';
@@ -12,15 +11,9 @@ const mapStateToProps = (state, ownProps) => ({
 
 @connect(mapStateToProps)
 class Options extends Component {
-	handleClose = () => {
-		this.setState({ anchorEl: null });
-	}
-	handleClick = (e) => {
-		this.setState({ anchorEl: e.currentTarget });
-	}
 	render() {
 		const {
-			isMyQuestion, canAcceptReply, onClick, isAccepted
+			isMyQuestion, canAcceptReply, onClick, isAccepted,
 		} = this.props;
 		return (
 			isMyQuestion || canAcceptReply

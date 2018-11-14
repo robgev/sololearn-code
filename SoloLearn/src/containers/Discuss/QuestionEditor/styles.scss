@@ -1,0 +1,14 @@
+@import '~styles/variables';
+
+.discuss_question-editor {
+	.counting-input {
+		.count {
+			align-self: flex-end;
+			margin: $primary_gap_size;
+		}
+	}
+	.submit-button {
+		align-self: flex-end;
+		margin: $primary_gap_size;
+	}
+}

@@ -1,31 +1,29 @@
-import React from 'react';
-import 'styles/Discuss/DiscussSidebar.scss';
+import React, { Fragment } from 'react';
+import { Heading, SecondaryTextBlock, FlexBox } from 'components/atoms';
 
 const DiscussSidebar = () => (
-	<div
-		style={{
-			padding: '15px 20px',
-			width: '100%',
-			boxSizing: 'border-box',
-		}}
-	>
-		<div className="sidebar-title">
-			<p className="title">Guidelines</p>
-		</div>
-		<p className="discuss-guidelines">- Post only programming-related QUESTIONS and ANSWERS;</p>
-
-		<p className="discuss-guidelines">- SEARCH for similar QUESTIONS or ANSWERS before posting;</p>
-
-		<p className="discuss-guidelines">- Include relevant TAGS;</p>
-
-		<p className="discuss-guidelines">- Follow community RULES: https://www.sololearn.com/Content-Creation-Guidelines/</p>
-
-		<p className="discuss-guidelines">
-			DO NOT
-			- Post spam/advertisement;
-			- Use inappropriate language.
-		</p>
-	</div>
+	<Fragment>
+		<Heading>Guidelines</Heading>
+		<FlexBox column>
+			<SecondaryTextBlock>
+				- Post only programming-related QUESTIONS and ANSWERS;
+			</SecondaryTextBlock>
+			<SecondaryTextBlock>
+				- SEARCH for similar QUESTIONS or ANSWERS before posting;
+			</SecondaryTextBlock>
+			<SecondaryTextBlock>
+				- Include relevant TAGS;
+			</SecondaryTextBlock>
+			<SecondaryTextBlock>
+				- Follow community RULES: https://www.sololearn.com/Content-Creation-Guidelines/
+			</SecondaryTextBlock>
+			<SecondaryTextBlock>
+				DO NOT
+				- Post spam/advertisement;
+				- Use inappropriate language.
+			</SecondaryTextBlock>
+		</FlexBox>
+	</Fragment>
 );
 
 export default DiscussSidebar;
