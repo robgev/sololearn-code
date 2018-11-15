@@ -48,10 +48,10 @@
 				color: white;
 				height: 52px;
 				width: 100%;
+				padding: $primary_gap_size;
 				.course-name {
-					height: 30px;
-					@include multiLineEllipsis($lineHeight: 15px, $lineCount: 2, $bgColor: white);
-					padding-left: 10px;
+					height: 2 * $secondary_text_size;
+					@include multiLineEllipsis($lineHeight: $secondary_text_size, $lineCount: 2, $bgColor: white);
 					&.centered {
 						text-align: center
 					}
