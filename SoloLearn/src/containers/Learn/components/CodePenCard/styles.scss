@@ -51,24 +51,10 @@
 				padding: $primary_gap_size;
 				.course-name {
 					height: 2 * $secondary_text_size;
+					color: inherit;
 					@include multiLineEllipsis($lineHeight: $secondary_text_size, $lineCount: 2, $bgColor: white);
 					&.centered {
 						text-align: center
-					}
-				}
-				.view-stats {
-					display: flex;
-					position: absolute;
-					bottom: 0;
-					right: 5px;
-					.stat-group {
-						display: flex;
-						align-items: center;
-						justify-content: space-between;
-						p {
-							padding: 3px;
-							font-size: 13px;
-						}
 					}
 				}
 			}
