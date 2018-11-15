@@ -1,22 +1,17 @@
 import React from 'react';
 import { Container, SecondaryTextBlock } from 'components/atoms';
-import { Avatar, UsernameLink } from 'components/molecules';
+import { Avatar, UsernameLink, ProfileAvatar, } from 'components/molecules';
 import { updateDate } from 'utils';
 
 const Author = ({
-	badge, userID, avatarUrl, userName, date,
+	badge, userID, avatarUrl, userName, date, level,
 }) => (
 	<Container className="user">
 		<Container className="name-date">
 			<UsernameLink to={`/profile/${userID}`}>{userName}</UsernameLink>
 			<SecondaryTextBlock>{updateDate(date)}</SecondaryTextBlock>
 		</Container>
-		<Avatar
-			badge={badge}
-			userID={userID}
-			avatarUrl={avatarUrl}
-			userName={userName}
-		/>
+		<ProfileAvatar user={{badge, id: userID, avatarUrl, name: userName, level}}/>
 	</Container>
 );
 
