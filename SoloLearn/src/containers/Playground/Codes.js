@@ -14,6 +14,7 @@ import {
 import { showError, queryDifference, isObjectEqual } from 'utils';
 
 import AddCodeButton from 'components/AddCodeButton';
+import { Add } from 'components/icons';
 import { Heading, Container, Select, MenuItem } from 'components/atoms';
 import { FloatingActionButton, LayoutWithSidebar } from 'components/molecules';
 
@@ -115,7 +116,11 @@ class Codes extends Component {
 						loadMore={this.getCodes}
 					/>
 					<AddCodeButton>
-						{({ togglePopup }) => <FloatingActionButton onClick={togglePopup} />}
+						{({ togglePopup }) => (
+							<FloatingActionButton color="secondary" alignment="right" onClick={togglePopup}>
+								<Add />
+							</FloatingActionButton>
+						)}
 					</AddCodeButton>
 				</Container>
 			</LayoutWithSidebar>

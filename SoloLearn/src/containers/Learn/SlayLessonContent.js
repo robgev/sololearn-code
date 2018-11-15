@@ -34,7 +34,6 @@ class SlayLessonContent extends Component {
 	render() {
 		const { t, parts, lessonId } = this.props;
 		const { currentStep, isReportPopupOpen } = this.state;
-		console.log(parts, currentStep);
 		const { textContent, ...childProps } = this.props;
 		return (
 			<Fragment>

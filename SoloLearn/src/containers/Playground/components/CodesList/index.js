@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
-import { Container, PaperContainer } from 'components/atoms';
+import { List, Container, PaperContainer } from 'components/atoms';
 import { InfiniteScroll } from 'components/molecules';
 import CodeShimmer from 'components/Shimmers/CodeShimmer';
 import './styles.scss';
@@ -18,7 +18,7 @@ const CodesList = observer(({
 		{
 			codes.length === 0 && !hasMore
 				? (
-					<PaperContainer style={{ padding: 15 }}>
+					<PaperContainer>
 						{header}
 						<Container className="no-codes-wrapper">{t('profile.no-codes')}</Container>
 					</PaperContainer>
@@ -27,7 +27,7 @@ const CodesList = observer(({
 					<Container>
 						{
 							codes.length === 0 &&
-								<PaperContainer style={{ height: '100vh', overflow: 'hidden', padding: 15 }}>
+								<PaperContainer style={{ height: '100vh', overflow: 'hidden' }}>
 									{header}
 									<CodeShimmer />
 								</PaperContainer>
@@ -37,15 +37,16 @@ const CodesList = observer(({
 							hasMore={hasMore}
 							style={{
 								display: 'flex',
-								padding: 15,
 								flexDirection: 'column',
 							}}
 						>
 							<PaperContainer>
 								{codes.length !== 0 ? header : null}
-								{codes.map(code => (
-									<CodeItem key={code.id} code={code} />
-								))}
+								<List>
+									{codes.map(code => (
+										<CodeItem key={code.id} code={code} />
+									))}
+								</List>
 							</PaperContainer>
 						</InfiniteScroll>
 					</Container>
