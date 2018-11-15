@@ -3,7 +3,7 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import './styles.scss';
 
 const StepIcon = ({
-	active, completed, text, className, disabled, ...props
+	active, completed, text, className, disabled,
 }) => {
 	const size = active ? 24 : 20;
 	const classes = `atom_step_icon ${active ? 'atom_step_icon_active ' : ''} ${completed ? 'atom_step_icon_completed ' : ''} ${disabled ? 'atom_step_icon_disabled ' : ''}`;

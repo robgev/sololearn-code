@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { ProgressBar } from 'react-step-progress-bar';
 
 const Stepper = ({ height, ...props }) => {
