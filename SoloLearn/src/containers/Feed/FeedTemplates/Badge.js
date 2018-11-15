@@ -6,6 +6,7 @@ import {
 	SecondaryTextBlock
 } from 'components/atoms';
 import BottomToolbar from '../FeedBottomToolbar';
+import 'styles/Feed/FeedTemplates/Badge.scss';
 
 const Badge = ({ date, achievement }) => (
 	<Fragment>
@@ -14,7 +15,7 @@ const Badge = ({ date, achievement }) => (
 				className="badge-base"
 				style={{ backgroundColor: achievement.color }}
 			>
-				<Image alt="achievement" src="/assets/achievement.png" classNmame="badge-icon" />
+				<Image alt="achievement" src="/assets/achievement.png" className="badge-icon" />
 			</Container>
 			<Container className="details" >
 				<SecondaryTextBlock className="title">{achievement.title}</SecondaryTextBlock>
