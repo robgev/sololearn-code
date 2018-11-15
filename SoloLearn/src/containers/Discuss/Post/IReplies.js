@@ -13,7 +13,7 @@ class IReplies {
 	constructor({
 		postID, userInfo,
 	}) {
-		this.postID = parseInt(postID, 10);
+		this.postID = postID;
 		// Have to give this to replies the current user makes { userName, avatarUrl }
 		this.userInfo = userInfo;
 		this.dispose = reaction(

@@ -6,7 +6,7 @@ class IPost {
 	static ORDER_BY_DATE = 2;
 
 	constructor({ id }) {
-		this.id = parseInt(id, 10);
+		this.id = id;
 	}
 
 	@observable getPostPromise = null;

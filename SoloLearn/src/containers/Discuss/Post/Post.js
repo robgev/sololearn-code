@@ -69,6 +69,7 @@ class Post extends Component {
 					this.post.data !== null
 					&& (
 						<Replies
+							key={replyID || 0}
 							postID={id}
 							askerID={this.post.data.userID}
 							replyID={replyID}

@@ -116,7 +116,7 @@ class Replies extends Component {
 							? <RaisedButton onClick={this.replies.getRepliesAbove}>Load above</RaisedButton>
 							: null
 						}
-						{this.replies.entities.length !== 0 || this.replies.isFetching
+						{this.replies.entities.length !== 0 || (this.replies.isFetching && this.replies.hasMore)
 							? (
 								<List>
 									{
