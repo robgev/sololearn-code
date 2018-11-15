@@ -3,14 +3,20 @@ import { StepIcon } from 'components/atoms';
 import './styles.scss';
 
 const Step = ({
-	onClick, text, active, completed, disabled, className, ...props
+	text,
+	active,
+	onClick,
+	disabled,
+	className,
+	completed,
+	...props
 }) => (
 	<div
 		tabIndex={0}
 		role="button"
 		onClick={onClick}
 		className={`atom_step ${className}`}
-		
+		{...props}
 	>
 		<StepIcon
 			text={text}
@@ -21,13 +27,12 @@ const Step = ({
 	</div>
 );
 
-
 Step.defaultProps = {
 	className: '',
 	completed: false,
 	active: false,
 	disabled: false,
-	onClick: ()=>{},
+	onClick: () => {},
 	text: '',
 };
 export default Step;
