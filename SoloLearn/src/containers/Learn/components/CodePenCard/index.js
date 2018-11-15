@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { slayItemTypes } from 'constants/ItemTypes';
 import { getLanguageColor, toSeoFriendly } from 'utils';
 
-import { Container, Progress, Image, SecondaryTextBlock } from 'components/atoms';
+import { PaperContainer, Container, Progress, Image, SecondaryTextBlock } from 'components/atoms';
 import { ContainerLink, ViewStats } from 'components/molecules';
+import './styles.scss';
 
 const getProgress = (skills, courseId) => {
 	const skill = skills.find(({ id }) => id === courseId);

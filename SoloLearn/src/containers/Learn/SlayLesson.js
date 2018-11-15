@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 
 import { toSeoFriendly } from 'utils';
@@ -148,9 +147,8 @@ class SlayLesson extends PureComponent {
 						/>
 					}
 				>
-					{!loading &&
-					<Container style={{ width: '100%' }}>
-						<PaperContainer style={{ padding: 15 }}>
+					<Container>
+						<PaperContainer>
 							<SlayLessonContent
 								t={t}
 								date={date}
@@ -169,10 +167,7 @@ class SlayLesson extends PureComponent {
 							/>
 							{nextLesson &&
 								<ContainerLink to={`/learn/lesson/${nextLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${nextLesson.id}/${toSeoFriendly(nextLesson.name, 100)}/1`}>
-									<RaisedButton
-										labelColor="#fff"
-										backgroundColor="#8bc34a"
-									>
+									<RaisedButton color="secondary">
 										{t('learn.buttons-continue')}
 									</RaisedButton>
 								</ContainerLink>
@@ -191,7 +186,6 @@ class SlayLesson extends PureComponent {
 							implementations={implementations}
 						/>
 					</Container>
-					}
 				</LayoutWithSidebar>
 			);
 	}

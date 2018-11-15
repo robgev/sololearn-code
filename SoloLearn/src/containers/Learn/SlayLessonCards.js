@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { translate } from 'react-i18next';
 
 import 'styles/Learn/Lessons.scss';
-import { Container, Loading } from 'components/atoms';
+import { Container, Loading, Title } from 'components/atoms';
 import { LayoutWithSidebar } from 'components/molecules';
 import { LessonTiles, UserProgressToolbar } from './components';
 
@@ -20,9 +20,9 @@ const SlayLessonCards = ({
 			? <Loading />
 			: (
 				<Fragment>
-					<Container className="lesson-breadcrumbs">
+					<Title>
 						{name}
-					</Container>
+					</Title>
 					<LessonTiles
 						t={t}
 						slayLessons

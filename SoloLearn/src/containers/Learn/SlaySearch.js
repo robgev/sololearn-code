@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { searchLessons } from 'actions/slay';
-import { CodePenCard, LayoutGenerator } from './components';
 import SlayDetailedShimmer from 'components/Shimmers/SlayDetailedShimmer';
+import { CodePenCard, LayoutGenerator } from './components';
 
 const mapStateToProps = state => ({ lessons: state.slay.filteredCollectionItems });
 
@@ -82,7 +82,6 @@ class SlayDetailed extends PureComponent {
 				}}
 				style={{
 					width: 'initial',
-					padding: 15,
 					flexDirection: 'row',
 					flexWrap: 'wrap',
 					justifyContent: 'flex-start',

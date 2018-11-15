@@ -1,21 +1,13 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
-import {
-	Step,
-	Stepper,
-	StepLabel,
-} from 'material-ui/Stepper';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import IconButton from 'material-ui/IconButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import { grey500 } from 'material-ui/styles/colors';
+import { Container, MenuItem,	Step, Stepper, StepIcon } from 'components/atoms';
+import { IconMenu } from 'components/molecules';
+import { MoreVert } from 'components/icons';
 import ReportItemTypes from 'constants/ReportItemTypes';
 import ReportPopup from 'components/ReportPopup';
 import { toSeoFriendly } from 'utils';
 
 import QuizText from './QuizText';
-import StepIcon from './StepIcon';
 
 class SlayLessonContent extends Component {
 	constructor(props) {
@@ -45,10 +37,10 @@ class SlayLessonContent extends Component {
 		const { currentStep, isReportPopupOpen } = this.state;
 		const { textContent, ...childProps } = this.props;
 		return (
-			<div style={{ position: 'relative' }}>
+			<Container style={{ position: 'relative' }}>
 				{
 					parts ?
-						<div>
+						<Container>
 							<Stepper>
 								{parts.map((singlePart, index) => (
 									<Step
@@ -56,19 +48,7 @@ class SlayLessonContent extends Component {
 										key={singlePart.id}
 										onClick={this.handleStepClick}
 									>
-										<StepLabel
-											icon={
-												<StepIcon
-													text={index + 1}
-													active={currentStep === index}
-													completed={currentStep > index}
-												/>
-											}
-											style={{
-												paddingLeft: index === 0 ? 0 : 14,
-												paddingRight: index === parts.length - 1 ? 0 : 14,
-											}}
-										/>
+										<StepIcon />
 									</Step>
 								))}
 							</Stepper>
@@ -77,30 +57,14 @@ class SlayLessonContent extends Component {
 								{...childProps}
 								textContent={parts[currentStep].textContent}
 							/>
-
-						</div>
+						</Container>
 						:
 						<QuizText {...this.props} />
 				}
-				<IconMenu
-					iconButtonElement={
-						<IconButton
-							style={{
-								height: 32,
-								padding: 0,
-							}}
-						>
-							<MoreVertIcon color={grey500} />
-						</IconButton>
-					}
-					style={{ position: 'absolute', top: 0, right: 0 }}
-					anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-					targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-				>
-					<MenuItem
-						primaryText={t('common.report-action-title')}
-						onClick={this.toggleReportPopup}
-					/>
+				<IconMenu icon={MoreVert}>
+					<MenuItem onClick={this.toggleReportPopup}>
+						{t('common.report-action-title')}
+					</MenuItem>
 				</IconMenu>
 				<ReportPopup
 					itemId={lessonId}
@@ -108,7 +72,7 @@ class SlayLessonContent extends Component {
 					itemType={ReportItemTypes.lesson}
 					onRequestClose={this.toggleReportPopup}
 				/>
-			</div>
+			</Container>
 		);
 	}
 }

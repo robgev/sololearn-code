@@ -23,48 +23,47 @@ const LayoutGenerator = ({
 	loadingComponent: LoadingComponent,
 }) => {
 	const MainContainer = noSidebar ? Layout : LayoutWithSidebar;
-	return loading
-		? <Loading /> : (
-			<MainContainer
-				sidebar={loading ? <SidebarShimmer /> : sidebarContent}
+	return (
+		<MainContainer
+			sidebar={loading ? <SidebarShimmer /> : sidebarContent}
+		>
+			<BusyWrapper
+				title={title}
+				paper={paper}
+				isBusy={loading}
+				style={wrapperStyle}
+				noDisplay={noDisplay}
+				loadingComponent={LoadingComponent ?
+					<LoadingComponent /> :
+					<SlayHomeShimmer />
+				}
 			>
-				<BusyWrapper
-					title={title}
-					paper={paper}
-					isBusy={loading}
-					style={wrapperStyle}
-					noDisplay={noDisplay}
-					loadingComponent={LoadingComponent ?
-						<LoadingComponent /> :
-						<SlayHomeShimmer />
-					}
+				<InfiniteScroll
+					pageStart={0}
+					hasMore={hasMore}
+					loadMore={loadMore}
+					style={{
+						width: '100%',
+						display: 'flex',
+						flexDirection: 'column',
+						justifyContent: 'center',
+						alignItems: 'center',
+						...style,
+					}}
+					loader={loading ? null : <Loading />}
 				>
-					<InfiniteScroll
-						pageStart={0}
-						hasMore={hasMore}
-						loadMore={loadMore}
-						style={{
-							width: '100%',
-							display: 'flex',
-							flexDirection: 'column',
-							justifyContent: 'center',
-							alignItems: 'center',
-							...style,
-						}}
-						loader={loading ? null : <Loading />}
-					>
-						{items.map(collection => (
-							<CardComponent
-								{...collection}
-								isCourses={isCourses}
-								key={collection.name}
-							/>
-						))}
-					</InfiniteScroll>
-					{children}
-				</BusyWrapper>
-			</MainContainer>
-		);
+					{items.map(collection => (
+						<CardComponent
+							{...collection}
+							isCourses={isCourses}
+							key={collection.name}
+						/>
+					))}
+				</InfiniteScroll>
+				{children}
+			</BusyWrapper>
+		</MainContainer>
+	);
 };
 
 export default LayoutGenerator;
