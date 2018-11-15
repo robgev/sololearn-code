@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, SecondaryTextBlock } from 'components/atoms';
-import { Avatar, UsernameLink, ProfileAvatar, } from 'components/molecules';
+import { Avatar, UsernameLink, ProfileAvatar, ModBadge } from 'components/molecules';
 import { updateDate } from 'utils';
 
 const Author = ({
@@ -8,7 +8,7 @@ const Author = ({
 }) => (
 	<Container className="user">
 		<Container className="name-date">
-			<UsernameLink to={`/profile/${userID}`}>{userName}</UsernameLink>
+			<UsernameLink to={`/profile/${userID}`}>{userName} <ModBadge badge={badge}/></UsernameLink>
 			<SecondaryTextBlock>{updateDate(date)}</SecondaryTextBlock>
 		</Container>
 		<ProfileAvatar user={{badge, id: userID, avatarUrl, name: userName, level}}/>
