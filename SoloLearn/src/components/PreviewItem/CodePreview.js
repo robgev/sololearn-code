@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
-import Paper from 'material-ui/Paper';
 import Service from 'api/service';
 import { LanguageLabel } from 'components/molecules';
-import { Container, PaperContainer, TextBlock, SecondaryTextBlock} from 'components/atoms';
+import { Container, PaperContainer, TextBlock, SecondaryTextBlock } from 'components/atoms';
 
 class CodePreview extends PureComponent {
 	constructor() {
@@ -39,7 +38,7 @@ class CodePreview extends PureComponent {
 				<LanguageLabel language={language} />
 				<Container className="preview-info">
 					<TextBlock className="primary">{name}</TextBlock>
-					<SeconaryTextBlock className="secondary">{userName}</SeconaryTextBlock>
+					<SecondaryTextBlock className="secondary">{userName}</SecondaryTextBlock>
 				</Container>
 			</PaperContainer>
 		);
