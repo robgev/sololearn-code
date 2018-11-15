@@ -93,7 +93,6 @@ class Question extends Component {
 								</Container>
 								<Snackbar
 									onClose={this.closeFollowSnackbar}
-									autoHideDuration={1500}
 									open={this.state.isFollowSnackbarOpen}
 									message={post.isFollowing ? t('discuss.following-title') : t('discuss.not-following-title')}
 								/>

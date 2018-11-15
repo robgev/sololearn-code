@@ -100,9 +100,10 @@ class IReplies {
 		const replies = uniqBy([ ...oldReplies, ...newReplies ], reply => reply.id);
 		switch (orderBy) {
 		case IReplies.ORDER_BY_VOTE:
-			return replies.slice().sort((a, b) => a.isAccepted ? -1 : b.votes - a.votes);
+			return replies.slice().sort((a, b) => (a.isAccepted ? -1 : b.votes - a.votes));
 		case IReplies.ORDER_BY_DATE:
-			return replies.slice().sort((a, b) => a.isAccepted ? -1 : new Date(b.date) - new Date(b.date));
+			return replies.slice().sort((a, b) =>
+				(a.isAccepted ? -1 : new Date(b.date) - new Date(b.date)));
 		default:
 			throw new Error('Couldn\'t identify replies order');
 		}
@@ -162,17 +163,20 @@ class IReplies {
 		this.entities = this.entities.filter(reply => reply.id !== id);
 	}
 
-	@action onAcceptReply = id => {
-		const isAccepted = true;
-		this.entities.forEach(reply => {
+	@action onAcceptReply = (id) => {
+		let isAccepted = true;
+		this.entities.forEach((reply) => {
 			if (reply.id === id) {
-				const isAccepted = !reply.isAccepted;
+				isAccepted = !reply.isAccepted;
+				/* eslint-disable */
 				reply.isAccepted = isAccepted;
 			} else {
 				reply.isAccepted = false;
 			}
+			/* eslint-enable */
 		});
 		Service.request('Discussion/ToggleAcceptedAnswer', { id, accepted: isAccepted });
+		return isAccepted;
 	}
 
 	@action _editReply = ({ id, message }) => {
@@ -181,13 +185,11 @@ class IReplies {
 		return Service.request('Discussion/EditPost', { id, message });
 	}
 
-	editReply = id => message => {
-		return this._editReply({ id, message });
-	}
+	editReply = id => message => this._editReply({ id, message })
 
-	deleteReply = id => {
+	deleteReply = (id) => {
 		this.removeReply(id);
-		return Service.request('Discussion/DeletePost', { id })
+		return Service.request('Discussion/DeletePost', { id });
 	}
 }
 
