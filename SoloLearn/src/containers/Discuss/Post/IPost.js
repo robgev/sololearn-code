@@ -51,7 +51,7 @@ class IPost {
 	@action onFollow = () => {
 		this.data.isFollowing = !this.data.isFollowing;
 		const urlOption = this.data.isFollowing ? 'Follow' : 'Unfollow';
-		Service.request(`Discussion/${urlOption}`, { id: this.data.id })
+		Service.request(`Discussion/${urlOption}Post`, { id: this.data.id })
 			.then(() => this.data.isFollowing);
 	}
 
