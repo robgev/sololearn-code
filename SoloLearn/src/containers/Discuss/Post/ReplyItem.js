@@ -1,4 +1,5 @@
 import React, { Component, Fragment, createRef } from 'react';
+import { translate } from 'react-i18next';
 import { observer } from 'mobx-react';
 import { ListItem, HorizontalDivider, Container, FlexBox } from 'components/atoms';
 import { RaisedButton } from 'components/molecules';
@@ -7,6 +8,7 @@ import Options from './Options';
 import Author from './Author';
 import AcceptReply from './AcceptReply';
 
+@translate()
 @observer
 class ReplyItem extends Component {
 	state = {
@@ -47,7 +49,7 @@ class ReplyItem extends Component {
 
 	render() {
 		const {
-			reply, deleteReply, onAccept, askerID,
+			reply, deleteReply, onAccept, askerID, t,
 		} = this.props;
 		if (this.state.isEditing) {
 			return (
@@ -61,16 +63,16 @@ class ReplyItem extends Component {
 					<Container className="buttons">
 						<RaisedButton
 							className="cancel"
-							onClick={this.toggleEdit}
+							onMouseDown={this.toggleEdit}
 						>
-							Cancel
+							{t('common.cancel-title')}
 						</RaisedButton>
 						<RaisedButton
 							className="edit"
 							onMouseDown={this.edit}
 							disabled={!this.state.isEditEnabled}
 						>
-							Edit
+							{t('common.edit-action-title')}
 						</RaisedButton>
 					</Container>
 				</FlexBox>
