@@ -1,12 +1,12 @@
 import React from 'react';
 import { numberFormatter } from 'utils';
 import { Views, Comment } from 'components/icons';
-import { FlexBox, Container, SecondaryTextBlock } from 'components/atoms';
+import { FlexBox, SecondaryTextBlock } from 'components/atoms';
 
 import './styles.scss';
 
 const ViewStats = ({	views, comments }) => (
-	<FlexBox align justify >
+	<FlexBox align justify>
 		{ views > 0 &&
 			<FlexBox align justify className="molecule_view-stats">
 				<Views className="molecule_view-stats-icon" />
