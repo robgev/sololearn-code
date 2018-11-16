@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
-
-import Paper from 'material-ui/Paper';
+import {
+	PaperContainer, FlexBox,
+	Title, SecondaryTextBlock, Image,
+} from 'components/atoms';
+import { ContainerLink } from 'components/molecules';
 
 import './OptionsCard.scss';
 
 const OptionsCard = ({
 	image, header, info, to, onClick,
 }) => (
-	<Link
+	<ContainerLink
 		onClick={onClick !== null
 			? (e) => {
 				e.preventDefault();
@@ -18,16 +20,18 @@ const OptionsCard = ({
 			: () => { }}
 		to={to}
 	>
-		<Paper className="options-card">
-			<div>
-				<img src={image} alt="" />
-			</div>
-			<div>
-				<span>{header}</span>
-				<p>{info}</p>
-			</div>
-		</Paper>
-	</Link>
+		<PaperContainer className="options-card">
+			<FlexBox>
+				<FlexBox>
+					<Image src={image} alt="" />
+				</FlexBox>
+				<FlexBox column className="info">
+					<Title>{header}</Title>
+					<SecondaryTextBlock>{info}</SecondaryTextBlock>
+				</FlexBox>
+			</FlexBox>
+		</PaperContainer>
+	</ContainerLink>
 );
 
 OptionsCard.defaultProps = {

@@ -1,12 +1,11 @@
 import React from 'react';
-import GeneralLayout from 'components/Layouts/GeneralLayout';
+import { LayoutWithSidebar } from 'components/molecules';
+import Sidebar from './components/Sidebar';
 
 const Layout = props => (
-	<GeneralLayout
-		sidebarContent={
-			<div>
-				Quiz Factory Guidelines
-			</div>
+	<LayoutWithSidebar
+		sidebar={
+			<Sidebar />
 		}
 		{...props}
 	/>
