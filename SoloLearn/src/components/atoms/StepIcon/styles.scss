@@ -1,23 +1,23 @@
 @import '~styles/colors';
 
+$icon_size: 24px;
+$container_size: 20px;
+
 .atom_step_icon {
 	display: block;
-	font-size: 24px;
+	font-size: $icon_size;
 	color: $secondary_background_color;
-	width: 20px;
-	height:20px;
-}
-
-.atom_step_icon_active {
-	color: $primary_color;
-	width: 24px;
-	height:24px;
-}
-
-.atom_step_icon_completed {
-	color: $secondary_color
-}
-
-.atom_step_icon_disabled {
-	color: $background_color;
+	width: $container_size;
+	height:$container_size;
+	&.atom_step_icon_active {
+		color: $primary_color;
+		width: $icon_size;
+		height:$icon_size;
+	}
+	&.atom_step_icon_completed {
+		color: $secondary_color
+	}
+	&.atom_step_icon_disabled {
+		color: $background_color;
+	}
 }

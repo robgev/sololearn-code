@@ -11,7 +11,10 @@ const Author = ({
 			<UsernameLink to={`/profile/${userID}`}>{userName} <ModBadge badge={badge}/></UsernameLink>
 			<SecondaryTextBlock>{updateDate(date)}</SecondaryTextBlock>
 		</Container>
-		<ProfileAvatar user={{badge, id: userID, avatarUrl, name: userName, level}}/>
+		<ProfileAvatar user={{
+			badge, id: userID, avatarUrl, name: userName, level,
+		}}
+		/>
 	</Container>
 );
 

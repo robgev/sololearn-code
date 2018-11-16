@@ -1,13 +1,7 @@
 import React from 'react';
-import Paper from 'material-ui/Paper';
+import { Title, PaperContainer, Container } from 'components/atoms';
 
 import 'styles/busyWrapper.scss';
-
-const PlainContainer = ({ children, className, style }) => (
-	<div style={style} className={className}>
-		{children}
-	</div>
-);
 
 const BusyWrapper = ({
 	title,
@@ -20,9 +14,9 @@ const BusyWrapper = ({
 	loadingComponent,
 	wrapperClassName = '',
 }) => {
-	const ContentContainer = paper ? Paper : PlainContainer;
+	const ContentContainer = paper ? PaperContainer : Container;
 	return (
-		<div className={`busy-wrap-container ${className}`}>
+		<Container className={`busy-wrap-container ${className}`}>
 			<ContentContainer
 				className={`content-wrapper ${wrapperClassName}`}
 				style={{
@@ -33,16 +27,16 @@ const BusyWrapper = ({
 			>
 				{!title ?
 					null :
-					<div className="card-title">
-						<p>{title}</p>
-					</div>
+					<Container className="card-title">
+						<Title>{title}</Title>
+					</Container>
 				}
 				{children}
 			</ContentContainer>
 			{isBusy &&
 				loadingComponent
 			}
-		</div>
+		</Container>
 	);
 };
 export default BusyWrapper;

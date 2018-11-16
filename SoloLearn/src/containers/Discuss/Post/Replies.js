@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import {
 	Container, List, PaperContainer,
 	SecondaryTextBlock, Select, MenuItem,
-	FlexBox, TextBlock,
+	FlexBox, TextBlock, Snackbar,
 } from 'components/atoms';
 import { InfiniteScroll, RaisedButton } from 'components/molecules';
 import AddReply from './AddReply';
@@ -20,6 +20,9 @@ const mapStateToProps = ({ userProfile }) => ({
 @translate()
 @observer
 class Replies extends Component {
+	state = {
+		isAcceptSnackbarOpen: false,
+	}
 	repliesRefs = {}
 	addReplyInput = React.createRef();
 
@@ -69,6 +72,17 @@ class Replies extends Component {
 		this.replies.setOrderBy(e.target.value);
 	}
 
+	onAcceptReply = (id) => {
+		const isAccepted = this.replies.onAcceptReply(id);
+		if (isAccepted) {
+			this.setState({ isAcceptSnackbarOpen: true });
+		}
+	}
+
+	closeAcceptSnackbar = () => {
+		this.setState({ isAcceptSnackbarOpen: false });
+	}
+
 	render() {
 		const { count, t, askerID } = this.props;
 		return (
@@ -102,7 +116,7 @@ class Replies extends Component {
 							? <RaisedButton onClick={this.replies.getRepliesAbove}>Load above</RaisedButton>
 							: null
 						}
-						{this.replies.entities.length !== 0 || this.replies.isFetching
+						{this.replies.entities.length !== 0 || (this.replies.isFetching && this.replies.hasMore)
 							? (
 								<List>
 									{
@@ -116,7 +130,7 @@ class Replies extends Component {
 												key={reply.id}
 												reply={reply}
 												deleteReply={() => this.deleteReply(reply.id)}
-												onAccept={() => this.replies.onAcceptReply(reply.id)}
+												onAccept={() => this.onAcceptReply(reply.id)}
 											/>
 										))
 									}
@@ -130,6 +144,11 @@ class Replies extends Component {
 						}
 					</PaperContainer>
 				</InfiniteScroll>
+				<Snackbar
+					onClose={this.closeAcceptSnackbar}
+					open={this.state.isAcceptSnackbarOpen}
+					message={t('discuss.answer-accepted')}
+				/>
 			</Container>
 		);
 	}

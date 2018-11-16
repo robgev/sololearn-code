@@ -1,8 +1,6 @@
 import React from 'react';
 import MUISnackbar from '@material-ui/core/Snackbar';
 
-// I think we also need to force autoHideDuration
-
 const Snackbar = ({ message, ...props }) => (
 	<MUISnackbar
 		ContentProps={{
@@ -12,5 +10,9 @@ const Snackbar = ({ message, ...props }) => (
 		{...props}
 	/>
 );
+
+Snackbar.defaultProps = {
+	autoHideDuration: 1500,
+};
 
 export default Snackbar;

@@ -1,21 +1,36 @@
 import React, { Component } from 'react';
+import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 import { observer } from 'mobx-react';
-import { PaperContainer, Container, Title, IconButton, Loading, FlexBox } from 'components/atoms';
+import {
+	PaperContainer, Container, Title,
+	IconButton, Loading, FlexBox, Snackbar,
+} from 'components/atoms';
 import { VoteActions, Mention } from 'components/organisms';
 import { Follow } from 'components/icons';
 import Author from './Author';
 import Options from './Options';
 import Tags from '../Tags';
 
+@translate()
 @observer
 class Question extends Component {
+	state = {
+		isFollowSnackbarOpen: false,
+	}
+	closeFollowSnackbar = () => {
+		this.setState({ isFollowSnackbarOpen: false });
+	}
+	onFollowClick = () => {
+		this.props.onFollowClick();
+		this.setState({ isFollowSnackbarOpen: true });
+	}
 	editPost = () => {
 		browserHistory.push(`/discuss/edit/${this.props.post.id}`);
 	}
 	render() {
 		const {
-			post, onVote, onDelete, onFollowClick,
+			post, onVote, onDelete, t,
 		} = this.props;
 		return (
 			<PaperContainer className="main-post">
@@ -41,7 +56,7 @@ class Question extends Component {
 											/>
 										</Container>
 										<Container className="follow">
-											<IconButton active={post.isFollowing} onClick={onFollowClick}>
+											<IconButton active={post.isFollowing} onClick={this.onFollowClick}>
 												<Follow />
 											</IconButton>
 										</Container>
@@ -76,6 +91,11 @@ class Question extends Component {
 										date={post.date}
 									/>
 								</Container>
+								<Snackbar
+									onClose={this.closeFollowSnackbar}
+									open={this.state.isFollowSnackbarOpen}
+									message={post.isFollowing ? t('discuss.following-title') : t('discuss.not-following-title')}
+								/>
 							</Container>
 						)
 				}

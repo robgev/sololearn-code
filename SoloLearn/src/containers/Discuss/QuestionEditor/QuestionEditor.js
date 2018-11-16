@@ -22,7 +22,7 @@ class QuestionEditor extends Component {
 			suggestions: [],
 			isReplyBoxOpen: false,
 			replyLength: 0,
-			query: '',
+			tagValue: '',
 		};
 	}
 
@@ -30,13 +30,8 @@ class QuestionEditor extends Component {
 	static maxQuestionLength = 1024;
 	static maxTitleLength = 128;
 
-	static Chip = ({ value, handleRequestDelete, defaultStyle }, key) => (
-		<Chip style={defaultStyle} label={value} key={key} onDelete={handleRequestDelete} />
-	);
-
 	static isEndingInNewline = str => str.match(/\n$/);
 
-	// Detect title change
 	onTitleChange = (e) => {
 		const { value: title } = e.currentTarget;
 		if (!QuestionEditor.isEndingInNewline(title) && title.length <= QuestionEditor.maxTitleLength) {
@@ -47,40 +42,54 @@ class QuestionEditor extends Component {
 		}
 	}
 
+	/* Chip input */
+
+	static Chip = ({ value, handleDelete, className }, key) => (
+		<Chip className={className} label={value} key={key} onDelete={handleDelete} />
+	);
+
 	addTag = (newTag) => {
-		this.setState((s) => {
-			if (s.tags.length !== 10) {
-				return { tags: [ ...s.tags, newTag ] };
-			}
-			return { tagsErrorText: 'Can\'t add more tags' };
-		});
+		this.setState(s => ({ tags: [ ...s.tags, newTag ], tagValue: '' }));
 	}
 
 	handleDeleteTag = (tag) => {
-		this.setState(s => ({ tags: s.tags.filter(t => t !== tag), tagsErrorText: '' }));
+		this.setState(s => ({
+			tags: s.tagValue === ''
+				? s.tags.filter(t => t !== tag)
+				: [ ...s.tags.filter(t => t !== tag), s.tagValue ],
+			tagsErrorText: '',
+			tagValue: '',
+		}));
 	}
 
-	// Get search suggestions
-	handleUpdateInput = async (query) => {
-		this.setState({ query });
-		if (query.length > 0) {
-			this.setState({ tagsErrorText: '' });
-		}
-		if (query.length < 2) {
-			this.setState({ suggestions: [] });
+	onChange = (e) => {
+		const { value: tagValue } = e.currentTarget;
+		if (this.canUpdateTag()) {
+			this.setState({ tagValue });
+			if (tagValue.length > 0) {
+				this.setState({ tagsErrorText: '' });
+			}
+			if (tagValue.length < 2) {
+				this.setState({ suggestions: [] });
+			} else {
+				this.getSuggestions(tagValue);
+			}
 		} else {
-			this.getSuggestions(query);
+			this.setState({ tagsErrorText: 'Can\'t add more tags' });
 		}
 	}
 
-	getSuggestions = async (query) => {
-		const { tags: suggestions } = await Service.request('Discussion/getTags', { query });
-		if (this.state.query === query) {
+	getSuggestions = async (tagValue) => {
+		const { tags: suggestions } = await Service.request('Discussion/GetTags', { query: tagValue });
+		if (this.state.tagValue === tagValue) {
 			this.setState({ suggestions });
 		}
 	}
 
-	// Add question form submit
+	canUpdateTag = () => this.state.tags.length < 10
+
+	/* End of tag input */
+
 	handleSubmit = () => {
 		const { t } = this.props;
 		const { title, tags } = this.state;
@@ -93,18 +102,10 @@ class QuestionEditor extends Component {
 			});
 		} else {
 			this.props.submit({
-				title: this.state.title,
+				title,
 				message: this.mentionInput.getValue(),
-				tags: this.state.tags,
+				tags,
 			});
-		}
-	}
-
-	// Customly render tag
-	handleChipBlur = (e) => {
-		const { value } = e.currentTarget;
-		if (value !== '') {
-			this.setState(s => ({ tags: [ ...s.tags, value ] }));
 		}
 	}
 
@@ -128,7 +129,8 @@ class QuestionEditor extends Component {
 	render() {
 		const { t, isNew } = this.props;
 		const {
-			isReplyBoxOpen, replyLength, titleErrorText,
+			title, titleErrorText, tags, tagsErrorText,
+			suggestions, isReplyBoxOpen, replyLength, tagValue,
 		} = this.state;
 		return (
 			<PaperContainer className="discuss_question-editor">
@@ -137,15 +139,14 @@ class QuestionEditor extends Component {
 					<FlexBox column className="counting-input">
 						<Input
 							error={titleErrorText !== ''}
-							multiLine
 							fullWidth
-							value={this.state.title}
+							value={title}
 							onChange={this.onTitleChange}
 							label={titleErrorText !== '' ? titleErrorText : t('question.title-placeholder')}
 							maxLength={QuestionEditor.maxTitleLength}
 						/>
 						<SecondaryTextBlock className="count">
-							{this.state.title.length} / {QuestionEditor.maxTitleLength}
+							{title.length} / {QuestionEditor.maxTitleLength}
 						</SecondaryTextBlock>
 					</FlexBox>
 					<CountingMentionInput
@@ -158,23 +159,25 @@ class QuestionEditor extends Component {
 					<FlexBox column className="counting-input">
 						<ChipInput
 							fullWidth
-							value={this.state.tags}
-							onBlur={this.handleChipBlur}
+							value={tags}
 							newChipKeyCodes={[ 13, 32 ]}
+							InputProps={{
+								value: tagValue,
+								onChange: this.onChange,
+							}}
+							blurBehavior="add"
 							chipRenderer={QuestionEditor.Chip}
-							dataSource={this.state.suggestions}
-							errorText={this.state.tagsErrorText}
-							onRequestAdd={this.addTag}
-							onUpdateInput={this.handleUpdateInput}
-							onRequestDelete={this.handleDeleteTag}
-							floatingLabelText={t('question.tags-placeholder')}
+							error={tagsErrorText !== ''}
+							dataSource={suggestions}
+							onAdd={this.addTag}
+							onDelete={this.handleDeleteTag}
+							label={t('question.tags-placeholder')}
 						/>
 						<SecondaryTextBlock className="count">
-							{this.state.tags.length} / {QuestionEditor.maxTagsLength}
+							{tags.length} / {QuestionEditor.maxTagsLength}
 						</SecondaryTextBlock>
 					</FlexBox>
 					<RaisedButton
-						primary
 						onMouseDown={this.handleSubmit}
 					>
 						{isNew ? t('common.post-action-title') : t('common.save-action-title')}

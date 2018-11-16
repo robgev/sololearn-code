@@ -1,27 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { browserHistory } from 'react-router';
-import {
-	Step,
-	Stepper,
-	StepLabel,
-} from 'material-ui/Stepper';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import IconButton from 'material-ui/IconButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import { grey500 } from 'material-ui/styles/colors';
+import { FlexBox, MenuItem,	Step, Stepper } from 'components/atoms';
+import { IconMenu } from 'components/molecules';
+import { MoreVert } from 'components/icons';
 import ReportItemTypes from 'constants/ReportItemTypes';
 import ReportPopup from 'components/ReportPopup';
 import { toSeoFriendly } from 'utils';
 
 import QuizText from './QuizText';
-import StepIcon from './StepIcon';
 
 class SlayLessonContent extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentStep: +props.pageNumber - 1,
+			currentStep: Number(props.pageNumber || 1) - 1,
 		};
 	}
 
@@ -29,14 +21,13 @@ class SlayLessonContent extends Component {
 		this.setState(state => ({ isReportPopupOpen: !state.isReportPopupOpen }));
 	}
 
-	handleStepClick = (e) => {
+	handleStepClick = (currentStep) => {
 		const {
 			name,
-			quizId,
 			itemType,
+			activeLesson,
 		} = this.props;
-		const currentStep = +e.currentTarget.getAttribute('value');
-		browserHistory.push(`/learn/lesson/${itemType === 3 ? 'course-lesson' : 'user-lesson'}/${quizId}/${toSeoFriendly(name, 100)}/${currentStep + 1}`);
+		browserHistory.push(`/learn/lesson/${itemType === 3 ? 'course-lesson' : 'user-lesson'}/${activeLesson.id}/${toSeoFriendly(name, 100)}/${currentStep + 1}`);
 		this.setState({ currentStep });
 	}
 
@@ -45,70 +36,41 @@ class SlayLessonContent extends Component {
 		const { currentStep, isReportPopupOpen } = this.state;
 		const { textContent, ...childProps } = this.props;
 		return (
-			<div style={{ position: 'relative' }}>
-				{
-					parts ?
-						<div>
-							<Stepper>
-								{parts.map((singlePart, index) => (
-									<Step
-										value={index}
-										key={singlePart.id}
-										onClick={this.handleStepClick}
-									>
-										<StepLabel
-											icon={
-												<StepIcon
-													text={index + 1}
-													active={currentStep === index}
-													completed={currentStep > index}
-												/>
-											}
-											style={{
-												paddingLeft: index === 0 ? 0 : 14,
-												paddingRight: index === parts.length - 1 ? 0 : 14,
-											}}
-										/>
-									</Step>
-								))}
-							</Stepper>
-							<QuizText
-								key={parts[currentStep].id}
-								{...childProps}
-								textContent={parts[currentStep].textContent}
-							/>
-
-						</div>
-						:
-						<QuizText {...this.props} />
-				}
-				<IconMenu
-					iconButtonElement={
-						<IconButton
-							style={{
-								height: 32,
-								padding: 0,
-							}}
-						>
-							<MoreVertIcon color={grey500} />
-						</IconButton>
+			<Fragment>
+				<FlexBox justify align>
+					{
+						parts &&
+						<Stepper className="slay-lesson-stepper">
+							{parts.map((singlePart, index) => (
+								<Step
+									text={index + 1}
+									key={singlePart.id}
+									active={currentStep === index}
+									completed={currentStep > index}
+									onClick={() => this.handleStepClick(index)}
+								/>
+							))}
+						</Stepper>
 					}
-					style={{ position: 'absolute', top: 0, right: 0 }}
-					anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-					targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-				>
-					<MenuItem
-						primaryText={t('common.report-action-title')}
-						onClick={this.toggleReportPopup}
-					/>
-				</IconMenu>
+					<IconMenu icon={MoreVert}>
+						<MenuItem onClick={this.toggleReportPopup}>
+							{t('common.report-action-title')}
+						</MenuItem>
+					</IconMenu>
+				</FlexBox>
+				<QuizText
+					key={parts[currentStep].id}
+					{...childProps}
+					textContent={parts ? parts[currentStep].textContent : textContent}
+				/>
+
 				<ReportPopup
 					itemId={lessonId}
 					open={isReportPopupOpen}
 					itemType={ReportItemTypes.lesson}
 					onRequestClose={this.toggleReportPopup}
 				/>
-			</div>
+			</Fragment>
 		);
 	}
 }

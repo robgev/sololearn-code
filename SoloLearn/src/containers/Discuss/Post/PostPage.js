@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
+import { toSeoFriendly } from 'utils';
 import Post from './Post';
 
 class PostPage extends Component {
@@ -7,7 +8,7 @@ class PostPage extends Component {
 	setRouteAlias = (alias) => {
 		const { id, replyId = '' } = this.props.params;
 		if (this._isMounted) {
-			browserHistory.replace(`/discuss/${id}/${alias}/${replyId}`);
+			browserHistory.replace(`/discuss/${id}/${toSeoFriendly(alias)}/${replyId}`);
 		}
 	}
 
@@ -24,8 +25,8 @@ class PostPage extends Component {
 		return (
 			<Post
 				key={id}
-				id={id}
-				replyID={replyId}
+				id={parseInt(id, 10)}
+				replyID={parseInt(replyId, 10)}
 				setRouteAlias={this.setRouteAlias}
 			/>
 		);

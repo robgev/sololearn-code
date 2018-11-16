@@ -5,21 +5,29 @@ import { Loading, Container } from 'components/atoms';
 
 import './styles.scss';
 
-const InfiniteScroll = ({ children, isLoading, ...props }) => (
+const InfiniteScroll = ({
+	children, hasMore, isLoading, ...props
+}) => (
 	<Fragment>
 		<RInfiniteScroll
+			hasMore={hasMore}
+			loader={null}
 			{...props}
 		>
 			{children}
 		</RInfiniteScroll>
-		{isLoading ? <Container className="molecule_infinit-scroll-loading"><Loading /></Container> : null}
+		{isLoading && hasMore ? <Container className="molecule_infinit-scroll-loading"><Loading /></Container> : null}
 	</Fragment>
 );
 
 InfiniteScroll.propTypes = {
 	hasMore: PropTypes.bool.isRequired,
-	isLoading: PropTypes.bool.isRequired,
 	loadMore: PropTypes.func.isRequired,
+	isLoading: PropTypes.bool,
+};
+
+InfiniteScroll.defaultProps = {
+	isLoading: true,
 };
 
 export default InfiniteScroll;

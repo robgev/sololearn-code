@@ -1,9 +1,8 @@
 import React from 'react';
-
 import { ProgressBar } from 'react-step-progress-bar';
+import './styles.scss';
 
-const Stepper = ({ height, ...props }) => {
-	const { children } = props;
+const Stepper = ({ height, children, ...props }) => {
 	const childrenArr = React.Children.toArray(children);
 	const activeIndex = childrenArr.findIndex(item => item.props.active);
 	const count = childrenArr.length;
@@ -16,7 +15,9 @@ const Stepper = ({ height, ...props }) => {
 			percent={percent}
 			filledBackground="#8BC34A"
 			{...props}
-		/>
+		>
+			{children}
+		</ProgressBar>
 	);
 };
 

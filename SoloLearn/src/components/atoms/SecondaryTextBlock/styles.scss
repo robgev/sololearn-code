@@ -1,6 +1,5 @@
 @import '~styles/colors';
-
-$secondary_text_size: 15px;
+@import '~styles/variables';
 
 .atom_secondary-text-block {
 	font-size: $secondary_text_size;
