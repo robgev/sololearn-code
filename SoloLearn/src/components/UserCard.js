@@ -3,12 +3,16 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import AvatarColors from 'constants/AvatarColors';
 import { followSuggestion } from 'actions/discover';
-import ModBadge from 'components/ModBadge';
 import { numberFormatter, showError } from 'utils';
-import { Container,	Image, SecondaryTextBlock } from 'components/atoms';
+import {
+	Container,
+	Image,
+	SecondaryTextBlock,
+} from 'components/atoms';
 import {
 	UsernameLink,
 	RaisedButton,
+	ModBadge,
 } from 'components/molecules';
 
 import 'styles/components/UserCard.scss';
@@ -61,7 +65,6 @@ class UserCard extends Component {
 									{name}
 									<ModBadge
 										badge={badge}
-										className="small"
 									/>
 								</Container>
 							</UsernameLink>
