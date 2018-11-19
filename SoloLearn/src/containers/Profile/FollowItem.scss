@@ -1,0 +1,28 @@
+@import '~styles/variables';
+
+.follower {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: $primary_gap_size 0;
+
+	.details {
+		flex: 2;
+		display: inline-flex;
+		align-items: center;
+	}
+
+	.username-container {
+		display: flex;
+		flex-direction: column;
+		width: 50%;
+		padding-left: $secondary_gap_size;
+
+		.username {
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+	}
+}
+
+	

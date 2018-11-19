@@ -1,19 +1,23 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import CircularProgress from 'material-ui/CircularProgress';
-import Paper from 'material-ui/Paper';
-
 import { getDiscoverSuggestions, removeSearchSuggestions } from 'actions/discover';
 import UserCard from 'components/UserCard';
 import BusyWrapper from 'components/BusyWrapper';
-import Layout from 'components/Layouts/GeneralLayout';
 import { showError } from 'utils';
 import {
 	discoverIdsSelector,
 	discoverEntitiesSelector,
 	discoverSearchIdsSelector,
 } from 'reducers/discover.reducer.js';
+
+import {
+	Container,
+	PaperContainer,
+	TextBlock,
+	Loading,
+} from 'components/atoms';
+import { Layout } from 'components/molecules';
 
 import 'styles/components/Layouts/DiscoverLayout.scss';
 
@@ -62,34 +66,22 @@ class DiscoverContainer extends PureComponent {
 		const { loading } = this.state;
 		const { t, discoverIds, discoverEntities } = this.props;
 		return (
-			<Layout noSidebar>
-				<Paper
-					className="discover-container"
-					style={
-						loading
-							? {
-								display: 'flex',
-								minHeight: '60vh',
-								alignItems: 'center',
-								justifyContent: 'center',
-							}
-							: null
-					}
+			<Layout>
+				<PaperContainer
+					className={`discover-container ${loading ? ' loading' : ''}`}
 				>
 					<BusyWrapper
 						isBusy={loading}
 						title={t('discover_peers.title')}
 						wrapperClassName="discover-busy-wrapper"
 						loadingComponent={
-							<CircularProgress
-								size={30}
-							/>
+							<Loading/>
 						}
 					>
-						<div className={`discover-wrapper ${discoverIds.length === 0 ? 'centered' : ''}`}>
+						<Container className={`discover-wrapper ${discoverIds.length === 0 ? 'centered' : ''}`}>
 							{
 								discoverIds.length === 0
-									? <div className="no-user-found">{t('common.no-results')}</div>
+									? <TextBlock className="no-user-found">{t('common.no-results')}</TextBlock>
 									: discoverIds.map(id => (
 										<UserCard
 											key={id}
@@ -98,9 +90,9 @@ class DiscoverContainer extends PureComponent {
 										/>
 									))
 							}
-						</div>
+						</Container>
 					</BusyWrapper>
-				</Paper>
+				</PaperContainer>
 			</Layout>
 		);
 	}

@@ -4,12 +4,15 @@ import { translate } from 'react-i18next';
 import ReactGA from 'react-ga';
 import { observable, action } from 'mobx';
 import { observer } from 'mobx-react';
-
-// Material UI components
-import { Tabs, Tab } from 'material-ui/Tabs';
-import Dialog from 'components/StyledDialog';
-
-// Additional data and components
+import {
+	Container,
+	Popup,
+	PopupTitle,
+	PopupContent,
+	PopupContentText,
+	Tabs,
+	Tab,
+} from 'components/atoms';
 import UserList from './UserList';
 
 const TabTypes = {
@@ -17,32 +20,12 @@ const TabTypes = {
 	Following: 2,
 };
 
-const styles = {
-	container: {
-		position: 'relative',
-		height: 500,
-	},
-	header: {
-		display: 'flex',
-	},
-	tabsWrapper: {
-		flex: 1,
-	},
-	tabs: {
-		marginRight: 50,
-		backgroundColor: '#fff',
-	},
-	tab: {
-		color: 'rgba(107, 104, 104, 0.8)',
-	},
-};
-
 @translate()
 @observer
 class FollowersBase extends Component {
 	@observable activeTab = TabTypes.Followers;
 
-	@action handleTabChange = (val) => {
+	@action handleTabChange = (event, val) => {
 		this.activeTab = val;
 	}
 
@@ -53,54 +36,55 @@ class FollowersBase extends Component {
 	render() {
 		const { t, open, closePopup } = this.props;
 		const {
-			followers, followings, getFollowers, getFollowings, onFollow,
+			followers, followings, getFollowers, getFollowings, onFollow, loadingFollowers, loadingFollowings
 		} = this.props.profile;
 		return (
-			<Dialog
+			<Popup
 				open={open}
-				onRequestClose={closePopup}
+				onClose={closePopup}
 				autoScrollBodyContent
-				header={
-					<div style={styles.header}>
-						<Tabs
-							style={styles.tabsWrapper}
-							value={this.activeTab}
-							onChange={this.handleTabChange}
-							tabItemContainerStyle={styles.tabs}
-						>
-							<Tab
-								label={t('followers.tab.followers-title')}
-								value={TabTypes.Followers}
-								style={styles.tab}
-							/>
-							<Tab
-								label={t('common.user-following')}
-								value={TabTypes.Following}
-								style={styles.tab}
-							/>
-						</Tabs>
-					</div>
-				}
 			>
-				<div style={styles.container}>
-					{this.activeTab === TabTypes.Followers &&
-						<UserList
-							users={followers.entities}
-							hasMore={followers.hasMore}
-							loadMore={getFollowers}
-							onFollowClick={onFollow}
+				<PopupTitle>
+					<Tabs
+						value={this.activeTab}
+
+						onChange={this.handleTabChange}
+					>
+						<Tab
+							label={t('followers.tab.followers-title')}
+							value={TabTypes.Followers}
 						/>
-					}
-					{this.activeTab === TabTypes.Following &&
-						<UserList
-							users={followings.entities}
-							hasMore={followings.hasMore}
-							loadMore={getFollowings}
-							onFollowClick={onFollow}
+						<Tab
+							label={t('common.user-following')}
+							value={TabTypes.Following}
 						/>
-					}
-				</div>
-			</Dialog>
+					</Tabs>
+				</PopupTitle>
+				<PopupContent>
+					<PopupContentText>
+						<Container style={{width: '500px'}}>
+							{this.activeTab === TabTypes.Followers &&
+								<UserList
+									users={followers.entities}
+									hasMore={followers.hasMore}
+									loadMore={getFollowers}
+									onFollowClick={onFollow}
+									loading={loadingFollowers}
+								/>
+							}
+							{this.activeTab === TabTypes.Following &&
+								<UserList
+									users={followings.entities}
+									hasMore={followings.hasMore}
+									loadMore={getFollowings}
+									loading={loadingFollowings}
+									onFollowClick={onFollow}
+								/>
+							}
+						</Container>
+					</PopupContentText>
+				</PopupContent>
+			</Popup>
 		);
 	}
 }

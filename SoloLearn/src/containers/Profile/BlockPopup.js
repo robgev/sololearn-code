@@ -1,32 +1,45 @@
 import React from 'react';
 import { translate } from 'react-i18next';
-import Dialog from 'components/StyledDialog';
-import FlatButton from 'material-ui/FlatButton';
+import {
+	Popup,
+	PopupTitle,
+	PopupContent,
+	PopupContentText,
+	PopupActions
+} from 'components/atoms';
+import { FlatButton } from 'components/molecules'
 
 const BlockPopup = ({
 	blockUser, onRequestClose, open, t,
 }) => {
 	const actions = [
 		<FlatButton
-			primary
 			onClick={onRequestClose}
-			label={t('common.cancel-title')}
-		/>,
+		>
+			{t('common.cancel-title')}
+		</FlatButton>,
 		<FlatButton
-			primary
 			onClick={blockUser}
-			label={t('common.block-user')}
-		/>,
+		>
+			{t('common.block-user')}
+		</FlatButton>,
 	];
 	return (
-		<Dialog
+		<Popup
 			open={open}
-			actions={actions}
-			onRequestClose={onRequestClose}
-			title={t('block.user.title')}
+			onClose={onRequestClose}
 		>
-			{t('block.user.message')}
-		</Dialog>
+			<PopupTitle>{t('block.user.title')}</PopupTitle>
+			<PopupContent>
+				<PopupContentText>
+					{t('block.user.message')}
+				</PopupContentText>
+			</PopupContent>
+			<PopupActions>
+				{actions}
+			</PopupActions>
+		</Popup>
+		
 	);
 };
 

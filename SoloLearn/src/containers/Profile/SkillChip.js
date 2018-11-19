@@ -1,30 +1,36 @@
 import React from 'react';
-import { Link } from 'react-router';
 import Progressbar from 'components/Progressbar';
-
-// i18next
+import {
+	Container,
+	Image,
+	Link,
+	SecondaryTextBlock,
+	TextBlock,
+	CircularProgress,
+} from 'components/atoms';
 import { translate } from 'react-i18next';
 
 const SkillChips = ({ t, course, shouldShowLink }) => (
-	<div className="course">
-		<div className="course-progress flex-centered">
-			<Progressbar percentage={course.progress * 100} />
-			<img
+	<Container className="course">
+		<Container className="course-progress flex-centered">
+			<CircularProgress percentage={course.progress * 100} />
+			<Image
 				alt={course.name}
 				className="course-icon"
 				src={`https://api.sololearn.com/uploads/Courses/${course.id}.png`}
 			/>
-		</div>
-		<div className="course-details">
-			<p className="course-name">{course.languageName}</p>
-			<p className="course-xp">{course.xp} XP</p>
+		</Container>
+		<Container className="course-details">
+			<TextBlock className="course-name">{course.languageName}</TextBlock>
+			<br/>
+			<SecondaryTextBlock className="course-xp">{course.xp} XP</SecondaryTextBlock>
 			{(course.progress >= 1 && shouldShowLink) &&
-				<Link className="hoverable" to={`/certificate/${course.id}`}>
+				<Link to={`/certificate/${course.id}`}>
 					{t('skills.view-certificate')}
 				</Link>
 			}
-		</div>
-	</div>
+		</Container>
+	</Container>
 );
 
 export default translate()(SkillChips);

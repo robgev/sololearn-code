@@ -1,9 +1,18 @@
 import React, { PureComponent } from 'react';
 import { translate } from 'react-i18next';
 import Dialog from 'components/StyledDialog';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+import {
+	Container,
+	RadioButton,
+	Input,
+	SecondaryTextBlock,
+	Popup,
+	PopupTitle,
+	PopupContent,
+	PopupContentText,
+	PopupActions
+} from 'components/atoms';
+import { RadioButtonGroup, FlatButton } from 'components/molecules'
 import Service from 'api/service';
 
 @translate()
@@ -76,49 +85,55 @@ class ReportPopup extends PureComponent {
 			/>,
 		];
 		return (
-			<Dialog
+			<Popup
 				open={open}
-				actions={actions}
-				onRequestClose={onRequestClose}
-				title={t('deactivate.deactivate-popup-title')}
+				onClose={onRequestClose}
 			>
-				<RadioButtonGroup
-					name="deactivateReason"
-					defaultSelected={11}
-					onChange={this.handleReasonChange}
-				>
-					<RadioButton
-						value={11}
-						label={t('deactivate.deactivate-option-1')}
-					/>
-					<RadioButton
-						value={12}
-						label={t('deactivate.deactivate-option-2')}
-					/>
-					<RadioButton
-						value={13}
-						label={t('deactivate.deactivate-option-3')}
-					/>
-					<RadioButton
-						value={14}
-						label={t('deactivate.deactivate-option-4')}
-					/>
-					<RadioButton
-						value={0}
-						label={t('deactivate.deactivate-option-5')}
-					/>
-				</RadioButtonGroup>
-				{reportReason === 0 &&
-					<div>
-						<TextField
-							value={customReason}
-							onChange={this.handleCustomReasonChange}
-							floatingLabelText={t('common.report-more-hint')}
+				<PopupTitle>
+					{t('deactivate.deactivate-popup-title')}
+				</PopupTitle>
+				<PopupContent>
+					<RadioButtonGroup
+						name="deactivateReason"
+						defaultSelected={11}
+						onChange={this.handleReasonChange}
+					>
+						<RadioButton
+							value={11}
+							label={t('deactivate.deactivate-option-1')}
 						/>
-						<span>{customReason.length} / {this.customReasonMaxLength}</span>
-					</div>
-				}
-			</Dialog>
+						<RadioButton
+							value={12}
+							label={t('deactivate.deactivate-option-2')}
+						/>
+						<RadioButton
+							value={13}
+							label={t('deactivate.deactivate-option-3')}
+						/>
+						<RadioButton
+							value={14}
+							label={t('deactivate.deactivate-option-4')}
+						/>
+						<RadioButton
+							value={0}
+							label={t('deactivate.deactivate-option-5')}
+						/>
+					</RadioButtonGroup>
+					{reportReason === 0 &&
+						<Container>
+							<Input
+								value={customReason}
+								onChange={this.handleCustomReasonChange}
+								label={t('common.report-more-hint')}
+							/>
+							<SecondaryTextBlock>{customReason.length} / {this.customReasonMaxLength}</SecondaryTextBlock>
+						</Container>
+					}
+				</PopupContent>
+				<PopupActions>
+					{actions}
+				</PopupActions>
+			</Popup>
 		);
 	}
 }

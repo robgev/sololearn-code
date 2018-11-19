@@ -1,32 +1,22 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
-import CircularProgress from 'material-ui/CircularProgress';
-import InfiniteScroll from 'react-infinite-scroller';
 import FollowItem from './FollowItem';
+import { Container } from 'components/atoms';
+import { InfiniteScroll } from 'components/molecules'
 
 const UserList = observer(({
-	t, users, hasMore, loadMore, onFollowClick,
+	t, users, hasMore, loadMore, loading, onFollowClick,
 }) => (
 	users.length === 0 && !hasMore
-		? <div>{t('common.empty-list-message')}</div>
+		? <Container>{t('common.empty-list-message')}</Container>
 		: (
 			<InfiniteScroll
-				threshold={100}
-				element="div"
-				loader={<CircularProgress
-					key="Infinite loader"
-					size={40}
-					style={{ display: 'flex', alignItems: 'center', margin: '10px auto' }}
-				/>}
 				useWindow={false}
 				loadMore={loadMore}
 				hasMore={hasMore}
-				style={{
-					display: 'flex',
-					width: '100%',
-					flexDirection: 'column',
-				}}
+				isLoading={loading}
+				
 			>
 				{users.map(el =>
 					<FollowItem key={el.id} follow={el} onFollowClick={onFollowClick} />)}

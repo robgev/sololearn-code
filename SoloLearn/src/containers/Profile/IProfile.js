@@ -1,6 +1,11 @@
 import { observable, action, computed } from 'mobx';
 import Service from 'api/service';
-import { filterExisting, groupFeedItems, showError, forceOpenFeed } from 'utils';
+import {
+	filterExisting,
+	groupFeedItems,
+	showError,
+	forceOpenFeed,
+} from 'utils';
 import { getUrlByType } from 'actions/feed';
 import feedTypes from 'defaults/appTypes';
 
@@ -26,6 +31,9 @@ class IProfile {
 	}
 
 	@observable data = {};
+
+	@observable loadingFollowers = false;
+	@observable loadingFollowings = false;
 
 	@observable questions = {
 		entities: [],
@@ -171,6 +179,7 @@ class IProfile {
 
 	@action getFollowers = () => {
 		if (this.getFollowersPromise === null) {
+			this.loadingFollowers = true;
 			const index = this.followersRaw.ids.length;
 			const count = 20;
 			this.getFollowersPromise = Service.request('Profile/GetFollowers', {
@@ -187,6 +196,7 @@ class IProfile {
 						}
 					});
 					this.getFollowersPromise = null;
+					this.loadingFollowers = false;
 				});
 		}
 		return this.getFollowersPromise;
@@ -194,6 +204,7 @@ class IProfile {
 
 	@action getFollowings = () => {
 		if (this.getFollowingsPromise === null) {
+			this.loadingFollowings = true;
 			const index = this.followingsRaw.ids.length;
 			const count = 20;
 			this.getFollowingsPromise = Service.request('Profile/GetFollowing', {
@@ -210,6 +221,7 @@ class IProfile {
 						}
 					});
 					this.getFollowingsPromise = null;
+					this.loadingFollowings = false;
 				});
 		}
 		return this.getFollowingsPromise;

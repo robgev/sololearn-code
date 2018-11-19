@@ -1,22 +1,19 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import RaisedButton from 'material-ui/RaisedButton';
 import AvatarColors from 'constants/AvatarColors';
-
 import { followSuggestion } from 'actions/discover';
 import ModBadge from 'components/ModBadge';
 import { numberFormatter, showError } from 'utils';
+import { Container,	Image } from 'components/atoms';
+import { UsernameLink, RaisedButton } from 'components/molecules';
+
 import 'styles/components/UserCard.scss';
 
 @connect(null, { followSuggestion })
 @translate()
 class UserCard extends Component {
 	handleFollow = (event) => {
-		// Disables redirect to /profile/:id on button click
-		event.preventDefault();
-
 		const { id, isFollowing } = this.props;
 		this.props.followSuggestion({ id, isFollowing })
 			.catch((e) => {
@@ -39,65 +36,65 @@ class UserCard extends Component {
 			withFollowButton,
 		} = this.props;
 		return (
-			<div className={`discover-user-card-container ${className}`}>
-				<Link to={`/profile/${id}`} style={{ textDecoration: 'none' }} className="profile-container">
-					<div className="profile-avatar-wrapper">
+			<Container className={`discover-user-card-container ${className}`}>
+				<Container className="profile-container">
+					<Container className="profile-avatar-wrapper">
 						{avatarUrl
-							? <img src={avatarUrl} alt="avatar" className="profile-avatar" />
+							? <Image src={avatarUrl} alt="avatar" className="profile-avatar" />
 							: (
-								<div
+								<Container
 									style={{ backgroundColor: AvatarColors[id % AvatarColors.length] }}
 									className="profile-avatar"
 								>
 									{name ? name.toUpperCase().charAt(0) : ''}
-								</div>
+								</Container>
 							)
 						}
-					</div>
-					<div className="profile-data">
-						<div className="profile-data-wrapper">
-
-							<div className="profile-name">
-								{name}
-								<ModBadge
-									badge={badge}
-									className="small"
-								/>
-							</div>
+					</Container>
+					<Container className="profile-data">
+						<Container className="profile-data-wrapper">
+							<UsernameLink  to={`/profile/${id}`}>
+								<Container>
+									{name}
+									<ModBadge
+										badge={badge}
+										className="small"
+									/>
+								</Container>
+							</UsernameLink>
 							{(followers || followers === 0) &&
-								<div className="profile-followers">
+								<Container className="profile-followers">
 									{ followers === 1
 										? `1 ${t('user-followers-one')}`
 										: `${numberFormatter(followers)} ${t('common.user-followers')}`}
-								</div>
+								</Container>
 							}
 							{(level || level === 0) &&
-								<div className="profile-followers">
+								<Container className="profile-followers">
 									{t('common.user-level')} {numberFormatter(level)}
-								</div>
+								</Container>
 							}
-						</div>
+						</Container>
 
 						{withFollowButton ?
 							<RaisedButton
-								secondary={isFollowing}
+								{...(isFollowing ? {color:'secondary'} : {})}
 								onClick={this.handleFollow}
-								style={{ height: 28, marginBottom: 5 }}
-								buttonStyle={{ height: 28, lineHeight: '28px' }}
 								className="user-card-follow-button"
-								label={isFollowing ? t('common.user-following') : t('common.follow-user')}
-							/> : (
-								<Link to={`/profile/${id}`} className="user-card-follow-button">
+							>
+								{isFollowing ? t('common.user-following') : t('common.follow-user')}
+							</RaisedButton> : (
+								<UsernameLink to={`/profile/${id}`} className="user-card-follow-button">
 									<RaisedButton
 										label={t('profile.show-profile')}
 									/>
-								</Link>
+								</UsernameLink>
 							)
 						}
-					</div>
-				</Link>
+					</Container>
+				</Container>
 
-			</div>
+			</Container>
 		);
 	}
 }

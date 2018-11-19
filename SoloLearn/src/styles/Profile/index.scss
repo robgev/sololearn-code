@@ -1,3 +1,5 @@
+@import '~styles/variables';
+
 .profile-container {
 	.profile-overlay {
 		margin-bottom: 15px;
@@ -10,6 +12,11 @@
 				.action-buttons {
 					display: flex;
 					align-items: center;
+
+					.follow-button {
+						margin-left: $secondary_gap_size;
+						height: 40px;
+					}
 				}
 			}
 			.profile-header-details {
@@ -20,7 +27,6 @@
 				.user-name {
 					font-size: 17px;
 					font-weight: 500;
-					color: #607D8B;
 				}
 				.user-level {
 					font-size: 13px;
@@ -43,6 +49,10 @@
 					}
 				}
 			}
+		}
+
+		.feed-icon {
+			height: 16px;
 		}
 	}
 	.codes-wrapper,

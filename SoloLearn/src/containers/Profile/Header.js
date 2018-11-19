@@ -3,33 +3,27 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { observable, action, autorun } from 'mobx';
 import { observer } from 'mobx-react';
-
-// Material UI components
-import Snackbar from 'material-ui/Snackbar';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import IconButton from 'material-ui/IconButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import LinearProgress from 'material-ui/LinearProgress';
-import Person from 'material-ui/svg-icons/social/person';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import { grey500 } from 'material-ui/styles/colors';
-
-// Redux modules
 import { blockUser } from 'actions/settings';
-
-// Utils and defaults
 import { numberFormatter, determineAccessLevel } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
-
-import ProfileAvatar from 'components/ProfileAvatar';
 import ReportPopup from 'components/ReportPopup';
-
-// i18next
 import { translate } from 'react-i18next';
-
 import DeactivationPopup from './DeactivationPopup';
 import BlockPopup from './BlockPopup';
+import { Person } from 'components/icons';
+import {
+	Container,
+	MenuItem,
+	SecondaryTextBlock,
+	Snackbar,
+} from 'components/atoms';
+import {
+	RaisedButton,
+	IconMenu,
+	ProfileAvatar,
+	UsernameLink,
+	ProgressBar,
+} from 'components/molecules'
 
 const mapStateToProps = state => ({
 	userId: state.userProfile.id,
@@ -98,76 +92,68 @@ class Header extends Component {
 
 		const nextLevel = levels.filter(item => item.maxXp > profile.xp)[0];
 		const maxXp = nextLevel ? nextLevel.maxXp : 0;
-
+		const userObj = {id: profile.id, name: profile.name, badge: profile.badge, avatarUrl: profile.avatarUrl};
+		console.log(profile.id);
 		return (
-			<div className="profile-header-container">
-				<div className="header-top-buttons">
+			<Container className="profile-header-container">
+				<Container className="header-top-buttons">
 					<RaisedButton
-						secondary
-						icon={<Person />}
-						style={{ marginRight: 3 }}
+						color="secondary"
 						onClick={openFollowerPopup}
-						label={numberFormatter(profile.followers)}
-					/>
+					>
+						<Person />
+						{numberFormatter(profile.followers)}
+					</RaisedButton>
 					{
 						profile.id !== userId &&
-						<div className="action-buttons">
+						<Container className="action-buttons">
 							<RaisedButton
-								secondary={profile.isFollowing}
+								{...(profile.isFollowing ? {color:'secondary'} : {})}
 								onClick={onFollow}
-								label={profile.isFollowing ? t('common.user-following') : t('common.follow-user')}
-							/>
-							<IconMenu
-								iconButtonElement={
-									<IconButton><MoreVertIcon color={grey500} /></IconButton>
-								}
-								anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-								targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+								className="follow-button"
 							>
+								{profile.isFollowing ? t('common.user-following') : t('common.follow-user')}
+							</RaisedButton>
+							<IconMenu>
 								<MenuItem
-									primaryText={t('common.report-action-title')}
 									onClick={this.toggleReportPopup}
-								/>
+								>
+									{t('common.report-action-title')}
+								</MenuItem>
 								<MenuItem
-									primaryText={t('common.block-user')}
 									onClick={this.toggleBlockPopup}
-								/>
+								>
+									{t('common.block-user')}
+								</MenuItem>
 								{(accessLevel > 0
 									&& !determineAccessLevel(profile.accessLevel) > 0) &&
 									<MenuItem
-										primaryText={t('common.deactivate-action-title')}
 										onClick={this.toggleDeactivationPopup}
-									/>
+									>
+										{t('common.deactivate-action-title')}
+									</MenuItem>
 								}
 							</IconMenu>
-						</div>
+						</Container>
 					}
-				</div>
-				<div className="profile-header-details">
-					<ProfileAvatar
-						disabled
-						size={130}
-						withBorder
-						userID={profile.id}
-						badge={profile.badge}
-						userName={profile.name}
-						avatarUrl={profile.avatarUrl}
-					/>
-					<span className="user-name">{profile.name}</span>
-					<p className="user-level">{t('common.user-level')} {profile.level}</p>
-					<div className="profile-progress-wrapper">
-						<LinearProgress
-							min={0}
-							max={maxXp}
-							color="#8BC34A"
-							value={profile.xp}
-							mode="determinate"
-							style={{ height: 13, backgroundColor: '#DEDEDE' }}
+				</Container>
+				<Container className="profile-header-details">
+					{ profile.id && 
+						<ProfileAvatar
+							user={profile}
+							size="big"
 						/>
-						<span className="xp-number left">{profile.xp} XP</span>
-						<span className="xp-number right">{maxXp} XP</span>
-					</div>
-				</div>
+					}
+					<UsernameLink className="user-name">{profile.name}</UsernameLink>
+					<SecondaryTextBlock className="user-level">{t('common.user-level')} {profile.level}</SecondaryTextBlock>
+					<Container className="profile-progress-wrapper">
+						<ProgressBar
+							value={100 * profile.xp/maxXp}
+							minText={`${profile.xp} XP`}
+							maxText={`${maxXp} XP`}
+						/>
+					</Container>
+				</Container>
 				<ReportPopup
 					itemId={profile.id}
 					open={this.isReportPopupOpen}
@@ -190,10 +176,10 @@ class Header extends Component {
 				<Snackbar
 					autoHideDuration={1500}
 					open={this.isSnackbarOpen}
-					onRequestClose={this.toggleSnackbar}
+					onClose={this.toggleSnackbar}
 					message={t('blocked.user.message')}
 				/>
-			</div>
+			</Container>
 		);
 	}
 }

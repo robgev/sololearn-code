@@ -1,14 +1,51 @@
 @keyframes highlight {
-  from {
-    background-color: yellow;
-  }
-  to {
-    background-color: white;
-  }
+	from {
+		background-color: yellow;
+	}
+	to {
+		background-color: white;
+	}
 }
 
 .badge-item {
-  &.animate {
-    animation: highlight 1.5s ease-in 1;
-  }
+	&.animate {
+		animation: highlight 1.5s ease-in 1;
+	}
+
+	&.achievement {
+		display: inline-flex;
+		width: 50%;
+		align-items: center;
+		padding: 0 5px 10px 0;
+		box-sizing: border-box;
+	}
+
+	.badge {
+		&.base {
+			height: 60px;
+			width: 60px;
+			flex-shrink: 0;
+			border-radius: 50%;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			background-color: #E0E0E0;
+		}
+
+		.icon {
+			height: 80%;
+			width: 80%;
+		}
+	}
+
+	.details {
+		margin: 0 0 0 5px;
+	}
+
+	.title {
+		.base {
+			margin: 0 0 3px 0;
+		}
+	}
+
 }

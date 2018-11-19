@@ -7,9 +7,11 @@ import './styles.scss';
 
 const ProfileAvatar = ({
 	user,
+	size,
 	className,
 }) => {
 	const { levelBadge } = determineBadge(user.badge);
+	console.log(user);
 	return (
 		<UserTooltip userData={user} placement="top">
 			<Container
@@ -22,6 +24,7 @@ const ProfileAvatar = ({
 							userName={user.name}
 							userID={user.id}
 							badge={user.badge}
+							variant={size}
 							disabled
 						/>
 						{ levelBadge &&
@@ -42,6 +45,7 @@ const ProfileAvatar = ({
 
 ProfileAvatar.defaultProps = {
 	className: '',
+	size: 'small',
 };
 
 export default ProfileAvatar;

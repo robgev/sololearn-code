@@ -1,21 +1,29 @@
 import React, { PureComponent } from 'react';
-
-import Paper from 'material-ui/Paper';
-import MenuItem from 'material-ui/MenuItem';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import LinearProgress from 'material-ui/LinearProgress';
 import PolarChart from 'components/PolarChart';
 import ChallengeGraphs from 'components/ChallengeGraphs';
 import LeaderboardString from 'components/LeaderboardString';
-import { getCountryName, calculateProgress, determineBadge } from 'utils';
-
-// i18next
+import {
+	getCountryName,
+	calculateProgress,
+	determineBadge,
+} from 'utils';
+import {
+	Container,
+	PaperContainer,
+	Title,
+	Image,
+	TextBlock,
+	Select,
+	MenuItem,
+} from 'components/atoms';
+import { ProgressBar } from 'components/molecules'
 import i18n from 'i18n';
 import { translate } from 'react-i18next';
 import { PolarChartColors } from 'constants/ChartColors';
 import LanguageCodes from 'constants/LanguageCodes';
-import 'styles/Profile/skills.scss';
 import SkillChip from './SkillChip';
+
+import 'styles/Profile/skills.scss';
 
 const getTranslatedLabel = (label) => {
 	switch (label) {
@@ -47,16 +55,16 @@ const createChartData = ranks => Object.keys(ranks)
 const ModeratorStatus = ({ badge, t }) => {
 	const { modBadge } = determineBadge(badge);
 	return !modBadge ? null
-		: <div style={{ textTransform: 'uppercase' }}>{t(`skills.${modBadge}`)}</div>;
+		: <Container>{t(`skills.${modBadge}`)}</Container>;
 };
 
 @translate()
 class Skills extends PureComponent {
 	state = {
-		courseID: null,
+		courseID: "",
 	}
 
-	handleCourseChange = (_, __, value) => this.setState({ courseID: value });
+	handleCourseChange = (event) => this.setState({ courseID: event.target.value });
 
 	render() {
 		const { courseID } = this.state;
@@ -72,38 +80,35 @@ class Skills extends PureComponent {
 			return null;
 		}
 		return (
-			<div className="skills-container">
-				<Paper className="skills-group">
-					<p className="skills-header">{t('skills.status-plus-rank')}</p>
+			<Container className="skills-container">
+				<PaperContainer className="skills-group">
+					<Title>{t('skills.status-plus-rank')}</Title>
 					<ModeratorStatus t={t} badge={profile.badge} />
-					<div className="skills-details">
+					<Container className="skills-details">
 						<LeaderboardString ranks={profile.rank} />
-						<div className="country-details">
-							<img
+						<Container className="country-details">
+							<Image
 								alt={profile.countryCode}
 								style={{ height: 'initial', width: 26 }}
 								src={`/assets/flags/${profile.countryCode.toLowerCase()}.png`}
 							/>
-							<p className="country-name">
+							<TextBlock className="country-name">
 								{ getCountryName(profile.countryCode) }
-							</p>
-						</div>
-						<div className="skills-progress-wrapper">
-							<LinearProgress
-								min={0}
-								max={maxXp}
-								color="#8BC34A"
-								value={profile.xp}
-								mode="determinate"
+							</TextBlock>
+						</Container>
+						<Container className="skills-progress-wrapper">
+							<ProgressBar
+								value={100 * profile.xp / maxXp}
 								className="progress"
+								minText=""
+								maxText={t(`profile.status-${status}`)}
 							/>
-							<span className="status">{t(`profile.status-${status}`)}</span>
-						</div>
-					</div>
-				</Paper>
-				<Paper className="skills-group">
-					<p className="skills-header">{t('skills.languages')}</p>
-					<div className={`courses ${skills.length <= 0 ? 'centered' : ''}`}>
+						</Container>
+					</Container>
+				</PaperContainer>
+				<PaperContainer className="skills-group">
+					<Title>{t('skills.languages')}</Title>
+					<Container className={`courses ${skills.length <= 0 ? 'centered' : ''}`}>
 						{skills.length > 0 ?
 							skills.map(course => (
 								<SkillChip
@@ -112,33 +117,39 @@ class Skills extends PureComponent {
 									shouldShowLink={profile.id === currentUserId}
 								/>
 							)) :
-							<p>{t('common.empty-list-message')}</p>
+							<TextBlock>{t('common.empty-list-message')}</TextBlock>
 						}
-					</div>
-				</Paper>
-				<Paper className="skills-group">
-					<p className="skills-header">{t('skills.skills-section-title')}</p>
+					</Container>
+				</PaperContainer>
+				<PaperContainer className="skills-group">
+					<Title>{t('skills.skills-section-title')}</Title>
 					<PolarChart chartData={createChartData(profile.skillRanks)} />
-				</Paper>
-				<Paper className="skills-group">
-					<div className="skills-row">
-						<p className="skills-header">{t('skills.challenges-section-title')}</p>
-						<DropDownMenu
+				</PaperContainer>
+				<PaperContainer className="skills-group">
+					<Container className="skills-row">
+						<Title className="skills-header">{t('skills.challenges-section-title')}</Title>
+						<Select
+							displayEmpty
 							value={courseID}
 							onChange={this.handleCourseChange}
 						>
-							<MenuItem value={null} primaryText={t('code.language-filter.all')} />
+							<MenuItem value="">
+								{t('code.language-filter.all')}
+							</MenuItem>
 							{ profile.contestStats.map(({ courseID: currentCourseID }) =>
-								<MenuItem value={currentCourseID} primaryText={LanguageCodes[currentCourseID]} />)}
-						</DropDownMenu>
-					</div>
+								<MenuItem value={currentCourseID}>
+									{LanguageCodes[currentCourseID]}
+								</MenuItem>
+							)}
+						</Select>
+					</Container>
 					<ChallengeGraphs
 						courseID={courseID}
 						contestStats={profile.contestStats}
 						contestHistory={profile.contestHistory}
 					/>
-				</Paper>
-			</div>
+				</PaperContainer>
+			</Container>
 		);
 	}
 }
