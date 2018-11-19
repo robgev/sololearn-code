@@ -4,25 +4,25 @@ import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
 import { translate } from 'react-i18next';
 import isEqual from 'lodash/isEqual';
-
-import Paper from 'material-ui/Paper';
-import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
-import CircularProgress from 'material-ui/CircularProgress';
-
 import { getLeaderboard, loadMore } from 'actions/leaderboards';
-
-import Layout from 'components/Layouts/GeneralLayout';
 import BusyWrapper from 'components/BusyWrapper';
 import LeaderboardShimmer from 'components/Shimmers/LeaderboardShimmer';
 import texts from 'texts';
-
-import 'styles/Leaderboards/index.scss';
-
 import InfiniteLeaderboard from './InfiniteLeaderboard';
 import LeaderboardCard from './LeaderboardCard';
+import { Layout, RaisedButton } from 'components/molecules';
+import {
+	Container,
+	PaperContainer,
+	Tabs,
+	Tab,
+	Select,
+	MenuItem,
+	Loading,
+} from 'components/atoms';
+import { ArrowDown } from 'components/icons';
+
+import './index.scss';
 
 const sendGoogleEvent = (mode) => {
 	switch (mode) {
@@ -63,12 +63,13 @@ class Leaderboards extends PureComponent {
 			hasMore: true,
 			shouldHideButton: false,
 			userId: calculatedUserId,
+			loadingData: false,
 		};
 		sendGoogleEvent(mode);
 		document.title = 'Sololearn | Leaderboards';
 	}
 
-	async componentWillMount() {
+	async componentDidMount() {
 		const {
 			mode, range, userId, startIndex, loadCount,
 		} = this.state;
@@ -110,6 +111,7 @@ class Leaderboards extends PureComponent {
 		const {
 			startIndex, loadCount, mode, userId,
 		} = this.state;
+		this.setState({loadingData:true});
 		const length = await this.props.loadMore({
 			mode,
 			userId,
@@ -120,12 +122,18 @@ class Leaderboards extends PureComponent {
 		this.setState({
 			hasMore: length === loadCount,
 			startIndex: startIndex + length,
+			loadingData: false,
 		});
 	}
 
-	handleChange = (_, __, range) => {
+	handleChange = (event) => {
 		const { mode = 1, userId } = this.state;
-		browserHistory.replace(`/leaderboards/${userId}/${mode}/${range}`);
+		browserHistory.replace(`/leaderboards/${userId}/${mode}/${event.target.value}`);
+	}
+
+	tabChange = (event, value) => {
+		const { range = 0, userId } = this.state;
+		browserHistory.replace(`/leaderboards/${userId}/${value}/${range}`);
 	}
 
 	findRank = (newLeaderboards) => {
@@ -155,42 +163,38 @@ class Leaderboards extends PureComponent {
 			hasMore,
 			userRank,
 			shouldHideButton,
+			loadingData,
 		} = this.state;
 
 		return (
 			<Layout className="leaderboards-container">
-				<Paper>
-					<div className="leaderboards-topbar">
-						<div className="leaderboard-tabs">
-							<Link
-								to={`/leaderboards/${userId}/1/${range}`}
-								className={`hoverable mode-item ${mode === 1 ? 'active' : ''}`}
-							>
-								{texts.following}
-							</Link>
-							<Link
-								to={`/leaderboards/${userId}/2/${range}`}
-								className={`hoverable mode-item ${mode === 2 ? 'active' : ''}`}
-							>
-								{texts.local}
-							</Link>
-							<Link
-								to={`/leaderboards/${userId}/0/${range}`}
-								className={`hoverable mode-item ${mode === 0 ? 'active' : ''}`}
-							>
-								{texts.global}
-							</Link>
-						</div>
-						<DropDownMenu value={range} onChange={this.handleChange}>
-							<MenuItem value={1} primaryText={texts.today} />
-							<MenuItem value={7} primaryText={texts.thisWeek} />
-							<MenuItem value={30} primaryText={texts.thisMonth} />
-							<MenuItem value={0} primaryText={texts.allTime} />
-						</DropDownMenu>
-					</div>
+				<PaperContainer className="leaderboards-header-container">
+					<Container className="leaderboards-topbar">
+						<Tabs onChange={this.tabChange} value={mode}>
+							<Tab
+								value={1}
+								label={texts.following}
+							/>
+							<Tab
+								value={2}
+								label={texts.local}
+							/>
+							<Tab
+								value={0}
+								label={texts.global}
+							/>
+						</Tabs>
+						<Select value={range} onChange={this.handleChange} displayEmpty={true}>
+							<MenuItem value={1}>{texts.today}</MenuItem>
+							<MenuItem value={7}>{texts.thisWeek}</MenuItem>
+							<MenuItem value={30}>{texts.thisMonth}</MenuItem>
+							<MenuItem value={0}>{texts.allTime}</MenuItem>
+						</Select>
+					</Container>
+				</PaperContainer>
+				<PaperContainer>
 					<BusyWrapper
 						isBusy={loading}
-						style={{ minHeight: '30vh' }}
 						wrapperClassName="leaderboards-body"
 						loadingComponent={<LeaderboardShimmer />}
 					>
@@ -201,6 +205,7 @@ class Leaderboards extends PureComponent {
 								leaderboards={leaderboards}
 								loadMore={this.handleNextFetch}
 								onScrollVisibility={this.onScrollVisibility}
+								isLoading={loadingData}
 							/> :
 							<LeaderboardCard
 								userId={userId}
@@ -210,32 +215,20 @@ class Leaderboards extends PureComponent {
 							/>
 						}
 						{ (userRank > 0 && !shouldHideButton) &&
-							<div
+							<Container
 								className="scroll-button-container"
 							>
 								<RaisedButton
-									labelColor="#FFFFFF"
 									onClick={this.scrollTo}
-									labelPosition="before"
 									className="scroll-button"
-									backgroundColor="#78909C"
-									style={{ borderRadius: 100 }}
-									buttonStyle={{ borderRadius: 100 }}
-									overlayStyle={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-									label={`${t(`leaderboard.action.${userId === this.props.userId ? 'find-me' : 'find-them'}`)} ${userRank}`}
-									icon={<ArrowDown />}
-								/>
-							</div>
+								>
+									{`${t(`leaderboard.action.${userId === this.props.userId ? 'find-me' : 'find-them'}`)} ${userRank}`}
+									<ArrowDown />
+								</RaisedButton>
+							</Container>
 						}
 					</BusyWrapper>
-				</Paper>
-				{
-					hasMore && leaderboards.length !== 0 &&
-					<CircularProgress
-						size={40}
-						style={{ display: 'flex', alignItems: 'center', margin: '10px auto' }}
-					/>
-				}
+				</PaperContainer>
 			</Layout>
 		);
 	}

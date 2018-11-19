@@ -3,50 +3,45 @@ import { Link } from 'react-router';
 import VisibilitySensor from 'react-visibility-sensor';
 import texts from 'texts';
 import UserCard from './UserCard';
+import { Container, HorizontalDivider } from 'components/atoms';
+
 
 const LeaderboardCard = ({
 	userId,
 	userRank,
 	leaderboards,
 	onScrollVisibility,
-}) => (
-	<div className="leaderboard-card-container">
-		{
-			leaderboards.map((user, index) => (
-				<div className="leaderboard-card-wrapper" key={user.name}>
+}) => {
+	return (
+	<Container className="leaderboard-card-container">
+		{	
+			leaderboards.map((user, index) => {
+				user.id = user.userID;
+				return (
+				<Container className="leaderboard-card-wrapper" key={user.name}>
 					{ (index === 10 && userRank > 10) && // after top 10
-					<div className="leaderboard-next-banner">
+					<Container className="leaderboard-next-banner">
 						{ texts.next }
-					</div>
+					</Container>
 					}
+					<Container className={`leaderboard-card ${user.userID === userId ? ' highlighted':''}`} id={`user-card-${user.userID}`}>
 					{	user.userID === userId ?
 						<VisibilitySensor
 							scrollCheck
 							scrollThrottle={100}
 							onChange={onScrollVisibility}
 						>
-							<Link
-								key={user.name}
-								to={`/profile/${user.userID}`}
-								id={`user-card-${user.userID}`}
-								className="leaderboard-card  highlighted hoverable"
-							>
-								<UserCard {...user} />
-							</Link>
+							<UserCard user={user} />
 						</VisibilitySensor> :
-						<Link
-							key={user.name}
-							to={`/profile/${user.userID}`}
-							id={`user-card-${user.userID}`}
-							className="leaderboard-card hoverable"
-						>
-							<UserCard {...user} />
-						</Link>
+						<UserCard user={user} />
 					}
-				</div>
-			))
+					</Container>
+					<HorizontalDivider/>
+				</Container>
+			)}
+				)
 		}
-	</div>
-);
+	</Container>
+);}
 
 export default LeaderboardCard;

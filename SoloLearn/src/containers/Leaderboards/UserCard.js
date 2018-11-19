@@ -1,51 +1,25 @@
 import React from 'react';
-import ProfileAvatar from 'components/ProfileAvatar';
-import UserTooltip from 'components/UserTooltip';
-import 'styles/userCard.scss';
+import { ProfileAvatar, UsernameLink, } from 'components/molecules';
+import { Container, SecondaryTextBlock, } from 'components/atoms';
+import './UserCard.scss';
 
 const UserData = ({ name, xp }) => (
-	<div className="user-meta-data">
-		<p className="user-name">{ name }</p>
-		<p className="user-overview">+{xp} XP</p>
-	</div>
+	<Container className="user-meta-data">
+		<UsernameLink>{ name }</UsernameLink>
+		<SecondaryTextBlock className="info">+{xp} XP</SecondaryTextBlock>
+	</Container>
 );
 
 const UserCard = ({
-	xp,
-	name,
-	level,
-	rank,
-	userID,
-	alltime,
-	rangeXp,
-	avatarUrl,
+	user
 }) => (
-	<div className="user-card-container">
-		<UserTooltip
-			userData={{
-				level,
-				userID,
-				avatarUrl,
-				userName: name,
-			}}
-		>
-			<ProfileAvatar
-				disabled
-				userID={userID}
-				level={level}
-				userName={name}
-				avatarUrl={avatarUrl}
-				className="user-info"
-				sideComponent={
-					<UserData
-						name={name}
-						xp={alltime ? xp : rangeXp}
-					/>
-				}
-			/>
-		</UserTooltip>
-		<div>{ rank }</div>
-	</div>
+	<Container className="user-card-container">
+		<Container className="user-info">
+			<ProfileAvatar user={user} />
+			<UserData {...user}/>
+		</Container>
+		<Container>{ user.rank }</Container>
+	</Container>
 );
 
 export default UserCard;

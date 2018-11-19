@@ -11,7 +11,6 @@ const ProfileAvatar = ({
 	className,
 }) => {
 	const { levelBadge } = determineBadge(user.badge);
-	console.log(user);
 	return (
 		<UserTooltip userData={user} placement="top">
 			<Container
