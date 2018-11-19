@@ -5,8 +5,11 @@ import AvatarColors from 'constants/AvatarColors';
 import { followSuggestion } from 'actions/discover';
 import ModBadge from 'components/ModBadge';
 import { numberFormatter, showError } from 'utils';
-import { Container,	Image } from 'components/atoms';
-import { UsernameLink, RaisedButton } from 'components/molecules';
+import { Container,	Image, SecondaryTextBlock } from 'components/atoms';
+import {
+	UsernameLink,
+	RaisedButton,
+} from 'components/molecules';
 
 import 'styles/components/UserCard.scss';
 
@@ -63,16 +66,16 @@ class UserCard extends Component {
 								</Container>
 							</UsernameLink>
 							{(followers || followers === 0) &&
-								<Container className="profile-followers">
+								<SecondaryTextBlock className="profile-followers">
 									{ followers === 1
 										? `1 ${t('user-followers-one')}`
 										: `${numberFormatter(followers)} ${t('common.user-followers')}`}
-								</Container>
+								</SecondaryTextBlock>
 							}
 							{(level || level === 0) &&
-								<Container className="profile-followers">
+								<SecondaryTextBlock className="profile-followers">
 									{t('common.user-level')} {numberFormatter(level)}
-								</Container>
+								</SecondaryTextBlock>
 							}
 						</Container>
 

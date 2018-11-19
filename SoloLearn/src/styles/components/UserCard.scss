@@ -41,9 +41,7 @@
 				@include multiLineEllipsis($lineHeight: 14px, $lineCount: 2, $bgColor: white);
 			}
 			.profile-followers {
-				color: gray;
-				font-size: 14px;
-				opacity: 0.5;
+				display: block;
 			}
 			.profile-level {
 				font-size: 14px;
