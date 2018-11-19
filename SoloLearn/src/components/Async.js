@@ -12,17 +12,33 @@ class Async extends Component {
 		error: null,
 	}
 
+	_isMounted;
+
+	componentDidMount() {
+		this._isMounted = true;
+	}
+
+	componentWillUnmount() {
+		this._isMounted = false;
+	}
+
 	fire = () => {
 		this.setState({ pending: true });
 		return this.props.fire()
 			.then((data) => {
-				this.setState({ data });
+				if (this._isMounted) {
+					this.setState({ data });
+				}
 			})
 			.catch((error) => {
-				this.setState({ error });
+				if (this._isMounted) {
+					this.setState({ error });
+				}
 			})
 			.finally(() => {
-				this.setState({ pending: false });
+				if (this._isMounted) {
+					this.setState({ pending: false });
+				}
 			});
 	}
 

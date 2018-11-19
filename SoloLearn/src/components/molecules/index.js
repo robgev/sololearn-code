@@ -23,3 +23,4 @@ export { default as IconMenu } from './IconMenu';
 export { default as ProfileAvatar } from './ProfileAvatar';
 export { default as ViewStats } from './ViewStats';
 export { default as FloatingActionButton } from './FloatingActionButton';
+export { default as PromiseButton } from './PromiseButton';
