@@ -9,7 +9,7 @@ const UserList = observer(({
 	t, users, hasMore, loadMore, loading, onFollowClick,
 }) => (
 	users.length === 0 && !hasMore
-		? <Container>{t('common.empty-list-message')}</Container>
+		? <Container className="followers-popup-empty-text">{t('common.empty-list-message')}</Container>
 		: (
 			<InfiniteScroll
 				useWindow={false}

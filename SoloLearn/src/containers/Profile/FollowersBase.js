@@ -15,6 +15,8 @@ import {
 } from 'components/atoms';
 import UserList from './UserList';
 
+import './FollowersBase.scss';
+
 const TabTypes = {
 	Followers: 1,
 	Following: 2,
@@ -43,6 +45,7 @@ class FollowersBase extends Component {
 				open={open}
 				onClose={closePopup}
 				autoScrollBodyContent
+				className="followers-popup"
 			>
 				<PopupTitle>
 					<Tabs
@@ -62,7 +65,7 @@ class FollowersBase extends Component {
 				</PopupTitle>
 				<PopupContent>
 					<PopupContentText>
-						<Container style={{width: '500px'}}>
+						<Container className="followers-popup-conent">
 							{this.activeTab === TabTypes.Followers &&
 								<UserList
 									users={followers.entities}
