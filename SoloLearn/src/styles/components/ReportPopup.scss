@@ -1,0 +1,11 @@
+@import '~styles/variables';
+
+.report-popup {
+	.report-popup-content {
+		width: 400px;
+	}
+	.count {
+		align-self: flex-end;
+		margin: $primary_gap_size;
+	}
+}

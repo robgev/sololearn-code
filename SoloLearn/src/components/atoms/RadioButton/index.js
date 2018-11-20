@@ -5,7 +5,6 @@ import { TextBlock } from 'components/atoms';
 
 const RadioButton = ({label, ...props}) => (
 	<FormControlLabel
-		value="left"
 		control={<Radio {...props} />}
 		label={<TextBlock>{label}</TextBlock>}
 		labelPlacement="left"

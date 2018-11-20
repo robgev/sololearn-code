@@ -25,8 +25,9 @@ const FeedItemBase = ({
 					to={`/profile/${user.id}`}
 					className="user-name-link"
 				>
-					{user.name} &nbsp;
+					{user.name}
 					<ModBadge
+						className="badge"
 						badge={user.badge}
 					/>
 				</UsernameLink>

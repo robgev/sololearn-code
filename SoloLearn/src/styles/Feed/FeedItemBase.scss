@@ -1,3 +1,5 @@
+@import '~styles/variables';
+
 .feed-item-content {
 	display: flex;
 	align-items: flex-start;
@@ -30,6 +32,10 @@
 				}
 				&:hover .user-name-wrapper {
 					text-decoration: underline;
+				}
+
+				.badge {
+					margin: 0 $secondary_gap_size;
 				}
 			}
 		}
