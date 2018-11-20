@@ -1,20 +1,15 @@
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
-import Localize from 'components/Localize';
+import { translate } from 'react-i18next';
+import { RaisedButton } from 'components/molecules';
 
-const PreviewButton = ({ disabled, onClick }) => (
-	<Localize>
-		{({ t }) => (
-			<RaisedButton
-				className="preview-button"
-				label={t('factory.quiz-preview-title')}
-				fullWidth
-				primary
-				onClick={onClick}
-				disabled={disabled}
-			/>
-		)}
-	</Localize>
+const PreviewButton = ({ t, ...props }) => (
+	<RaisedButton
+		fullWidth
+		color="primary"
+		{...props}
+	>
+		{t('factory.quiz-preview-title')}
+	</RaisedButton>
 );
 
-export default PreviewButton;
+export default translate()(PreviewButton);

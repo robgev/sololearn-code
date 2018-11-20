@@ -1,16 +1,19 @@
 import React from 'react';
-import Paper from 'material-ui/Paper';
-import Localize from 'components/Localize';
+import { translate } from 'react-i18next';
+import { PaperContainer, Title, TextBox, FlexBox } from 'components/atoms';
 
-const QuestionInput = ({ question, onChange }) => (
-	<Localize>
-		{({ t }) => (
-			<Paper className="question container">
-				<span className="title">{t('factory.quiz-question-title')}</span>
-				<textarea value={question} onChange={onChange} placeholder={t('factory.quiz-question-placeholder')} />
-			</Paper>
-		)}
-	</Localize>
+const QuestionInput = ({ t, question, onChange }) => (
+	<PaperContainer className="container">
+		<FlexBox column className="question">
+			<Title className="title">{t('factory.quiz-question-title')}</Title>
+			<TextBox
+				className="text"
+				value={question}
+				onChange={onChange}
+				placeholder={t('factory.quiz-question-placeholder')}
+			/>
+		</FlexBox>
+	</PaperContainer>
 );
 
-export default QuestionInput;
+export default translate()(QuestionInput);

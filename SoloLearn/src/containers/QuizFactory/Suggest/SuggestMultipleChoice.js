@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
-import Paper from 'material-ui/Paper';
-import Checkbox from 'material-ui/Checkbox';
-import TextField from 'material-ui/TextField';
+import { PaperContainer, Input, Container, Title, FlexBox, Checkbox } from 'components/atoms';
+
 import LanguageSelectorTab from './LanguageSelectorTab';
 import QuestionInput from './QuestionInput';
 import PreviewButton from './PreviewButton';
@@ -70,21 +69,22 @@ class SuggestMultipleChoice extends Component {
 			language, question, answers,
 		} = this.state;
 		return (
-			<div className="quiz-factory">
+			<Container className="quiz-factory">
 				<LanguageSelectorTab language={language} selectLanguage={this.selectLanguage} />
 				<QuestionInput question={question} onChange={this.onQuestionChange} />
-				<Paper className="container">
-					<span className="title">{t('factory.quiz-multiple-choice-answers-title')}</span>
-					<div className="answers">
+				<PaperContainer className="container">
+					<Title className="title">{t('factory.quiz-multiple-choice-answers-title')}</Title>
+					<Container className="answers">
 						{
 							answers.map(answer => (
-								<div
-									className="answer-item"
+								<FlexBox
 									key={`option-${answer.id}`}
+									align
 								>
-									<TextField
+									<Input
 										name={`Answer field ${answer.id}`}
 										className="input"
+										fullWidth
 										value={answer.text}
 										placeholder={`${t('factory.quiz-option')} ${answer.id + 1}`}
 										onChange={e => this.onAnswerChange(answer.id, e.target.value)}
@@ -92,18 +92,19 @@ class SuggestMultipleChoice extends Component {
 									<Checkbox
 										className="checkbox"
 										checked={answer.isCorrect}
-										onCheck={() => this.toggleAnswer(answer.id)}
+										color="primary"
+										onChange={() => this.toggleAnswer(answer.id)}
 									/>
-								</div>
+								</FlexBox>
 							))
 						}
-					</div>
-				</Paper>
+					</Container>
+				</PaperContainer>
 				<PreviewButton
 					onClick={this.preview}
 					disabled={!this.isComplete()}
 				/>
-			</div>
+			</Container>
 		);
 	}
 }

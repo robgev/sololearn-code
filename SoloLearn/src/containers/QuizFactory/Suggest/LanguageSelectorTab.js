@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import Paper from 'material-ui/Paper';
-import Localize from 'components/Localize';
+import React, { Component, Fragment } from 'react';
+import { translate } from 'react-i18next';
+import { PaperContainer, Title, FlexBox, Image, TextBlock } from 'components/atoms';
 import LanguageSelector from 'components/LanguageSelector';
 
+@translate()
 class LanguageSelectorTab extends Component {
 	state = {
 		isLanguageSelectorOpen: false,
@@ -16,27 +17,27 @@ class LanguageSelectorTab extends Component {
 	}
 	render() {
 		const { isLanguageSelectorOpen } = this.state;
-		const { language } = this.props;
+		const { language, t } = this.props;
 		return (
-			<Localize>
-				{({ t }) => (
-					<React.Fragment>
-						<Paper onClick={this.toggleLanguageSelector} className="selected-language container">
-							<span className="title">{t('settings.language')}</span>
-							<div className="with-image">
-								<span className="language-name">{language === null ? t('common.option-select') : language.languageName}</span>
-								<img src="/assets/keyboard_arrow_right.svg" alt="" />
-							</div>
-						</Paper>
-						<LanguageSelector
-							open={isLanguageSelectorOpen}
-							onClose={this.toggleLanguageSelector}
-							onChoose={this.selectLanguage}
-							filter={course => course.isQuizFactoryEnabled}
-						/>
-					</React.Fragment>
-				)}
-			</Localize>
+			<Fragment>
+				<PaperContainer onClick={this.toggleLanguageSelector} className="container">
+					<FlexBox justifyBetween align className="select-language">
+						<Title>{t('settings.language')}</Title>
+						<FlexBox align>
+							<TextBlock>
+								{language === null ? t('common.option-select') : language.languageName}
+							</TextBlock>
+							<Image src="/assets/keyboard_arrow_right.svg" />
+						</FlexBox>
+					</FlexBox>
+				</PaperContainer>
+				<LanguageSelector
+					open={isLanguageSelectorOpen}
+					onClose={this.toggleLanguageSelector}
+					onChoose={this.selectLanguage}
+					filter={course => course.isQuizFactoryEnabled}
+				/>
+			</Fragment>
 		);
 	}
 }
