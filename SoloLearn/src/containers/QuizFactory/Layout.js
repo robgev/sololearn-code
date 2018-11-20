@@ -1,13 +1,14 @@
 import React from 'react';
-import GeneralLayout from 'components/Layouts/GeneralLayout';
+import { LayoutWithSidebar } from 'components/molecules';
+import Sidebar from './components/Sidebar';
+import './style.scss';
 
 const Layout = props => (
-	<GeneralLayout
-		sidebarContent={
-			<div>
-				Quiz Factory Guidelines
-			</div>
+	<LayoutWithSidebar
+		sidebar={
+			<Sidebar />
 		}
+		className="quiz_factory"
 		{...props}
 	/>
 );

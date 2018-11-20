@@ -1,4 +1,17 @@
-.quiz-factory {
+@import '~styles/variables';
+
+.quiz_factory-suggest-list {
+	.item {
+		width: 100%;
+		justify-content: space-between;
+		margin: $secondary_gap_size;
+		.image {
+			width: 40px;
+			margin-right: $secondary_gap_size;
+		}
+	}
+}
+.quiz_factory {
 	.container {
 		margin-bottom: 10px;
 		padding: 12px;

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
-
+import {
+	Popup, PopupContent, PopupActions, PopupTitle,
+} from 'components/atoms';
+import { FlatButton } from 'components/molecules';
 import LanguageSelector from 'components/LanguageSelector';
-import Dialog from 'components/StyledDialog';
-import FlatButton from 'material-ui/FlatButton';
 import { OptionsCard } from './components';
 import Layout from './Layout';
 import Suggest from './Suggest/Suggest';
@@ -70,14 +71,21 @@ class QuizFactory extends Component {
 					onChoose={this.selectLanguage}
 					filter={course => courseIds.includes(course.id)}
 				/>
-				<Dialog
+				<Popup
 					open={suggestDialogOpen}
-					title={t('factory.quiz-create-title')}
-					onRequestClose={this.toggleSuggest}
-					actions={[ <FlatButton label={t('common.cancel-title')} onClick={this.toggleSuggest} primary /> ]}
+					onClose={this.toggleSuggest}
 				>
-					<Suggest />
-				</Dialog>
+					<PopupTitle>{t('factory.quiz-create-title')}</PopupTitle>
+					<PopupContent><Suggest /></PopupContent>
+					<PopupActions>
+						<FlatButton
+							onClick={this.toggleSuggest}
+							primary
+						>
+							{t('common.cancel-title')}
+						</FlatButton>
+					</PopupActions>
+				</Popup>
 			</Layout>
 		);
 	}

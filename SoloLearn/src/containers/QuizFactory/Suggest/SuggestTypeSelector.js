@@ -1,20 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import Dialog from 'components/StyledDialog';
-import FlatButton from 'material-ui/FlatButton';
 import { browserHistory } from 'react-router';
 import { setSuggestionChallenge } from 'actions/quizFactory';
 import Quiz, { CheckBar } from 'components/Quiz';
-import LoadingButton from 'components/LoadingButton';
+import { FlatButton, PromiseButton } from 'components/molecules';
+import { Popup, PopupContent, PopupActions, PopupTitle, Container } from 'components/atoms';
 import Layout from '../Layout';
 import SuggestMultipleChoice from './SuggestMultipleChoice';
 import SuggestTypeIn from './SuggestTypeIn';
 import SuggestFillIn from './SuggestFillIn';
 import { submitChallenge } from '../api';
-
-import './style.scss';
-import actionContainerStyle from '../components/actionContainerStyle';
 
 const mapStateToProps = ({ quizSubmission, courses }) => ({ quizSubmission, courses });
 const mapDispatchToProps = { setSuggestionChallenge };
@@ -28,7 +24,6 @@ class SuggestTypeSelector extends Component {
 			previewQuiz: null,
 			isQuizComplete: false,
 			checkResult: null,
-			isSubmitting: false,
 		};
 		document.title = 'Sololearn | Suggest a Quiz';
 	}
@@ -70,7 +65,6 @@ class SuggestTypeSelector extends Component {
 		this.setState({ checkResult: null, isQuizComplete: false });
 	}
 	handleSubmit = () => {
-		this.setState({ isSubmitting: true });
 		const { previewQuiz } = this.state;
 		const answers = previewQuiz.answers
 			.map(({ text, properties, isCorrect }) => ({ text, properties, isCorrect }));
@@ -78,7 +72,7 @@ class SuggestTypeSelector extends Component {
 			...previewQuiz,
 			answers,
 		};
-		submitChallenge(quiz)
+		return submitChallenge(quiz)
 			.then(() => browserHistory.push('/quiz-factory/my-submissions'));
 	}
 	checkComplete = ({ isComplete }) => {
@@ -115,50 +109,53 @@ class SuggestTypeSelector extends Component {
 	render() {
 		const { t } = this.props;
 		const {
-			previewQuiz, checkResult, isQuizComplete, isSubmitting,
+			previewQuiz, checkResult, isQuizComplete,
 		} = this.state;
-		const actions = [
-			<FlatButton
-				primary
-				onClick={this.closePreview}
-				label={t('common.cancel-title')}
-			/>,
-			<LoadingButton
-				raised
-				primary
-				loading={isSubmitting}
-				onClick={this.handleSubmit}
-				label={t('common.submit-action-title')}
-			/>,
-		];
 		return (
 			<Layout>
 				{this.getSuggestComp(this.props.params.type)}
-				<Dialog
+				<Popup
 					open={previewQuiz !== null}
-					actions={actions}
-					onRequestClose={this.closePreview}
-					actionsContainerStyle={actionContainerStyle}
-					autoScrollBodyContent
+					onClose={this.closePreview}
 				>
-					{previewQuiz !== null ? (
-						<div>
-							<Quiz
-								quiz={previewQuiz}
-								onChange={this.checkComplete}
-								disabled={checkResult !== null}
-								ref={(q) => { this.quiz = q; }}
-							/>
-							<CheckBar
-								onClick={this.checkBarOnClick}
-								disabled={!isQuizComplete}
-								secondary
-								label={this.checkBarLabel}
-								status={this.state.checkResult}
-							/>
-						</div>
-					) : null}
-				</Dialog>
+					<PopupTitle>{t('common.submit-action-title')}</PopupTitle>
+					{previewQuiz !== null
+						? (
+							<PopupContent>
+								<Container>
+									<Quiz
+										quiz={previewQuiz}
+										onChange={this.checkComplete}
+										disabled={checkResult !== null}
+										ref={(q) => { this.quiz = q; }}
+									/>
+									<CheckBar
+										onClick={this.checkBarOnClick}
+										disabled={!isQuizComplete}
+										secondary
+										label={this.checkBarLabel}
+										status={this.state.checkResult}
+									/>
+								</Container>
+							</PopupContent>
+						)
+						: null}
+					<PopupActions>
+						<FlatButton
+							color="primary"
+							onClick={this.closePreview}
+						>
+							{t('common.cancel-title')}
+						</FlatButton>
+						<PromiseButton
+							raised
+							fire={this.handleSubmit}
+							color="primary"
+						>
+							{t('common.submit-action-title')}
+						</PromiseButton>
+					</PopupActions>
+				</Popup>
 			</Layout>
 		);
 	}
