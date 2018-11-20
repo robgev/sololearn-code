@@ -4,15 +4,16 @@ import Container from '../Container';
 import './styles.scss';
 
 const FlexBox = ({
-	justify, align, column, className, ...props
+	justify, justifyBetween, align, column, className, ...props
 }) => {
-	const columnClassName = column ? 'column' : '';
-	const justifyClassName = justify ? 'justify-center' : '';
-	const alignClassName = align ? 'align-center' : '';
-	const fullClassName = `atom_flexbox ${columnClassName} ${justifyClassName} ${alignClassName} ${className}`;
+	const columnCN = column ? 'column' : '';
+	const justifyCN = justify ? 'justify-center' : '';
+	const alignCN = align ? 'align-center' : '';
+	const justifyBetweenCN = justifyBetween ? 'justify-between' : '';
+	const fullCN = `atom_flexbox ${columnCN} ${justifyCN} ${alignCN} ${justifyBetweenCN} ${className}`;
 	return (
 		<Container
-			className={fullClassName}
+			className={fullCN}
 			{...props}
 		/>
 	);
@@ -23,6 +24,7 @@ FlexBox.defaultProps = {
 	column: false,
 	justify: false,
 	align: false,
+	justifyBetween: false,
 };
 
 export default FlexBox;
