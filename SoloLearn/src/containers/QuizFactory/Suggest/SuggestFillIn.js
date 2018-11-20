@@ -10,8 +10,8 @@ import {
 	ContentState,
 	SelectionState,
 } from 'draft-js';
-import Paper from 'material-ui/Paper';
-import FlatButton from 'material-ui/FlatButton';
+import { PaperContainer, Container, Title, FlexBox, TextBlock } from 'components/atoms';
+import { FlatButton } from 'components/molecules';
 import LanguageSelectorTab from './LanguageSelectorTab';
 import QuestionInput from './QuestionInput';
 import PreviewButton from './PreviewButton';
@@ -28,7 +28,7 @@ const markedStrategy = (contentBlock, callback, contentState) => {
 	}, callback);
 };
 
-const Marked = ({ children }) => <span className="marked">{children}</span>;
+const Marked = ({ children }) => <TextBlock className="marked">{children}</TextBlock>;
 
 // Change marked text to {index} and get results from blocks
 const markTextBlock = (raw, ranges, index) => (ranges.length > 0 ? ranges
@@ -180,30 +180,38 @@ class SuggestFillIn extends Component {
 		} = this.state;
 		const { t } = this.props;
 		return (
-			<div className="quiz-factory">
+			<Container className="fill-in">
 				<LanguageSelectorTab language={language} selectLanguage={this.selectLanguage} />
 				<QuestionInput question={question} onChange={this.onQuestionChange} />
-				<Paper className="container editor-box">
-					<div className="title-with-button">
-						<span className="title">{t('factory.quiz-fill-in-the-blanks-answer-title')}</span>
-						<FlatButton label={t('factory.highlight')} secondary onClick={this.markHighlighted} disabled={!isMarkEnabled} />
-					</div>
-					<div className="editor" onClick={this.focusEditor} role="button" tabIndex={0}>
+				<PaperContainer className="container">
+					<FlexBox justifyBetween>
+						<Title className="title">{t('factory.quiz-fill-in-the-blanks-answer-title')}</Title>
+						<FlatButton
+							color="secondary"
+							onClick={this.markHighlighted}
+							disabled={!isMarkEnabled}
+						>
+							{t('factory.highlight')}
+						</FlatButton>
+					</FlexBox>
+					<Container
+						className="editor"
+						onClick={this.focusEditor}
+					>
 						<Editor
 							ref={(editor) => { this.editor = editor; }}
-							style={{ height: 400 }}
 							onSelect={this.onEditorChange}
 							editorState={editorState}
 							onChange={this.onEditorChange}
 							textDirection="LTR"
 						/>
-					</div>
-				</Paper>
+					</Container>
+				</PaperContainer>
 				<PreviewButton
 					onClick={this.preview}
 					disabled={!this.isComplete()}
 				/>
-			</div>
+			</Container>
 		);
 	}
 }
