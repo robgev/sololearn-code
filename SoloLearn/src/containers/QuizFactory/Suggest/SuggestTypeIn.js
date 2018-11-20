@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
-import Paper from 'material-ui/Paper';
-import TextField from 'material-ui/TextField';
+import { PaperContainer, Input, Title, Container } from 'components/atoms';
 import LanguageSelectorTab from './LanguageSelectorTab';
 import QuestionInput from './QuestionInput';
 import PreviewButton from './PreviewButton';
@@ -56,26 +55,26 @@ class SuggestTypeIn extends Component {
 			language, question, answer,
 		} = this.state;
 		return (
-			<div className="quiz-factory">
+			<Container>
 				<LanguageSelectorTab language={language} selectLanguage={this.selectLanguage} />
 				<QuestionInput question={question} onChange={this.onQuestionChange} />
-				<Paper className="container">
-					<span className="title">{t('factory.quiz-guess-the-output-answers-title')}</span>
-					<div className="answers">
-						<TextField
+				<PaperContainer className="container">
+					<Title className="title">{t('factory.quiz-guess-the-output-answers-title')}</Title>
+					<Container className="answers">
+						<Input
 							name="answer"
 							value={answer}
 							onChange={this.onAnswerChange}
 							fullWidth
 							placeholder={t('factory.quiz-answer-placeholder')}
 						/>
-					</div>
-				</Paper>
+					</Container>
+				</PaperContainer>
 				<PreviewButton
 					onClick={this.preview}
 					disabled={!this.isComplete()}
 				/>
-			</div>
+			</Container>
 		);
 	}
 }

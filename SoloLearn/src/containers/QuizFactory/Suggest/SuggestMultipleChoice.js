@@ -69,7 +69,7 @@ class SuggestMultipleChoice extends Component {
 			language, question, answers,
 		} = this.state;
 		return (
-			<Container className="quiz-factory">
+			<Container>
 				<LanguageSelectorTab language={language} selectLanguage={this.selectLanguage} />
 				<QuestionInput question={question} onChange={this.onQuestionChange} />
 				<PaperContainer className="container">
