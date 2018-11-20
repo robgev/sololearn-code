@@ -1,41 +1,23 @@
-.rate-container {
-	.vote-container {
-		display: flex;
-		justify-content: center;
-		margin: 20px;
-		.button {
-			width: 200px;
-			margin: 10px;
-		}
+@import '~styles/variables';
+@import '~styles/colors';
+
+.quiz_factory-rate {
+	.loading-container {
+		height: 100%;
 	}
-	.challenge-container {
-		display: flex;
-		flex-direction: column;
-		.challenge {
-			min-height: 300px;
-			align-self: stretch;
-			.no-challenge-found {
-				height: 100%;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-			}
-		}
-		.center-loading {
-			align-items: center;
-			margin: auto;
-			min-height: inherit;
-		}
-		.check-container {
-			display: flex;
-			flex-direction: row-reverse;
-			justify-content: space-between;
-			margin: 10px 0;
-			align-self: stretch;
-			.check-container-button {
-				width: 120px;
-			}
-		}
+	.challenge-item {
+		width: 100%;
+		min-height: $empty_card_size;
+		margin-bottom: $primary_gap_size;
+	}
+	.check {
+		width: 100%;
+		flex-direction: row-reverse;
+		justify-content: space-between;
+		margin-bottom: $primary_gap_size;
+	}
+	.dislike {
+		background-color: $error-red;
+		color: $white;
 	}
 }
-

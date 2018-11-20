@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import Paper from 'material-ui/Paper';
-import CircularProgress from 'material-ui/CircularProgress';
-import { red500 } from 'material-ui/styles/colors';
-import ThumbUp from 'material-ui/svg-icons/action/thumb-up';
-import ThumbDown from 'material-ui/svg-icons/action/thumb-down';
+import { PaperContainer, Loading, FlexBox } from 'components/atoms';
+import { FlatButton, RaisedButton, IconWithText } from 'components/molecules';
+import { ThumbUp, ThumbDown } from 'components/icons';
 import Quiz, { CheckIndicator } from 'components/Quiz';
 import { showError } from 'utils';
 import Layout from './Layout';
@@ -104,14 +100,14 @@ class Rate extends Component {
 		} = this.state;
 		const { t } = this.props;
 		return (
-			<Layout className="rate-container">
-				<div className="challenge-container">
-					<Paper className="challenge">
+			<Layout className="quiz_factory-rate">
+				<FlexBox align column>
+					<PaperContainer className="challenge-item">
 						{
 							challenge !== null
 								? (
 									<Quiz
-										key={challenge.id} // need for remounting if preloaded
+										key={challenge.id}
 										quiz={challenge}
 										onChange={this.onChange}
 										disabled={checkResult !== null}
@@ -119,52 +115,60 @@ class Rate extends Component {
 									/>
 								)
 								: isFetching
-									? <CircularProgress size={40} style={{ display: 'flex' }} className="center-loading" />
-									: <div className="no-challenge-found">{t('common.empty-list-message')}</div>
-
+									? <FlexBox className="loading-container" justify align><Loading /></FlexBox>
+									: t('common.empty-list-message')
 						}
-					</Paper>
+					</PaperContainer>
 					{challenge !== null ? (
-						<div className="check-container">
-							<div>
+						<FlexBox className="check">
+							<FlexBox>
 								<FlatButton
 									className="check-container-button"
-									label={t('factory.skip-item-title')}
 									onClick={this.getChallenge}
-									primary
-								/>
+									color="primary"
+								>
+									{t('factory.skip-item-title')}
+								</FlatButton>
 								<RaisedButton
 									className="check-container-button"
-									label={this.checkBarLabel}
 									onClick={this.checkBarOnClick}
-									secondary
+									color="secondary"
 									disabled={!isQuizComplete}
-								/>
-							</div>
+								>
+									{this.checkBarLabel}
+								</RaisedButton>
+							</FlexBox>
 							<CheckIndicator status={checkResult} />
-						</div>
+						</FlexBox>
 					) : null}
-				</div>
-				{voteOpen ?
-					<div className="vote-container">
-						<RaisedButton
-							className="button"
-							label={t('factory.button-like')}
-							labelPosition="after"
-							icon={<ThumbUp />}
-							onClick={this.like}
-							secondary
-						/>
-						<RaisedButton
-							className="button"
-							label={t('factory.button-dislike')}
-							labelPosition="before"
-							icon={<ThumbDown />}
-							onClick={this.dislike}
-							backgroundColor={red500}
-							labelColor="#FFFFFF"
-						/>
-					</div> : null
+				</FlexBox>
+				{voteOpen
+					? (
+						<FlexBox justify className="vote-container">
+							<RaisedButton
+								className="button"
+								onClick={this.like}
+								color="secondary"
+							>
+								<IconWithText
+									Icon={ThumbUp}
+								>
+									{t('factory.button-like')}
+								</IconWithText>
+							</RaisedButton>
+							<RaisedButton
+								className="dislike"
+								onClick={this.dislike}
+							>
+								<IconWithText
+									Icon={ThumbDown}
+								>
+									{t('factory.button-dislike')}
+								</IconWithText>
+							</RaisedButton>
+						</FlexBox>
+					)
+					: null
 				}
 			</Layout>
 		);
