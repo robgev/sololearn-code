@@ -1,0 +1,13 @@
+@import '~styles/colors';
+.notifications-button-container {
+	position: relative;
+	.notifications-badge {
+		top: 0;
+		right: 0;
+		background-color: $error-red;
+		color: white;
+	}
+	.notifications-button-icon {
+		color: $white;
+	}
+}

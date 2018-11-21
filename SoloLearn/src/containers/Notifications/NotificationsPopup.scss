@@ -1,0 +1,38 @@
+@import '~styles/colors';
+
+.notification-popup-wrapper {
+	position: absolute;
+	right: -5px;
+
+	.arrow {
+		position: absolute;
+		pointer-events: none;
+		border-top: 10px solid transparent;
+		border-left: 10px solid transparent;
+		border-right: 10px solid transparent;
+		border-bottom: 10px solid $white;
+		height: 0;
+		width: 0;
+		bottom: 100%;
+		right: 20px;
+		top: 0;
+		z-index: 10001;
+	}
+	.notifications-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 11px 14px;
+	}
+	.notifications-container {
+		position: absolute;
+		width: 400px;
+		top: 20px;
+		right: 15px;
+	}
+	.notifications-footer {
+		padding: 8px 12px;
+		text-align: center;
+	}
+}
+	

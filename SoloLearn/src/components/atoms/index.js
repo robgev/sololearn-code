@@ -39,3 +39,4 @@ export { default as Tooltip } from './Tooltip';
 export { default as Menu } from './Menu';
 export { default as FlexBox } from './FlexBox';
 export { default as Chip } from './Chip';
+export { default as Badge } from './Badge';

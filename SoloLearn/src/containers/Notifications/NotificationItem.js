@@ -1,17 +1,10 @@
-// General modules
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-// Material UI components
-import { ListItem } from 'material-ui/List';
-
-// Redux modules
 import { markRead } from 'actions/notifications';
-
-// Utils And Defaults
 import NotificationToaster from './NotificationToaster';
+import { ListItem } from 'components/atoms';
 
-import { NotificationItemStyles as styles } from './styles';
+import './NotificationItem.scss';
 
 const mapDispatchToProps = { markRead };
 
@@ -26,10 +19,7 @@ class NotificationItem extends Component {
 		const generatedContent = NotificationToaster.generateContent(notification, this.onClick);
 		return (
 			<ListItem
-				containerElement="div"
 				className="notification-item"
-				style={styles.notificationItem}
-				innerDivStyle={styles.notificationItemInner}
 			>
 				{generatedContent}
 			</ListItem>

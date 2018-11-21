@@ -1,13 +1,5 @@
-// General modules
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-
-// Material UI components
-import IconButton from 'material-ui/IconButton';
-import Badge from 'material-ui/Badge';
-import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
-
-// Redux modules
 import {
 	setNotificationCount,
 	refreshNotifications,
@@ -18,12 +10,12 @@ import {
 	notificationsCountSelector,
 } from 'reducers/notifications.reducer';
 
-import 'styles/Notifications/index.scss';
-
-// Additional components
 import NotificationToaster from './NotificationToaster'; // For static funcs
 import NotificationsPopup from './NotificationsPopup';
+import { Badge, IconButton } from 'components/atoms';
+import { Notifications } from 'components/icons';
 
+import './NotificationManager.scss';
 const mapStateToProps = state => ({
 	count: notificationsCountSelector(state),
 });
@@ -86,29 +78,16 @@ class NotificationManager extends PureComponent {
 		return (
 			<div className="notifications-button-container">
 				<Badge
-					style={{ padding: 0, paddingRight: 10 }}
-					badgeStyle={{
-						top: 11,
-						right: 14,
-						zIndex: 1,
-						height: 16,
-						color: '#fff',
-						fontSize: 11,
-						minWidth: 16,
-						width: 'initial',
-						borderRadius: 8,
-						cursor: 'pointer',
-						backgroundColor: '#F44336',
-						visibility: count <= 0 ? 'hidden' : 'initial',
-					}}
+					classes={{badge:"notifications-badge", invisible: 'notifications-badge-invisible'}}
 					badgeContent={count}
+					invisible={count <= 0}
 					onClick={this.toggleNotificationsOpen}
 				>
 					<IconButton
 						className="notification-button"
 						onClick={this.toggleNotificationsOpen}
 					>
-						<NotificationsIcon color="#fff" />
+						<Notifications className="notifications-button-icon" />
 					</IconButton>
 				</Badge>
 				{isOpened &&

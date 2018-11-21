@@ -2,24 +2,28 @@
 import React, { Component } from 'react';
 import { Link, browserHistory } from 'react-router';
 import { toast, Slide } from 'react-toastify';
-
-// Utils And Defaults
 import types from 'defaults/appTypes';
 import { updateDate, toSeoFriendly, stopPropagation } from 'utils';
-import ProfileAvatar from 'components/ProfileAvatar';
+import { Container, SecondaryTextBlock } from 'components/atoms';
+import {
+	ProfileAvatar,
+	RoundImage,
+	UsernameLink,
+	ContainerLink,
+} from 'components/molecules';
 
-import { NotificationItemStyles as styles } from './styles';
+import './NotificationToaster.scss';
 
 class NotificationToaster extends Component {
 	static toast = (notification, markRead, onClick = () => { }) => toast(() => (
-		<div
+		<Container
 			role="button"
 			tabIndex="0"
 			onClick={() => NotificationToaster.handleClick(notification, markRead, onClick)}
 			className="notification-snackbar"
 		>
 			{NotificationToaster.generateContent(notification)}
-		</div>
+		</Container>
 	), {
 		position: 'bottom-right',
 		transition: Slide,
@@ -46,15 +50,13 @@ class NotificationToaster extends Component {
 		const pattern = /({action_user}|{opponent}|{main})/.exec(fullTitle);
 		if (pattern !== null) {
 			const link = (
-				<Link
+				<UsernameLink
 					key="profile-link"
-					className="hoverable"
 					onClick={stopPropagation}
 					to={`/profile/${notification.actionUser.id}`}
-					style={{ color: '#8BC34A', textDecoration: 'none' }}
 				>
 					{notification.actionUser.name}
-				</Link>
+				</UsernameLink>
 			);
 			const splitTitle = fullTitle.split(pattern[0]);
 			return [ splitTitle[0], link, splitTitle[1] ];
@@ -70,37 +72,32 @@ class NotificationToaster extends Component {
 		const link = NotificationToaster.getNotificationLink(notification);
 
 		return (
-			<Link onClick={onClick} to={link} className="notification-content" style={styles.notificationContent}>
+			<ContainerLink onClick={onClick} to={link} className="notification-content" >
 				{
 					notification.type === types.badgeUnlocked ?
-						<div style={{ ...styles.badge.base, backgroundColor: notification.achievement.color }}>
-							<img
+						<Container className="achievement-icon-container" style={{ backgroundColor: notification.achievement.color }}>
+							<RoundImage
 								alt="Achievement icon"
-								style={styles.badge.icon}
+								className="achievement-icon"
 								src={notification.achievement.icon}
 							/>
-						</div> :
+						</Container> :
 						<ProfileAvatar
-							style={styles.avatar}
-							badge={notification.actionUser.badge}
-							userID={notification.actionUser.id}
-							userName={notification.actionUser.name}
-							avatarUrl={notification.actionUser.avatarUrl}
+							user={notification.actionUser}
 						/>
 				}
-				<div className="additional-details" style={styles.additionalDetails}>
-					<p
+				<Container className="additional-details">
+					<SecondaryTextBlock
 						className="title"
-						style={styles.title}
 					>
 						{title}
-					</p>
-					<div>
-						<span className="date" style={styles.date}>{updateDate(notification.date)}</span>
-						{!notification.isClicked && <span style={styles.notClickedIcon} />}
-					</div>
-				</div>
-			</Link>
+					</SecondaryTextBlock>
+					<Container className="date-container">
+						<SecondaryTextBlock className="date">{updateDate(notification.date)}</SecondaryTextBlock>
+						{!notification.isClicked && <Container className="notClickedIcon" />}
+					</Container>
+				</Container>
+			</ContainerLink>
 		);
 	}
 

@@ -1,0 +1,41 @@
+@import '~styles/variables';
+@import '~styles/colors';
+
+.notification-content {
+	display: flex;
+	width: 100%;
+	.additional-details {
+		width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		.date-container {
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			margin-right: $secondary_gap_size;
+
+			.notClickedIcon {
+				width: 6px;
+				height: 6px;
+				background-color: $primary_color;
+				vertical-align: middle;
+				display: inline-block;
+				border-radius: 50%;
+				margin: 0 0 0 5px;
+			}
+		}
+	}
+	.achievement-icon-container {
+		border-radius: 50%;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+
+		.achievement-icon {
+			height: $small-avatar-size;
+			width: $small-avatar-size;
+		}
+		
+	}
+	
+}

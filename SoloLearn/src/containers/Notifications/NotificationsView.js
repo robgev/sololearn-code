@@ -1,32 +1,26 @@
-// React modules
 import React from 'react';
 import { translate } from 'react-i18next';
-import Layout from 'components/Layouts/GeneralLayout';
 import DiscoverPeersSidebar from 'containers/Feed/FeedSidebar';
-
-// Material UI components
-import Paper from 'material-ui/Paper';
-import Divider from 'material-ui/Divider';
-
-// Additional components
 import NotificationList from './NotificationList';
-
-import { NotificationsViewStyles as styles } from './styles';
+import { LayoutWithSidebar } from 'components/molecules';
+import {
+	PaperContainer,
+	Title,
+	HorizontalDivider,
+} from 'components/atoms';
 
 const Notifications = ({ t }) => {
 	document.title = 'Sololearn | Notifications';
 	return (
-		<Layout
-			sidebarContent={<DiscoverPeersSidebar t={t} />}
+		<LayoutWithSidebar
+			sidebar={<DiscoverPeersSidebar t={t} />}
 		>
-			<Paper>
-				<div className="notification-header" style={styles.notificationsHeader}>
-					<p className="notifications-title" style={styles.notificationsTitle}>{t('notifications.title')}</p>
-				</div>
-				<Divider />
+			<PaperContainer>
+				<Title>{t('notifications.title')}</Title>
+				<HorizontalDivider />
 				<NotificationList isPopup={false} />
-			</Paper>
-		</Layout>
+			</PaperContainer>
+		</LayoutWithSidebar>
 	);
 };
 

@@ -1,29 +1,18 @@
-// React modules
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
-
-// Material UI components
-import Divider from 'material-ui/Divider';
-import { List } from 'material-ui/List';
-import CircularProgress from 'material-ui/CircularProgress';
-
-// Service
 import Service from 'api/service';
-
-// Redux modules
 import { getNotifications, emptyNotifications } from 'actions/notifications';
 import {
 	notificationsSelector,
 	notificationsHasMoreSelector,
 	isNotificationsFetchingSelector,
 } from 'reducers/notifications.reducer';
-
-// Additional components
-import InfiniteScroll from 'react-infinite-scroller';
 import NotificationItem from './NotificationItem';
+import { List, HorizontalDivider } from 'components/atoms';
+import { InfiniteScroll } from 'components/molecules';
 
-import { NotificationListStyles as styles } from './styles';
+import './NotificationList.scss';
 
 const mapStateToProps = state => ({
 	notifications: notificationsSelector(state),
@@ -49,7 +38,9 @@ class NotificationList extends Component {
 		if (this.props.isPopup) { this.props.toggleNotificationsOpen(); }
 	}
 
-	getNotifications = () => this.props.getNotifications();
+	getNotifications = async () => {
+		this.props.getNotifications();
+	}
 
 	// Mark notifications as seen
 	markAsSeen = () => {
@@ -61,29 +52,15 @@ class NotificationList extends Component {
 
 	render() {
 		const { isPopup, hasMore } = this.props;
-		const bodyStyle = {
-			...styles.notificationsBody.base,
-			...(isPopup ? styles.notificationsBody.fixedHeight : {}),
-		};
 
 		return (
-			<List id="notifications-body" style={bodyStyle}>
+			<List id="notifications-body" className="notifications-list-body fixed-height">
 				<InfiniteScroll
 					threshold={100}
-					loader={<CircularProgress
-						key="Infinite loader"
-						size={20}
-						style={{ display: 'flex', alignItems: 'center', margin: '10px auto' }}
-					/>}
 					useWindow={!isPopup}
 					loadMore={this.getNotifications}
 					initialLoad={false}
 					hasMore={hasMore}
-					style={{
-						display: 'flex',
-						width: '100%',
-						flexDirection: 'column',
-					}}
 				>
 					{this.props.notifications.map(notif => (
 						<React.Fragment key={notif.id}>
@@ -91,7 +68,7 @@ class NotificationList extends Component {
 								handleOpenIfPopup={this.handleOpenIfPopup}
 								notification={notif}
 							/>
-							<Divider />
+							<HorizontalDivider />
 						</React.Fragment>
 					))}
 				</InfiniteScroll>

@@ -1,21 +1,18 @@
-// React modules
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import { Motion, spring } from 'react-motion';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-
-// Material UI components
-import Paper from 'material-ui/Paper';
-import Divider from 'material-ui/Divider';
-
-// Redux modules
 import { markRead, markAllSeen } from 'actions/notifications';
-
-// Additional components
 import NotificationList from './NotificationList';
+import {
+	PaperContainer,
+	Container,
+	Title,
+	HorizontalDivider,
+} from 'components/atoms';
+import { UsernameLink } from 'components/molecules';
 
-import { NotificationsPopupStyles as styles } from './styles';
+import './NotificationsPopup.scss';
 
 const mapDispatchToProps = { markRead, markAllSeen };
 
@@ -48,7 +45,6 @@ class NotificationPopup extends Component {
 		const { t } = this.props;
 		return (
 			<Motion
-				defaultStyle={{ opacity: 0, top: 40 }}
 				style={{
 					opacity: spring(1),
 					top: spring(31, { stiffness: 120, damping: 15 }),
@@ -57,38 +53,33 @@ class NotificationPopup extends Component {
 				{
 					interpolatingStyle =>
 						(
-							<div id="notifications" className="notifications" style={{ ...styles.wrapper, ...interpolatingStyle }}>
-								<div className="arrow" style={styles.arrow} />
-								<Paper className="notifications-container" style={styles.notificationsContainer}>
-									<div className="notification-header" style={styles.notificationsHeader}>
-										<p className="notifications-title" style={styles.notificationsTitle}>{t('notifications.title')}</p>
-										<button
-											className="hoverable"
-											type="button"
-											style={styles.notificationsHeaderButton}
+							<Container id="notifications" className="notification-popup-wrapper" style={{...interpolatingStyle }}>
+								<Container className="arrow"/>
+								<PaperContainer className="notifications-container">
+									<Container className="notifications-header">
+										<Title className="notifications-title" >{t('notifications.title')}</Title>
+										<UsernameLink
 											onClick={this.markAllRead}
 										>
 											{t('notifications.mark-all-as-read-action-title')}
-										</button>
-									</div>
-									<Divider />
+										</UsernameLink>
+									</Container>
+									<HorizontalDivider />
 									<NotificationList
 										isPopup
 										toggleNotificationsOpen={this.props.toggleNotificationsOpen}
 									/>
-									<Divider />
-									<div className="notification-footer" style={styles.notificationsFooter}>
-										<Link
-											className="hoverable"
+									<HorizontalDivider />
+									<Container className="notifications-footer">
+										<UsernameLink
 											to="/notifications"
 											onClick={this.props.toggleNotificationsOpen}
-											style={styles.notificationsFooterButton}
 										>
 											{t('notifications.see-all')}
-										</Link>
-									</div>
-								</Paper>
-							</div>
+										</UsernameLink>
+									</Container>
+								</PaperContainer>
+							</Container>
 						)
 				}
 			</Motion>
