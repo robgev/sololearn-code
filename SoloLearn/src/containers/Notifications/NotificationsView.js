@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { translate } from 'react-i18next';
-import DiscoverPeersSidebar from 'containers/Feed/FeedSidebar';
+import { connect } from 'react-redux';
+import { getDiscoverSuggestions } from 'actions/discover';
+import FeedSidebar from 'containers/Feed/FeedSidebar';
 import NotificationList from './NotificationList';
 import { LayoutWithSidebar } from 'components/molecules';
 import {
@@ -9,19 +11,34 @@ import {
 	HorizontalDivider,
 } from 'components/atoms';
 
-const Notifications = ({ t }) => {
-	document.title = 'Sololearn | Notifications';
-	return (
-		<LayoutWithSidebar
-			sidebar={<DiscoverPeersSidebar t={t} />}
-		>
-			<PaperContainer>
-				<Title>{t('notifications.title')}</Title>
-				<HorizontalDivider />
-				<NotificationList isPopup={false} />
-			</PaperContainer>
-		</LayoutWithSidebar>
-	);
-};
+const mapDispatchToProps = { getDiscoverSuggestions };
 
-export default translate()(Notifications);
+@connect(null, mapDispatchToProps)
+@translate()
+class Notifications extends Component {
+	constructor() {
+		super();
+	}
+
+	componentDidMount = () => {
+		this.props.getDiscoverSuggestions()
+				.catch(e => showError(e, 'Something went wrong when trying to fetch user suggestions'));
+	}
+
+	render() {
+		const { t } = this.props;
+		return (
+			<LayoutWithSidebar
+				sidebar={<FeedSidebar t={t} />}
+			>
+				<PaperContainer>
+					<Title>{t('notifications.title')}</Title>
+					<HorizontalDivider />
+					<NotificationList isPopup={false} />
+				</PaperContainer>
+			</LayoutWithSidebar>
+		);
+	}
+}
+
+export default Notifications;
