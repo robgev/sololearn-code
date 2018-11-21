@@ -59,7 +59,7 @@ class SlayLessonContent extends Component {
 					</IconMenu>
 				</FlexBox>
 				<QuizText
-					key={parts[currentStep].id}
+					key={parts ? parts[currentStep].id : lessonId}
 					{...childProps}
 					textContent={parts ? parts[currentStep].textContent : textContent}
 				/>
