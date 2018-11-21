@@ -1,50 +1,98 @@
-.my-submissions {
-	.submissions-busy-container {
-		position: relative;
-		.submissions-wrapper {
-			flex-direction: row;
-			justify-content: flex-start;
-		}
+@import '~styles/variables';
+@import '~styles/colors';
+
+.quiz_factory-my-submissions {
+	.toolbar {
+		margin-bottom: $secondary_gap_size;
 	}
-	.status-bar {
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
-		margin-bottom: 10px;
+	.select {
+		margin-right: $primary_gap_size;
 	}
-	.preview {
-		.primary-text {
-			text-overflow: ellipsis;
-			overflow: hidden;
-			white-space: nowrap;
-			width: 70%;
-		}
-		img {
-			height: 50px;
-			width: 50px;
-		}
-		.status {
-			float: right;
-			width: 80px;
-			padding: 3px;
-			color: #FFFFFF;
-			text-align: center;
-			font-size: 12px;
-			font-weight: 500;
-		}
-	}
-	@keyframes highlight {
-		from {
-			background-color: yellow;
-		}
-		to {
-			background-color: white;
-		}
-	}
-	.challenge-item {
-		&.animate {
-			animation: highlight 1.5s ease-in 1;
-			margin: 100;
+	.challenges-list {
+		.item {
+			width: 100%;
+			cursor: pointer;
+			.info {
+				width: 70%;
+				.icon {
+					margin-right: $secondary_gap_size;
+				}
+				.name {
+					width: 100%;
+					.title {
+						text-overflow: ellipsis;
+						overflow: hidden;
+						white-space: nowrap;
+					}
+				}
+			}
+			.status {
+				padding: $secondary_gap_size;
+				.text {
+					color: $white;
+					text-align: center;
+				}
+				&.pending {
+					background-color: #BDBDBD;
+				}
+				&.declined {
+					background-color: $error-red;
+				}
+				&.approved {
+					background-color: $secondary_color;
+				}
+			}
 		}
 	}
 }
+
+// .my-submissions {
+// 	.submissions-busy-container {
+// 		position: relative;
+// 		.submissions-wrapper {
+// 			flex-direction: row;
+// 			justify-content: flex-start;
+// 		}
+// 	}
+// 	.status-bar {
+// 		display: flex;
+// 		justify-content: flex-end;
+// 		align-items: center;
+// 		margin-bottom: 10px;
+// 	}
+// 	.preview {
+// 		.primary-text {
+// 			text-overflow: ellipsis;
+// 			overflow: hidden;
+// 			white-space: nowrap;
+// 			width: 70%;
+// 		}
+// 		img {
+// 			height: 50px;
+// 			width: 50px;
+// 		}
+// 		.status {
+// 			float: right;
+// 			width: 80px;
+// 			padding: 3px;
+// 			color: #FFFFFF;
+// 			text-align: center;
+// 			font-size: 12px;
+// 			font-weight: 500;
+// 		}
+// 	}
+// 	@keyframes highlight {
+// 		from {
+// 			background-color: yellow;
+// 		}
+// 		to {
+// 			background-color: white;
+// 		}
+// 	}
+// 	.challenge-item {
+// 		&.animate {
+// 			animation: highlight 1.5s ease-in 1;
+// 			margin: 100;
+// 		}
+// 	}
+// }

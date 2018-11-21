@@ -1,6 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment, createRef } from 'react';
 import { translate } from 'react-i18next';
-import { ListItem } from 'material-ui/List';
+import {
+	ListItem, HorizontalDivider, FlexBox,
+	Title, SecondaryTextBlock, Container,
+} from 'components/atoms';
+import { TagLabel } from 'components/molecules';
 
 @translate(null, { withRef: true })
 class ChallengeItem extends Component {
@@ -20,11 +24,11 @@ class ChallengeItem extends Component {
 	static getStatus = (status) => {
 		switch (status) {
 		case 1:
-			return { text: 'factory.submission-pending', color: '#BDBDBD' };
+			return { text: 'factory.submission-pending', className: 'pending' };
 		case 2:
-			return { text: 'factory.submission-declined', color: '#D32F2F' };
+			return { text: 'factory.submission-declined', className: 'declined' };
 		case 3:
-			return { text: 'factory.submission-approved', color: '#9CCC65' };
+			return { text: 'factory.submission-approved', className: 'approved' };
 		default:
 			throw new Error('Can\'t identify status of submitted challenge');
 		}
@@ -38,43 +42,55 @@ class ChallengeItem extends Component {
 		return question.substring(0, indexOfFormat);
 	};
 
-	state = { highlighted: false }
+	state = { isHighlighted: false }
+
+	item = createRef();
 
 	scrollIntoView = () => {
-		this.mainDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-		this.setState({ highlighted: true }, () => {
+		this.item.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		this.setState({ isHighlighted: true }, () => {
 			setTimeout(() => {
-				this.setState({ highlighted: false });
+				this.setState({ isHighlighted: false });
 			}, 2000);
 		});
 	}
+
+	preview = () => {
+		this.props.preview(this.props.quiz);
+	}
+
 	render() {
 		const {
-			t, quiz, preview, leftIcon,
+			t, languageCard, quiz,
 		} = this.props;
+		const { isHighlighted } = this.state;
 		return (
-			<div className={`challenge-item${this.state.highlighted ? ' animate' : ''}`} ref={(node) => { this.mainDiv = node; }}>
-				<ListItem
-					onClick={() => preview(quiz)}
-					className="preview"
-					leftIcon={leftIcon}
-					rightIcon={
-						<div
-							className="status"
-							style={{ height: 'initial', width: 80, backgroundColor: ChallengeItem.getStatus(quiz.status).color }}
-						>
-							{t(ChallengeItem.getStatus(quiz.status).text)}
-						</div>
-					}
-					primaryText={
-						<div className="primary-text">
-							{ChallengeItem.getQuestionTitle(quiz.question)}
-						</div>
-					}
-					key={quiz.id}
-					secondaryText={t(ChallengeItem.getTypeString(quiz.type))}
-				/>
-			</div>
+			<Fragment>
+				<ListItem>
+					<FlexBox
+						ref={this.item}
+						justifyBetween
+						className={`item ${isHighlighted ? 'animate-highlight' : ''}`}
+						onClick={this.preview}
+					>
+						<FlexBox align className="info">
+							<Container className="icon">
+								{languageCard}
+							</Container>
+							<FlexBox className="name" column justify>
+								<Title className="title">{ChallengeItem.getQuestionTitle(quiz.question)}</Title>
+								<SecondaryTextBlock>{t(ChallengeItem.getTypeString(quiz.type))}</SecondaryTextBlock>
+							</FlexBox>
+						</FlexBox>
+						<FlexBox align justify>
+							<TagLabel className={`status ${ChallengeItem.getStatus(quiz.status).className}`}>
+								{t(ChallengeItem.getStatus(quiz.status).text)}
+							</TagLabel>
+						</FlexBox>
+					</FlexBox>
+				</ListItem>
+				<HorizontalDivider />
+			</Fragment>
 		);
 	}
 }

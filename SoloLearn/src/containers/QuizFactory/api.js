@@ -25,8 +25,9 @@ export const voteChallenge = (challengeId, vote) =>
 
 export const getMySubmissions = ({ courseId, status, index }) => {
 	const options = {
-		...(courseId === null ? {} : { courseId }),
-		...(status === null ? {} : { status }),
+		...(courseId === 0 ? {} : { courseId }),
+		// status = 0 is the 'all' case
+		...(status === 0 ? {} : { status }),
 		index,
 	};
 	return Service.request('Challenge/GetChallenges', options)
