@@ -4,7 +4,7 @@ import { translate } from 'react-i18next';
 import ChipInput from 'material-ui-chip-input';
 
 import { PaperContainer, Input, Chip, Heading, FlexBox, SecondaryTextBlock } from 'components/atoms';
-import { RaisedButton } from 'components/molecules';
+import { FlatButton } from 'components/molecules';
 import { CountingMentionInput } from 'components/organisms';
 
 import './styles.scss';
@@ -177,11 +177,12 @@ class QuestionEditor extends Component {
 							{tags.length} / {QuestionEditor.maxTagsLength}
 						</SecondaryTextBlock>
 					</FlexBox>
-					<RaisedButton
+					<FlatButton
+						color="primary"
 						onMouseDown={this.handleSubmit}
 					>
 						{isNew ? t('common.post-action-title') : t('common.save-action-title')}
-					</RaisedButton>
+					</FlatButton>
 				</FlexBox>
 			</PaperContainer>
 		);
