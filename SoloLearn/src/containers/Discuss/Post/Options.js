@@ -6,7 +6,7 @@ import { MoreVert } from 'components/icons';
 import { determineAccessLevel } from 'utils';
 
 const mapStateToProps = (state, ownProps) => ({
-	canRequestRemoval: determineAccessLevel(state.userProfile.accessLevel) > 2,
+	canRequestRemoval: determineAccessLevel(state.userProfile.accessLevel) >= 1,
 	isMe: state.userProfile.id === ownProps.userID,
 });
 
@@ -25,7 +25,7 @@ class Options extends Component {
 	render() {
 		const {
 			isMe, canRequestRemoval, t,
-			editPost, deletePost, reportPost, removePost,
+			editPost, deletePost, reportPost, requestRemoval,
 		} = this.props;
 		const { anchorEl } = this.state;
 		return (
@@ -73,7 +73,7 @@ class Options extends Component {
 					{!isMe && canRequestRemoval
 						? (
 							<MenuItem
-								onClick={removePost}
+								onClick={requestRemoval}
 							>
 								{t('common.remove-title')}
 							</MenuItem>

@@ -5,6 +5,7 @@ import { ListItem, HorizontalDivider, Container, FlexBox } from 'components/atom
 import { RaisedButton } from 'components/molecules';
 import { VoteActions, Mention, CountingMentionInput } from 'components/organisms';
 import ReportPopup from 'components/ReportPopup';
+import RemovalPopup from './RemovalPopup';
 import Options from './Options';
 import Author from './Author';
 import AcceptReply from './AcceptReply';
@@ -17,9 +18,17 @@ class ReplyItem extends Component {
 		isEditing: false,
 		isEditEnabled: true,
 		isReportPopupOpen: false,
+		isRemovalPopupOpen: false,
 	}
 	postContainer = createRef();
 	editInput = createRef();
+
+	openRemovalPopup = () => {
+		this.setState({ isRemovalPopupOpen: true });
+	}
+	closeRemovalPopup = () => {
+		this.setState({ isRemovalPopupOpen: false });
+	}
 
 	closeReportPopup = () => {
 		this.setState({ isReportPopupOpen: false });
@@ -58,7 +67,7 @@ class ReplyItem extends Component {
 
 	render() {
 		const {
-			isEditing, isHighlighted, isReportPopupOpen, isEditEnabled,
+			isEditing, isHighlighted, isReportPopupOpen, isEditEnabled, isRemovalPopupOpen,
 		} = this.state;
 		const {
 			reply, deleteReply, onAccept, askerID, t,
@@ -127,6 +136,7 @@ class ReplyItem extends Component {
 									deletePost={deleteReply}
 									editPost={this.toggleEdit}
 									reportPost={this.openReportPopup}
+									requestRemoval={this.openRemovalPopup}
 								/>
 							</Container>
 						</Container>
@@ -148,6 +158,12 @@ class ReplyItem extends Component {
 					onRequestClose={this.closeReportPopup}
 					itemId={reply.id}
 					itemType="post"
+				/>
+				<RemovalPopup
+					open={isRemovalPopupOpen}
+					id={reply.id}
+					deletePost={deleteReply}
+					onClose={this.closeRemovalPopup}
 				/>
 			</Fragment>
 		);

@@ -9,6 +9,7 @@ import {
 import { VoteActions, Mention } from 'components/organisms';
 import { Follow } from 'components/icons';
 import ReportPopup from 'components/ReportPopup';
+import RemovalPopup from './RemovalPopup';
 import Author from './Author';
 import Options from './Options';
 import Tags from '../Tags';
@@ -19,6 +20,13 @@ class Question extends Component {
 	state = {
 		isFollowSnackbarOpen: false,
 		isReportPopupOpen: false,
+		isRemovalPopupOpen: false,
+	}
+	openRemovalPopup = () => {
+		this.setState({ isRemovalPopupOpen: true });
+	}
+	closeRemovalPopup = () => {
+		this.setState({ isRemovalPopupOpen: false });
 	}
 	closeReportPopup = () => {
 		this.setState({ isReportPopupOpen: false });
@@ -37,6 +45,7 @@ class Question extends Component {
 		browserHistory.push(`/discuss/edit/${this.props.post.id}`);
 	}
 	render() {
+		const { isFollowSnackbarOpen, isReportPopupOpen, isRemovalPopupOpen } = this.state;
 		const {
 			post, onVote, onDelete, t,
 		} = this.props;
@@ -88,6 +97,7 @@ class Question extends Component {
 											deletePost={onDelete}
 											editPost={this.editPost}
 											reportPost={this.openReportPopup}
+											requestRemoval={this.openRemovalPopup}
 										/>
 									</Container>
 								</Container>
@@ -102,14 +112,20 @@ class Question extends Component {
 								</Container>
 								<Snackbar
 									onClose={this.closeFollowSnackbar}
-									open={this.state.isFollowSnackbarOpen}
+									open={isFollowSnackbarOpen}
 									message={post.isFollowing ? t('discuss.following-title') : t('discuss.not-following-title')}
 								/>
 								<ReportPopup
-									open={this.state.isReportPopupOpen}
+									open={isReportPopupOpen}
 									onRequestClose={this.closeReportPopup}
 									itemId={post.id}
 									itemType="post"
+								/>
+								<RemovalPopup
+									open={isRemovalPopupOpen}
+									id={post.id}
+									deletePost={this.onDelete}
+									onClose={this.closeRemovalPopup}
 								/>
 							</Container>
 						)
