@@ -8,6 +8,7 @@ import {
 } from 'components/atoms';
 import { VoteActions, Mention } from 'components/organisms';
 import { Follow } from 'components/icons';
+import ReportPopup from 'components/ReportPopup';
 import Author from './Author';
 import Options from './Options';
 import Tags from '../Tags';
@@ -17,6 +18,13 @@ import Tags from '../Tags';
 class Question extends Component {
 	state = {
 		isFollowSnackbarOpen: false,
+		isReportPopupOpen: false,
+	}
+	closeReportPopup = () => {
+		this.setState({ isReportPopupOpen: false });
+	}
+	openReportPopup = () => {
+		this.setState({ isReportPopupOpen: true });
 	}
 	closeFollowSnackbar = () => {
 		this.setState({ isFollowSnackbarOpen: false });
@@ -79,6 +87,7 @@ class Question extends Component {
 											userID={post.userID}
 											deletePost={onDelete}
 											editPost={this.editPost}
+											reportPost={this.openReportPopup}
 										/>
 									</Container>
 								</Container>
@@ -95,6 +104,12 @@ class Question extends Component {
 									onClose={this.closeFollowSnackbar}
 									open={this.state.isFollowSnackbarOpen}
 									message={post.isFollowing ? t('discuss.following-title') : t('discuss.not-following-title')}
+								/>
+								<ReportPopup
+									open={this.state.isReportPopupOpen}
+									onRequestClose={this.closeReportPopup}
+									itemId={post.id}
+									itemType="post"
 								/>
 							</Container>
 						)

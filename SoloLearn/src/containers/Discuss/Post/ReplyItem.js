@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import { ListItem, HorizontalDivider, Container, FlexBox } from 'components/atoms';
 import { RaisedButton } from 'components/molecules';
 import { VoteActions, Mention, CountingMentionInput } from 'components/organisms';
+import ReportPopup from 'components/ReportPopup';
 import Options from './Options';
 import Author from './Author';
 import AcceptReply from './AcceptReply';
@@ -15,9 +16,17 @@ class ReplyItem extends Component {
 		isHighlighted: false,
 		isEditing: false,
 		isEditEnabled: true,
+		isReportPopupOpen: false,
 	}
 	postContainer = createRef();
 	editInput = createRef();
+
+	closeReportPopup = () => {
+		this.setState({ isReportPopupOpen: false });
+	}
+	openReportPopup = () => {
+		this.setState({ isReportPopupOpen: true });
+	}
 
 	highlight = () => {
 		this.postContainer.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -49,9 +58,12 @@ class ReplyItem extends Component {
 
 	render() {
 		const {
+			isEditing, isHighlighted, isReportPopupOpen, isEditEnabled,
+		} = this.state;
+		const {
 			reply, deleteReply, onAccept, askerID, t,
 		} = this.props;
-		if (this.state.isEditing) {
+		if (isEditing) {
 			return (
 				<FlexBox column className="editing-post">
 					<CountingMentionInput
@@ -70,7 +82,7 @@ class ReplyItem extends Component {
 						<RaisedButton
 							className="edit"
 							onMouseDown={this.edit}
-							disabled={!this.state.isEditEnabled}
+							disabled={!isEditEnabled}
 						>
 							{t('common.edit-action-title')}
 						</RaisedButton>
@@ -83,7 +95,7 @@ class ReplyItem extends Component {
 				<ListItem>
 					<Container
 						ref={this.postContainer}
-						className={`post ${this.state.isHighlighted ? 'animate-highlight' : ''} ${reply.isAccepted ? 'accepted' : ''}`}
+						className={`post ${isHighlighted ? 'animate-highlight' : ''} ${reply.isAccepted ? 'accepted' : ''}`}
 					>
 						<Container className="info">
 							<Container className="toolbar">
@@ -114,6 +126,7 @@ class ReplyItem extends Component {
 									userID={reply.userID}
 									deletePost={deleteReply}
 									editPost={this.toggleEdit}
+									reportPost={this.openReportPopup}
 								/>
 							</Container>
 						</Container>
@@ -130,6 +143,12 @@ class ReplyItem extends Component {
 					</Container>
 				</ListItem>
 				<HorizontalDivider />
+				<ReportPopup
+					open={isReportPopupOpen}
+					onRequestClose={this.closeReportPopup}
+					itemId={reply.id}
+					itemType="post"
+				/>
 			</Fragment>
 		);
 	}

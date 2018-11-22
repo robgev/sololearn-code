@@ -1,9 +1,5 @@
 import React, { PureComponent } from 'react';
 import { translate } from 'react-i18next';
-//import Dialog from 'components/StyledDialog';
-import TextField from 'material-ui/TextField';
-//import FlatButton from 'material-ui/FlatButton';
-//import { RadioButtonGroup } from 'material-ui/RadioButton';
 import {
 	RadioButton,
 	Popup,
@@ -11,10 +7,9 @@ import {
 	PopupContent,
 	PopupContentText,
 	PopupActions,
-	Container,
 	Input,
 	SecondaryTextBlock,
-	FlexBox
+	FlexBox,
 } from 'components/atoms';
 import { RadioButtonGroup, FlatButton } from 'components/molecules';
 import Service from 'api/service';
@@ -123,7 +118,7 @@ class ReportPopup extends PureComponent {
 								<Input
 									value={customReason}
 									onChange={this.handleCustomReasonChange}
-									inputProps={{maxLength:this.customReasonMaxLength}}
+									inputProps={{ maxLength: this.customReasonMaxLength }}
 									label={t('common.report-more-hint')}
 								/>
 								<SecondaryTextBlock className="count">{customReason.length} / {this.customReasonMaxLength}</SecondaryTextBlock>
