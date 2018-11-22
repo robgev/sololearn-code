@@ -5,6 +5,8 @@ import { ListItem, HorizontalDivider, Container, FlexBox } from 'components/atom
 import { RaisedButton } from 'components/molecules';
 import { VoteActions, Mention, CountingMentionInput } from 'components/organisms';
 import ReportPopup from 'components/ReportPopup';
+import PreviewItem from 'components/PreviewItem';
+import { generatePreviews } from 'utils';
 import RemovalPopup from './RemovalPopup';
 import DeletePopup from './DeletePopup';
 import Options from './Options';
@@ -138,6 +140,16 @@ class ReplyItem extends Component {
 							<Container className="question">
 								<Container className="message">
 									<Mention text={reply.message} />
+								</Container>
+								<Container>
+									{generatePreviews(reply.message).map(preview => (
+										<Container className="preview">
+											<PreviewItem
+												{...preview}
+												key={preview.link}
+											/>
+										</Container>
+									))}
 								</Container>
 							</Container>
 							<Container className="options">
