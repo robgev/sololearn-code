@@ -1,14 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import uniqBy from 'lodash/uniqBy';
-import Paper from 'material-ui/Paper';
-import Dialog from 'components/StyledDialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
-import { red500 } from 'material-ui/styles/colors';
+import {
+	PaperContainer, Heading, FlexBox,
+	Select, MenuItem, Popup, PopupActions, PopupTitle, PopupContent,
+} from 'components/atoms';
+import { FlatButton, RaisedButton, InfiniteScroll } from 'components/molecules';
 import { browserHistory } from 'react-router';
 import { queryDifference, isObjectEqual } from 'utils';
 import Quiz, { CheckBar } from 'components/Quiz';
@@ -17,7 +15,6 @@ import Layout from '../Layout';
 import ChallengesList from './ChallengesList';
 import { getMySubmissions, deleteChallenge } from '../api';
 import './mySubmissionsStyles.scss';
-import actionContainerStyle from '../components/actionContainerStyle';
 
 // Utility funcs
 
@@ -44,7 +41,7 @@ const mapDispatchToProps = {
 @connect(mapStateToProps, mapDispatchToProps)
 class MySubmissions extends Component {
 	static DEFAULT_FILTERS = {
-		count: 20, courseId: null, status: null, id: null,
+		count: 20, courseId: 0, status: 0, id: null,
 	}
 
 	constructor(props) {
@@ -60,6 +57,9 @@ class MySubmissions extends Component {
 			filters: MySubmissions.DEFAULT_FILTERS,
 		};
 	}
+
+	challengesList = createRef();
+
 	componentDidMount() {
 		this._isMounted = true;
 		const { location } = this.props;
@@ -85,7 +85,9 @@ class MySubmissions extends Component {
 		}
 	}
 	scrollToID = (id) => {
-		this.challengesList.getWrappedInstance().scrollToID(id);
+		if (this.challengesList) {
+			this.challengesList.current.getWrappedInstance().scrollToID(id);
+		}
 	}
 	setFilters = (filters) => {
 		const { filters: oldFilters } = this.state;
@@ -146,11 +148,13 @@ class MySubmissions extends Component {
 		}));
 		return deleteChallenge(id);
 	}
-	hanldeStatusFilterChange = (_, __, status) => {
+	hanldeStatusFilterChange = (e) => {
+		const status = e.target.value;
 		const { location } = this.props;
 		browserHistory.push({ ...location, query: { ...location.query, status } });
 	}
-	handleCourseIdFilterChange = (_, __, courseId) => {
+	handleCourseIdFilterChange = (e) => {
+		const courseId = e.target.value;
 		const { location } = this.props;
 		browserHistory.push({ ...location, query: { ...location.query, courseId } });
 	}
@@ -190,102 +194,134 @@ class MySubmissions extends Component {
 	}
 	render() {
 		const {
-			challenges, previewChallenge, checkResult, isQuizComplete, hasMore, isFetching,
+			challenges, previewChallenge, checkResult,
+			isQuizComplete, hasMore, isFetching, filters,
+			isDeletePopupOpen,
 		} = this.state;
 		const { courses, t } = this.props;
-		const actions = [
-			<FlatButton onClick={this.closePreview} label={t('common.cancel-title')} primary />,
-			previewChallenge !== null && previewChallenge.status === 2
-				? <FlatButton
-					label={t('common.delete-title')}
-					onClick={this.toggleDeletePopup}
-					labelStyle={{ color: red500 }}
-				/> : null,
-			previewChallenge !== null && previewChallenge.status === 2
-				? <RaisedButton
-					label={t('common.edit-action-title')}
-					onClick={this.handleEdit}
-					primary
-				/> : null,
-			previewChallenge !== null && previewChallenge.status === 3
-				? <RaisedButton
-					label={t('factory.action-clone')}
-					onClick={this.handleEdit}
-					primary
-				/> : null,
-		];
 		return (
-			<Layout className="my-submissions">
-				<Paper className="status-bar">
-					<span style={{ marginTop: 5 }}>{t('factory.status-filter-label')}</span>
-					<DropDownMenu
-						value={this.state.filters.status}
-						onChange={this.hanldeStatusFilterChange}
-					>
-						<MenuItem value={null} primaryText={t('factory.submission-all')} />
-						<MenuItem value={1} primaryText={t('factory.submission-pending')} />
-						<MenuItem value={2} primaryText={t('factory.submission-declined')} />
-						<MenuItem value={3} primaryText={t('factory.submission-approved')} />
-					</DropDownMenu>
-					<DropDownMenu
-						value={this.state.filters.courseId}
-						onChange={this.handleCourseIdFilterChange}
-					>
-						<MenuItem value={null} primaryText={t('factory.submission-all')} />
-						{
-							this.props.courses
-								.filter(course => course.isQuizFactoryEnabled)
-								.map(course =>
-									<MenuItem key={course.id} value={course.id} primaryText={course.language} />)
-						}
-					</DropDownMenu>
-				</Paper>
-				<ChallengesList
-					ref={(list) => { this.challengesList = list; }}
-					challenges={challenges}
-					courses={courses}
-					loadMore={this.fetchSubmissions}
+			<Layout className="quiz_factory-my-submissions">
+				<InfiniteScroll
 					hasMore={hasMore}
-					isFetching={isFetching}
-					preview={this.preview}
-				/>
-				<Dialog
+					isLoading={isFetching}
+					loadMore={this.fetchSubmissions}
+				>
+					<PaperContainer>
+						<FlexBox className="toolbar" align justifyBetween>
+							<Heading>{t('discuss.title')}</Heading>
+							<FlexBox align>
+								<Select
+									className="select"
+									value={filters.status}
+									onChange={this.hanldeStatusFilterChange}
+								>
+									<MenuItem value={0}>{t('factory.submission-all')}</MenuItem>
+									<MenuItem value={1}>{t('factory.submission-pending')}</MenuItem>
+									<MenuItem value={2}>{t('factory.submission-declined')}</MenuItem>
+									<MenuItem value={3}>{t('factory.submission-approved')}</MenuItem>
+								</Select>
+								<Select
+									value={filters.courseId}
+									onChange={this.handleCourseIdFilterChange}
+								>
+									<MenuItem value={0}>{t('factory.submission-all')}</MenuItem>
+									{
+										courses
+											.filter(course => course.isQuizFactoryEnabled)
+											.map(course =>
+												<MenuItem key={course.id} value={course.id}>{course.language}</MenuItem>)
+									}
+								</Select>
+							</FlexBox>
+						</FlexBox>
+						<ChallengesList
+							ref={this.challengesList}
+							challenges={challenges}
+							isLoading={isFetching}
+							courses={courses}
+							preview={this.preview}
+						/>
+					</PaperContainer>
+				</InfiniteScroll>
+				<Popup
 					open={previewChallenge !== null}
-					actions={actions}
-					onRequestClose={this.closePreview}
-					actionsContainerStyle={actionContainerStyle}
-					autoScrollBodyContent
+					onClose={this.closePreview}
 				>
-					{previewChallenge !== null ? (
-						<div>
-							<Quiz
-								quiz={previewChallenge}
-								onChange={this.checkComplete}
-								disabled={checkResult !== null}
-								ref={(q) => { this.quiz = q; }}
-							/>
-							<CheckBar
-								onClick={this.checkBarOnClick}
-								disabled={!isQuizComplete}
-								secondary
-								label={this.checkBarLabel}
-								status={this.state.checkResult}
-							/>
-						</div>
-					) : null}
-				</Dialog>
-				<Dialog
-					title={t('factory.delete-submission-title')}
-					contentStyle={{ width: '50%' }}
-					open={this.state.isDeletePopupOpen}
-					actions={[
-						<FlatButton label={t('common.cancel-title')} onClick={this.toggleDeletePopup} primary />,
-						<FlatButton label={t('common.delete-title')} onClick={this.handleDelete} labelStyle={{ color: red500 }} />,
-					]}
-					onRequestClose={this.toggleDeletePopup}
+					{previewChallenge !== null
+						? (
+							<PopupContent>
+								<Quiz
+									quiz={previewChallenge}
+									onChange={this.checkComplete}
+									disabled={checkResult !== null}
+									ref={(q) => { this.quiz = q; }}
+								/>
+								<CheckBar
+									onClick={this.checkBarOnClick}
+									disabled={!isQuizComplete}
+									secondary
+									label={this.checkBarLabel}
+									status={checkResult}
+								/>
+							</PopupContent>
+						)
+						: null}
+					<PopupActions>
+						<FlatButton onClick={this.closePreview} color="primary">
+							{t('common.cancel-title')}
+						</FlatButton>
+						{previewChallenge !== null && previewChallenge.status === 2
+							? (
+								<FlatButton
+									onClick={this.toggleDeletePopup}
+								>
+									{t('common.delete-title')}
+								</FlatButton>
+							)
+							: null}
+						{previewChallenge !== null && previewChallenge.status === 2
+							? (
+								<RaisedButton
+									onClick={this.handleEdit}
+									color="primary"
+								>
+									{t('common.edit-action-title')}
+								</RaisedButton>
+							)
+							: null}
+						{previewChallenge !== null && previewChallenge.status === 3
+							? (
+								<RaisedButton
+									onClick={this.handleEdit}
+									color="primary"
+								>
+									{t('factory.action-clone')}
+								</RaisedButton>
+							)
+							: null}
+					</PopupActions>
+				</Popup>
+				<Popup
+					open={isDeletePopupOpen}
+					onClose={this.toggleDeletePopup}
 				>
-					{t('factory.delete-submission-message')}
-				</Dialog>
+					<PopupTitle>
+						{t('factory.delete-submission-title')}
+					</PopupTitle>
+					<PopupActions>
+						<FlatButton
+							onClick={this.toggleDeletePopup}
+							color="primary"
+						>
+							{t('common.cancel-title')}
+						</FlatButton>
+						<FlatButton
+							onClick={this.handleDelete}
+						>
+							{t('common.delete-title')}
+						</FlatButton>
+					</PopupActions>
+				</Popup>
 			</Layout>
 		);
 	}

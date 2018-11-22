@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import Container from '../Container';
 
 import './styles.scss';
 
-const FlexBox = ({
+const FlexBox = forwardRef(({
 	justify, justifyBetween, align, column, className, ...props
-}) => {
+}, ref) => {
 	const columnCN = column ? 'column' : '';
 	const justifyCN = justify ? 'justify-center' : '';
 	const alignCN = align ? 'align-center' : '';
@@ -13,11 +13,12 @@ const FlexBox = ({
 	const fullCN = `atom_flexbox ${columnCN} ${justifyCN} ${alignCN} ${justifyBetweenCN} ${className}`;
 	return (
 		<Container
+			ref={ref}
 			className={fullCN}
 			{...props}
 		/>
 	);
-};
+});
 
 FlexBox.defaultProps = {
 	className: '',
