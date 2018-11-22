@@ -232,6 +232,7 @@ class IProfile {
 		const shouldFollow = !this.followEntities[id].isFollowing;
 		Service.request(`Profile/${shouldFollow ? 'Follow' : 'Unfollow'}`, { id });
 		this.followEntities[id].isFollowing = shouldFollow;
+		this.followEntities[id].followers += (shouldFollow ? 1 : -1);
 		if (this._isMe && shouldFollow) {
 			this.followingsRaw.ids.unshift(id);
 		}
