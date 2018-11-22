@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
-import { setSuggestionChallenge } from 'actions/quizFactory';
 import Quiz, { CheckBar } from 'components/Quiz';
 import { FlatButton, PromiseButton } from 'components/molecules';
 import { Popup, PopupContent, PopupActions, PopupTitle, Container } from 'components/atoms';
@@ -12,10 +11,9 @@ import SuggestTypeIn from './SuggestTypeIn';
 import SuggestFillIn from './SuggestFillIn';
 import { submitChallenge } from '../api';
 
-const mapStateToProps = ({ quizSubmission, courses }) => ({ quizSubmission, courses });
-const mapDispatchToProps = { setSuggestionChallenge };
+const mapStateToProps = ({ courses }) => ({ courses });
 
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(mapStateToProps)
 @translate()
 class SuggestTypeSelector extends Component {
 	constructor(props) {
@@ -27,19 +25,17 @@ class SuggestTypeSelector extends Component {
 		};
 		document.title = 'Sololearn | Suggest a Quiz';
 	}
-	componentWillUnmount() {
-		this.props.setSuggestionChallenge(null);
-	}
 	format = () => {
-		if (this.props.quizSubmission !== null) {
-			const { quizSubmission, courses } = this.props;
+		if (this.props.location.state) {
+			const { courses } = this.props;
+			const { init } = this.props.location.state;
 			const { id, iconUrl, languageName } = courses
-				.find(course => course.id === quizSubmission.courseID);
-			const { question } = quizSubmission;
-			const answers = quizSubmission.answers
+				.find(course => course.id === init.courseID);
+			const { question } = init;
+			const answers = init.answers
 				.map(({ isCorrect, text }, idx) => ({ isCorrect, text, id: idx }));
 			return {
-				language: { id, iconUrl, languageName }, question, answers, id: quizSubmission.id,
+				language: { id, iconUrl, languageName }, question, answers, id: init.id,
 			};
 		}
 		return null;

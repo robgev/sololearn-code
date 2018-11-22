@@ -42,9 +42,6 @@ import leaderboards from './leaderboards.reducer';
 // Discover
 import discoverSuggestions from './discover.reducer';
 
-// Quiz factory
-import quizSubmission from './quizSubmission.reducer';
-
 // Search
 import searchBar from './searchBar.reducer';
 
@@ -77,8 +74,6 @@ const reducers = combineReducers({
 	// Feed
 	feed,
 	feedPins,
-	// Quiz factory
-	quizSubmission,
 	// Search
 	searchBar,
 	// Localization
@@ -100,31 +95,31 @@ export const store = createStore(
 // Redux selector for detecting data state
 export const isLoaded = (state, componentName) => {
 	switch (componentName) {
-		case 'loggedin':
-			return state.userProfile !== null && state.userProfile.id !== undefined;
-		case 'modules':
-			return state.course != null;
-		case 'lessons':
-			return (state.course && state.modulesMapping &&
+	case 'loggedin':
+		return state.userProfile !== null && state.userProfile.id !== undefined;
+	case 'modules':
+		return state.course != null;
+	case 'lessons':
+		return (state.course && state.modulesMapping &&
 				state.lessonsMapping && state.activeModuleId) != null;
-		case 'quizzes':
-			return state.course !== null && state.modulesMapping !== null &&
+	case 'quizzes':
+		return state.course !== null && state.modulesMapping !== null &&
 				state.lessonsMapping !== null && state.quizzesMapping !== null &&
 				state.activeModuleId !== null;
-		case 'discuss':
-			return state.questions.length > 0;
-		case 'discussPost':
-			return state.discussPost !== null;
-		case 'notifications':
-			return state.notifications.length > 0;
-		case 'feed':
-			return state.feed.length > 0;
-		case 'followers':
-			return state.profile.followers.length > 0;
-		case 'following':
-			return state.profile.following.length > 0;
-		default:
-			throw new Error('Couldn\'t find the selector');
+	case 'discuss':
+		return state.questions.length > 0;
+	case 'discussPost':
+		return state.discussPost !== null;
+	case 'notifications':
+		return state.notifications.length > 0;
+	case 'feed':
+		return state.feed.length > 0;
+	case 'followers':
+		return state.profile.followers.length > 0;
+	case 'following':
+		return state.profile.following.length > 0;
+	default:
+		throw new Error('Couldn\'t find the selector');
 	}
 };
 

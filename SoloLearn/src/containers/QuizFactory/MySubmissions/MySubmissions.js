@@ -10,7 +10,6 @@ import { FlatButton, RaisedButton, InfiniteScroll } from 'components/molecules';
 import { browserHistory } from 'react-router';
 import { queryDifference, isObjectEqual } from 'utils';
 import Quiz, { CheckBar } from 'components/Quiz';
-import { setSuggestionChallenge } from 'actions/quizFactory';
 import Layout from '../Layout';
 import ChallengesList from './ChallengesList';
 import { getMySubmissions, deleteChallenge } from '../api';
@@ -33,12 +32,8 @@ const getStringFromType = (type) => {
 
 const mapStateToProps = ({ courses }) => ({ courses });
 
-const mapDispatchToProps = {
-	setSuggestionChallenge,
-};
-
 @translate()
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(mapStateToProps)
 class MySubmissions extends Component {
 	static DEFAULT_FILTERS = {
 		count: 20, courseId: 0, status: 0, id: null,
@@ -136,8 +131,10 @@ class MySubmissions extends Component {
 	}
 	handleEdit = () => {
 		const { previewChallenge } = this.state;
-		this.props.setSuggestionChallenge(previewChallenge);
-		browserHistory.push(`/quiz-factory/suggest/${getStringFromType(previewChallenge.type)}`);
+		browserHistory.push({
+			pathname: `/quiz-factory/suggest/${getStringFromType(previewChallenge.type)}`,
+			state: { init: previewChallenge },
+		});
 	}
 	handleDelete = () => {
 		const { id } = this.state.previewChallenge;
