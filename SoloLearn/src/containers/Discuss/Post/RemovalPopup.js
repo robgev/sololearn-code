@@ -95,8 +95,6 @@ RemovalPopup.defaultProps = {
 RemovalPopup.propTypes = {
 	open: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
-	// If canDelete, then mod high enough that he can delete the post without requesting deletion
-	canDelete: PropTypes.bool.isRequired,
 	isReply: PropTypes.bool,
 	id: PropTypes.number.isRequired,
 	deletePost: PropTypes.func.isRequired,

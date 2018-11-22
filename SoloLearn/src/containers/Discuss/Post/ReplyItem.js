@@ -6,11 +6,12 @@ import { RaisedButton } from 'components/molecules';
 import { VoteActions, Mention, CountingMentionInput } from 'components/organisms';
 import ReportPopup from 'components/ReportPopup';
 import RemovalPopup from './RemovalPopup';
+import DeletePopup from './DeletePopup';
 import Options from './Options';
 import Author from './Author';
 import AcceptReply from './AcceptReply';
 
-@translate()
+@translate(null, { withRef: true })
 @observer
 class ReplyItem extends Component {
 	state = {
@@ -19,9 +20,17 @@ class ReplyItem extends Component {
 		isEditEnabled: true,
 		isReportPopupOpen: false,
 		isRemovalPopupOpen: false,
+		isDeletePopupOpen: false,
 	}
 	postContainer = createRef();
 	editInput = createRef();
+
+	openDeletePopup = () => {
+		this.setState({ isDeletePopupOpen: true });
+	}
+	closeDeletePopup = () => {
+		this.setState({ isDeletePopupOpen: false });
+	}
 
 	openRemovalPopup = () => {
 		this.setState({ isRemovalPopupOpen: true });
@@ -67,7 +76,8 @@ class ReplyItem extends Component {
 
 	render() {
 		const {
-			isEditing, isHighlighted, isReportPopupOpen, isEditEnabled, isRemovalPopupOpen,
+			isEditing, isHighlighted, isReportPopupOpen,
+			isEditEnabled, isRemovalPopupOpen, isDeletePopupOpen,
 		} = this.state;
 		const {
 			reply, deleteReply, onAccept, askerID, t,
@@ -133,7 +143,7 @@ class ReplyItem extends Component {
 							<Container className="options">
 								<Options
 									userID={reply.userID}
-									deletePost={deleteReply}
+									deletePost={this.openDeletePopup}
 									editPost={this.toggleEdit}
 									reportPost={this.openReportPopup}
 									requestRemoval={this.openRemovalPopup}
@@ -164,6 +174,11 @@ class ReplyItem extends Component {
 					id={reply.id}
 					deletePost={deleteReply}
 					onClose={this.closeRemovalPopup}
+				/>
+				<DeletePopup
+					open={isDeletePopupOpen}
+					onClose={this.closeDeletePopup}
+					onDelete={deleteReply}
 				/>
 			</Fragment>
 		);

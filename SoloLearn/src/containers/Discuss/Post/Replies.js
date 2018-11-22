@@ -45,7 +45,7 @@ class Replies extends Component {
 
 	highlight = (replyID) => {
 		if (this.repliesRefs[replyID]) {
-			this.repliesRefs[replyID].highlight();
+			this.repliesRefs[replyID].getWrappedInstance().highlight();
 		}
 	}
 

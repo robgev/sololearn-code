@@ -10,6 +10,7 @@ import { VoteActions, Mention } from 'components/organisms';
 import { Follow } from 'components/icons';
 import ReportPopup from 'components/ReportPopup';
 import RemovalPopup from './RemovalPopup';
+import DeletePopup from './DeletePopup';
 import Author from './Author';
 import Options from './Options';
 import Tags from '../Tags';
@@ -21,6 +22,13 @@ class Question extends Component {
 		isFollowSnackbarOpen: false,
 		isReportPopupOpen: false,
 		isRemovalPopupOpen: false,
+		isDeletePopupOpen: false,
+	}
+	openDeletePopup = () => {
+		this.setState({ isDeletePopupOpen: true });
+	}
+	closeDeletePopup = () => {
+		this.setState({ isDeletePopupOpen: false });
 	}
 	openRemovalPopup = () => {
 		this.setState({ isRemovalPopupOpen: true });
@@ -45,7 +53,9 @@ class Question extends Component {
 		browserHistory.push(`/discuss/edit/${this.props.post.id}`);
 	}
 	render() {
-		const { isFollowSnackbarOpen, isReportPopupOpen, isRemovalPopupOpen } = this.state;
+		const {
+			isFollowSnackbarOpen, isReportPopupOpen, isRemovalPopupOpen, isDeletePopupOpen,
+		} = this.state;
 		const {
 			post, onVote, onDelete, t,
 		} = this.props;
@@ -94,7 +104,7 @@ class Question extends Component {
 									<Container className="options">
 										<Options
 											userID={post.userID}
-											deletePost={onDelete}
+											deletePost={this.openDeletePopup}
 											editPost={this.editPost}
 											reportPost={this.openReportPopup}
 											requestRemoval={this.openRemovalPopup}
@@ -124,8 +134,13 @@ class Question extends Component {
 								<RemovalPopup
 									open={isRemovalPopupOpen}
 									id={post.id}
-									deletePost={this.onDelete}
+									deletePost={onDelete}
 									onClose={this.closeRemovalPopup}
+								/>
+								<DeletePopup
+									open={isDeletePopupOpen}
+									onClose={this.closeDeletePopup}
+									onDelete={onDelete}
 								/>
 							</Container>
 						)

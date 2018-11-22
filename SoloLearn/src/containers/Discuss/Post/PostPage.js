@@ -26,7 +26,7 @@ class PostPage extends Component {
 			<Post
 				key={id}
 				id={parseInt(id, 10)}
-				replyID={parseInt(replyId, 10)}
+				replyID={replyId ? parseInt(replyId, 10) : null}
 				setRouteAlias={this.setRouteAlias}
 			/>
 		);
