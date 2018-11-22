@@ -19,6 +19,7 @@ import {
 	Select,
 	MenuItem,
 	Loading,
+	Title,
 } from 'components/atoms';
 import { ArrowDown } from 'components/icons';
 
@@ -165,7 +166,7 @@ class Leaderboards extends PureComponent {
 			shouldHideButton,
 			loadingData,
 		} = this.state;
-
+		console.log(leaderboards.length);
 		return (
 			<Layout className="leaderboards-container">
 				<PaperContainer className="leaderboards-header-container">
@@ -198,7 +199,10 @@ class Leaderboards extends PureComponent {
 						wrapperClassName="leaderboards-body"
 						loadingComponent={<LeaderboardShimmer />}
 					>
-						{ range === 0 ?
+						{
+							leaderboards.length == 0 ? 
+								<Title>{t("leaderboard.no-social-message")}</Title> 
+							: range === 0 ?
 							<InfiniteLeaderboard
 								userId={userId}
 								hasMore={hasMore}
