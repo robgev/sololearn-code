@@ -11,4 +11,26 @@
 		align-self: flex-end;
 		margin: $primary_gap_size;
 	}
+	.react-autosuggest__container {
+		flex-grow: 1;
+		position: relative;
+	}
+	.react-autosuggest__suggestions-container {
+		padding: 0;
+	}
+	.react-autosuggest__suggestions-container--open {
+		padding: 10;
+		position: absolute;
+		left: 0;
+		right: 0;
+		z-index: 1;
+	}
+	.react-autosuggest__suggestion {
+		display: block;
+	}
+	.react-autosuggest__suggestions-list {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+	}
 }

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import Service from 'api/service';
 import { translate } from 'react-i18next';
-import ChipInput from 'material-ui-chip-input';
 
-import { PaperContainer, Input, Chip, Heading, FlexBox, SecondaryTextBlock } from 'components/atoms';
+import { PaperContainer, Input, Heading, FlexBox, SecondaryTextBlock } from 'components/atoms';
 import { FlatButton } from 'components/molecules';
 import { CountingMentionInput } from 'components/organisms';
 
+import TagsInput from './TagsInput';
 import './styles.scss';
 
 @translate()
@@ -18,11 +17,9 @@ class QuestionEditor extends Component {
 			title: post !== null ? post.title : '',
 			titleErrorText: '',
 			tags: post !== null ? post.tags : [],
-			tagsErrorText: '',
-			suggestions: [],
+			tagsError: false,
 			isReplyBoxOpen: false,
 			replyLength: 0,
-			tagValue: '',
 		};
 	}
 
@@ -44,49 +41,28 @@ class QuestionEditor extends Component {
 
 	/* Chip input */
 
-	static Chip = ({ value, handleDelete, className }, key) => (
-		<Chip className={className} label={value} key={key} onDelete={handleDelete} />
-	);
+	canAddTag = () => this.state.tags.length < QuestionEditor.maxTagsLength;
 
-	addTag = (newTag) => {
-		this.setState(s => ({ tags: [ ...s.tags, newTag ], tagValue: '' }));
+	setTagsError = (tagsError) => {
+		this.setState({ tagsError });
 	}
 
-	handleDeleteTag = (tag) => {
-		this.setState(s => ({
-			tags: s.tagValue === ''
-				? s.tags.filter(t => t !== tag)
-				: [ ...s.tags.filter(t => t !== tag), s.tagValue ],
-			tagsErrorText: '',
-			tagValue: '',
-		}));
-	}
-
-	onChange = (e) => {
-		const { value: tagValue } = e.currentTarget;
-		if (this.canUpdateTag()) {
-			this.setState({ tagValue });
-			if (tagValue.length > 0) {
-				this.setState({ tagsErrorText: '' });
-			}
-			if (tagValue.length < 2) {
-				this.setState({ suggestions: [] });
-			} else {
-				this.getSuggestions(tagValue);
-			}
-		} else {
-			this.setState({ tagsErrorText: 'Can\'t add more tags' });
+	addTag = (tag) => {
+		if (this.canAddTag() && !this.state.tags.includes(tag)) {
+			this.setState(s => ({
+				tags: [ ...s.tags, tag ],
+			}));
+			this.setTagsError(false);
+			return true; // added
 		}
+		this.setTagsError(true);
+		return false; // not added
 	}
 
-	getSuggestions = async (tagValue) => {
-		const { tags: suggestions } = await Service.request('Discussion/GetTags', { query: tagValue });
-		if (this.state.tagValue === tagValue) {
-			this.setState({ suggestions });
-		}
+	deleteTag = (tag) => {
+		this.setState(s => ({ tags: s.tags.filter(t => tag !== t) }));
+		this.setTagsError(false);
 	}
-
-	canUpdateTag = () => this.state.tags.length < 10
 
 	/* End of tag input */
 
@@ -98,7 +74,7 @@ class QuestionEditor extends Component {
 		if (isTitleEmpty || isTagsEmpty) {
 			this.setState({
 				titleErrorText: isTitleEmpty ? t('question.invalid-title') : '',
-				tagsErrorText: isTagsEmpty ? t('question.empty-tags') : '',
+				tagsError: isTagsEmpty,
 			});
 		} else {
 			this.props.submit({
@@ -129,8 +105,8 @@ class QuestionEditor extends Component {
 	render() {
 		const { t, isNew } = this.props;
 		const {
-			title, titleErrorText, tags, tagsErrorText,
-			suggestions, isReplyBoxOpen, replyLength, tagValue,
+			title, titleErrorText, tags, tagsError,
+			isReplyBoxOpen, replyLength,
 		} = this.state;
 		return (
 			<PaperContainer className="discuss_question-editor">
@@ -157,21 +133,13 @@ class QuestionEditor extends Component {
 						maxLength={QuestionEditor.maxQuestionLength}
 					/>
 					<FlexBox column className="counting-input">
-						<ChipInput
-							fullWidth
-							value={tags}
-							newChipKeyCodes={[ 13, 32 ]}
-							InputProps={{
-								value: tagValue,
-								onChange: this.onChange,
-							}}
-							blurBehavior="add"
-							chipRenderer={QuestionEditor.Chip}
-							error={tagsErrorText !== ''}
-							dataSource={suggestions}
-							onAdd={this.addTag}
-							onDelete={this.handleDeleteTag}
-							label={t('question.tags-placeholder')}
+						<TagsInput
+							error={tagsError}
+							tags={tags}
+							addTag={this.addTag}
+							deleteTag={this.deleteTag}
+							setTagsError={this.setTagsError}
+							canAddTag={this.canAddTag()}
 						/>
 						<SecondaryTextBlock className="count">
 							{tags.length} / {QuestionEditor.maxTagsLength}
