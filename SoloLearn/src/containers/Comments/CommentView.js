@@ -31,7 +31,7 @@ import './comment.scss';
 
 @translate(null, { withRef: true })
 @observer
-class CommenView extends Component {
+class CommentView extends Component {
 	@observable highlighted = false;
 	@observable deleteOpen = false;
 	@observable isEditing = false;
@@ -203,4 +203,4 @@ class CommenView extends Component {
 	}
 }
 
-export default CommenView;
+export default CommentView;

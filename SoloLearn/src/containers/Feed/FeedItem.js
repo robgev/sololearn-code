@@ -62,6 +62,7 @@ class FeedItem extends Component {
 					url={this.url}
 					date={feedItem.date}
 					post={feedItem.post}
+					id={feedItem.post.id}
 					vote={feedItem.vote}
 					votes={feedItem.votes}
 					onChange={(vote, newVote) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.post.id })}
@@ -75,10 +76,11 @@ class FeedItem extends Component {
 					url={this.url}
 					isQuestion={false}
 					post={feedItem.post}
+					id={feedItem.post.id}
 					vote={feedItem.vote}
 					date={feedItem.date}
 					votes={feedItem.votes}
-					onChange={(vote, newVote) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.post.id })}
+					onChange={({vote:newVote, votes}) => {voteFeedItem({ ...feedItem, newVote, targetId: feedItem.post.id })}}
 				/>
 			);
 		case types.postedCode:

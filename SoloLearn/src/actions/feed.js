@@ -135,7 +135,6 @@ export const voteFeedItem = ({
 	id: feedItemId,
 	votes: totalVotes,
 }) => {
-	
 	const userVote = vote === newVote ? 0 : newVote;
 	const votes = (totalVotes + userVote) - vote;
 	

@@ -19,6 +19,7 @@ const Post = ({
 	noVotes,
 	isQuestion,
 	onChange,
+	id,
 }) => (
 	<Container className="feed-post-container">
 		<Link
@@ -42,6 +43,7 @@ const Post = ({
 				date={date}
 				type='post'
 				userVote={vote}
+				id={id}
 				totalVotes={votes}
 				onChange={onChange}
 			/>

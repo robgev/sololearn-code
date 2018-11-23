@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { changePostRepliesCount, removePostFromList, votePostInList } from 'actions/discuss';
+import { changePostRepliesCount, removePostFromList, } from 'actions/discuss';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 import { LayoutWithSidebar } from 'components/molecules';
@@ -15,7 +15,6 @@ import './styles.scss';
 const mapDispatchToProps = {
 	changePostRepliesCount,
 	removePostFromList,
-	votePostInList,
 };
 
 @connect(null, mapDispatchToProps)
@@ -34,10 +33,6 @@ class Post extends Component {
 			.then(() => {
 				browserHistory.replace('/discuss');
 			});
-	}
-
-	handleVote = ({ vote, votes }) => {
-		this.props.votePostInList({ id: this.post.id, vote, votes });
 	}
 
 	handlePostRepliesCountChange = (countChange) => {
@@ -62,7 +57,6 @@ class Post extends Component {
 				<Question
 					post={this.post.data}
 					onFollowClick={this.post.onFollow}
-					onVote={this.handleVote}
 					onDelete={this.handleDelete}
 				/>
 				{

@@ -1,14 +1,18 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
+import { connect } from 'react-redux';
 import { observable, action } from 'mobx';
-
+import { vote } from 'actions/vote';
 import ILikes from './ILikes';
 import VoteButtons from './VoteButtons';
 import LikesPopup from './LikesPopup';
 import './styles.scss';
 
+const mapDispatchToProps = {vote};
+
 @observer
+@connect(null, mapDispatchToProps)
 class VoteActions extends Component {
 	@observable likes = new ILikes({
 		type: this.props.type,
@@ -27,13 +31,17 @@ class VoteActions extends Component {
 	}
 
 	onUpvote = () => {
+		const { type, id, vote } = this.props;
 		this.likes.vote({ newVote: 1 });
 		this.props.onChange({ vote: this.likes.userVote, votes: this.likes.voteCount });
+		vote({type, id, vote: this.likes.userVote, votes: this.likes.voteCount});
 	}
 
 	onDownvote = () => {
+		const { type, id, vote } = this.props;
 		this.likes.vote({ newVote: -1 });
 		this.props.onChange({ vote: this.likes.userVote, votes: this.likes.voteCount });
+		vote({type, id, vote: this.likes.userVote, votes: this.likes.voteCount});
 	}
 
 	render() {

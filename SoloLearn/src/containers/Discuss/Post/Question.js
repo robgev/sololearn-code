@@ -57,7 +57,7 @@ class Question extends Component {
 			isFollowSnackbarOpen, isReportPopupOpen, isRemovalPopupOpen, isDeletePopupOpen,
 		} = this.state;
 		const {
-			post, onVote, onDelete, t,
+			post, onDelete, t,
 		} = this.props;
 		return (
 			<PaperContainer className="main-post">
@@ -79,7 +79,6 @@ class Question extends Component {
 												vertical
 												initialCount={post.votes}
 												initialVote={post.vote}
-												onChange={onVote}
 											/>
 										</Container>
 										<Container className="follow">
