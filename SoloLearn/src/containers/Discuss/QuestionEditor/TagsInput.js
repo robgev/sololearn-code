@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import Autosuggest from 'react-autosuggest';
-import { MenuItem, PaperContainer } from 'components/atoms';
+import { MenuItem, PaperContainer, Chip } from 'components/atoms';
 import MUIChipInput from 'material-ui-chip-input';
 import Service from 'api/service';
 
@@ -43,6 +43,10 @@ class TagsInput extends Component {
 		<MenuItem>
 			{suggestion}
 		</MenuItem>
+	);
+
+	static Chip = ({ value, handleDelete, className }, key) => (
+		<Chip className={className} label={value} key={key} onDelete={handleDelete} />
 	);
 
 	static getSuggestionValue = suggestion => suggestion
@@ -87,7 +91,7 @@ class TagsInput extends Component {
 		const {
 			suggestions, value,
 		} = this.state;
-		const { error, tags, deleteTag } = this.props;
+		const { error, tags } = this.props;
 		const { t } = this.props;
 		return (
 			<Autosuggest
@@ -105,10 +109,11 @@ class TagsInput extends Component {
 					tags,
 					value,
 					onAdd: this.addTag,
-					onDelete: deleteTag,
+					onDelete: this.deleteTag,
 					onChange: this.onChange,
 					newChipKeyCodes: [ 13, 32 ],
 					error,
+					chipRenderer: TagsInput.Chip,
 				}}
 			/>
 		);
