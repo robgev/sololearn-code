@@ -34,7 +34,7 @@ class EditQuestion extends Component {
 
 	submit = ({ title, message, tags }) => {
 		const { id } = this.state.post;
-		Service.request('Discussion/EditPost', {
+		return Service.request('Discussion/EditPost', {
 			id, message, title, tags,
 		})
 			.then(() => {

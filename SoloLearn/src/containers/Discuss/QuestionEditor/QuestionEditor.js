@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 
 import { PaperContainer, Input, Heading, FlexBox, SecondaryTextBlock } from 'components/atoms';
-import { FlatButton } from 'components/molecules';
+import { PromiseButton } from 'components/molecules';
 import { CountingMentionInput } from 'components/organisms';
 
 import TagsInput from './TagsInput';
@@ -76,13 +76,13 @@ class QuestionEditor extends Component {
 				titleErrorText: isTitleEmpty ? t('question.invalid-title') : '',
 				tagsError: isTagsEmpty,
 			});
-		} else {
-			this.props.submit({
-				title,
-				message: this.mentionInput.getValue(),
-				tags,
-			});
+			return Promise.resolve();
 		}
+		return this.props.submit({
+			title,
+			message: this.mentionInput.getValue(),
+			tags,
+		});
 	}
 
 	/* Mention input functions */
@@ -145,12 +145,13 @@ class QuestionEditor extends Component {
 							{tags.length} / {QuestionEditor.maxTagsLength}
 						</SecondaryTextBlock>
 					</FlexBox>
-					<FlatButton
+					<PromiseButton
 						color="primary"
-						onMouseDown={this.handleSubmit}
+						mouseDown
+						fire={this.handleSubmit}
 					>
 						{isNew ? t('common.post-action-title') : t('common.save-action-title')}
-					</FlatButton>
+					</PromiseButton>
 				</FlexBox>
 			</PaperContainer>
 		);
