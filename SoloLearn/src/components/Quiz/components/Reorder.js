@@ -2,12 +2,22 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { shuffleArray } from 'utils';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
-import { List, ListItem } from 'material-ui/List';
+import { List, ListItem, FlexBox, TextBlock } from 'components/atoms';
+import { MoreVert } from 'components/icons';
 import quizType from './types';
 
 // Utility components
 
-const SortableItem = SortableElement(({ value }) => <ListItem>{value}</ListItem>);
+const SortableItem = SortableElement(({ value }) => (
+	<ListItem>
+		<FlexBox className="reorder-item" fullWidth justifyBetween>
+			<TextBlock className="unselectable-text">
+				{value}
+			</TextBlock>
+			<MoreVert />
+		</FlexBox>
+	</ListItem>
+));
 
 const SortableList = SortableContainer(({ items, disabled }) => (
 	<List>
