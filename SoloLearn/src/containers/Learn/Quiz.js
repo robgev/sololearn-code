@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 
 // Redux modules
@@ -12,13 +11,11 @@ import { selectModule, selectLesson, selectQuiz } from 'actions/learn';
 import Progress, { PointExchangeTypes } from 'api/progress';
 
 // Marterial UI components
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import Dialog from 'components/StyledDialog';
+import { Popup, PopupContent, PopupTitle, PopupActions, PopupContentText, Loading } from 'components/atoms';
+import { FlatButton, RaisedButton } from 'components/molecules';
 
 // Additional data and components
 import QuizAnswers, { CheckBar, TopBar } from 'components/Quiz';
-import LoadingOverlay from 'components/LoadingOverlay';
 import QuizText from './QuizText';
 
 const styles = {
@@ -72,27 +69,46 @@ const mapStateToProps = state => ({
 	userXp: state.userProfile.xp,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = {
 	selectModule,
 	selectLesson,
 	selectQuiz,
-}, dispatch);
+};
 
 @connect(mapStateToProps, mapDispatchToProps)
 @translate()
 class Quiz extends Component {
 	state = {
-		hintOpened: false,
-		unlockOpened: false,
+		isHintPopupOpen: false,
+		isUnlockPopupOpen: false,
 		notAvailable: false,
 		checkResult: null,
 		isQuizComplete: false,
 	};
 
-	// componentWillUnmount() {
-	// 	this.props.selectLesson(null);
-	// 	this.props.selectQuiz(null);
-	// }
+	closeNotAvailablePopup = () => {
+		this.setState({ notAvailable: false });
+	}
+
+	componentDidMount() {
+		ReactGA.ga('send', 'screenView', { screenName: 'Lesson Quiz Page' });
+	}
+
+	openHintPopup = () => {
+		this.setState({ isHintPopupOpen: true });
+	}
+
+	closeHintPopup = () => {
+		this.setState({ isHintPopupOpen: false });
+	}
+
+	openUnlockPopup = () => {
+		this.setState({ isUnlockPopupOpen: true });
+	}
+
+	closeUnlockPopup = () => {
+		this.setState({ isUnlockPopupOpen: false });
+	}
 
 	handleHint = () => {
 		if (Progress.consumePoints(this.props.activeModule.hintPrice)) {
@@ -101,21 +117,11 @@ class Quiz extends Component {
 				PointExchangeTypes.Hint,
 				this.props.activeModule.hintPrice,
 			);
-			if (this.quiz.hint()) {
-				this.setState({ checkResult: true });
-			}
-			this.handleHintDialogClose();
+			this.hint();
+			this.closeHintPopup();
 		} else {
 			this.setState({ notAvailable: true });
 		}
-	}
-
-	handleHintDialogOpen = () => {
-		this.setState({ hintOpened: true });
-	}
-
-	handleHintDialogClose = () => {
-		this.setState({ hintOpened: false });
 	}
 
 	handleUnlock = () => {
@@ -125,24 +131,11 @@ class Quiz extends Component {
 				PointExchangeTypes.Skip,
 				this.props.activeModule.skipPrice,
 			);
-			this.quiz.unlock();
-			this.setState({ checkResult: true });
-			this.handleUnlockDialogClose();
+			this.unlock();
+			this.closeUnlockPopup();
 		} else {
 			this.setState({ notAvailable: true });
 		}
-	}
-
-	handleUnlockDialogOpen = () => {
-		this.setState({ unlockOpened: true });
-	}
-
-	handleUnlockDialogClose = () => {
-		this.setState({ unlockOpened: false });
-	}
-
-	handleMessageDialogClose = () => {
-		this.setState({ notAvailable: false });
 	}
 
 	check = (force = false) => {
@@ -252,13 +245,12 @@ class Quiz extends Component {
 			activeQuiz,
 			activeLesson,
 			activeModule,
-			activeLessonId,
 			t,
 		} = this.props;
 		const { checkResult, isQuizComplete } = this.state;
 
 		if (!this.props.isLoaded) {
-			return <LoadingOverlay />;
+			return <Loading />;
 		}
 
 		const quiz = quizzes[activeQuiz.id];
@@ -277,9 +269,7 @@ class Quiz extends Component {
 						courseLanguage={course.language}
 					/>
 					<RaisedButton
-						label={t('learn.buttons-continue')}
-						labelColor="#fff"
-						backgroundColor="#8bc34a"
+						color="secondary"
 						onClick={() =>
 							this.props.loadLessonLink(
 								activeQuiz.id,
@@ -288,38 +278,18 @@ class Quiz extends Component {
 								2,
 							)
 						}
-					/>
+					>
+						{t('learn.buttons-continue')}
+					</RaisedButton>
 				</div>
 			);
 		}
 
-		const hintActions = [
-			<FlatButton
-				label={t('common.cancel-title')}
-				onClick={this.handleHintDialogClose}
-			/>,
-			<FlatButton
-				label={t('learn.popups.hint-popup-ok-action-title')}
-				onClick={this.handleHint}
-			/>,
-		];
-
-		const unlockActions = [
-			<FlatButton
-				label={t('common.cancel-title')}
-				onClick={this.handleUnlockDialogClose}
-			/>,
-			<FlatButton
-				label={t('learn.popups.unlock-popup-ok-action-title')}
-				onClick={this.handleUnlock}
-			/>,
-		];
-		ReactGA.ga('send', 'screenView', { screenName: 'Lesson Quiz Page' });
 		return (
 			<div className="quiz" style={styles.wrapper}>
 				<TopBar
-					onUnlock={this.unlock}
-					onHint={this.hint}
+					onUnlock={this.openUnlockPopup}
+					onHint={this.openHintPopup}
 					hintable={this.isHintable}
 					disabled={checkResult !== null}
 				/>
@@ -337,23 +307,62 @@ class Quiz extends Component {
 					label={this.checkBarLabel}
 					status={this.state.checkResult}
 				/>
-				<Dialog
-					title={t('learn.popups.unlock-popup-title')}
-					actions={unlockActions}
-					open={this.state.unlockOpened}
-					onRequestClose={this.handleUnlockDialogClose}
+				<Popup
+					open={this.state.isUnlockPopupOpen}
+					onClose={this.closeUnlockPopup}
 				>
-					{t('learn.popups.unlock.description', { price: this.props.activeModule.skipPrice, total: this.props.userXp })}
-				</Dialog>
-				<Dialog
-					actions={hintActions}
-					open={this.state.hintOpened}
-					title={t('quiz.get-hint-message')}
-					onRequestClose={this.handleHintDialogClose}
+					<PopupTitle>
+						{t('learn.popups.unlock-popup-title')}
+					</PopupTitle>
+					<PopupContent>
+						<PopupContentText>
+							{t('learn.popups.unlock.description', { price: this.props.activeModule.skipPrice, total: this.props.userXp })}
+						</PopupContentText>
+					</PopupContent>
+					<PopupActions>
+						<FlatButton
+							onClick={this.closeUnlockPopup}
+						>
+							{t('common.cancel-title')}
+						</FlatButton>
+						<FlatButton
+							onClick={this.handleUnlock}
+						>
+							{t('learn.popups.unlock-popup-ok-action-title')}
+						</FlatButton>
+					</PopupActions>
+				</Popup>
+				<Popup
+					open={this.state.isHintPopupOpen}
+					onClose={this.closeHintPopup}
 				>
-					{t('learn.get-hint-format', { price: this.props.activeModule.skipPrice, total: this.props.userXp })}
-				</Dialog>
-			</div >
+					<PopupTitle>
+						{t('quiz.get-hint-message')}
+					</PopupTitle>
+					<PopupContent>
+						<PopupContentText>
+							{t('learn.get-hint-format', { price: this.props.activeModule.skipPrice, total: this.props.userXp })}
+						</PopupContentText>
+					</PopupContent>
+					<PopupActions>
+						<FlatButton
+							onClick={this.closeHintPopup}
+						>
+							{t('common.cancel-title')}
+						</FlatButton>
+						<FlatButton
+							onClick={this.handleHint}
+						>
+							{t('learn.popups.hint-popup-ok-action-title')}
+						</FlatButton>
+					</PopupActions>
+				</Popup>
+				<Popup open={this.state.notAvailable} onClose={this.closeNotAvailablePopup}>
+					<PopupContent>
+						<PopupContentText>{t('learn.hint-not-enough-xp')}</PopupContentText>
+					</PopupContent>
+				</Popup>
+			</div>
 		);
 	}
 }
