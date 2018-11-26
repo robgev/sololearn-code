@@ -178,8 +178,7 @@ class Quiz extends Component {
 					const { modules } = this.props.course;
 					// If this was last module
 					if (modules[modules.length - 1] === module) {
-						// TODO: Show congrats
-						// alert('CONGRATS');
+						browserHistory.push(`/certificate/${this.props.course.id}`);
 					} else {
 						// Go back to module list
 						browserHistory.push(`/learn/course/${this.props.params.courseName}`);
