@@ -10,6 +10,7 @@ export const MODULE_SELECTED = 'MODULE_SELECTED';
 export const LESSON_SELECTED = 'LESSON_SELECTED';
 export const QUIZ_SELECTED = 'QUIZ_SELECTED ';
 export const SET_SHORTCUT_LESSON = 'SET_SHORTCUT_LESSON';
+export const DEDUCT_EXP = 'DEDUCT_EXP';
 
 // Playground types
 export const SET_CODES = 'SET_CODES';
@@ -139,4 +140,3 @@ export const VOTE_LESSON_COMMENT = 'VOTE_LESSON_COMMENT';
 export const VOTE_USER_LESSON_COMMENT = 'VOTE_USER_LESSON_COMMENT';
 export const VOTE_CODE = 'VOTE_CODE';
 export const VOTE_CODE_COMMENT = 'VOTE_CODE_COMMENT';
-

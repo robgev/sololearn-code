@@ -1,4 +1,4 @@
-import { GET_USER_PROFILE, UPDATE_PROFILE_DATA, TOGGLE_COURSE } from 'constants/ActionTypes';
+import { GET_USER_PROFILE, UPDATE_PROFILE_DATA, TOGGLE_COURSE, DEDUCT_EXP } from 'constants/ActionTypes';
 import { createSelector } from 'reselect';
 
 export default (state = null, action) => {
@@ -11,6 +11,8 @@ export default (state = null, action) => {
 		return Object.assign({}, state, {
 			skills: action.payload,
 		});
+	case DEDUCT_EXP:
+		return { ...state, xp: state.xp - action.payload };
 	default:
 		return state;
 	}

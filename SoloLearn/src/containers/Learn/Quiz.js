@@ -7,7 +7,7 @@ import { browserHistory } from 'react-router';
 
 // Redux modules
 import { isLoaded } from 'reducers';
-import { selectModule, selectLesson, selectQuiz } from 'actions/learn';
+import { selectModule, selectLesson, selectQuiz, deductExp } from 'actions/learn';
 import Progress, { PointExchangeTypes } from 'api/progress';
 
 // Marterial UI components
@@ -73,6 +73,7 @@ const mapDispatchToProps = {
 	selectModule,
 	selectLesson,
 	selectQuiz,
+	deductExp,
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -117,6 +118,7 @@ class Quiz extends Component {
 				PointExchangeTypes.Hint,
 				this.props.activeModule.hintPrice,
 			);
+			this.props.deductExp(this.props.activeModule.hintPrice);
 			this.hint();
 			this.closeHintPopup();
 		} else {
@@ -131,6 +133,7 @@ class Quiz extends Component {
 				PointExchangeTypes.Skip,
 				this.props.activeModule.skipPrice,
 			);
+			this.props.deductExp(this.props.activeModule.skipPrice);
 			this.unlock();
 			this.closeUnlockPopup();
 		} else {
@@ -341,7 +344,7 @@ class Quiz extends Component {
 					</PopupTitle>
 					<PopupContent>
 						<PopupContentText>
-							{t('learn.get-hint-format', { price: this.props.activeModule.skipPrice, total: this.props.userXp })}
+							{t('learn.get-hint-format', { price: this.props.activeModule.hintPrice, total: this.props.userXp })}
 						</PopupContentText>
 					</PopupContent>
 					<PopupActions>

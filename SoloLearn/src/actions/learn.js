@@ -136,3 +136,8 @@ export const selectQuiz = quiz => ({
 	type: types.QUIZ_SELECTED,
 	payload: quiz,
 });
+
+export const deductExp = exp => ({
+	type: types.DEDUCT_EXP,
+	payload: exp,
+});
