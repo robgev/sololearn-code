@@ -4,9 +4,6 @@ import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 import ReportPopup from 'components/ReportPopup';
 import ReportItemTypes from 'constants/ReportItemTypes';
-import RemovalPopup from './RemovalPopup';
-import CommentItem from './CommentItem';
-
 import {
 	Container,
 	Popup,
@@ -16,7 +13,8 @@ import {
 	PopupContentText,
 } from 'components/atoms';
 import { FlatButton } from 'components/molecules';
-
+import RemovalPopup from './RemovalPopup';
+import CommentItem from './CommentItem';
 import './comment.scss';
 
 @translate(null, { withRef: true })
@@ -52,13 +50,13 @@ class CommentView extends Component {
 	}
 	render() {
 		const {
-			date, message, level, userName, avatarUrl,
-			vote, votes, userID, replies, badge, id, parentID,
+			level, userName, avatarUrl,
+			userID, badge, id,
 		} = this.props.comment;
 		const {
 			commentsType, userProfile,
 			onVote, selfDestruct, onRepliesButtonClick,
-			t, children, onRequestRemoval, accessLevel,
+			t, onRequestRemoval, accessLevel,
 		} = this.props;
 		const userObj = {
 			name: userName, id: userID, level, badge, avatarUrl,
@@ -69,7 +67,7 @@ class CommentView extends Component {
 				ref={(node) => { this.mainDiv = node; }}
 				className={`comment-item ${this.highlighted ? 'animate' : ''}`}
 			>
-				<CommentItem 
+				<CommentItem
 					comment={this.props.comment}
 					user={userObj}
 					type={commentsType}
@@ -103,8 +101,7 @@ class CommentView extends Component {
 							onClick={selfDestruct}
 						>
 							{t('common.delete-title')}
-						</FlatButton>,
-
+						</FlatButton>
 					</PopupActions>
 				</Popup>
 

@@ -7,14 +7,13 @@ import {
 	FlatButton,
 	ProfileAvatar,
 } from 'components/molecules';
-import CircularProgress from 'material-ui/CircularProgress';
 import { CountingMentionInput, Mention } from 'components/organisms';
 import {
 	Container,
 	HorizontalDivider,
 	Loading,
 } from 'components/atoms';
-import { replaceMention, showError, determineAccessLevel } from 'utils';
+import { showError, determineAccessLevel } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
 import CommentList from './CommentList';
 import CommentView from './CommentView';
@@ -239,8 +238,8 @@ class Comment extends Component {
 					commentsType={this.props.commentsAPI.commentsType}
 					accessLevel={accessLevel}
 					comment={this.props.comment}
-					//upvote={this.upvote}
-					//downvote={this.downvote}
+					// upvote={this.upvote}
+					// downvote={this.downvote}
 					onVote={this.vote}
 					userProfile={userProfile}
 					onRepliesButtonClick={this.onRepliesButtonClick}
@@ -315,7 +314,7 @@ class Comment extends Component {
 								<ProfileAvatar user={userProfile} />
 								<CountingMentionInput
 									onBlur={this.onReplyBlur}
-									
+
 									ref={(i) => { this.mentionInput = i; }}
 									initText={this.initText}
 									getUsers={this.props.commentsAPI.getMentionUsers}
@@ -337,8 +336,8 @@ class Comment extends Component {
 				{
 					this.isReplyLoading
 					&& <Container className="replay-loader">
-							<Loading />
-						</Container>
+						<Loading />
+					</Container>
 				}
 			</Container>
 		);
