@@ -27,7 +27,7 @@ const Avatar = ({
 			className="avatar-container"
 			{...props}
 		>
-			{ avatarUrl
+			{avatarUrl
 				? (
 					<RoundImage
 						src={avatarUrl}
@@ -53,7 +53,7 @@ Avatar.propTypes = {
 	badge: PropTypes.string,
 	disabled: PropTypes.bool,
 	userName: PropTypes.string.isRequired,
-	variant: PropTypes.oneOf('small', 'normal', 'big'),
+	variant: PropTypes.oneOf([ 'small', 'normal', 'big' ]),
 };
 
 Avatar.defaultProps = {
