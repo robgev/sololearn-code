@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { resetLocaleData } from 'actions/settings';
-import LanguageSelector from './LanguageSelector';
 import { Container } from 'components/atoms';
+import LanguageSelector from './LanguageSelector';
 
 const mapStateToProps = state => ({ locale: state.locale });
 
@@ -11,7 +11,7 @@ const mapStateToProps = state => ({ locale: state.locale });
 @translate()
 class Profile extends PureComponent {
 	handleLocaleChange = (event) => {
-		const locale = event.target.value; 
+		const locale = event.target.value;
 		if (this.props.locale !== locale) {
 			this.props.resetLocaleData(locale);
 		}

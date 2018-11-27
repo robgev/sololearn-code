@@ -74,12 +74,13 @@ class QuizManager extends Component {
 		const {
 			isLoaded,
 			loadCourseInternal,
+			course,
 		} = this.props;
 
 		this.setState({ loading: true });
 
 		if (!isLoaded) {
-			await loadCourseInternal();
+			await loadCourseInternal(course.id);
 		}
 		if (this._isMounted) {
 			const lessonId = this.props.lesson.id;

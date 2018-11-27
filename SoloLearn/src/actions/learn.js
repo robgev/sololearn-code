@@ -88,33 +88,13 @@ export const toggleCourseInternal = (courseId, enable) => (dispatch, getState) =
 	});
 };
 
-export const loadCourseInternal = courseId => async (dispatch, getState) => {
-	let selectedCourseId = courseId || Storage.load('selectedCourseId');
-	const course = Storage.load(`c${selectedCourseId}`);
-	const store = getState();
-	const userCourses = store.userProfile.skills;
-
-	if (selectedCourseId && userCourses.findIndex(item => item.id === selectedCourseId) === -1) {
-		dispatch(toggleCourseInternal(selectedCourseId, true));
-	}
-	if (course != null) {
-		Storage.save('selectedCourseId', course.id);
-		Progress.courseId = course.id;
-		Progress.loadCourse(course); // Getting progress of course
-		await Progress.sync();
-		dispatch(normalizeCourse(course.modules));
-		dispatch(loadCourse(course));
-	} else {
-		selectedCourseId = selectedCourseId || userCourses[0].id;
-		Storage.save('selectedCourseId', selectedCourseId);
-		const { course: fetchedCourse } = await Service.request('GetCourse', { id: selectedCourseId });
-		Progress.courseId = fetchedCourse.id;
-		Progress.loadCourse(fetchedCourse); // Getting progress of course
-		await Progress.sync();
-		Storage.save(`c${selectedCourseId}`, fetchedCourse); // Saveing data to localStorage
-		dispatch(normalizeCourse(fetchedCourse.modules, dispatch));
-		dispatch(loadCourse(fetchedCourse));
-	}
+export const loadCourseInternal = id => async (dispatch) => {
+	const { course } = await Service.request('GetCourse', { id });
+	Progress.courseId = course.id;
+	Progress.loadCourse(course);
+	await Progress.sync();
+	dispatch(normalizeCourse(course.modules, dispatch));
+	dispatch(loadCourse(course));
 };
 
 export const selectModule = moduleId => ({

@@ -17,7 +17,7 @@ export const getModuleByName = (state, name) => {
 	}
 	let res = null;
 	Object.values(state.modulesMapping).forEach((module) => {
-		if (toSeoFriendly(module.name) === name) {
+		if (toSeoFriendly(module.name) === toSeoFriendly(name)) {
 			res = module;
 		}
 	});

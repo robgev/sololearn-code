@@ -17,7 +17,7 @@ export const getLessonByName = (state, name) => {
 	}
 	let res = null;
 	Object.values(lessonsMapping).forEach((lesson) => {
-		if (toSeoFriendly(lesson.name) === name) {
+		if (toSeoFriendly(lesson.name) === toSeoFriendly(name)) {
 			res = lesson;
 		}
 	});
