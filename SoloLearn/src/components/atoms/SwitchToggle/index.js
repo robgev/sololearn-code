@@ -1,17 +1,24 @@
 import React from 'react';
 import Switch from '@material-ui/core/Switch';
-import './styles.scss';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { TextBlock } from 'components/atoms';
 
-const SwitchToggle = props => (
-	<Switch 
-		classes={{
-			root: 'atom_switch',
-			switchBase: 'atom_switch_base',
-			iconChecked: 'atom_switch_checked',
-			bar: 'atom_switch_bar',
-		}} 
-		{...props} 
+const SwitchToggle = ({ label, labelPlacement, ...props }) => (
+	<FormControlLabel
+		control={
+			<Switch
+				color="primary"
+				{...props}
+			/>
+		}
+		label={<TextBlock>{label}</TextBlock>}
+		labelPlacement={labelPlacement}
 	/>
 );
+
+SwitchToggle.defaultProps = {
+	label: '',
+	labelPlacement: 'start',
+};
 
 export default SwitchToggle;
