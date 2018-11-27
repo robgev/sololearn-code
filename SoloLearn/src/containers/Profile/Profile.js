@@ -6,11 +6,9 @@ import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
-import AddCodeButton from 'components/AddCodeButton';
-import FloatingButton from 'components/AddCodeButton/FloatingButton';
+import { CodesList, AddCodeButton } from 'containers/Playground/components';
 import BusyWrapper from 'components/BusyWrapper';
 import ProfileHeaderShimmer from 'components/Shimmers/ProfileHeaderShimmer';
-import { CodesList } from 'containers/Playground/components';
 import FeedList from 'containers/Feed/FeedList';
 import QuestionList from 'containers/Discuss/QuestionsList';
 import {
@@ -20,7 +18,7 @@ import {
 	PaperContainer,
 	Container,
 } from 'components/atoms';
-import { LayoutWithSidebar, InfiniteScroll } from 'components/molecules';
+import { LayoutWithSidebar, InfiniteScroll, FloatingActionButton } from 'components/molecules';
 import { Feed } from 'components/icons';
 import Header from './Header';
 import Skills from './Skills';
@@ -154,7 +152,7 @@ class Profile extends Component {
 						/>
 						{data.id === userId &&
 							<AddCodeButton>
-								{({ togglePopup }) => <FloatingButton onClick={togglePopup} />}
+								{({ togglePopup }) => <FloatingActionButton onClick={togglePopup} />}
 							</AddCodeButton>
 						}
 					</Container>

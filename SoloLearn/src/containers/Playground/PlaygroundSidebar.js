@@ -5,9 +5,8 @@ import { Link } from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import { sidebarCodesSelector } from 'reducers/codes.reducer';
 import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
-import AddCodeButton from 'components/AddCodeButton';
 
-import { CodeItem } from './components';
+import { CodeItem, AddCodeButton } from './components';
 
 const mapStateToProps = state => ({
 	userID: state.userProfile.id,

@@ -13,13 +13,12 @@ import {
 } from 'reducers/codes.reducer';
 import { showError, queryDifference, isObjectEqual } from 'utils';
 
-import AddCodeButton from 'components/AddCodeButton';
 import { Add } from 'components/icons';
 import { Heading, Container, Select, MenuItem } from 'components/atoms';
 import { FloatingActionButton, LayoutWithSidebar } from 'components/molecules';
 
 import 'styles/Playground/CodesBase.scss';
-import { CodesList } from './components';
+import { CodesList, AddCodeButton } from './components';
 import PlaygroundSidebar from './PlaygroundSidebar';
 
 const mapStateToProps = state => ({
