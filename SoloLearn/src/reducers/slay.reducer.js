@@ -8,17 +8,33 @@ import {
 	REMOVE_BOOKMARK_ITEM,
 	APPEND_LESSONS_BY_USER,
 	APPEND_COLLECTION_ITEMS,
+	REFRESH_COLLECTIONS_PROGRESS,
 	SET_CURRENT_LESSON_COLLECTION,
 	SET_BOOKMARK_COLLECTION_ITEMS,
 	APPEND_BOOKMARK_COLLECTION_ITEMS,
 } from 'constants/ActionTypes';
 import uniqBy from 'lodash/uniqBy';
+import map from 'lodash/map';
+import keyBy from 'lodash/keyBy';
 import { combineReducers } from 'redux';
+
+const refreshCollections = (currentCollections, changedCollections) => {
+	// Done for accessing by id, see line 26
+	const changedCollectionsHashmap = keyBy(changedCollections, 'id');
+	const changedIds = map(changedCollections, 'id');
+	console.log(currentCollections, changedCollectionsHashmap, changedIds);
+	return currentCollections.map(c =>
+		(changedIds.includes(c.id)
+			? { ...c, items: changedCollectionsHashmap[c.id].lessons }
+			: c));
+};
 
 const slayCollections = (state = [], action) => {
 	switch (action.type) {
 	case SET_LESSON_COLLECTIONS:
 		return uniqBy([ ...state, ...action.payload ], 'id');
+	case REFRESH_COLLECTIONS_PROGRESS:
+		return refreshCollections(state, action.payload);
 	case RESET_LOCALE_DATA:
 		return [];
 	default:
@@ -90,6 +106,13 @@ const lessonsByUser = (state = [], action) => {
 		return state;
 	}
 };
+
+export const slaySelector = state => state.slay;
+export const slayCollectionsSelector = state =>
+	slaySelector(state).slayCollections;
+// 2 is course collections, 4 is track collections
+export const slayProgressCollectionsSelector = state =>
+	slayCollectionsSelector(state).filter(c => c.type === 2 || c.type === 4);
 
 export default combineReducers({
 	bookmarks,
