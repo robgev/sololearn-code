@@ -8,7 +8,7 @@ import './styles.scss';
 const LayoutWithSidebar = ({ sidebar, sidebarProps, ...props }) => (
 	<Layout className="with-sidebar">
 		<Container {...props} />
-		<PaperContainer {...sidebarProps}>
+		<PaperContainer className="sidebar" {...sidebarProps}>
 			{sidebar}
 		</PaperContainer>
 	</Layout>

@@ -8,10 +8,25 @@ $layouts_gap: 20px;
 	padding: $layouts_gap;
 	max-width: $layout_max_size;
 	min-width: $phone_media;
+	transition: all 150ms cubic-bezier(0.075, 0.82, 0.165, 1);
 	&.with-sidebar {
 		display: grid;
 		grid-gap: $layouts_gap;
 		grid-template-columns: minmax(0, 5fr) 2fr;
 		align-items: start;
+	}
+}
+
+@include for-until-tablet {
+	.molecule_layout {
+		max-width: 100%;
+		padding: 0;
+		&.with-sidebar {
+			grid-gap: 0;
+			grid-template-columns: 1fr;
+			.sidebar {
+				display: none;
+			}
+		}
 	}
 }
