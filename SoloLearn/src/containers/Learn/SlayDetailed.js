@@ -10,7 +10,6 @@ import { CodePenCard, CourseBox, LayoutGenerator } from './components';
 
 const mapStateToProps = state => ({
 	courses: state.courses,
-	collections: state.slay.slayCollections,
 	selectedCollection: state.slay.selectedCollection,
 	collectionCourses: state.slay.filteredCollectionItems,
 });
@@ -31,24 +30,18 @@ class SlayDetailed extends PureComponent {
 	}
 
 	async componentWillMount() {
-		// Need to rewrite this part after architecture change.
-		// We don't need to have this much of difference between
-		// initial SL lessons and slay lessons
-		const { params, collections } = this.props;
+		const { params } = this.props;
 		const { startIndex, loadCount } = this.state;
 		const collectionId = parseInt(params.collectionId, 10);
-		if (collectionId !== 1) { // 1 stands for Default SoloLearn lessons
-			if (collections.length === 0 && collectionId === -1) {
-				await this.props.getLessonCollections({ index: 0, count: 1 });
-			}
-			await this.props.setSelectedCollection(collectionId);
-			const length =
-				await this.props.getCollectionItems(collectionId, { index: startIndex, count: loadCount });
-			this.setState({
-				loading: false,
-				hasMore: length === loadCount,
-				startIndex: startIndex + length,
-			});
+		await this.props.setSelectedCollection(collectionId);
+		const length =
+		await this.props.getCollectionItems(collectionId, { index: startIndex, count: loadCount });
+		this.setState({
+			loading: false,
+			hasMore: length === loadCount,
+			startIndex: startIndex + length,
+		});
+		if (collectionId !== -1) { // TODO: Rewrite. 1 stands for Default SoloLearn lessons
 			ReactGA.ga('send', 'screenView', { screenName: 'Collection Page' });
 		} else {
 			ReactGA.ga('send', 'screenView', { screenName: 'Lessons Page' });

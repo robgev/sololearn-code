@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { browserHistory, withRouter } from 'react-router';
 import { translate } from 'react-i18next';
 
-import Service from 'api/service';
 import { toggleLessonBookmark } from 'actions/slay';
 import { updateDate } from 'utils';
 import Snackbar from 'material-ui/Snackbar';

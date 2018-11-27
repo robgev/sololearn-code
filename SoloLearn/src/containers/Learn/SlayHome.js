@@ -3,7 +3,7 @@ import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
-import { getLessonCollections, getBookmarkLessons } from 'actions/slay';
+import { refreshLessonCollections, getLessonCollections, getBookmarkLessons } from 'actions/slay';
 import { CollectionCard, LayoutGenerator, SidebarCollectionCard } from 'containers/Learn/components';
 
 const mapStateToProps = state => ({
@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
 	collections: state.slay.slayCollections,
 });
 
-const mapDispatchToProps = { getLessonCollections, getBookmarkLessons };
+const mapDispatchToProps = { refreshLessonCollections, getLessonCollections, getBookmarkLessons };
 
 @connect(mapStateToProps, mapDispatchToProps)
 @translate()
@@ -27,12 +27,12 @@ class SlayHome extends PureComponent {
 		document.title = 'Sololearn | Learn';
 	}
 
-	async componentWillMount() {
+	async componentDidMount() {
 		const { startIndex, loadCount } = this.state;
 		const { collections, getLessonCollections } = this.props;
-		if (collections.length < 10) {
+		this.props.refreshLessonCollections();
+		if (collections.length <= 0) {
 			await this.props.getBookmarkLessons({ index: startIndex, count: loadCount });
-			// -1 for lesson collection with id -1 (round items)
 			const length = await getLessonCollections({ index: startIndex, count: loadCount });
 			this.setState({
 				loading: false,
@@ -43,9 +43,6 @@ class SlayHome extends PureComponent {
 			this.setState({
 				loading: false,
 				startIndex: startIndex + collections.length,
-				// If number of collections is divisible by the number
-				// of items we get on every load, then there is 1 more collection
-				// Same -1 as mentioned above
 				hasMore: collections.length % loadCount === 0,
 			});
 		}
@@ -53,7 +50,6 @@ class SlayHome extends PureComponent {
 	}
 
 	loadMore = async () => {
-		console.log('Loading More');
 		const { startIndex, loadCount } = this.state;
 		const length =
 			await this.props.getLessonCollections({ index: startIndex, count: loadCount });
@@ -66,7 +62,6 @@ class SlayHome extends PureComponent {
 	render() {
 		const { t, collections, bookmarks } = this.props;
 		const { loading, hasMore } = this.state;
-		console.log(hasMore, this.state.startIndex);
 		return (
 			<LayoutGenerator
 				noDisplay={false}

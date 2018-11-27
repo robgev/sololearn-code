@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Tooltip } from 'react-tippy';
 import { Linkify } from 'components/molecules';
+import { TextContainer, TextBlock, Container, Image } from 'components/atoms';
 import CodeBlock from './CodeBlock';
-import { SecondaryTextBlock, TextBlock, Container, Image } from 'components/atoms';
 import './styles.scss';
+
+// TODO: Use tooltip atom instead
 
 const wordBoundary = term => new RegExp(`(?:^|\\s|\\]|\\.|\\,)${term}(?:\\s|\\$|\\[|\\.|\\,)`, 'm');
 
@@ -105,9 +107,9 @@ class Parser extends Component {
 			unmountHTMLWhenHide
 			html={glossaryText}
 		>
-			<SecondaryTextBlock className="glossary">
+			<TextContainer className="glossary">
 				{children}
-			</SecondaryTextBlock>
+			</TextContainer>
 		</Tooltip>
 	);
 

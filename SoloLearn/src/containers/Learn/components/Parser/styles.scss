@@ -1,32 +1,43 @@
+@import '~styles/colors';
+@import '~styles/variables';
+
+$note_border_color: #c9c54c;
+
 .parser-root {
   white-space: pre-wrap;
   .note {
     display: flex;
     align-items: center;
-    border: solid 1px #ddd;
-    margin: 10px 0;
-    background: #EAEA6E;
-    border-left: 5px solid #c9c54c;
-    padding: 10px;
+    border: 1px solid $secondary_background_color;
+    margin: $primary_gap_size 0;
+    background: $highlight_color;
+    border-left: 5px solid $note_border_color;
+    padding: $primary_gap_size;
     img {
       align-self: flex-start;
       width: 25px;
       flex-shrink: 0;
-      margin-right: 10px;
+      margin-right: $primary_gap_size;
     }
   }
   .code {
-    border: solid 1px #ddd;
-    margin: 10px 0;
-    background: #ecf0f1;
-    border-left: 5px solid #589d32;
-    padding: 10px;
+    border: 1px solid $secondary_background_color;
+    margin: $primary_gap_size 0;
+    background: $background_color;
+    border-left: 5px solid $secondary_color;
+		padding: $primary_gap_size;
   }
+	.code-container {
+		overflow: hidden;
+		.code-button {
+			align-self: flex-end;
+		}
+	}
   .image {
     display: block;
     margin: 5px auto;
   }
   .glossary {
-    color: blue;
+    color: $primary_color;
   }
 }

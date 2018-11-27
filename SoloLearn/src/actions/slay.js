@@ -1,4 +1,5 @@
 import Service from 'api/service';
+import { slayProgressCollectionsSelector } from 'reducers/slay.reducer';
 import * as types from 'constants/ActionTypes';
 
 export const getLessonCollections = pagingData => async (dispatch) => {
@@ -13,6 +14,22 @@ export const getLessonCollections = pagingData => async (dispatch) => {
 		console.log(e);
 		return 0;
 	}
+};
+
+export const refreshLessonCollections = () => async (dispatch, getState) => {
+	const progressableCollections = slayProgressCollectionsSelector(getState());
+	const collectionsRefreshPromises =
+		progressableCollections.map(({ id }) =>
+			Service.request(
+				'GetCollectionItems',
+				{ collectionId: id, index: 0, count: 100 },
+				{ id },
+			));
+	const res = await Promise.all(collectionsRefreshPromises);
+	dispatch({
+		type:	types.REFRESH_COLLECTIONS_PROGRESS,
+		payload: res,
+	});
 };
 
 export const getCollectionItems = (collectionId, pagingData) => async (dispatch) => {

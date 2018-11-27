@@ -20,14 +20,14 @@ class Service {
 	setLocale = (locale) => {
 		this.locale = locale;
 	}
-	_request = (url, options) =>
+	_request = (url, options, appendPayload) =>
 		fetch(url, { ...options, credentials: 'include' })
 			.then(res => res.json())
 			.then((res) => {
 				if (res.error) {
 					throw res.error;
 				}
-				return res;
+				return { ...res, ...appendPayload };
 			})
 			.catch((e) => {
 				console.error(e);
@@ -61,7 +61,7 @@ class Service {
 		});
 	}
 
-	request = async (url, body = {}) => {
+	request = async (url, body = {}, appendPayload) => {
 		if (
 			this.accessToken === null
 			|| Date.now() > this.accessTokenExpireTime) {
@@ -74,7 +74,7 @@ class Service {
 				'Content-type': 'application/json',
 				Authorization: `Bearer ${this.accessToken}`,
 			},
-		});
+		}, appendPayload);
 	}
 
 	imageRequest = async (url, body = {}) => {
