@@ -57,10 +57,8 @@ class Likes extends Component {
 				{/* style={{ display: 'flex' }} */}
 				<PopupTitle>
 					<Tabs
-						style={{ flex: 1 }}
 						onChange={this.handleTabChange}
 						value={canAccessDownvotes ? activeTab : TabTypes.upvotes}
-						inkBarContainerStyle={!canAccessDownvotes ? { display: 'none' } : null}
 					>
 						<Tab
 							label={t('upvotes.title')}
