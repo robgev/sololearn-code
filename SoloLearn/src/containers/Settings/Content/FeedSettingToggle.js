@@ -4,7 +4,7 @@ import texts from 'texts';
 import {
 	Container,
 	SwitchToggle,
-	SecondaryTextBlock
+	SecondaryTextBlock,
 } from 'components/atoms';
 
 const FeedSettingToggle = ({
