@@ -1,0 +1,22 @@
+.top-toolbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+	.toolbar-left {
+		flex-grow: 1;
+	}
+	.toolbar-right {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: flex-end;
+		flex-grow: 1;
+		.my-code-actions {
+			min-height: 48px;
+			.delete-button {
+				margin-right: 5px;
+			}
+		}
+	}
+}

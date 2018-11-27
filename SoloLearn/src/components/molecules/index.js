@@ -11,6 +11,7 @@ export { default as CloseButton } from './CloseButton';
 export { default as BreadCrumbs } from './BreadCrumbs';
 export { default as IconWithText } from './IconWithText';
 export { default as LanguageLabel } from './LanguageLabel';
+export { default as LanguageIndicator } from './LanguageIndicator';
 export { default as Avatar } from './Avatar';
 export { default as RoundImage } from './RoundImage';
 export { default as UserTooltip } from './UserTooltip';

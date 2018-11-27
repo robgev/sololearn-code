@@ -1,9 +1,6 @@
-// React modules
 import React from 'react';
+import { observer } from 'mobx-react';
 import AceEditor from 'react-ace';
-import 'styles/Playground/Editor.scss';
-
-// Additional data and components (ACE Editor)
 import ace from 'brace';
 import 'brace/mode/html';
 import 'brace/mode/css';
@@ -19,34 +16,27 @@ import 'brace/theme/chrome'; // Editor light theme
 import 'brace/theme/monokai'; // Editor dark theme
 import 'brace/ext/language_tools';
 
-const styles = {
-	editor: {
-		base: {
-			width: '100%',
-			height: '100%',
-			transform: 'translateZ(0)',
-		},
-		hide: {
-			display: 'none',
-		},
-	},
-};
+import { editorModeNames } from 'containers/Playground/utils/Mappings';
+import './styles.scss';
 
 const Editor = ({
-	code,
-	mode,
-	theme,
-	publicID,
-	showWebOutput,
-	handleEditorChange,
+	playground: {
+		code,
+		isDark,
+		publicId,
+		language,
+		isFullscreen,
+		changeEditorState,
+	},
 }) => (
 	<AceEditor
 		wrapEnabled
 		value={code}
 		width="100%"
-		theme={theme}
+		height={isFullscreen ? '100%' : '500px'}
 		showPrintMargin={false}
-		mode={mode !== 'c' ? mode : 'c_cpp'}
+		theme={isDark ? 'monokai' : 'chrome'}
+		mode={editorModeNames[language]}
 		setOptions={{
 			enableBasicAutocompletion: true,
 			enableLiveAutocompletion: true,
@@ -54,19 +44,15 @@ const Editor = ({
 			showLineNumbers: true,
 			tabSize: 2,
 		}}
-		name={publicID}
-		onChange={handleEditorChange}
+		name={publicId}
+		onChange={changeEditorState}
 		editorProps={{ $blockScrolling: Infinity }}
 		onLoad={(editor) => {
 			editor.focus();
 			editor.getSession().setUseWrapMode(true);
 			editor.getSession().setUndoManager(new ace.UndoManager());
 		}}
-		style={{
-			...styles.editor.base,
-			...(showWebOutput ? styles.editor.hide : {}),
-		}}
 	/>
 );
 
-export default Editor;
+export default observer(Editor);

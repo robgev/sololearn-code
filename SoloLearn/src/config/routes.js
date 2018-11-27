@@ -80,7 +80,6 @@ const QuizFactoryRate = Loadable({
 	loader: () => import('containers/QuizFactory').then(mod => mod.QuizFactoryRate),
 });
 
-// TODO: Playgroud gets language and codeID prop from Slay lesson (parent)
 export default ([
 	<Route path="/login" component={Login} />,
 	<Route path="/signup" component={Login} />,
@@ -109,7 +108,7 @@ export default ([
 		<Route path="/lesson-factory" component={LessonFactory} />
 		<Route path="/codes" component={Codes} />
 		<Route path="/settings(/:settingID)" component={Settings} />
-		<Route path="/playground(/:primary)(/:secondary)" component={Playground} />
+		<Route path="/playground(/:publicId)" component={Playground} />
 		<Route path="/discuss" component={Questions} />
 		<Route path="/discuss/new" component={NewQuestion} />
 		<Route path="/discuss/edit/:id" component={EditQuestion} />

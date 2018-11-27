@@ -1,0 +1,16 @@
+@import '~styles/medias';
+
+.molecule_layout {
+	&.fullscreen {
+		max-width: 100%;
+		padding: 0;
+		.playground_main-container {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			padding: 0;
+			height: calc(100vh - 50px);
+			overflow-y: hidden;
+		}
+	}
+}

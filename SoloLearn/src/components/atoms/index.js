@@ -40,3 +40,6 @@ export { default as Menu } from './Menu';
 export { default as FlexBox } from './FlexBox';
 export { default as Chip } from './Chip';
 export { default as Badge } from './Badge';
+export { default as TextContainer } from './TextContainer';
+export { default as FormControlLabel } from './FormControlLabel';
+export { default as ButtonTooltip } from './ButtonTooltip';
