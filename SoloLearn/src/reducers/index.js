@@ -114,10 +114,6 @@ export const isLoaded = (state, componentName) => {
 		return state.notifications.length > 0;
 	case 'feed':
 		return state.feed.length > 0;
-	case 'followers':
-		return state.profile.followers.length > 0;
-	case 'following':
-		return state.profile.following.length > 0;
 	default:
 		throw new Error('Couldn\'t find the selector');
 	}
