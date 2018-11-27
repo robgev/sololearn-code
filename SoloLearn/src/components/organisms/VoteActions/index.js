@@ -11,8 +11,8 @@ import './styles.scss';
 
 const mapDispatchToProps = {vote};
 
+@connect(null, mapDispatchToProps) 
 @observer
-@connect(null, mapDispatchToProps)
 class VoteActions extends Component {
 	@observable likes = new ILikes({
 		type: this.props.type,
@@ -24,6 +24,7 @@ class VoteActions extends Component {
 	@observable open = false;
 
 	@action toggleOpen = () => {
+		console.log(this.open);
 		this.open = !this.open;
 		if (!this.open) {
 			this.likes.empty();
@@ -46,6 +47,7 @@ class VoteActions extends Component {
 
 	render() {
 		const { vertical } = this.props;
+		console.log('aaa');
 		return (
 			<Fragment>
 				<VoteButtons
