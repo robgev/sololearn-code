@@ -100,7 +100,7 @@ class Questions extends Component {
 								<MenuItem value={6}>{t('discuss.filter.my-answers')}</MenuItem>
 							</Select>
 						</FlexBox>
-						<QuestionList isLoading={isFetching} questions={posts} />
+						<QuestionList hasMore={hasMore} questions={posts} />
 						<AddQuestionButton />
 					</PaperContainer>
 				</InfiniteScroll>

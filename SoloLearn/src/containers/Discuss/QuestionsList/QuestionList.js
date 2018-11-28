@@ -4,8 +4,8 @@ import { List } from 'components/atoms';
 import { EmptyCard } from 'components/molecules';
 import Question from './Question';
 
-const QuestionList = ({ questions, isLoading }) => (
-	questions.length > 0 || isLoading
+const QuestionList = ({ questions, hasMore }) => (
+	questions.length > 0 || hasMore
 		? (
 			<List>
 				{
