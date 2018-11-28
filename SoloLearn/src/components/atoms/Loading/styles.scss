@@ -1,8 +1,9 @@
 @import '~styles/colors';
-/*
-primary_color : #607D8B;
-secondary_color: #8BC34A;
-*/
+@import '~styles/variables';
+
 .atom_loading {
-	color: $primary_color;
+	margin: $primary_gap_size;
+	.circle {
+		color: $primary_color;
+	}
 }
