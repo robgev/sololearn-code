@@ -1,0 +1,10 @@
+@import '~styles/variables';
+
+.playground_sidebar {
+	.item {
+		margin-bottom: $primary_gap_size;
+		&.title {
+			margin-top: $primary_gap_size;
+		}
+	}
+}
