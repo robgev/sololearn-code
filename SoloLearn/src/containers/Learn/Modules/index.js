@@ -6,7 +6,6 @@ import { translate } from 'react-i18next';
 import { MoreVert } from 'components/icons';
 import {
 	Heading,
-	Loading,
 	MenuItem,
 	PaperContainer,
 	Popup,
@@ -20,6 +19,7 @@ import {
 	IconMenu,
 	FlatButton,
 	LayoutWithSidebar,
+	EmptyCard,
 } from 'components/molecules';
 
 import { loadCourseInternal, toggleCourseInternal, toggleCourse, selectModule } from 'actions/learn';
@@ -133,13 +133,7 @@ class Modules extends Component {
 		return (
 			<LayoutWithSidebar sidebar={<UserProgressToolbar />}>
 				{loading || (!isModuleLoaded && this.props.userProfile.skills.length > 0)
-					? (
-						<PaperContainer>
-							<FlexBox className="empty-card-placeholder" align justify>
-								<Loading />
-							</FlexBox>
-						</PaperContainer>
-					)
+					? <EmptyCard paper loading />
 					: userCourses.length > 0
 						? (
 							<PaperContainer>

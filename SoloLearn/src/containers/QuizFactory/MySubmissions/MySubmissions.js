@@ -81,7 +81,7 @@ class MySubmissions extends Component {
 	}
 	scrollToID = (id) => {
 		if (this.challengesList) {
-			this.challengesList.current.getWrappedInstance().scrollToID(id);
+			this.challengesList.current.scrollToID(id);
 		}
 	}
 	setFilters = (filters) => {

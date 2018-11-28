@@ -5,9 +5,9 @@ import { observer } from 'mobx-react';
 import {
 	Container, List, PaperContainer,
 	SecondaryTextBlock, Select, MenuItem,
-	FlexBox, TextBlock, Snackbar,
+	Snackbar,
 } from 'components/atoms';
-import { InfiniteScroll, RaisedButton } from 'components/molecules';
+import { InfiniteScroll, RaisedButton, EmptyCard } from 'components/molecules';
 import AddReply from './AddReply';
 import ReplyItem from './ReplyItem';
 import IReplies from './IReplies';
@@ -136,11 +136,7 @@ class Replies extends Component {
 									}
 								</List>
 							)
-							: (
-								<FlexBox justify align className="empty-card-placeholder">
-									<TextBlock>{t('common.empty-list-message')}</TextBlock>
-								</FlexBox>
-							)
+							: <EmptyCard />
 						}
 					</PaperContainer>
 				</InfiniteScroll>

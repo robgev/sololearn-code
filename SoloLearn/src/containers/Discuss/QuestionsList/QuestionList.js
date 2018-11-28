@@ -1,10 +1,10 @@
 import React from 'react';
-import { translate } from 'react-i18next';
 import { observer } from 'mobx-react';
-import { List, TextBlock, FlexBox } from 'components/atoms';
+import { List } from 'components/atoms';
+import { EmptyCard } from 'components/molecules';
 import Question from './Question';
 
-const QuestionList = ({ questions, t, isLoading }) => (
+const QuestionList = ({ questions, isLoading }) => (
 	questions.length > 0 || isLoading
 		? (
 			<List>
@@ -15,11 +15,7 @@ const QuestionList = ({ questions, t, isLoading }) => (
 				}
 			</List>
 		)
-		: (
-			<FlexBox justify align className="empty-card-placeholder">
-				<TextBlock>{t('common.empty-list-message')}</TextBlock>
-			</FlexBox>
-		)
+		: <EmptyCard />
 );
 
-export default translate()(observer(QuestionList));
+export default observer(QuestionList);

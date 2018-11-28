@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { translate } from 'react-i18next';
-import { List, FlexBox, TextBlock } from 'components/atoms';
+import { List } from 'components/atoms';
+import { EmptyCard } from 'components/molecules';
 import LanguageCard from 'components/LanguageCard';
 import ChallengeItem from './ChallengeItem';
 
-@translate(null, { withRef: true })
 class ChallengesList extends Component {
 	challengeRefs = {};
 	scrollToID = (id) => {
@@ -14,14 +13,10 @@ class ChallengesList extends Component {
 	}
 	render() {
 		const {
-			challenges, preview, courses, isLoading, t,
+			challenges, preview, courses, isLoading,
 		} = this.props;
 		if (challenges.length === 0 && !isLoading) {
-			return (
-				<FlexBox justify align className="empty-card-placeholder">
-					<TextBlock>{t('common.empty-list-message')}</TextBlock>
-				</FlexBox>
-			);
+			return <EmptyCard />;
 		}
 		return (
 			<List className="challenges-list">
