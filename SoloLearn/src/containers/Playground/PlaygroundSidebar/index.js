@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { Container, Heading, SecondaryTextBlock, Title, FlexBox } from 'components/atoms';
+import { Container, Heading, SecondaryTextBlock, Title, FlexBox, List } from 'components/atoms';
 import { ViewMoreLink } from 'components/molecules';
 import RaisedButton from 'material-ui/RaisedButton';
 import { sidebarCodesSelector } from 'reducers/codes.reducer';
@@ -38,7 +38,11 @@ const PlaygroundSidebar = ({ t, sidebarItems, userID }) => (
 						</AddCodeButton>
 					</FlexBox>
 				)
-				: sidebarItems.map(code => <CodeItem key={code.id} code={code} />)
+				: (
+					<List>
+						{sidebarItems.map(code => <CodeItem key={code.id} code={code} />)}
+					</List>
+				)
 		}
 		{sidebarItems && sidebarItems.length > 0 &&
 			<ViewMoreLink to={`/profile/${userID}/codes`} >
