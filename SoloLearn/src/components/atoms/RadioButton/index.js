@@ -13,7 +13,7 @@ const RadioButton = ({ label, labelPlacement, ...props }) => (
 
 RadioButton.defaultProps = {
 	label: '',
-	labelPlacement: 'start',
+	labelPlacement: 'end',
 };
 
 export default RadioButton;
