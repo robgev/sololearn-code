@@ -138,7 +138,7 @@ class ReplyItem extends Component {
 								</Container>
 							</Container>
 							<Container className="question">
-								<Container className="message">
+								<Container>
 									<Mention text={reply.message} />
 								</Container>
 								<Container>

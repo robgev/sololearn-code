@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { IconButton, Menu } from 'components/atoms';
 import { MoreVert } from 'components/icons';
+import './styles.scss';
 
 class IconMenu extends Component {
 	state = {
@@ -30,6 +31,7 @@ class IconMenu extends Component {
 					aria-haspopup="true"
 					aria-owns={open ? 'long-menu' : undefined}
 					onClick={this.handleClick}
+					className="molecule_icon-menu"
 					{...iconProps}
 				>
 					<Icon />

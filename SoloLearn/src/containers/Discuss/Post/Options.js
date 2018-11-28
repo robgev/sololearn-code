@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { IconButton, Menu, MenuItem } from 'components/atoms';
-import { MoreVert } from 'components/icons';
+import { Menu, MenuItem } from 'components/atoms';
+import { IconMenu } from 'components/molecules';
 import { determineAccessLevel } from 'utils';
 
 const mapStateToProps = (state, ownProps) => ({
@@ -30,16 +30,7 @@ class Options extends Component {
 		const { anchorEl } = this.state;
 		return (
 			<Fragment>
-				<IconButton
-					onClick={this.handleClick}
-				>
-					<MoreVert />
-				</IconButton>
-				<Menu
-					anchorEl={anchorEl}
-					open={Boolean(anchorEl)}
-					onClose={this.handleClose}
-				>
+				<IconMenu>
 					{isMe
 						? (
 							<MenuItem
@@ -80,7 +71,7 @@ class Options extends Component {
 						)
 						: null
 					}
-				</Menu>
+				</IconMenu>
 			</Fragment>
 		);
 	}
