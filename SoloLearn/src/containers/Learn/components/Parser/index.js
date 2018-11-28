@@ -37,7 +37,7 @@ class Parser extends Component {
 
 	// static utility funcitons and regexes
 
-	static tagRegex = /\[(b|i|u|h1|h2|h3|note|code|a)(.*?)\]([\s\S\n]*?)\[\/\1\]/;
+	static tagRegex = /\[(b|i|u|h1|h2|h3|note|code|a)( .*)?\]([\s\S\n]*?)\[\/\1\]/;
 
 	static imgRegex = /\[img id="(\d+)" width="(\d+)%"\]/;
 
