@@ -31,7 +31,9 @@ const FeedItemBase = ({
 						badge={user.badge}
 					/>
 				</UsernameLink>
-				{title}
+				<TextBlock className="title">
+					{title}
+				</TextBlock>
 			</TextBlock>
 			{children}
 		</Container>

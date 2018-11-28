@@ -35,8 +35,11 @@
 				}
 
 				.badge {
-					margin: 0 $secondary_gap_size;
+					margin-left: $secondary_gap_size;
 				}
+			}
+			.title {
+				margin-left: $secondary_gap_size;
 			}
 		}
 		.course-card-container.small {
