@@ -1,0 +1,9 @@
+@import '~styles/colors';
+@import '~styles/variables';
+
+.molecule_view-more-link {
+	color: $primary_color;
+	text-transform: uppercase;
+	font-weight: 500;
+	font-size: $label_text_size;
+}

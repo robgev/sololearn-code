@@ -26,3 +26,4 @@ export { default as ViewStats } from './ViewStats';
 export { default as FloatingActionButton } from './FloatingActionButton';
 export { default as PromiseButton } from './PromiseButton';
 export { default as EmptyCard } from './EmptyCard';
+export { default as ViewMoreLink } from './ViewMoreLink';
