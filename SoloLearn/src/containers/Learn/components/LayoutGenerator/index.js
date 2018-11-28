@@ -2,7 +2,6 @@ import React from 'react';
 import BusyWrapper from 'components/BusyWrapper';
 import SlayHomeShimmer from 'components/Shimmers/SlayHomeShimmer';
 import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
-import { Loading } from 'components/atoms';
 import { InfiniteScroll, Layout, LayoutWithSidebar } from 'components/molecules';
 
 const LayoutGenerator = ({
@@ -50,7 +49,6 @@ const LayoutGenerator = ({
 						alignItems: 'center',
 						...style,
 					}}
-					loader={loading ? null : <Loading />}
 				>
 					{items.map(collection => (
 						<CardComponent

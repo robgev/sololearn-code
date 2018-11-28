@@ -6,8 +6,9 @@ import { MoreVert } from 'components/icons';
 import ReportItemTypes from 'constants/ReportItemTypes';
 import ReportPopup from 'components/ReportPopup';
 import { toSeoFriendly } from 'utils';
+import './styles.scss';
 
-import QuizText from './QuizText';
+import QuizText from '../QuizText';
 
 class SlayLessonContent extends Component {
 	constructor(props) {
@@ -52,7 +53,7 @@ class SlayLessonContent extends Component {
 							))}
 						</Stepper>
 					}
-					<IconMenu icon={MoreVert}>
+					<IconMenu iconProps={{ className: 'slay-lesson-align-left' }} icon={MoreVert}>
 						<MenuItem onClick={this.toggleReportPopup}>
 							{t('common.report-action-title')}
 						</MenuItem>

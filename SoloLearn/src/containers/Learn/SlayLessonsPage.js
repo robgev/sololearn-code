@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
-import { Loading } from 'components/atoms';
-import { InfiniteScroll } from 'components/molecules';
+import { InfiniteScroll, LayoutWithSidebar } from 'components/molecules';
 import { getCollectionItems, setSelectedCollection } from 'actions/slay';
 
+import { UserProgressToolbar } from './components';
 import SlayLessonCards from './SlayLessonCards';
 
 const mapStateToProps = state => ({
@@ -17,7 +17,6 @@ const mapDispatchToProps = { getCollectionItems, setSelectedCollection };
 @connect(mapStateToProps, mapDispatchToProps)
 class SlayLessonsPage extends Component {
 	state = {
-		loading: true,
 		hasMore: true,
 		startIndex: 0,
 		loadCount: 20,
@@ -31,7 +30,6 @@ class SlayLessonsPage extends Component {
 		const length = await this.props.getCollectionItems(parsedCollectionId, { index: 0, count: 20 });
 		ReactGA.ga('send', 'screenView', { screenName: 'Collection Page' });
 		this.setState({
-			loading: false,
 			hasMore: length === loadCount,
 			startIndex: startIndex + length,
 		});
@@ -54,23 +52,24 @@ class SlayLessonsPage extends Component {
 	// lesson items in learn home page.
 	render() {
 		const { selectedCollection, collectionCourses } = this.props;
-		const { loading, hasMore } = this.state;
+		const { hasMore } = this.state;
 		return (
-			<InfiniteScroll
-				pageStart={0}
-				hasMore={hasMore}
-				loadMore={this.loadMore}
-				loader={loading ?
-					null :
-					<Loading ey={collectionCourses.length ? collectionCourses[0].name : 'progress'} />
-				}
+
+			<LayoutWithSidebar
+				sidebar={<UserProgressToolbar />}
 			>
-				<SlayLessonCards
-					loading={loading}
-					lessons={collectionCourses}
-					name={selectedCollection ? selectedCollection.name : ''}
-				/>
-			</InfiniteScroll>
+				<InfiniteScroll
+					pageStart={0}
+					hasMore={hasMore}
+					loadMore={this.loadMore}
+				>
+					<SlayLessonCards
+						lessons={collectionCourses}
+						name={selectedCollection ? selectedCollection.name : ''}
+					/>
+				</InfiniteScroll>
+
+			</LayoutWithSidebar>
 		);
 	}
 }
