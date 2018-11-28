@@ -96,17 +96,26 @@ class IReplies {
 		return withUserInfo.id;
 	}
 
-	concatRepliesByOrder = (oldReplies, newReplies, orderBy) => {
-		const replies = uniqBy([ ...oldReplies, ...newReplies ], reply => reply.id);
+	sortReplies = (replies, orderBy) => {
 		switch (orderBy) {
 		case IReplies.ORDER_BY_VOTE:
-			return replies.slice().sort((a, b) => (a.isAccepted ? -1 : b.votes - a.votes));
+			return replies.slice().sort((a, b) => b.votes - a.votes);
 		case IReplies.ORDER_BY_DATE:
-			return replies.slice().sort((a, b) =>
-				(a.isAccepted ? -1 : new Date(b.date) - new Date(b.date)));
+			return replies.slice().sort((a, b) => new Date(b.date) - new Date(b.date));
 		default:
 			throw new Error('Couldn\'t identify replies order');
 		}
+	}
+
+	concatRepliesByOrder = (oldReplies, newReplies, orderBy) => {
+		const replies = uniqBy([ ...oldReplies, ...newReplies ], reply => reply.id);
+		const sortedReplies = this.sortReplies(replies, orderBy);
+		const acceptedIndex = sortedReplies.findIndex(r => r.isAccepted);
+		if (acceptedIndex !== -1) {
+			const [ accepted ] = sortedReplies.splice(acceptedIndex, 1);
+			sortedReplies.unshift(accepted);
+		}
+		return sortedReplies;
 	}
 
 	@action getRepliesByID = (findPostID) => {
