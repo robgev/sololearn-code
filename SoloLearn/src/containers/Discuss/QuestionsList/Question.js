@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { translate } from 'react-i18next';
 import {
-	Container, SecondaryTextBlock, FlexBox, Title, HorizontalDivider, ListItem,
+	Link, Container, SecondaryTextBlock, FlexBox, Title, HorizontalDivider, ListItem,
 } from 'components/atoms';
 import { ContainerLink, UsernameLink } from 'components/molecules';
 import { updateDate } from 'utils';
@@ -12,8 +12,8 @@ const Question = ({ question, t }) => (
 	<Fragment>
 		<ListItem>
 			<FlexBox column className="question">
-				<ContainerLink to={`/discuss/${question.id}`}>
-					<FlexBox className="info">
+				<FlexBox className="info">
+					<ContainerLink to={`/discuss/${question.id}`}>
 						<FlexBox className="numbers">
 							<NumberWithText
 								number={question.votes}
@@ -24,12 +24,14 @@ const Question = ({ question, t }) => (
 								text={question.answers === 1 ? t('discuss.answer-one-format') : t('discuss.answer-other-format')}
 							/>
 						</FlexBox>
-						<FlexBox column className="question-info">
+					</ContainerLink>
+					<FlexBox column className="question-info">
+						<Link to={`/discuss/${question.id}`}>
 							<Title>{question.title}</Title>
-							<Tags tags={question.tags} />
-						</FlexBox>
+						</Link>
+						<Tags tags={question.tags} />
 					</FlexBox>
-				</ContainerLink>
+				</FlexBox>
 				<Container className="author">
 					<SecondaryTextBlock className="text">{updateDate(question.date)} </SecondaryTextBlock>
 					<UsernameLink to={`/profile/${question.userID}`}>{question.userName}</UsernameLink>
