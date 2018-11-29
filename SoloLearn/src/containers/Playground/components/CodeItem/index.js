@@ -9,7 +9,7 @@ const CodeItem = ({ code }) => (
 	<Fragment>
 		<ListItem className="code-item-wrapper">
 			<UserTooltip userData={code}>
-				<ProfileAvatar user={code} />
+				<ProfileAvatar className="user" user={code} />
 			</UserTooltip>
 			<Container className="details-wrapper">
 				<Link to={`/playground/${code.publicID}`}>

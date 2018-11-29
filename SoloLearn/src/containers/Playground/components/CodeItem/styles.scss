@@ -1,6 +1,11 @@
+@import '~styles/variables';
+
 .code-item-wrapper {
 	display: flex;
 	color: inherit;
+	.user {
+		margin-right: $secondary_gap_size;
+	}
 	.details-wrapper {
 		display: flex;
 		flex-direction: column;
