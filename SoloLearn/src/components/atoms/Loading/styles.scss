@@ -2,7 +2,8 @@
 @import '~styles/variables';
 
 .atom_loading {
-	margin: $primary_gap_size;
+	display: block;
+	margin: $primary_gap_size auto;
 	.circle {
 		color: $primary_color;
 	}

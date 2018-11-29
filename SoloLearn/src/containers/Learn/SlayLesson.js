@@ -148,7 +148,7 @@ class SlayLesson extends PureComponent {
 				<Container>
 					<PaperContainer>
 						{	loading
-							? <Loading />
+							? <Loading/>
 							: (
 								<Fragment>
 									<SlayLessonContent

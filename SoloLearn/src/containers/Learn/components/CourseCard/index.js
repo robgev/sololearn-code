@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getCourseNameById, toSeoFriendly } from 'utils';
 import { slayItemTypes } from 'constants/ItemTypes';
 
-import { Container, PaperContainer, Link, Image, SecondaryTextBlock, Title } from 'components/atoms';
+import { Container, PaperContainer, Link, Image, SecondaryTextBlock, Title, HorizontalDivider } from 'components/atoms';
 import { ViewStats, UsernameLink } from 'components/molecules';
 
 import './styles.scss';
@@ -25,7 +25,7 @@ const CourseCard = ({
 	comments,
 	className,
 }) => (
-	<PaperContainer className={`course-card-container ${small ? 'small' : ''} ${className || ''}`}>
+	<Container className={`course-card-container ${small ? 'small' : ''} ${className || ''}`}>
 		{
 			title &&
 				<Container className="meta-info">
@@ -63,7 +63,8 @@ const CourseCard = ({
 				}
 			</Container>
 		</Link>
-	</PaperContainer>
+		<HorizontalDivider/>
+	</Container>
 );
 
 const mapStateToProps = state => ({ courses: state.courses });
