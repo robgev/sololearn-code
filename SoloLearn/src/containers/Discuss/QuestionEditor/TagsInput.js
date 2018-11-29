@@ -12,6 +12,8 @@ class TagsInput extends Component {
 		value: '',
 	};
 
+	static maxTagLength = 24;
+
 	static SuggestionsContainer = ({ containerProps, children }) => (
 		<PaperContainer {...containerProps}>
 			{children}
@@ -82,8 +84,10 @@ class TagsInput extends Component {
 	onChange = (e) => {
 		if (!this.props.canAddTag) {
 			this.props.setTagsError(true);
-		} else {
+		} else if (e.currentTarget.value.length <= TagsInput.maxTagLength) {
 			this.setState({ value: e.currentTarget.value });
+		} else {
+			this.addTag(e.currentTarget.value);
 		}
 	};
 
