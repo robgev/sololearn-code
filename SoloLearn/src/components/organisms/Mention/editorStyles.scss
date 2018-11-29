@@ -7,9 +7,13 @@
   margin-bottom: 0;
   box-shadow: inset 0px 1px 8px -3px #ABABAB;
   background: #fefefe;
+  &.expanded {
+    .DraftEditor-root {
+      height: 100%;
+    }
+  }
 }
 
 .editor :global(.public-DraftEditor-content) {
 	overflow: auto;
-	// max-height: 160px;
 }
