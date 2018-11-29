@@ -1,8 +1,8 @@
 @import '~styles/colors';
 @import '~styles/variables';
-$title-color: $main_text_color;
 
 .atom_title {
-  font-size: $title-size;
-  color: $title-color;
+  font-size: $title_size;
+  color: $main_text_color;
+  font-weight: $title_weight
 }
