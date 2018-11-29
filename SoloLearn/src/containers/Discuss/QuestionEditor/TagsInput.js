@@ -82,12 +82,12 @@ class TagsInput extends Component {
 	};
 
 	onChange = (e) => {
-		if (!this.props.canAddTag) {
-			this.props.setTagsError(true);
-		} else if (e.currentTarget.value.length <= TagsInput.maxTagLength) {
-			this.setState({ value: e.currentTarget.value });
-		} else {
-			this.addTag(e.currentTarget.value);
+		if (this.props.canAddTag) {
+			if (e.currentTarget.value.length <= TagsInput.maxTagLength) {
+				this.setState({ value: e.currentTarget.value });
+			} else {
+				this.addTag(e.currentTarget.value);
+			}
 		}
 	};
 

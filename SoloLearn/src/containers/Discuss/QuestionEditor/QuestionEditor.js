@@ -55,7 +55,6 @@ class QuestionEditor extends Component {
 			this.setTagsError(false);
 			return true; // added
 		}
-		this.setTagsError(true);
 		return false; // not added
 	}
 
