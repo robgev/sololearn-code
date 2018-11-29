@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { translate } from 'react-i18next';
 
 import { CourseCard } from 'containers/Learn/components';
-import { Container, Title, SecondaryTextBlock } from 'components/atoms';
-import { TextLink } from 'components/molecules';
+import { Container, List, ListItem, HorizontalDivider, Heading } from 'components/atoms';
+import { EmptyCard, ViewMoreLink } from 'components/molecules';
 
 const SidebarCollection = ({
 	t,
@@ -13,39 +13,38 @@ const SidebarCollection = ({
 	bookmarks,
 	noViewMore = false,
 }) => (
-	<Container
-		style={{
-			padding: 15,
-			width: '100%',
-			paddingBottom: 0,
-			boxSizing: 'border-box',
-			borderBottom: '1px solid transparent',
-		}}
-		className="sidebar-collection-card"
-	>
-		<Container style={{ color: 'rgba(0, 0, 0, .87)' }} className="meta-info">
-			<Container className="sidebar-title">
-				<Title className="title" style={{ paddingBottom: 0 }}>{ title }</Title>
-			</Container>
-			{ !noViewMore && items.length > 0 &&
-				<TextLink to={bookmarks ? 'learn/bookmarks' : `/learn/more/author/${userID}`} >
-					{t('common.loadMore')}
-				</TextLink>
-			}
-		</Container>
+	<Container>
+		<Heading>{title}</Heading>
 		{
 			items.length === 0
-				?	<SecondaryTextBlock style={{ padding: '15px 0' }} className="flex-centered">{t('common.empty-list-message')}</SecondaryTextBlock>
-				: items.map(lessonItem => (
-					<CourseCard
-						minimal
-						{...lessonItem}
-						wrapperStyle={{ padding: 0 }}
-						className="collection-card-chip"
-						style={{ padding: 0, boxShadow: 'none' }}
-						key={`${lessonItem.name}-${lessonItem.id}`}
-					/>
-				))
+				? <EmptyCard />
+				: (
+					<List>
+						{
+							items.map(lessonItem => (
+								<Fragment>
+									<ListItem>
+										<CourseCard
+											minimal
+											{...lessonItem}
+											wrapperStyle={{ padding: 0 }}
+											className="collection-card-chip"
+											style={{ padding: 0, boxShadow: 'none' }}
+											key={`${lessonItem.name}-${lessonItem.id}`}
+										/>
+									</ListItem>
+									<HorizontalDivider />
+								</Fragment>
+							))
+						}
+					</List>
+				)
+		}
+		{!noViewMore && items.length > 0 && (
+			<ViewMoreLink to={bookmarks ? 'learn/bookmarks' : `/learn/more/author/${userID}`} >
+				{t('common.loadMore')}
+			</ViewMoreLink>
+		)
 		}
 	</Container>
 );

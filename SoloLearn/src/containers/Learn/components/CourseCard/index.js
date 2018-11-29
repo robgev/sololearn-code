@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getCourseNameById, toSeoFriendly } from 'utils';
 import { slayItemTypes } from 'constants/ItemTypes';
 
-import { Container, PaperContainer, Link, Image, SecondaryTextBlock, Title, HorizontalDivider } from 'components/atoms';
+import { Container, Link, Image, SecondaryTextBlock, Title } from 'components/atoms';
 import { ViewStats, UsernameLink } from 'components/molecules';
 
 import './styles.scss';
@@ -56,14 +56,13 @@ const CourseCard = ({
 					{userName}
 				</UsernameLink>
 				{(!minimal && (Number.isInteger(viewCount) && Number.isInteger(comments))) &&
-				<ViewStats
-					views={viewCount}
-					comments={comments}
-				/>
+						<ViewStats
+							views={viewCount}
+							comments={comments}
+						/>
 				}
 			</Container>
 		</Link>
-		<HorizontalDivider/>
 	</Container>
 );
 
