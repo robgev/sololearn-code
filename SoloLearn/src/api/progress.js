@@ -630,6 +630,10 @@ class ProgressManager {
 		});
 	}
 
+	getPoints() {
+		return this.progress.points;
+	}
+
 	consumePoints(points) {
 		const currentPoints = this.progress.points;
 		return currentPoints >= points;

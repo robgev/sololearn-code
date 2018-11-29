@@ -251,7 +251,7 @@ class Quiz extends Component {
 			t,
 		} = this.props;
 		const { checkResult, isQuizComplete } = this.state;
-
+		
 		if (!this.props.isLoaded) {
 			return <Loading />;
 		}
@@ -319,7 +319,7 @@ class Quiz extends Component {
 					</PopupTitle>
 					<PopupContent>
 						<PopupContentText>
-							{t('learn.popups.unlock.description', { price: this.props.activeModule.skipPrice, total: this.props.userXp })}
+							{t('learn.popups.unlock.description', { price: this.props.activeModule.skipPrice, total: Progress.getPoints() })}
 						</PopupContentText>
 					</PopupContent>
 					<PopupActions>
@@ -344,7 +344,7 @@ class Quiz extends Component {
 					</PopupTitle>
 					<PopupContent>
 						<PopupContentText>
-							{t('learn.get-hint-format', { price: this.props.activeModule.hintPrice, total: this.props.userXp })}
+							{t('learn.get-hint-format', { price: this.props.activeModule.hintPrice, total: Progress.getPoints() })}
 						</PopupContentText>
 					</PopupContent>
 					<PopupActions>
