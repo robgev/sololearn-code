@@ -232,8 +232,9 @@ class Comment extends Component {
 			replies,
 			repliesArray,
 		} = this.props.comment;
+		console.log(userProfile);
 		return (
-			<Container>
+			<Container style={{width:'100%'}}>
 				<CommentView
 					commentsType={this.props.commentsAPI.commentsType}
 					accessLevel={accessLevel}
@@ -288,6 +289,7 @@ class Comment extends Component {
 									{t('common.loadMore')}
 								</FlatButton>
 							}
+
 							<CommentList
 								comments={repliesArray}
 								delete={this.deleteReply}

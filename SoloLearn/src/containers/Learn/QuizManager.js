@@ -379,7 +379,10 @@ class QuizManager extends Component {
 						{childrenWithProps}
 						<Link to={{ pathname: '/discuss', query: { query: tags !== null ? tags : course.language } }}>Q&A</Link>
 					</div>
-					{commentsOpened || activeQuiz.isText ?
+					
+
+				</Paper>
+				{commentsOpened || activeQuiz.isText ?
 						<Comments
 							id={activeQuiz.id}
 							commentsType="lesson"
@@ -387,8 +390,6 @@ class QuizManager extends Component {
 							commentsCount={commentsCount}
 						/> : null
 					}
-
-				</Paper>
 			</Layout>
 		);
 	}

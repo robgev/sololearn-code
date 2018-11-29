@@ -6,14 +6,16 @@ import { withRouter } from 'react-router';
 import { translate } from 'react-i18next';
 import { CountingMentionInput } from 'components/organisms';
 import CommentsAPI from './comments.api';
-import CommentList from './CommentList';
 import IComment from './IComment';
 import CommentsToolbar from './CommentsToolbar';
 import { filterExisting } from './comments.utils';
-import { ProfileAvatar, FlatButton } from 'components/molecules';
-import { Container } from 'components/atoms';
+import CommentList from './CommentList';
+import { ProfileAvatar, FlatButton, InfiniteScroll } from 'components/molecules';
+import { Container, PaperContainer } from 'components/atoms';
+import Comment from './Comment';
 
 import './comments.scss';
+import './CommentList.scss';
 
 const mapStateToProps = ({ userProfile }) => ({ userProfile });
 
@@ -231,62 +233,66 @@ class Comments extends Component {
 	render() {
 		const { t, userProfile } = this.props;
 		return (
-			<Container className="comments-container">
-				<CommentsToolbar
-					count={this.commentsCount}
-					value={this.orderBy}
-					onChange={this.changeOrder}
-				/>
-				<Container className="input-bar">
-					<ProfileAvatar user={userProfile}/>
-					<CountingMentionInput
-						ref={(i) => { this.mentionInput = i; }}
-						onSubmitEnabledChange={this.submitEnabledChange}
-						getUsers={this.commentsAPI.getMentionUsers}
-						placeholder={t('comments.write-comment-placeholder')}
+			<InfiniteScroll
+				loadMore={this.loadMore}
+				hasMore={this.hasMore}
+				isLoading={this.loading}
+				className="comment-list"
+			>
+				<PaperContainer className="comments-container">
+					<CommentsToolbar
+						count={this.commentsCount}
+						value={this.orderBy}
+						onChange={this.changeOrder}
 					/>
-				</Container>
-				<FlatButton
-					onClick={this.addComment}
-					disabled={!this.isSubmitEnabled}
-				>
-					Comment
-				</FlatButton>
-				{
-					this.isOnReply &&
-					<FlatButton onClick={this.reset} >
-						{t('common.back-action-title')}
+					<Container className="input-bar">
+						<ProfileAvatar user={userProfile}/>
+						<CountingMentionInput
+							ref={(i) => { this.mentionInput = i; }}
+							onSubmitEnabledChange={this.submitEnabledChange}
+							getUsers={this.commentsAPI.getMentionUsers}
+							placeholder={t('comments.write-comment-placeholder')}
+						/>
+					</Container>
+					<FlatButton
+						onClick={this.addComment}
+						disabled={!this.isSubmitEnabled}
+					>
+						Comment
 					</FlatButton>
-				}
-				{
-					this.hasMoreAbove &&
-					<FlatButton onClick={this.getCommentsAbove}>
-						{t('common.loadMore')}
-					</FlatButton>
-				}
-				<CommentList
-					onCommentAdd={this.onCommentAdd}
-					onCommentDelete={this.onCommentDelete}
-					commentsRef={this.addRef}
-					delete={this.deleteComment}
-					comments={this.comments}
-					loadMore={this.loadMore}
-					hasMore={this.hasMore && !this.initial && !this.isOnReply}
-					loading={this.loading}
-					infinite
-					commentsAPI={this.commentsAPI}
-				/>
-				{
-					this.initial && this.comments.length > 0 && this.hasMore && !this.isOnReply
-					&& (
-						<FlatButton
-							onClick={this.unlockInitial}
-						>
+					{
+						this.isOnReply &&
+						<FlatButton onClick={this.reset} >
+							{t('common.back-action-title')}
+						</FlatButton>
+					}
+					{
+						this.hasMoreAbove &&
+						<FlatButton onClick={this.getCommentsAbove}>
 							{t('common.loadMore')}
 						</FlatButton>
-					)
-				}
-			</Container>
+					}
+						<CommentList
+							comments={this.comments}
+							onCommentAdd={this.onCommentAdd}
+							onCommentDelete={this.onCommentDelete}
+							commentsRef={this.addRef}
+							delete={this.deleteComment}
+							commentsAPI={this.commentsAPI}
+						/>
+					{
+						this.initial && this.comments.length > 0 && this.hasMore && !this.isOnReply
+						&& (
+							<FlatButton
+								onClick={this.unlockInitial}
+							>
+								{t('common.loadMore')}
+							</FlatButton>
+						)
+					}
+				</PaperContainer>
+			</InfiniteScroll>
+					
 		);
 	}
 }

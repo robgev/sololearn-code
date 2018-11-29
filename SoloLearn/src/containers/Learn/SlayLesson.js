@@ -6,7 +6,7 @@ import { translate } from 'react-i18next';
 import { toSeoFriendly } from 'utils';
 import Comments from 'containers/Comments/CommentsBase';
 import { PaperContainer, Container, Loading } from 'components/atoms';
-import { ContainerLink, LayoutWithSidebar, RaisedButton } from 'components/molecules';
+import { ContainerLink, LayoutWithSidebar, RaisedButton, EmptyCard } from 'components/molecules';
 
 import Service from 'api/service';
 import {
@@ -146,44 +146,44 @@ class SlayLesson extends PureComponent {
 				}
 			>
 				<Container>
-					<PaperContainer>
-						{	loading
-							? <Loading/>
-							: (
-								<Fragment>
-									<SlayLessonContent
-										t={t}
-										date={date}
-										type={type}
-										name={name}
-										parts={parts}
-										withAuthorInfo
-										userData={userData}
-										itemType={itemType}
-										textContent={content}
-										pageNumber={pageNumber}
-										activeLesson={activeLesson}
-										courseLanguage={language}
-										commentsCount={comments}
-										isBookmarked={isBookmarked}
-									/>
-									{nextLesson &&
-									<ContainerLink to={`/learn/lesson/${nextLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${nextLesson.id}/${toSeoFriendly(nextLesson.name, 100)}/1`}>
-										<RaisedButton color="secondary">
-											{t('learn.buttons-continue')}
-										</RaisedButton>
-									</ContainerLink>
-									}
-									<Comments
-										id={id}
-										type={1}
-										commentsType="userLesson"
-										commentsCount={commentsCount}
-									/>
-								</Fragment>
-							)
-						}
-					</PaperContainer>
+					{loading
+						? <EmptyCard loading paper />
+						: (
+							<Fragment>
+							<PaperContainer>
+										<SlayLessonContent
+											t={t}
+											date={date}
+											type={type}
+											name={name}
+											parts={parts}
+											withAuthorInfo
+											userData={userData}
+											itemType={itemType}
+											textContent={content}
+											pageNumber={pageNumber}
+											activeLesson={activeLesson}
+											courseLanguage={language}
+											commentsCount={comments}
+											isBookmarked={isBookmarked}
+										/>
+										{nextLesson &&
+										<ContainerLink to={`/learn/lesson/${nextLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${nextLesson.id}/${toSeoFriendly(nextLesson.name, 100)}/1`}>
+											<RaisedButton color="secondary">
+												{t('learn.buttons-continue')}
+											</RaisedButton>
+										</ContainerLink>
+										}
+							</PaperContainer>
+							<Comments
+								id={id}
+								type={1}
+								commentsType="userLesson"
+								commentsCount={commentsCount}
+							/>
+							</Fragment>
+						)
+					}
 					{ !loading &&
 					<RelatedLessons
 						id={id}

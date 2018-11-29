@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { observer } from 'mobx-react';
 import { InfiniteScroll } from 'components/molecules'
 import Comment from './Comment';
@@ -6,11 +6,7 @@ import Comment from './Comment';
 import './CommentList.scss';
 
 const CommentList = observer(props => (
-	<InfiniteScroll
-		loadMore={props.loadMore}
-		hasMore={props.infinite && props.hasMore}
-		isLoading={props.loading}
-		className="comment-list"
+	<Fragment
 	>
 		{props.comments.map(comment => (
 			<Comment
@@ -24,12 +20,7 @@ const CommentList = observer(props => (
 				toggleReplyBox={props.toggleReplyBox}
 			/>
 		))}
-	</InfiniteScroll>
+	</Fragment>
 ));
-
-CommentList.defaultProps = {
-	loadMore() { }, // Replies don't have load more
-	infinite: false,
-};
 
 export default CommentList;

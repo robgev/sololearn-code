@@ -65,16 +65,16 @@ class Playground extends Component {
 							<CodeOutput playground={this.playground} />
 						</EditorContainer>
 						<CodeActions playground={this.playground} />
-						{!isMinimal &&
+						<InputPopup playground={this.playground} />
+					</PaperContainer>
+					{!isMinimal &&
 						<Comments
 							type={1}
 							commentsType="code"
 							id={data.id}
 							commentsCount={data.comments}
 						/>
-						}
-						<InputPopup playground={this.playground} />
-					</PaperContainer>
+					}
 				</Layout>
 			);
 	}
