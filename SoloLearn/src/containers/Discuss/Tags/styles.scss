@@ -1,3 +1,9 @@
+@import '~styles/variables';
+
 .discuss_tags {
-	flex-wrap: wrap;	
+	flex-wrap: wrap;
+	.tag {
+		margin-top: $secondary_gap_size;
+		margin-right: $secondary_gap_size;
+	}	
 }

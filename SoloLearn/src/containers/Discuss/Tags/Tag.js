@@ -3,7 +3,7 @@ import { Link } from 'components/atoms';
 import { TagLabel } from 'components/molecules';
 
 const Tag = ({ tag }) => (
-	<TagLabel>
+	<TagLabel className="tag">
 		<Link to={{ pathname: '/discuss', query: { query: tag } }}>
 			{tag}
 		</Link>
