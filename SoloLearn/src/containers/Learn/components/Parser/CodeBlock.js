@@ -58,7 +58,7 @@ class CodeBlock extends Component {
 							</FlatButton>
 						</FlexBox> :
 						<FlexBox column style={{ position: 'relative' }}>
-							<LanguageLabel language={courseLanguage}>
+							<LanguageLabel language={courseLanguage} className="language-label">
 								{courseLanguage}
 							</LanguageLabel>
 							{children}

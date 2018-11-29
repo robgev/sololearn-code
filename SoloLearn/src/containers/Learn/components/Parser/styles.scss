@@ -29,6 +29,11 @@ $note_border_color: #c9c54c;
   }
 	.code-container {
 		overflow: hidden;
+    .language-label {
+      position: absolute;
+      right: 0px;
+      top: 10px;
+    }
 		.code-button {
 			align-self: flex-end;
 		}
