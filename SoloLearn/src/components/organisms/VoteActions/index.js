@@ -9,9 +9,9 @@ import VoteButtons from './VoteButtons';
 import LikesPopup from './LikesPopup';
 import './styles.scss';
 
-const mapDispatchToProps = {vote};
+const mapDispatchToProps = { vote };
 
-@connect(null, mapDispatchToProps) 
+@connect(null, mapDispatchToProps)
 @observer
 class VoteActions extends Component {
 	@observable likes = new ILikes({
@@ -24,7 +24,6 @@ class VoteActions extends Component {
 	@observable open = false;
 
 	@action toggleOpen = () => {
-		console.log(this.open);
 		this.open = !this.open;
 		if (!this.open) {
 			this.likes.empty();
@@ -35,19 +34,22 @@ class VoteActions extends Component {
 		const { type, id, vote } = this.props;
 		this.likes.vote({ newVote: 1 });
 		this.props.onChange({ vote: this.likes.userVote, votes: this.likes.voteCount });
-		vote({type, id, vote: this.likes.userVote, votes: this.likes.voteCount});
+		vote({
+			type, id, vote: this.likes.userVote, votes: this.likes.voteCount,
+		});
 	}
 
 	onDownvote = () => {
 		const { type, id, vote } = this.props;
 		this.likes.vote({ newVote: -1 });
 		this.props.onChange({ vote: this.likes.userVote, votes: this.likes.voteCount });
-		vote({type, id, vote: this.likes.userVote, votes: this.likes.voteCount});
+		vote({
+			type, id, vote: this.likes.userVote, votes: this.likes.voteCount,
+		});
 	}
 
 	render() {
 		const { vertical } = this.props;
-		console.log('aaa');
 		return (
 			<Fragment>
 				<VoteButtons
@@ -71,11 +73,11 @@ VoteActions.defaultProps = {
 VoteActions.propTypes = {
 	id: PropTypes.number.isRequired,
 	type: PropTypes
-		.oneOf([ 'code', 'post', 'lessonComment', 'userLessonComment', 'codeComment' ]).isRequired,
+		.oneOf(['code', 'post', 'lessonComment', 'userLessonComment', 'codeComment']).isRequired,
 	vertical: PropTypes.bool,
 	onChange: PropTypes.func,
 	initialCount: PropTypes.number.isRequired,
-	initialVote: PropTypes.oneOf([ 1, 0, -1 ]).isRequired,
+	initialVote: PropTypes.oneOf([1, 0, -1]).isRequired,
 };
 
 export default VoteActions;
