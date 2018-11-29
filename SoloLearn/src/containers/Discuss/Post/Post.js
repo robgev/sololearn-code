@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { changePostRepliesCount, removePostFromList, } from 'actions/discuss';
+import { changePostRepliesCount, removePostFromList } from 'actions/discuss';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
-import { LayoutWithSidebar } from 'components/molecules';
+import { LayoutWithSidebar, EmptyCard } from 'components/molecules';
 import Replies from './Replies';
 import Question from './Question';
 import PostSidebar from './PostSidebar';
@@ -54,11 +54,17 @@ class Post extends Component {
 				sidebar={<PostSidebar />}
 				className="discuss_post"
 			>
-				<Question
-					post={this.post.data}
-					onFollowClick={this.post.onFollow}
-					onDelete={this.handleDelete}
-				/>
+				{
+					this.post.error === null
+						? (
+							<Question
+								post={this.post.data}
+								onFollowClick={this.post.onFollow}
+								onDelete={this.handleDelete}
+							/>
+						)
+						: <EmptyCard paper />
+				}
 				{
 					this.post.data !== null
 					&& (

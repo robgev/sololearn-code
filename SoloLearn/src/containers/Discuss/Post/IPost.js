@@ -17,6 +17,8 @@ class IPost {
 
 	@observable data = null;
 
+	@observable error = null;
+
 	@computed get count() {
 		if (this.data === null) {
 			return null;
@@ -39,10 +41,15 @@ class IPost {
 		return res;
 	}
 
+	@action setError = (err) => {
+		this.error = err;
+	}
+
 	@action getPost = () => {
 		if (this.getPostPromise === null) {
 			this.getPostPromise = Service.request('Discussion/GetPost', { id: this.id })
 				.then(this.handleGottenPost)
+				.catch(this.setError)
 				.finally(this.endGetPostRequest);
 		}
 		return this.getPostPromise;
