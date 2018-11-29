@@ -7,6 +7,7 @@
 	color: $secondary_color;
 	.CircularProgressbar-path {
 		stroke: $secondary_color;
+		transition: none;
 	}
 	.CircularProgressbar-trail {
 		stroke: $secondary_background_color;
