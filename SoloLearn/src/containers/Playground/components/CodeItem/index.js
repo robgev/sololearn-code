@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Lock } from 'components/icons';
-import { Link, Container, ListItem, HorizontalDivider } from 'components/atoms';
+import { Link, Title, Container, ListItem, HorizontalDivider } from 'components/atoms';
 import { ViewStats, ProfileAvatar, UserTooltip, LanguageLabel } from 'components/molecules';
 
 import './styles.scss';
@@ -13,14 +13,16 @@ const CodeItem = ({ code }) => (
 			</UserTooltip>
 			<Container className="details-wrapper">
 				<Link to={`/playground/${code.publicID}`}>
-					{code.name}
+					<Title>
+						{code.name}
+					</Title>
 				</Link>
 				<Container className="stats">
 					<LanguageLabel language={code.language} />
 					<ViewStats votes={code.votes} comments={code.comments} />
 					<Container>
 						{!code.isPublic &&
-						<Lock />
+							<Lock />
 						}
 					</Container>
 				</Container>
