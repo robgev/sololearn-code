@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import ReactGA from 'react-ga';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
@@ -8,7 +8,14 @@ import { Loading, PaperContainer } from 'components/atoms';
 import Comments from 'containers/Comments/CommentsBase';
 
 import IPlayground from './IPlayground';
-import { Editor, CodeInfoToolbar, InputPopup, CodeActions } from './components';
+import {
+	Editor,
+	SplitPane,
+	CodeOutput,
+	InputPopup,
+	CodeActions,
+	CodeInfoToolbar,
+} from './components';
 import './styles.scss';
 
 @translate()
@@ -35,12 +42,14 @@ class Playground extends Component {
 
 	render() {
 		const {
+			data,
+			isInline,
 			isFetching,
 			isFullscreen,
-			isInline,
-			data,
+			hasLiveOutput,
 		} = this.playground;
 		const isMinimal = !data.id || isInline || isFullscreen;
+		const EditorContainer = !hasLiveOutput ? SplitPane : Fragment;
 		return isFetching
 			? <Loading />
 			: (
@@ -49,7 +58,12 @@ class Playground extends Component {
 						<CodeInfoToolbar playground={this.playground} />
 					}
 					<PaperContainer className="playground_main-container">
-						<Editor playground={this.playground} />
+						<EditorContainer
+							playground={this.playground}
+						>
+							<Editor playground={this.playground} />
+							<CodeOutput playground={this.playground} />
+						</EditorContainer>
 						<CodeActions playground={this.playground} />
 						{!isMinimal &&
 						<Comments

@@ -38,7 +38,7 @@ const InputPopup = ({
 			</FlatButton>
 			<FlatButton
 				variant="primary"
-				onClick={playground.runCode}
+				onClick={playground.runCompiledCode}
 			>
 				{t('common.submit-action-title')}
 			</FlatButton>

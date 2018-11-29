@@ -1,0 +1,28 @@
+@import '~styles/colors';
+
+$console_dark_bg_color: $main_text_color;
+$console_light_bg_color: $background_color;
+
+.playground_live-output-container {
+	.playground_output-frame {
+		display: block;
+		height: 500px;
+		width: 100%;
+		border: none;
+	}
+	.playground_console-root {
+		.playground_console {
+			max-height: 50px;
+			overflow-y: scroll;
+			&.light {
+				background-color: $console_light_bg_color;
+			}
+			&.dark {
+				background-color: $console_dark_bg_color;
+			}
+		}
+	}
+	&.playground_output-frame-fullscreen {
+		height: 100%;
+	}
+}

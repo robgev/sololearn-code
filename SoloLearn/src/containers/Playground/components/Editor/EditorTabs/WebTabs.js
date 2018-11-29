@@ -17,16 +17,19 @@ const WebTabs = ({ location, languages, playground }) => (
 				key={languages.html}
 				value="html"
 				label={languages.html}
+				onClick={playground.hideOutput}
 			/>,
 			<Tab
 				key={languages.css}
 				value="css"
 				label={languages.css}
+				onClick={playground.hideOutput}
 			/>,
 			<Tab
 				key={languages.javascript}
 				value="javascript"
 				label={languages.javascript}
+				onClick={playground.hideOutput}
 			/>,
 		]
 		}
@@ -34,6 +37,7 @@ const WebTabs = ({ location, languages, playground }) => (
 		<Tab
 			value="php"
 			label={languages.php}
+			onClick={playground.hideOutput}
 		/>
 		}
 	</Tabs>

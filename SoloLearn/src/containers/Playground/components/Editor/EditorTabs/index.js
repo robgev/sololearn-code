@@ -16,15 +16,15 @@ import WebTabs from './WebTabs';
 
 const PlaygroundTabs = ({ t, playground }) => (
 	<FlexBox justifyBetween align noShrink>
-		{ playground.isWeb || playground.language === 'php'
+		{ playground.hasLiveOutput
 			?	<WebTabs playground={playground} languages={languageNames} />
 			: <TextContainer>{languageNames[playground.language]}</TextContainer>
 		}
 
 		<div>
-			{ (playground.isWeb || playground.language === 'php') &&
+			{ playground.hasLiveOutput &&
 			<FlatButton
-				onClick={() => alert('RUN')}
+				onClick={playground.runWebCode}
 			>
 				{t('code_playground.output')}
 			</FlatButton>

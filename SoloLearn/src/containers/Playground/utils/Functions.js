@@ -84,17 +84,14 @@ export const wrapCodeWithComment = ({ editorState, userName, language }) => {
 // ------------------------------ Running ------------------------------
 export const checkForInput = ({ code, language }) => {
 	// Legacy code, don't know why we need this replaces, don't wanna touch
+	const inputRegex = regexes.inputRegexes[language];
 	if (language === 'py') {
 		const codeBlock = code.replace(/(([^'"])(#)|(^#))((.*)$)/gm, '');
-		const inputRegex = regexes[language];
 		return inputRegex.test(codeBlock);
 	} else if (language === 'rb') {
 		const codeBlock = code.replace(/(=begin(\n[\s\S]*?)=end)|(([^'"])(#)|(^#))((.*)$)/gm, '');
-		const inputRegex = regexes[language];
 		return inputRegex.test(codeBlock);
 	}
-
 	const codeBlock = code.replace(/(\/\*([\s\S]*?)\*\/)|(\/\/(.*)$)/gm, '');
-	const inputRegex = regexes[language];
 	return inputRegex.test(codeBlock);
 };

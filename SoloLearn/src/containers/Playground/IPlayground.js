@@ -15,6 +15,7 @@ class IPlayground {
 	@observable inputValue = '';
 	@observable saveCodePromise = null;
 	@observable compileCodePromise = null;
+	@observable output = null;
 
 	constructor({
 		userId,
@@ -87,8 +88,16 @@ class IPlayground {
 		return this.saveCodePromise !== null;
 	}
 
+	@computed get isRunning() {
+		return this.compileCodePromise !== null;
+	}
+
 	@computed get isWeb() {
 		return [ 'html', 'css', 'javascript' ].includes(this.language);
+	}
+
+	@computed get hasLiveOutput() {
+		return this.isWeb || this.language === 'php';
 	}
 
 	@computed get isMyCode() {
@@ -133,10 +142,6 @@ class IPlayground {
 		this.isInputPopupOpen = !this.isInputPopupOpen;
 	}
 
-	@action toggleOutput = () => {
-		this.isOutputOpen = !this.isOutputOpen;
-	}
-
 	@action toggleFullScreen = () => {
 		this.isFullscreen = !this.isFullscreen;
 	}
@@ -145,8 +150,8 @@ class IPlayground {
 		this.code = this.latestSavedCode;
 	}
 
-	@action changeInputValue = (inputValue) => {
-		this.inputValue = inputValue;
+	@action changeInputValue = (e) => {
+		this.inputValue = e.target.value;
 	}
 
 	@action changeEditorState = (editorValue) => {
@@ -159,7 +164,15 @@ class IPlayground {
 				code: this.editorState.sourceCode,
 				value: `<script src="${sourceUrl}"></script>`,
 			});
-		console.log(this.editorState.sourceCode);
+	}
+
+	@action showOutput = (output) => {
+		this.output = output;
+		this.isOutputOpen = true;
+	}
+
+	@action hideOutput = () => {
+		this.isOutputOpen = false;
 	}
 
 	@action runCodeRequest = async () => {
@@ -171,7 +184,7 @@ class IPlayground {
 		});
 		try {
 			const { output } = await this.compileCodePromise;
-			// this.showOutput(output);
+			this.showOutput(output);
 		} finally {
 			this.compileCodePromise = null;
 			this.inputValue = '';
@@ -183,11 +196,11 @@ class IPlayground {
 			code: this.editorState.sourceCode,
 			value: `<style>${this.editorState.cssCode}</style>`,
 		});
-		const wholeCode = addInBody({
+		const wholeCode = addUserScript({
 			code: htmlWithCss,
 			value: `<script type="text/javascript">${this.editorState.jsCode}</script>`,
 		});
-		// this.showWebOutput(wholeCode);
+		this.showOutput(wholeCode);
 	}
 
 	@action runCompiledCode = async () => {
@@ -198,6 +211,7 @@ class IPlayground {
 		if (needsInput && !this.inputValue) {
 			this.toggleInputPopup();
 		} else {
+			this.isInputPopupOpen = false;
 			this.runCodeRequest();
 		}
 	}

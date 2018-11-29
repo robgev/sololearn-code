@@ -1,9 +1,20 @@
+@import '~styles/colors';
+
+.playground_split-pane-container {
+	position: relative;
+	height: 600px;
+	&.split-pane_inline {
+		height: 300px;
+	}
+	&.split-pane_fullscreen {
+		height: calc(100vh - 50px);
+	}
+}
+
 .Resizer {
-	background:#5F7E97;
+	background:$primary_color;
 	opacity: 1;
 	z-index: 1;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	-moz-background-clip: padding;
 	-webkit-background-clip: padding;
@@ -11,7 +22,6 @@
 }
 
 .Resizer:hover {
-	-webkit-transition: all 150ms ease;
 	transition: all 150ms ease;
 }
 
@@ -34,6 +44,11 @@
 }
 .Resizer.disabled:hover {
 	border-color: transparent;
+}
+
+.Pane.Pane1 {
+	max-height: 100%;
+	flex-direction: column;
 }
 
 .Pane.Pane2 {

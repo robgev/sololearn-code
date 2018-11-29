@@ -21,11 +21,13 @@ import './styles.scss';
 
 const Editor = ({
 	playground: {
+		id,
 		code,
 		isDark,
 		publicId,
 		language,
 		isFullscreen,
+		hasLiveOutput,
 		changeEditorState,
 	},
 }) => (
@@ -33,7 +35,9 @@ const Editor = ({
 		wrapEnabled
 		value={code}
 		width="100%"
-		height={isFullscreen ? '100%' : '500px'}
+		// Height is 100% in all cases except when it's web, in which
+		// case it's not a child of SplitPane
+		height={(hasLiveOutput && !isFullscreen) ? '500px' : '100%'}
 		showPrintMargin={false}
 		theme={isDark ? 'monokai' : 'chrome'}
 		mode={editorModeNames[language]}

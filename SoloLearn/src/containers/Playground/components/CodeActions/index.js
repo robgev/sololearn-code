@@ -1,4 +1,3 @@
-// React modules
 import React, { PureComponent } from 'react';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
@@ -36,23 +35,10 @@ class Toolbar extends PureComponent {
 	}
 
 	handleSnackBarClose = (reason) => {
+		// TODO: Snackbar logic
 		if (reason !== 'clickaway') {
 			this.setState({ isSnackbarOpen: false });
 		}
-	}
-
-	addExternalSource = () => {
-		const {
-			mode, jsCode, handleEditorChange, insertToHead,
-		} = this.props;
-		const newSourceCode =
-			insertToHead(`<script src="${this.state.sourceUrl}">
-	${jsCode}
-</script>\n`);
-		if (mode === 'html') {
-			handleEditorChange(newSourceCode);
-		}
-		this.handleExternalSourcesPopupClose();
 	}
 
 	render() {
@@ -100,9 +86,12 @@ class Toolbar extends PureComponent {
 					</FlatButton>
 
 					<RaisedButton
-						onClick={() => alert('RUN')}
 						variant="secondary"
-						disabled={playground.isSaving} // isRunning ||
+						disabled={playground.isSaving || playground.isRunning}
+						onClick={playground.isWeb
+							? playground.runWebCode
+							: playground.runCompiledCode
+						}
 					>
 						Run
 						<Run />
