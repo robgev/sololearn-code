@@ -67,6 +67,13 @@ class MentionInput extends Component {
 		});
 	};
 
+	handleReturn = () => {
+		if (this.getLength() > this.props.maxLength - 1) {
+			return 'handled';
+		}
+		return 'not_handled';
+	}
+
 	handleBeforeInput = () => {
 		const currentContent = this.state.editorState.getCurrentContent();
 		const currentContentLength = currentContent.getPlainText('').length;
@@ -193,6 +200,7 @@ class MentionInput extends Component {
 					ref={(element) => { this.editor = element; }}
 					handleBeforeInput={this.handleBeforeInput}
 					handlePastedText={this.handlePastedText}
+					handleReturn={this.handleReturn}
 				/>
 				<MentionSuggestions
 					onSearchChange={this.onSearchChange}
