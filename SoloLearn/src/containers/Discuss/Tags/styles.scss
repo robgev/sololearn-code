@@ -3,7 +3,6 @@
 .discuss_tags {
 	flex-wrap: wrap;
 	.tag {
-		margin-top: $secondary_gap_size;
-		margin-right: $secondary_gap_size;
+		margin: $secondary_gap_size $secondary_gap_size $secondary_gap_size 0;
 	}	
 }
