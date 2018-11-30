@@ -19,6 +19,7 @@ import {
 } from 'actions/learn';
 import { getModuleByName } from 'reducers/reducer_modules';
 import { getLessonByName } from 'reducers/reducer_lessons';
+import { getCourseByCourseName } from 'reducers/courses.reducer';
 
 // Utils
 import Progress, { ProgressState } from 'api/progress';
@@ -46,7 +47,7 @@ const isQuizCompleted = ({ quizID, lessonProgress }) => {
 
 const mapStateToProps = (state, ownProps) => ({
 	isLoaded: isLoaded(state, 'quizzes'),
-	course: state.course,
+	course: getCourseByCourseName(state, ownProps.params.courseName),
 	lessons: state.lessonsMapping,
 	activeQuiz: state.activeQuiz,
 	lesson: getLessonByName(state, ownProps.params.lessonName),
@@ -76,6 +77,7 @@ class QuizManager extends Component {
 			loadCourseInternal,
 			course,
 		} = this.props;
+
 
 		this.setState({ loading: true });
 
