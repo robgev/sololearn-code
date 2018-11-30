@@ -5,14 +5,13 @@ import { observer } from 'mobx-react';
 import { withRouter } from 'react-router';
 import { translate } from 'react-i18next';
 import { CountingMentionInput } from 'components/organisms';
+import { ProfileAvatar, FlatButton, InfiniteScroll } from 'components/molecules';
+import { Container, PaperContainer } from 'components/atoms';
 import CommentsAPI from './comments.api';
 import IComment from './IComment';
 import CommentsToolbar from './CommentsToolbar';
 import { filterExisting } from './comments.utils';
 import CommentList from './CommentList';
-import { ProfileAvatar, FlatButton, InfiniteScroll } from 'components/molecules';
-import { Container, PaperContainer } from 'components/atoms';
-import Comment from './Comment';
 
 import './comments.scss';
 import './CommentList.scss';
@@ -234,8 +233,9 @@ class Comments extends Component {
 		const { t, userProfile } = this.props;
 		return (
 			<InfiniteScroll
+				initialLoad={false}
 				loadMore={this.loadMore}
-				hasMore={this.hasMore}
+				hasMore={this.hasMore && !this.initial}
 				isLoading={this.loading}
 				className="comment-list"
 			>
@@ -246,7 +246,7 @@ class Comments extends Component {
 						onChange={this.changeOrder}
 					/>
 					<Container className="input-bar">
-						<ProfileAvatar user={userProfile}/>
+						<ProfileAvatar user={userProfile} />
 						<CountingMentionInput
 							ref={(i) => { this.mentionInput = i; }}
 							onSubmitEnabledChange={this.submitEnabledChange}
@@ -272,14 +272,14 @@ class Comments extends Component {
 							{t('common.loadMore')}
 						</FlatButton>
 					}
-						<CommentList
-							comments={this.comments}
-							onCommentAdd={this.onCommentAdd}
-							onCommentDelete={this.onCommentDelete}
-							commentsRef={this.addRef}
-							delete={this.deleteComment}
-							commentsAPI={this.commentsAPI}
-						/>
+					<CommentList
+						comments={this.comments}
+						onCommentAdd={this.onCommentAdd}
+						onCommentDelete={this.onCommentDelete}
+						commentsRef={this.addRef}
+						delete={this.deleteComment}
+						commentsAPI={this.commentsAPI}
+					/>
 					{
 						this.initial && this.comments.length > 0 && this.hasMore && !this.isOnReply
 						&& (
@@ -292,7 +292,7 @@ class Comments extends Component {
 					}
 				</PaperContainer>
 			</InfiniteScroll>
-					
+
 		);
 	}
 }
