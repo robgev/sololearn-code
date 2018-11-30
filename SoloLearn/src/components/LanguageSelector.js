@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Dialog from 'components/StyledDialog';
 import { List, ListItem } from 'material-ui/List';
-import LoadingOverlay from 'components/LoadingOverlay';
+import { EmptyCard } from 'components/molecules';
 import LanguageCard from 'components/LanguageCard';
 import Localize from 'components/Localize';
 
@@ -19,11 +19,11 @@ const LanguageSelector = ({
 					title={t('factory.quiz-choose-language-title')}
 					open={open}
 					onRequestClose={onClose}
-					bodyStyle={{ border: 'none', padding: 0}}
+					bodyStyle={{ border: 'none', padding: 0 }}
 				>
-					{filteredCourses.length === 0 ? <LoadingOverlay /> : null}
+					{filteredCourses.length === 0 ? <EmptyCard loading /> : null}
 					<List>
-						{filteredCourses.map((course, idx) => (
+						{filteredCourses.map(course => (
 							<div key={course.id} onClick={() => onChoose(course)} tabIndex={0} role="button">
 								<ListItem
 									primaryText={course.languageName}

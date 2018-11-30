@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 
-import { LayoutWithSidebar } from 'components/molecules';
+import { LayoutWithSidebar, EmptyCard } from 'components/molecules';
 
 // Material UI components
 import Paper from 'material-ui/Paper';
@@ -30,7 +30,6 @@ import { toSeoFriendly } from 'utils';
 
 // Additional data and components
 import Comments from 'containers/Comments/CommentsBase';
-import LoadingOverlay from 'components/LoadingOverlay';
 
 import StepIcon from './StepIcon';
 import { UserProgressToolbar } from './components';
@@ -347,7 +346,7 @@ class QuizManager extends Component {
 		if (loading || (!isLoaded) ||
 			(!activeQuiz) ||
 			(this.props.params.quizNumber && !this.props.activeQuiz)) {
-			return <LoadingOverlay />;
+			return <EmptyCard loading paper />;
 		}
 
 		const { quizzes, tags } = activeLesson;
