@@ -46,9 +46,10 @@ class CodeBlock extends Component {
 						<FlexBox column>
 							<Playground
 								inline
-								codeId={codeId}
-								basePath={basePath}
-								params={playgroundParams}
+								lessonCodeId={codeId}
+								language={courseLanguage}
+							// basePath={basePath}
+							// params={playgroundParams}
 							/>
 							<FlatButton
 								className="code-button"
