@@ -1,7 +1,12 @@
 import Service from 'api/service';
 import { observable, action, computed } from 'mobx';
 import { defaultCodes } from './utils/Texts';
-import { addExternal, addUserScript, checkForInput } from './utils/Functions';
+import {
+	addExternal,
+	addUserScript,
+	checkForInput,
+	wrapCodeWithComment,
+} from './utils/Functions';
 
 class IPlayground {
 	@observable data = null;
@@ -240,7 +245,7 @@ class IPlayground {
 	}
 
 	@action saveCode = () => {
-		this.saveCodeRequest(this.data.id);
+		this.saveCodeRequest({ id: this.data.id });
 	}
 
 	@action saveNewCode = ({ name, isPublic }) => {
@@ -248,7 +253,7 @@ class IPlayground {
 			if (!this.isMyCode && this.data.userID) {
 				// If it is another user's code we should give credits :)
 				this.editorState =
-					this.wrapCodeWithComment({
+					wrapCodeWithComment({
 						editorState: this.editorState,
 						userName: this.data.userName,
 						language: this.language,

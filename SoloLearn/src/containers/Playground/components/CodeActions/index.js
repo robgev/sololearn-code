@@ -64,26 +64,27 @@ class Toolbar extends PureComponent {
 					}
 				</div>
 				<div>
-					<FlatButton
-						onClick={this.handleSaveClick}
-						disabled={playground.isSaving}
-					>
-						{t('common.save-action-title')}
-					</FlatButton>
+					{!playground.isInline &&
+						<FlatButton
+							onClick={this.handleSaveClick}
+							disabled={playground.isSaving}
+						>
+							{t('common.save-action-title')}
+						</FlatButton>
+					}
 					<FlatButton
 						disabled={playground.isSaving}
 						onClick={this.toggleSavePopup}
 					>
 						{t('code_playground.actions.save-as')}
 					</FlatButton>
-					{!playground.isInline &&
-						<FlatButton
-							onClick={playground.resetToSaved}
-							disabled={playground.isResetDisabled}
-						>
-							{t('code_playground.actions.reset-code')}
-						</FlatButton>
-					}
+					<FlatButton
+						onClick={playground.resetToSaved}
+						disabled={playground.isResetDisabled}
+					>
+						{t('code_playground.actions.reset-code')}
+					</FlatButton>
+
 					<RaisedButton
 						variant="secondary"
 						disabled={playground.isSaving || playground.isRunning}

@@ -23,7 +23,7 @@ class SavePopup extends Component {
 
 	onConfirm = () => {
 		const { name, isPublic } = this.state;
-		this.props.playground.saveCode({ name, isPublic });
+		this.props.playground.saveNewCode({ name, isPublic });
 		this.props.onClose();
 	}
 
