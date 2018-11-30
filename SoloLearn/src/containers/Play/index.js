@@ -1,13 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
 import Paper from 'material-ui/Paper';
-import Layout from 'components/Layouts/GeneralLayout';
+import { Layout } from 'components/molecules';
 import RaisedButton from 'material-ui/RaisedButton';
 
 const ComingSoon = () => (
-	<Layout
-		noSidebar
-	>
+	<Layout>
 		<Paper style={{
 			display: 'flex',
 			flexDirection: 'column',
@@ -34,5 +32,3 @@ const ComingSoon = () => (
 );
 
 export default ComingSoon;
-
-// rootStyle={{ { paddingTop: 0 }}

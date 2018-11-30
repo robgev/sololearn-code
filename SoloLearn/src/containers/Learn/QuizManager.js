@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 
+import { LayoutWithSidebar } from 'components/molecules';
+
 // Material UI components
 import Paper from 'material-ui/Paper';
 
@@ -28,7 +30,6 @@ import { toSeoFriendly } from 'utils';
 
 // Additional data and components
 import Comments from 'containers/Comments/CommentsBase';
-import Layout from 'components/Layouts/GeneralLayout';
 import LoadingOverlay from 'components/LoadingOverlay';
 
 import StepIcon from './StepIcon';
@@ -361,8 +362,8 @@ class QuizManager extends Component {
 		);
 
 		return (
-			<Layout
-				sidebarContent={<UserProgressToolbar />}
+			<LayoutWithSidebar
+				sidebar={<UserProgressToolbar />}
 			>
 				<Paper className="quiz-container">
 					<div style={{ padding: 15 }}>
@@ -392,7 +393,7 @@ class QuizManager extends Component {
 							commentsCount={commentsCount}
 						/> : null
 					}
-			</Layout>
+			</LayoutWithSidebar>
 		);
 	}
 }

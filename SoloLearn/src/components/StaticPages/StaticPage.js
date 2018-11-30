@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Layout from 'components/Layouts/GeneralLayout';
+import { Layout } from 'components/molecules';
 import Service from 'api/service';
 
 class StaticPage extends Component {
@@ -15,7 +15,7 @@ class StaticPage extends Component {
 
 	render() {
 		return (
-			<Layout noSidebar>
+			<Layout>
 				<div dangerouslySetInnerHTML={{ __html: this.state.content }} />
 			</Layout>
 		);

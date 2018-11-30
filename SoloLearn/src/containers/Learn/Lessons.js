@@ -20,7 +20,7 @@ import {
 import { isLoaded } from 'reducers';
 
 import { toSeoFriendly } from 'utils';
-import Layout from 'components/Layouts/GeneralLayout';
+import { LayoutWithSidebar } from 'components/molecules';
 
 import 'styles/Learn/Lessons.scss';
 
@@ -105,8 +105,8 @@ class Lessons extends Component {
 		const { lessons, name } = activeModule;
 
 		return (
-			<Layout
-				sidebarContent={<UserProgressToolbar />}
+			<LayoutWithSidebar
+				sidebar={<UserProgressToolbar />}
 			>
 				<div className="lessons-container">
 					<div className="lesson-breadcrumbs">
@@ -123,7 +123,7 @@ class Lessons extends Component {
 						onItemClick={this.handleClick}
 					/>
 				</div>
-			</Layout>
+			</LayoutWithSidebar>
 		);
 	}
 }
