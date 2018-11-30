@@ -129,7 +129,7 @@ class SlayLesson extends PureComponent {
 			badge,
 			userID,
 			avatarUrl,
-			userName,
+			name: userName,
 			id: userID,
 		};
 		return (

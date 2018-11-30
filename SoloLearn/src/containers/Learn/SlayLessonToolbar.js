@@ -1,7 +1,9 @@
 import React from 'react';
-import { Container, IconButton } from 'components/atoms';
-import { Avatar, UserTooltip } from 'components/molecules';
-import { 	Bookmark, BookmarkBorder } from 'components/icons';
+import { Container, IconButton, FlexBox, } from 'components/atoms';
+import { ProfileAvatar, UsernameLink, ModBadge } from 'components/molecules';
+import { Bookmark, BookmarkBorder } from 'components/icons';
+
+import './SlayLessonToolbar.scss';
 
 const SlayLessonToolbar = ({
 	userData, // User data contains avatarURL, userName and userID
@@ -23,15 +25,17 @@ const SlayLessonToolbar = ({
 			</IconButton>
 		</Container>
 		{ withAuthorInfo &&
-			<Container className="author-data">
-				<UserTooltip userData={userData}>
-					<Avatar
-						{...userData}
-						withUserNameBox
-						timePassed={timePassed}
-					/>
-				</UserTooltip>
-			</Container>
+			//<Container className="author-data">
+				<FlexBox>
+					<ProfileAvatar user={userData}/>
+					<FlexBox align>
+						<UsernameLink to={`/profile/${userData.id}`}>
+							{userData.name}
+						</UsernameLink>
+						<ModBadge badge={userData.badge}/>
+					</FlexBox>
+				</FlexBox>
+			//</Container>
 		}
 	</Container>
 );
