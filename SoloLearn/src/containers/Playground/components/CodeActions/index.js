@@ -56,11 +56,11 @@ class Toolbar extends PureComponent {
 						onChange={playground.toggleTheme}
 						label={t('code_playground.dark-theme')}
 					/>
-					{playground.isWeb &&
-					<FlatButton onClick={this.toggleSourcePopup}>
+					{playground.isWeb && !playground.isInline &&
+						<FlatButton onClick={this.toggleSourcePopup}>
 							External Resources
-						<InsertLink />
-					</FlatButton>
+							<InsertLink />
+						</FlatButton>
 					}
 				</div>
 				<div>

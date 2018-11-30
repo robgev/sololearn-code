@@ -3,8 +3,8 @@ import ReactGA from 'react-ga';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
+import { Container, PaperContainer } from 'components/atoms';
 import { Layout, EmptyCard } from 'components/molecules';
-import { PaperContainer } from 'components/atoms';
 import Comments from 'containers/Comments/CommentsBase';
 
 import IPlayground from './IPlayground';
@@ -44,44 +44,48 @@ class Playground extends Component {
 		const {
 			data,
 			isInline,
+			publicId,
 			isFetching,
 			isFullscreen,
 			hasLiveOutput,
 		} = this.playground;
-		const isMinimal = !data.id || isInline || isFullscreen;
+		// If it's not a public code or we are not in fullscreen mode
+		// We don't need some of the elements on the page.
+		const isMinimal = !data.id || isInline || isFullscreen || !publicId;
+		const LayoutContainer = isInline ? Container : Layout;
+		const MainContainer = isInline ? Container : PaperContainer;
 		const EditorContainer = !hasLiveOutput ? SplitPane : Fragment;
 		return (
-			<Layout className={isFullscreen ? 'fullscreen' : ''}>
-				{
-					isFetching
-						? <EmptyCard loading paper />
-						: (
-							<Fragment>
-								{!isMinimal &&
-									<CodeInfoToolbar playground={this.playground} />
-								}
-								<PaperContainer className="playground_main-container">
-									<EditorContainer
-										playground={this.playground}
-									>
-										<Editor playground={this.playground} />
-										<CodeOutput playground={this.playground} />
-									</EditorContainer>
-									<CodeActions playground={this.playground} />
-									<InputPopup playground={this.playground} />
-								</PaperContainer>
-								{!isMinimal &&
-									<Comments
-										type={1}
-										commentsType="code"
-										id={data.id}
-										commentsCount={data.comments}
-									/>
-								}
-							</Fragment>
-						)
+			<LayoutContainer className={isFullscreen ? 'fullscreen' : ''}>
+				{isFetching
+					? <EmptyCard loading paper />
+					: (
+						<Fragment>
+							{ !isMinimal &&
+								<CodeInfoToolbar playground={this.playground} />
+							}
+							<MainContainer className="playground_main-container">
+								<EditorContainer
+									playground={this.playground}
+								>
+									<Editor playground={this.playground} />
+									<CodeOutput playground={this.playground} />
+								</EditorContainer>
+								<CodeActions playground={this.playground} />
+								<InputPopup playground={this.playground} />
+							</MainContainer>
+							{!isMinimal &&
+								<Comments
+									type={1}
+									commentsType="code"
+									id={data.id}
+									commentsCount={data.comments}
+								/>
+							}
+						</Fragment>
+					)
 				}
-			</Layout>
+			</LayoutContainer>
 		);
 	}
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 
@@ -22,7 +23,7 @@ const PlaygroundTabs = ({ t, playground }) => (
 		}
 
 		<div>
-			{ playground.hasLiveOutput &&
+			{ playground.hasLiveOutput && !playground.isInline &&
 			<FlatButton
 				onClick={playground.runWebCode}
 			>
@@ -33,7 +34,15 @@ const PlaygroundTabs = ({ t, playground }) => (
 				placement="bottom-end"
 				title={playground.isInline ? 'Maximize in Playground' : 'Toggle Fullscreen'}
 			>
-				<IconButton onClick={playground.toggleFullScreen}>
+				<IconButton onClick={
+					playground.isInline
+						?	() => browserHistory.push({
+							pathname: '/playground',
+							query: { lessonCodeId: playground.lessonCodeId, language: playground.language },
+						})
+						:	playground.toggleFullScreen
+				}
+				>
 					{ playground.isFullscreen
 						?	<FullscreenExit />
 						:	<Fullscreen />

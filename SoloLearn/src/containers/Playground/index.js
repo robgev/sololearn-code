@@ -17,13 +17,18 @@ const PlaygroundRoute = ({ userId, params, location }) => {
 	return (
 		<Playground
 			userId={userId}
-			basePath="/playground"
+			publicId={publicId}
 			language={language}
-			publicId={publicId || null}
-			lessonCodeId={lessonCodeId || null}
+			basePath="/playground"
+			lessonCodeId={lessonCodeId}
 			key={`${publicId || ''}-${lessonCodeId || ''}`}
 		/>
 	);
+};
+
+PlaygroundRoute.defaultProps = {
+	publicId: null,
+	lessonCodeId: null,
 };
 
 const mapStateToProps = ({ userProfile }) => ({

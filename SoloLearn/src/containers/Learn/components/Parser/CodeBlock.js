@@ -1,28 +1,17 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
-import { browserHistory } from 'react-router';
 import { Container, FlexBox } from 'components/atoms';
 import { FlatButton, LanguageLabel } from 'components/molecules';
 import Playground from 'containers/Playground/AsyncPlayground';
 
+@translate()
 class CodeBlock extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			playgroundOpened: false,
-		};
+	state = {
+		playgroundOpened: false,
 	}
 
-	openPlayground = () => {
-		const { basePath } = this.props;
-		browserHistory.replace(basePath);
-		this.setState({ playgroundOpened: true });
-	}
-
-	closePlayground = () => {
-		const { basePath } = this.props;
-		this.setState({ playgroundOpened: false });
-		browserHistory.replace(basePath);
+	togglePlayground = () => {
+		this.setState(({ playgroundOpened }) => ({ playgroundOpened: !playgroundOpened }));
 	}
 
 	render() {
@@ -33,27 +22,23 @@ class CodeBlock extends Component {
 			basePath,
 			courseLanguage,
 		} = this.props;
-		const playgroundParams = {
-			primary: courseLanguage,
-			secondary: codeId,
-		};
 
 		const { playgroundOpened } = this.state;
-		if (codeId !== undefined) {
-			return (
+		return codeId !== undefined ?
+			(
 				<Container className="code-container">
 					{playgroundOpened ?
 						<FlexBox column>
 							<Playground
 								inline
-								lessonCodeId={codeId}
+								codeId={codeId}
+								basePath={basePath}
 								language={courseLanguage}
-							// basePath={basePath}
-							// params={playgroundParams}
+								lessonCodeId={codeId || null}
 							/>
 							<FlatButton
 								className="code-button"
-								onClick={this.closePlayground}
+								onClick={this.togglePlayground}
 							>
 								{t('common.close-title')}
 							</FlatButton>
@@ -65,18 +50,16 @@ class CodeBlock extends Component {
 							{children}
 							<FlatButton
 								className="code-button"
-								onClick={this.openPlayground}
+								onClick={this.togglePlayground}
 							>
 								{t('learn.try-it-yourself')}
 							</FlatButton>
 						</FlexBox>
 					}
 				</Container>
-			);
-		}
-
-		return children;
+			)
+			: children;
 	}
 }
 
-export default translate()(CodeBlock);
+export default CodeBlock;
