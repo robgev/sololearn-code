@@ -70,21 +70,20 @@ class Toolbar extends PureComponent {
 					>
 						{t('common.save-action-title')}
 					</FlatButton>
+					<FlatButton
+						disabled={playground.isSaving}
+						onClick={this.toggleSavePopup}
+					>
+						{t('code_playground.actions.save-as')}
+					</FlatButton>
 					{!playground.isInline &&
 						<FlatButton
-							disabled={playground.isSaving}
-							onClick={this.toggleSavePopup}
+							onClick={playground.resetToSaved}
+							disabled={playground.isResetDisabled}
 						>
-							{t('code_playground.actions.save-as')}
+							{t('code_playground.actions.reset-code')}
 						</FlatButton>
 					}
-					<FlatButton
-						onClick={playground.resetToSaved}
-						disabled={playground.isResetDisabled}
-					>
-						{t('code_playground.actions.reset-code')}
-					</FlatButton>
-
 					<RaisedButton
 						variant="secondary"
 						disabled={playground.isSaving || playground.isRunning}

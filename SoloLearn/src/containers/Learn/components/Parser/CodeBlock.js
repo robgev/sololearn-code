@@ -1,16 +1,27 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
+import { browserHistory, withRouter } from 'react-router';
 import { Container, FlexBox } from 'components/atoms';
 import { FlatButton, LanguageLabel } from 'components/molecules';
 import Playground from 'containers/Playground/AsyncPlayground';
 
+@withRouter
 @translate()
 class CodeBlock extends Component {
 	state = {
 		playgroundOpened: false,
 	}
 
-	togglePlayground = () => {
+	openPlayground = () => {
+		const { location, courseLanguage } = this.props;
+		browserHistory.replace({ ...location, query: { ...location.query, language: courseLanguage } });
+		this.setState(({ playgroundOpened }) => ({ playgroundOpened: !playgroundOpened }));
+	}
+
+	closePlayground = () => {
+		const { location } = this.props;
+		const { language, ...queryRest } = location.query;
+		browserHistory.replace({ ...location, query: queryRest });
 		this.setState(({ playgroundOpened }) => ({ playgroundOpened: !playgroundOpened }));
 	}
 
@@ -20,8 +31,10 @@ class CodeBlock extends Component {
 			children,
 			codeId,
 			basePath,
+			location,
 			courseLanguage,
 		} = this.props;
+		const { language } = location.query;
 
 		const { playgroundOpened } = this.state;
 		return codeId !== undefined ?
@@ -33,12 +46,12 @@ class CodeBlock extends Component {
 								inline
 								codeId={codeId}
 								basePath={basePath}
-								language={courseLanguage}
+								language={language}
 								lessonCodeId={codeId || null}
 							/>
 							<FlatButton
 								className="code-button"
-								onClick={this.togglePlayground}
+								onClick={this.closePlayground}
 							>
 								{t('common.close-title')}
 							</FlatButton>
@@ -50,7 +63,7 @@ class CodeBlock extends Component {
 							{children}
 							<FlatButton
 								className="code-button"
-								onClick={this.togglePlayground}
+								onClick={this.openPlayground}
 							>
 								{t('learn.try-it-yourself')}
 							</FlatButton>

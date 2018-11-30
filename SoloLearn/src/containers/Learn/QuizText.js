@@ -18,24 +18,12 @@ const styles = {
 	},
 };
 
-const constructBasePathname = (pathname, params) => {
-	if (params.primary || params.secondary) {
-		return pathname.replace(new RegExp(`/${params.primary}/${params.secondary}$`), '');
-	}
-	return pathname;
-};
-
+@translate()
 @connect(null, { toggleLessonBookmark })
 class QuizText extends Component {
 	constructor(props) {
 		super(props);
-		const { pathname } = props.location;
-		const basePath = constructBasePathname(pathname, props.params);
-		if (pathname !== basePath) {
-			browserHistory.replace(basePath);
-		}
 		this.state = {
-			basePath,
 			snackbarOpened: false,
 			isBookmarked: props.isBookmarked,
 		};
@@ -56,7 +44,7 @@ class QuizText extends Component {
 	}
 
 	render() {
-		const { basePath, isBookmarked, snackbarOpened } = this.state;
+		const { isBookmarked, snackbarOpened } = this.state;
 		const {
 			t,
 			date,
@@ -68,7 +56,6 @@ class QuizText extends Component {
 		return (
 			<div className="text-container" style={styles.textContainer}>
 				<Parser
-					basePath={basePath}
 					courseLanguage={courseLanguage}
 					text={this.props.textContent}
 					glossary={this.props.glossary}
@@ -92,4 +79,4 @@ class QuizText extends Component {
 	}
 }
 
-export default withRouter(translate()(QuizText));
+export default QuizText;

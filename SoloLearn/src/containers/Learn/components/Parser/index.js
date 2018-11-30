@@ -57,7 +57,6 @@ class Parser extends Component {
 	);
 
 	static Code = ({
-		basePath,
 		children,
 		strAttributes,
 		courseLanguage,
@@ -70,7 +69,6 @@ class Parser extends Component {
 		return (
 			<CodeBlock
 				codeId={codeId}
-				basePath={basePath}
 				format={codeFormat}
 				courseLanguage={courseLanguage}
 			>
@@ -114,7 +112,7 @@ class Parser extends Component {
 	);
 
 	// recursive parser
-	_parse = ({ text, courseLanguage, basePath }) => {
+	_parse = ({ text, courseLanguage }) => {
 		let current = text;
 		let idx = 0;
 		const result = [];
@@ -125,7 +123,7 @@ class Parser extends Component {
 			const regexed = Parser.tagRegex.exec(current);
 			const [ match, tag, args, innerText ] = regexed;
 			result.push(this.noTagParse(current.substring(0, current.indexOf(match))));
-			const inner = this._parse({ text: innerText, courseLanguage, basePath });
+			const inner = this._parse({ text: innerText, courseLanguage });
 			idx += 1;
 			switch (tag) {
 			case 'b':
@@ -156,7 +154,6 @@ class Parser extends Component {
 				result.push((
 					<Parser.Code
 						key={idx}
-						basePath={basePath}
 						courseLanguage={courseLanguage}
 						strAttributes={args}
 					>
@@ -182,9 +179,9 @@ class Parser extends Component {
 		this.text = props.text;
 	}
 	parse = () => {
-		const { courseLanguage, basePath } = this.props;
+		const { courseLanguage } = this.props;
 		const toBeParsed = this.text.replace('\r\n\r\n', '\r\n');
-		return this._parse({ text: toBeParsed, courseLanguage, basePath });
+		return this._parse({ text: toBeParsed, courseLanguage });
 	}
 	parseGlossary = (fullText) => {
 		if (this.filteredGlossary === null) {
