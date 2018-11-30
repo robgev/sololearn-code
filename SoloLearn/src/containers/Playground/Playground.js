@@ -3,8 +3,8 @@ import ReactGA from 'react-ga';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
-import { Layout } from 'components/molecules';
-import { Loading, PaperContainer } from 'components/atoms';
+import { Layout, EmptyCard } from 'components/molecules';
+import { PaperContainer } from 'components/atoms';
 import Comments from 'containers/Comments/CommentsBase';
 
 import IPlayground from './IPlayground';
@@ -50,33 +50,39 @@ class Playground extends Component {
 		} = this.playground;
 		const isMinimal = !data.id || isInline || isFullscreen;
 		const EditorContainer = !hasLiveOutput ? SplitPane : Fragment;
-		return isFetching
-			? <Loading />
-			: (
-				<Layout className={isFullscreen ? 'fullscreen' : ''}>
-					{ !isMinimal &&
-						<CodeInfoToolbar playground={this.playground} />
-					}
-					<PaperContainer className="playground_main-container">
-						<EditorContainer
-							playground={this.playground}
-						>
-							<Editor playground={this.playground} />
-							<CodeOutput playground={this.playground} />
-						</EditorContainer>
-						<CodeActions playground={this.playground} />
-						<InputPopup playground={this.playground} />
-					</PaperContainer>
-					{!isMinimal &&
-						<Comments
-							type={1}
-							commentsType="code"
-							id={data.id}
-							commentsCount={data.comments}
-						/>
-					}
-				</Layout>
-			);
+		return (
+			<Layout className={isFullscreen ? 'fullscreen' : ''}>
+				{
+					isFetching
+						? <EmptyCard loading paper />
+						: (
+							<Fragment>
+								{!isMinimal &&
+									<CodeInfoToolbar playground={this.playground} />
+								}
+								<PaperContainer className="playground_main-container">
+									<EditorContainer
+										playground={this.playground}
+									>
+										<Editor playground={this.playground} />
+										<CodeOutput playground={this.playground} />
+									</EditorContainer>
+									<CodeActions playground={this.playground} />
+									<InputPopup playground={this.playground} />
+								</PaperContainer>
+								{!isMinimal &&
+									<Comments
+										type={1}
+										commentsType="code"
+										id={data.id}
+										commentsCount={data.comments}
+									/>
+								}
+							</Fragment>
+						)
+				}
+			</Layout>
+		);
 	}
 }
 
