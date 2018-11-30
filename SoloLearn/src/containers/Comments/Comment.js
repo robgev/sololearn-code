@@ -232,9 +232,8 @@ class Comment extends Component {
 			replies,
 			repliesArray,
 		} = this.props.comment;
-		console.log(userProfile);
 		return (
-			<Container style={{width:'100%'}}>
+			<Container className="comment-container">
 				<CommentView
 					commentsType={this.props.commentsAPI.commentsType}
 					accessLevel={accessLevel}

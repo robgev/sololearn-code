@@ -6,33 +6,36 @@
     background-color: white;
   }
 }
+.comment-container {
+	width: 100%;
 
-.comment-input-toolbar {
-	text-align: right;
-}
+	.comment-input-toolbar {
+		text-align: right;
+	}
 
-.comment-item {
-	.comment-item-container {
-		padding-top: 10px;
+	.comment-item {
+		.comment-item-container {
+			padding-top: 10px;
 
-		&.replay {
-			padding-left: 20px;
+			&.replay {
+				padding-left: 20px;
+			}
 		}
-	}
 
-	.comment-preview {
-		display: flex;
-		padding: 0 49px;
+		.comment-preview {
+			display: flex;
+			padding: 0 49px;
+		}
+		
+		> .Linkify > p {
+			font-size: 14px;
+	    color: rgb(130, 126, 126);
+			padding: 0 49px;
+			margin-bottom: 5px;
+			margin-top: -13px;
+		}
+	  &.animate {
+	    animation: highlight 1.5s ease-in 1;
+	  }
 	}
-	
-	> .Linkify > p {
-		font-size: 14px;
-    color: rgb(130, 126, 126);
-		padding: 0 49px;
-		margin-bottom: 5px;
-		margin-top: -13px;
-	}
-  &.animate {
-    animation: highlight 1.5s ease-in 1;
-  }
 }
