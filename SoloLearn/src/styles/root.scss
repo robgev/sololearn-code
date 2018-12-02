@@ -35,65 +35,6 @@ html, body {
 	}
 }
 
-.hoverable-icon {
-	&:hover svg {
-		fill: #607D8B !important;
-	}
-}
-
-.sidebar-title {
-	.title {
-		@extend %title-text;
-		padding-bottom: 5px;
-		line-height: 14px;
-	}
-}
-
-.page-title {
-	@extend %title-text;
-	line-height: 14px;
-}
-
-.mini-drop-down {
-	svg {
-		height: 13px !important;
-		width: 13px !important;
-	}
-}
-
-.sidebar-placeholder {
-	position: relative;
-	width: 300px;
-	.sidebar-wrapper {
-		position: absolute;
-		width: 300px;
-		.sidebar-main-content {
-			min-height: 20px;
-			background-color: white;
-			box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px,
-			rgba(0, 0, 0, 0.12) 0px 1px 4px;
-			border-radius: 2px;
-		}
-		.sidebar-static-pages {
-			display: flex;
-			justify-content: center;
-			padding: 10px 0;
-			.static-link {
-				display: inline-block;
-				color: #90948F;
-				padding: 0 10px;
-				font-size: 14px;
-				&:not(:last-child) {
-					border-right: 1px solid #CCCCCC;
-				}
-			}
-		}
-		&.sticky {
-			position: fixed;
-		}
-	}
-}
-
 .flex-centered {
 	display: flex;
 	justify-content: center;
@@ -102,16 +43,6 @@ html, body {
 
 .column {
 	flex-direction: column;
-}
-
-.load-more-button {
-	color: #586B74;
-	text-transform: uppercase;
-	font-size: 13px;
-	font-weight: 500;
-	&:hover {
-		text-decoration: underline;
-	}
 }
 
 @keyframes highlight {
@@ -125,12 +56,6 @@ html, body {
 
 .animate-highlight {
 	animation: highlight 1s ease-in;
-}
-
-@include for-until-tablet {
-	.sidebar-placeholder {
-		display: none;
-	}
 }
 
 .empty-card-placeholder {

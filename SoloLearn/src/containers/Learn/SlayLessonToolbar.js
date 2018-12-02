@@ -13,7 +13,7 @@ const SlayLessonToolbar = ({
 		<Container className="lesson-data">
 			<IconButton
 				onClick={toggleBookmark}
-				className="search-button hoverable-icon"
+				className="search-button"
 			>
 				{ isBookmarked ?
 					<Bookmark /> :
