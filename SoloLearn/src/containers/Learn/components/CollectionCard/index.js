@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { Title, SecondaryTextBlock, PaperContainer, Container } from 'components/atoms';
-import { Slider, TextLink } from 'components/molecules';
+import { Title, SecondaryTextBlock, PaperContainer, Container, FlexBox } from 'components/atoms';
+import { Slider, ViewMoreLink } from 'components/molecules';
 
 import { CourseChip } from 'containers/Learn/components';
 import './styles.scss';
@@ -51,14 +51,14 @@ const CollectionCard = ({
 				overflow: 'hidden',
 			}}
 		>
-			<Container className={`meta-info ${!description ? 'big-padding-bottom' : ''}`}>
+			<FlexBox align justifyBetween className={`meta-info ${!description ? 'big-padding-bottom' : ''}`}>
 				<Title>{ name }</Title>
 				{ !noViewMore &&
-				<TextLink to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} >
+				<ViewMoreLink to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} >
 					{t('common.loadMore')}
-				</TextLink>
+				</ViewMoreLink>
 				}
-			</Container>
+			</FlexBox>
 			{ description &&
 				<SecondaryTextBlock className="course-description">{description}</SecondaryTextBlock>
 			}

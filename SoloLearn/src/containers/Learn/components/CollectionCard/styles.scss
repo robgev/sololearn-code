@@ -1,25 +1,11 @@
 .meta-info {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
 	padding-bottom: 5px;
-	a {
-		color: #586B74;
-		text-transform: uppercase;
-		font-size: 13px;
-		font-weight: 500;
-		&:hover {
-			text-decoration: underline;
-		}
-	}
 	&.big-padding-bottom {
 		padding-bottom: 15px;
 	}
 }
 .course-description {
 	padding-bottom: 15px;
-	color: #737373;
-	font-size: 14px;
 }
 .courses-list {
 	.course-chip-wrapper {
