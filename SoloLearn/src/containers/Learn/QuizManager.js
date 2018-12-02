@@ -346,7 +346,11 @@ class QuizManager extends Component {
 		if (loading || (!isLoaded) ||
 			(!activeQuiz) ||
 			(this.props.params.quizNumber && !this.props.activeQuiz)) {
-			return <EmptyCard loading paper />;
+			return 	<LayoutWithSidebar
+						sidebar={<UserProgressToolbar />}
+					>
+						<EmptyCard loading paper />
+					</LayoutWithSidebar>
 		}
 
 		const { quizzes, tags } = activeLesson;
