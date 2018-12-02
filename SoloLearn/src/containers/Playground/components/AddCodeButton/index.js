@@ -36,6 +36,7 @@ class AddCodeButton extends Component {
 					open={isLanguageSelectorOpen}
 					onChoose={this.selectLanguage}
 					onClose={this.toggleLanguageSelector}
+					filter={c => c.language !== 'sql'}
 				/>
 			</Fragment>
 		);

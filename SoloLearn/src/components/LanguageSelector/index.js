@@ -8,6 +8,7 @@ import {
 	PopupContent,
 	FlexBox,
 	ListItem,
+	Container,
 	List,
 } from 'components/atoms';
 import { EmptyCard } from 'components/molecules';
@@ -21,25 +22,22 @@ const LanguageSelector = ({
 	const filteredCourses = courses.filter(filter);
 	return (
 		<Popup
-			fullWidh
 			open={open}
-			maxWidth="md"
 			onClose={onClose}
 		>
 			<PopupTitle>{t('factory.quiz-choose-language-title')}</PopupTitle>
 			<PopupContent>
 				{filteredCourses.length === 0 ? <EmptyCard /> : null}
-				{ console.log(filteredCourses)}
 				<List>
 					{filteredCourses.map(course => (
-						<div key={course.id} onClick={() => onChoose(course)} tabIndex={0} role="button">
+						<Container key={course.id} onClick={() => onChoose(course)} tabIndex={0} role="button">
 							<ListItem button>
 								<FlexBox align className="language_selector-card-container">
 									<LanguageCard language={course.language} />
 									{course.languageName}
 								</FlexBox>
 							</ListItem>
-						</div>
+						</Container>
 					))}
 				</List>
 			</PopupContent>
