@@ -1,7 +1,9 @@
-import React, { PureComponent } from 'react';
-import { Link } from 'react-router';
+import React, { Component } from 'react';
+import { Container, Link } from 'components/atoms';
 
-class Sidebar extends PureComponent {
+import './styles.scss';
+
+class Sidebar extends Component {
 	state = {
 		scrollTop: 0,
 	};
@@ -46,18 +48,18 @@ class Sidebar extends PureComponent {
 		const { children } = this.props;
 		const reachedThreshold = scrollTop > this.threshold;
 		return (
-			<div className="sidebar-placeholder">
-				<div
+			<Container className="sidebar-placeholder">
+				<Container
 					ref={(sidebarElem) => { this.sidebarElem = sidebarElem; }}
 					className={`sidebar-wrapper ${reachedThreshold || !this.isScrollable ? 'sticky' : ''}`}
 					style={{
 						bottom: (reachedThreshold && this.isScrollable) ? this.sidebarOffset : 'initial',
 					}}
 				>
-					<div className="sidebar-main-content">
+					<Container className="sidebar-main-content">
 						{children}
-					</div>
-					<div className="sidebar-static-pages">
+					</Container>
+					<Container className="sidebar-static-pages">
 						<Link className="static-link hoverable" to="/privacy">
 							Privacy
 						</Link>
@@ -67,9 +69,9 @@ class Sidebar extends PureComponent {
 						<Link className="static-link hoverable" to="/contact">
 							Contact
 						</Link>
-					</div>
-				</div>
-			</div>
+					</Container>
+				</Container>
+			</Container>
 		);
 	}
 }

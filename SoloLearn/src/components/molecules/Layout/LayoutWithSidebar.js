@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Container, PaperContainer } from 'components/atoms';
+import { StickySidebar } from 'components/molecules';
 import Layout from './Layout';
 
 import './styles.scss';
@@ -8,9 +9,11 @@ import './styles.scss';
 const LayoutWithSidebar = ({ sidebar, sidebarProps, ...props }) => (
 	<Layout className="with-sidebar">
 		<Container {...props} />
-		<PaperContainer className="sidebar" {...sidebarProps}>
-			{sidebar}
-		</PaperContainer>
+		<StickySidebar>
+			<PaperContainer className="sidebar" {...sidebarProps}>
+				{sidebar}
+			</PaperContainer>
+		</StickySidebar>
 	</Layout>
 );
 

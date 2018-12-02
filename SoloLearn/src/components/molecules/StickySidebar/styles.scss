@@ -1,0 +1,36 @@
+@import "~styles/medias";
+
+.sidebar-placeholder {
+	position: relative;
+	width: 275px;
+	.sidebar-wrapper {
+		position: absolute;
+		width: inherit;
+		.sidebar-main-content {
+			min-height: 20px;
+		}
+		.sidebar-static-pages {
+			display: flex;
+			justify-content: center;
+			padding: 10px 0;
+			.static-link {
+				display: inline-block;
+				color: #90948F;
+				padding: 0 10px;
+				font-size: 14px;
+				&:not(:last-child) {
+					border-right: 1px solid #CCCCCC;
+				}
+			}
+		}
+		&.sticky {
+			position: fixed;
+		}
+	}
+}
+
+@include for-until-tablet {
+	.sidebar-placeholder {
+		display: none;
+	}
+}
