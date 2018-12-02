@@ -1,3 +1,5 @@
+$gap-size: 5px;
+
 .lesssons-in-enter, .lesssons-in-appear {
 	transform: translateY(100px);
 	opacity: 0;
@@ -24,11 +26,19 @@
 
 	.lesson-item {
 		display: inline-block;
-		padding: 10px;
+		padding: $gap-size * 1.5 $gap-size;
 		cursor: pointer;
 		backface-visibility: hidden;
-		transform:translate3d(0,0,0);
-		width: calc(100% / 3 - 20px);
+		transform: translate3d(0,0,0);
+		width: calc(100% / 3);
+		&:nth-child(3n) {
+			padding-right: 0;
+			padding-left: 2 * $gap-size;
+		}
+		&:nth-child(3n - 2) {
+			padding-left: 0;
+			padding-right: 2 * $gap-size;
+		}
 		.lesson {
 			position: relative;
 			display: inline-block;
