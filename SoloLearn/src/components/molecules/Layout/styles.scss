@@ -23,7 +23,7 @@ $layouts_gap: 20px;
 		padding: 0;
 		&.with-sidebar {
 			grid-gap: 0;
-			grid-template-columns: 1fr;
+			grid-template-columns: minmax(0, 1fr);
 			.sidebar {
 				display: none;
 			}
