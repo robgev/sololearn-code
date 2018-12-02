@@ -9,10 +9,10 @@ const BusyWrapper = ({
 	paper,
 	isBusy,
 	children,
-	className = '',
-	noDisplay = true,
+	className,
+	noDisplay,
 	loadingComponent,
-	wrapperClassName = '',
+	wrapperClassName,
 }) => {
 	const ContentContainer = paper ? PaperContainer : Container;
 	return (
@@ -27,9 +27,7 @@ const BusyWrapper = ({
 			>
 				{!title ?
 					null :
-					<Container className="card-title">
-						<Title>{title}</Title>
-					</Container>
+					<Title>{title}</Title>
 				}
 				{children}
 			</ContentContainer>
@@ -39,4 +37,11 @@ const BusyWrapper = ({
 		</Container>
 	);
 };
+
+BusyWrapper.defaultProps = {
+	className: '',
+	noDisplay: true,
+	wrapperClassName: '',
+};
+
 export default BusyWrapper;

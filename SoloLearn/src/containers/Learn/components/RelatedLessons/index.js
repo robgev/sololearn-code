@@ -1,9 +1,7 @@
 import React from 'react';
 import { CollectionCard, SidebarCollectionCard, CourseCard } from 'containers/Learn/components';
 import { translate } from 'react-i18next';
-import { Container } from 'components/atoms';
-
-import './styles.scss';
+import { FlexBox } from 'components/atoms';
 
 const RelatedLessons = ({
 	t,
@@ -15,7 +13,7 @@ const RelatedLessons = ({
 	relevantLessons,
 	implementations,
 }) => (
-	<Container className="related-container">
+	<FlexBox column justifyBetween>
 		{	(implementations && !!implementations.length) &&
 			<CollectionCard
 				round
@@ -54,7 +52,7 @@ const RelatedLessons = ({
 			items={lessonsByUser.slice(0, 10)}
 		/>
 		}
-	</Container>
+	</FlexBox>
 );
 
 export default translate()(RelatedLessons);

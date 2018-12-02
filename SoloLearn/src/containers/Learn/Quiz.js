@@ -1,5 +1,5 @@
 // React modules
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
@@ -19,11 +19,6 @@ import QuizAnswers, { CheckBar, TopBar } from 'components/Quiz';
 import QuizText from './QuizText';
 
 const styles = {
-	wrapper: {
-		position: 'relative',
-		display: 'flex',
-		flexDirection: 'column',
-	},
 
 	skipText: {
 		margin: '15px 48px 0 0',
@@ -251,7 +246,7 @@ class Quiz extends Component {
 			t,
 		} = this.props;
 		const { checkResult, isQuizComplete } = this.state;
-		
+
 		if (!this.props.isLoaded) {
 			return <Loading />;
 		}
@@ -261,7 +256,7 @@ class Quiz extends Component {
 		if (activeQuiz.isText) {
 			ReactGA.ga('send', 'screenView', { screenName: 'Lesson Text Page' });
 			return (
-				<div className="quiz-text" style={{ ...styles.wrapper, alignItems: 'flex-end' }}>
+				<Fragment>
 					<QuizText
 						type={1}
 						key={quiz.id}
@@ -284,7 +279,7 @@ class Quiz extends Component {
 					>
 						{t('learn.buttons-continue')}
 					</RaisedButton>
-				</div>
+				</Fragment>
 			);
 		}
 

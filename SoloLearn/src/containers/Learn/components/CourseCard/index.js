@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { getCourseNameById, toSeoFriendly } from 'utils';
 import { slayItemTypes } from 'constants/ItemTypes';
 
-import { Container, Link, Image, SecondaryTextBlock, Title } from 'components/atoms';
+import { Heading, Container, Link, Image, SecondaryTextBlock, Title } from 'components/atoms';
 import { ViewStats, UsernameLink } from 'components/molecules';
 
 import './styles.scss';
@@ -28,9 +28,16 @@ const CourseCard = ({
 	<Container className={`course-card-container ${small ? 'small' : ''} ${className || ''}`}>
 		{
 			title &&
-				<Container className="meta-info">
-					<SecondaryTextBlock>{title}</SecondaryTextBlock>
-				</Container>
+			<Fragment>
+				{	small
+					? <Heading>{title}</Heading>
+					: (
+						<Container className="meta-info">
+							<SecondaryTextBlock>{title}</SecondaryTextBlock>
+						</Container>
+					)
+				}
+			</Fragment>
 		}
 		<Link
 			to={
@@ -56,10 +63,10 @@ const CourseCard = ({
 					{userName}
 				</UsernameLink>
 				{(!minimal && (Number.isInteger(viewCount) && Number.isInteger(comments))) &&
-						<ViewStats
-							views={viewCount}
-							comments={comments}
-						/>
+				<ViewStats
+					views={viewCount}
+					comments={comments}
+				/>
 				}
 			</Container>
 		</Link>
