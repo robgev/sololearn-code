@@ -4,7 +4,6 @@ import { browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
 
 import LanguageSelector from 'components/LanguageSelector';
-import { defaultCodes } from 'containers/Playground/utils/Texts';
 
 @translate()
 class AddCodeButton extends Component {
@@ -37,7 +36,6 @@ class AddCodeButton extends Component {
 					open={isLanguageSelectorOpen}
 					onChoose={this.selectLanguage}
 					onClose={this.toggleLanguageSelector}
-					courses={Object.keys(defaultCodes)}
 				/>
 			</Fragment>
 		);
