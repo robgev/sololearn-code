@@ -185,3 +185,9 @@ export const getLessonsByAuthor = (excludeLessonId, userId, pagingData) => async
 		return 0;
 	}
 };
+
+export const unsetCollection = () => {
+	return {
+		type: types.UNSET_COLLECTION
+	}
+}

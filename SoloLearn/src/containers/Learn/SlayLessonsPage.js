@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { InfiniteScroll, LayoutWithSidebar } from 'components/molecules';
-import { getCollectionItems, setSelectedCollection } from 'actions/slay';
+import { getCollectionItems, setSelectedCollection, unsetCollection } from 'actions/slay';
 
 import { UserProgressToolbar } from './components';
 import SlayLessonCards from './SlayLessonCards';
@@ -12,7 +12,7 @@ const mapStateToProps = state => ({
 	collectionCourses: state.slay.filteredCollectionItems,
 });
 
-const mapDispatchToProps = { getCollectionItems, setSelectedCollection };
+const mapDispatchToProps = { getCollectionItems, setSelectedCollection, unsetCollection };
 
 @connect(mapStateToProps, mapDispatchToProps)
 class SlayLessonsPage extends Component {
@@ -22,7 +22,7 @@ class SlayLessonsPage extends Component {
 		loadCount: 20,
 	}
 
-	async componentWillMount() {
+	async componentDidMount() {
 		const { loadCount, startIndex } = this.state;
 		const { params: { collectionId } } = this.props;
 		const parsedCollectionId = parseInt(collectionId, 10);
@@ -33,6 +33,10 @@ class SlayLessonsPage extends Component {
 			hasMore: length === loadCount,
 			startIndex: startIndex + length,
 		});
+	}
+
+	componentWillUnmount() {
+		this.props.unsetCollection();
 	}
 
 	loadMore = async () => {

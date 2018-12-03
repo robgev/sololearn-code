@@ -12,6 +12,7 @@ import {
 	SET_CURRENT_LESSON_COLLECTION,
 	SET_BOOKMARK_COLLECTION_ITEMS,
 	APPEND_BOOKMARK_COLLECTION_ITEMS,
+	UNSET_COLLECTION,
 } from 'constants/ActionTypes';
 import uniqBy from 'lodash/uniqBy';
 import map from 'lodash/map';
@@ -46,6 +47,7 @@ const selectedCollection = (state = null, action) => {
 	switch (action.type) {
 	case SET_CURRENT_LESSON_COLLECTION:
 		return action.payload;
+	case UNSET_COLLECTION:
 	case RESET_LOCALE_DATA:
 		return null;
 	default:
@@ -59,6 +61,7 @@ const filteredCollectionItems = (state = [], action) => {
 		return action.payload;
 	case APPEND_COLLECTION_ITEMS:
 		return uniqBy([ ...state, ...action.payload ], 'id');
+	case UNSET_COLLECTION:
 	case RESET_LOCALE_DATA:
 		return [];
 	default:
