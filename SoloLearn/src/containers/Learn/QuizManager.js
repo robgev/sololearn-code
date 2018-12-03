@@ -1,6 +1,6 @@
 // React modules
 import React, { Component } from 'react';
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 
 import { LayoutWithSidebar, EmptyCard } from 'components/molecules';
@@ -33,6 +33,7 @@ import Comments from 'containers/Comments/CommentsBase';
 
 import StepIcon from './StepIcon';
 import { UserProgressToolbar } from './components';
+ import { Link, Container, PaperContainer } from 'components/atoms';
 
 export const LessonType = {
 	Checkpoint: 0,
@@ -165,6 +166,9 @@ class QuizManager extends Component {
 	generateTimeline = (quizzes, activeQuiz) => {
 		const timeline = [];
 		const lesson = this.props.activeLesson;
+		if(lesson.type !== LessonType.Checkpoint) {
+			return null;
+		}
 		const progress = Progress.getLessonProgress(lesson.id);
 		let activeQuizIndex = 0;
 		let isLessonCompleted = false;
@@ -368,26 +372,26 @@ class QuizManager extends Component {
 			<LayoutWithSidebar
 				sidebar={<UserProgressToolbar />}
 			>
-				<Paper className="quiz-container">
-					<div style={{ padding: 15 }}>
-						<div className="lesson-breadcrumbs">
-							<Link className="hoverable" to={`/learn/course/${courseName}`}>
+				<PaperContainer className="quiz-container">
+					<Container style={{ padding: 15 }}>
+						<Container className="lesson-breadcrumbs">
+							<Link to={`/learn/course/${courseName}`}>
 								{course.name} &gt; {' '}
 							</Link>
-							<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}`}>
+							<Link to={`/learn/course/${courseName}/${moduleName}`}>
 								{activeModule.name} &gt; {' '}
 							</Link>
-							<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(activeLesson.name, 100)}/1`}>
+							<Link to={`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(activeLesson.name, 100)}/1`}>
 								{activeLesson.name}
 							</Link>
-						</div>
+						</Container>
 						{this.generateTimeline(quizzes, activeQuiz)}
 						{childrenWithProps}
 						<Link to={{ pathname: '/discuss', query: { query: tags !== null ? tags : course.language } }}>Q&A</Link>
-					</div>
+					</Container>
 					
 
-				</Paper>
+				</PaperContainer>
 				{commentsOpened || activeQuiz.isText ?
 						<Comments
 							id={activeQuiz.id}

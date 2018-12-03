@@ -11,45 +11,14 @@ import { selectModule, selectLesson, selectQuiz, deductExp } from 'actions/learn
 import Progress, { PointExchangeTypes } from 'api/progress';
 
 // Marterial UI components
-import { Popup, PopupContent, PopupTitle, PopupActions, PopupContentText, Loading } from 'components/atoms';
+import { Popup, PopupContent, PopupTitle, PopupActions, PopupContentText, Loading, FlexBox, Container } from 'components/atoms';
 import { FlatButton, RaisedButton } from 'components/molecules';
 
 // Additional data and components
 import QuizAnswers, { CheckBar, TopBar } from 'components/Quiz';
 import QuizText from './QuizText';
 
-const styles = {
-
-	skipText: {
-		margin: '15px 48px 0 0',
-	},
-
-	quizQuestion: {
-		textAlign: 'center',
-		margin: '15px 0',
-		fontSize: '17px',
-	},
-
-	quizActions: {
-		overflow: 'hidden',
-		backgroundColor: '#8bc34a',
-	},
-
-	quizAction: {
-		float: 'right',
-	},
-
-	checkButton: {
-		float: 'right',
-		margin: '60px 0 0 0',
-	},
-
-	resultButton: {
-		float: 'right',
-		margin: '60px 0 0 0',
-		position: 'relative',
-	},
-};
+import './Quiz.scss';
 
 const mapStateToProps = state => ({
 	isLoaded: isLoaded(state, 'quizzes'),
@@ -256,7 +225,7 @@ class Quiz extends Component {
 		if (activeQuiz.isText) {
 			ReactGA.ga('send', 'screenView', { screenName: 'Lesson Text Page' });
 			return (
-				<Fragment>
+				<FlexBox column fullWidth className="quiz-container">
 					<QuizText
 						type={1}
 						key={quiz.id}
@@ -279,12 +248,12 @@ class Quiz extends Component {
 					>
 						{t('learn.buttons-continue')}
 					</RaisedButton>
-				</Fragment>
+				</FlexBox>
 			);
 		}
 
 		return (
-			<div className="quiz" style={styles.wrapper}>
+			<Container>
 				<TopBar
 					onUnlock={this.openUnlockPopup}
 					onHint={this.openHintPopup}
@@ -360,7 +329,7 @@ class Quiz extends Component {
 						<PopupContentText>{t('learn.hint-not-enough-xp')}</PopupContentText>
 					</PopupContent>
 				</Popup>
-			</div>
+			</Container>
 		);
 	}
 }
