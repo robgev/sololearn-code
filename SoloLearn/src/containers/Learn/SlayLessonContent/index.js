@@ -38,10 +38,13 @@ class SlayLessonContent extends Component {
 		const { textContent, ...childProps } = this.props;
 		return (
 			<Fragment>
-				<FlexBox justify align>
+				<FlexBox className="slay_lesson-step-container" fullWidth justify align>
 					{
 						parts &&
-						<Stepper className="slay-lesson-stepper">
+						<Stepper
+							width={`${((parts.length * 3) + ((parts.length - 1) * 5))}%`}
+							className="slay-lesson-stepper slay-lesson-align-left"
+						>
 							{parts.map((singlePart, index) => (
 								<Step
 									text={index + 1}
