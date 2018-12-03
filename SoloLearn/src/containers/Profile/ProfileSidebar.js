@@ -1,16 +1,14 @@
 import React from 'react';
 import { translate } from 'react-i18next';
-import 'styles/Profile/ProfileSidebar.scss';
+import { Container, FlexBox, Heading, TextBlock } from 'components/atoms';
 
 const ProfileSidebar = ({ t }) => (
-	<div className="profile-sidebar-root">
-		<div className="sidebar-title">
-			<p className="title">Highlights</p>
-		</div>
-		<div className="profile-sidebar-container">
-			<p className="coming-soon">{t('skills.coming-soon')}!</p>
-		</div>
-	</div>
+	<Container>
+		<Heading>Highlights</Heading>
+		<FlexBox column align>
+			<TextBlock>{t('skills.coming-soon')}</TextBlock>
+		</FlexBox>
+	</Container>
 );
 
 export default translate()(ProfileSidebar);
