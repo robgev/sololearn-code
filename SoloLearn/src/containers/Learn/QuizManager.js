@@ -350,7 +350,7 @@ class QuizManager extends Component {
 				sidebar={<UserProgressToolbar />}
 			>
 				<EmptyCard loading paper />
-			</LayoutWithSidebar>);
+            </LayoutWithSidebar>);
 		}
 
 		const { quizzes, tags } = activeLesson;
