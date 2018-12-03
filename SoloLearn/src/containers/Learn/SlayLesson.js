@@ -188,14 +188,7 @@ class SlayLesson extends PureComponent {
 							</Fragment>
 						)
 					}
-					{ !loading &&
-					<RelatedLessons
-						id={id}
-						userID={userID}
-						userName={userName}
-						implementations={implementations}
-					/>
-					}
+					
 				</Container>
 			</LayoutWithSidebar>
 		);
