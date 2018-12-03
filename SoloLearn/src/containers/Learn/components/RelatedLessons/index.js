@@ -21,7 +21,7 @@ const RelatedLessons = ({
 		|| nextLesson)
 		? (
 			<FlexBox column justifyBetween>
-				{	implementations && implementations.length &&
+				{	!!implementations.length &&
 				<CollectionCard
 					round
 					id={id}
@@ -36,10 +36,15 @@ const RelatedLessons = ({
 					small
 					{...nextLesson}
 					title={t('lesson.up-next')}
-					
+					style={{
+						padding: 15,
+						marginBottom: 0,
+						paddingBottom: 0,
+						boxShadow: 'none',
+					}}
 				/>
 				}
-				{relevantLessons && relevantLessons.length &&
+				{	!!relevantLessons.length &&
 				<SidebarCollectionCard
 					id={id}
 					noViewMore
@@ -47,7 +52,7 @@ const RelatedLessons = ({
 					items={relevantLessons}
 				/>
 				}
-				{lessonsByUser && lessonsByUser.length &&
+				{	!!lessonsByUser.length &&
 				<SidebarCollectionCard
 					userID={userID}
 					title={`${t('lesson.view-more-by-author')} ${userName}`}
@@ -58,5 +63,12 @@ const RelatedLessons = ({
 		)
 		: <EmptyCard />
 );
+
+RelatedLessons.defaultProps = {
+	implementations: [],
+	relevantLessons: [],
+	lessonsByUser: [],
+	nextLesson: null,
+};
 
 export default translate()(RelatedLessons);
