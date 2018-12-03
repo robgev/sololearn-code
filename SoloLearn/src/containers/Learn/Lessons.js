@@ -58,14 +58,13 @@ class Lessons extends Component {
 	handleClick = (lessonId, lessonState, lessonName) => {
 		const {
 			params,
-			course,
 		} = this.props;
 		if (lessonState.visualState === ProgressState.Disabled) {
 			return;
 		}
 		this.props.selectLesson(lessonId, lessonState);
 		this.props.selectQuiz(this.getActiveQuiz(this.props.lessons[lessonId]));
-		browserHistory.push(`/learn/course/${params.courseName}/${params.moduleName}/${toSeoFriendly(lessonName)}/1`);
+		browserHistory.push(`/learn/course/${toSeoFriendly(params.courseName)}/${toSeoFriendly(params.moduleName)}/${toSeoFriendly(lessonName)}/1`);
 	}
 
 	getActiveQuiz = (lesson) => {
@@ -110,10 +109,10 @@ class Lessons extends Component {
 			>
 				<div className="lessons-container">
 					<div className="lesson-breadcrumbs">
-						<Link className="hoverable" to={`/learn/course/${courseName}`}>
+						<Link className="hoverable" to={`/learn/course/${toSeoFriendly(courseName)}`}>
 							{course.name}
 						</Link> &gt;
-						<Link className="hoverable" to={`/learn/course/${courseName}/${moduleName}`}>
+						<Link className="hoverable" to={`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}`}>
 							{name}
 						</Link>
 					</div>

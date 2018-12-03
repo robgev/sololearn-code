@@ -1,5 +1,5 @@
 // React modules
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
@@ -9,6 +9,7 @@ import { browserHistory } from 'react-router';
 import { isLoaded } from 'reducers';
 import { selectModule, selectLesson, selectQuiz, deductExp } from 'actions/learn';
 import Progress, { PointExchangeTypes } from 'api/progress';
+import { toSeoFriendly } from 'utils';
 
 // Marterial UI components
 import { Popup, PopupContent, PopupTitle, PopupActions, PopupContentText, Loading, FlexBox, Container } from 'components/atoms';
@@ -141,12 +142,12 @@ class Quiz extends Component {
 						browserHistory.push(`/certificate/${this.props.course.id}`);
 					} else {
 						// Go back to module list
-						browserHistory.push(`/learn/course/${this.props.params.courseName}`);
+						browserHistory.push(`/learn/course/${toSeoFriendly(this.props.params.courseName)}`);
 					}
 				} else {
 					// Else show lessons
 					this.setState({ checkResult: null, isQuizComplete: false });
-					browserHistory.push(`/learn/course/${this.props.params.courseName}/${this.props.params.moduleName}`);
+					browserHistory.push(`/learn/course/${toSeoFriendly(this.props.params.courseName)}/${toSeoFriendly(this.props.params.moduleName)}`);
 				}
 				// return;
 			}

@@ -5,9 +5,6 @@ import { connect } from 'react-redux';
 
 import { LayoutWithSidebar, EmptyCard } from 'components/molecules';
 
-// Material UI components
-import Paper from 'material-ui/Paper';
-
 import { ProgressBar, Step } from 'react-step-progress-bar';
 import 'react-step-progress-bar/styles.css';
 
@@ -33,7 +30,7 @@ import Comments from 'containers/Comments/CommentsBase';
 
 import StepIcon from './StepIcon';
 import { UserProgressToolbar } from './components';
- import { Link, Container, PaperContainer } from 'components/atoms';
+import { Link, Container, PaperContainer } from 'components/atoms';
 
 export const LessonType = {
 	Checkpoint: 0,
@@ -79,7 +76,6 @@ class QuizManager extends Component {
 			course,
 		} = this.props;
 
-
 		this.setState({ loading: true });
 
 		if (!isLoaded) {
@@ -118,12 +114,12 @@ class QuizManager extends Component {
 						localProgress[localProgress.length - 1].lessonID :
 						lessons[0].id;
 					this.setActiveLesson(activeLessonId, activeModuleId);
-					browserHistory.replace(`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(lessonName)}/${this.props.activeQuiz.number}`);
+					browserHistory.replace(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${this.props.activeQuiz.number}`);
 				} else {
 					const { localProgress } = Progress;
 					const activeLessonId = localProgress[localProgress.length - 1].lessonID;
 					this.setActiveLesson(activeLessonId, moduleId);
-					browserHistory.replace(`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(lessonName)}/${this.props.activeQuiz.number}`);
+					browserHistory.replace(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${this.props.activeQuiz.number}`);
 				}
 			} else {
 				this.setActiveLesson(lessonId, moduleId);
@@ -166,7 +162,7 @@ class QuizManager extends Component {
 	generateTimeline = (quizzes, activeQuiz) => {
 		const timeline = [];
 		const lesson = this.props.activeLesson;
-		if(lesson.type !== LessonType.Checkpoint) {
+		if (lesson.type !== LessonType.Checkpoint) {
 			return null;
 		}
 		const progress = Progress.getLessonProgress(lesson.id);
@@ -297,7 +293,7 @@ class QuizManager extends Component {
 			.then(({ count }) => {
 				this.setState({ commentsCount: count, commentsOpened: false });
 			});
-		browserHistory.push(`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(activeLesson.name)}/${number}`);
+		browserHistory.push(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(activeLesson.name)}/${number}`);
 		this.props.selectQuiz({ id: quizId, number, isText });
 	}
 
@@ -350,11 +346,11 @@ class QuizManager extends Component {
 		if (loading || (!isLoaded) ||
 			(!activeQuiz) ||
 			(this.props.params.quizNumber && !this.props.activeQuiz)) {
-			return 	<LayoutWithSidebar
-						sidebar={<UserProgressToolbar />}
-					>
-						<EmptyCard loading paper />
-					</LayoutWithSidebar>
+			return 	(<LayoutWithSidebar
+				sidebar={<UserProgressToolbar />}
+			>
+				<EmptyCard loading paper />
+			</LayoutWithSidebar>);
 		}
 
 		const { quizzes, tags } = activeLesson;
@@ -375,13 +371,13 @@ class QuizManager extends Component {
 				<PaperContainer className="quiz-container">
 					<Container style={{ padding: 15 }}>
 						<Container className="lesson-breadcrumbs">
-							<Link to={`/learn/course/${courseName}`}>
+							<Link to={`/learn/course/${toSeoFriendly(courseName)}`}>
 								{course.name} &gt; {' '}
 							</Link>
-							<Link to={`/learn/course/${courseName}/${moduleName}`}>
+							<Link to={`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}`}>
 								{activeModule.name} &gt; {' '}
 							</Link>
-							<Link to={`/learn/course/${courseName}/${moduleName}/${toSeoFriendly(activeLesson.name, 100)}/1`}>
+							<Link to={`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(activeLesson.name, 100)}/1`}>
 								{activeLesson.name}
 							</Link>
 						</Container>
@@ -389,17 +385,16 @@ class QuizManager extends Component {
 						{childrenWithProps}
 						<Link to={{ pathname: '/discuss', query: { query: tags !== null ? tags : course.language } }}>Q&A</Link>
 					</Container>
-					
 
 				</PaperContainer>
 				{commentsOpened || activeQuiz.isText ?
-						<Comments
-							id={activeQuiz.id}
-							commentsType="lesson"
-							type={activeQuiz.isText ? 1 : 3}
-							commentsCount={commentsCount}
-						/> : null
-					}
+					<Comments
+						id={activeQuiz.id}
+						commentsType="lesson"
+						type={activeQuiz.isText ? 1 : 3}
+						commentsCount={commentsCount}
+					/> : null
+				}
 			</LayoutWithSidebar>
 		);
 	}

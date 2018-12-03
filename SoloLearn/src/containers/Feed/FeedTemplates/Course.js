@@ -12,9 +12,8 @@ import {
 import 'styles/Feed/FeedTemplates/Course.scss';
 
 class Course extends Component {
-	
 	render() {
-		const { course, date, showDate=true } = this.props;
+		const { course, date, showDate = true } = this.props;
 
 		return (
 			<Link to={`/learn/course/${toSeoFriendly(course.name)}`}>
