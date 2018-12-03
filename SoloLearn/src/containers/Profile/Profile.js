@@ -19,7 +19,7 @@ import {
 	Container,
 } from 'components/atoms';
 import { LayoutWithSidebar, InfiniteScroll, FloatingActionButton } from 'components/molecules';
-import { Feed } from 'components/icons';
+import { Feed, Add } from 'components/icons';
 import Header from './Header';
 import Skills from './Skills';
 import Badges from './Badges';
@@ -152,7 +152,7 @@ class Profile extends Component {
 						/>
 						{data.id === userId &&
 							<AddCodeButton>
-								{({ togglePopup }) => <FloatingActionButton onClick={togglePopup} />}
+								{({ togglePopup }) => <FloatingActionButton alignment="right"  onClick={togglePopup} ><Add /></FloatingActionButton>}
 							</AddCodeButton>
 						}
 					</Container>
