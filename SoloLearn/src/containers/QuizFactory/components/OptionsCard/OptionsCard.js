@@ -25,7 +25,7 @@ const OptionsCard = ({
 				<FlexBox>
 					<Image src={image} alt="" />
 				</FlexBox>
-				<FlexBox column className="info">
+				<FlexBox column>
 					<Title>{header}</Title>
 					<SecondaryTextBlock>{info}</SecondaryTextBlock>
 				</FlexBox>
