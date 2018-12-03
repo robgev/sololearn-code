@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Tooltip } from 'react-tippy';
 import { Linkify } from 'components/molecules';
 import { TextContainer, TextBlock, Container, Image } from 'components/atoms';
+import { RefLink } from 'components/molecules';
 import CodeBlock from './CodeBlock';
 import './styles.scss';
 
@@ -81,7 +82,7 @@ class Parser extends Component {
 		const [ , fullLink ] = Parser.linkRegex.exec(strAttributes);
 		if (fullLink.includes('sololearn.com')) {
 			const userLessonId = fullLink.substring(fullLink.lastIndexOf('/') + 1);
-			return <a href={`/learn/lesson/user-lesson/${userLessonId}`}>{children}</a>;
+			return <RefLink href={`/learn/lesson/user-lesson/${userLessonId}`}>{children}</RefLink>;
 		}
 		return <Linkify href={fullLink}>{children}</Linkify>;
 	}
