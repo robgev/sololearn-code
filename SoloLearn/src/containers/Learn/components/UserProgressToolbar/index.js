@@ -1,8 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { CircularProgress, Container, TextBlock, SecondaryTextBlock, Title } from 'components/atoms';
-import { TextLink, UsernameLink, ProfileAvatar } from 'components/molecules';
+import {
+	CircularProgress,
+	Container,
+	TextBlock,
+	SecondaryTextBlock,
+	Title,
+	Link,
+} from 'components/atoms';
+import { UsernameLink, ProfileAvatar } from 'components/molecules';
 import LeaderboardString from 'components/LeaderboardString';
 
 import './styles.scss';
@@ -48,18 +55,18 @@ const UserProgressToolbar = ({
 				</Container>
 			</Container>
 			<Container className="user-activity-info">
-				<TextLink to={`/profile/${profile.id}/codes`} className="user-activity-tab">
+				<Link to={`/profile/${profile.id}/codes`} className="user-activity-tab">
 					<TextBlock className="block-text">{profile.codes}</TextBlock>
 					<SecondaryTextBlock className="block-text">{t('profile.tab.codes')}</SecondaryTextBlock>
-				</TextLink>
-				<TextLink to={`/profile/${profile.id}/discussion`} className="user-activity-tab">
+				</Link>
+				<Link to={`/profile/${profile.id}/discussion`} className="user-activity-tab">
 					<TextBlock className="block-text">{profile.posts}</TextBlock>
 					<SecondaryTextBlock className="block-text">{t('profile.tab.posts')}</SecondaryTextBlock>
-				</TextLink>
-				<TextLink to={`/profile/${profile.id}/skills`} className="user-activity-tab">
+				</Link>
+				<Link to={`/profile/${profile.id}/skills`} className="user-activity-tab">
 					<TextBlock className="block-text">{profile.skills ? profile.skills.length : 0}</TextBlock>
 					<SecondaryTextBlock className="block-text">{t('profile.tab.skills')}</SecondaryTextBlock>
-				</TextLink>
+				</Link>
 			</Container>
 		</Container>
 	);
