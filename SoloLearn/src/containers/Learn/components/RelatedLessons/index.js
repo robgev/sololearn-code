@@ -21,7 +21,7 @@ const RelatedLessons = ({
 		|| nextLesson)
 		? (
 			<FlexBox column justifyBetween>
-				{	!!implementations.length &&
+				{	implementations && !!implementations.length &&
 				<CollectionCard
 					round
 					id={id}
@@ -44,7 +44,7 @@ const RelatedLessons = ({
 					}}
 				/>
 				}
-				{	!!relevantLessons.length &&
+				{	relevantLessons && !!relevantLessons.length &&
 				<SidebarCollectionCard
 					id={id}
 					noViewMore
@@ -52,7 +52,7 @@ const RelatedLessons = ({
 					items={relevantLessons}
 				/>
 				}
-				{	!!lessonsByUser.length &&
+				{	lessonsByUser && !!lessonsByUser.length &&
 				<SidebarCollectionCard
 					userID={userID}
 					title={`${t('lesson.view-more-by-author')} ${userName}`}
@@ -61,7 +61,7 @@ const RelatedLessons = ({
 				}
 			</FlexBox>
 		)
-		: <EmptyCard />
+		: <EmptyCard loading />
 );
 
 RelatedLessons.defaultProps = {
