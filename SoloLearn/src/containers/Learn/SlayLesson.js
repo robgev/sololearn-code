@@ -5,7 +5,7 @@ import { translate } from 'react-i18next';
 
 import { toSeoFriendly } from 'utils';
 import Comments from 'containers/Comments/CommentsBase';
-import { PaperContainer, Container } from 'components/atoms';
+import { PaperContainer, Container, FlexBox } from 'components/atoms';
 import { ContainerLink, LayoutWithSidebar, RaisedButton, EmptyCard } from 'components/molecules';
 
 import Service from 'api/service';
@@ -17,6 +17,8 @@ import {
 
 import RelatedLessons from './components/RelatedLessons';
 import SlayLessonContent from './SlayLessonContent';
+
+import "./SlayLesson.scss";
 
 const mapStateToProps = state => ({
 	activeLesson: state.slay.activeLesson,
@@ -151,29 +153,31 @@ class SlayLesson extends PureComponent {
 						: (
 							<Fragment>
 								<PaperContainer>
-									<SlayLessonContent
-										t={t}
-										date={date}
-										type={type}
-										name={name}
-										parts={parts}
-										withAuthorInfo
-										userData={userData}
-										itemType={itemType}
-										textContent={content}
-										pageNumber={pageNumber}
-										activeLesson={activeLesson}
-										courseLanguage={language}
-										commentsCount={comments}
-										isBookmarked={isBookmarked}
-									/>
-									{nextLesson &&
-										<ContainerLink to={`/learn/lesson/${nextLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${nextLesson.id}/${toSeoFriendly(nextLesson.name, 100)}/1`}>
-											<RaisedButton color="secondary">
-												{t('learn.buttons-continue')}
-											</RaisedButton>
-										</ContainerLink>
-									}
+									<FlexBox column fullWidth className="slay-lesson-container">
+										<SlayLessonContent
+											t={t}
+											date={date}
+											type={type}
+											name={name}
+											parts={parts}
+											withAuthorInfo
+											userData={userData}
+											itemType={itemType}
+											textContent={content}
+											pageNumber={pageNumber}
+											activeLesson={activeLesson}
+											courseLanguage={language}
+											commentsCount={comments}
+											isBookmarked={isBookmarked}
+										/>
+										{nextLesson &&
+											<ContainerLink to={`/learn/lesson/${nextLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${nextLesson.id}/${toSeoFriendly(nextLesson.name, 100)}/1`}>
+												<RaisedButton color="secondary">
+													{t('learn.buttons-continue')}
+												</RaisedButton>
+											</ContainerLink>
+										}
+									</FlexBox>
 								</PaperContainer>
 								<Comments
 									id={id}
