@@ -1,19 +1,17 @@
 // React modules
 import React, { PureComponent } from 'react';
 import { translate } from 'react-i18next';
-import ProfileAvatar from './ProfileAvatar';
-import LeaderboardString from 'components/LeaderboardString'
+import LeaderboardString from 'components/LeaderboardString';
 import {
 	Container,
 	PaperContainer,
-	Link,
-	SecondaryTextBlock,
-	TextBlock,
 } from 'components/atoms';
 import {
 	RaisedButton,
 	UsernameLink,
+	ContainerLink,
 	ProgressBar,
+	ProfileAvatar,
 } from 'components/molecules';
 
 import 'styles/Feed/Header.scss';
@@ -59,7 +57,7 @@ class Header extends PureComponent {
 						<UsernameLink to={`/profile/${profile.id}`}>
 							{profile.name}
 						</UsernameLink>
-						
+
 						<LeaderboardString ranks={rank} />
 						<Container className="profile-progress-wrapper">
 							<ProgressBar
@@ -71,11 +69,11 @@ class Header extends PureComponent {
 					</Container>
 				</Container>
 				<Container className="actions">
-					<Link to="/discover">
+					<ContainerLink to="/discover">
 						<RaisedButton>
 							{t('discover_peers.title')}
 						</RaisedButton>
-					</Link>
+					</ContainerLink>
 				</Container>
 			</PaperContainer>
 

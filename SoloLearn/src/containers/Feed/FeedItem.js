@@ -80,7 +80,7 @@ class FeedItem extends Component {
 					vote={feedItem.vote}
 					date={feedItem.date}
 					votes={feedItem.votes}
-					onChange={({vote:newVote, votes}) => {voteFeedItem({ ...feedItem, newVote, targetId: feedItem.post.id })}}
+					onChange={({ vote: newVote, votes }) => { voteFeedItem({ ...feedItem, newVote, targetId: feedItem.post.id }); }}
 				/>
 			);
 		case types.postedCode:
@@ -196,7 +196,7 @@ class FeedItem extends Component {
 					<Container
 						id="feed-items"
 						className={`merged-items-container ${this.state.isOpened ? 'open' : ''}`}
-						style={{ height: this.state.isOpened ? feedItem.groupedItems.length * 159 : 0 }}
+						style={{ height: this.state.isOpened ? ((feedItem.groupedItems.length * 139) - 10) : 0 }} // 10 = last item margin bottom
 					>
 						{feedItem.groupedItems.map(currentItem => (
 							<FeedItem
