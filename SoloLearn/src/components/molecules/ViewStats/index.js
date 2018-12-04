@@ -6,7 +6,7 @@ import { FlexBox, SecondaryTextBlock } from 'components/atoms';
 import './styles.scss';
 
 const ViewStats = ({	views, votes, comments }) => (
-	<FlexBox align justify>
+	<FlexBox align>
 		{ votes > 0 &&
 			<FlexBox align justify className="molecule_view-stats">
 				<Arrows className="molecule_view-stats-icon" />
