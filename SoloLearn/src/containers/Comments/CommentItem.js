@@ -35,14 +35,7 @@ const CommentItem = ({
 	toggleEdit,
 }) => {
 	const {
-		parentID,
-		date,
-		userID,
 		id,
-		message,
-		vote,
-		votes,
-		replies,
 	} = comment;
 	return (
 		<Fragment>
@@ -55,7 +48,7 @@ const CommentItem = ({
 						<FlexBox>
 							<FlexBox column fullWidth>
 								<FlexBox justifyBetween fullWidth align>
-									<UsernameLink>
+									<UsernameLink to={`/profile/${user.id}`}>
 										{user.name}
 									</UsernameLink>
 									<Container>
@@ -98,7 +91,7 @@ const CommentItem = ({
 											}
 										</IconMenu>
 									</Container>
-									
+
 								</FlexBox>
 								<Container>
 									<Mention text={comment.message} />
@@ -111,11 +104,11 @@ const CommentItem = ({
 									))}
 								</Container>
 							</FlexBox>
-							
+
 						</FlexBox>
 						<FlexBox justifyBetween>
 							<Container>
-								<VoteActions 
+								<VoteActions
 									id={comment.id}
 									type={`${type}Comment`}
 									initialVote={comment.vote}
@@ -146,11 +139,10 @@ const CommentItem = ({
 			</ListItem>
 			<HorizontalDivider />
 		</Fragment>
-	)
-}
+	);
+};
 
 export default translate()(CommentItem);
-
 
 /*
 	<Container className="comment-header">

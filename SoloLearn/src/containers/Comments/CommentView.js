@@ -66,7 +66,6 @@ class CommentView extends Component {
 			<Container
 				ref={(node) => { this.mainDiv = node; }}
 				className={`comment-item ${this.highlighted ? 'animate' : ''}`}
-				
 			>
 				<CommentItem
 					comment={this.props.comment}
