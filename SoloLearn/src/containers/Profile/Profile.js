@@ -10,7 +10,7 @@ import { CodesList, AddCodeButton } from 'containers/Playground/components';
 import BusyWrapper from 'components/BusyWrapper';
 import ProfileHeaderShimmer from 'components/Shimmers/ProfileHeaderShimmer';
 import FeedList from 'containers/Feed/FeedList';
-import QuestionList from 'containers/Discuss/QuestionsList';
+import QuestionList, { AddQuestionButton } from 'containers/Discuss/QuestionsList';
 import {
 	Tabs,
 	Tab,
@@ -20,15 +20,14 @@ import {
 } from 'components/atoms';
 import { LayoutWithSidebar, InfiniteScroll, FloatingActionButton } from 'components/molecules';
 import { Feed, Add } from 'components/icons';
+import 'containers/Discuss/QuestionsList/styles.scss';
+import 'styles/Profile/index.scss';
 import Header from './Header';
 import Skills from './Skills';
 import Badges from './Badges';
 import FollowersBase from './FollowersBase';
 import ProfileSidebar from './ProfileSidebar';
 import IProfile from './IProfile';
-
-import 'containers/Discuss/QuestionsList/styles.scss';
-import 'styles/Profile/index.scss';
 
 const capitalize = str => str.charAt(0).toUpperCase() + str.substr(1);
 
@@ -121,12 +120,20 @@ class Profile extends Component {
 							<Tab
 								value="skills"
 								label={<SecondaryTextBlock>{t('profile.tab.skills')}</SecondaryTextBlock>}
-								icon={<SecondaryTextBlock>{data.skills ? data.skills.length : 0}</SecondaryTextBlock>}
+								icon={
+									<SecondaryTextBlock>
+										{data.skills ? data.skills.length : 0}
+									</SecondaryTextBlock>
+								}
 							/>
 							<Tab
 								value="badges"
 								label={<SecondaryTextBlock>{t('profile.tab.badges')}</SecondaryTextBlock>}
-								icon={<SecondaryTextBlock>{data.badges ? data.badges.filter(item => item.isUnlocked).length : 0}</SecondaryTextBlock>}
+								icon={
+									<SecondaryTextBlock>
+										{data.badges ? data.badges.filter(item => item.isUnlocked).length : 0}
+									</SecondaryTextBlock>
+								}
 							/>
 						</Tabs>
 					</BusyWrapper>
@@ -152,7 +159,7 @@ class Profile extends Component {
 						/>
 						{data.id === userId &&
 							<AddCodeButton>
-								{({ togglePopup }) => <FloatingActionButton alignment="right"  onClick={togglePopup} ><Add /></FloatingActionButton>}
+								{({ togglePopup }) => <FloatingActionButton alignment="right" onClick={togglePopup} ><Add /></FloatingActionButton>}
 							</AddCodeButton>
 						}
 					</Container>
@@ -167,8 +174,11 @@ class Profile extends Component {
 							<PaperContainer className="discuss_questions-list">
 								<QuestionList
 									questions={questions.entities}
-									isLoading={this.profile.isQuestionsFetching}
+									hasMore={questions.hasMore}
 								/>
+								{data.id === userId &&
+									<AddQuestionButton />
+								}
 							</PaperContainer>
 						</InfiniteScroll>
 					)
