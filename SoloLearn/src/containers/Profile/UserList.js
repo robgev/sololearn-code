@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
-import FollowItem from './FollowItem';
 import { Container } from 'components/atoms';
-import { InfiniteScroll } from 'components/molecules'
+import { InfiniteScroll } from 'components/molecules';
+import FollowItem from './FollowItem';
 
 const UserList = observer(({
 	t, users, hasMore, loadMore, loading, onFollowClick,
@@ -16,7 +16,6 @@ const UserList = observer(({
 				loadMore={loadMore}
 				hasMore={hasMore}
 				isLoading={loading}
-				
 			>
 				{users.map(el =>
 					<FollowItem key={el.id} follow={el} onFollowClick={onFollowClick} />)}

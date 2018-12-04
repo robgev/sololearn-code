@@ -22,9 +22,9 @@ const mapStateToProps = state => ({
 	canAccessDownvotes: determineAccessLevel(state.userProfile.accessLevel) > 2,
 });
 
-@observer
 @connect(mapStateToProps)
 @translate()
+@observer
 class Likes extends Component {
 	state = {
 		activeTab: TabTypes.upvotes,
