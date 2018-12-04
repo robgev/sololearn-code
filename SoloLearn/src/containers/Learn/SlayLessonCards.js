@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { translate } from 'react-i18next';
 
-import 'styles/Learn/Lessons.scss';
+import './Lessons.scss';
 import { Title } from 'components/atoms';
 import { LessonTiles } from './components';
 

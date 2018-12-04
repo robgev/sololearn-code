@@ -1,0 +1,8 @@
+@import '~styles/variables';
+.lessons-container {
+	padding: $primary_gap_size;
+	.lesson-breadcrumbs {
+		padding-left: $primary_gap_size;
+		padding-bottom: $secondary_gap_size;
+	}
+}

@@ -1,12 +1,10 @@
 // React modules
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
-// Marterial UI components
-import CircularProgress from 'material-ui/CircularProgress';
 import { ProgressState } from 'api/progress';
 import { getCourseByCourseName } from 'reducers/courses.reducer';
 
@@ -20,9 +18,10 @@ import {
 import { isLoaded } from 'reducers';
 
 import { toSeoFriendly } from 'utils';
-import { LayoutWithSidebar } from 'components/molecules';
+import { LayoutWithSidebar, EmptyCard } from 'components/molecules';
+import { Container, Link } from 'components/atoms';
 
-import 'styles/Learn/Lessons.scss';
+import './Lessons.scss';
 
 import { LessonTiles, UserProgressToolbar } from './components';
 import { LessonType } from './QuizManager';
@@ -98,7 +97,11 @@ class Lessons extends Component {
 		} = this.props;
 
 		if (!isLoaded || !activeModule) {
-			return <CircularProgress style={{ display: 'flex', alignItems: 'center', margin: 'auto' }} />;
+			return <LayoutWithSidebar
+				sidebar={<UserProgressToolbar />}
+			>
+				<EmptyCard loading />
+			</LayoutWithSidebar>
 		}
 
 		const { lessons, name } = activeModule;
@@ -107,21 +110,21 @@ class Lessons extends Component {
 			<LayoutWithSidebar
 				sidebar={<UserProgressToolbar />}
 			>
-				<div className="lessons-container">
-					<div className="lesson-breadcrumbs">
+				<Container className="lessons-container">
+					<Container className="lesson-breadcrumbs">
 						<Link className="hoverable" to={`/learn/course/${toSeoFriendly(courseName)}`}>
 							{course.name}
 						</Link> &gt;
 						<Link className="hoverable" to={`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}`}>
 							{name}
 						</Link>
-					</div>
+					</Container>
 					<LessonTiles
 						t={t}
 						lessons={lessons}
 						onItemClick={this.handleClick}
 					/>
-				</div>
+				</Container>
 			</LayoutWithSidebar>
 		);
 	}
