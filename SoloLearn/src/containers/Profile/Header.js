@@ -144,7 +144,7 @@ class Header extends Component {
 							size="big"
 						/>
 					}
-					<UsernameLink className="user-name">{profile.name}</UsernameLink>
+					<UsernameLink to={`/profile/${profile.id}`} className="user-name">{profile.name}</UsernameLink>
 					<SecondaryTextBlock className="user-level">{t('common.user-level')} {profile.level}</SecondaryTextBlock>
 					<Container className="profile-progress-wrapper">
 						<ProgressBar

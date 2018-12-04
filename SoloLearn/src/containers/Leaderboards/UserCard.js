@@ -3,9 +3,9 @@ import { ProfileAvatar, UsernameLink, } from 'components/molecules';
 import { Container, SecondaryTextBlock, } from 'components/atoms';
 import './UserCard.scss';
 
-const UserData = ({ name, xp }) => (
+const UserData = ({ name, xp, id }) => (
 	<Container className="user-meta-data">
-		<UsernameLink>{ name }</UsernameLink>
+		<UsernameLink to={`/profile/${id}`}>{ name }</UsernameLink>
 		<SecondaryTextBlock className="info">+{xp} XP</SecondaryTextBlock>
 	</Container>
 );

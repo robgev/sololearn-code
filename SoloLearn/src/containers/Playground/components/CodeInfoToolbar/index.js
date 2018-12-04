@@ -70,7 +70,7 @@ class CodeInfoToolbar extends PureComponent {
 							<SecondaryTextBlock>
 								{name} <LanguageIndicator language={language} />
 							</SecondaryTextBlock>
-							<UsernameLink>
+							<UsernameLink to={`/profile/${userID}`}>
 								{userName}
 							</UsernameLink>
 						</FlexBox>
