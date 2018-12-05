@@ -1,16 +1,14 @@
 import React, { Fragment } from 'react';
 import { Lock } from 'components/icons';
 import { Link, Title, Container, ListItem, HorizontalDivider } from 'components/atoms';
-import { ViewStats, ProfileAvatar, UserTooltip, LanguageLabel } from 'components/molecules';
+import { ViewStats, ProfileAvatar, LanguageLabel } from 'components/molecules';
 
 import './styles.scss';
 
 const CodeItem = ({ code }) => (
 	<Fragment>
 		<ListItem className="code-item-wrapper">
-			<UserTooltip userData={code}>
-				<ProfileAvatar className="user" user={code} />
-			</UserTooltip>
+			<ProfileAvatar className="user" user={code} />
 			<Container className="details-wrapper">
 				<Link to={`/playground/${code.publicID}`}>
 					<Title>
