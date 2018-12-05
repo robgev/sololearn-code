@@ -150,7 +150,7 @@ class SlayLesson extends PureComponent {
 		const {pageNumber} = params;
 		const {id, name, parts, nextLesson} = activeLesson;
 		const url = `/learn/lesson/${nextLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}`;
-		if (pageNumber < parts.length) {
+		if (parts && pageNumber < parts.length) {
 			browserHistory.push(`${url}/${this.props.activeLesson.id}/${toSeoFriendly(this.props.activeLesson.name, 100)}/${Number(pageNumber)+1}`);
 		} else {
 			browserHistory.push(`${url}/${nextLesson.id}/${toSeoFriendly(nextLesson.name, 100)}/1`);
@@ -196,7 +196,7 @@ class SlayLesson extends PureComponent {
 			name: userName,
 			id: userID,
 		};
-		const hasNext = loading ? false : pageNumber < parts.length || nextLesson;
+		const hasNext = loading ? false : parts && pageNumber < parts.length || nextLesson;
 		console.log('alert!!');
 		return (
 			<LayoutWithSidebar
