@@ -27,10 +27,10 @@ import { toSeoFriendly } from 'utils';
 
 // Additional data and components
 import Comments from 'containers/Comments/CommentsBase';
+import { Link, Container, PaperContainer } from 'components/atoms';
 
 import StepIcon from './StepIcon';
 import { UserProgressToolbar } from './components';
-import { Link, Container, PaperContainer } from 'components/atoms';
 
 export const LessonType = {
 	Checkpoint: 0,
@@ -63,7 +63,7 @@ class QuizManager extends Component {
 	_isMounted = false;
 
 	state = {
-		commentsCount: 0,
+		commentsCount: null,
 		commentsOpened: false,
 	}
 
@@ -76,10 +76,10 @@ class QuizManager extends Component {
 			course,
 		} = this.props;
 
-		this.setState({ loading: true });
-
 		if (!isLoaded) {
+			this.setState({ loading: true });
 			await loadCourseInternal(course.id);
+			this.setState({ loading: false });
 		}
 		if (this._isMounted) {
 			const lessonId = this.props.lesson.id;
@@ -125,10 +125,11 @@ class QuizManager extends Component {
 			} else {
 				this.setActiveLesson(lessonId, moduleId);
 			}
-			const { count } =
-				await Service.request('Discussion/GetLessonCommentCount', { quizId: this.props.activeQuiz.id, type: this.props.activeQuiz.isText ? 1 : 3 });
+			this.getCommentsCount({
+				quizId: this.props.activeQuiz.id,
+				type: this.props.activeQuiz.isText ? 1 : 3,
+			});
 			if (this._isMounted) {
-				this.setState({ commentsCount: count, loading: false });
 				document.title = `${this.props.activeLesson.name}`;
 			}
 		}
@@ -148,6 +149,21 @@ class QuizManager extends Component {
 		this._isMounted = false;
 	}
 
+	getCommentsCount = async ({ quizId, type }) => {
+		const { count } =
+			await Service.request('Discussion/GetLessonCommentCount', {
+				quizId, type,
+			});
+		if (this._isMounted) {
+			if (type === 3) {
+				this.setState({ commentsOpened: false });
+			} else {
+				this.setState({ commentsOpened: true });
+			}
+			this.setState({ commentsCount: count });
+		}
+	}
+
 	setActiveLesson = (lessonId, moduleId) => {
 		const {
 			lessons,
@@ -163,17 +179,16 @@ class QuizManager extends Component {
 	getLastUnlockedQuiz = (quizNumber, timeline) => {
 		let lastUnlockedQuiz = quizNumber;
 
-		while(lastUnlockedQuiz > 0 && !timeline[lastUnlockedQuiz].isCompleted) {
+		while (lastUnlockedQuiz > 0 && !timeline[lastUnlockedQuiz].isCompleted) {
 			lastUnlockedQuiz--;
 		}
 		if (lastUnlockedQuiz !== 0 && lastUnlockedQuiz < timeline.length - 1) {
 			lastUnlockedQuiz++;
 		}
-		while(timeline[lastUnlockedQuiz].isText && lastUnlockedQuiz !== quizNumber) {
+		while (timeline[lastUnlockedQuiz].isText && lastUnlockedQuiz !== quizNumber) {
 			lastUnlockedQuiz++;
 		}
 		return lastUnlockedQuiz;
-		
 	}
 
 	generateTimeline = (quizzes, activeQuiz) => {
@@ -240,10 +255,7 @@ class QuizManager extends Component {
 		});
 		this.timeline = timeline;
 		return timeline;
-		
-		
 	}
-
 
 	getProgress = (quizzes, activeQuiz) => {
 		const timeline = this.generateTimeline(quizzes, activeQuiz);
@@ -314,10 +326,7 @@ class QuizManager extends Component {
 			},
 			activeLesson,
 		} = this.props;
-		Service.request('Discussion/GetLessonCommentCount', { quizId, type: isText ? 1 : 3 })
-			.then(({ count }) => {
-				this.setState({ commentsCount: count, commentsOpened: false });
-			});
+		this.getCommentsCount({ quizId, type: isText ? 1 : 3 });
 		browserHistory.push(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(activeLesson.name)}/${number}`);
 		this.props.selectQuiz({ id: quizId, number, isText });
 	}
@@ -347,27 +356,28 @@ class QuizManager extends Component {
 		this.props.selectQuiz(activeQuiz);
 
 		const timeline = this.generateTimeline(quizzes, activeQuiz);
-		const quizNumber = Math.min(parseInt(this.props.params.quizNumber || timeline.length - 1, 10), timeline.length - 1);
+		const quizNumber = Math.min(
+			parseInt(this.props.params.quizNumber || timeline.length - 1, 10),
+			timeline.length - 1,
+		);
 		const lastUnlockedQuiz = this.getLastUnlockedQuiz(quizNumber, timeline);
-		if(!this.props.params.quizNumber || lastUnlockedQuiz < this.props.params.quizNumber) {
+		if (!this.props.params.quizNumber || lastUnlockedQuiz < this.props.params.quizNumber) {
 			const {
 				params: {
 					courseName, moduleName, lessonName,
 				},
 			} = this.props;
 			browserHistory.push(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz}`);
-			return null;
+			return;
 		}
 
-
-		if (!this.props.params.quizNumber ) {
+		if (!this.props.params.quizNumber) {
 			const {
 				params: {
 					courseName, moduleName, lessonName,
 				},
 			} = this.props;
 			browserHistory.push(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz}`);
-			
 		}
 	}
 
@@ -376,7 +386,6 @@ class QuizManager extends Component {
 	}
 
 	render() {
-		console.log('QuizManager');
 		const {
 			course,
 			isLoaded,
@@ -393,11 +402,13 @@ class QuizManager extends Component {
 		if (loading || (!isLoaded) ||
 			(!activeQuiz) ||
 			(this.props.params.quizNumber && !this.props.activeQuiz)) {
-			return 	(<LayoutWithSidebar
-				sidebar={<UserProgressToolbar />}
-			>
-				<EmptyCard loading paper />
-            </LayoutWithSidebar>);
+			return (
+				<LayoutWithSidebar
+					sidebar={<UserProgressToolbar />}
+				>
+					<EmptyCard loading paper />
+				</LayoutWithSidebar>
+			);
 		}
 
 		const { quizzes, tags } = activeLesson;
@@ -434,8 +445,9 @@ class QuizManager extends Component {
 					</Container>
 
 				</PaperContainer>
-				{commentsOpened || activeQuiz.isText ?
+				{commentsCount !== null && commentsOpened ?
 					<Comments
+						key={activeQuiz.id}
 						id={activeQuiz.id}
 						commentsType="lesson"
 						type={activeQuiz.isText ? 1 : 3}

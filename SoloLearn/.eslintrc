@@ -40,6 +40,7 @@
 				"functions": false
 			}
 		],
+		"no-plusplus": 0,
 		"prefer-const": 1,
 		"complexity": 0,
 		"react/jsx-filename-extension": 0,

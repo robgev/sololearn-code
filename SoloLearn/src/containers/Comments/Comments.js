@@ -74,8 +74,19 @@ class Comments extends Component {
 		this.initialRequest();
 	}
 
+	componentWillReceiveProps(nextProps) {
+		const { commentsCount } = nextProps;
+		if (commentsCount !== this.props.commentsCount) {
+			this.updateCommentCount(commentsCount);
+		}
+	}
+
 	componentWillUnmount() {
 		this.dispose();
+	}
+
+	@action updateCommentCount = (commentsCount) => {
+		this.commentsCount = commentsCount;
 	}
 
 	@action onCommentAdd = () => {
