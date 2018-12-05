@@ -18,7 +18,7 @@ import {
 import RelatedLessons from './components/RelatedLessons';
 import SlayLessonContent from './SlayLessonContent';
 
-import "./SlayLesson.scss";
+import './SlayLesson.scss';
 
 const mapStateToProps = state => ({
 	activeLesson: state.slay.activeLesson,
@@ -38,7 +38,7 @@ class SlayLesson extends PureComponent {
 		super();
 		this.state = {
 			loading: false,
-			commentsCount: 0,
+			commentsCount: null,
 		};
 	}
 
@@ -47,17 +47,39 @@ class SlayLesson extends PureComponent {
 		this.loadLesson(lessonId);
 	}
 
-	componentWillReceiveProps(newProps) {
+	async componentWillReceiveProps(newProps) {
 		const { params: newParams } = newProps;
 		const { params } = this.props;
 		if (newParams.lessonId !== params.lessonId) {
 			this.loadLesson(newParams.lessonId);
+		} else if (newParams.pageNumber !== params.pageNumber) {
+			this.setState({ commentsCount: null });
+			this.loadCommentsCount();
 		}
 	}
 
 	loadCommentsCount = async () => {
+		switch (this.props.params.itemType) {
+		case 'course-lesson':
+			this.setState({ commentsCount: await this.loadCourseLessonCommentsCount() });
+			break;
+		case 'user-lesson':
+			this.setState({ commentsCount: await this.loadUserLessonCommentsCount() });
+			break;
+		default:
+			throw new Error('Could not find lesson type');
+		}
+	}
+
+	loadUserLessonCommentsCount = async () => {
 		const { id } = this.props.activeLesson;
 		const { count } = await Service.request('Discussion/GetUserLessonCommentCount', { lessonId: id });
+		return count;
+	}
+
+	loadCourseLessonCommentsCount = async () => {
+		const { id } = this.props.activeLesson.parts[this.props.params.pageNumber - 1];
+		const { count } = await Service.request('Discussion/GetLessonCommentCount', { quizId: id });
 		return count;
 	}
 
@@ -71,26 +93,48 @@ class SlayLesson extends PureComponent {
 		case 'course-lesson': {
 			await getCourseLesson(lessonId);
 			await this.getLessonsByAuthor();
-			const commentsCount = await this.loadCommentsCount();
-			this.setState({ loading: false, commentsCount });
+			this.setState({ loading: false });
 			break;
 		}
 		case 'user-lesson': {
 			await getLesson(lessonId);
 			await this.getLessonsByAuthor();
-			const commentsCount = await this.loadCommentsCount();
-			this.setState({ loading: false, commentsCount });
+			this.setState({ loading: false });
 			break;
 		}
 		default:
 			break;
 		}
 		const { name } = this.props.activeLesson;
+		this.loadCommentsCount();
 		document.title = `${name}`;
 		if (this.props.activeLesson.parts) {
 			ReactGA.ga('send', 'screenView', { screenName: 'Course Lesson Lesson Page' });
 		} else {
 			ReactGA.ga('send', 'screenView', { screenName: 'Lesson Page' });
+		}
+	}
+
+	getCommentsId = () => {
+		const { params, activeLesson } = this.props;
+		switch (params.itemType) {
+		case 'course-lesson':
+			return activeLesson.parts[params.pageNumber - 1].id;
+		case 'user-lesson':
+			return activeLesson.id;
+		default:
+			throw new Error('Unkown lesson type');
+		}
+	}
+
+	getCommentsType = () => {
+		switch (this.props.params.itemType) {
+		case 'course-lesson':
+			return 'lesson';
+		case 'user-lesson':
+			return 'userLesson';
+		default:
+			throw new Error('Unkown lesson type');
 		}
 	}
 
@@ -124,7 +168,6 @@ class SlayLesson extends PureComponent {
 			nextLesson,
 			isBookmarked,
 			relevantLessons,
-			implementations,
 		} = activeLesson || {};
 		const userData = {
 			level,
@@ -179,16 +222,19 @@ class SlayLesson extends PureComponent {
 										}
 									</FlexBox>
 								</PaperContainer>
-								<Comments
-									id={id}
-									type={1}
-									commentsType="userLesson"
-									commentsCount={commentsCount}
-								/>
+								{commentsCount !== null &&
+									<Comments
+										key={this.getCommentsId()}
+										id={this.getCommentsId()}
+										type={1}
+										commentsType={this.getCommentsType()}
+										commentsCount={commentsCount}
+									/>
+								}
 							</Fragment>
 						)
 					}
-					
+
 				</Container>
 			</LayoutWithSidebar>
 		);
