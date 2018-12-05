@@ -13,8 +13,9 @@ class CodeBlock extends Component {
 	}
 
 	openPlayground = () => {
-		const { location, courseLanguage } = this.props;
-		browserHistory.replace({ ...location, query: { ...location.query, language: courseLanguage } });
+		const { location, format, courseLanguage } = this.props;
+		const codeLanguage = format || courseLanguage;
+		browserHistory.replace({ ...location, query: { ...location.query, language: codeLanguage } });
 		this.setState(({ playgroundOpened }) => ({ playgroundOpened: !playgroundOpened }));
 	}
 
@@ -31,10 +32,12 @@ class CodeBlock extends Component {
 			children,
 			codeId,
 			basePath,
+			format,
 			location,
 			courseLanguage,
 		} = this.props;
 		const { language } = location.query;
+		const codeLanguage = format || courseLanguage;
 
 		const { playgroundOpened } = this.state;
 		return codeId !== undefined ?
@@ -57,8 +60,8 @@ class CodeBlock extends Component {
 							</FlatButton>
 						</FlexBox> :
 						<FlexBox column style={{ position: 'relative' }}>
-							<LanguageLabel language={courseLanguage} className="language-label">
-								{courseLanguage}
+							<LanguageLabel language={codeLanguage} className="language-label">
+								{codeLanguage}
 							</LanguageLabel>
 							{children}
 							<FlatButton

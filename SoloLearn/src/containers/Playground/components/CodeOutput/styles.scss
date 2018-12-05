@@ -22,6 +22,9 @@ $console_light_bg_color: $background_color;
 			}
 		}
 	}
+	.playground_live-output-loading {
+		height: 500px;
+	}
 	&.playground_output-frame-fullscreen {
 		height: 100%;
 	}

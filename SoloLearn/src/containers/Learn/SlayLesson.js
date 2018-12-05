@@ -197,7 +197,6 @@ class SlayLesson extends PureComponent {
 			id: userID,
 		};
 		const hasNext = loading ? false : parts && pageNumber < parts.length || nextLesson;
-		console.log('alert!!');
 		return (
 			<LayoutWithSidebar
 				sidebar={

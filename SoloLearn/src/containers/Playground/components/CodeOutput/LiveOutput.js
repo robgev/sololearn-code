@@ -4,10 +4,10 @@ import { translate } from 'react-i18next';
 import { Hook, Console, Decode } from 'console-feed';
 
 import {
-	Loading,
 	Heading,
 	Container,
 } from 'components/atoms';
+import { EmptyCard } from 'components/molecules';
 
 @translate()
 @observer
@@ -20,12 +20,16 @@ class LiveOutput extends React.Component {
 
 	componentDidMount() {
 		const { playground } = this.props;
-		const { contentDocument, contentWindow } = this.outputWindowRef.current;
-		Hook(contentWindow.console, (log) => {
-			this.setState(state => ({ logs: [ ...state.logs, Decode(log) ] }));
-		});
-		contentDocument.write(playground.output);
-		contentDocument.close();
+		// Do nothing if the code is still compiling
+		// And we only show loading and no iframe is available in ref.
+		if (!playground.isRunning) {
+			const { contentDocument, contentWindow } = this.outputWindowRef.current;
+			Hook(contentWindow.console, (log) => {
+				this.setState(state => ({ logs: [ ...state.logs, Decode(log) ] }));
+			});
+			contentDocument.write(playground.output);
+			contentDocument.close();
+		}
 	}
 
 	render() {
@@ -34,7 +38,7 @@ class LiveOutput extends React.Component {
 		return (
 			<Container className={`playground_live-output-container ${playground.isFullscreen ? 'playground_output-frame-fullscreen' : ''}`}>
 				{ playground.isRunning
-					? <Loading />
+					? <EmptyCard className="playground_live-output-loading" loading={playground.isRunning} />
 					: (
 						<Fragment>
 							<iframe className="playground_output-frame" title="code-output" ref={this.outputWindowRef} />

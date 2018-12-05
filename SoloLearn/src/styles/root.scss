@@ -58,12 +58,6 @@ html, body {
 	animation: highlight 1s ease-in;
 }
 
-.empty-card-placeholder {
-	min-height: $empty_card_size;
-	width: 100%;
-	height: 100%;
-}
-
 span::selection {
 	background-color: $primary_color_hover;
 	color: white;
