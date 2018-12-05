@@ -93,5 +93,6 @@ export const checkForInput = ({ code, language }) => {
 		return inputRegex.test(codeBlock);
 	}
 	const codeBlock = code.replace(/(\/\*([\s\S]*?)\*\/)|(\/\/(.*)$)/gm, '');
-	return inputRegex.test(codeBlock);
+	// Validate inputRegex to avoid reading property of undefined.
+	return inputRegex ? inputRegex.test(codeBlock) : false;
 };

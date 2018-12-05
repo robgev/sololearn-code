@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Tooltip } from 'react-tippy';
-import { Linkify } from 'components/molecules';
 import { TextContainer, TextBlock, Container, Image } from 'components/atoms';
-import { RefLink } from 'components/molecules';
+import { Linkify, RefLink } from 'components/molecules';
 import CodeBlock from './CodeBlock';
 import './styles.scss';
 

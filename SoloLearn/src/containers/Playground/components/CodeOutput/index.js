@@ -9,7 +9,12 @@ import './styles.scss';
 const CodeOutput = ({ playground }) => (!playground.isOutputOpen ? null : (
 	<Fragment>
 		{playground.hasLiveOutput
-			? <LiveOutput playground={playground} />
+			? (
+				<LiveOutput
+					key={`live-${playground.id}-${playground.lessonCodeId}-${playground.isRunning ? 'running' : 'live'}`}
+					playground={playground}
+				/>
+			)
 			: <CompiledOutput playground={playground} />
 		}
 	</Fragment>

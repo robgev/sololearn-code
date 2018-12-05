@@ -188,6 +188,7 @@ class IPlayground {
 			input: this.inputValue,
 		});
 		try {
+			this.isOutputOpen = true;
 			const { output } = await this.compileCodePromise;
 			this.showOutput(output);
 		} finally {

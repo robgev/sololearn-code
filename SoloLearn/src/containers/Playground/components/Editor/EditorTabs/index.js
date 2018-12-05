@@ -25,7 +25,7 @@ const PlaygroundTabs = ({ t, playground }) => (
 		<div>
 			{ playground.hasLiveOutput && !playground.isInline &&
 			<FlatButton
-				onClick={playground.runWebCode}
+				onClick={playground.language === 'php' ? playground.runCompiledCode : playground.runWebCode}
 			>
 				{t('code_playground.output')}
 			</FlatButton>
