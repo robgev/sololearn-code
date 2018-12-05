@@ -67,13 +67,13 @@ class ReportPopup extends PureComponent {
 		const { onRequestClose, open, t } = this.props;
 		const actions = [
 			<FlatButton
-				primary
+				color="primary"
 				onClick={onRequestClose}
 			>
 				{t('common.cancel-title')}
 			</FlatButton>,
 			<FlatButton
-				primary
+				color="primary"
 				onClick={() => this.submitReport()}
 				label={t('common.report-action-title')}
 			>
