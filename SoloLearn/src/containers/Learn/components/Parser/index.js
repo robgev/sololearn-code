@@ -181,7 +181,6 @@ class Parser extends Component {
 	}
 	parse = () => {
 		const { courseLanguage } = this.props;
-		console.log(this.text);
 		const toBeParsed = this.text.replace('\r\n\r\n', '\r\n');
 		return this._parse({ text: toBeParsed, courseLanguage });
 	}

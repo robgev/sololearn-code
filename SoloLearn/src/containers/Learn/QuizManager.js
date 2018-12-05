@@ -94,6 +94,7 @@ class QuizManager extends Component {
 					courseName, moduleName, lessonName,
 				},
 			} = this.props;
+
 			const { _visualState: lessonState } = Progress.getLessonStateById(lessonId);
 
 			const { _visualState: moduleState } = Progress.getModuleStateById(moduleId);
@@ -159,6 +160,22 @@ class QuizManager extends Component {
 		this.getActiveQuiz(lesson);
 	}
 
+	getLastUnlockedQuiz = (quizNumber, timeline) => {
+		let lastUnlockedQuiz = quizNumber;
+
+		while(lastUnlockedQuiz > 0 && !timeline[lastUnlockedQuiz].isCompleted) {
+			lastUnlockedQuiz--;
+		}
+		if (lastUnlockedQuiz !== 0 && lastUnlockedQuiz < timeline.length - 1) {
+			lastUnlockedQuiz++;
+		}
+		while(timeline[lastUnlockedQuiz].isText && lastUnlockedQuiz !== quizNumber) {
+			lastUnlockedQuiz++;
+		}
+		return lastUnlockedQuiz;
+		
+	}
+
 	generateTimeline = (quizzes, activeQuiz) => {
 		const timeline = [];
 		const lesson = this.props.activeLesson;
@@ -222,6 +239,14 @@ class QuizManager extends Component {
 			});
 		});
 		this.timeline = timeline;
+		return timeline;
+		
+		
+	}
+
+
+	getProgress = (quizzes, activeQuiz) => {
+		const timeline = this.generateTimeline(quizzes, activeQuiz);
 		const quizNumber = (parseInt(this.props.activeQuiz.number, 10) - 1);
 		const activeQuizId = timeline[quizNumber].quizId;
 		if (timeline.length < 3) {
@@ -299,7 +324,7 @@ class QuizManager extends Component {
 
 	getActiveQuiz = (lesson) => {
 		const { quizzes } = lesson;
-		const currentNumber = parseInt(this.props.params.quizNumber || 1, 10);
+		const currentNumber = parseInt(this.props.params.quizNumber || quizzes.length, 10);
 		const activeQuiz = {};
 		const isCheckpoint = lesson.type === LessonType.Checkpoint;
 		for (let i = 0; i < quizzes.length; i += 1) {
@@ -320,8 +345,29 @@ class QuizManager extends Component {
 		}
 
 		this.props.selectQuiz(activeQuiz);
-		if (!this.props.params.quizNumber) {
-			browserHistory.replace(`${this.props.location.pathname}/${currentNumber}`);
+
+		const timeline = this.generateTimeline(quizzes, activeQuiz);
+		const quizNumber = Math.min(parseInt(this.props.params.quizNumber || timeline.length - 1, 10), timeline.length - 1);
+		const lastUnlockedQuiz = this.getLastUnlockedQuiz(quizNumber, timeline);
+		if(!this.props.params.quizNumber || lastUnlockedQuiz < this.props.params.quizNumber) {
+			const {
+				params: {
+					courseName, moduleName, lessonName,
+				},
+			} = this.props;
+			browserHistory.push(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz}`);
+			return null;
+		}
+
+
+		if (!this.props.params.quizNumber ) {
+			const {
+				params: {
+					courseName, moduleName, lessonName,
+				},
+			} = this.props;
+			browserHistory.push(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz}`);
+			
 		}
 	}
 
@@ -330,6 +376,7 @@ class QuizManager extends Component {
 	}
 
 	render() {
+		console.log('QuizManager');
 		const {
 			course,
 			isLoaded,
@@ -381,7 +428,7 @@ class QuizManager extends Component {
 								{activeLesson.name}
 							</Link>
 						</Container>
-						{this.generateTimeline(quizzes, activeQuiz)}
+						{this.getProgress(quizzes, activeQuiz)}
 						{childrenWithProps}
 						<Link to={{ pathname: '/discuss', query: { query: tags !== null ? tags : course.language } }}>Q&A</Link>
 					</Container>
