@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { withRouter, browserHistory } from 'react-router';
@@ -8,7 +9,7 @@ const onLanguageChange = location =>
 
 const WebTabs = ({ location, languages, playground }) => (
 	<Tabs
-		value={playground.language}
+		value={playground.isOutputOpen ? '' : playground.language} // Hide selected tab when output is open
 		onChange={onLanguageChange(location)}
 	>
 		{ playground.isWeb &&
@@ -43,4 +44,4 @@ const WebTabs = ({ location, languages, playground }) => (
 	</Tabs>
 );
 
-export default withRouter(WebTabs);
+export default withRouter(observer(WebTabs));
