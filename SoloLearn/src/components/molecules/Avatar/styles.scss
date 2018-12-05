@@ -5,7 +5,6 @@
 	display: inline-block;
 	.profile-image {
 		font-size: 50%;
-		box-sizing: content-box;
 		&.small {
 			height: $small-avatar-size;
 			width: $small-avatar-size;

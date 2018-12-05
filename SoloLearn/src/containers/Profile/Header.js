@@ -1,15 +1,13 @@
 // General modules
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import { observable, action, autorun } from 'mobx';
 import { observer } from 'mobx-react';
 import { blockUser } from 'actions/settings';
 import { numberFormatter, determineAccessLevel } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
 import ReportPopup from 'components/ReportPopup';
-import { translate } from 'react-i18next';
-import DeactivationPopup from './DeactivationPopup';
-import BlockPopup from './BlockPopup';
 import { Person } from 'components/icons';
 import {
 	Container,
@@ -20,10 +18,13 @@ import {
 import {
 	RaisedButton,
 	IconMenu,
-	ProfileAvatar,
 	UsernameLink,
 	ProgressBar,
-} from 'components/molecules'
+} from 'components/molecules';
+
+import DeactivationPopup from './DeactivationPopup';
+import BlockPopup from './BlockPopup';
+import { UserAvatar } from './components';
 
 const mapStateToProps = state => ({
 	userId: state.userProfile.id,
@@ -92,8 +93,6 @@ class Header extends Component {
 
 		const nextLevel = levels.filter(item => item.maxXp > profile.xp)[0];
 		const maxXp = nextLevel ? nextLevel.maxXp : 0;
-		const userObj = {id: profile.id, name: profile.name, badge: profile.badge, avatarUrl: profile.avatarUrl};
-		console.log(profile.id);
 		return (
 			<Container className="profile-header-container">
 				<Container className="header-top-buttons">
@@ -108,9 +107,9 @@ class Header extends Component {
 						profile.id !== userId &&
 						<Container className="action-buttons">
 							<RaisedButton
-								{...(profile.isFollowing ? {color:'secondary'} : {})}
 								onClick={onFollow}
 								className="follow-button"
+								color={profile.isFollowing ? 'secondary' : 'default'}
 							>
 								{profile.isFollowing ? t('common.user-following') : t('common.follow-user')}
 							</RaisedButton>
@@ -138,8 +137,8 @@ class Header extends Component {
 					}
 				</Container>
 				<Container className="profile-header-details">
-					{ profile.id && 
-						<ProfileAvatar
+					{ profile.id &&
+						<UserAvatar
 							user={profile}
 							size="big"
 						/>
@@ -148,7 +147,7 @@ class Header extends Component {
 					<SecondaryTextBlock className="user-level">{t('common.user-level')} {profile.level}</SecondaryTextBlock>
 					<Container className="profile-progress-wrapper">
 						<ProgressBar
-							value={100 * profile.xp/maxXp}
+							value={(100 * profile.xp) / maxXp}
 							minText={`${profile.xp} XP`}
 							maxText={`${maxXp} XP`}
 						/>

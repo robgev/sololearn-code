@@ -1,0 +1,28 @@
+@import '~styles/colors';
+@import '~styles/variables';
+
+.profile_user-avatar-container {
+		position: relative;
+		border: 4px solid transparent;
+		border-radius: 100%;
+		box-sizing: content-box;
+		.profile_user-avatar-mod-badge {
+			position: absolute;
+			bottom: -5%;
+		}
+		.profile_user-avatar-level-badge {
+			position: absolute;
+			width: 35%;
+			bottom: 5%;
+			right: 5%;
+		}
+		&.mod {
+			border-color: $mod_badge_color;
+		}
+		&.gold_mod {
+			border-color: $gold_mod_bagde_color;
+		}
+		&.platinum_mod {
+			border-color: $platinum_mod_badge_color;
+		}
+}
