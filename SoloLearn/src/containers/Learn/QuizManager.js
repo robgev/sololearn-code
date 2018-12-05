@@ -367,7 +367,7 @@ class QuizManager extends Component {
 					courseName, moduleName, lessonName,
 				},
 			} = this.props;
-			browserHistory.push(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz}`);
+			browserHistory.replace(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz}`);
 			return;
 		}
 
@@ -377,7 +377,7 @@ class QuizManager extends Component {
 					courseName, moduleName, lessonName,
 				},
 			} = this.props;
-			browserHistory.push(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz}`);
+			browserHistory.replace(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz}`);
 		}
 	}
 
