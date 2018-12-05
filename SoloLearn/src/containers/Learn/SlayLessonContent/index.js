@@ -14,33 +14,27 @@ class SlayLessonContent extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentStep: Number(props.pageNumber || 1) - 1,
+			isReportPopupOpen: false,
 		};
 	}
+
 
 	toggleReportPopup = () => {
 		this.setState(state => ({ isReportPopupOpen: !state.isReportPopupOpen }));
 	}
 
-	handleStepClick = (currentStep) => {
-		const {
-			name,
-			itemType,
-			activeLesson,
-		} = this.props;
-		browserHistory.push(`/learn/lesson/${itemType === 3 ? 'course-lesson' : 'user-lesson'}/${activeLesson.id}/${toSeoFriendly(name, 100)}/${currentStep + 1}`);
-		this.setState({ currentStep });
-	}
+
 
 	render() {
-		const { t, parts, lessonId } = this.props;
-		const { currentStep, isReportPopupOpen } = this.state;
-		const { textContent, ...childProps } = this.props;
+		const { t, parts, lessonId, handleStepClick } = this.props;
+		const { isReportPopupOpen } = this.state;
+		const { textContent, pageNumber, ...childProps } = this.props;
+		const currentStep = Number(pageNumber || 1) - 1;
 		return (
 			<Fragment>
 				<FlexBox className="slay_lesson-step-container" fullWidth justify align>
 					{
-						parts &&
+						parts && parts.length > 1 &&
 						<Stepper
 							width={`${((parts.length * 3) + ((parts.length - 1) * 5))}%`}
 							className="slay-lesson-stepper slay-lesson-align-left"
@@ -51,7 +45,7 @@ class SlayLessonContent extends Component {
 									key={singlePart.id}
 									active={currentStep === index}
 									completed={currentStep > index}
-									onClick={() => this.handleStepClick(index)}
+									onClick={() => handleStepClick(index)}
 								/>
 							))}
 						</Stepper>
