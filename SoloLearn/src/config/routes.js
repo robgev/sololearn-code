@@ -81,7 +81,7 @@ const QuizFactoryRate = Loadable({
 });
 
 export default ([
-	<Route path="/login" component={Login} />,
+	<Route path="/signin" component={Login} />,
 	<Route path="/signup" component={Login} />,
 	<Route path="/forgot" component={Login} />,
 	<Route path="/privacy" component={Privacy} />,

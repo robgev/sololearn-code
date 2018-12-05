@@ -25,7 +25,7 @@ const mapDispatchToProps = {
 @translate()
 class SettingsMenu extends PureComponent {
 	singOut = () => {
-		browserHistory.push('/login');
+		browserHistory.push('/signin');
 		this.props.logout();
 	}
 

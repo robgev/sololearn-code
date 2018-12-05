@@ -15,7 +15,7 @@ export default (Comp) => {
 			if (!this.props.isUserLoaded) {
 				const { location } = this.props;
 				const nextLocation = `${location.pathname}${location.search}`;
-				browserHistory.replace(`/login?url=${nextLocation}`);
+				browserHistory.replace(`/signin?url=${nextLocation}`);
 			}
 		}
 		render() {

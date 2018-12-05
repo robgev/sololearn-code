@@ -39,7 +39,7 @@ class LoginContainer extends PureComponent {
 
 	checkToFeed = (err) => {
 		if (!err) {
-			if (browserHistory.getCurrentLocation().pathname === '/login'
+			if (browserHistory.getCurrentLocation().pathname === '/signin'
 				|| browserHistory.getCurrentLocation().pathname === '/signup') {
 				const { url = '/feed' } = this.props.location.query;
 				return browserHistory.push(url);
