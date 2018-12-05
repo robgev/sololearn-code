@@ -89,14 +89,15 @@ class LoginBody extends Component {
 	}
 
 	updateState = (e) => {
-		this.setState({ [e.target.name]: e.target.value });
+		const { name, value } = e.target;
+		this.setState({ [name]: value.replace(/^\s+/g, '') });
 	}
 
 	render() {
 		const {
 			t, currentPage, loading, alertMessage, alertType,
 		} = this.props;
-		const isLogin = currentPage === 'login';
+		const isLogin = currentPage === 'signin';
 		const isForgot = currentPage === 'forgot';
 		const {
 			email, password, name, retypePass,
@@ -179,7 +180,7 @@ class LoginBody extends Component {
 						<RaisedButton
 							secondary
 							style={{ width: '50%' }}
-							containerElement={<Link to={isLogin ? '/signup' : '/login'} />}
+							containerElement={<Link to={isLogin ? '/signup' : '/signin'} />}
 							label={t(isLogin ? 'register.create-new-account-title' : 'auth.signin-title')}
 						/>
 					</div>

@@ -174,7 +174,7 @@ class FeedPin extends Component {
 					{pin.posts && <Container className="posts" >{this.generatePosts()}</Container>}
 
 					<Link to={this.getPinUrl()} className="actions" >
-						<FlatButton primary>
+						<FlatButton color="primary">
 							{pin.actionName}
 						</FlatButton>
 					</Link>

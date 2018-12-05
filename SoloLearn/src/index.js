@@ -33,7 +33,7 @@ const mapStateToProps = state => ({
 });
 
 const shouldRedirect = (pathname) => {
-	const whiteList = [ 'login', 'signup', 'forgot', 'terms-of-service', 'contact', 'faq', 'privacy' ];
+	const whiteList = [ 'signin', 'signup', 'forgot', 'terms-of-service', 'contact', 'faq', 'privacy' ];
 	return !whiteList.find(routeName => pathname.includes(routeName));
 };
 
@@ -49,7 +49,7 @@ class App extends PureComponent {
 		Service.getSession()
 			.then((user) => {
 				if (user === null && shouldRedirect(window.location.pathname)) {
-					browserHistory.replace('/login');
+					browserHistory.replace('/signin');
 				} else {
 					this.props.getUserProfileAsync();
 				}

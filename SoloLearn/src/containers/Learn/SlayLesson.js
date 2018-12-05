@@ -2,6 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
+import { browserHistory } from 'react-router';
 
 import { toSeoFriendly } from 'utils';
 import Comments from 'containers/Comments/CommentsBase';
@@ -144,6 +145,24 @@ class SlayLesson extends PureComponent {
 		await getLessonsByAuthor(id, userID, { index: 0, count: 10 });
 	}
 
+	goToNextLesson = () => {
+		const {activeLesson, params} = this.props;
+		const {pageNumber} = params;
+		const {id, name, parts, nextLesson} = activeLesson;
+		const url = `/learn/lesson/${nextLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}`;
+		if (parts && pageNumber < parts.length) {
+			browserHistory.push(`${url}/${this.props.activeLesson.id}/${toSeoFriendly(this.props.activeLesson.name, 100)}/${Number(pageNumber)+1}`);
+		} else {
+			browserHistory.push(`${url}/${nextLesson.id}/${toSeoFriendly(nextLesson.name, 100)}/1`);
+		}
+	}
+
+	handleStepClick = (index) => {
+		const { params, activeLesson } = this.props; 
+		const url = `/learn/lesson/${params.itemType}`;
+		browserHistory.push(`${url}/${activeLesson.id}/${toSeoFriendly(activeLesson.name, 100)}/${Number(index)+1}`);
+	}
+
 	render() {
 		const { loading, commentsCount } = this.state;
 		const {
@@ -177,6 +196,7 @@ class SlayLesson extends PureComponent {
 			name: userName,
 			id: userID,
 		};
+		const hasNext = loading ? false : parts && pageNumber < parts.length || nextLesson;
 		return (
 			<LayoutWithSidebar
 				sidebar={
@@ -212,13 +232,15 @@ class SlayLesson extends PureComponent {
 											courseLanguage={language}
 											commentsCount={comments}
 											isBookmarked={isBookmarked}
+											handleStepClick={this.handleStepClick}
 										/>
-										{nextLesson &&
-											<ContainerLink to={`/learn/lesson/${nextLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${nextLesson.id}/${toSeoFriendly(nextLesson.name, 100)}/1`}>
-												<RaisedButton color="secondary">
-													{t('learn.buttons-continue')}
-												</RaisedButton>
-											</ContainerLink>
+										{hasNext &&
+											<RaisedButton 
+												color="secondary"
+												onClick={this.goToNextLesson}
+											>
+												{t('learn.buttons-continue')}
+											</RaisedButton>
 										}
 									</FlexBox>
 								</PaperContainer>

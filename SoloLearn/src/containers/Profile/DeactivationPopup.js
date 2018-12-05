@@ -10,9 +10,9 @@ import {
 	PopupTitle,
 	PopupContent,
 	PopupContentText,
-	PopupActions
+	PopupActions,
 } from 'components/atoms';
-import { RadioButtonGroup, FlatButton } from 'components/molecules'
+import { RadioButtonGroup, FlatButton } from 'components/molecules';
 import Service from 'api/service';
 
 @translate()
@@ -74,12 +74,12 @@ class ReportPopup extends PureComponent {
 		const { onRequestClose, open, t } = this.props;
 		const actions = [
 			<FlatButton
-				primary
+				color="primary"
 				onClick={onRequestClose}
 				label={t('common.cancel-title')}
 			/>,
 			<FlatButton
-				primary
+				color="primary"
 				onClick={() => this.submitReport()}
 				label={t('common.deactivate-action-title')}
 			/>,
