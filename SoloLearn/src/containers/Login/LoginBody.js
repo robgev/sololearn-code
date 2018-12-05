@@ -63,10 +63,11 @@ class LoginBody extends Component {
 			this.props.alert(t('auth.invalid-password'), 'error');
 		} else if (this.state.password !== this.state.retypePass) {
 			this.props.alert(t('register.passwords-not-match'), 'error');
+		} else {
+			const { name, email, password: pass } = this.state;
+			await this.props.signup({ name, email, pass });
+			this.props.alert(t('auth.activate-account-success'), 'info');
 		}
-		const { name, email, password: pass } = this.state;
-		await this.props.signup({ name, email, pass });
-		this.props.alert(t('auth.activate-account-success'), 'info');
 	}
 
 	forgot = (e) => {
@@ -88,7 +89,8 @@ class LoginBody extends Component {
 	}
 
 	updateState = (e) => {
-		this.setState({ [e.target.name]: e.target.value });
+		const { name, value } = e.target;
+		this.setState({ [name]: value.replace(/^\s+/g, '') });
 	}
 
 	render() {

@@ -55,13 +55,19 @@ class Codes extends Component {
 	componentWillUnmount() {
 		this.props.setCodesFilters({ ...this.props.filters, query: '' });
 	}
-	handleLanguageFilterChange = (_, __, language) => {
+	handleLanguageFilterChange = (event) => {
 		const { location } = this.props;
-		browserHistory.push({ ...location, query: { ...location.query, language } });
+		browserHistory.push({
+			...location,
+			query: { ...location.query, language: event.target.value },
+		});
 	}
-	handleOrderByFilterChange = (_, __, orderBy) => {
+	handleOrderByFilterChange = (event) => {
 		const { location } = this.props;
-		browserHistory.push({ ...location, query: { ...location.query, orderBy } });
+		browserHistory.push({
+			...location,
+			query: { ...location.query, orderBy: event.target.value },
+		});
 	}
 	getCodes = () => {
 		this.props.getCodes()

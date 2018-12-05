@@ -35,6 +35,7 @@ FlexBox.defaultProps = {
 	column: false,
 	justify: false,
 	align: false,
+	noShrink: false,
 	justifyBetween: false,
 	fullWidth: false,
 };

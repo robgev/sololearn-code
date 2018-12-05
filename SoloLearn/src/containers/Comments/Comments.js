@@ -246,7 +246,7 @@ class Comments extends Component {
 			<InfiniteScroll
 				initialLoad={false}
 				loadMore={this.loadMore}
-				hasMore={this.hasMore && !this.initial}
+				hasMore={this.hasMore}
 				isLoading={this.loading}
 				className="comment-list"
 			>
@@ -291,16 +291,6 @@ class Comments extends Component {
 						delete={this.deleteComment}
 						commentsAPI={this.commentsAPI}
 					/>
-					{
-						this.initial && this.comments.length > 0 && this.hasMore && !this.isOnReply
-						&& (
-							<FlatButton
-								onClick={this.unlockInitial}
-							>
-								{t('common.loadMore')}
-							</FlatButton>
-						)
-					}
 				</PaperContainer>
 			</InfiniteScroll>
 
