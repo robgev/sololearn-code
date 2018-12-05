@@ -5,7 +5,7 @@ export const defaultCodes = {
 	css: 'body {\n\t\n}',
 	html: '<!DOCTYPE html>\n<html>\n\t<head>\n\t\t<title>Page Title</title>\n\t</head>\n\t<body>\n\t\t\n\t</body>\n</html>',
 	java: 'public class Program\n{\n\tpublic static void main(String[] args) {\n\t\t\n\t}\n}',
-	javascript: '',
+	js: '',
 	jquery: '$(function() {\n\t\n});',
 	jqueryHtml: '<!DOCTYPE html>\n<html>\n\t<head>\n\t\t<title>Page Title</title>\n\t\t<script src="https://code.jquery.com/jquery-3.1.1.js"></script>\n\t</head>\n\t<body>\n\t\t\n\t</body>\n</html>',
 	kt: 'fun main(args: Array<String>) {\n\n}',

@@ -37,7 +37,7 @@ class IPlayground {
 		this.editorState = {
 			sourceCode: defaultCodes[language],
 			cssCode: defaultCodes.css,
-			jsCode: defaultCodes.javascript,
+			jsCode: defaultCodes.js,
 		};
 		this.data = { ...this.editorState, isPublic: false, name: null };
 		this.type = null;
@@ -70,7 +70,7 @@ class IPlayground {
 		switch (this.language) {
 		case 'css':
 			return target.cssCode;
-		case 'javascript':
+		case 'js':
 			return target.jsCode;
 		default:
 			return target.sourceCode;
@@ -98,7 +98,7 @@ class IPlayground {
 	}
 
 	@computed get isWeb() {
-		return [ 'html', 'css', 'javascript' ].includes(this.language);
+		return [ 'html', 'css', 'js' ].includes(this.language);
 	}
 
 	@computed get hasLiveOutput() {
@@ -118,7 +118,7 @@ class IPlayground {
 		case 'css':
 			this.editorState.cssCode = value;
 			break;
-		case 'javascript':
+		case 'js':
 			this.editorState.jsCode = value;
 			break;
 		default:

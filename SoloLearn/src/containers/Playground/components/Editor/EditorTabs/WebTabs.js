@@ -27,9 +27,9 @@ const WebTabs = ({ location, languages, playground }) => (
 				onClick={playground.hideOutput}
 			/>,
 			<Tab
-				key={languages.javascript}
-				value="javascript"
-				label={languages.javascript}
+				key={languages.js}
+				value="js"
+				label={languages.js}
 				onClick={playground.hideOutput}
 			/>,
 		]
