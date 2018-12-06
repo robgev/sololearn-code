@@ -9,6 +9,8 @@
 .code-shimmer-root {
 	padding: 15px;
 	padding-top: 0;
+	max-height: 100vh;
+	overflow: hidden;
 	.code-shimmer-shimmer {
 		@extend %shimmer-container;
 		position: absolute;

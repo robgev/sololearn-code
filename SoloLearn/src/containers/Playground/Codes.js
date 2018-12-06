@@ -14,8 +14,8 @@ import {
 import { showError, queryDifference, isObjectEqual } from 'utils';
 
 import { Add } from 'components/icons';
-import { Heading, Container, Select, MenuItem } from 'components/atoms';
-import { FloatingActionButton, LayoutWithSidebar } from 'components/molecules';
+import { PaperContainer, Heading, Container, Select, MenuItem } from 'components/atoms';
+import { FloatingActionButton, InfiniteScroll, LayoutWithSidebar } from 'components/molecules';
 
 import 'styles/Playground/CodesBase.scss';
 import { CodesList, AddCodeButton } from './components';
@@ -79,55 +79,57 @@ class Codes extends Component {
 		} = this.props;
 		return (
 			<LayoutWithSidebar sidebar={<PlaygroundSidebar />}>
-				<Container className="playground-codes-container">
-					<CodesList
-						header={
-							<Container className="playground-codes-toolbar">
-								<Heading>{t('code_playground.title')}</Heading>
-								<Container className="playground-menus">
-									<Select
-										value={filters.language || 'all'}
-										className="playground-menu-spaced"
-										onChange={this.handleLanguageFilterChange}
-									>
-										<MenuItem value="all">{t('code.language-filter.all')}</MenuItem>
-										<MenuItem value="web">Web</MenuItem>
-										<MenuItem value="cpp">C++</MenuItem>
-										<MenuItem value="c">C</MenuItem>
-										<MenuItem value="cs">C#</MenuItem>
-										<MenuItem value="java">Java</MenuItem>
-										<MenuItem value="kt">Kotlin</MenuItem>
-										<MenuItem value="swift">Swift</MenuItem>
-										<MenuItem value="py">Python</MenuItem>
-										<MenuItem value="rb">Ruby</MenuItem>
-										<MenuItem value="php">PHP</MenuItem>
-									</Select>
-									<Select
-										value={filters.orderBy}
-										onChange={this.handleOrderByFilterChange}
-									>
-										<MenuItem value={6}>{t('code.filter.hot-today')}</MenuItem>
-										<MenuItem value={4}>{t('code.filter.trending')}</MenuItem>
-										<MenuItem value={5}>{t('code.filter.your-network')}</MenuItem>
-										<MenuItem value={2}>{t('code.filter.most-popular')}</MenuItem>
-										<MenuItem value={1}>{t('code.filter.most-recent')}</MenuItem>
-										<MenuItem value={3}>{t('code.filter.my-codes')}</MenuItem>
-									</Select>
-								</Container>
+				<InfiniteScroll
+					hasMore={hasMore}
+					loadMore={this.getCodes}
+				>
+					<PaperContainer className="playground-codes-container">
+						<Container className="playground-codes-toolbar">
+							<Heading>{t('code_playground.title')}</Heading>
+							<Container className="playground-menus">
+								<Select
+									value={filters.language || 'all'}
+									className="playground-menu-spaced"
+									onChange={this.handleLanguageFilterChange}
+								>
+									<MenuItem value="all">{t('code.language-filter.all')}</MenuItem>
+									<MenuItem value="web">Web</MenuItem>
+									<MenuItem value="cpp">C++</MenuItem>
+									<MenuItem value="c">C</MenuItem>
+									<MenuItem value="cs">C#</MenuItem>
+									<MenuItem value="java">Java</MenuItem>
+									<MenuItem value="kt">Kotlin</MenuItem>
+									<MenuItem value="swift">Swift</MenuItem>
+									<MenuItem value="py">Python</MenuItem>
+									<MenuItem value="rb">Ruby</MenuItem>
+									<MenuItem value="php">PHP</MenuItem>
+								</Select>
+								<Select
+									value={filters.orderBy}
+									onChange={this.handleOrderByFilterChange}
+								>
+									<MenuItem value={6}>{t('code.filter.hot-today')}</MenuItem>
+									<MenuItem value={4}>{t('code.filter.trending')}</MenuItem>
+									<MenuItem value={5}>{t('code.filter.your-network')}</MenuItem>
+									<MenuItem value={2}>{t('code.filter.most-popular')}</MenuItem>
+									<MenuItem value={1}>{t('code.filter.most-recent')}</MenuItem>
+									<MenuItem value={3}>{t('code.filter.my-codes')}</MenuItem>
+								</Select>
 							</Container>
-						}
-						codes={codes}
-						hasMore={hasMore}
-						loadMore={this.getCodes}
-					/>
-					<AddCodeButton>
-						{({ togglePopup }) => (
-							<FloatingActionButton color="secondary" alignment="right" onClick={togglePopup}>
-								<Add />
-							</FloatingActionButton>
-						)}
-					</AddCodeButton>
-				</Container>
+						</Container>
+						<CodesList
+							codes={codes}
+							hasMore={hasMore}
+						/>
+						<AddCodeButton>
+							{({ togglePopup }) => (
+								<FloatingActionButton color="secondary" alignment="right" onClick={togglePopup}>
+									<Add />
+								</FloatingActionButton>
+							)}
+						</AddCodeButton>
+					</PaperContainer>
+				</InfiniteScroll>
 			</LayoutWithSidebar>
 		);
 	}

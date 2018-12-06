@@ -11,44 +11,34 @@ const CodesList = observer(({
 	t,
 	codes,
 	hasMore,
-	loadMore,
 	header = null,
 }) => (
 	<Container className="codes-wrapper">
 		{
 			codes.length === 0 && !hasMore
 				? (
-					<PaperContainer>
+					<Container>
 						{header}
 						<Container className="no-codes-wrapper">{t('profile.no-codes')}</Container>
-					</PaperContainer>
+					</Container>
 				)
 				: (
 					<Container>
 						{
 							codes.length === 0 &&
-								<PaperContainer style={{ height: '100vh', overflow: 'hidden' }}>
+								<Container>
 									{header}
 									<CodeShimmer />
-								</PaperContainer>
+								</Container>
 						}
-						<InfiniteScroll
-							loadMore={loadMore}
-							hasMore={hasMore}
-							style={{
-								display: 'flex',
-								flexDirection: 'column',
-							}}
-						>
-							<PaperContainer>
-								{codes.length !== 0 ? header : null}
-								<List>
-									{codes.map(code => (
-										<CodeItem key={code.id} code={code} />
-									))}
-								</List>
-							</PaperContainer>
-						</InfiniteScroll>
+						<Container>
+							{codes.length !== 0 ? header : null}
+							<List>
+								{codes.map(code => (
+									<CodeItem key={code.id} code={code} />
+								))}
+							</List>
+						</Container>
 					</Container>
 				)
 		}
