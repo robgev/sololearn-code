@@ -57,9 +57,10 @@ class Codes extends Component {
 	}
 	handleLanguageFilterChange = (event) => {
 		const { location } = this.props;
+		const language = event.target.value === 'all' ? '' : event.target.value;
 		browserHistory.push({
 			...location,
-			query: { ...location.query, language: event.target.value },
+			query: { ...location.query, language },
 		});
 	}
 	handleOrderByFilterChange = (event) => {
