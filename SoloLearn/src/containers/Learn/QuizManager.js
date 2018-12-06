@@ -202,26 +202,28 @@ class QuizManager extends Component {
 		let isLessonCompleted = false;
 
 		if (progress != null) {
+			const progressQuizes = [];
+			//match progress.quizzes order with quizzes order
+			quizzes.forEach(({ id }) => {
+				const progressItem = progress.quizzes.find(q => q.quizID === id);
+				if (progressItem) {
+					progressQuizes.push(progressItem);
+				}
+			});
+
 			isLessonCompleted = progress.isCompleted || false;
 			let incrementQuzId = false;
-			for (let i = 0; i < progress.quizzes.length; i++) {
-				if (progress.quizzes[i].isCompleted) {
-					activeQuizIndex = i;
-					incrementQuzId = true;
+			for (let i = 0; i < progressQuizes.length; i++) {
+				if (progressQuizes[i].isCompleted) {
+					activeQuizIndex = i+1;
 				}
-			}
-			if (incrementQuzId) {
-				activeQuizIndex++;
 			}
 		}
 		const isCheckpoint = lesson.type === LessonType.Checkpoint;
-		// let currentIndex = 0;
 
 		quizzes.forEach((quiz, index) => {
 			const isCompleted = (isLessonCompleted || index <= activeQuizIndex);
 			const isCurrent = quizzes[index].id === activeQuiz.id;
-			// if (isCurrent) currentIndex = (isCheckpoint ? index * 2 : index);
-
 			if (isCheckpoint) {
 				timeline.push({
 					lessonId: lesson.id,
