@@ -18,6 +18,8 @@
 
 .discuss-shimmer-wrapper {
 	width: 100%;
+	max-height: 100vh;
+	overflow: hidden;
 	.discuss-shimmer-container {
 		position: relative;
 		display: flex;
