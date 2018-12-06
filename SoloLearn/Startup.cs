@@ -16,76 +16,85 @@ using Microsoft.Extensions.Options;
 
 namespace SoloLearn
 {
-    public class Startup
-    {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddMvc();
-            services.AddReact();
-	  services.AddCors();
+	public class Startup
+	{
+		// This method gets called by the runtime. Use this method to add services to the container.
+		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddMvc();
+			services.AddReact();
+			services.AddCors();
 
 			services.AddDataProtection()
 								.PersistKeysToFileSystem(new DirectoryInfo(@"C:\DataProtection"))
 								.SetDefaultKeyLifetime(TimeSpan.FromDays(365 * 10))
 								.UseCryptographicAlgorithms(new AuthenticatedEncryptionSettings
 								{
-														
-										EncryptionAlgorithm = EncryptionAlgorithm.AES_256_GCM,
-										ValidationAlgorithm = ValidationAlgorithm.HMACSHA512
+
+									EncryptionAlgorithm = EncryptionAlgorithm.AES_256_GCM,
+									ValidationAlgorithm = ValidationAlgorithm.HMACSHA512
 								});
-        }
+		}
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
-            loggerFactory.AddConsole();
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+		{
+			loggerFactory.AddConsole();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-	  app.UseCors(builder =>
-builder.WithOrigins("http://localhost:3000")
-.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials().SetPreflightMaxAge(TimeSpan.FromDays(356))
-);
-	  app.UseMiddleware<ServiceProxyMiddleware>(Options.Create(new ProxyOptions
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
+			app.UseCors(builder =>
+	builder.WithOrigins("http://localhost:3000")
+	.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials().SetPreflightMaxAge(TimeSpan.FromDays(356))
+	);
+			app.UseMiddleware<ServiceProxyMiddleware>(Options.Create(new ProxyOptions
 			{
 				Scheme = "http",
 				Host = "localhost"
 			}));
 
-            // Initialise ReactJS.NET. Must be before static files.
-            app.UseReact(config =>
-            {
-                // If you want to use server-side rendering of React components,
-                // add all the necessary JavaScript files here. This includes
-                // your components as well as all of their dependencies.
-                // See http://reactjs.net/ for more information. Example:
-                //config
-                //  .AddScript("~/Scripts/First.jsx")
-                //  .AddScript("~/Scripts/Second.jsx");
+			// Initialise ReactJS.NET. Must be before static files.
+			app.UseReact(config =>
+			{
+				// If you want to use server-side rendering of React components,
+				// add all the necessary JavaScript files here. This includes
+				// your components as well as all of their dependencies.
+				// See http://reactjs.net/ for more information. Example:
+				//config
+				//  .AddScript("~/Scripts/First.jsx")
+				//  .AddScript("~/Scripts/Second.jsx");
 
-                // If you use an external build too (for example, Babel, Webpack,
-                // Browserify or Gulp), you can improve performance by disabling
-                // ReactJS.NET's version of Babel and loading the pre-transpiled
-                // scripts. Example:
-                //config
-                //  .SetLoadBabel(false)
-                //  .AddScriptWithoutTransform("~/Scripts/bundle.server.js");
-            });
+				// If you use an external build too (for example, Babel, Webpack,
+				// Browserify or Gulp), you can improve performance by disabling
+				// ReactJS.NET's version of Babel and loading the pre-transpiled
+				// scripts. Example:
+				//config
+				//  .SetLoadBabel(false)
+				//  .AddScriptWithoutTransform("~/Scripts/bundle.server.js");
+			});
 
-            app.UseStaticFiles();
+			var cachePeriod = env.IsDevelopment() ? "600" : "604800";
+			app.UseStaticFiles(new StaticFileOptions
+			{
+				OnPrepareResponse = ctx =>
+				{
+					// Requires the following import:
+					// using Microsoft.AspNetCore.Http;
+					ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={cachePeriod}");
+				}
+			});
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "GetSession",
-                    template: "{controller=Ajax}/{action=GetSession}");
+			app.UseMvc(routes =>
+			{
+				routes.MapRoute(
+									name: "GetSession",
+									template: "{controller=Ajax}/{action=GetSession}");
 
-                routes.MapRoute("default", "{*url}", new { controller = "Home", action = "Index" });
-            });
-        }
-    }
+				routes.MapRoute("default", "{*url}", new { controller = "Home", action = "Index" });
+			});
+		}
+	}
 }
