@@ -1,7 +1,6 @@
 import hmacsha1 from 'hmacsha1';
 
 import Optional from './optional';
-import getOffset from './getOffset';
 import showError from './showError';
 import truncate from './textTruncate';
 import getPosition from './getPosition';
@@ -45,7 +44,6 @@ export {
 	truncate,
 	Optional,
 	checkWeb,
-	getOffset,
 	showError,
 	updateDate,
 	mandatory,
