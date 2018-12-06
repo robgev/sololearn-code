@@ -78,10 +78,18 @@ class ILikes {
 	}
 
 	@action vote = ({ newVote }) => {
-		const vote = this.userVote === newVote ? 0 : newVote;
-		this.voteCount = (this.voteCount + vote) - this.userVote;
+		const initialVoteCount = this.voteCount;
+		const initialUserVote = this.userVote;
+
+		const vote = initialUserVote === newVote ? 0 : newVote;
+		this.voteCount = (initialVoteCount + vote) - initialUserVote;
 		this.userVote = vote;
-		Service.request(`${this.url('Vote')}`, { id: this.id, vote: this.userVote });
+		return Service.request(`${this.url('Vote')}`, { id: this.id, vote: this.userVote })
+			.catch((resp) => {
+				this.voteCount = initialVoteCount;
+				this.userVote = initialUserVote;
+				throw resp;
+			});
 	}
 
 	get params() {

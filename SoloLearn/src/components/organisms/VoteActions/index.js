@@ -2,16 +2,20 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import { observable, action } from 'mobx';
 import { vote } from 'actions/vote';
 import ILikes from './ILikes';
 import VoteButtons from './VoteButtons';
 import LikesPopup from './LikesPopup';
+import { Snackbar } from 'components/atoms';
+import getFaultReason from 'utils/faultGenerator';
 import './styles.scss';
 
 const mapDispatchToProps = { vote };
 
 @connect(null, mapDispatchToProps)
+@translate()
 @observer
 class VoteActions extends Component {
 	@observable likes = new ILikes({
@@ -22,6 +26,15 @@ class VoteActions extends Component {
 	});
 
 	@observable open = false;
+	@observable isSnackbarOpen = false;
+
+	@action closeSnackbar = () => {
+		this.isSnackbarOpen = false;
+	}
+
+	@action openSnackbar = () => {
+		this.isSnackbarOpen = true;
+	}
 
 	@action toggleOpen = () => {
 		this.open = !this.open;
@@ -30,26 +43,43 @@ class VoteActions extends Component {
 		}
 	}
 
+	catchError = (e) => {
+		if (e.data && getFaultReason(e.data).includes('NotActivated')) {
+			this.showError();
+		}
+	}
+
+	showError = () => {
+		this.openSnackbar();
+	}
+
 	onUpvote = () => {
 		const { type, id, vote } = this.props;
-		this.likes.vote({ newVote: 1 });
-		this.props.onChange({ vote: this.likes.userVote, votes: this.likes.voteCount });
-		vote({
-			type, id, vote: this.likes.userVote, votes: this.likes.voteCount,
-		});
+		this.likes.vote({ newVote: 1 })
+			.then(() => {
+				this.props.onChange({ vote: this.likes.userVote, votes: this.likes.voteCount });
+				vote({
+					type, id, vote: this.likes.userVote, votes: this.likes.voteCount,
+				});
+			})
+			.catch(this.catchError);
 	}
 
 	onDownvote = () => {
+		
 		const { type, id, vote } = this.props;
-		this.likes.vote({ newVote: -1 });
-		this.props.onChange({ vote: this.likes.userVote, votes: this.likes.voteCount });
-		vote({
-			type, id, vote: this.likes.userVote, votes: this.likes.voteCount,
-		});
+		this.likes.vote({ newVote: -1 })
+			.then(() => {
+				this.props.onChange({ vote: this.likes.userVote, votes: this.likes.voteCount });
+				vote({
+					type, id, vote: this.likes.userVote, votes: this.likes.voteCount,
+				});
+			})
+			.catch(this.catchError);
 	}
 
 	render() {
-		const { vertical } = this.props;
+		const { t, vertical } = this.props;
 		return (
 			<Fragment>
 				<VoteButtons
@@ -60,6 +90,11 @@ class VoteActions extends Component {
 					onLabelClick={this.toggleOpen}
 				/>
 				<LikesPopup open={this.open} likes={this.likes} onClose={this.toggleOpen} />
+				<Snackbar
+					onClose={this.closeSnackbar}
+					open={this.isSnackbarOpen}
+					message={t('votes.not-activated-account')}
+				/>
 			</Fragment>
 		);
 	}

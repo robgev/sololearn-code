@@ -863,5 +863,8 @@
     "quiz.leave-alert-message": "Todos los cambios se perderán",
     "quiz.leave-alert-title": "Salir",
     "highlight": "Marcar"
+  },
+  "votes": {
+    "not-activated-account": "Tu cuenta no está activa. Revisa tu email para las instrucciones de activación."
   }
 }

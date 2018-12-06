@@ -857,5 +857,8 @@
 		"quiz.leave-alert-title": "Quit",
 		"quiz.leave-alert-message": "All changes will be lost.",
 		"highlight": "Mark"
+	},
+	"votes": {
+		"not-activated-account": "Your account is not activated. Check your email for activation instructions."
 	}
 }
