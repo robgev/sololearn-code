@@ -118,6 +118,7 @@
 					display: flex;
 					width: 50%;
 					.social-login-element {
+						padding: 5px;
 						display: flex;
 						align-items: center;
 						flex: 1;
@@ -137,6 +138,7 @@
 							background: none;
 							cursor: pointer;
 							padding-left: 10px;
+							font-size: 16px;
 						}
 						.fab {
 							padding-left: 10px;
