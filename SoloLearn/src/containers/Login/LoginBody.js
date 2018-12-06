@@ -22,7 +22,10 @@ class LoginBody extends Component {
 	}
 
 	componentWillReceiveProps(newProps) {
-		if (newProps.currentPage !== this.props.currentPage && newProps.currentPage === 'signup') {
+		if (newProps.currentPage !== this.props.currentPage
+		/* Commented out because it will probably come back */
+		// && newProps.currentPage === 'signup'
+		) {
 			this.setState({
 				email: '',
 				password: '',
