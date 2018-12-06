@@ -23,7 +23,6 @@ const ModuleChip = ({
 			className={`content ${className}`}
 		>
 			<PaperContainer
-				circle
 				elevation={1}
 				key={module.id}
 				className={`module-circle flex-centered ${state}`}
