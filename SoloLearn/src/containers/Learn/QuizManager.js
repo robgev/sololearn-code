@@ -260,11 +260,12 @@ class QuizManager extends Component {
 	getProgress = (quizzes, activeQuiz) => {
 		const timeline = this.generateTimeline(quizzes, activeQuiz);
 		const quizNumber = (parseInt(this.props.activeQuiz.number, 10) - 1);
-		const activeQuizId = timeline[quizNumber].quizId;
+		
 		if (timeline.length < 3) {
 			return null;
 		}
 		const count = timeline.length / 2;
+		const activeQuizId = timeline[quizNumber].quizId;
 		return (
 			<div
 				style={{
@@ -401,6 +402,7 @@ class QuizManager extends Component {
 
 		if (loading || (!isLoaded) ||
 			(!activeQuiz) ||
+			(activeQuiz.number === undefined) ||
 			(this.props.params.quizNumber && !this.props.activeQuiz)) {
 			return (
 				<LayoutWithSidebar

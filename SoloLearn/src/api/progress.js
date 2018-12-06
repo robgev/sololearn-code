@@ -434,6 +434,9 @@ class ProgressManager {
 				Object.assign(lp, newProgress[i]);
 				const { quizzes } = newProgress[i];
 				for (let j = 0; j < quizzes.length; j++) {
+					if (lp.isCompleted === true) {
+						quizzes[j].isCompleted = true;
+					}
 					lp.quizzes[j] = Object.assign(new QuizProgress(), quizzes[j]);
 				}
 				this.localProgress.push(lp);
