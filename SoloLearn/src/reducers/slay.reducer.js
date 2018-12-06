@@ -23,7 +23,6 @@ const refreshCollections = (currentCollections, changedCollections) => {
 	// Done for accessing by id, see line 26
 	const changedCollectionsHashmap = keyBy(changedCollections, 'id');
 	const changedIds = map(changedCollections, 'id');
-	console.log(currentCollections, changedCollectionsHashmap, changedIds);
 	return currentCollections.map(c =>
 		(changedIds.includes(c.id)
 			? { ...c, items: changedCollectionsHashmap[c.id].lessons }

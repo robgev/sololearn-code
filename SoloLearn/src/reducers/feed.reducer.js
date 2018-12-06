@@ -15,7 +15,6 @@ import { combineReducers } from 'redux';
 import { createSelector } from 'reselect';
 
 const changeFeedItemVote = (feedItems, { votes, vote, id }) => {
-	console.log();
 	const targetItemIndex = feedItems.findIndex(currentItem => currentItem.id === id);
 	const targetItem = feedItems[targetItemIndex];
 	return [
@@ -28,7 +27,6 @@ const changeFeedItemVote = (feedItems, { votes, vote, id }) => {
 const entities = (state = [], action) => {
 	switch (action.type) {
 	case GET_FEED_ITEMS:
-		// console.log(action.payload);
 		return uniqBy([ ...state, ...action.payload ], 'id');
 	case SET_FEED_ITEM_VOTE_DATA:
 		return changeFeedItemVote(state, action.payload);
@@ -40,40 +38,40 @@ const entities = (state = [], action) => {
 	case VOTE_POST:
 		return state.map((item) => {
 			if (
-				(item.type === feedTypes.postedQuestion || item.type === feedTypes.postedAnswer) 
-				&& item.post
-				&& item.post.id === action.payload.id
+				(item.type === feedTypes.postedQuestion || item.type === feedTypes.postedAnswer)
+					&& item.post
+					&& item.post.id === action.payload.id
 			) {
 				item.votes = action.payload.votes;
 				item.vote = action.payload.vote;
 			}
 			return item;
 		});
-	case VOTE_CODE: 
+	case VOTE_CODE:
 		return state.map((item) => {
 			if (
 				item.type === feedTypes.postedCode
-				&& item.code
-				&& item.code.id === action.payload.id
+					&& item.code
+					&& item.code.id === action.payload.id
 			) {
 				item.votes = action.payload.votes;
 				item.vote = action.payload.vote;
 			}
 			return item;
-		});	
+		});
 
 	case VOTE_CODE_COMMENT:
 		return state.map((item) => {
 			if (
 				(item.type === feedTypes.postedCodeComment || item.type === feedTypes.postedCodeCommentReply)
-				&& item.comment
-				&& item.comment.id === action.payload.id
+					&& item.comment
+					&& item.comment.id === action.payload.id
 			) {
 				item.votes = action.payload.votes;
 				item.vote = action.payload.vote;
 			}
 			return item;
-		});	
+		});
 	default:
 		return state;
 	}

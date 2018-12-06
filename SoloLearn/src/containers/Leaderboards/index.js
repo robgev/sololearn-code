@@ -112,7 +112,7 @@ class Leaderboards extends PureComponent {
 		const {
 			startIndex, loadCount, mode, userId,
 		} = this.state;
-		this.setState({loadingData:true});
+		this.setState({ loadingData: true });
 		const length = await this.props.loadMore({
 			mode,
 			userId,
@@ -166,7 +166,6 @@ class Leaderboards extends PureComponent {
 			shouldHideButton,
 			loadingData,
 		} = this.state;
-		console.log(leaderboards.length);
 		return (
 			<Layout className="leaderboards-container">
 				<PaperContainer className="leaderboards-header-container">
@@ -185,7 +184,7 @@ class Leaderboards extends PureComponent {
 								label={texts.global}
 							/>
 						</Tabs>
-						<Select value={range} onChange={this.handleChange} displayEmpty={true}>
+						<Select value={range} onChange={this.handleChange} displayEmpty>
 							<MenuItem value={1}>{texts.today}</MenuItem>
 							<MenuItem value={7}>{texts.thisWeek}</MenuItem>
 							<MenuItem value={30}>{texts.thisMonth}</MenuItem>
@@ -200,25 +199,25 @@ class Leaderboards extends PureComponent {
 						loadingComponent={<LeaderboardShimmer />}
 					>
 						{
-							leaderboards.length == 0 ? 
-								<Title>{t("leaderboard.no-social-message")}</Title> 
-							: range === 0 ?
-							<InfiniteLeaderboard
-								userId={userId}
-								hasMore={hasMore}
-								leaderboards={leaderboards}
-								loadMore={this.handleNextFetch}
-								onScrollVisibility={this.onScrollVisibility}
-								isLoading={loadingData}
-							/> :
-							<LeaderboardCard
-								userId={userId}
-								userRank={userRank}
-								leaderboards={leaderboards}
-								onScrollVisibility={this.onScrollVisibility}
-							/>
+							leaderboards.length == 0 ?
+								<Title>{t('leaderboard.no-social-message')}</Title>
+								: range === 0 ?
+									<InfiniteLeaderboard
+										userId={userId}
+										hasMore={hasMore}
+										leaderboards={leaderboards}
+										loadMore={this.handleNextFetch}
+										onScrollVisibility={this.onScrollVisibility}
+										isLoading={loadingData}
+									/> :
+									<LeaderboardCard
+										userId={userId}
+										userRank={userRank}
+										leaderboards={leaderboards}
+										onScrollVisibility={this.onScrollVisibility}
+									/>
 						}
-						{ (userRank > 0 && !shouldHideButton) &&
+						{(userRank > 0 && !shouldHideButton) &&
 							<Container
 								className="scroll-button-container"
 							>

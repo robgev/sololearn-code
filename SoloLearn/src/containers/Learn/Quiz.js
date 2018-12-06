@@ -206,7 +206,6 @@ class Quiz extends Component {
 		return type === 2 || type === 3;
 	}
 	render() {
-		console.log('Quiz');
 		const {
 			course,
 			// params,

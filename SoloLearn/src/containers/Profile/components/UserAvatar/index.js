@@ -8,7 +8,6 @@ import { determineBadge } from 'utils';
 import './styles.scss';
 
 const UserAvatar = ({ size, user }) => {
-	console.log(user);
 	const { modBadge, levelBadge } = determineBadge(user.badge);
 	return (
 		<FlexBox
@@ -24,14 +23,14 @@ const UserAvatar = ({ size, user }) => {
 				userName={user.name}
 				avatarUrl={user.avatarUrl}
 			/>
-			{ modBadge &&
+			{modBadge &&
 				<ModBadge
 					badge={user.badge}
 					big={size === 'big'}
 					className="profile_user-avatar-mod-badge"
 				/>
 			}
-			{ (levelBadge && !modBadge) &&
+			{(levelBadge && !modBadge) &&
 				<Image
 					alt="LB"
 					className="profile_user-avatar-level-badge"

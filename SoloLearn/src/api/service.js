@@ -95,7 +95,6 @@ class Service {
 		return fetch(`${AppDefaults.baseUrl}/api/${url}`, options)
 			.then(res => res.blob())
 			.then((res) => {
-				console.log(res);
 				if (res.error) {
 					throw res.error;
 				}

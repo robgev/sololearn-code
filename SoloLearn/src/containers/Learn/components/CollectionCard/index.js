@@ -17,7 +17,6 @@ const generateBreakpoints = (numberOfItems, roundItems) => {
 	const initialNumberOfShownItems = roundItems ? 4 : 3;
 	return breakpointValues.map((currentPoint, index) => {
 		const slidesToShow = initialNumberOfShownItems - (index + 1);
-		console.log(currentPoint, slidesToShow);
 		return {
 			breakpoint: currentPoint,
 			settings: {
@@ -53,14 +52,14 @@ const CollectionCard = ({
 			}}
 		>
 			<FlexBox align justifyBetween className={`meta-info ${!description ? 'big-padding-bottom' : ''}`}>
-				<Title>{ name }</Title>
-				{ !noViewMore &&
-				<ViewMoreLink to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} >
-					{t('common.loadMore')}
-				</ViewMoreLink>
+				<Title>{name}</Title>
+				{!noViewMore &&
+					<ViewMoreLink to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} >
+						{t('common.loadMore')}
+					</ViewMoreLink>
 				}
 			</FlexBox>
-			{ description &&
+			{description &&
 				<SecondaryTextBlock className="course-description">{description}</SecondaryTextBlock>
 			}
 			<Slider
@@ -71,17 +70,17 @@ const CollectionCard = ({
 				{
 					items.map(lessonItem => (
 						lessonItem.itemType !== 4 &&
-							<Container className="course-chip-wrapper" key={`${lessonItem.name}-${lessonItem.id}`}>
-								<CourseChip
-									{...lessonItem}
-									round={round}
-									noName={noName}
-									isCourse={isCourses}
-									className="collection-card-chip"
-									noBoxShadow={!(isCourses && round)}
-									customLink={lessonItem.itemType === 5 ? `/learn/collection/${lessonItem.id}` : null}
-								/>
-							</Container>
+						<Container className="course-chip-wrapper" key={`${lessonItem.name}-${lessonItem.id}`}>
+							<CourseChip
+								{...lessonItem}
+								round={round}
+								noName={noName}
+								isCourse={isCourses}
+								className="collection-card-chip"
+								noBoxShadow={!(isCourses && round)}
+								customLink={lessonItem.itemType === 5 ? `/learn/collection/${lessonItem.id}` : null}
+							/>
+						</Container>
 					))
 				}
 			</Slider>
