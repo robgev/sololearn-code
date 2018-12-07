@@ -50,7 +50,7 @@ class LoginBody extends Component {
 	}
 
 	googleLoginRedirect = (googleUser) => {
-		const { id_token: accessToken } = googleUser.getAuthResponse();
+		const { access_token: accessToken } = googleUser.getAuthResponse();
 		this.props.socialLogin({ accessToken, service: 'google' });
 	}
 
