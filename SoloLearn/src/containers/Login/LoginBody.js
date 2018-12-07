@@ -208,7 +208,7 @@ class LoginBody extends Component {
 								<GoogleLogin
 									socialId="303971375723-2de33bk4bf6n632t35nebb357aerc798.apps.googleusercontent.com"
 									className="login-component"
-									scope="profile"
+									scope="profile email"
 									prompt="select_account"
 									fetchBasicProfile={false}
 									responseHandler={this.googleLoginRedirect}
