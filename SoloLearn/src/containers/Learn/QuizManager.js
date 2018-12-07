@@ -177,7 +177,13 @@ class QuizManager extends Component {
 	}
 
 	getLastUnlockedQuiz = (quizNumber, timeline) => {
-		let lastUnlockedQuiz = quizNumber;
+		let lastUnlockedQuiz = quizNumber - 1;
+		while (lastUnlockedQuiz > 0 && !timeline[lastUnlockedQuiz].isCompleted) {
+			lastUnlockedQuiz--;
+		}
+		lastUnlockedQuiz += 2;
+		return lastUnlockedQuiz;
+		/*let lastUnlockedQuiz = quizNumber;
 
 		while (lastUnlockedQuiz > 0 && !timeline[lastUnlockedQuiz].isCompleted) {
 			lastUnlockedQuiz--;
@@ -188,15 +194,15 @@ class QuizManager extends Component {
 		while (timeline[lastUnlockedQuiz].isText && lastUnlockedQuiz !== quizNumber) {
 			lastUnlockedQuiz++;
 		}
-		return lastUnlockedQuiz;
+		return lastUnlockedQuiz;*/
 	}
 
 	generateTimeline = (quizzes, activeQuiz) => {
 		const timeline = [];
 		const lesson = this.props.activeLesson;
-		if (lesson.type !== LessonType.Checkpoint) {
+		/*if (lesson.type !== LessonType.Checkpoint) {
 			return null;
-		}
+		}*/
 		const progress = Progress.getLessonProgress(lesson.id);
 		let activeQuizIndex = 0;
 		let isLessonCompleted = false;
@@ -261,13 +267,16 @@ class QuizManager extends Component {
 
 	getProgress = (quizzes, activeQuiz) => {
 		const timeline = this.generateTimeline(quizzes, activeQuiz);
+		const isModuleQuiz = this.props.activeLesson.type !== LessonType.Checkpoint;
 		const quizNumber = (parseInt(this.props.activeQuiz.number, 10) - 1);
-		
-		if (timeline.length < 3) {
+		if ( !isModuleQuiz && timeline.length < 3) {
 			return null;
 		}
-		const count = timeline.length / 2;
+		const count = isModuleQuiz? timeline.length : timeline.length / 2;
 		const activeQuizId = timeline[quizNumber].quizId;
+		const percent = isModuleQuiz
+			? (100 * (quizNumber / (count - 1)))
+			: (100 * (Math.floor(quizNumber / 2) / (count - 1)))
 		return (
 			<div
 				style={{
@@ -277,12 +286,12 @@ class QuizManager extends Component {
 			>
 				<ProgressBar
 					height={7}
-					percent={100 * (Math.floor(quizNumber / 2) / (count - 1))}
+					percent={percent}
 					filledBackground="#8BC34A"
 				>
 					{
 						timeline
-							.filter(el => el.isText)
+							.filter(el => el.isText || isModuleQuiz)
 							.map((item, index) => {
 								const isActive = item.quizId === activeQuizId;
 								return (
@@ -370,7 +379,7 @@ class QuizManager extends Component {
 					courseName, moduleName, lessonName,
 				},
 			} = this.props;
-			browserHistory.replace(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz}`);
+			browserHistory.replace(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz || 1}`);
 			return;
 		}
 
@@ -380,7 +389,7 @@ class QuizManager extends Component {
 					courseName, moduleName, lessonName,
 				},
 			} = this.props;
-			browserHistory.replace(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz}`);
+			browserHistory.replace(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz || 1}`);
 		}
 	}
 
