@@ -183,7 +183,7 @@ class QuizManager extends Component {
 		}
 		lastUnlockedQuiz += 2;
 		return lastUnlockedQuiz;
-		/*let lastUnlockedQuiz = quizNumber;
+		/* let lastUnlockedQuiz = quizNumber;
 
 		while (lastUnlockedQuiz > 0 && !timeline[lastUnlockedQuiz].isCompleted) {
 			lastUnlockedQuiz--;
@@ -194,22 +194,22 @@ class QuizManager extends Component {
 		while (timeline[lastUnlockedQuiz].isText && lastUnlockedQuiz !== quizNumber) {
 			lastUnlockedQuiz++;
 		}
-		return lastUnlockedQuiz;*/
+		return lastUnlockedQuiz; */
 	}
 
 	generateTimeline = (quizzes, activeQuiz) => {
 		const timeline = [];
 		const lesson = this.props.activeLesson;
-		/*if (lesson.type !== LessonType.Checkpoint) {
+		/* if (lesson.type !== LessonType.Checkpoint) {
 			return null;
-		}*/
+		} */
 		const progress = Progress.getLessonProgress(lesson.id);
 		let activeQuizIndex = 0;
 		let isLessonCompleted = false;
 
 		if (progress != null) {
 			const progressQuizes = [];
-			//match progress.quizzes order with quizzes order
+			// match progress.quizzes order with quizzes order
 			quizzes.forEach(({ id }) => {
 				const progressItem = progress.quizzes.find(q => q.quizID === id);
 				if (progressItem) {
@@ -218,10 +218,10 @@ class QuizManager extends Component {
 			});
 
 			isLessonCompleted = progress.isCompleted || false;
-			let incrementQuzId = false;
+			const incrementQuzId = false;
 			for (let i = 0; i < progressQuizes.length; i++) {
 				if (progressQuizes[i].isCompleted) {
-					activeQuizIndex = i+1;
+					activeQuizIndex = i + 1;
 				}
 			}
 		}
@@ -269,14 +269,14 @@ class QuizManager extends Component {
 		const timeline = this.generateTimeline(quizzes, activeQuiz);
 		const isModuleQuiz = this.props.activeLesson.type !== LessonType.Checkpoint;
 		const quizNumber = (parseInt(this.props.activeQuiz.number, 10) - 1);
-		if ( !isModuleQuiz && timeline.length < 3) {
+		if (!isModuleQuiz && timeline.length < 3) {
 			return null;
 		}
-		const count = isModuleQuiz? timeline.length : timeline.length / 2;
+		const count = isModuleQuiz ? timeline.length : timeline.length / 2;
 		const activeQuizId = timeline[quizNumber].quizId;
 		const percent = isModuleQuiz
 			? (100 * (quizNumber / (count - 1)))
-			: (100 * (Math.floor(quizNumber / 2) / (count - 1)))
+			: (100 * (Math.floor(quizNumber / 2) / (count - 1)));
 		return (
 			<div
 				style={{
@@ -460,7 +460,7 @@ class QuizManager extends Component {
 				</PaperContainer>
 				{commentsCount !== null && commentsOpened ?
 					<Comments
-						key={activeQuiz.id}
+						key={`${activeQuiz.id}${activeQuiz.isText}`}
 						id={activeQuiz.id}
 						commentsType="lesson"
 						type={activeQuiz.isText ? 1 : 3}

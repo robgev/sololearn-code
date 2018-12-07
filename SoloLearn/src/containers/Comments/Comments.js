@@ -71,7 +71,7 @@ class Comments extends Component {
 			// Need to keep commentsAPI orderBy in sync with view
 			this.commentsAPI.orderBy = this.orderBy;
 		});
-		this.initialRequest();
+		// this.initialRequest();
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -113,11 +113,14 @@ class Comments extends Component {
 	}
 	static DEFAULT_INITAL_COUNT = 3;
 	@action initialRequest = async () => {
+		this.loading = true;
+		this.unlockInitial();
 		const { findPostId } = this.commentsAPI;
 		this.comments = [];
 		const comments = await this.commentsAPI.getComments({
 			index: this.comments.length, count: Comments.DEFAULT_INITAL_COUNT,
 		});
+		this.loading = false;
 		if (comments.length < Comments.DEFAULT_INITAL_COUNT) {
 			this.hasMore = false;
 		}
@@ -146,12 +149,19 @@ class Comments extends Component {
 		const { commentID } = this.props.location.query;
 		if (commentID !== prevProps.location.query.commentID) {
 			this.commentsAPI.findPostId = commentID;
-			this.initialRequest();
 		}
 	}
 
 	// need to ignore default "page" arg by InfinteScroll, so can't pass getCommentsBelow
-	loadMore = () => this.getCommentsBelow();
+	loadMore = () => {
+		if (!this.loading) {
+			if (this.initial) {
+				this.initialRequest();
+			} else {
+				this.getCommentsBelow();
+			}
+		}
+	}
 
 	@action reset = () => {
 		this.comments = [];
@@ -244,7 +254,7 @@ class Comments extends Component {
 		const { t, userProfile } = this.props;
 		return (
 			<InfiniteScroll
-				initialLoad={false}
+				key={this.orderBy}
 				loadMore={this.loadMore}
 				hasMore={this.hasMore}
 				isLoading={this.loading}
