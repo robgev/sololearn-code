@@ -110,7 +110,9 @@ class Quiz extends Component {
 		const checkResult = force === true ? true : this.quiz.check();
 		Progress.addResult(this.props.activeLessonId, this.props.activeQuiz.id, checkResult, 0);
 		this.setState({ checkResult, isQuizComplete: true });
-		this.props.openComments();
+		if (checkResult) {
+			this.props.openComments();
+		}
 	}
 
 	continueQuiz = () => {
