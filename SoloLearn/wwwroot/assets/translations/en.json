@@ -539,6 +539,15 @@
 			"input-needs-title": "Looks like your program needs input",
 			"input-needs-message": "Use new lines to separate multiple inputs"
 		},
+		"details": {
+			"title": "Details",
+			"name": "Title",
+			"author": "Author",
+			"modified": "Last Modified",
+			"date": "Creation Date",
+			"lines": "Line Count",
+			"chars": "Character Count"
+		},
 		"popups": {
 			"save-popup-title": "Save Code",
 			"save-popup-code-name-placeholder": "Code name",

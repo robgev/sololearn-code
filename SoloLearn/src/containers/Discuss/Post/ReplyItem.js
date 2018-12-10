@@ -176,7 +176,7 @@ class ReplyItem extends Component {
 				<HorizontalDivider />
 				<ReportPopup
 					open={isReportPopupOpen}
-					onRequestClose={this.closeReportPopup}
+					onClose={this.closeReportPopup}
 					itemId={reply.id}
 					itemType="post"
 				/>

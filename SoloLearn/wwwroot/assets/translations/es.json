@@ -539,7 +539,16 @@
       "invalid-name-message": "El nombre del código no puede contener más de 100 caracteres",
       "input-needs-title": "Parece que tu programa necesita una entrada",
       "input-needs-message": "Dividir múltiples entradas en líneas separadas"
-    },
+		},
+		"details": {
+			"title": "Información",
+			"name": "Titulo",
+			"author": "Autor",
+			"modified": "Última modificación",
+			"date": "Fecha de creación",
+			"lines": "Líneas",
+			"chars": "Caracteres"
+		},
     "popups": {
       "save-popup-title": "Guardar código",
       "save-popup-code-name-placeholder": "Nombre del código",

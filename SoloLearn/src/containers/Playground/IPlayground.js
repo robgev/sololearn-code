@@ -81,6 +81,23 @@ class IPlayground {
 		return this.extractCodeFromObject(this.editorState);
 	}
 
+	@computed get totalCode() {
+		return this.isWeb
+			? `${this.editorState.sourceCode}\n${this.editorState.cssCode}\n${this.editorState.jsCode}`
+			: this.editorState.sourceCode;
+	}
+
+	@computed get numberOfLines() {
+		// Note: We get unicode return symbol, so I added that symbol to regex
+		// IMPORTANT: This needs to be changed ASAP
+		return this.totalCode.split((/\r\n|\n|\r|↵/)).length;
+	}
+
+	@computed get numberOfSymbols() {
+		console.log(this.totalCode);
+		return this.totalCode.length;
+	}
+
 	@computed get latestSavedCode() {
 		return this.extractCodeFromObject(this.data);
 	}

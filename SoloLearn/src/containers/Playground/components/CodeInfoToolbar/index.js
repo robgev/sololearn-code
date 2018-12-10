@@ -5,11 +5,13 @@ import { browserHistory } from 'react-router';
 import {
 	FlexBox,
 	Container,
+	MenuItem,
 	SwitchToggle,
 	PaperContainer,
 	SecondaryTextBlock,
 } from 'components/atoms';
 import {
+	IconMenu,
 	ProfileAvatar,
 	RaisedButton,
 	UsernameLink,
@@ -17,11 +19,14 @@ import {
 } from 'components/molecules';
 import { VoteActions } from 'components/organisms';
 import { Delete } from 'components/icons';
+import ReportPopup from 'components/ReportPopup';
+import ReportItemTypes from 'constants/ReportItemTypes';
 
 import { determineAccessLevel, updateDate } from 'utils';
 import { removeCode } from 'actions/playground';
 
 import RemovalPopup from './RemovalPopup';
+import DetailsPopup from './DetailsPopup';
 import './styles.scss';
 
 const mapStateToProps = state => ({
@@ -36,7 +41,9 @@ const mapDispatchToProps = {
 @connect(mapStateToProps, mapDispatchToProps)
 class CodeInfoToolbar extends PureComponent {
 	state = {
-		isDeleteModalOpen: false,
+		isDeletePopupOpen: false,
+		isDetailsPopupOpen: false,
+		isReportPopupOpen: false,
 	};
 
 	deleteCurrentCode = async () => {
@@ -45,11 +52,19 @@ class CodeInfoToolbar extends PureComponent {
 	}
 
 	togglePopup = () => {
-		this.setState(state => ({ isDeleteModalOpen: !state.isDeleteModalOpen }));
+		this.setState(state => ({ isDeletePopupOpen: !state.isDeletePopupOpen }));
+	}
+
+	toggleDetailsPopup = () => {
+		this.setState(state => ({ isDetailsPopupOpen: !state.isDetailsPopupOpen }));
+	}
+
+	toggleReportPopup = () => {
+		this.setState(state => ({ isReportPopupOpen: !state.isReportPopupOpen }));
 	}
 
 	render() {
-		const { isDeleteModalOpen } = this.state;
+		const { isDeletePopupOpen, isDetailsPopupOpen, isReportPopupOpen } = this.state;
 		const { t, accessLevel } = this.props;
 		const {
 			id,
@@ -85,7 +100,6 @@ class CodeInfoToolbar extends PureComponent {
 						</RaisedButton>
 						}
 						{(isMe || accessLevel > 1) &&
-
 						<SwitchToggle
 							defaultChecked={this.props.playground.isPublic}
 							onChange={this.props.playground.togglePublic}
@@ -93,6 +107,26 @@ class CodeInfoToolbar extends PureComponent {
 							label={t('code_playground.popups.save-popup-public-toggle-title')}
 						/>
 						}
+						<IconMenu>
+							{isMe &&
+								<MenuItem key={`remove-${id}`} onClick={this.togglePopup}>
+									{t('common.delete-title')}
+								</MenuItem>
+							}
+							{!isMe &&
+								<MenuItem onClick={this.toggleReportPopup}>
+									{t('common.report-action-title')}
+								</MenuItem>
+							}
+							{(isMe || accessLevel > 1) &&
+								<MenuItem onClick={this.props.playground.togglePublic}>
+									{t('code_playground.popups.save-popup-public-toggle-title')}
+								</MenuItem>
+							}
+							<MenuItem onClick={this.toggleDetailsPopup}>
+								{t('code_playground.details.title')}
+							</MenuItem>
+						</IconMenu>
 					</FlexBox>
 					<VoteActions
 						id={id}
@@ -104,8 +138,19 @@ class CodeInfoToolbar extends PureComponent {
 						{updateDate(this.props.playground.data.createdDate)}
 					</SecondaryTextBlock>
 				</Container>
+				<ReportPopup
+					itemId={id}
+					open={isReportPopupOpen}
+					itemType={ReportItemTypes.code}
+					onClose={this.toggleReportPopup}
+				/>
+				<DetailsPopup
+					open={isDetailsPopupOpen}
+					onClose={this.toggleDetailsPopup}
+					playground={this.props.playground}
+				/>
 				<RemovalPopup
-					open={isDeleteModalOpen}
+					open={isDeletePopupOpen}
 					onClose={this.togglePopup}
 					onDelete={this.deleteCurrentCode}
 				/>

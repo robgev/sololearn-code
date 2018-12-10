@@ -15,7 +15,7 @@ import { FlatButton } from 'components/molecules';
 class RemovalPopup extends Component {
 	requestRemoval = () => {
 		const {
-			deleteComment, commentsType, report, onRequestClose, accessLevel,
+			deleteComment, commentsType, report, onClose, accessLevel,
 		} = this.props;
 		const itemType = ReportItemTypes[`${commentsType}Comment`];
 		try {
@@ -26,7 +26,7 @@ class RemovalPopup extends Component {
 			} else {
 				report();
 			}
-			onRequestClose();
+			onClose();
 		} catch (e) {
 			console.log(e);
 		}
@@ -38,7 +38,7 @@ class RemovalPopup extends Component {
 			open,
 			accessLevel,
 			commentsType,
-			onRequestClose,
+			onClose,
 		} = this.props;
 		const cannotRemove = accessLevel === 1 && (commentsType !== 'lesson' && commentsType !== 'userLesson');
 		const actions = [
@@ -53,7 +53,7 @@ class RemovalPopup extends Component {
 			</FlatButton>,
 			<FlatButton
 				variant="contained"
-				onClick={onRequestClose}
+				onClick={onClose}
 			>
 				{t('common.cancel-title')}
 			</FlatButton>,
@@ -61,7 +61,7 @@ class RemovalPopup extends Component {
 		return (
 			<Popup
 				open={open}
-				onClose={onRequestClose}
+				onClose={onClose}
 			>
 				<PopupTitle>
 					{cannotRemove ?

@@ -42,7 +42,7 @@ class ReportPopup extends PureComponent {
 		const {
 			itemId,
 			itemType,
-			onRequestClose,
+			onClose,
 		} = this.props;
 		const { reportReason, customReason } = this.state;
 		try {
@@ -50,7 +50,7 @@ class ReportPopup extends PureComponent {
 				reportReason: 1,
 				customReason: '',
 			});
-			onRequestClose();
+			onClose();
 			await Service.request('ReportItem', {
 				itemId,
 				itemType,
@@ -64,27 +64,12 @@ class ReportPopup extends PureComponent {
 
 	render() {
 		const { reportReason, customReason } = this.state;
-		const { onRequestClose, open, t } = this.props;
-		const actions = [
-			<FlatButton
-				color="primary"
-				onClick={onRequestClose}
-			>
-				{t('common.cancel-title')}
-			</FlatButton>,
-			<FlatButton
-				color="primary"
-				onClick={() => this.submitReport()}
-				label={t('common.report-action-title')}
-			>
-				{t('common.report-action-title')}
-			</FlatButton>,
-		];
+		const { onClose, open, t } = this.props;
 		return (
 			<Popup
 				className="report-popup"
 				open={open}
-				onClose={onRequestClose}
+				onClose={onClose}
 			>
 				<PopupTitle>
 					{t('report.report-popup-title')}
@@ -127,7 +112,18 @@ class ReportPopup extends PureComponent {
 					</PopupContentText>
 				</PopupContent>
 				<PopupActions>
-					{actions}
+					<FlatButton
+						color="primary"
+						onClick={onClose}
+					>
+						{t('common.cancel-title')}
+					</FlatButton>
+					<FlatButton
+						color="primary"
+						onClick={this.submitReport}
+					>
+						{t('common.report-action-title')}
+					</FlatButton>
 				</PopupActions>
 			</Popup>
 		);

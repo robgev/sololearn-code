@@ -126,7 +126,7 @@ class Question extends Component {
 								/>
 								<ReportPopup
 									open={isReportPopupOpen}
-									onRequestClose={this.closeReportPopup}
+									onClose={this.closeReportPopup}
 									itemId={post.id}
 									itemType="post"
 								/>
