@@ -94,7 +94,6 @@ class IPlayground {
 	}
 
 	@computed get numberOfSymbols() {
-		console.log(this.totalCode);
 		return this.totalCode.length;
 	}
 

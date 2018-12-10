@@ -64,9 +64,13 @@ class Profile extends Component {
 		}
 	}
 
-	@action handleTabChange = (event, activeTab) => {
+	@action handleTabChange = (_, activeTab) => {
+		const { location, params } = this.props;
 		this.activeTab = activeTab;
-		browserHistory.replace(`/profile/${this.props.params.id}/${this.activeTab}`);
+		browserHistory.replace({
+			...location,
+			pathname: `/profile/${params.id}/${this.activeTab}`,
+		});
 		ReactGA.ga('send', 'screenView', { screenName: `Profile ${capitalize(this.activeTab)} Page` });
 	}
 
