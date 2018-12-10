@@ -45,7 +45,7 @@ class Badge extends Component {
 					<TextBlock>
 						{achievement.title}
 					</TextBlock>
-					<br/>
+					<br />
 					<SecondaryTextBlock className="description">{achievement.description}</SecondaryTextBlock>
 				</Container>
 			</Container>

@@ -18,15 +18,14 @@ class SlayLessonContent extends Component {
 		};
 	}
 
-
 	toggleReportPopup = () => {
 		this.setState(state => ({ isReportPopupOpen: !state.isReportPopupOpen }));
 	}
 
-
-
 	render() {
-		const { t, parts, lessonId, handleStepClick } = this.props;
+		const {
+ t, parts, lessonId, handleStepClick 
+} = this.props;
 		const { isReportPopupOpen } = this.state;
 		const { textContent, pageNumber, ...childProps } = this.props;
 		const currentStep = Number(pageNumber || 1) - 1;
@@ -66,7 +65,7 @@ class SlayLessonContent extends Component {
 					itemId={lessonId}
 					open={isReportPopupOpen}
 					itemType={ReportItemTypes.lesson}
-					onRequestClose={this.toggleReportPopup}
+					onClose={this.toggleReportPopup}
 				/>
 			</Fragment>
 		);

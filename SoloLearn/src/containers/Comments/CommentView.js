@@ -113,7 +113,7 @@ class CommentView extends Component {
 				<ReportPopup
 					open={this.reportPopupOpen}
 					itemId={id}
-					onRequestClose={this.toggleReportPopup}
+					onClose={this.toggleReportPopup}
 					itemType={ReportItemTypes[`${commentsType}Comment`]}
 				/>
 			</Container>

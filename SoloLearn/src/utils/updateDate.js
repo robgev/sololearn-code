@@ -12,9 +12,7 @@ const updateDate = (date) => {
 	if (diffWeeks > 4) {
 		return postDate.format('ll');
 	}
-	return currentDate.diff(postDate) <= 0
-		? 'a few seconds ago'
-		: postDate.fromNow();
+	return postDate.fromNow();
 };
 
 export default updateDate;

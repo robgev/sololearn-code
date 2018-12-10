@@ -157,7 +157,7 @@ class Header extends Component {
 					itemId={profile.id}
 					open={this.isReportPopupOpen}
 					itemType={ReportItemTypes.profile}
-					onRequestClose={this.toggleReportPopup}
+					onClose={this.toggleReportPopup}
 				/>
 				<BlockPopup
 					userId={profile.id}
