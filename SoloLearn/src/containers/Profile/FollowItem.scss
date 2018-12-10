@@ -10,12 +10,13 @@
 		flex: 2;
 		display: inline-flex;
 		align-items: center;
+		min-width: 300px;
 	}
 
 	.username-container {
 		display: flex;
 		flex-direction: column;
-		width: 50%;
+		width: 80%;
 		padding-left: $secondary_gap_size;
 
 		.username {
