@@ -276,7 +276,7 @@ class Comments extends Component {
 						/>
 					</Container>
 					<FlatButton
-						onClick={this.addComment}
+						onMouseDown={this.addComment}
 						disabled={!this.isSubmitEnabled}
 					>
 						Comment

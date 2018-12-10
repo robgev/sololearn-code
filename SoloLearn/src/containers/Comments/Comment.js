@@ -32,8 +32,14 @@ class Comment extends Component {
 	@observable isReplyInputOpen = false;
 	@observable isReplyLoading = false;
 	@observable initText = null;
-	@observable isEditButtonEnabled = false;
+	@observable isEditing = false;
+	@observable isEditButtonEnabled = true;
 	@observable isReplyButtonEnabled = false;
+
+	@action toggleEdit = () => {
+		this.isEditing = !this.isEditing;
+	}
+
 	@action toggleReplyBox = async ({ id, userID, userName }) => {
 		if (this.props.toggleReplyBox) {
 			// Reply case
@@ -236,10 +242,14 @@ class Comment extends Component {
 			<Container className="comment-container">
 				<CommentView
 					commentsType={this.props.commentsAPI.commentsType}
+					getMentionUsers={this.props.commentsAPI.getMentionUsers}
+					isEditButtonEnabled={this.isEditButtonEnabled}
+					onEditButtonEnabledChange={this.editButtonEnabledChange}
 					accessLevel={accessLevel}
 					comment={this.props.comment}
-					// upvote={this.upvote}
-					// downvote={this.downvote}
+					edit={this.editComment}
+					toggleEdit={this.toggleEdit}
+					isEditing={this.isEditing}
 					onVote={this.vote}
 					userProfile={userProfile}
 					onRepliesButtonClick={this.onRepliesButtonClick}
@@ -247,38 +257,7 @@ class Comment extends Component {
 					onReply={this.toggleReplyBox}
 					onRequestRemoval={this.onRequestRemoval}
 					ref={(node) => { this.commentRef = node; }}
-				>
-					{({
-						isEditing, message, toggleEdit, id,
-					}) => (isEditing
-						? (
-							<Container className="comment-input-toolbar">
-								<Container className="input-bar reply-input">
-									<ProfileAvatar user={userProfile} />
-									<CountingMentionInput
-										style={{ height: 50 }}
-										ref={(i) => { this.editMentionInput = i; }}
-										getUsers={this.props.commentsAPI.getMentionUsers}
-										initText={message}
-										onSubmitEnabledChange={this.editButtonEnabledChange}
-										placeholder={t('comments.write-comment-placeholder')}
-									/>
-								</Container>
-								<FlatButton
-									disabled={!this.isEditButtonEnabled}
-									onClick={() => {
-										this.editComment({ message: this.editMentionInput.popValue(), id });
-										toggleEdit();
-									}}
-								>
-									{t('common.edit-action-title')}
-								</FlatButton>
-							</Container>
-						)
-						: (
-							<Mention text={message} />
-						))}
-				</CommentView>
+				/>
 				{
 					repliesArray !== null && (
 						<Container >
@@ -336,9 +315,11 @@ class Comment extends Component {
 				}
 				{
 					this.isReplyLoading
-					&& <Container className="replay-loader">
-						<Loading />
-					</Container>
+					&& (
+						<Container className="replay-loader">
+							<Loading />
+						</Container>
+					)
 				}
 			</Container>
 		);

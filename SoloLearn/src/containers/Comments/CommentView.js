@@ -50,17 +50,14 @@ class CommentView extends Component {
 	}
 	render() {
 		const {
-			level, userName, avatarUrl,
-			userID, badge, id,
+			id,
 		} = this.props.comment;
 		const {
 			commentsType, userProfile,
 			onVote, selfDestruct, onRepliesButtonClick,
 			t, onRequestRemoval, accessLevel,
+			...rest
 		} = this.props;
-		const userObj = {
-			name: userName, id: userID, level, badge, avatarUrl,
-		};
 
 		return (
 			<Container
@@ -69,7 +66,6 @@ class CommentView extends Component {
 			>
 				<CommentItem
 					comment={this.props.comment}
-					user={userObj}
 					type={commentsType}
 					onVote={onVote}
 					onReply={this.onReply}
@@ -80,6 +76,7 @@ class CommentView extends Component {
 					toggleReportPopup={this.toggleReportPopup}
 					toggleRemovalPopup={this.toggleRemovalPopup}
 					toggleEdit={this.toggleEdit}
+					{...rest}
 				/>
 				<Popup
 					onClose={this.toggleDeleteDialog}

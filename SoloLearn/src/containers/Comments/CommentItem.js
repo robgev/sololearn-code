@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import { translate } from 'react-i18next';
 import { updateDate, generatePreviews } from 'utils';
 import PreviewItem from 'components/PreviewItem';
@@ -17,130 +17,179 @@ import {
 	PromiseButton,
 	IconMenu,
 } from 'components/molecules';
-import { Mention, VoteActions } from 'components/organisms';
+import { Mention, CountingMentionInput, VoteActions } from 'components/organisms';
 
-const CommentItem = ({
-	t,
-	comment,
-	user,
-	type,
-	onVote,
-	onReply,
-	onRepliesButtonClick,
-	accessLevel,
-	userProfileId,
-	toggleDeleteDialog,
-	toggleReportPopup,
-	toggleRemovalPopup,
-	toggleEdit,
-}) => {
-	const {
-		id,
-	} = comment;
-	return (
-		<Fragment>
-			<ListItem>
-				<FlexBox fullWidth className={`comment-item-container ${comment.parentID === null ? '' : 'replay'}`}>
-					<Container>
-						<ProfileAvatar user={user} />
-					</Container>
-					<FlexBox column fullWidth>
-						<FlexBox>
-							<FlexBox column fullWidth>
-								<FlexBox justifyBetween fullWidth align>
-									<UsernameLink to={`/profile/${user.id}`}>
-										{user.name}
-									</UsernameLink>
+class CommentItem extends Component {
+	static serializeProfile = comment => ({
+		id: comment.userID,
+		badge: comment.badge,
+		avatarUrl: comment.avatarUrl,
+		name: comment.userName,
+		level: comment.level,
+	})
+	render() {
+		const {
+			t,
+			comment,
+			isEditing,
+			user,
+			type,
+			onVote,
+			onReply,
+			edit,
+			onRepliesButtonClick,
+			accessLevel,
+			userProfileId,
+			toggleDeleteDialog,
+			toggleReportPopup,
+			toggleRemovalPopup,
+			toggleEdit,
+			onEditButtonEnabledChange,
+			getMentionUsers,
+			isEditButtonEnabled,
+		} = this.props;
+		const {
+			id,
+		} = comment;
+		const profile = CommentItem.serializeProfile(comment);
+		return (
+			<Fragment>
+				<ListItem>
+					<FlexBox fullWidth className={`comment-item-container ${comment.parentID === null ? '' : 'replay'}`}>
+						<Container>
+							<ProfileAvatar user={profile} />
+						</Container>
+						<FlexBox column fullWidth>
+							<FlexBox>
+								<FlexBox column fullWidth>
+									<FlexBox justifyBetween fullWidth align>
+										<UsernameLink to={`/profile/${profile.id}`}>
+											{profile.name}
+										</UsernameLink>
+										<Container>
+											<SecondaryTextBlock>
+												{updateDate(comment.date)}
+											</SecondaryTextBlock>
+											<IconMenu >
+												{comment.userID === userProfileId &&
+													[
+														<MenuItem
+															key={`edit${comment.id}`}
+															onClick={toggleEdit}
+														>{t('common.edit-action-title')}
+														</MenuItem>,
+														<MenuItem
+															key={`remove${id}`}
+															onClick={toggleDeleteDialog}
+														>{t('common.delete-title')}
+														</MenuItem>,
+													]
+												}
+												{comment.userID !== userProfileId &&
+													<MenuItem
+														onClick={toggleReportPopup}
+													>{t('common.report-action-title')}
+													</MenuItem>
+												}
+												{comment.userID !== userProfileId &&
+													accessLevel > 0 &&
+													<MenuItem
+														onClick={toggleRemovalPopup}
+													>
+														{
+															(accessLevel === 1 &&
+																(type !== 'lesson' && type !== 'userLesson')) ?
+																t('discuss.forum_request_removal_prompt_title') :
+																t('discuss.forum_remove_prompt_title')
+														}
+													</MenuItem>
+												}
+											</IconMenu>
+										</Container>
+									</FlexBox>
 									<Container>
-										<SecondaryTextBlock>
-											{updateDate(comment.date)}
-										</SecondaryTextBlock>
-										<IconMenu >
-											{comment.userID === userProfileId &&
-												[
-													<MenuItem
-														key={`edit${comment.id}`}
-														onClick={toggleEdit}
-													>{t('common.edit-action-title')}
-													</MenuItem>,
-													<MenuItem
-														key={`remove${id}`}
-														onClick={toggleDeleteDialog}
-													>{t('common.delete-title')}
-													</MenuItem>,
-												]
-											}
-											{comment.userID !== userProfileId &&
-												<MenuItem
-													onClick={toggleReportPopup}
-												>{t('common.report-action-title')}
-												</MenuItem>
-											}
-											{comment.userID !== userProfileId &&
-												accessLevel > 0 &&
-												<MenuItem
-													onClick={toggleRemovalPopup}
-												>
-													{
-														(accessLevel === 1 &&
-														(type !== 'lesson' && type !== 'userLesson')) ?
-															t('discuss.forum_request_removal_prompt_title') :
-															t('discuss.forum_remove_prompt_title')
-													}
-												</MenuItem>
-											}
-										</IconMenu>
+										{
+											isEditing
+												? (
+													<Container className="comment-input-toolbar">
+														<Container className="input-bar reply-input">
+															<CountingMentionInput
+																style={{ height: 50 }}
+																ref={(i) => { this.editMentionInput = i; }}
+																getUsers={getMentionUsers}
+																initText={comment.message}
+																onSubmitEnabledChange={onEditButtonEnabledChange}
+																placeholder={t('comments.write-comment-placeholder')}
+															/>
+														</Container>
+														<FlatButton
+															disabled={!isEditButtonEnabled}
+															onMouseDown={() => {
+																edit({ message: this.editMentionInput.popValue(), id });
+																toggleEdit();
+															}}
+														>
+															{t('common.edit-action-title')}
+														</FlatButton>
+														<FlatButton
+															onMouseDown={toggleEdit}
+														>
+															{t('common.cancel-title')}
+														</FlatButton>
+													</Container>
+												)
+												: (
+													<Container>
+														<Mention text={comment.message} />
+														{generatePreviews(comment.message).map(singlePreviewData => (
+															<PreviewItem
+																{...singlePreviewData}
+																key={singlePreviewData.link}
+																className="comment-preview"
+															/>
+														))}
+													</Container>
+												)
+										}
 									</Container>
-
 								</FlexBox>
+							</FlexBox>
+							<FlexBox justifyBetween>
 								<Container>
-									<Mention text={comment.message} />
-									{generatePreviews(comment.message).map(singlePreviewData => (
-										<PreviewItem
-											{...singlePreviewData}
-											key={singlePreviewData.link}
-											className="comment-preview"
-										/>
-									))}
+									<VoteActions
+										id={comment.id}
+										type={`${type}Comment`}
+										initialVote={comment.vote}
+										initialCount={comment.votes}
+										onChange={(vote) => { onVote(vote); }}
+									/>
+								</Container>
+								<Container>
+									<FlatButton
+										onClick={onReply}
+									>
+										{t('comments.reply')}
+									</FlatButton>
+									{
+										comment.parentID === null && comment.replies !== 0 && (
+											<PromiseButton
+												fire={onRepliesButtonClick}
+												mouseDown
+											>
+												{comment.replies === 1 ? t('comments.replies-one') : `${comment.replies} ${t('comments.replies-other')}`}
+											</PromiseButton>
+										)
+									}
 								</Container>
 							</FlexBox>
-
-						</FlexBox>
-						<FlexBox justifyBetween>
-							<Container>
-								<VoteActions
-									id={comment.id}
-									type={`${type}Comment`}
-									initialVote={comment.vote}
-									initialCount={comment.votes}
-									onChange={(vote) => { onVote(vote); }}
-								/>
-							</Container>
-							<Container>
-								<FlatButton
-									onClick={onReply}
-								>
-									{t('comments.reply')}
-								</FlatButton>
-								{
-									comment.parentID === null && comment.replies !== 0 && (
-										<PromiseButton
-											fire={onRepliesButtonClick}
-											mouseDown
-										>
-											{comment.replies === 1 ? t('comments.replies-one') : `${comment.replies} ${t('comments.replies-other')}`}
-										</PromiseButton>
-									)
-								}
-							</Container>
 						</FlexBox>
 					</FlexBox>
-				</FlexBox>
-			</ListItem>
-			<HorizontalDivider />
-		</Fragment>
-	);
-};
+				</ListItem>
+				<HorizontalDivider />
+			</Fragment>
+		);
+	}
+}
 
 export default translate()(CommentItem);
 
