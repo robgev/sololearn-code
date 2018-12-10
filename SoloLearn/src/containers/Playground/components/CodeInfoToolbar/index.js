@@ -18,7 +18,7 @@ import {
 import { VoteActions } from 'components/organisms';
 import { Delete } from 'components/icons';
 
-import { determineAccessLevel } from 'utils';
+import { determineAccessLevel, updateDate } from 'utils';
 import { removeCode } from 'actions/playground';
 
 import RemovalPopup from './RemovalPopup';
@@ -100,6 +100,9 @@ class CodeInfoToolbar extends PureComponent {
 						initialVote={vote}
 						initialCount={votes}
 					/>
+					<SecondaryTextBlock>
+						{updateDate(this.props.playground.data.createdDate)}
+					</SecondaryTextBlock>
 				</Container>
 				<RemovalPopup
 					open={isDeleteModalOpen}
