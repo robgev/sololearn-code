@@ -61,6 +61,7 @@ const mapDispatchToProps = {
 @connect(mapStateToProps, mapDispatchToProps)
 class QuizManager extends Component {
 	_isMounted = false;
+	getCommentsPromise = null;
 
 	state = {
 		commentsCount: null,
@@ -150,17 +151,21 @@ class QuizManager extends Component {
 	}
 
 	getCommentsCount = async ({ quizId, type }) => {
-		const { count } =
-			await Service.request('Discussion/GetLessonCommentCount', {
-				quizId, type,
-			});
-		if (this._isMounted) {
-			if (type === 3) {
-				this.setState({ commentsOpened: false });
-			} else {
-				this.setState({ commentsOpened: true });
+		this.setState({ commentsCount: null });
+		const getCommentsPromise = Service.request('Discussion/GetLessonCommentCount', {
+			quizId, type,
+		});
+		this.getCommentsPromise = getCommentsPromise;
+		const { count } = await getCommentsPromise;
+		if (getCommentsPromise === this.getCommentsPromise) {
+			if (this._isMounted) {
+				if (type === 3) {
+					this.setState({ commentsOpened: false });
+				} else {
+					this.setState({ commentsOpened: true });
+				}
+				this.setState({ commentsCount: count });
 			}
-			this.setState({ commentsCount: count });
 		}
 	}
 
