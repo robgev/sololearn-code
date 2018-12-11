@@ -70,8 +70,7 @@ class QuizText extends Component {
 				/>
 				<Snackbar
 					open={snackbarOpened}
-					autoHideDuration={1500}
-					onRequestClose={this.handleSnackbarClose}
+					onClose={this.handleSnackbarClose}
 					message={isBookmarked ? t('lesson.bookmark-added') : t('lesson.bookmark-removed')}
 				/>
 			</div>

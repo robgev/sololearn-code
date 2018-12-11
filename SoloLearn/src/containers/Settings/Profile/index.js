@@ -220,16 +220,16 @@ class Profile extends PureComponent {
 				<Snackbar
 					open={snackbarOpen}
 					autoHideDuration={isSaving ? 5000 : 1000}
-					onRequestClose={this.handleSnackBarClose}
+					onClose={this.handleSnackBarClose}
 					message={isSaving ? 'Saving New Settings' : t('code_playground.alert.saved-title')}
 				/>
 
-				<Container 
-					style={{display:'none'}}
-					//preload images for CountrySelector
+				<Container
+					style={{ display: 'none' }}
+					// preload images for CountrySelector
 				>
 					{images}
-				</Container> 
+				</Container>
 			</Container>
 		);
 	}

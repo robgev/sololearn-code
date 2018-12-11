@@ -176,7 +176,6 @@ class Header extends Component {
 					accessLevel={accessLevel}
 				/>
 				<Snackbar
-					autoHideDuration={1500}
 					open={this.isSnackbarOpen}
 					onClose={this.toggleSnackbar}
 					message={t('blocked.user.message')}
