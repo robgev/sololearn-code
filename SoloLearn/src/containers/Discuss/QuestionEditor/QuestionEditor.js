@@ -145,6 +145,8 @@ class QuestionEditor extends Component {
 						</SecondaryTextBlock>
 					</FlexBox>
 					<PromiseButton
+						raised
+						className="submit-button"
 						color="primary"
 						mouseDown
 						fire={this.handleSubmit}
