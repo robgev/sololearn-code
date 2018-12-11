@@ -2,13 +2,14 @@
 import React, { Fragment } from 'react';
 // Additional data and components
 import BottomToolbar from '../FeedBottomToolbar';
-import ProfileAvatar from '../ProfileAvatar';
+//import ProfileAvatar from '../ProfileAvatar';
 import {
 	Container,
 	TextBlock,
-	SecondaryTextBlock
+	SecondaryTextBlock,
+	FlexBox,
 } from 'components/atoms';
-import { UsernameLink } from 'components/molecules';
+import { UsernameLink, ProfileAvatar } from 'components/molecules';
 
 import 'styles/Feed/FeedTemplates/Challenge.scss';
 
@@ -20,25 +21,25 @@ const Challenge = ({
 }) => (
 	<Fragment>
 		<Container className="challenge">
-			<Container>
+			<FlexBox column align>
 				<ProfileAvatar 
 					user={player}
 				/>
 				<Container className="username">
 					<UsernameLink to={`/Profile/${player.id}`}>{player.name}</UsernameLink>
 				</Container>
-			</Container>
+			</FlexBox>
 			<Container>
 				<TextBlock className="score">{`${player.score} : ${opponent.score}`}</TextBlock>
 			</Container>
-			<Container>
+			<FlexBox column align>
 				<ProfileAvatar 
 					user={opponent}
 				/>
 				<Container className="username">
 					<UsernameLink to={`/Profile/${opponent.id}`}>{opponent.name}</UsernameLink>
 				</Container>
-			</Container>
+			</FlexBox>
 		</Container>
 		<BottomToolbar date={date} />
 	</Fragment>

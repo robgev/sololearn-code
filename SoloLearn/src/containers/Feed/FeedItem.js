@@ -46,7 +46,7 @@ class FeedItem extends Component {
 		switch (feedItem.type) {
 		case types.badgeUnlocked:
 			this.url = `/profile/${feedItem.user.id}/badges?badgeID=${feedItem.achievement.id}`;
-			return <Badge date={feedItem.date} achievement={feedItem.achievement} />;
+			return <Badge date={feedItem.date} achievement={feedItem.achievement} url={this.url} />;
 		case types.courseStarted:
 			this.url = `/learn/course/${toSeoFriendly(feedItem.course.name)}`;
 			return <Course date={feedItem.date} course={feedItem.course} openPopup={this.props.openCoursePopup} />;
@@ -196,7 +196,8 @@ class FeedItem extends Component {
 					<Container
 						id="feed-items"
 						className={`merged-items-container ${this.state.isOpened ? 'open' : ''}`}
-						style={{ height: this.state.isOpened ? ((feedItem.groupedItems.length * 139) - 10) : 0 }} // 10 = last item margin bottom
+						//style={{ height: this.state.isOpened ? ((feedItem.groupedItems.length * 139) - 10) : 0 }} // 10 = last item margin bottom
+						//style={{'display': this.state.isOpened? 'block' : 'none'}}
 					>
 						{feedItem.groupedItems.map(currentItem => (
 							<FeedItem

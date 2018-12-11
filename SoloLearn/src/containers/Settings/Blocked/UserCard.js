@@ -19,12 +19,12 @@ const UserCard = ({
 	<Container>
 		<Card
 			user={user}
+			isBlocked={blockedState}
 			t={t}
 		/>
 		<RaisedButton
-			className='unblock-button'
+			className={`unblock-button ${blockedState ? 'unblock' : ''}`}
 			onClick={onBlock}
-			label={blockedState ? t('common.unblock-user') : t('common.block-user')}
 		>
 			{blockedState ? t('common.unblock-user') : t('common.block-user')}
 		</RaisedButton>

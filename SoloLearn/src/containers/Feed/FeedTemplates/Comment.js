@@ -4,7 +4,7 @@ import BottomToolbarWithVotes from '../BottomToolbarWithVotes'
 import {
 	Container,
 	Link,
-	TextBlock,
+	SecondaryTextBlock,
 } from 'components/atoms';
 import { QuoteIcon } from 'components/icons';
 
@@ -23,9 +23,9 @@ const Comment = ({
 		<Container className="comment-item-container">
 			<Link to={url} className="comment-feed-item-wrapper">
 				<QuoteIcon/>
-				<TextBlock className="comment-text">
+				<SecondaryTextBlock className="comment-text">
 					{truncate(comment.message, 200, 5, true)}
-				</TextBlock>
+				</SecondaryTextBlock>
 				<QuoteIcon/>
 			</Link>
 		</Container>

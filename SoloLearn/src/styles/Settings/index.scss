@@ -27,9 +27,9 @@ $settings_section_width: 200px;
 			margin-top: 10px;
 		}
 		.settings_loading{
-				margin: auto;
-				display: block;
-			}
+			margin: auto;
+			display: block;
+		}
 
 		.profile-settings-container {
 			display: flex;
@@ -91,14 +91,17 @@ $settings_section_width: 200px;
 				margin-bottom: 5px;
 				display: flex; 
 				justify-content: space-between;
-
-				.unblock-button {
-					float: right;
-					margin-top: 10px;
-				}
 			}
 			&.center-vertical {
 				justify-content: center
+			}
+		}
+		.unblock-button {
+			float: right;
+			margin-top: 10px;
+
+			&.unblock {
+				background-color: $secondary_color;
 			}
 		}
 		.arsenal-settings-container {
@@ -156,9 +159,4 @@ $settings_section_width: 200px;
 
 .crop-dialog {
 	max-width: none;
-}
-
-.unblock-button {
-	float: right;
-	margin-top: 10px;
 }

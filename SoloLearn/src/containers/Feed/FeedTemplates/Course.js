@@ -16,7 +16,7 @@ class Course extends Component {
 		const { course, date, showDate = true } = this.props;
 
 		return (
-			<Link to={`/learn/course/${toSeoFriendly(course.name)}`}>
+			<Container>
 				<Container
 					tabIndex={0}
 					role="button"
@@ -27,10 +27,10 @@ class Course extends Component {
 						src={`https://api.sololearn.com/uploads/Courses/${course.id}.png`}
 						className="courseIcon"
 					/>
-					<TextBlock className="courseName">{course.name}</TextBlock>
+					<Link to={`/learn/course/${toSeoFriendly(course.name)}`}><TextBlock className="courseName">{course.name}</TextBlock></Link>
 				</Container>
 				{showDate && <BottomToolbar date={date} />}
-			</Link>
+			</Container>
 		);
 	}
 }

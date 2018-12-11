@@ -1,9 +1,11 @@
 .merged-items-container {
 	opacity: 0;
 	transition: all 150ms ease-in;
+	display: none;
 	&.open {
 		opacity: 1;
 		margin-bottom: 10px;
+		display: block;
 	}
 }
 

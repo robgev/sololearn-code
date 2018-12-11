@@ -2,11 +2,11 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
-import ProfileAvatar from './ProfileAvatar';
+//import ProfileAvatar from './ProfileAvatar';
 import { followUserSuggestion } from 'actions/feed';
 import { numberFormatter } from 'utils';
 import { PaperContainer, SecondaryTextBlock, } from 'components/atoms';
-import { UsernameLink, RaisedButton,  } from 'components/molecules'
+import { UsernameLink, RaisedButton, ProfileAvatar } from 'components/molecules'
 
 import 'styles/Feed/FeedSuggestion.scss';
 
