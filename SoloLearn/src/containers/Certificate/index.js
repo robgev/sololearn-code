@@ -2,13 +2,14 @@ import React, { PureComponent } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import CircularProgress from 'material-ui/CircularProgress';
 
 import Progress from 'api/progress';
 import Service from 'api/service';
 import { toSeoFriendly } from 'utils';
 import { loadCourseInternal } from 'actions/learn';
-import BusyWrapper from 'components/BusyWrapper';
+import { Container, Image, FlexBox } from 'components/atoms';
+import { Layout, EmptyCard } from 'components/molecules';
+import './styles.scss';
 
 const mapStateToProps = state => ({
 	courses: state.courses,
@@ -61,26 +62,25 @@ class Certificate extends PureComponent {
 	render() {
 		const { loading, imageData } = this.state;
 		return (
-			<BusyWrapper
-				isBusy={loading}
-				style={{ minHeight: '60vh' }}
-				loadingComponent={
-					<CircularProgress
-						size={100}
-					/>
+			<Layout className="certificate_full-height">
+				{
+					loading
+						? (
+							<FlexBox align justify>
+								<EmptyCard loading />
+							</FlexBox>
+						)
+						: (
+							<FlexBox align justify>
+								<Image
+									className="certificate_image"
+									src={imageData}
+									alt="Certificate"
+								/>
+							</FlexBox>
+						)
 				}
-			>
-				<div>
-					<img
-						style={{
-							margin: '5px auto',
-							height: 'calc(100vh - 65px)',
-						}}
-						src={imageData}
-						alt="Certificate"
-					/>
-				</div>
-			</BusyWrapper>
+			</Layout>
 		);
 	}
 }
