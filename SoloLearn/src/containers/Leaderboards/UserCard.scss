@@ -7,7 +7,9 @@
 		display: flex;
 		.user-meta-data {
 			margin-left: $secondary-gap-size;
-
+			.badge {
+				margin-left: $secondary-gap-size;
+			}
 			.info {
 				display: block;
 				padding: 0px;
