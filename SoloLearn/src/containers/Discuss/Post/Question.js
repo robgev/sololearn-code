@@ -117,6 +117,7 @@ class Question extends Component {
 										avatarUrl={post.avatarUrl}
 										userName={post.userName}
 										date={post.date}
+										level={post.level}
 									/>
 								</Container>
 								<Snackbar
