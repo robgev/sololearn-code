@@ -33,6 +33,7 @@ class Content extends PureComponent {
 	constructor() {
 		super();
 		this.state = { loading: true };
+		this.feedTimer = null;
 	}
 
 	async componentDidMount() {
@@ -41,13 +42,25 @@ class Content extends PureComponent {
 		ReactGA.ga('send', 'screenView', { screenName: 'Activity Feed Settings Page' });
 	}
 
+	resetFeed = () => {
+		if(this.feedTimer) {
+			window.clearTimeout(this.feedTimer);
+		}
+
+		const { getFeedItems, getPinnedFeedItems, clearFeedItems } = this.props;
+
+		this.feedTimer = window.setTimeout(() => {
+			clearFeedItems();
+			getFeedItems();
+			getPinnedFeedItems();
+		},1000);
+	}
+
 	onToggle = (event) => {
-		const { feedSettings, updateSetting, getFeedItems, getPinnedFeedItems, clearFeedItems } = this.props;
+		const { feedSettings, updateSetting } = this.props;
 		const currentSettingKey = event.target.name;
 		updateSetting({[currentSettingKey]: !feedSettings[currentSettingKey]});
-		clearFeedItems();
-		getFeedItems();
-		getPinnedFeedItems();
+		this.resetFeed();
 	} 
 
 	render() {

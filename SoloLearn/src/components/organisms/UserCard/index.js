@@ -5,7 +5,7 @@ import { Avatar, UsernameLink } from 'components/molecules';
 
 import './styles.scss';
 
-const UserCard = ({ className, user, t, ...props }) => {
+const UserCard = ({ className, isBlocked, user, t, ...props }) => {
 	const {
 		id,
 		name,
@@ -25,7 +25,10 @@ const UserCard = ({ className, user, t, ...props }) => {
 			/>
 			<Container className='info'>
 				<Container>
-					<UsernameLink to={`/profile/${id}`}> {name} </UsernameLink>
+				{ 
+					isBlocked 
+					? <SecondaryTextBlock>{name}</SecondaryTextBlock> : <UsernameLink to={`/profile/${id}`}> {name} </UsernameLink>
+				}
 				</Container>
 				<Container>
 					<SecondaryTextBlock>{ followers } {t('common.user-followers')} | {t('common.user-level')} { level }</SecondaryTextBlock>
@@ -43,5 +46,6 @@ UserCard.propTypes = {
 
 UserCard.defaultProps = {
 	className: '',
+	isBlocked: false,
 };
 export default UserCard;

@@ -58,7 +58,9 @@ class Password extends PureComponent {
 		} else if (newPassword === oldPassword) {
 			// TODO: Change string when got localization
 			// Should be "Passwords should not match"
-			this.setState({ errorText: '', oldPassErrorText: t('register.passwords-not-match') });
+			this.setState({ errorText: '', oldPassErrorText: 'Passwords should not match' });
+		} else if (newPassword.length < 6 ) {
+			this.setState({ errorText: t('auth.invalid-password'), oldPassErrorText: '' });
 		} else {
 			this.setState({ errorText: t('register.passwords-not-match'), oldPassErrorText: '' });
 		}
