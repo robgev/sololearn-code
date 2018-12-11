@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 import {
 	FlexBox,
+	Snackbar,
 	Container,
 	MenuItem,
 	SwitchToggle,
@@ -39,11 +41,13 @@ const mapDispatchToProps = {
 
 @translate()
 @connect(mapStateToProps, mapDispatchToProps)
+@observer
 class CodeInfoToolbar extends PureComponent {
 	state = {
 		isDeletePopupOpen: false,
 		isDetailsPopupOpen: false,
 		isReportPopupOpen: false,
+		isSnackbarOpen: false,
 	};
 
 	deleteCurrentCode = async () => {
@@ -63,8 +67,24 @@ class CodeInfoToolbar extends PureComponent {
 		this.setState(state => ({ isReportPopupOpen: !state.isReportPopupOpen }));
 	}
 
+	togglePublic = () => {
+		this.setState({ isSnackbarOpen: true });
+		this.props.playground.togglePublic();
+	}
+
+	handleSnackbarClose = (_, reason) => {
+		if (reason !== 'clickaway') {
+			this.setState({ isSnackbarOpen: false });
+		}
+	}
+
 	render() {
-		const { isDeletePopupOpen, isDetailsPopupOpen, isReportPopupOpen } = this.state;
+		const {
+			isDeletePopupOpen,
+			isDetailsPopupOpen,
+			isReportPopupOpen,
+			isSnackbarOpen,
+		} = this.state;
 		const { t, accessLevel } = this.props;
 		const {
 			id,
@@ -102,7 +122,7 @@ class CodeInfoToolbar extends PureComponent {
 						{(isMe || accessLevel > 1) &&
 						<SwitchToggle
 							defaultChecked={this.props.playground.isPublic}
-							onChange={this.props.playground.togglePublic}
+							onChange={this.togglePublic}
 							labelPlacement="start"
 							label={t('code_playground.popups.save-popup-public-toggle-title')}
 						/>
@@ -116,11 +136,6 @@ class CodeInfoToolbar extends PureComponent {
 							{!isMe &&
 								<MenuItem onClick={this.toggleReportPopup}>
 									{t('common.report-action-title')}
-								</MenuItem>
-							}
-							{(isMe || accessLevel > 1) &&
-								<MenuItem onClick={this.props.playground.togglePublic}>
-									{t('code_playground.popups.save-popup-public-toggle-title')}
 								</MenuItem>
 							}
 							<MenuItem onClick={this.toggleDetailsPopup}>
@@ -153,6 +168,14 @@ class CodeInfoToolbar extends PureComponent {
 					open={isDeletePopupOpen}
 					onClose={this.togglePopup}
 					onDelete={this.deleteCurrentCode}
+				/>
+				<Snackbar
+					open={isSnackbarOpen}
+					onClose={this.handleSnackbarClose}
+					message={this.props.playground.isPublic
+						? t('code_playground.alert.private-title')
+						: t('code_playground.alert.public-title')
+					}
 				/>
 			</PaperContainer>
 		);
