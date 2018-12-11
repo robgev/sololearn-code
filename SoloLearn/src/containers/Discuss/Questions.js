@@ -35,7 +35,11 @@ class Questions extends Component {
 	componentDidMount() {
 		document.title = 'Sololearn | Discuss';
 		const { location, filters } = this.props;
-		const query = { ...filters, ...location.query };
+		// if searching (location.query.query), default filer has to be selected
+		const query = {
+			...(location.query.query != null ? DEFAULT_DISCUSS_FILTERS : filters),
+			...location.query,
+		};
 		this.props.setDiscussFilters(query);
 		const changed = queryDifference(DEFAULT_DISCUSS_FILTERS, query);
 		browserHistory.replace({ ...location, query: changed });
