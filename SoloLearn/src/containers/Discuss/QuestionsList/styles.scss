@@ -10,8 +10,13 @@
 	}
 	.question {
 		width: 100%;
-		.number-with-text {
-			margin-right: $secondary_gap_size;
+		.numbers {
+			width: 110px;
+			display: flex;
+			justify-content: center;
+			.number-with-text {
+				margin-right: $secondary_gap_size;
+			}
 		}
 		.author {
 			z-index: 1;
