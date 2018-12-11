@@ -12,15 +12,34 @@ import { ChallengeColors } from 'constants/ChartColors';
 import { translate } from 'react-i18next';
 
 const createChartData = (contests, courseID, dataKey) => {
-	const filteredContests =
-	courseID ? contests.filter(currentContest => currentContest.courseID === courseID) : contests;
-	const relevantContests = filteredContests.length > 15 ?
-		filteredContests.slice(filteredContests.length - 15) : filteredContests;
-	// We will show only 15 of contests and we get like > 60
-	return relevantContests.map((currentContest, index) => ({
-		x: index + 1,
-		y: dataKey === 'loses' ? -currentContest[dataKey] : currentContest[dataKey],
-	}));
+
+	const generatedData = [];
+
+	contests.forEach(contest => {
+		if(courseID && contest.courseID !== courseID) {
+			return
+		}
+
+		const currentDataIndex = generatedData.findIndex(d => d.date === contest.date);
+		let dataObj;
+		if( currentDataIndex === -1 ) {
+			dataObj = {date: contest.date, count: 0};
+			generatedData.push(dataObj);
+		} else {
+			dataObj = generatedData[currentDataIndex];
+		}
+
+		dataObj.count += contest[dataKey];
+	})
+	if( generatedData.length > 15 ) {
+		generatedData.splice(0, generatedData.length - 15);
+	}
+	return generatedData.map((currentContest, index) => {
+		return {
+			x: index+1,
+			y: dataKey === 'loses' ? -currentContest.count : currentContest.count,
+		}
+	})
 };
 
 const CustomLabel = props => (

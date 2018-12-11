@@ -30,6 +30,10 @@ class IProfile {
 		return this.getQuestionsPromise !== null;
 	}
 
+	@computed get isCodesFetching() {
+		return this.getCodesPromise !== null;
+	}
+
 	@observable data = {};
 
 	@observable loadingFollowers = false;

@@ -155,18 +155,24 @@ class Profile extends Component {
 				}
 				{
 					this.activeTab === 'codes' &&
-					<Container className="codes-wrapper section">
-						<CodesList
-							codes={codes.entities}
-							hasMore={codes.hasMore}
-							loadMore={this.profile.getCodes}
-						/>
-						{data.id === userId &&
-							<AddCodeButton>
-								{({ togglePopup }) => <FloatingActionButton alignment="right" onClick={togglePopup} ><Add /></FloatingActionButton>}
-							</AddCodeButton>
-						}
-					</Container>
+					<InfiniteScroll
+						hasMore={codes.hasMore}
+						isLoading={this.profile.isCodesFetching}
+						loadMore={this.profile.getCodes}
+					>
+						<PaperContainer className="codes-wrapper section">
+							<CodesList
+								codes={codes.entities}
+								hasMore={codes.hasMore}
+								loadMore={this.profile.getCodes}
+							/>
+							{data.id === userId &&
+								<AddCodeButton>
+									{({ togglePopup }) => <FloatingActionButton alignment="right" onClick={togglePopup} ><Add /></FloatingActionButton>}
+								</AddCodeButton>
+							}
+						</PaperContainer>
+					</InfiniteScroll>
 				}
 				{
 					this.activeTab === 'discussion' && (

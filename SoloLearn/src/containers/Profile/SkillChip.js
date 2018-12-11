@@ -7,6 +7,7 @@ import {
 	SecondaryTextBlock,
 	TextBlock,
 	CircularProgress,
+	FlexBox,
 } from 'components/atoms';
 import { translate } from 'react-i18next';
 
@@ -20,16 +21,15 @@ const SkillChips = ({ t, course, shouldShowLink }) => (
 				src={`https://api.sololearn.com/uploads/Courses/${course.id}.png`}
 			/>
 		</Container>
-		<Container className="course-details">
-			<TextBlock className="course-name">{course.languageName}</TextBlock>
-			<br/>
-			<SecondaryTextBlock className="course-xp">{course.xp} XP</SecondaryTextBlock>
+		<FlexBox column >
+			<TextBlock >{course.languageName}</TextBlock>
+			<SecondaryTextBlock >{course.xp} XP</SecondaryTextBlock>
 			{(course.progress >= 1 && shouldShowLink) &&
 				<Link to={`/certificate/${course.id}`}>
-					{t('skills.view-certificate')}
+					<SecondaryTextBlock >{t('skills.view-certificate')}</SecondaryTextBlock>
 				</Link>
 			}
-		</Container>
+		</FlexBox>
 	</Container>
 );
 

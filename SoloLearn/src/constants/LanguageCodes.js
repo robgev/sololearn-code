@@ -7,4 +7,5 @@ export default {
 	1073: 'Python',
 	1080: 'C#',
 	1081: 'Ruby',
+	1089: 'C',
 };

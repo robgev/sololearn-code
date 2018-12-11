@@ -63,6 +63,7 @@ const PieChart = ({ t, contestStats, courseID }) => {
 					labels: {
 						fill: 'white',
 						fontWeight: 'bold',
+						fontSize:'19px',
 					},
 				}}
 				startAngle={135}
