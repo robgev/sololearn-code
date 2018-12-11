@@ -9,7 +9,7 @@ import { CourseCard } from 'containers/Learn/components';
 // Additional data and components
 import Course from './FeedTemplates/Course';
 import Post from './FeedTemplates/Post';
-import ProfileAvatar from './ProfileAvatar';
+//import ProfileAvatar from './ProfileAvatar';
 import {
 	Container,
 	PaperContainer,
@@ -17,8 +17,9 @@ import {
 	Image,
 	Title,
 	SecondaryTextBlock,
+	FlexBox,
 } from 'components/atoms';
-import { FlatButton } from 'components/molecules';
+import { FlatButton, ContainerLink, ProfileAvatar } from 'components/molecules';
 
 import 'styles/Feed/FeedPin.scss';
 
@@ -122,6 +123,8 @@ class FeedPin extends Component {
 			} else if (pin.userPosts) {
 				const firstPost = pin.userPosts[0];
 				url = `/userPost/${firstPost.id}`;
+			} else if (pin.courses) {
+				url = `/learn/course/${toSeoFriendly(pin.courses[0].name)}`
 			}
 		} else {
 			const parts = url.split('/');
@@ -142,7 +145,7 @@ class FeedPin extends Component {
 				url = `/learn/more/${parts[2]}`;
 				break;
 			default:
-				url = `/${primaryPart}`;
+				//url = `/${primaryPart}`;
 				break;
 			}
 		}
@@ -153,7 +156,7 @@ class FeedPin extends Component {
 	render() {
 		const { pin } = this.props;
 		return (
-			<Container className="feed-pin-wrapper" >
+			<ContainerLink className="feed-pin-wrapper" to={this.getPinUrl()} target="_blank">
 				<PaperContainer className="feed-pin-content">
 					<Container className="heading" >
 						<Title className="title" >{pin.title}</Title>
@@ -172,18 +175,19 @@ class FeedPin extends Component {
 					{pin.codes && <Container className="codes">{this.generateCodes()}</Container>}
 					{pin.lessons && <Container className="lessons" >{this.generateLessons()}</Container>}
 					{pin.posts && <Container className="posts" >{this.generatePosts()}</Container>}
-
-					<Link to={this.getPinUrl()} className="actions" >
+					<FlexBox className="actions">
 						<FlatButton color="primary">
-							{pin.actionName}
+							<Link to={this.getPinUrl()}  >
+								{pin.actionName}
+							</Link>
 						</FlatButton>
-					</Link>
+					</FlexBox>
 				</PaperContainer>
 				{pin.courses ?
 					<SecondaryTextBlock className="feed-pin" onClick={this.openCoursePopup} /> :
 					<Link className="feed-pin" to={this.getPinUrl()} />
 				}
-			</Container>
+			</ContainerLink>
 		);
 	}
 }

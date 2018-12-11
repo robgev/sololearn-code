@@ -8,9 +8,9 @@
 		background-color: #F5F5F5;
 		.code-snippet, .comment-text {
 			flex: 2;
-			color: #777;
-			font-size: 14px;
+			margin: 0 10px;
 			white-space: pre-wrap;
+			word-break: break-word;
 		}
 		.language-tag {
 			height: 30px;

@@ -7,8 +7,8 @@ import {
 	Container, FlexBox, Heading, HorizontalDivider,
 	List, ListItem, SecondaryTextBlock,
 } from 'components/atoms';
-import { UsernameLink, ViewMoreLink } from 'components/molecules';
-import ProfileAvatar from './ProfileAvatar';
+import { UsernameLink, ViewMoreLink, ProfileAvatar } from 'components/molecules';
+//import ProfileAvatar from './ProfileAvatar';
 import './sidebar.scss';
 
 const mapStateToProps = state => ({
@@ -36,7 +36,7 @@ const FeedSuggestions = ({ t, discoverIds, discoverEntities }) => (
 												className="profile"
 												user={discoverEntities[id]}
 											/>
-											<FlexBox column>
+											<FlexBox column className="profile-info">
 												<UsernameLink to={`/profile/${id}`} >{name}</UsernameLink>
 												<SecondaryTextBlock>
 													{

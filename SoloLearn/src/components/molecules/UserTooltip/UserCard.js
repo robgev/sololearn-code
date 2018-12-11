@@ -3,8 +3,8 @@ import { translate } from 'react-i18next';
 
 import AvatarColors from 'constants/AvatarColors';
 import { Container, SecondaryTextBlock, Image } from 'components/atoms';
-import { RaisedButton, UsernameLink, ContainerLink } from 'components/molecules';
-import ModBadge from 'components/ModBadge';
+import { RaisedButton, UsernameLink, ContainerLink, ModBadge } from 'components/molecules';
+//import ModBadge from 'components/ModBadge';
 import { numberFormatter } from 'utils';
 
 const UserCard = ({
@@ -28,13 +28,15 @@ const UserCard = ({
 			)
 		}
 		<Container className="molecule_userTooltip-user-data">
-			<UsernameLink>
-				{name}
+			<Container>
+				<UsernameLink>
+					{name}
+				</UsernameLink>
 				<ModBadge
 					badge={badge}
 					className="small"
 				/>
-			</UsernameLink>
+			</Container>
 			{level !== null &&
 			<SecondaryTextBlock>
 				{t('common.user-level')} {numberFormatter(level)}
