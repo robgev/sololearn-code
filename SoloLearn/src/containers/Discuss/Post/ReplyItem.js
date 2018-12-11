@@ -92,6 +92,7 @@ class ReplyItem extends Component {
 						initText={reply.message}
 						ref={this.editInput}
 						onSubmitEnabledChange={this.setCanEdit}
+						placeholder={t('discuss.editTitle')}
 					/>
 					<Container className="buttons">
 						<RaisedButton
