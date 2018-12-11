@@ -24,7 +24,7 @@ class PostPage extends Component {
 		const { id, replyId } = this.props.params;
 		return (
 			<Post
-				key={id}
+				key={`${id}-${replyId}`}
 				id={parseInt(id, 10)}
 				replyID={replyId ? parseInt(replyId, 10) : null}
 				setRouteAlias={this.setRouteAlias}
