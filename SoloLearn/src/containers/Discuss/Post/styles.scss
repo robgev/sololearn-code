@@ -82,6 +82,7 @@
 			}
 		}
 		.user {
+			margin-top: $secondary_gap_size;
 			align-self: flex-end;
 			display: flex;
 			.name-date {
