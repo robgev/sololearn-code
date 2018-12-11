@@ -3,7 +3,6 @@ import * as types from 'constants/ActionTypes';
 import {
 	discussPostsSelector,
 	discussFiltersSelector,
-	isDiscussFetchingSelector,
 } from 'reducers/discuss.reducer';
 import { setSearchValue, toggleSearch, onSearchSectionChange } from 'actions/searchBar';
 import { SECTIONS } from 'reducers/searchBar.reducer';
@@ -25,23 +24,20 @@ export const getPosts = ({
 	count = 20,
 } = {}) => async (dispatch, getState) => {
 	const stateBefore = getState();
-	// Avoid unnecessary requests if already fetching
-	if (!isDiscussFetchingSelector(stateBefore)) {
-		dispatch({ type: types.REQUEST_POSTS });
-		const filters = discussFiltersSelector(stateBefore);
-		const { length } = discussPostsSelector(stateBefore);
-		const { posts, error } = await Service.request('Discussion/Search', {
-			index: length, count, ...filters,
-		});
-		if (error) {
-			throw error;
-		}
-		// Ignore action if filters changed
-		if (filters === discussFiltersSelector(getState())) {
-			dispatch({ type: types.SET_POSTS, payload: posts });
-			if (posts.length < count) {
-				dispatch({ type: types.MARK_DISCUSS_LIST_FINISHED });
-			}
+	dispatch({ type: types.REQUEST_POSTS });
+	const filters = discussFiltersSelector(stateBefore);
+	const { length } = discussPostsSelector(stateBefore);
+	const { posts, error } = await Service.request('Discussion/Search', {
+		index: length, count, ...filters,
+	});
+	if (error) {
+		throw error;
+	}
+	// Ignore action if filters changed
+	if (filters === discussFiltersSelector(getState())) {
+		dispatch({ type: types.SET_POSTS, payload: posts });
+		if (posts.length < count) {
+			dispatch({ type: types.MARK_DISCUSS_LIST_FINISHED });
 		}
 	}
 };
