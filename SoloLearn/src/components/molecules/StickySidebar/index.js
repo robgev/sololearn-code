@@ -60,13 +60,13 @@ class Sidebar extends Component {
 						{children}
 					</Container>
 					<Container className="sidebar-static-pages">
-						<Link className="static-link hoverable" to="/privacy">
+						<Link className="static-link hoverable" to="/privacy" target="_blank">
 							Privacy
 						</Link>
-						<Link className="static-link hoverable" to="/faq">
+						<Link className="static-link hoverable" to="/faq" target="_blank">
 							FAQ
 						</Link>
-						<Link className="static-link hoverable" to="/contact">
+						<Link className="static-link hoverable" to="/contact" target="_blank">
 							Contact
 						</Link>
 					</Container>

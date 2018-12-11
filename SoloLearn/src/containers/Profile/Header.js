@@ -14,6 +14,7 @@ import {
 	MenuItem,
 	SecondaryTextBlock,
 	Snackbar,
+	Link,
 } from 'components/atoms';
 import {
 	RaisedButton,
@@ -138,10 +139,12 @@ class Header extends Component {
 				</Container>
 				<Container className="profile-header-details">
 					{ profile.id &&
-						<UserAvatar
-							user={profile}
-							size="big"
-						/>
+						<Link to={`/profile/${profile.id}/skills`}>
+							<UserAvatar
+								user={profile}
+								size="big"
+							/>
+						</Link>
 					}
 					<UsernameLink to={`/profile/${profile.id}`} className="user-name">{profile.name}</UsernameLink>
 					<SecondaryTextBlock className="user-level">{t('common.user-level')} {profile.level}</SecondaryTextBlock>

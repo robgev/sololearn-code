@@ -75,7 +75,7 @@ class Skills extends PureComponent {
 			profile,
 			currentUserId,
 		} = this.props;
-		const { maxXp, status } = calculateProgress(levels, profile.level, profile.xp);
+		const { maxXp, status, currentStatus } = calculateProgress(levels, profile.level, profile.xp);
 		if (!skills) {
 			return null;
 		}
@@ -100,7 +100,7 @@ class Skills extends PureComponent {
 							<ProgressBar
 								value={100 * profile.xp / maxXp}
 								className="progress"
-								minText=""
+								minText={t(`profile.status-${currentStatus}`)}
 								maxText={t(`profile.status-${status}`)}
 							/>
 						</Container>
