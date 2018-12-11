@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Link } from 'components/atoms';
+import { Container } from 'components/atoms';
+import { RefLink } from '../RefLink';
 
 import './styles.scss';
 
@@ -60,15 +61,15 @@ class Sidebar extends Component {
 						{children}
 					</Container>
 					<Container className="sidebar-static-pages">
-						<Link className="static-link hoverable" to="/privacy">
+						<RefLink className="static-link hoverable" to="/privacy">
 							Privacy
-						</Link>
-						<Link className="static-link hoverable" to="/faq">
+						</RefLink>
+						<RefLink className="static-link hoverable" to="/faq">
 							FAQ
-						</Link>
-						<Link className="static-link hoverable" to="/contact">
+						</RefLink>
+						<RefLink className="static-link hoverable" to="/contact">
 							Contact
-						</Link>
+						</RefLink>
 					</Container>
 				</Container>
 			</Container>
