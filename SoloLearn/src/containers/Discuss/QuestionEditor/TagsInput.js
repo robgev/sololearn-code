@@ -81,12 +81,12 @@ class TagsInput extends Component {
 		this.props.deleteTag(tag);
 	};
 
-	onChange = (e) => {
+	onChange = (e, { newValue }) => {
 		if (this.props.canAddTag) {
-			if (e.currentTarget.value.length <= TagsInput.maxTagLength) {
-				this.setState({ value: e.currentTarget.value.replace(/\s/g, '') });
+			if (newValue.length <= TagsInput.maxTagLength) {
+				this.setState({ value: newValue.replace(/\s/g, '') });
 			} else {
-				this.addTag(e.currentTarget.value);
+				this.addTag(newValue);
 			}
 		}
 	};
