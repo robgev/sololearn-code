@@ -29,6 +29,11 @@
 			justify-content: space-between;
 			align-items: center;
 			margin: $primary_gap_size;
+			.filters {
+				.title {
+					margin-right: $secondary_gap_size;
+				}
+			}
 		}
 	}
 	.editing-post {

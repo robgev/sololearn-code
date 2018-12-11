@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import {
 	Container, List, PaperContainer,
 	SecondaryTextBlock, Select, MenuItem,
-	Snackbar,
+	Snackbar, FlexBox,
 } from 'components/atoms';
 import { InfiniteScroll, RaisedButton, EmptyCard } from 'components/molecules';
 import AddReply from './AddReply';
@@ -91,7 +91,10 @@ class Replies extends Component {
 					<SecondaryTextBlock>
 						{count} {t(count === 1 ? 'discuss.answer-one-format' : 'discuss.answer-other-format')}
 					</SecondaryTextBlock>
-					<Container>
+					<FlexBox align className="filters">
+						<SecondaryTextBlock className="title">
+							{t('discuss.answers.filter.title')}
+						</SecondaryTextBlock>
 						<Select
 							value={this.replies.orderBy}
 							onChange={this.onOrderChange}
@@ -99,7 +102,7 @@ class Replies extends Component {
 							<MenuItem value={IReplies.ORDER_BY_VOTE}>{t('discuss.answers.filter.vote')}</MenuItem>
 							<MenuItem value={IReplies.ORDER_BY_DATE}>{t('discuss.answers.filter.date')}</MenuItem>
 						</Select>
-					</Container>
+					</FlexBox>
 				</Container>
 				<InfiniteScroll
 					hasMore={this.replies.hasMore}
