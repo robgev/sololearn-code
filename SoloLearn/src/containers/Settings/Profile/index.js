@@ -12,12 +12,12 @@ import ProfileAvatar from 'components/ProfileAvatar';
 
 import {
 	Container,
-	Input
+	Input,
 } from 'components/atoms';
 import {
 	FlatButton,
 	RoundImage,
-	Avatar
+	Avatar,
 } from 'components/molecules';
 
 import CropPopup from './CropPopup';
@@ -25,9 +25,9 @@ import CountrySelector from './CountrySelector';
 
 import countries from 'constants/Countries.json';
 
-//preload images for CountrySelector
+// preload images for CountrySelector
 const images = countries.map(country => (
-	<img 
+	<img
 		src={`/assets/flags/${country.code.toLowerCase()}.png`}
 	/>
 ));
@@ -156,7 +156,7 @@ class Profile extends PureComponent {
 					<Container className="profile-image-container">
 						<Avatar
 							disabled
-							variant='big'
+							variant="big"
 							avatarUrl={image}
 							userID={userProfile.id}
 							userName={userProfile.name}
@@ -165,9 +165,9 @@ class Profile extends PureComponent {
 							onClick={this.handleInputOpen}
 							className="profile-edit-button"
 						>
-							<Edit/>
+							<Edit />
 						</RoundImage>
-						
+
 						<input
 							type="file"
 							name="image"
@@ -183,7 +183,7 @@ class Profile extends PureComponent {
 						<Input
 							name="name"
 							value={name}
-							className='settings-input'
+							className="settings-input"
 							onChange={this.handleChange}
 							label={t('edit_account.user-name')}
 						/>
@@ -191,7 +191,7 @@ class Profile extends PureComponent {
 							type="email"
 							name="email"
 							value={email}
-							className='settings-input'
+							className="settings-input"
 							label={t('common.email-title')}
 							onChange={this.handleChange}
 						/>
@@ -207,7 +207,7 @@ class Profile extends PureComponent {
 							type="submit"
 							disabled={this.shouldDisable()}
 						>
-						{t('common.save-action-title')}
+							{t('common.save-action-title')}
 						</FlatButton>
 					</Container>
 				</form>

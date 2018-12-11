@@ -97,11 +97,13 @@ class Lessons extends Component {
 		} = this.props;
 
 		if (!isLoaded || !activeModule) {
-			return <LayoutWithSidebar
-				sidebar={<UserProgressToolbar />}
-			>
-				<EmptyCard loading />
-			</LayoutWithSidebar>
+			return (
+				<LayoutWithSidebar
+					sidebar={<UserProgressToolbar />}
+				>
+					<EmptyCard loading />
+				</LayoutWithSidebar>
+			);
 		}
 
 		const { lessons, name } = activeModule;

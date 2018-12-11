@@ -3,40 +3,15 @@
 .feed-item-content {
 	display: flex;
 	align-items: flex-start;
-	
-	.level-badge {
-		position: absolute;
-		width: 35%;
-		bottom: 5%;
-		right: 5%;
-	}
 	.wrapper {
-		margin: 0 0 0 10px;
-		flex-grow: 1;
-		width: 90%;
+		margin-left: 10px;
+		flex: 1 0 90%;
 		.feed-item-title {
-			font-size: 14px;
-			color: #545454;
-			margin: 0 0 7px 0;
 			.user-name-link {
-				display: inline-flex;
-				justify-content: center;
-				align-items: center;
-				position: relative;
 				font-weight: 500;
-				color: #607D8B;
-				/*text-decoration: none;*/
-				z-index: 2;
-				.user-name-wrapper {
-					margin-right: 3px;
-				}
-				&:hover .user-name-wrapper {
-					text-decoration: underline;
-				}
-
-				.badge {
-					margin-left: $secondary_gap_size;
-				}
+			}
+			.badge {
+				margin-left: $secondary_gap_size;
 			}
 			.title {
 				margin-left: $secondary_gap_size;
