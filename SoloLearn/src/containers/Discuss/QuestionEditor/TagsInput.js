@@ -84,7 +84,7 @@ class TagsInput extends Component {
 	onChange = (e) => {
 		if (this.props.canAddTag) {
 			if (e.currentTarget.value.length <= TagsInput.maxTagLength) {
-				this.setState({ value: e.currentTarget.value });
+				this.setState({ value: e.currentTarget.value.replace(/\s/g, '') });
 			} else {
 				this.addTag(e.currentTarget.value);
 			}
