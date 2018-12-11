@@ -61,6 +61,12 @@ class MentionInput extends Component {
 		};
 	}
 
+	componentDidMount() {
+		if (this.props.autofocus) {
+			setTimeout(this.editor.focus, 0);
+		}
+	}
+
 	onChange = (editorState) => {
 		this.setState({ editorState }, () => {
 			this.props.onLengthChange(this.getLength(), this.getTrimmedLength());

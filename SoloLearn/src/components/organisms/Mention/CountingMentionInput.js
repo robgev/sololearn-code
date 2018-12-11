@@ -13,7 +13,7 @@ class CountingMentionInput extends Component {
 		this.mentionInput = React.createRef();
 		this.state = {
 			charCount: 0,
-			isExpanded: false,
+			isExpanded: this.props.autofocus,
 		};
 	}
 	onFocus = () => {
