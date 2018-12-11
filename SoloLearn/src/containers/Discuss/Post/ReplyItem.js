@@ -93,6 +93,7 @@ class ReplyItem extends Component {
 						ref={this.editInput}
 						onSubmitEnabledChange={this.setCanEdit}
 						placeholder={t('discuss.editTitle')}
+						autofocus
 					/>
 					<Container className="buttons">
 						<RaisedButton
