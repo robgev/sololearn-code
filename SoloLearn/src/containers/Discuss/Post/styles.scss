@@ -37,10 +37,6 @@
 		.buttons {
 			display: flex;
 			justify-content: flex-end;
-			.edit {
-				background-color: $primary_color;
-				color: $white;
-			}
 			.cancel {
 				margin-right: $secondary_gap_size;
 			}

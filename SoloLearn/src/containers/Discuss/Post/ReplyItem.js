@@ -102,7 +102,7 @@ class ReplyItem extends Component {
 							{t('common.cancel-title')}
 						</RaisedButton>
 						<RaisedButton
-							className="edit"
+							color="primary"
 							onMouseDown={this.edit}
 							disabled={!isEditEnabled}
 						>
