@@ -1,12 +1,9 @@
 // React modules
 import React from 'react';
-import { Link } from 'react-router';
-//import ProfileAvatar from './ProfileAvatar';
 import { Container, TextBlock } from 'components/atoms';
 import {
 	UsernameLink,
 	ModBadge,
-	UserTooltip,
 	ProfileAvatar,
 } from 'components/molecules';
 
@@ -16,7 +13,7 @@ const FeedItemBase = ({
 	title, user, children,
 }) => (
 	<Container className="feed-item-content">
-		
+
 		<ProfileAvatar
 			user={user}
 		/>
@@ -27,11 +24,11 @@ const FeedItemBase = ({
 					className="user-name-link"
 				>
 					{user.name}
-					<ModBadge
-						className="badge"
-						badge={user.badge}
-					/>
 				</UsernameLink>
+				<ModBadge
+					className="badge"
+					badge={user.badge}
+				/>
 				<TextBlock className="title">
 					{title}
 				</TextBlock>

@@ -3,11 +3,12 @@ import React, { Fragment } from 'react';
 import {
 	Container,
 	Image,
-	SecondaryTextBlock,
 	Link,
+	FlexBox,
+	SecondaryTextBlock,
 } from 'components/atoms';
-import BottomToolbar from '../FeedBottomToolbar';
 import 'styles/Feed/FeedTemplates/Badge.scss';
+import BottomToolbar from '../FeedBottomToolbar';
 
 const Badge = ({ date, achievement, url }) => (
 	<Fragment>
@@ -18,10 +19,10 @@ const Badge = ({ date, achievement, url }) => (
 			>
 				<Image alt="achievement" src="/assets/achievement.png" className="badge-icon" />
 			</Container>
-			<Container className="details" >
+			<FlexBox column className="details" >
 				<Link to={url}><SecondaryTextBlock className="title">{achievement.title}</SecondaryTextBlock></Link>
 				<SecondaryTextBlock className="description">{achievement.description}</SecondaryTextBlock>
-			</Container>
+			</FlexBox>
 		</Container>
 		<BottomToolbar date={date} />
 	</Fragment>
