@@ -1,13 +1,10 @@
 import React, { PureComponent } from 'react';
-//import Paper from 'material-ui/Paper';
 import Service from 'api/service';
-//import ProfileAvatar from 'components/ProfileAvatar';
 
 import {
-	Container,
 	PaperContainer,
-	TextBlock,
 	SecondaryTextBlock,
+	Link,
 } from 'components/atoms';
 import { Avatar } from 'components/molecules';
 
@@ -50,10 +47,8 @@ class PostPreview extends PureComponent {
 					avatarUrl={avatarUrl}
 					userName={userName}
 				/>
-				<Container className="preview-info">
-					<TextBlock className="primary">{title}</TextBlock>
-					<SecondaryTextBlock className="secondary">{userName}</SecondaryTextBlock>
-				</Container>
+				<Link to={this.props.to} className="item">{title}</Link>
+				<SecondaryTextBlock className="item">{userName}</SecondaryTextBlock>
 			</PaperContainer>
 		);
 	}

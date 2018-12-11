@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { CourseChip } from 'containers/Learn/components';
-import { Container, PaperContainer, TextBlock } from 'components/atoms';
+import { PaperContainer, Link } from 'components/atoms';
 
 const mapStateToProps = ({ courses }) => ({ courses });
 
@@ -27,9 +27,7 @@ class CodePreview extends Component {
 					itemType={1}
 					iconUrl={iconUrl}
 				/>
-				<Container className="preview-info">
-					<TextBlock className="primary">{name}</TextBlock>
-				</Container>
+				<Link to={this.props.to} className="item">{name}</Link>
 			</PaperContainer>
 		);
 	}

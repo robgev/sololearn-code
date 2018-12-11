@@ -1,8 +1,8 @@
 import React from 'react';
-//import { Link } from 'react-router';
-import { Link, } from 'components/atoms';
+import { Container } from 'components/atoms';
 
 import 'styles/components/PreviewItem.scss';
+import './styles.scss';
 
 import LessonPreview from './LessonPreview';
 import CodePreview from './CodePreview';
@@ -14,29 +14,29 @@ const constructLink = (link, type) => (type === 'code' ? `/playground/${link.spl
 const PreviewBody = ({
 	id,
 	type,
-	recompute,
 	courseAlias,
+	to,
 }) => {
 	switch (type) {
 	case 'slayLesson':
-		return <LessonPreview id={id} type={type} recompute={recompute} />;
+		return <LessonPreview to={to} id={id} type={type} />;
 	case 'code':
-		return <CodePreview publicId={id} recompute={recompute} />;
+		return <CodePreview to={to} publicId={id} />;
 	case 'discuss':
-		return <PostPreview id={id} recompute={recompute} />;
+		return <PostPreview to={to} id={id} />;
 	case 'course':
 		return id
-			? <LessonPreview id={id} type={type} recompute={recompute} />
-			: <CoursePreview courseAlias={courseAlias} recompute={recompute} />;
+			? <LessonPreview to={to} id={id} type={type} />
+			: <CoursePreview to={to} courseAlias={courseAlias} />;
 	default:
 		return null;
 	}
 };
 
 const PreviewItem = props => (
-	<Link to={constructLink(props.link, props.type)} className={`preview-container ${props.className}`}>
-		<PreviewBody {...props} />
-	</Link>
+	<Container className={`preview-container ${props.className}`}>
+		<PreviewBody {...props} to={constructLink(props.link, props.type)} />
+	</Container>
 );
 
 export default PreviewItem;
