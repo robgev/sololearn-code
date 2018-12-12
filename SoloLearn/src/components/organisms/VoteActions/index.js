@@ -38,7 +38,7 @@ class VoteActions extends Component {
 
 	@action toggleOpen = () => {
 		this.open = !this.open;
-		if (!this.open) {
+		if (this.open) {
 			this.likes.empty();
 		}
 	}

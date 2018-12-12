@@ -3,14 +3,17 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-
-		.username {
+		.user-container {
 			width: 60px;
-		    overflow: hidden;
-		    text-overflow: ellipsis;
-		    white-space: nowrap;
-		    text-align: center;
+			white-space: nowrap;
+			text-align: center;
+
+			.username {
+			    overflow: hidden;
+			    text-overflow: ellipsis;
+			}
 		}
+		
 
 		.score {
 			font-size: 25px;

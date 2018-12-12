@@ -4,4 +4,10 @@
 	.profile {
 		margin-right: $secondary_gap_size;
 	}
+	.profile-info {
+
+		.badge {
+			margin: 0 $secondary_gap_size;
+		}
+	}
 }

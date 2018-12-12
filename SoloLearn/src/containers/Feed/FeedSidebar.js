@@ -7,7 +7,7 @@ import {
 	Container, FlexBox, Heading, HorizontalDivider,
 	List, ListItem, SecondaryTextBlock,
 } from 'components/atoms';
-import { UsernameLink, ViewMoreLink, ProfileAvatar } from 'components/molecules';
+import { UsernameLink, ViewMoreLink, ProfileAvatar, ModBadge } from 'components/molecules';
 //import ProfileAvatar from './ProfileAvatar';
 import './sidebar.scss';
 
@@ -26,7 +26,7 @@ const FeedSuggestions = ({ t, discoverIds, discoverEntities }) => (
 					{
 						discoverIds.slice(0, 7).map((id) => {
 							const {
-								name, followers, level,
+								name, followers, level, badge,
 							} = discoverEntities[id];
 							return (
 								<Fragment>
@@ -37,7 +37,13 @@ const FeedSuggestions = ({ t, discoverIds, discoverEntities }) => (
 												user={discoverEntities[id]}
 											/>
 											<FlexBox column className="profile-info">
-												<UsernameLink to={`/profile/${id}`} >{name}</UsernameLink>
+												<Container>
+													<UsernameLink to={`/profile/${id}`} >{name}</UsernameLink>
+													<ModBadge
+														className="badge"
+														badge={badge}
+													/>
+												</Container>
 												<SecondaryTextBlock>
 													{
 														followers === 1
