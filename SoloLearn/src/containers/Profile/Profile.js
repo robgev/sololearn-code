@@ -15,6 +15,7 @@ import {
 	Tabs,
 	Tab,
 	SecondaryTextBlock,
+	TextBlock,
 	PaperContainer,
 	Container,
 } from 'components/atoms';
@@ -108,35 +109,35 @@ class Profile extends Component {
 						>
 							<Tab
 								value="codes"
-								label={<SecondaryTextBlock>{t('profile.tab.codes')}</SecondaryTextBlock>}
-								icon={<SecondaryTextBlock>{data.codes}</SecondaryTextBlock>}
+								label={<TextBlock>{t('profile.tab.codes')}</TextBlock>}
+								icon={<TextBlock>{data.codes}</TextBlock>}
 							/>
 							<Tab
 								value="discussion"
-								label={<SecondaryTextBlock>{t('profile.tab.posts')}</SecondaryTextBlock>}
-								icon={<SecondaryTextBlock>{data.posts}</SecondaryTextBlock>}
+								label={<TextBlock>{t('profile.tab.posts')}</TextBlock>}
+								icon={<TextBlock>{data.posts}</TextBlock>}
 							/>
 							<Tab
 								value="activity"
-								label={<SecondaryTextBlock>{t('profile.tab.activity')}</SecondaryTextBlock>}
+								label={<TextBlock>{t('profile.tab.activity')}</TextBlock>}
 								icon={<Feed className="feed-icon" />}
 							/>
 							<Tab
 								value="skills"
-								label={<SecondaryTextBlock>{t('profile.tab.skills')}</SecondaryTextBlock>}
+								label={<TextBlock>{t('profile.tab.skills')}</TextBlock>}
 								icon={
-									<SecondaryTextBlock>
+									<TextBlock>
 										{data.skills ? data.skills.length : 0}
-									</SecondaryTextBlock>
+									</TextBlock>
 								}
 							/>
 							<Tab
 								value="badges"
-								label={<SecondaryTextBlock>{t('profile.tab.badges')}</SecondaryTextBlock>}
+								label={<TextBlock>{t('profile.tab.badges')}</TextBlock>}
 								icon={
-									<SecondaryTextBlock>
+									<TextBlock>
 										{data.badges ? data.badges.filter(item => item.isUnlocked).length : 0}
-									</SecondaryTextBlock>
+									</TextBlock>
 								}
 							/>
 						</Tabs>
