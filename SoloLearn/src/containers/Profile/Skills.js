@@ -13,6 +13,7 @@ import {
 	Title,
 	Image,
 	TextBlock,
+	SecondaryTextBlock,
 	Select,
 	MenuItem,
 } from 'components/atoms';
@@ -75,7 +76,7 @@ class Skills extends PureComponent {
 			profile,
 			currentUserId,
 		} = this.props;
-		const { maxXp, status, currentStatus } = calculateProgress(levels, profile.level, profile.xp);
+		const { maxXp, status, currentStatus, levelsToNext } = calculateProgress(levels, profile.level, profile.xp);
 		if (!skills) {
 			return null;
 		}
@@ -103,6 +104,16 @@ class Skills extends PureComponent {
 								minText={t(`profile.status-${currentStatus}`)}
 								maxText={t(`profile.status-${status}`)}
 							/>
+							{
+								levelsToNext && (
+									<Container className="levels-to-next">
+										<SecondaryTextBlock>
+											{`${levelsToNext} ${levelsToNext === 1 ? t('profile.status-text-one') : t('profile.status-text-other')} ${t(`profile.status-${status}`)}` }
+										</SecondaryTextBlock>
+									</Container>
+								)
+							}
+							
 						</Container>
 					</Container>
 				</PaperContainer>

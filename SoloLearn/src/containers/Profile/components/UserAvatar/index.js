@@ -7,7 +7,7 @@ import { determineBadge } from 'utils';
 
 import './styles.scss';
 
-const UserAvatar = ({ size, user }) => {
+const UserAvatar = ({ size, user, link }) => {
 	const { modBadge, levelBadge } = determineBadge(user.badge);
 	return (
 		<FlexBox
@@ -16,12 +16,13 @@ const UserAvatar = ({ size, user }) => {
 			className={`profile_user-avatar-container ${modBadge || ''}`}
 		>
 			<Avatar
-				disabled
+				disabled={!link}
 				variant={size}
 				userID={user.id}
 				badge={user.badge}
 				userName={user.name}
 				avatarUrl={user.avatarUrl}
+				link={link}
 			/>
 			{modBadge &&
 				<ModBadge

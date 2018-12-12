@@ -15,6 +15,7 @@ const Avatar = ({
 	disabled,
 	avatarUrl,
 	userName,
+	link,
 	...props
 }) => {
 	const ConditionalContainer = disabled ? Container : Link;
@@ -22,7 +23,7 @@ const Avatar = ({
 
 	return (
 		<ConditionalContainer
-			to={`/profile/${userID}`}
+			to={link || `/profile/${userID}`}
 			onClick={stopPropagation}
 			className="avatar-container"
 			{...props}

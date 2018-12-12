@@ -21,6 +21,7 @@ import {
 	IconMenu,
 	UsernameLink,
 	ProgressBar,
+	ContainerLink,
 } from 'components/molecules';
 
 import DeactivationPopup from './DeactivationPopup';
@@ -139,12 +140,13 @@ class Header extends Component {
 				</Container>
 				<Container className="profile-header-details">
 					{ profile.id &&
-						<Link to={`/profile/${profile.id}/skills`}>
-							<UserAvatar
-								user={profile}
-								size="big"
-							/>
-						</Link>
+						
+						<UserAvatar
+							user={profile}
+							size="big"
+							link={`/profile/${profile.id}/skills`}
+						/>
+					
 					}
 					<UsernameLink to={`/profile/${profile.id}`} className="user-name">{profile.name}</UsernameLink>
 					<SecondaryTextBlock className="user-level">{t('common.user-level')} {profile.level}</SecondaryTextBlock>
