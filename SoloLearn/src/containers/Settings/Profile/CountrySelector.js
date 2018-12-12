@@ -9,7 +9,9 @@ import {
 	Image
 } from 'components/atoms';
 
-const items = countries.map(country =>
+
+const CountrySelector = ({ t, value, onChange }) => {
+	const items = countries.map(country =>
 	(
 		<MenuItem
 			key={country.name}
@@ -24,23 +26,24 @@ const items = countries.map(country =>
 						src={`/assets/flags/${country.code.toLowerCase()}.png`}
 					/>
 			}
-			{country.name}
+			{country.code === 'NST' ? t('country.not-set-item-title'):country.name}
 		</MenuItem>
 	));
 
-const CountrySelector = ({ t, value, onChange }) => (
-	<Container className='settings_country_selector_container'>
-		<SecondaryTextBlock>{t('country.title')}</SecondaryTextBlock>
-		<Select
-			fullWidth
-			autoWidth
-			value={value}
-			maxHeight={200}
-			onChange={onChange}
-		>
-			{ items }
-		</Select>
-	</Container>
-);
+	return(
+		<Container className='settings_country_selector_container'>
+			<SecondaryTextBlock>{t('country.title')}</SecondaryTextBlock>
+			<Select
+				fullWidth
+				autoWidth
+				value={value}
+				maxHeight={200}
+				onChange={onChange}
+			>
+				{ items }
+			</Select>
+		</Container>
+	)
+};
 
 export default CountrySelector;

@@ -7,7 +7,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import BusyWrapper from 'components/BusyWrapper';
 import { blockUser, getBlockedUsers } from 'actions/settings';
 
-import { Container, Loading, TextBlock } from 'components/atoms';
+import { Container, Loading, TextBlock, FlexBox } from 'components/atoms';
 import { InfiniteScroll } from 'components/molecules';
 
 import UserCard from './UserCard';
@@ -32,17 +32,6 @@ class Blocked extends PureComponent {
 		};
 	}
 
-	/*async componentWillMount() {
-		const { startIndex, loadCount } = this.state;
-		const length = await this.props.getBlockedUsers({ index: startIndex, count: loadCount });
-		this.setState({
-			loading: false,
-			hasMore: length === loadCount,
-			startIndex: startIndex + loadCount,
-		});
-		ReactGA.ga('send', 'screenView', { screenName: 'Blocked Users Page' });
-	}*/
-
 	componentDidMount = () => {
 		this.loadMore();
 	}
@@ -63,14 +52,13 @@ class Blocked extends PureComponent {
 
 	render() {
 		const { t,  blockUser, blockedUsers } = this.props;
-		//const blockedUsers = [];
 		const {
 			loading,
 			hasMore,
 		} = this.state;
 		return (
 			!blockedUsers.length && !loading ?
-				<TextBlock>{t('common.empty-list-message')}</TextBlock> :
+				<FlexBox className="empty-container" justify align><TextBlock>{t('common.empty-list-message')}</TextBlock></FlexBox> :
 				<InfiniteScroll
 					pageStart={0}
 					hasMore={hasMore}

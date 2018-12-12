@@ -18,6 +18,9 @@ $settings_section_width: 200px;
 		width: 100%;
 		border: 1px solid $divider_color;
 		padding: 30px;
+		.empty-container {
+			height: 100%;
+		}
 		.setting-banner {
 			border-bottom: 1px solid gray;
 			margin-bottom: 10px;
@@ -86,6 +89,7 @@ $settings_section_width: 200px;
 		}
 		.blocked-settings-container {
 			height: 100%;
+
 		}
 		.blocked-settings-wrapper {
 			display: flex;
