@@ -41,6 +41,10 @@ $settings_section_width: 200px;
 				width: 100%;
 				text-transform: capitalize;
 				margin-top: 20px;
+
+				.error-text {
+					text-transform: none;
+				}
 			}
 
 			.password_button {

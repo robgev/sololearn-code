@@ -105,7 +105,7 @@ class Password extends PureComponent {
 						name="newPassword"
 						value={newPassword}
 						helperText={oldPassErrorText}
-						FormHelperTextProps={{error:true}}
+						FormHelperTextProps={{error:true,  className: "error-text"}}
 						onChange={this.handleChange}
 						className='password_input'
 						label={t('chnage_password.new-password-placeholder')}
@@ -116,7 +116,7 @@ class Password extends PureComponent {
 						name="retypePass"
 						value={retypePass}
 						helperText={errorText}
-						FormHelperTextProps={{error:true}}
+						FormHelperTextProps={{error:true, className: "error-text"}}
 						onChange={this.handleChange}
 						className='password_input'
 						label={t('chnage_password.confirm-password-placeholder')}
