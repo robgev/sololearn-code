@@ -1,13 +1,10 @@
 import React, { PureComponent } from 'react';
-import ReactGA from 'react-ga';
+// TODO: import ReactGA from 'react-ga';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
-//import InfiniteScroll from 'react-infinite-scroller';
-import CircularProgress from 'material-ui/CircularProgress';
-import BusyWrapper from 'components/BusyWrapper';
-import { blockUser, getBlockedUsers } from 'actions/settings';
+import { blockUser, getBlockedUsers, removeUnblockedUsersFromList } from 'actions/settings';
 
-import { Container, Loading, TextBlock, FlexBox } from 'components/atoms';
+import { TextBlock, FlexBox } from 'components/atoms';
 import { InfiniteScroll } from 'components/molecules';
 
 import UserCard from './UserCard';
@@ -17,6 +14,7 @@ const mapStateToProps = ({ settings: { blockedUsers } }) => ({ blockedUsers });
 const mapDispatchToProps = {
 	blockUser,
 	getBlockedUsers,
+	removeUnblockedUsersFromList,
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -36,22 +34,26 @@ class Blocked extends PureComponent {
 		this.loadMore();
 	}
 
+	componentWillUnmount() {
+		this.props.removeUnblockedUsersFromList();
+	}
+
 	loadMore = async () => {
 		const { startIndex, loadCount, loading } = this.state;
 		if (!loading) {
-			this.setState({loading:true});
+			this.setState({ loading: true });
 			const length =
 				await this.props.getBlockedUsers({ index: startIndex, count: loadCount });
 			this.setState({
 				hasMore: length === loadCount,
 				startIndex: startIndex + loadCount,
-				loading:false,
+				loading: false,
 			});
 		}
 	}
 
 	render() {
-		const { t,  blockUser, blockedUsers } = this.props;
+		const { t, blockUser, blockedUsers } = this.props;
 		const {
 			loading,
 			hasMore,

@@ -80,6 +80,9 @@ export const blockUser = blockData => async (dispatch) => {
 	await Service.request('Profile/BlockUser', blockData);
 };
 
+export const removeUnblockedUsersFromList = () =>
+	({ type: types.REMOVE_UNBLOCKED_USERS_FROM_LIST });
+
 export const getBlockedUsers = pagingData => async (dispatch) => {
 	const { users } = await Service.request('Profile/GetBlockedUsers', pagingData);
 	const payload = users.map(user => ({ ...user, blockedState: true }));
