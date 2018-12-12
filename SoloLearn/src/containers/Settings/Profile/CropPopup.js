@@ -25,6 +25,7 @@ class Profile extends PureComponent {
 		const data = await fetch(dataUrl);
 		const blob = await data.blob();
 		const avatarUrl = await this.props.updateAvatar(blob);
+		console.warn(avatarUrl);
 		this.props.onRequestClose(avatarUrl);
 	}
 

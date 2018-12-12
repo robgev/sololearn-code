@@ -53,6 +53,7 @@ class Profile extends PureComponent {
 			name: name || '',
 			email: email || '',
 			image: avatarUrl,
+			newImage: null,
 			snackbarOpen: false,
 			countryCode: countryCode === '' ? 'NST' : countryCode,
 		};
@@ -77,14 +78,15 @@ class Profile extends PureComponent {
 	}
 
 	handleNewImage = (e) => {
-		const image = URL.createObjectURL(e.target.files[0]);
+		const newImage = URL.createObjectURL(e.target.files[0]);
 		this.setState({
-			image,
+			newImage,
 			open: true,
 		});
 	}
 
 	handlePopupClose = (newUrl) => {
+		console.log('new', newUrl);
 		const { avatarUrl } = this.props.userProfile;
 		this.setState({
 			open: false,
@@ -148,7 +150,9 @@ class Profile extends PureComponent {
 			isSaving,
 			countryCode,
 			snackbarOpen,
+			newImage,
 		} = this.state;
+		console.log('render', image);
 		const { t, userProfile } = this.props;
 		return (
 			<Container className="profile-settings-container">
@@ -214,7 +218,7 @@ class Profile extends PureComponent {
 				<CropPopup
 					t={t}
 					open={open}
-					image={image}
+					image={newImage}
 					onRequestClose={this.handlePopupClose}
 				/>
 				<Snackbar

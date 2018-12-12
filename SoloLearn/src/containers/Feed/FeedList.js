@@ -18,7 +18,7 @@ import {
 	Popup,
 	PopupContent,
 } from 'components/atoms';
-import { InfiniteScroll, } from 'components/molecules'
+import { InfiniteScroll} from 'components/molecules'
 
 import 'styles/Feed/FeedList.scss';
 
@@ -34,6 +34,12 @@ class FeedList extends Component {
 	state = {
 		courseId: null,
 		coursePopupOpen: false,
+		shouldShowFeed: false,
+	}
+
+	componentDidMount() {
+		window.scrollTo(0,0);
+		setTimeout(()=>this.setState({ shouldShowFeed: true }), 0);
 	}
 
 	toggleCoursePopup = (courseId = null) => {
@@ -53,7 +59,8 @@ class FeedList extends Component {
 			voteFeedItem,
 			loading,
 		} = this.props;
-		const { coursePopupOpen, courseId } = this.state;
+		const { coursePopupOpen, courseId, shouldShowFeed } = this.state;
+		
 		return (
 			<Container>
 				{
@@ -95,7 +102,7 @@ class FeedList extends Component {
 														loadMore={loadMore}
 														isLoading={loading}
 													>
-														{feed.map(feedItem => (
+														{feed.map((feedItem, index) => ( index > 20 && !shouldShowFeed? null: 
 															<FeedItem
 																key={feedItem.type === types.mergedChallange ?
 																	`feedGroup${feedItem.toId}` :
