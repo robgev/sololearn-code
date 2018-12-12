@@ -3,6 +3,10 @@
 	.skills-group {
 		margin-top: $primary_gap_size;
 		padding: $primary_gap_size;
+
+		.mode-badge-icon {
+			display: inline-block;
+		}
 		.skills-row {
 			display: flex;
 			justify-content: space-between;

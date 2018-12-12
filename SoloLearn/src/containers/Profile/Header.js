@@ -54,18 +54,34 @@ class Header extends Component {
 	@observable isReportPopupOpen = false;
 	@observable isBlockPopupOpen = false;
 	@observable isDeactivationPopupOpen = false;
-	@observable isSnackbarOpen = false;
+	@observable isBlockSnackbarOpen = false;
+	@observable isReportSnackbarOpen = false;
 
-	@action toggleReportPopup = () => {
-		this.isReportPopupOpen = !this.isReportPopupOpen;
+	@action openReportPopup = () => {
+		this.isReportPopupOpen = true;
+
+	}
+	@action closeReportPopup = (isReported) => {
+		this.isReportPopupOpen = false;
+		if (isReported) {
+			this.openReportSnackbar();
+		}
+	}
+
+	@action openReportSnackbar = () => {
+		this.isReportSnackbarOpen = true;
+	}
+
+	@action closeReportSnackbar = () => {
+		this.isReportSnackbarOpen = false;
 	}
 
 	@action toggleBlockPopup = () => {
 		this.isBlockPopupOpen = !this.isBlockPopupOpen;
 	}
 
-	@action toggleSnackbar = () => {
-		this.isSnackbarOpen = !this.isSnackbarOpen;
+	@action toggleBlockSnackbar = () => {
+		this.isBlockSnackbarOpen = !this.isBlockSnackbarOpen;
 	}
 
 	@action toggleDeactivationPopup = () => {
@@ -79,7 +95,7 @@ class Header extends Component {
 			block: !profile.blockedState,
 		});
 		this.toggleBlockPopup();
-		this.toggleSnackbar();
+		this.toggleBlockSnackbar();
 	}
 
 	render() {
@@ -117,7 +133,7 @@ class Header extends Component {
 							</RaisedButton>
 							<IconMenu>
 								<MenuItem
-									onClick={this.toggleReportPopup}
+									onClick={this.openReportPopup}
 								>
 									{t('common.report-action-title')}
 								</MenuItem>
@@ -162,7 +178,7 @@ class Header extends Component {
 					itemId={profile.id}
 					open={this.isReportPopupOpen}
 					itemType={ReportItemTypes.profile}
-					onClose={this.toggleReportPopup}
+					onClose={this.closeReportPopup}
 				/>
 				<BlockPopup
 					userId={profile.id}
@@ -178,9 +194,14 @@ class Header extends Component {
 					accessLevel={accessLevel}
 				/>
 				<Snackbar
-					open={this.isSnackbarOpen}
-					onClose={this.toggleSnackbar}
+					open={this.isBlockSnackbarOpen}
+					onClose={this.toggleBlockSnackbar}
 					message={t('blocked.user.message')}
+				/>
+				<Snackbar
+					onClose={this.closeReportSnackbar}
+					open={this.isReportSnackbarOpen}
+					message={t('report.report-submitted-title')}
 				/>
 			</Container>
 		);

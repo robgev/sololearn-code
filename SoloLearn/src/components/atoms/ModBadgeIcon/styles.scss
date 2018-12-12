@@ -1,0 +1,15 @@
+@import '~styles/variables';
+
+$big_size: 1.5*$badge_size;
+
+.atom_mod-badge-icon {
+	width: $badge_size;
+	margin-right: 2px;
+	.atom_mod-badge-img {
+		width: 100%;
+	}
+
+	&.primary {
+		width: 18px;
+	}
+}

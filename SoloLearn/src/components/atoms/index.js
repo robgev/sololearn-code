@@ -43,3 +43,4 @@ export { default as Badge } from './Badge';
 export { default as TextContainer } from './TextContainer';
 export { default as FormControlLabel } from './FormControlLabel';
 export { default as ButtonTooltip } from './ButtonTooltip';
+export { default as ModBadgeIcon } from './ModBadgeIcon';

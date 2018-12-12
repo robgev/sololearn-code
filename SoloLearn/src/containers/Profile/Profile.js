@@ -143,7 +143,7 @@ class Profile extends Component {
 					</BusyWrapper>
 				</PaperContainer>
 				{
-					this.activeTab === 'activity' &&
+					data.id !== undefined && this.activeTab === 'activity' &&
 					<Container className="section">
 						<FeedList
 							feed={feed.entities}
@@ -154,7 +154,7 @@ class Profile extends Component {
 					</Container>
 				}
 				{
-					this.activeTab === 'codes' &&
+					data.id !== undefined && this.activeTab === 'codes' &&
 					<InfiniteScroll
 						hasMore={codes.hasMore}
 						isLoading={this.profile.isCodesFetching}
@@ -175,7 +175,7 @@ class Profile extends Component {
 					</InfiniteScroll>
 				}
 				{
-					this.activeTab === 'discussion' && (
+					data.id !== undefined && this.activeTab === 'discussion' && (
 						<InfiniteScroll
 							hasMore={questions.hasMore}
 							isLoading={this.profile.isQuestionsFetching}
@@ -194,7 +194,7 @@ class Profile extends Component {
 					)
 				}
 				{
-					this.activeTab === 'skills' &&
+					data.id !== undefined && this.activeTab === 'skills' &&
 					<Skills
 						levels={levels}
 						profile={data}
@@ -203,7 +203,7 @@ class Profile extends Component {
 					/>
 				}
 				{
-					this.activeTab === 'badges' && data.badges &&
+					data.id !== undefined && this.activeTab === 'badges' && data.badges &&
 					<Badges
 						badges={data.badges}
 						key={this.props.location.query.badgeID || 0}

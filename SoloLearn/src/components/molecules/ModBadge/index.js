@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, Image, Label } from 'components/atoms';
+import { Container, Image, Label, ModBadgeIcon } from 'components/atoms';
 import { determineBadge } from 'utils';
 import './styles.scss';
 
@@ -15,9 +15,7 @@ const ModBadge = ({
 			className={`molecule_mod-badge-container ${modBadge} ${big ? 'big' : 'small'} ${className}`}
 		>
 			{hasCrown &&
-			<Container className="molecule_mod-badge-icon">
-				<Image className="molecule_mod-badge-img" src="/assets/mod.png" alt="Mod" />
-			</Container>
+				<ModBadgeIcon/>
 			}
 			<Container className="molecule_mod-badge-label">Mod</Container>
 		</Label>

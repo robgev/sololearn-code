@@ -16,6 +16,7 @@ import {
 	SecondaryTextBlock,
 	Select,
 	MenuItem,
+	ModBadgeIcon,
 } from 'components/atoms';
 import { ProgressBar } from 'components/molecules'
 import i18n from 'i18n';
@@ -55,8 +56,13 @@ const createChartData = ranks => Object.keys(ranks)
 
 const ModeratorStatus = ({ badge, t }) => {
 	const { modBadge } = determineBadge(badge);
+	const hasCrown = modBadge === 'gold_mod' || modBadge === 'platinum_mod';
 	return !modBadge ? null
-		: <Container>{t(`skills.${modBadge}`)}</Container>;
+		:
+		<Container>
+			<ModBadgeIcon className="mode-badge-icon" mode="primary" />
+			{t(`skills.${modBadge}`)}
+		</Container>;
 };
 
 @translate()
@@ -80,6 +86,7 @@ class Skills extends PureComponent {
 		if (!skills) {
 			return null;
 		}
+		
 		return (
 			<Container className="skills-container">
 				<PaperContainer className="skills-group">

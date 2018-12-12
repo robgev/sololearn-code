@@ -8,7 +8,7 @@ export default (levels, userLevel, currentXp) => {
 	if (userLevel >= highestMilestone.number) {
 		const maxXp = currentXp;
 		const { status } = highestMilestone;
-		return { maxXp, status, currentStatus, levelsToNext: 0 };
+		return { maxXp, status, currentStatus, levelsToNext: null };
 	}
 
 	const nextLevelIndex = levels.findIndex(l => l.number >= userLevel && l.status !== null);

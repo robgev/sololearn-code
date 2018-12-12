@@ -27,6 +27,10 @@ class ReportPopup extends PureComponent {
 		};
 	}
 
+	componentWillReceiveProps = () => {
+		this.setState({reportReason: 1, customReason: ''})
+	}
+
 	handleReasonChange = (event) => {
 		this.setState({ reportReason: +event.target.value });
 	}
@@ -36,6 +40,10 @@ class ReportPopup extends PureComponent {
 		if (customReason.length <= this.customReasonMaxLength) {
 			this.setState({ customReason });
 		}
+	}
+	onClose = () => {
+		const { onClose } = this.props;
+		onClose(false);
 	}
 
 	submitReport = async () => {
@@ -50,7 +58,7 @@ class ReportPopup extends PureComponent {
 				reportReason: 1,
 				customReason: '',
 			});
-			onClose();
+			onClose(true);
 			await Service.request('ReportItem', {
 				itemId,
 				itemType,
@@ -69,7 +77,7 @@ class ReportPopup extends PureComponent {
 			<Popup
 				className="report-popup"
 				open={open}
-				onClose={onClose}
+				onClose={this.onClose}
 			>
 				<PopupTitle>
 					{t('report.report-popup-title')}
@@ -114,7 +122,7 @@ class ReportPopup extends PureComponent {
 				<PopupActions>
 					<FlatButton
 						color="primary"
-						onClick={onClose}
+						onClick={this.onClose}
 					>
 						{t('common.cancel-title')}
 					</FlatButton>
