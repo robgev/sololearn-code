@@ -44,11 +44,11 @@ class IconMenu extends Component {
 				>
 					<Icon />
 				</IconButton>
-				<Popper open={open} anchorEl={anchorEl} transition disablePortal>
+				<Popper open={open} className="molecule_icon-menu-popper" anchorEl={anchorEl} transition disablePortal>
 					{({ TransitionProps, placement }) => (
 						<Grow
 							{...TransitionProps}
-							className={`molecule_icon-menu-grow ${placement === 'bottom' ? 'top' : 'bottom'}`}
+							className={`grow ${placement === 'bottom' ? 'top' : 'bottom'}`}
 						>
 							<PaperContainer>
 								<ClickAwayListener onClickAway={this.handleClose}>

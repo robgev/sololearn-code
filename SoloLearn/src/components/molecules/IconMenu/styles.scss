@@ -1,16 +1,18 @@
 .molecule_icon-menu {
 	padding: 0;
 }
-.molecule_icon-menu-grow {
-	z-index: 100;
-	&.bottom {
-		transform-origin: center top;
-	}
-	&.top {
-		transform-origin: center bottom;
-	}
-	padding: 0;
-	.list {
+.molecule_icon-menu-popper {
+	z-index: 10;
+	.grow {
+		&.bottom {
+			transform-origin: center top;
+		}
+		&.top {
+			transform-origin: center bottom;
+		}
 		padding: 0;
+		.list {
+			padding: 0;
+		}
 	}
 }
