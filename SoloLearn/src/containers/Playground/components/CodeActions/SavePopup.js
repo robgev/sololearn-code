@@ -33,8 +33,8 @@ class SavePopup extends Component {
 	}
 
 	onChange = (e) => {
-		if (this.state.name.length < 100) {
-			this.setState({ name: e.target.value, hasError: Boolean(e.target.value.trim()) });
+		if (this.state.name.length <= 100) {
+			this.setState({ name: e.target.value, hasError: !e.target.value.trim() });
 		}
 	}
 
