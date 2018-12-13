@@ -6,7 +6,7 @@ import { IconMenu } from 'components/molecules';
 import { determineAccessLevel } from 'utils';
 
 const mapStateToProps = (state, ownProps) => ({
-	canRequestRemoval: determineAccessLevel(state.userProfile.accessLevel) >= 1,
+	canRequestRemoval: determineAccessLevel(state.userProfile.accessLevel) > 1,
 	isMe: state.userProfile.id === ownProps.userID,
 });
 
@@ -31,7 +31,7 @@ class Options extends Component {
 		return (
 			<Fragment>
 				<IconMenu>
-					{isMe
+					{isMe || canRequestRemoval
 						? (
 							<MenuItem
 								onClick={editPost}

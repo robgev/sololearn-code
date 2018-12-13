@@ -92,17 +92,24 @@ class CommentItem extends Component {
 													</MenuItem>
 												}
 												{comment.userID !== userProfileId &&
-													accessLevel > 0 &&
-													<MenuItem
-														onClick={toggleRemovalPopup}
-													>
-														{
-															(accessLevel === 1 &&
-																(type !== 'lesson' && type !== 'userLesson')) ?
-																t('discuss.forum_request_removal_prompt_title') :
-																t('discuss.forum_remove_prompt_title')
-														}
-													</MenuItem>
+													accessLevel > 1 &&
+													[
+														<MenuItem
+																key={`edit${comment.id}`}
+																onClick={toggleEdit}
+															>{t('common.edit-action-title')}
+														</MenuItem>,
+														<MenuItem
+															onClick={toggleRemovalPopup}
+														>
+															{
+																(accessLevel === 1 &&
+																	(type !== 'lesson' && type !== 'userLesson')) ?
+																	t('discuss.forum_request_removal_prompt_title') :
+																	t('discuss.forum_remove_prompt_title')
+															}
+														</MenuItem>
+													]
 												}
 											</IconMenu>
 										</Container>

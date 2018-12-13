@@ -5,7 +5,7 @@ import { Accepted } from 'components/icons';
 import { determineAccessLevel } from 'utils';
 
 const mapStateToProps = (state, ownProps) => ({
-	canAcceptReply: determineAccessLevel(state.userProfile.accessLevel) > 2,
+	canAcceptReply: determineAccessLevel(state.userProfile.accessLevel) > 1,
 	isMyQuestion: state.userProfile.id === ownProps.askerID,
 });
 
