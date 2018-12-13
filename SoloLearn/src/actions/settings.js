@@ -3,6 +3,7 @@ import Storage from 'api/storage';
 import i18n from 'i18next';
 import omit from 'lodash/omit';
 import * as types from 'constants/ActionTypes';
+import { getCourses } from 'actions/learn';
 
 export const resetLocaleData = locale => (dispatch) => {
 	Storage.save('locale', locale);
@@ -14,6 +15,7 @@ export const resetLocaleData = locale => (dispatch) => {
 	dispatch({
 		type: types.RESET_LOCALE_DATA, payload: locale,
 	});
+	dispatch(getCourses());
 };
 
 export const getSettings = () => async (dispatch) => {

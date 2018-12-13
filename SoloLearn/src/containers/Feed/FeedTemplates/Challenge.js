@@ -1,9 +1,5 @@
-// React modules
 import React, { Fragment } from 'react';
 import { translate } from 'react-i18next';
-// Additional data and components
-import BottomToolbar from '../FeedBottomToolbar';
-//import ProfileAvatar from '../ProfileAvatar';
 import {
 	Container,
 	TextBlock,
@@ -11,21 +7,20 @@ import {
 	FlexBox,
 } from 'components/atoms';
 import { UsernameLink, ProfileAvatar } from 'components/molecules';
-
 import 'styles/Feed/FeedTemplates/Challenge.scss';
-
+import BottomToolbar from '../FeedBottomToolbar';
 
 const Challenge = ({
 	t,
 	date,
 	contest: {
-		id, courseID, player, opponent,
+		player, opponent,
 	},
 }) => (
 	<Fragment>
 		<Container className="challenge">
 			<FlexBox column align>
-				<ProfileAvatar 
+				<ProfileAvatar
 					user={player}
 				/>
 				<FlexBox className="user-container" column>
@@ -37,7 +32,7 @@ const Challenge = ({
 				<TextBlock className="score">{`${player.score} : ${opponent.score}`}</TextBlock>
 			</Container>
 			<FlexBox column align>
-				<ProfileAvatar 
+				<ProfileAvatar
 					user={opponent}
 				/>
 				<FlexBox className="user-container" column>
