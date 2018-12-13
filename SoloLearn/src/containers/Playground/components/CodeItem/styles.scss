@@ -7,9 +7,7 @@
 		margin-right: $secondary_gap_size;
 	}
 	.details-wrapper {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
+		align-items: flex-start;
 		.stats {
 			display: inline-flex;
 			align-items: center;

@@ -44,7 +44,8 @@ const PlaygroundSidebar = ({ t, sidebarItems, userID }) => (
 					</List>
 				)
 		}
-		{sidebarItems && sidebarItems.length > 0 &&
+		{sidebarItems && sidebarItems.length > 0 && sidebarItems.length === 10 &&
+		// Check if got whole 10 else no more code available
 			<ViewMoreLink to={`/profile/${userID}/codes`} >
 				{t('common.loadMore')}
 			</ViewMoreLink>

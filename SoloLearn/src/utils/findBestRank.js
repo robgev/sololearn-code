@@ -38,13 +38,20 @@ const findBestRank = (ranks = {}) =>
 						hasPriority ||
 						(normalPriority && ranks[key] < best.rank)
 			) {
-				const monthOrWeek = key.includes('monthly') ? 'm' : 'w';
-				const totalOrCountry = key.includes('Total') ? 't' : 'c';
+				const isMonthly = key.includes('monthly');
+				const isTotal = key.includes('Total');
+				const monthOrWeek = isMonthly ? 'm' : 'w';
+				const totalOrCountry = isTotal ? 't' : 'c';
 				const percentOrRank = isCurrentRank ? 'r' : 'p';
 				const formattedKey = `${monthOrWeek}${totalOrCountry}${percentOrRank}`;
+				const queryParams = {
+					mode:	isTotal ? 0 : 2,
+					range: isMonthly ? 30 : 7,
+				};
 				return {
 					key: formattedKey,
 					rank: ranks[key],
+					queryParams,
 				};
 			}
 		}
@@ -52,6 +59,6 @@ const findBestRank = (ranks = {}) =>
 		// We just return the rank we already have
 		// This is done for having consistent return
 		return best;
-	}, { key: null, rank: null });
+	}, { key: null, rank: null, queryParams: null });
 
 export default findBestRank;

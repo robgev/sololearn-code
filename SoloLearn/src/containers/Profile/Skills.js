@@ -18,7 +18,7 @@ import {
 	MenuItem,
 	ModBadgeIcon,
 } from 'components/atoms';
-import { ProgressBar } from 'components/molecules'
+import { ProgressBar } from 'components/molecules';
 import i18n from 'i18n';
 import { translate } from 'react-i18next';
 import { PolarChartColors } from 'constants/ChartColors';
@@ -68,10 +68,10 @@ const ModeratorStatus = ({ badge, t }) => {
 @translate()
 class Skills extends PureComponent {
 	state = {
-		courseID: "",
+		courseID: '',
 	}
 
-	handleCourseChange = (event) => this.setState({ courseID: event.target.value });
+	handleCourseChange = event => this.setState({ courseID: event.target.value });
 
 	render() {
 		const { courseID } = this.state;
@@ -93,7 +93,7 @@ class Skills extends PureComponent {
 					<Title>{t('skills.status-plus-rank')}</Title>
 					<ModeratorStatus t={t} badge={profile.badge} />
 					<Container className="skills-details">
-						<LeaderboardString ranks={profile.rank} />
+						<LeaderboardString userID={profile.id} ranks={profile.rank} />
 						<Container className="country-details">
 							<Image
 								alt={profile.countryCode}
@@ -155,10 +155,9 @@ class Skills extends PureComponent {
 								{t('code.language-filter.all')}
 							</MenuItem>
 							{ profile.contestStats.map(({ courseID: currentCourseID }) =>
-								<MenuItem value={currentCourseID}>
+								(<MenuItem value={currentCourseID}>
 									{LanguageCodes[currentCourseID]}
-								</MenuItem>
-							)}
+         </MenuItem>) )}
 						</Select>
 					</Container>
 					<ChallengeGraphs

@@ -35,7 +35,7 @@ const UserProgressToolbar = ({
 					<SecondaryTextBlock className="block-text">{t('common.user-level')} {profile.level}</SecondaryTextBlock>
 				</Container>
 			</Container>
-			<LeaderboardString />
+			<LeaderboardString userID={profile.id} />
 			<Container className="user-level-info">
 				<SecondaryTextBlock className="current-xp">{ profile.xp } XP</SecondaryTextBlock>
 				<Container className="level-graph-container">

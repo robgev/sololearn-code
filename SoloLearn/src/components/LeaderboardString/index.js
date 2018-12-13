@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import { Link } from 'react-router';
 import { findBestRank, getCountryName } from 'utils';
 import { translate } from 'react-i18next';
 
@@ -29,24 +28,38 @@ class LeaderboardString extends Component {
 		const { ranks, t } = this.props;
 		if (ranks !== null) {
 			const localePrefix = 'leaderboard.rank';
-			const { key, rank } = findBestRank(ranks);
+			const { key, rank, queryParams } = findBestRank(ranks);
 			if (key !== null) {
 				const localeFormat = this.getRightLocaleFormat(key);
 				const numberFormat = key.endsWith('p') ? 'percent-format' : 'default-format';
-				return t(`${localePrefix}.${localeFormat}`, {
-					rank: t(`${localePrefix}.${numberFormat}`, { number: +rank.toFixed(2) }),
-					country: getCountryName(ranks.countryCode),
-				});
+				return {
+					queryParams,
+					string: t(`${localePrefix}.${localeFormat}`, {
+						rank: t(`${localePrefix}.${numberFormat}`, { number: +rank.toFixed(2) }),
+						country: getCountryName(ranks.countryCode),
+					}),
+				};
 			}
 		}
-		return t('leaderboard.rank.placeholder');
+		return {
+			queryParams: null,
+			string: t('leaderboard.rank.placeholder'),
+		};
 	}
 
 	render() {
+		const { userID } = this.props;
+		const { queryParams, string } = this.getLeaderboardString();
 		return (
-			<UsernameLink to="/leaderboards" className="leaderboard-link hoverable">
+			<UsernameLink
+				to={queryParams
+					? `/leaderboards/${userID}/${queryParams.mode}/${queryParams.range}`
+					: '/leaderboards'
+				}
+				className="leaderboard-link hoverable"
+			>
 				<Image className="learboards-goblet" src="/assets/rank_goblet.png" alt="g" />
-				{this.getLeaderboardString()}
+				{string}
 			</UsernameLink>
 		);
 	}

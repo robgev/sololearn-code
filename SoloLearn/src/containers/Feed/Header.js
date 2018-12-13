@@ -62,7 +62,7 @@ class Header extends PureComponent {
 							</UsernameLink>
 							<ModBadge badge={badge} className="badge" />
 						</FlexBox>
-						<LeaderboardString ranks={rank} />
+						<LeaderboardString userID={profile.id} ranks={rank} />
 						<Container className="profile-progress-wrapper">
 							<ProgressBar
 								value={100 * currentXp / this.maxXp}
