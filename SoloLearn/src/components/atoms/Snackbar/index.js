@@ -1,7 +1,7 @@
 import React from 'react';
 import MUISnackbar from '@material-ui/core/Snackbar';
 
-const Snackbar = ({ message, ...props }) => (
+const Snackbar = ({ message, snackKey, ...props }) => (
 	<MUISnackbar
 		ContentProps={{
 			'aria-describedby': 'message-id',

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
@@ -42,7 +42,7 @@ const mapDispatchToProps = {
 @translate()
 @connect(mapStateToProps, mapDispatchToProps)
 @observer
-class CodeInfoToolbar extends PureComponent {
+class CodeInfoToolbar extends Component {
 	state = {
 		isDeletePopupOpen: false,
 		isDetailsPopupOpen: false,

@@ -2,7 +2,7 @@ import React from 'react';
 import MUITooltip from '@material-ui/core/Tooltip';
 
 const ButtonTooltip = props => (
-	<MUITooltip c{...props} />
+	<MUITooltip {...props} />
 );
 
 export default ButtonTooltip;

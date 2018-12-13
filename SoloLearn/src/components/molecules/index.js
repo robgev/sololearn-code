@@ -28,3 +28,4 @@ export { default as PromiseButton } from './PromiseButton';
 export { default as EmptyCard } from './EmptyCard';
 export { default as ViewMoreLink } from './ViewMoreLink';
 export { default as StickySidebar } from './StickySidebar';
+export { default as ConsecutiveSnackbar } from './ConsecutiveSnackbar';

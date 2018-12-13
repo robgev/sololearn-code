@@ -1,18 +1,17 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 
-import { Snackbar, Checkbox, FlexBox } from 'components/atoms';
-import { FlatButton, RaisedButton } from 'components/molecules';
+import { Checkbox, FlexBox } from 'components/atoms';
+import { ConsecutiveSnackbar, FlatButton, RaisedButton } from 'components/molecules';
 import { Run, InsertLink } from 'components/icons';
 import SavePopup from './SavePopup';
 import ExternalResourcePopup from './ExternalResourcePopup';
 
 @translate()
 @observer
-class Toolbar extends PureComponent {
+class Toolbar extends Component {
 	state = {
-		isSnackbarOpen: false,
 		isSavePopupOpen: false,
 		isSourcePopupOpen: false,
 	};
@@ -34,16 +33,8 @@ class Toolbar extends PureComponent {
 		this.setState(({ isSourcePopupOpen }) => ({ isSourcePopupOpen: !isSourcePopupOpen }));
 	}
 
-	handleSnackBarClose = (reason) => {
-		// TODO: Snackbar logic
-		if (reason !== 'clickaway') {
-			this.setState({ isSnackbarOpen: false });
-		}
-	}
-
 	render() {
 		const {
-			isSnackbarOpen,
 			isSavePopupOpen,
 			isSourcePopupOpen,
 		} = this.state;
@@ -106,9 +97,9 @@ class Toolbar extends PureComponent {
 						open={isSourcePopupOpen}
 						onClose={this.toggleSourcePopup}
 					/>
-					<Snackbar
+					<ConsecutiveSnackbar
 						open={playground.isSaving}
-						onClose={this.handleSnackBarClose}
+						autoHideDuration={playground.isSaving ? null : 1500}
 						message={playground.isSaving ? 'Saving...' : t('code_playground.alert.saved-title')}
 					/>
 				</div>

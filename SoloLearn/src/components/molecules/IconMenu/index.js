@@ -77,4 +77,8 @@ IconMenu.defaultProps = {
 	onClick: () => { },
 };
 
+IconMenu.propTypes = {
+	icon: PropTypes.node,
+};
+
 export default IconMenu;
