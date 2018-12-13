@@ -45,3 +45,4 @@ export { default as FormControlLabel } from './FormControlLabel';
 export { default as ButtonTooltip } from './ButtonTooltip';
 export { default as ModBadgeIcon } from './ModBadgeIcon';
 export { default as Popper } from './Popper';
+export { default as Grow } from './Grow';
