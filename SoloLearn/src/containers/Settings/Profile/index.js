@@ -152,7 +152,7 @@ class Profile extends PureComponent {
 			snackbarOpen,
 			newImage,
 		} = this.state;
-		console.log('render', image);
+		
 		const { t, userProfile } = this.props;
 		return (
 			<Container className="profile-settings-container">

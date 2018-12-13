@@ -5,6 +5,7 @@ import LeaderboardString from 'components/LeaderboardString';
 import {
 	Container,
 	PaperContainer,
+	FlexBox,
 } from 'components/atoms';
 import {
 	RaisedButton,
@@ -12,6 +13,7 @@ import {
 	ContainerLink,
 	ProgressBar,
 	ProfileAvatar,
+	ModBadge,
 } from 'components/molecules';
 
 import 'styles/Feed/Header.scss';
@@ -45,7 +47,7 @@ class Header extends PureComponent {
 
 	render() {
 		const { profile, t } = this.props;
-		const { xp: currentXp, rank } = profile;
+		const { xp: currentXp, rank, badge } = profile;
 
 		return (
 			<PaperContainer className="feed-header">
@@ -54,10 +56,12 @@ class Header extends PureComponent {
 						user={profile}
 					/>
 					<Container className="details">
-						<UsernameLink to={`/profile/${profile.id}`}>
-							{profile.name}
-						</UsernameLink>
-
+						<FlexBox>
+							<UsernameLink to={`/profile/${profile.id}`}>
+								{profile.name}
+							</UsernameLink>
+							<ModBadge badge={badge} className="badge" />
+						</FlexBox>
 						<LeaderboardString ranks={rank} />
 						<Container className="profile-progress-wrapper">
 							<ProgressBar
