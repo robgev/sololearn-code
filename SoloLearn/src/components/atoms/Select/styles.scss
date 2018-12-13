@@ -1,5 +1,10 @@
 @import '~styles/colors';
 
-.atom_select:after {
-	border-bottom-color: $primary_color;
+.atom_select {
+	&:after {
+		border-bottom-color: $primary_color;
+	}
+	div[aria-pressed]:focus {
+		background: none;
+	}
 }
