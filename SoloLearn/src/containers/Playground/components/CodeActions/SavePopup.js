@@ -24,6 +24,7 @@ class SavePopup extends Component {
 	onConfirm = () => {
 		const { name, isPublic } = this.state;
 		this.props.playground.saveNewCode({ name, isPublic });
+		this.setState({ name: '', isPublic: false, hasError: false });
 		this.props.onClose();
 	}
 
@@ -37,17 +38,21 @@ class SavePopup extends Component {
 		}
 	}
 
+	onClose = () => {
+		this.setState({ name: '', isPublic: false, hasError: false });
+		this.props.onClose();
+	}
+
 	render() {
 		const {
 			t,
 			open,
-			onClose,
 		} = this.props;
 		const { name, hasError } = this.state;
 		return (
 			<Popup
 				open={open}
-				onClose={onClose}
+				onClose={this.onClose}
 			>
 				<PopupTitle>{t('code_playground.popups.save-popup-title')}</PopupTitle>
 				<PopupContent>
@@ -71,7 +76,7 @@ class SavePopup extends Component {
 				</PopupContent>
 				<PopupActions>
 					<FlatButton
-						onClick={onClose}
+						onClick={this.onClose}
 						variant="secondary"
 					>
 						{t('common.cancel-title')}
