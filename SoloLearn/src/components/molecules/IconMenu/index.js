@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { IconButton, Menu } from 'components/atoms';
+import { IconButton, Popper, Grow, ClickAwayListener, PaperContainer, MenuList } from 'components/atoms';
 import { MoreVert } from 'components/icons';
 import './styles.scss';
 
@@ -44,21 +44,22 @@ class IconMenu extends Component {
 				>
 					<Icon />
 				</IconButton>
-				<Menu
-					id="long-menu"
-					open={open}
-					anchorEl={anchorEl}
-					onClose={this.handleClose}
-					onClick={this.onClick}
-					PaperProps={{
-						style: {
-							width: 200,
-						},
-					}}
-					{...props}
-				>
-					{children}
-				</Menu>
+				<Popper open={open} anchorEl={anchorEl} transition disablePortal>
+					{({ TransitionProps, placement }) => (
+						<Grow
+							{...TransitionProps}
+							className={`molecule_icon-menu-grow ${placement === 'bottom' ? 'top' : 'bottom'}`}
+						>
+							<PaperContainer>
+								<ClickAwayListener onClickAway={this.handleClose}>
+									<MenuList onClick={this.onClick} className="list" {...props}>
+										{children}
+									</MenuList>
+								</ClickAwayListener>
+							</PaperContainer>
+						</Grow>
+					)}
+				</Popper>
 			</Fragment>
 		);
 	}
