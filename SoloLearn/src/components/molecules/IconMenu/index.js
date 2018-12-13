@@ -17,10 +17,18 @@ class IconMenu extends Component {
 		this.setState({ anchorEl: null });
 	};
 
+	onClick = () => {
+		const { closeOnClick, onClick } = this.props;
+		if (closeOnClick) {
+			this.handleClose();
+		}
+		onClick();
+	}
+
 	render() {
 		const { anchorEl } = this.state;
 		const {
-			icon: Icon, children, iconProps, ...props
+			icon: Icon, children, iconProps, onClick, ...props
 		} = this.props;
 		const open = Boolean(anchorEl);
 
@@ -41,6 +49,7 @@ class IconMenu extends Component {
 					open={open}
 					anchorEl={anchorEl}
 					onClose={this.handleClose}
+					onClick={this.onClick}
 					PaperProps={{
 						style: {
 							width: 200,
@@ -57,10 +66,14 @@ class IconMenu extends Component {
 
 IconMenu.propTypes = {
 	icon: PropTypes.node,
+	closeOnClick: PropTypes.bool,
+	onClick: PropTypes.func,
 };
 
 IconMenu.defaultProps = {
 	icon: MoreVert,
+	closeOnClick: true,
+	onClick: () => { },
 };
 
 export default IconMenu;
