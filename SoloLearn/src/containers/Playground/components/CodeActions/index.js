@@ -71,7 +71,7 @@ class Toolbar extends Component {
 					</FlatButton>
 					<FlatButton
 						onClick={playground.resetToSaved}
-						disabled={playground.isResetDisabled}
+						disabled={playground.isResetDisabled || playground.isSaving || playground.isRunning}
 					>
 						{t('code_playground.actions.reset-code')}
 					</FlatButton>

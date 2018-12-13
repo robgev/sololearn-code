@@ -26,7 +26,7 @@ export const emptyCodes = () => ({
 });
 
 export const getCodes = ({
-	query = '', count = 20,
+	query = '', count = 20, forceRefresh,
 } = {}) => async (dispatch, getState) => {
 	const stateBefore = getState();
 	// Avoid unnecessary requests if already fetching
@@ -34,12 +34,14 @@ export const getCodes = ({
 		dispatch({ type: types.REQUEST_CODES });
 		const filters = codesFiltersSelector(stateBefore);
 		const { length } = codesSelector(stateBefore);
+		const index = forceRefresh ? 0 : length; // Update the list when entering the page
 		const { codes } = await Service.request('Playground/GetPublicCodes', {
-			index: length, query, count, ...filters,
+			index, query, count, ...filters,
 		});
 		// Ignore action if filters changed
 		if (filters === codesFiltersSelector(getState())) {
-			dispatch({ type: types.SET_CODES, payload: codes });
+			const actionType = forceRefresh ? types.REFRESH_CODES : types.SET_CODES;
+			dispatch({ type: actionType, payload: codes });
 			if (codes.length < count) {
 				dispatch({ type: types.MARK_CODES_LIST_FINISHED });
 			}

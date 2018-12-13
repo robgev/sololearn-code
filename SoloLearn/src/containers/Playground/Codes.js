@@ -42,6 +42,7 @@ class Codes extends Component {
 		const changed = queryDifference(DEFAULT_CODES_FILTERS, query);
 		browserHistory.replace({ ...location, query: changed });
 		this.props.getSidebarCodes();
+		this.getCodes({ forceRefresh: true });
 	}
 	componentWillUpdate(nextProps) {
 		// Source of truth is the route
@@ -70,8 +71,8 @@ class Codes extends Component {
 			query: { ...location.query, orderBy: event.target.value },
 		});
 	}
-	getCodes = () => {
-		this.props.getCodes()
+	getCodes = (params) => {
+		this.props.getCodes(params)
 			.catch(e => showError(e, 'Something went wrong when trying to fetch codes'));
 	}
 	render() {

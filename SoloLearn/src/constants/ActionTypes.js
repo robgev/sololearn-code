@@ -14,6 +14,7 @@ export const DEDUCT_EXP = 'DEDUCT_EXP';
 
 // Playground types
 export const SET_CODES = 'SET_CODES';
+export const REFRESH_CODES = 'REFRESH_CODES';
 export const EMPTY_CODES = 'EMPTY_CODES';
 export const REMOVE_CODE = 'REMOVE_CODE';
 export const SET_CODES_FILTERS = 'SET_CODES_FILTERS';
