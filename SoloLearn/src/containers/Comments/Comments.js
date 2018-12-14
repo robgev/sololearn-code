@@ -273,6 +273,7 @@ class Comments extends Component {
 							onSubmitEnabledChange={this.submitEnabledChange}
 							getUsers={this.commentsAPI.getMentionUsers}
 							placeholder={t('comments.write-comment-placeholder')}
+							maxLength={1024}
 						/>
 					</Container>
 					<FlatButton
