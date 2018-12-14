@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { translate } from 'react-i18next';
 import Dialog from 'components/StyledDialog';
 import {
-	Container,
+	FlexBox,
 	RadioButton,
 	Input,
 	SecondaryTextBlock,
@@ -15,6 +15,8 @@ import {
 import { RadioButtonGroup, FlatButton } from 'components/molecules';
 import Service from 'api/service';
 
+import './DeactivationPopup.scss';
+
 @translate()
 class ReportPopup extends PureComponent {
 	constructor() {
@@ -26,11 +28,12 @@ class ReportPopup extends PureComponent {
 		};
 	}
 
-	handleReasonChange = (_, reportReason) => {
-		this.setState({ reportReason });
+	handleReasonChange = (event) => {
+		this.setState({ reportReason: +event.target.value });
 	}
 
-	handleCustomReasonChange = (_, customReason) => {
+	handleCustomReasonChange = (event) => {
+		const customReason = event.target.value;
 		if (customReason.length <= this.customReasonMaxLength) {
 			this.setState({ customReason });
 		}
@@ -76,18 +79,21 @@ class ReportPopup extends PureComponent {
 			<FlatButton
 				color="primary"
 				onClick={onRequestClose}
-				label={t('common.cancel-title')}
-			/>,
+			>
+				{t('common.cancel-title')}
+			</FlatButton>,
 			<FlatButton
 				color="primary"
 				onClick={() => this.submitReport()}
-				label={t('common.deactivate-action-title')}
-			/>,
+			>
+				{t('common.deactivate-action-title')}
+			</FlatButton>,
 		];
 		return (
 			<Popup
 				open={open}
 				onClose={onRequestClose}
+				className="profile-deactivate-popup"
 			>
 				<PopupTitle>
 					{t('deactivate.deactivate-popup-title')}
@@ -95,7 +101,7 @@ class ReportPopup extends PureComponent {
 				<PopupContent>
 					<RadioButtonGroup
 						name="deactivateReason"
-						defaultSelected={11}
+						value={reportReason}
 						onChange={this.handleReasonChange}
 					>
 						<RadioButton
@@ -120,14 +126,15 @@ class ReportPopup extends PureComponent {
 						/>
 					</RadioButtonGroup>
 					{reportReason === 0 &&
-						<Container>
+						<FlexBox column>
 							<Input
 								value={customReason}
 								onChange={this.handleCustomReasonChange}
+								inputProps={{ maxLength: this.customReasonMaxLength }}
 								label={t('common.report-more-hint')}
 							/>
-							<SecondaryTextBlock>{customReason.length} / {this.customReasonMaxLength}</SecondaryTextBlock>
-						</Container>
+							<SecondaryTextBlock className="count">{customReason.length} / {this.customReasonMaxLength}</SecondaryTextBlock>
+						</FlexBox>
 					}
 				</PopupContent>
 				<PopupActions>
