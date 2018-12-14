@@ -41,6 +41,7 @@ class Comment extends Component {
 	}
 
 	@action toggleReplyBox = async ({ id, userID, userName }) => {
+		//console.log(id, userID, userName );
 		if (this.props.toggleReplyBox) {
 			// Reply case
 			this.props.toggleReplyBox({ id, userID, userName });
@@ -294,7 +295,7 @@ class Comment extends Component {
 								<ProfileAvatar user={userProfile} />
 								<CountingMentionInput
 									onBlur={this.onReplyBlur}
-
+									maxLength={1024}
 									ref={(i) => { this.mentionInput = i; }}
 									initText={this.initText}
 									getUsers={this.props.commentsAPI.getMentionUsers}

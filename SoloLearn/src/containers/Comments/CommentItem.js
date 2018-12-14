@@ -120,6 +120,7 @@ class CommentItem extends Component {
 																initText={comment.message}
 																onSubmitEnabledChange={onEditButtonEnabledChange}
 																placeholder={t('comments.write-comment-placeholder')}
+																maxLength={1024}
 															/>
 														</Container>
 														<FlatButton
