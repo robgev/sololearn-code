@@ -6,7 +6,7 @@ import { IconMenu } from 'components/molecules';
 import { determineAccessLevel } from 'utils';
 
 const mapStateToProps = (state, ownProps) => ({
-	canRequestRemoval: determineAccessLevel(state.userProfile.accessLevel) > 1,
+	canRequestRemoval: determineAccessLevel(state.userProfile.accessLevel) >= 1,
 	isMe: state.userProfile.id === ownProps.userID,
 });
 
@@ -66,7 +66,7 @@ class Options extends Component {
 							<MenuItem
 								onClick={requestRemoval}
 							>
-								{t('common.remove-title')}
+								{t('discuss.forum_request_removal_prompt_title') }
 							</MenuItem>
 						)
 						: null
