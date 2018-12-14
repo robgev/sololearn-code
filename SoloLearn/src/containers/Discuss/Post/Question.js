@@ -129,7 +129,7 @@ class Question extends Component {
 									open={isReportPopupOpen}
 									onClose={this.closeReportPopup}
 									itemId={post.id}
-									itemType="post"
+									itemType={2}
 								/>
 								<RemovalPopup
 									open={isRemovalPopupOpen}

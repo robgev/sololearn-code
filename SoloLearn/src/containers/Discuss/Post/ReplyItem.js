@@ -180,7 +180,7 @@ class ReplyItem extends Component {
 					open={isReportPopupOpen}
 					onClose={this.closeReportPopup}
 					itemId={reply.id}
-					itemType="post"
+					itemType={2}
 				/>
 				<RemovalPopup
 					open={isRemovalPopupOpen}
