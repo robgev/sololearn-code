@@ -300,7 +300,7 @@ class Comment extends Component {
 									initText={this.initText}
 									getUsers={this.props.commentsAPI.getMentionUsers}
 									onSubmitEnabledChange={this.replyButtonEnabledChange}
-									placeholder={t('comments.write-comment-placeholder')}
+									placeholder={t('comments.write-reply-placeholder')}
 								/>
 							</Container>
 							<FlatButton

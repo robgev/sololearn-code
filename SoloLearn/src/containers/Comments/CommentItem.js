@@ -124,6 +124,11 @@ class CommentItem extends Component {
 															/>
 														</Container>
 														<FlatButton
+															onMouseDown={toggleEdit}
+														>
+															{t('common.cancel-title')}
+														</FlatButton>
+														<FlatButton
 															disabled={!isEditButtonEnabled}
 															onMouseDown={() => {
 																edit({ message: this.editMentionInput.popValue(), id });
@@ -131,11 +136,6 @@ class CommentItem extends Component {
 															}}
 														>
 															{t('common.edit-action-title')}
-														</FlatButton>
-														<FlatButton
-															onMouseDown={toggleEdit}
-														>
-															{t('common.cancel-title')}
 														</FlatButton>
 													</Container>
 												)
@@ -155,7 +155,7 @@ class CommentItem extends Component {
 									</Container>
 								</FlexBox>
 							</FlexBox>
-							<FlexBox justifyBetween>
+							{!isEditing && <FlexBox justifyBetween>
 								<Container>
 									<VoteActions
 										id={comment.id}
@@ -166,13 +166,9 @@ class CommentItem extends Component {
 									/>
 								</Container>
 								<Container>
-									<FlatButton
-										onClick={onReply}
-									>
-										{t('comments.reply')}
-									</FlatButton>
+									
 									{
-										comment.parentID === null && comment.replies !== 0 && (
+										comment.parentID === null && (
 											<PromiseButton
 												fire={onRepliesButtonClick}
 												mouseDown
@@ -181,8 +177,13 @@ class CommentItem extends Component {
 											</PromiseButton>
 										)
 									}
+									<FlatButton
+										onClick={onReply}
+									>
+										{t('comments.reply')}
+									</FlatButton>
 								</Container>
-							</FlexBox>
+							</FlexBox>}
 						</FlexBox>
 					</FlexBox>
 				</ListItem>
