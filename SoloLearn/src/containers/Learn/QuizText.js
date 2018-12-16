@@ -6,9 +6,10 @@ import { translate } from 'react-i18next';
 
 import { toggleLessonBookmark } from 'actions/slay';
 import { updateDate } from 'utils';
-import Snackbar from 'material-ui/Snackbar';
+//import Snackbar from 'material-ui/Snackbar';
 import SlayLessonToolbar from './SlayLessonToolbar';
 import { Parser } from './components';
+import { Container, Snackbar } from 'components/atoms';
 
 const styles = {
 	textContainer: {
@@ -38,9 +39,9 @@ class QuizText extends Component {
 	}
 
 	handleSnackBarClose = (reason) => {
-		if (reason !== 'clickaway') {
+		//if (reason !== 'clickaway') {
 			this.setState({ snackbarOpened: false });
-		}
+		//}
 	}
 
 	render() {
@@ -54,7 +55,7 @@ class QuizText extends Component {
 			courseLanguage,
 		} = this.props;
 		return (
-			<div className="text-container" style={styles.textContainer}>
+			<Container className="text-container" style={styles.textContainer}>
 				<Parser
 					courseLanguage={courseLanguage}
 					text={this.props.textContent}
@@ -70,10 +71,10 @@ class QuizText extends Component {
 				/>
 				<Snackbar
 					open={snackbarOpened}
-					onClose={this.handleSnackbarClose}
+					onClose={this.handleSnackBarClose}
 					message={isBookmarked ? t('lesson.bookmark-added') : t('lesson.bookmark-removed')}
 				/>
-			</div>
+			</Container>
 		);
 	}
 }

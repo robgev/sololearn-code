@@ -61,7 +61,11 @@ class Quiz extends Component {
 	}
 
 	openHintPopup = () => {
-		this.setState({ isHintPopupOpen: true });
+		if (Progress.consumePoints(this.props.activeModule.hintPrice)) {
+			this.setState({ isHintPopupOpen: true });
+		} else {
+			this.setState({ notAvailable: true });
+		}
 	}
 
 	closeHintPopup = () => {
@@ -69,7 +73,11 @@ class Quiz extends Component {
 	}
 
 	openUnlockPopup = () => {
-		this.setState({ isUnlockPopupOpen: true });
+		if (Progress.consumePoints(this.props.activeModule.skipPrice)) {
+			this.setState({ isUnlockPopupOpen: true });
+		} else {
+			this.setState({ notAvailable: true });
+		}
 	}
 
 	closeUnlockPopup = () => {
@@ -77,33 +85,29 @@ class Quiz extends Component {
 	}
 
 	handleHint = () => {
-		if (Progress.consumePoints(this.props.activeModule.hintPrice)) {
-			Progress.applyHint(
-				this.props.activeQuiz.id,
-				PointExchangeTypes.Hint,
-				this.props.activeModule.hintPrice,
-			);
-			this.props.deductExp(this.props.activeModule.hintPrice);
-			this.hint();
-			this.closeHintPopup();
-		} else {
-			this.setState({ notAvailable: true });
-		}
+		
+		Progress.applyHint(
+			this.props.activeQuiz.id,
+			PointExchangeTypes.Hint,
+			this.props.activeModule.hintPrice,
+		);
+		this.props.deductExp(this.props.activeModule.hintPrice);
+		this.hint();
+		this.closeHintPopup();
+		
 	}
 
 	handleUnlock = () => {
-		if (Progress.consumePoints(this.props.activeModule.skipPrice)) {
-			Progress.applyHint(
-				this.props.activeQuiz.id,
-				PointExchangeTypes.Skip,
-				this.props.activeModule.skipPrice,
-			);
-			this.props.deductExp(this.props.activeModule.skipPrice);
-			this.unlock();
-			this.closeUnlockPopup();
-		} else {
-			this.setState({ notAvailable: true });
-		}
+		
+		Progress.applyHint(
+			this.props.activeQuiz.id,
+			PointExchangeTypes.Skip,
+			this.props.activeModule.skipPrice,
+		);
+		this.props.deductExp(this.props.activeModule.skipPrice);
+		this.unlock();
+		this.closeUnlockPopup();
+	
 	}
 
 	check = (force = false) => {
@@ -331,6 +335,13 @@ class Quiz extends Component {
 					<PopupContent>
 						<PopupContentText>{t('learn.hint-not-enough-xp')}</PopupContentText>
 					</PopupContent>
+					<PopupActions>
+						<FlatButton
+							onClick={this.closeNotAvailablePopup}
+						>
+							{t('common.cancel-title')}
+						</FlatButton>
+					</PopupActions>
 				</Popup>
 			</Container>
 		);

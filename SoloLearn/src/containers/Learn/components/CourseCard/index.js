@@ -4,7 +4,7 @@ import { getCourseNameById, toSeoFriendly } from 'utils';
 import { slayItemTypes } from 'constants/ItemTypes';
 
 import { Heading, Container, Link, Image, SecondaryTextBlock, Title } from 'components/atoms';
-import { ViewStats, UsernameLink } from 'components/molecules';
+import { ViewStats, UsernameLink, ModBadge } from 'components/molecules';
 
 import './styles.scss';
 
@@ -24,6 +24,7 @@ const CourseCard = ({
 	viewCount,
 	comments,
 	className,
+	badge,
 }) => (
 	<Container className={`course-card-container ${small ? 'small' : ''} ${className || ''}`}>
 		{
@@ -59,9 +60,15 @@ const CourseCard = ({
 			</Container>
 			<Container className="info-container">
 				<Title className="hoverable">{name}</Title>
-				<UsernameLink to={`/profile/${userID}`}>
-					{userName}
-				</UsernameLink>
+				<Container>
+					<UsernameLink to={`/profile/${userID}`}>
+						{userName}
+					</UsernameLink>
+					<ModBadge
+						className="badge"
+						badge={badge}
+					/>
+				</Container>
 				{(!minimal && (Number.isInteger(viewCount) && Number.isInteger(comments))) &&
 				<ViewStats
 					views={viewCount}
