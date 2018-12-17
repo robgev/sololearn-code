@@ -4,7 +4,7 @@ import { translate } from 'react-i18next';
 import AvatarColors from 'constants/AvatarColors';
 import { Container, SecondaryTextBlock, Image } from 'components/atoms';
 import { RaisedButton, UsernameLink, ContainerLink, ModBadge } from 'components/molecules';
-//import ModBadge from 'components/ModBadge';
+// import ModBadge from 'components/ModBadge';
 import { numberFormatter } from 'utils';
 
 const UserCard = ({

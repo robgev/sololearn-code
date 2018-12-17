@@ -28,6 +28,7 @@ export {
 	Person,
 	Dehaze as Feed,
 	ThumbUp,
+	EventNote as Date,
 	ThumbDown,
 	Edit,
 } from '@material-ui/icons';

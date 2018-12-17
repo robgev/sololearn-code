@@ -4,11 +4,10 @@ $icon_color: $secondary_text_color;
 $icon_size: 20px;
 
 .molecule_icon-with-text {
-	display: flex;
 	.icon {
 		width: $icon_size;
 		height: $icon_size;
 		color: $icon_color;
-		margin-right: 10px;
+		margin-right: 5px;
 	}
 }

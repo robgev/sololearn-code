@@ -1,6 +1,7 @@
 import React from 'react';
 import { numberFormatter } from 'utils';
 import { Arrows, Views, Comment } from 'components/icons';
+import { IconWithText } from 'components/molecules';
 import { FlexBox, SecondaryTextBlock } from 'components/atoms';
 
 import './styles.scss';
@@ -8,22 +9,19 @@ import './styles.scss';
 const ViewStats = ({	views, votes, comments }) => (
 	<FlexBox align>
 		{ Number.isInteger(votes) && // Can have negative votes
-			<FlexBox align justify className="molecule_view-stats">
-				<Arrows className="molecule_view-stats-icon" />
+			<IconWithText justify Icon={Arrows} className="molecule_view-stats">
 				<SecondaryTextBlock>{votes > 0 ? `+${numberFormatter(votes)}` : numberFormatter(votes)}</SecondaryTextBlock>
-			</FlexBox>
+			</IconWithText>
 		}
 		{ views >= 0 &&
-			<FlexBox align justify className="molecule_view-stats">
-				<Views className="molecule_view-stats-icon" />
+			<IconWithText justify Icon={Views} className="molecule_view-stats">
 				<SecondaryTextBlock>{ numberFormatter(views) }</SecondaryTextBlock>
-			</FlexBox>
+			</IconWithText>
 		}
 		{ comments >= 0 &&
-			<FlexBox align justify>
-				<Comment className="molecule_view-stats-icon" />
+			<IconWithText justify Icon={Comment} className="molecule_view-stats">
 				<SecondaryTextBlock>{ numberFormatter(comments) }</SecondaryTextBlock>
-			</FlexBox>
+			</IconWithText>
 		}
 	</FlexBox>
 );

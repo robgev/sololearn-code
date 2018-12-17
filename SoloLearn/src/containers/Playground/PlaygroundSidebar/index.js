@@ -40,7 +40,7 @@ const PlaygroundSidebar = ({ t, sidebarItems, userID }) => (
 				)
 				: (
 					<List>
-						{sidebarItems.map(code => <CodeItem key={code.id} code={code} />)}
+						{sidebarItems.map(code => <CodeItem minimal key={code.id} code={code} />)}
 					</List>
 				)
 		}
