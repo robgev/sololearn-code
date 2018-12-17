@@ -59,7 +59,7 @@ class ExternalResourcePopup extends Component {
 						value={selectedSource}
 						onChange={this.onSelect}
 					>
-						<MenuItem disabled value="">None</MenuItem>
+						<MenuItem value="">None</MenuItem>
 						<MenuItem value={externalResources.jquery}>jQuery</MenuItem>
 						<MenuItem value={externalResources.jqueryui}>jQuery UI</MenuItem>
 					</Select>
