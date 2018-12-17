@@ -5,7 +5,6 @@ import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 import {
 	FlexBox,
-	Snackbar,
 	Container,
 	MenuItem,
 	SwitchToggle,
@@ -18,6 +17,7 @@ import {
 	RaisedButton,
 	UsernameLink,
 	LanguageIndicator,
+	ConsecutiveSnackbar,
 } from 'components/molecules';
 import { VoteActions } from 'components/organisms';
 import { Delete } from 'components/icons';
@@ -72,10 +72,8 @@ class CodeInfoToolbar extends Component {
 		this.props.playground.togglePublic();
 	}
 
-	handleSnackbarClose = (_, reason) => {
-		if (reason !== 'clickaway') {
-			this.setState({ isSnackbarOpen: false });
-		}
+	handleSnackbarClose = () => {
+		this.setState({ isSnackbarOpen: false });
 	}
 
 	render() {
@@ -132,7 +130,7 @@ class CodeInfoToolbar extends Component {
 						}
 						{(isMe || accessLevel > 1) &&
 						<SwitchToggle
-							defaultChecked={this.props.playground.isPublic}
+							defaultChecked={this.props.playground.data.isPublic}
 							onChange={this.togglePublic}
 							labelPlacement="start"
 							label={t('code_playground.popups.save-popup-public-toggle-title')}
@@ -180,12 +178,12 @@ class CodeInfoToolbar extends Component {
 					onClose={this.togglePopup}
 					onDelete={this.deleteCurrentCode}
 				/>
-				<Snackbar
+				<ConsecutiveSnackbar
 					open={isSnackbarOpen}
 					onClose={this.handleSnackbarClose}
-					message={this.props.playground.isPublic
-						? t('code_playground.alert.private-title')
-						: t('code_playground.alert.public-title')
+					message={this.props.playground.data.isPublic
+						? t('code_playground.alert.public-title')
+						: t('code_playground.alert.private-title')
 					}
 				/>
 			</PaperContainer>

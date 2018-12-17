@@ -13,9 +13,11 @@ class ConsecutiveSnackbar extends Component {
 		};
 	}
 
-	componentDidUpdate(oldProps) {
-		if (oldProps.message !== this.props.message) {
-			this.handleMessageChange(this.props.message);
+	componentWillReceiveProps(newProps) {
+		if (newProps.message !== this.props.message) {
+			this.setState({ open: newProps.open }, () => {
+				this.handleMessageChange(newProps.message);
+			});
 		}
 	}
 
