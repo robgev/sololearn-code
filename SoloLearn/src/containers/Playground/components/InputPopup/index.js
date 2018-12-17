@@ -31,12 +31,6 @@ const InputPopup = ({
 		</PopupContent>
 		<PopupActions>
 			<FlatButton
-				onClick={playground.toggleInputPopup}
-				variant="secondary"
-			>
-				{t('common.cancel-title')}
-			</FlatButton>
-			<FlatButton
 				variant="primary"
 				onClick={playground.runCompiledCode}
 			>

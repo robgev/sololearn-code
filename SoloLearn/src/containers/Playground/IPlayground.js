@@ -230,7 +230,7 @@ class IPlayground {
 			code: this.editorState.sourceCode,
 			language: this.language,
 		});
-		if (needsInput && !this.inputValue) {
+		if (needsInput && !this.inputValue && !this.isInputPopupOpen) {
 			this.toggleInputPopup();
 		} else {
 			this.isInputPopupOpen = false;

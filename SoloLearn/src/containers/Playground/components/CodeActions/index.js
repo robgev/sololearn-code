@@ -4,9 +4,9 @@ import { translate } from 'react-i18next';
 
 import { Container, Checkbox, FlexBox } from 'components/atoms';
 import { ConsecutiveSnackbar, FlatButton, RaisedButton } from 'components/molecules';
-import { Run, InsertLink } from 'components/icons';
+import { Run } from 'components/icons'; // InsertLink
 import SavePopup from './SavePopup';
-import ExternalResourcePopup from './ExternalResourcePopup';
+// import ExternalResourcePopup from './ExternalResourcePopup';
 
 @translate()
 @observer
@@ -29,14 +29,14 @@ class Toolbar extends Component {
 		this.setState(({ isSavePopupOpen }) => ({ isSavePopupOpen: !isSavePopupOpen }));
 	}
 
-	toggleSourcePopup = () => {
-		this.setState(({ isSourcePopupOpen }) => ({ isSourcePopupOpen: !isSourcePopupOpen }));
-	}
+	// toggleSourcePopup = () => {
+	// 	this.setState(({ isSourcePopupOpen }) => ({ isSourcePopupOpen: !isSourcePopupOpen }));
+	// }
 
 	render() {
 		const {
 			isSavePopupOpen,
-			isSourcePopupOpen,
+			// isSourcePopupOpen,
 		} = this.state;
 		const { t, playground } = this.props;
 		return (
@@ -47,12 +47,12 @@ class Toolbar extends Component {
 						onChange={playground.toggleTheme}
 						label={t('code_playground.dark-theme')}
 					/>
-					{playground.isWeb && !playground.isInline &&
+					{/* {playground.isWeb && !playground.isInline &&
 						<FlatButton onClick={this.toggleSourcePopup}>
 							External Resources
 							<InsertLink />
 						</FlatButton>
-					}
+					} */}
 				</Container>
 				<Container>
 					{!playground.isInline &&
@@ -92,11 +92,11 @@ class Toolbar extends Component {
 						playground={playground}
 						onClose={this.toggleSavePopup}
 					/>
-					<ExternalResourcePopup
+					{/* <ExternalResourcePopup
 						playground={playground}
 						open={isSourcePopupOpen}
 						onClose={this.toggleSourcePopup}
-					/>
+					/> */}
 					<ConsecutiveSnackbar
 						open={playground.isSaving}
 						autoHideDuration={playground.isSaving ? null : 1500}
