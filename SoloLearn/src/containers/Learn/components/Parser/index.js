@@ -78,8 +78,11 @@ class Parser extends Component {
 	};
 
 	static Link = ({ children, strAttributes }) => {
-		const [ , fullLink ] = Parser.linkRegex.exec(strAttributes);
+		let [ , fullLink ] = Parser.linkRegex.exec(strAttributes);
 		if (fullLink.includes('sololearn.com')) {
+			if(fullLink[fullLink.length-1] === '/') {
+				fullLink = fullLink.substring(0, fullLink.length-1)
+			}
 			const userLessonId = fullLink.substring(fullLink.lastIndexOf('/') + 1);
 			return <RefLink href={`/learn/lesson/user-lesson/${userLessonId}`}>{children}</RefLink>;
 		}
@@ -181,7 +184,6 @@ class Parser extends Component {
 			? null
 			: filterGlossary(props.glossary, props.text);
 		this.text = props.text;
-		console.log(this.text);
 	}
 	parse = () => {
 		const { courseLanguage } = this.props;
