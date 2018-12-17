@@ -186,10 +186,14 @@ class QuizManager extends Component {
 
 	getLastUnlockedQuiz = (quizNumber, timeline) => {
 		let lastUnlockedQuiz = quizNumber - 1;
-		while (lastUnlockedQuiz > 0 && !timeline[lastUnlockedQuiz].isCompleted) {
+		while (lastUnlockedQuiz >= 0 && !timeline[lastUnlockedQuiz].isCompleted) {
 			lastUnlockedQuiz--;
 		}
-		//lastUnlockedQuiz += 2;
+
+		
+		lastUnlockedQuiz += 2;
+		
+
 		return lastUnlockedQuiz;
 		/* let lastUnlockedQuiz = quizNumber;
 
@@ -282,9 +286,12 @@ class QuizManager extends Component {
 		}
 		const count = isModuleQuiz ? timeline.length : timeline.length / 2;
 		const activeQuizId = timeline[quizNumber].quizId;
+
+		const lastActive = this.getLastUnlockedQuiz(timeline.length, timeline);
+
 		const percent = isModuleQuiz
-			? (100 * (quizNumber / (count - 1)))
-			: (100 * (Math.floor(quizNumber / 2) / (count - 1)));
+			? (100 * ((lastActive-1) / (count - 1)))
+			: (100 * (Math.floor(lastActive / 2) / (count - 1)));
 		return (
 			<div
 				style={{
@@ -380,10 +387,8 @@ class QuizManager extends Component {
 			parseInt(this.props.params.quizNumber || timeline.length - 1, 10),
 			timeline.length - 1,
 		);
-		let lastUnlockedQuiz = this.getLastUnlockedQuiz(quizNumber, timeline);
-		if (isCheckpoint) {
-			lastUnlockedQuiz += 2 //if not quiz go to next lesson
-		}
+		const lastUnlockedQuiz = this.getLastUnlockedQuiz(quizNumber, timeline);
+		
 		if (!this.props.params.quizNumber || lastUnlockedQuiz < this.props.params.quizNumber) {
 			const {
 				params: {
