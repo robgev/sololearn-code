@@ -41,7 +41,6 @@ class Comment extends Component {
 	}
 
 	@action toggleReplyBox = async ({ id, userID, userName }) => {
-		//console.log(id, userID, userName );
 		if (this.props.toggleReplyBox) {
 			// Reply case
 			this.props.toggleReplyBox({ id, userID, userName });

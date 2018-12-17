@@ -55,7 +55,7 @@ class CommentView extends Component {
 		const {
 			commentsType, userProfile,
 			onVote, selfDestruct, onRepliesButtonClick,
-			t, onRequestRemoval, accessLevel,
+			t, onRequestRemoval, accessLevel, onReply,
 			...rest
 		} = this.props;
 

@@ -27,6 +27,7 @@ class CommentItem extends Component {
 		name: comment.userName,
 		level: comment.level,
 	})
+
 	render() {
 		const {
 			t,
