@@ -90,17 +90,28 @@ class CodeInfoToolbar extends Component {
 			id,
 			vote,
 			votes,
+			level,
 			name,
+			badge,
 			userID,
 			language,
 			userName,
+			avatarUrl,
 		} = this.props.playground.data;
 		const isMe = userID === this.props.playground.userId;
+		const userData = {
+			level,
+			badge,
+			userID,
+			avatarUrl,
+			name: userName,
+			id: userID,
+		};
 		return (
 			<PaperContainer className="top-toolbar">
 				<Container className="toolbar-left">
 					<FlexBox align>
-						<ProfileAvatar user={this.props.playground.data} />
+						<ProfileAvatar user={userData} />
 						<FlexBox column>
 							<SecondaryTextBlock>
 								{name} <LanguageIndicator language={language} />
