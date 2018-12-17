@@ -265,7 +265,7 @@ class IPlayground {
 		this.saveCodeRequest({ id: this.data.id });
 	}
 
-	@action saveNewCode = ({ name, isPublic }) => {
+	@action saveNewCode = async ({ name, isPublic }) => {
 		if (this.data) {
 			if (!this.isMyCode && this.data.userID) {
 				// If it is another user's code we should give credits :)
@@ -278,7 +278,7 @@ class IPlayground {
 			}
 		}
 		// We need to send id = 0 if we want to create a brand new code.
-		this.saveCodeRequest({ id: 0, name, isPublic });
+		await this.saveCodeRequest({ id: 0, name, isPublic });
 	}
 }
 

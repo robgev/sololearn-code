@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 
-import { Checkbox, FlexBox } from 'components/atoms';
+import { Container, Checkbox, FlexBox } from 'components/atoms';
 import { ConsecutiveSnackbar, FlatButton, RaisedButton } from 'components/molecules';
 import { Run, InsertLink } from 'components/icons';
 import SavePopup from './SavePopup';
@@ -41,7 +41,7 @@ class Toolbar extends Component {
 		const { t, playground } = this.props;
 		return (
 			<FlexBox align justifyBetween noShrink>
-				<div>
+				<Container>
 					<Checkbox
 						checked={playground.isDark}
 						onChange={playground.toggleTheme}
@@ -53,8 +53,8 @@ class Toolbar extends Component {
 							<InsertLink />
 						</FlatButton>
 					}
-				</div>
-				<div>
+				</Container>
+				<Container>
 					{!playground.isInline &&
 						<FlatButton
 							onClick={this.handleSaveClick}
@@ -102,7 +102,7 @@ class Toolbar extends Component {
 						autoHideDuration={playground.isSaving ? null : 1500}
 						message={playground.isSaving ? 'Saving...' : t('code_playground.alert.saved-title')}
 					/>
-				</div>
+				</Container>
 			</FlexBox>
 		);
 	}

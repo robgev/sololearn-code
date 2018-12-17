@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { observer } from 'mobx-react';
+import { toJS } from 'mobx';
+import { browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
 import {
 	Input,
@@ -14,6 +17,7 @@ import {
 import { FlatButton } from 'components/molecules';
 
 @translate()
+@observer
 class SavePopup extends Component {
 	state = {
 		name: '',
@@ -21,11 +25,16 @@ class SavePopup extends Component {
 		hasError: false,
 	}
 
-	onConfirm = () => {
+	onConfirm = async () => {
 		const { name, isPublic } = this.state;
-		this.props.playground.saveNewCode({ name, isPublic });
 		this.setState({ name: '', isPublic: false, hasError: false });
 		this.props.onClose();
+		await this.props.playground.saveNewCode({ name, isPublic });
+		console.log('PG Data is :::::', toJS(this.props.playground));
+		browserHistory.replace({
+			pathname: `/playground/${this.props.playground.data.publicID}`,
+			query: { language: this.props.playground.language },
+		});
 	}
 
 	onToggle = () => {
