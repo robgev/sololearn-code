@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import NotificationManager from './NotificationManager';
 
 const mapStateToProps = state => ({
@@ -8,6 +9,6 @@ const mapStateToProps = state => ({
 });
 
 // Need to remount NotificaitonManager when locale or user changes
-const Notifications = ({ userID, locale }) => <NotificationManager key={userID + locale} />;
+const Notifications = ({ userID, locale, location }) => <NotificationManager key={`${userID}-${locale}-${location.pathname}`} />;
 
-export default connect(mapStateToProps)(Notifications);
+export default connect(mapStateToProps)(withRouter(Notifications));

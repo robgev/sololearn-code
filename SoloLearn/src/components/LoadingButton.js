@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Localize from 'components/Localize';
-//import FlatButton from 'material-ui/FlatButton';
-//import RaisedButton from 'material-ui/RaisedButton';
+// import FlatButton from 'material-ui/FlatButton';
+// import RaisedButton from 'material-ui/RaisedButton';
 import { FlatButton, RaisedButton } from 'components/molecules';
 
 const LoadingButton = ({
@@ -15,13 +15,13 @@ const LoadingButton = ({
 				<Button
 					{...{
 						style: { width: 120 },
-						//label: loading ? t('common.loading') : label,
+						// label: loading ? t('common.loading') : label,
 						disabled: disabled || loading,
 						...rest,
 						...labelStyle,
 					}}
 				>
-				{(loading ? t('common.loading') : label)}
+					{(loading ? t('common.loading') : label)}
 				</Button>
 			)}
 		</Localize>

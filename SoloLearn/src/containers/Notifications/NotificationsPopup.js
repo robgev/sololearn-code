@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import { Motion, spring } from 'react-motion';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { markRead, markAllSeen } from 'actions/notifications';
-import NotificationList from './NotificationList';
+import { markAllSeen } from 'actions/notifications';
 import {
 	PaperContainer,
 	Container,
-	Title,
 	HorizontalDivider,
 } from 'components/atoms';
 import { UsernameLink } from 'components/molecules';
 
+import NotificationList from './NotificationList';
+import { Header } from './components';
 import './NotificationsPopup.scss';
 
-const mapDispatchToProps = { markRead, markAllSeen };
+const mapDispatchToProps = { markAllSeen };
 
 @connect(null, mapDispatchToProps)
 @translate()
@@ -37,10 +37,6 @@ class NotificationPopup extends Component {
 		}
 	}
 
-	markAllRead = () => {
-		this.props.markRead(null);
-	}
-
 	render() {
 		const { t } = this.props;
 		return (
@@ -53,17 +49,10 @@ class NotificationPopup extends Component {
 				{
 					interpolatingStyle =>
 						(
-							<Container id="notifications" className="notification-popup-wrapper" style={{...interpolatingStyle }}>
-								<Container className="arrow"/>
+							<Container id="notifications" className="notification-popup-wrapper" style={{ ...interpolatingStyle }}>
+								<Container className="arrow" />
 								<PaperContainer className="notifications-container">
-									<Container className="notifications-header">
-										<Title className="notifications-title" >{t('notifications.title')}</Title>
-										<UsernameLink
-											onClick={this.markAllRead}
-										>
-											{t('notifications.mark-all-as-read-action-title')}
-										</UsernameLink>
-									</Container>
+									<Header />
 									<HorizontalDivider />
 									<NotificationList
 										isPopup

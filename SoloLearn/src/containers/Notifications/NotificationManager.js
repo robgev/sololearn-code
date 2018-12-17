@@ -16,6 +16,7 @@ import { Badge, IconButton } from 'components/atoms';
 import { Notifications } from 'components/icons';
 
 import './NotificationManager.scss';
+
 const mapStateToProps = state => ({
 	count: notificationsCountSelector(state),
 });
@@ -78,7 +79,7 @@ class NotificationManager extends PureComponent {
 		return (
 			<div className="notifications-button-container">
 				<Badge
-					classes={{badge:"notifications-badge", invisible: 'notifications-badge-invisible'}}
+					classes={{ badge: 'notifications-badge', invisible: 'notifications-badge-invisible' }}
 					badgeContent={count}
 					invisible={count <= 0}
 					onClick={this.toggleNotificationsOpen}

@@ -1,0 +1,9 @@
+.notifications-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 11px 14px;
+	.notifications_mark-read {
+		cursor: pointer;
+	}
+}
