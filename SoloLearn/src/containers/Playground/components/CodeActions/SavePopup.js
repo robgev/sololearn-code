@@ -30,7 +30,7 @@ class SavePopup extends Component {
 		this.setState({ name: '', isPublic: false, hasError: false });
 		this.props.onClose();
 		await this.props.playground.saveNewCode({ name, isPublic });
-		console.log('PG Data is :::::', toJS(this.props.playground));
+		console.log('Here');
 		browserHistory.replace({
 			pathname: `/playground/${this.props.playground.data.publicID}`,
 			query: { language: this.props.playground.language },

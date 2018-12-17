@@ -93,8 +93,8 @@ class CodeInfoToolbar extends Component {
 			badge,
 			userID,
 			language,
-			userName,
 			avatarUrl,
+			userName = '',
 		} = this.props.playground.data;
 		const isMe = userID === this.props.playground.userId;
 		const userData = {
