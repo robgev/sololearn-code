@@ -260,7 +260,7 @@ class IPlayground {
 			});
 		try {
 			const { code } = await this.saveCodePromise;
-			this.data = code;
+			this.data = { ...this.data, ...code };
 		} finally {
 			this.saveCodePromise = null;
 		}
