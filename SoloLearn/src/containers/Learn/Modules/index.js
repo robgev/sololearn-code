@@ -160,14 +160,17 @@ class Modules extends Component {
 									courseId={id}
 									modules={modules}
 								/>
-								<ModuleChip
-									state="normal"
-									className="center"
-									completionPercent={100}
-									to={`/learn/more-on/${id}`}
-									name={t('learn.more-on-topic')}
-									iconSource="https://api.sololearn.com/uploads/Courses/assets/more.png"
-								/>
+								{
+									course.hasAdditionalLessons && 
+									<ModuleChip
+										state="normal"
+										className="center"
+										completionPercent={100}
+										to={`/learn/more-on/${id}`}
+										name={t('learn.more-on-topic')}
+										iconSource="https://api.sololearn.com/uploads/Courses/assets/more.png"
+									/>
+								}
 							</PaperContainer>
 						)
 						: <AddCourse />
