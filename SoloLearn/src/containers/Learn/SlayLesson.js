@@ -199,7 +199,9 @@ class SlayLesson extends PureComponent {
 		const hasNext = loading ? false : parts && pageNumber < parts.length || nextLesson;
 		return (
 			<LayoutWithSidebar
-				sidebar={
+				sidebar={loading
+					? <EmptyCard loading />
+					:
 					<RelatedLessons
 						id={id}
 						userID={userID}

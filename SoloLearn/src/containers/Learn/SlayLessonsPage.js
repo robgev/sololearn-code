@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
-import { InfiniteScroll, LayoutWithSidebar } from 'components/molecules';
+import { InfiniteScroll, LayoutWithSidebar, EmptyCard } from 'components/molecules';
 import { getCollectionItems, setSelectedCollection, unsetCollection } from 'actions/slay';
 
 import { UserProgressToolbar } from './components';
@@ -20,6 +20,7 @@ class SlayLessonsPage extends Component {
 		hasMore: true,
 		startIndex: 0,
 		loadCount: 20,
+		initialLoad: true,
 	}
 
 	async componentDidMount() {
@@ -32,6 +33,7 @@ class SlayLessonsPage extends Component {
 		this.setState({
 			hasMore: length === loadCount,
 			startIndex: startIndex + length,
+			initialLoad: false,
 		});
 	}
 
@@ -56,13 +58,17 @@ class SlayLessonsPage extends Component {
 	// lesson items in learn home page.
 	render() {
 		const { selectedCollection, collectionCourses } = this.props;
-		const { hasMore } = this.state;
+		const { hasMore, initialLoad } = this.state;
 		return (
 
 			<LayoutWithSidebar
 				sidebar={<UserProgressToolbar />}
 			>
-				<InfiniteScroll
+				{initialLoad
+					? 
+					<EmptyCard loading/>
+					:
+					<InfiniteScroll
 					pageStart={0}
 					hasMore={hasMore}
 					loadMore={this.loadMore}
@@ -72,6 +78,7 @@ class SlayLessonsPage extends Component {
 						name={selectedCollection ? selectedCollection.name : ''}
 					/>
 				</InfiniteScroll>
+				}
 
 			</LayoutWithSidebar>
 		);

@@ -116,9 +116,11 @@ class Parser extends Component {
 		let current = text;
 		let idx = 0;
 		const result = [];
+		
 		if (!Parser.tagRegex.test(current)) {
 			return this.noTagParse(current);
 		}
+		let skipGlossary = false;
 		while (Parser.tagRegex.test(current)) {
 			const regexed = Parser.tagRegex.exec(current);
 			const [ match, tag, args, innerText ] = regexed;
@@ -137,6 +139,7 @@ class Parser extends Component {
 				break;
 			case 'h1':
 				result.push(<h1 key={idx}>{inner}</h1>);
+				this.isHeader = true;
 				break;
 			case 'h2':
 				result.push(<h2 key={idx}>{inner}</h2>);
@@ -167,6 +170,7 @@ class Parser extends Component {
 			current = current.substring(current.indexOf(match) + match.length);
 		}
 		result.push(this.noTagParse(current));
+		this.isHeader = false;
 		return result;
 	};
 
@@ -177,6 +181,7 @@ class Parser extends Component {
 			? null
 			: filterGlossary(props.glossary, props.text);
 		this.text = props.text;
+		console.log(this.text);
 	}
 	parse = () => {
 		const { courseLanguage } = this.props;
@@ -184,7 +189,7 @@ class Parser extends Component {
 		return this._parse({ text: toBeParsed, courseLanguage });
 	}
 	parseGlossary = (fullText) => {
-		if (this.filteredGlossary === null) {
+		if (this.filteredGlossary === null || !this.isHeader) {
 			return fullText;
 		}
 		const allItems = [];

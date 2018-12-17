@@ -40,7 +40,7 @@ const SidebarCollection = ({
 					</List>
 				)
 		}
-		{!noViewMore && items.length > 0 && (
+		{!noViewMore && items.length > 1 && (
 			<ViewMoreLink to={bookmarks ? 'learn/bookmarks' : `/learn/more/author/${userID}`} >
 				{t('common.loadMore')}
 			</ViewMoreLink>

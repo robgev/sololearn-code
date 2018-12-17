@@ -39,6 +39,9 @@ export const LessonType = {
 
 const isQuizCompleted = ({ quizID, lessonProgress }) => {
 	if (lessonProgress === null) return false;
+	if(lessonProgress.isCompleted === true) {
+		return true;
+	}
 	const progress = lessonProgress.quizzes.find(el => el.quizID === quizID);
 	return progress !== undefined && progress.isCompleted;
 };
@@ -186,7 +189,7 @@ class QuizManager extends Component {
 		while (lastUnlockedQuiz > 0 && !timeline[lastUnlockedQuiz].isCompleted) {
 			lastUnlockedQuiz--;
 		}
-		lastUnlockedQuiz += 2;
+		//lastUnlockedQuiz += 2;
 		return lastUnlockedQuiz;
 		/* let lastUnlockedQuiz = quizNumber;
 
@@ -377,7 +380,10 @@ class QuizManager extends Component {
 			parseInt(this.props.params.quizNumber || timeline.length - 1, 10),
 			timeline.length - 1,
 		);
-		const lastUnlockedQuiz = this.getLastUnlockedQuiz(quizNumber, timeline);
+		let lastUnlockedQuiz = this.getLastUnlockedQuiz(quizNumber, timeline);
+		if (isCheckpoint) {
+			lastUnlockedQuiz += 2 //if not quiz go to next lesson
+		}
 		if (!this.props.params.quizNumber || lastUnlockedQuiz < this.props.params.quizNumber) {
 			const {
 				params: {
