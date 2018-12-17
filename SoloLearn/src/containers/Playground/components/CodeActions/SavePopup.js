@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { toJS } from 'mobx';
 import { browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
 import {
@@ -42,8 +41,11 @@ class SavePopup extends Component {
 	}
 
 	onChange = (e) => {
-		if (e.target.value.length <= 100) {
+		if (e.target.value.length <= this.props.playground.MAX_INPUT_LENGTH) {
 			this.setState({ name: e.target.value, hasError: !e.target.value.trim() });
+		} else {
+			const trimmedValue = e.target.value.substring(0, this.props.playground.MAX_INPUT_LENGTH);
+			this.setState({ name: trimmedValue, hasError: !trimmedValue.trim() });
 		}
 	}
 
@@ -74,7 +76,9 @@ class SavePopup extends Component {
 						label={t('code_playground.popups.save-popup-code-name-placeholder')}
 					/>
 					<FlexBox align justifyBetween>
-						<SecondaryTextBlock>{name.length}/100</SecondaryTextBlock>
+						<SecondaryTextBlock>
+							{name.length}/{this.props.playground.MAX_INPUT_LENGTH}
+						</SecondaryTextBlock>
 						<SwitchToggle
 							onChange={this.onToggle}
 							defaultChecked={this.props.playground.isPublic}

@@ -8,6 +8,7 @@ import {
 	PopupActions,
 	PopupContent,
 	PopupContentText,
+	SecondaryTextBlock,
 } from 'components/atoms';
 import { FlatButton } from 'components/molecules';
 
@@ -28,6 +29,9 @@ const InputPopup = ({
 				value={playground.inputValue}
 				onChange={playground.changeInputValue}
 			/>
+			<SecondaryTextBlock>
+				{playground.inputValue.length}/{playground.MAX_INPUT_LENGTH}
+			</SecondaryTextBlock>
 		</PopupContent>
 		<PopupActions>
 			<FlatButton

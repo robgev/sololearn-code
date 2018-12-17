@@ -9,6 +9,7 @@ import {
 } from './utils/Functions';
 
 class IPlayground {
+	MAX_INPUT_LENGTH = 100;
 	@observable data = null;
 	@observable language = null;
 	@observable getCodePromise = null;
@@ -172,7 +173,11 @@ class IPlayground {
 	}
 
 	@action changeInputValue = (e) => {
-		this.inputValue = e.target.value;
+		if (e.target.value.length <= this.MAX_INPUT_LENGTH) {
+			this.inputValue = e.target.value;
+		} else {
+			this.inputValue = e.target.value.substring(0, this.MAX_INPUT_LENGTH);
+		}
 	}
 
 	@action changeEditorState = (editorValue) => {
