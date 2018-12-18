@@ -33,7 +33,8 @@ export const getPosts = ({
 	if (error) {
 		throw error;
 	}
-	// Ignore action if filters changed
+	// Proceed with action only when the filters haven't changed
+	// while waiting for the response
 	if (filters === discussFiltersSelector(getState())) {
 		dispatch({ type: types.SET_POSTS, payload: posts });
 		if (posts.length < count) {

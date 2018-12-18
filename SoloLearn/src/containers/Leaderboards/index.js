@@ -4,7 +4,13 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
 import isEqual from 'lodash/isEqual';
-import { getLeaderboard, loadMore } from 'actions/leaderboards';
+import { getLeaderboard, setFilters } from 'actions/leaderboards';
+import {
+	DEFAULT_FILTERS,
+	leaderboardsFiltersSelector,
+	leaderboardsDataSelector,
+} from 'reducers/leaderboards.reducer';
+import { queryDifference } from 'utils';
 import BusyWrapper from 'components/BusyWrapper';
 import LeaderboardShimmer from 'components/Shimmers/LeaderboardShimmer';
 import texts from 'texts';
@@ -41,23 +47,21 @@ const sendGoogleEvent = (mode) => {
 	}
 };
 
-const mapStateToProps =
-	({ leaderboards, userProfile: { id: userId, countryCode } }) =>
-		({ leaderboards, userId, countryCode });
+const mapStateToProps = state => ({
+	leaderboards: leaderboardsDataSelector(state),
+	filters: leaderboardsFiltersSelector(state),
+	userId: state.userProfile.id,
+	countryCode: state.userProfile.countryCode,
+});
 
-@connect(mapStateToProps, { getLeaderboard, loadMore })
+@connect(mapStateToProps, { getLeaderboard, setFilters })
 @translate()
 class Leaderboards extends PureComponent {
 	constructor(props) {
 		super(props);
-		const { params: { mode: modeValue, range: rangeValue, userId } } = props;
+		const { params: { userId } } = props;
 		const calculatedUserId = parseInt(userId || this.props.userId, 10);
-		// Set default mode and turn into int in case it's not set
-		const mode = modeValue ? parseInt(modeValue, 10) : 1;
-		const range = rangeValue ? parseInt(rangeValue, 10) : 1; // Same thing
 		this.state = {
-			mode,
-			range,
 			userRank: -1,
 			loading: true,
 			startIndex: 0,
@@ -67,17 +71,22 @@ class Leaderboards extends PureComponent {
 			userId: calculatedUserId,
 			loadingData: false,
 		};
-		sendGoogleEvent(mode);
 		document.title = 'Sololearn | Leaderboards';
 	}
 
 	async componentDidMount() {
 		const {
-			mode, range, userId, startIndex, loadCount,
+			userId, startIndex, loadCount,
 		} = this.state;
+		const { location, filters } = this.props;
+		const query = {
+			...filters,
+			...location.query,
+		};
+		this.props.setFilters(query);
+		const changed = queryDifference(DEFAULT_FILTERS, query);
+		browserHistory.replace({ ...location, query: changed });
 		const length = await this.props.getLeaderboard({
-			mode,
-			range,
 			userId,
 			index: startIndex,
 			count: loadCount,
@@ -89,35 +98,42 @@ class Leaderboards extends PureComponent {
 			startIndex: length,
 			hasMore: length === loadCount,
 		});
+		sendGoogleEvent(this.props.filters.mode);
 	}
 
 	async componentWillReceiveProps(newProps) {
-		const { loadCount } = this.state;
-		const { params: newParams, leaderboards: newLeaderboards } = newProps;
-		const { params, leaderboards } = this.props;
-		if (newParams.mode !== params.mode || newParams.range !== params.range) {
-			sendGoogleEvent(newParams.mode);
-			const mode = parseInt(newParams.mode, 10);
-			const range = parseInt(newParams.range, 10);
-			this.setState({ loading: true, mode, range });
-			const length = await this.props.getLeaderboard({ ...newParams, index: 0, count: 20 });
-			this.setState({ startIndex: length, hasMore: length === loadCount });
+		const { userId, loadCount } = this.state;
+		const {
+			location: newLocation,
+			leaderboards: newLeaderboards,
+		} = newProps;
+		const { location, leaderboards } = this.props;
+		if (!isEqual(newLocation.query, location.query)) {
+			this.setState({ loading: true });
+			sendGoogleEvent(newProps.filters.mode);
+			// Check against default filters and show only the ones that are different
+			// From the defaults in the address bar
+			const changed = queryDifference(DEFAULT_FILTERS, newLocation.query);
+			browserHistory.replace({ ...newLocation, query: changed });
+			// Keep the redux filters up to date with the route url
+			this.props.setFilters({ ...DEFAULT_FILTERS, ...newLocation.query });
+			// Fetch and send google event
+			const length = await this.props.getLeaderboard({ userId, index: 0, count: 20 });
+			this.setState({ loading: false, startIndex: length, hasMore: length === loadCount });
 		} else if (newLeaderboards.length !== leaderboards.length
 			|| !isEqual(newLeaderboards, leaderboards)) {
 			const userRank = this.findRank(newLeaderboards);
-			this.setState({ loading: false, userRank });
+			this.setState({ userRank });
 		}
 	}
 
 	handleNextFetch = async () => {
 		const {
-			startIndex, loadCount, mode, userId,
+			startIndex, loadCount, userId,
 		} = this.state;
 		this.setState({ loadingData: true });
 		const length = await this.props.loadMore({
-			mode,
 			userId,
-			range: 0,
 			count: loadCount,
 			index: startIndex,
 		});
@@ -129,13 +145,19 @@ class Leaderboards extends PureComponent {
 	}
 
 	handleChange = (event) => {
-		const { mode = 1, userId } = this.state;
-		browserHistory.replace(`/leaderboards/${userId}/${mode}/${event.target.value}`);
+		const { location } = this.props;
+		browserHistory.replace({
+			...location,
+			query: { ...location.query, range: event.target.value },
+		});
 	}
 
-	tabChange = (event, value) => {
-		const { range = 0, userId } = this.state;
-		browserHistory.replace(`/leaderboards/${userId}/${value}/${range}`);
+	tabChange = (_, value) => {
+		const { location } = this.props;
+		browserHistory.replace({
+			...location,
+			query: { ...location.query, mode: value },
+		});
 	}
 
 	findRank = (newLeaderboards) => {
@@ -158,13 +180,12 @@ class Leaderboards extends PureComponent {
 	render() {
 		const {
 			t,
+			filters,
 			countryCode,
 			leaderboards,
 			userId: currentUserId,
 		} = this.props;
 		const {
-			mode,
-			range,
 			userId,
 			loading,
 			hasMore,
@@ -172,11 +193,12 @@ class Leaderboards extends PureComponent {
 			shouldHideButton,
 			loadingData,
 		} = this.state;
+		console.log(loading);
 		return (
 			<Layout className="leaderboards-container">
 				<PaperContainer className="leaderboards-header-container">
 					<Container className="leaderboards-topbar">
-						<Tabs onChange={this.tabChange} value={mode}>
+						<Tabs onChange={this.tabChange} value={filters.mode}>
 							<Tab
 								value={1}
 								label={texts.following}
@@ -190,7 +212,7 @@ class Leaderboards extends PureComponent {
 								label={texts.global}
 							/>
 						</Tabs>
-						<Select value={range} onChange={this.handleChange} displayEmpty>
+						<Select value={filters.range} onChange={this.handleChange} displayEmpty>
 							<MenuItem value={1}>{texts.today}</MenuItem>
 							<MenuItem value={7}>{texts.thisWeek}</MenuItem>
 							<MenuItem value={30}>{texts.thisMonth}</MenuItem>
@@ -210,7 +232,7 @@ class Leaderboards extends PureComponent {
 									{
 										leaderboards.length === 0 ?
 											<Title>{t('leaderboard.no-social-message')}</Title>
-											: range === 0 ?
+											: filters.range === 0 ?
 												<InfiniteLeaderboard
 													userId={userId}
 													hasMore={hasMore}
@@ -238,7 +260,7 @@ class Leaderboards extends PureComponent {
 									onClick={this.scrollTo}
 									className="scroll-button"
 								>
-									{`${t(`leaderboard.action.${userId === this.props.userId ? 'find-me' : 'find-them'}`)} ${userRank}`}
+									{`${t(`leaderboard.action.${userId === currentUserId ? 'find-me' : 'find-them'}`)} ${userRank}`}
 									<ArrowDown />
 								</RaisedButton>
 							</Container>

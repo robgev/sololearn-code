@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router';
 import VisibilitySensor from 'react-visibility-sensor';
 import { InfiniteScroll } from 'components/molecules';
-import UserCard from './UserCard';
 import { Container, HorizontalDivider } from 'components/atoms';
+import UserCard from './UserCard';
 
 const InfiniteLeaderboard = ({
 	userId,
@@ -20,30 +19,28 @@ const InfiniteLeaderboard = ({
 	>
 		<Container className="leaderboard-card-container">
 			{
-				leaderboards.map(user => {
-					user.id = user.userID;
-					return (
-						<Container
-							key={user.name}
-							id={`user-card-${user.userID}`}
-							className="leaderboard-card-wrapper"
-						>
-							<Container className="leaderboard-card">
-								{	user.userID === userId ?
-									<VisibilitySensor
-										scrollCheck
-										scrollThrottle={100}
-										intervalDelay={8000}
-										onChange={onScrollVisibility}
-									>
-										<UserCard user={user}/>
-									</VisibilitySensor> :
+				leaderboards.map(user => (
+					<Container
+						key={user.name}
+						id={`user-card-${user.userID}`}
+						className="leaderboard-card-wrapper"
+					>
+						<Container className="leaderboard-card">
+							{	user.userID === userId ?
+								<VisibilitySensor
+									scrollCheck
+									scrollThrottle={100}
+									intervalDelay={8000}
+									onChange={onScrollVisibility}
+								>
 									<UserCard user={user} />
-								}
-							</Container>
-							<HorizontalDivider/>
+								</VisibilitySensor> :
+								<UserCard user={user} />
+							}
 						</Container>
-				)})
+						<HorizontalDivider />
+					</Container>
+				))
 			}
 
 		</Container>

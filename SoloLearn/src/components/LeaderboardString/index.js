@@ -49,11 +49,11 @@ class LeaderboardString extends Component {
 
 	render() {
 		const { userID } = this.props;
-		const { queryParams, string } = this.getLeaderboardString();
+		const { queryParams: query, string } = this.getLeaderboardString();
 		return (
 			<UsernameLink
-				to={queryParams
-					? `/leaderboards/${userID}/${queryParams.mode}/${queryParams.range}`
+				to={query
+					? { pathname: `/leaderboards/${userID}`, query }
 					: '/leaderboards'
 				}
 				className="leaderboard-link hoverable"
