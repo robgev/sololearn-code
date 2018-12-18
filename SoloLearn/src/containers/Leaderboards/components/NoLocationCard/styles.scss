@@ -1,0 +1,8 @@
+@import '~styles/variables';
+
+.no-location_container {
+	min-height: 400px;
+	.no-location_spaced {
+		margin-bottom: $secondary_gap_size
+	}
+}

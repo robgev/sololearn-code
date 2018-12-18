@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
@@ -19,6 +19,7 @@ import {
 	Title,
 } from 'components/atoms';
 import { ArrowDown } from 'components/icons';
+import { NoLocationCard } from './components';
 import InfiniteLeaderboard from './InfiniteLeaderboard';
 import LeaderboardCard from './LeaderboardCard';
 
@@ -41,7 +42,8 @@ const sendGoogleEvent = (mode) => {
 };
 
 const mapStateToProps =
-	({ leaderboards, userProfile: { id: userId } }) => ({ leaderboards, userId });
+	({ leaderboards, userProfile: { id: userId, countryCode } }) =>
+		({ leaderboards, userId, countryCode });
 
 @connect(mapStateToProps, { getLeaderboard, loadMore })
 @translate()
@@ -154,7 +156,12 @@ class Leaderboards extends PureComponent {
 	}
 
 	render() {
-		const { leaderboards, t, userId: currentUserId } = this.props;
+		const {
+			t,
+			countryCode,
+			leaderboards,
+			userId: currentUserId,
+		} = this.props;
 		const {
 			mode,
 			range,
@@ -197,26 +204,33 @@ class Leaderboards extends PureComponent {
 						wrapperClassName="leaderboards-body"
 						loadingComponent={<LeaderboardShimmer />}
 					>
-						{
-							leaderboards.length === 0 ?
-								<Title>{t('leaderboard.no-social-message')}</Title>
-								: range === 0 ?
-									<InfiniteLeaderboard
-										userId={userId}
-										hasMore={hasMore}
-										leaderboards={leaderboards}
-										loadMore={this.handleNextFetch}
-										onScrollVisibility={this.onScrollVisibility}
-										isLoading={loadingData}
-									/> :
-									<LeaderboardCard
-										userId={userId}
-										leaderboards={leaderboards}
-										isMine={currentUserId === userId}
-										onScrollVisibility={this.onScrollVisibility}
-									/>
+						{countryCode
+							? (
+								<Fragment>
+									{
+										leaderboards.length === 0 ?
+											<Title>{t('leaderboard.no-social-message')}</Title>
+											: range === 0 ?
+												<InfiniteLeaderboard
+													userId={userId}
+													hasMore={hasMore}
+													leaderboards={leaderboards}
+													loadMore={this.handleNextFetch}
+													onScrollVisibility={this.onScrollVisibility}
+													isLoading={loadingData}
+												/> :
+												<LeaderboardCard
+													userId={userId}
+													leaderboards={leaderboards}
+													isMine={currentUserId === userId}
+													onScrollVisibility={this.onScrollVisibility}
+												/>
+									}
+								</Fragment>
+							)
+							: <NoLocationCard />
 						}
-						{(userRank > 0 && !shouldHideButton) &&
+						{(userRank > 0 && countryCode && !shouldHideButton) &&
 							<Container
 								className="scroll-button-container"
 							>

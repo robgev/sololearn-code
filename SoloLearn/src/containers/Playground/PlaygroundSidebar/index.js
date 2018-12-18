@@ -2,8 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { Container, Heading, SecondaryTextBlock, Title, FlexBox, List } from 'components/atoms';
-import { ViewMoreLink } from 'components/molecules';
-import RaisedButton from 'material-ui/RaisedButton';
+import { ViewMoreLink, RaisedButton } from 'components/molecules';
 import { sidebarCodesSelector } from 'reducers/codes.reducer';
 import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
 
@@ -29,10 +28,11 @@ const PlaygroundSidebar = ({ t, sidebarItems, userID }) => (
 							{({ togglePopup }) =>
 								(
 									<RaisedButton
-										secondary
+										color="secondary"
 										onClick={togglePopup}
-										label={t('code.no-saved-code-action-title')}
-									/>
+									>
+										{t('code.no-saved-code-action-title')}
+									</RaisedButton>
 								)
 							}
 						</AddCodeButton>
