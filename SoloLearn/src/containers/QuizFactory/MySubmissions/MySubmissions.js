@@ -305,6 +305,9 @@ class MySubmissions extends Component {
 					<PopupTitle>
 						{t('factory.delete-submission-title')}
 					</PopupTitle>
+					<PopupContent>
+						{t('factory.delete-submission-message')}
+					</PopupContent>
 					<PopupActions>
 						<FlatButton
 							onClick={this.toggleDeletePopup}
