@@ -1,7 +1,10 @@
 .certificate_full-height {
 	padding: 0;
 	height: calc(100vh - 50px);
-	.certificate_image {
+	.certificate_container {
 		height: 100%;
+		.certificate_image {
+			height: 100%;
+		}
 	}
 }

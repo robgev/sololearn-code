@@ -66,12 +66,12 @@ class Certificate extends PureComponent {
 				{
 					loading
 						? (
-							<FlexBox align justify>
+							<FlexBox align justify className="certificate_container">
 								<EmptyCard loading />
 							</FlexBox>
 						)
 						: (
-							<FlexBox align justify>
+							<FlexBox align justify className="certificate_container">
 								<Image
 									className="certificate_image"
 									src={imageData}

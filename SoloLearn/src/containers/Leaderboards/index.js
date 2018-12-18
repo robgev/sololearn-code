@@ -1,15 +1,13 @@
 import React, { PureComponent } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
-import { browserHistory, Link } from 'react-router';
+import { browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
 import isEqual from 'lodash/isEqual';
 import { getLeaderboard, loadMore } from 'actions/leaderboards';
 import BusyWrapper from 'components/BusyWrapper';
 import LeaderboardShimmer from 'components/Shimmers/LeaderboardShimmer';
 import texts from 'texts';
-import InfiniteLeaderboard from './InfiniteLeaderboard';
-import LeaderboardCard from './LeaderboardCard';
 import { Layout, RaisedButton } from 'components/molecules';
 import {
 	Container,
@@ -18,10 +16,11 @@ import {
 	Tab,
 	Select,
 	MenuItem,
-	Loading,
 	Title,
 } from 'components/atoms';
 import { ArrowDown } from 'components/icons';
+import InfiniteLeaderboard from './InfiniteLeaderboard';
+import LeaderboardCard from './LeaderboardCard';
 
 import './index.scss';
 
@@ -155,7 +154,7 @@ class Leaderboards extends PureComponent {
 	}
 
 	render() {
-		const { leaderboards, t } = this.props;
+		const { leaderboards, t, userId: currentUserId } = this.props;
 		const {
 			mode,
 			range,
@@ -199,7 +198,7 @@ class Leaderboards extends PureComponent {
 						loadingComponent={<LeaderboardShimmer />}
 					>
 						{
-							leaderboards.length == 0 ?
+							leaderboards.length === 0 ?
 								<Title>{t('leaderboard.no-social-message')}</Title>
 								: range === 0 ?
 									<InfiniteLeaderboard
@@ -212,8 +211,8 @@ class Leaderboards extends PureComponent {
 									/> :
 									<LeaderboardCard
 										userId={userId}
-										userRank={userRank}
 										leaderboards={leaderboards}
+										isMine={currentUserId === userId}
 										onScrollVisibility={this.onScrollVisibility}
 									/>
 						}

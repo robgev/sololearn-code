@@ -1,12 +1,13 @@
 import React from 'react';
+import { translate } from 'react-i18next';
 import VisibilitySensor from 'react-visibility-sensor';
-import texts from 'texts';
 import { Container, HorizontalDivider } from 'components/atoms';
 import UserCard from './UserCard';
 
 const LeaderboardCard = ({
+	t,
 	userId,
-	userRank,
+	isMine,
 	leaderboards,
 	onScrollVisibility,
 }) => (
@@ -14,9 +15,12 @@ const LeaderboardCard = ({
 		{
 			leaderboards.map((user, index) => (
 				<Container className="leaderboard-card-wrapper" key={user.name}>
-					{ (index === 10 && userRank > 10) && // after top 10
+					{ (index === 0
+						? false
+						: user.number - leaderboards[index - 1].number > 1
+					) && // after top 10
 						<Container className="leaderboard-next-banner">
-							{ texts.next }
+							{ isMine ? t('leaderboard.header.own-title') : t('leaderboard.header.they-title') }
 						</Container>
 					}
 					<Container className={`leaderboard-card ${user.userID === userId ? ' highlighted' : ''}`} id={`user-card-${user.userID}`}>
@@ -38,4 +42,4 @@ const LeaderboardCard = ({
 	</Container>
 );
 
-export default LeaderboardCard;
+export default translate()(LeaderboardCard);

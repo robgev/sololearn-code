@@ -115,9 +115,6 @@ const texts = {
 	get global() {
 		return i18n.t('leaderboard.tab.global-title');
 	},
-	get next() {
-		return i18n.t('leaderboard.header.own-title');
-	},
 };
 
 export default texts;
