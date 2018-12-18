@@ -71,41 +71,43 @@ class CommentItem extends Component {
 											<SecondaryTextBlock>
 												{updateDate(comment.date)}
 											</SecondaryTextBlock>
-											<IconMenu >
-												{comment.userID === userProfileId &&
-													[
+											{ !isEditing && 
+												 <IconMenu >
+													{comment.userID === userProfileId &&
+														[
+															<MenuItem
+																key={`edit${comment.id}`}
+																onClick={toggleEdit}
+															>{t('common.edit-action-title')}
+															</MenuItem>,
+															<MenuItem
+																key={`remove${id}`}
+																onClick={toggleDeleteDialog}
+															>{t('common.delete-title')}
+															</MenuItem>,
+														]
+													}
+													{comment.userID !== userProfileId &&
 														<MenuItem
-															key={`edit${comment.id}`}
-															onClick={toggleEdit}
-														>{t('common.edit-action-title')}
-														</MenuItem>,
-														<MenuItem
-															key={`remove${id}`}
-															onClick={toggleDeleteDialog}
-														>{t('common.delete-title')}
-														</MenuItem>,
-													]
-												}
-												{comment.userID !== userProfileId &&
-													<MenuItem
-														onClick={toggleReportPopup}
-													>{t('common.report-action-title')}
-													</MenuItem>
-												}
-												{comment.userID !== userProfileId &&
-													accessLevel > 1 &&
-													[
-														
-														<MenuItem
-															onClick={toggleRemovalPopup}
-														>
-															{
-																t('discuss.forum_request_removal_prompt_title') 
-															}
+															onClick={toggleReportPopup}
+														>{t('common.report-action-title')}
 														</MenuItem>
-													]
-												}
+													}
+													{comment.userID !== userProfileId &&
+														accessLevel > 1 &&
+														[
+															
+															<MenuItem
+																onClick={toggleRemovalPopup}
+															>
+																{
+																	t('discuss.forum_request_removal_prompt_title') 
+																}
+															</MenuItem>
+														]
+													}
 											</IconMenu>
+											}
 										</Container>
 									</FlexBox>
 									<Container>

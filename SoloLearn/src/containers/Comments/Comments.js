@@ -254,7 +254,7 @@ class Comments extends Component {
 		const { t, userProfile } = this.props;
 		return (
 			<InfiniteScroll
-				key={this.orderBy}
+				
 				loadMore={this.loadMore}
 				hasMore={this.hasMore}
 				isLoading={this.loading}
@@ -301,6 +301,7 @@ class Comments extends Component {
 						commentsRef={this.addRef}
 						delete={this.deleteComment}
 						commentsAPI={this.commentsAPI}
+						key={this.orderBy}
 					/>
 				</PaperContainer>
 			</InfiniteScroll>
