@@ -14,7 +14,7 @@ const entities = (state = [], action) => {
 	case SET_LEADERBOARD:
 		return action.payload;
 	case APPEND_LEADERBOARD_USERS:
-		return uniqBy([ ...state, ...action.payload ], 'id');
+		return uniqBy([ ...state, ...action.payload ], 'number');
 	case EMPTY_LEADERBOARDS:
 	case LOGOUT:
 		return [];

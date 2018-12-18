@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
 import isEqual from 'lodash/isEqual';
-import { getLeaderboard, setFilters } from 'actions/leaderboards';
+import { getLeaderboard, setFilters, loadMore } from 'actions/leaderboards';
 import {
 	DEFAULT_FILTERS,
 	leaderboardsFiltersSelector,
@@ -54,7 +54,7 @@ const mapStateToProps = state => ({
 	countryCode: state.userProfile.countryCode,
 });
 
-@connect(mapStateToProps, { getLeaderboard, setFilters })
+@connect(mapStateToProps, { getLeaderboard, setFilters, loadMore })
 @translate()
 class Leaderboards extends PureComponent {
 	constructor(props) {
