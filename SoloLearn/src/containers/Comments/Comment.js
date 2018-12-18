@@ -102,8 +102,12 @@ class Comment extends Component {
 
 	@action deleteReply = async (id) => {
 		const { comment } = this.props;
-		comment.repliesArray.splice(comment.repliesArray.findIndex(i => i.id === id), 1);
+		const index = comment.repliesArray.findIndex(i => i.id === id);
+		comment.repliesArray.splice(index, 1);
 		comment.replies -= 1;
+		for(let i = index; i < comment.repliesArray.length; i++) {
+			comment.repliesArray[i].index--;
+		}
 		this.props.commentsAPI.deleteComment({ id })
 			.catch(e => showError(e, 'Something went wrong when trying to delete comment'));
 		this.props.onCommentDelete();
