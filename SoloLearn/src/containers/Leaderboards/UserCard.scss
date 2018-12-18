@@ -1,19 +1,12 @@
 @import '~styles/variables';
 
-.user-card-container {
-	display: flex;
-	justify-content: space-between;
-	.user-info {
-		display: flex;
-		.user-meta-data {
-			margin-left: $secondary-gap-size;
-			.badge {
-				margin-left: $secondary-gap-size;
-			}
-			.info {
-				display: block;
-				padding: 0px;
-			}
-		}
+.user-meta-data {
+	margin-left: $secondary-gap-size;
+	.badge {
+		margin-left: $secondary-gap-size;
+	}
+	.info {
+		display: block;
+		padding: 0px;
 	}
 }
