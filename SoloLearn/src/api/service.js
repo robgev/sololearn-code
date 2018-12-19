@@ -2,7 +2,7 @@ import Storage from './storage';
 
 export const AppDefaults = {
 	baseUrl: 'http://localhost:2525',
-	downloadHost: 'https://api.sololearn.com/uploads/',
+	downloadHost: 'https://api.sololearn.com/uploads',
 };
 
 class Service {
