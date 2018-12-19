@@ -1,9 +1,10 @@
 import { LOAD_COURSES, RESET_LOCALE_DATA } from 'constants/ActionTypes';
 import { toSeoFriendly } from 'utils';
+import { AppDefaults } from 'api/service';
 
 const addIconLinks = courses => courses.map(singleCourse => ({
 	...singleCourse,
-	iconUrl: `https://api.sololearn.com/uploads/Courses/${singleCourse.id}.png`,
+	iconUrl: `${AppDefaults.downloadHost}/Courses/${singleCourse.id}.png`,
 }));
 
 export default (state = [], action) => {

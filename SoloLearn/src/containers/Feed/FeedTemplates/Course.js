@@ -7,6 +7,7 @@ import {
 	TextBlock,
 	Link,
 } from 'components/atoms';
+import { AppDefaults } from 'api/service';
 
 import 'styles/Feed/FeedTemplates/Course.scss';
 
@@ -21,7 +22,7 @@ const Course = ({ course, date, showDate = true }) => (
 		>
 			<Image
 				alt="course icon"
-				src={`https://api.sololearn.com/uploads/Courses/${course.id}.png`}
+				src={`${AppDefaults.downloadHost}/Courses/${course.id}.png`}
 				className="courseIcon"
 			/>
 			<Link to={`/learn/course/${toSeoFriendly(course.name)}`}>

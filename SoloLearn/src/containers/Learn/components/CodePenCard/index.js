@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { slayItemTypes } from 'constants/ItemTypes';
+import { AppDefaults } from 'api/service';
 import { getLanguageColor, toSeoFriendly } from 'utils';
 
-import { PaperContainer, Container, Progress, Image, SecondaryTextBlock } from 'components/atoms';
+import { Container, Progress, Image, SecondaryTextBlock } from 'components/atoms';
 import { ContainerLink, ViewStats } from 'components/molecules';
 import './styles.scss';
 
@@ -39,7 +40,7 @@ const CodePenCard = ({
 					alt="Course Icon"
 					className="card-image"
 					src={itemType === slayItemTypes.course
-						? `https://api.sololearn.com/uploads/Courses/${id}_web.png`
+						? `${AppDefaults.downloadHost}/Courses/${id}_web.png`
 						: iconUrl
 					}
 				/>

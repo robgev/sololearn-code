@@ -26,7 +26,7 @@ import { loadCourseInternal, toggleCourseInternal, toggleCourse, selectModule } 
 import { getCourseByCourseName } from 'reducers/courses.reducer';
 import { isCourseLoaded } from 'reducers/reducer_course';
 
-import Service from 'api/service';
+import Service, { AppDefaults } from 'api/service';
 import Progress, { ProgressState } from 'api/progress';
 
 import './styles.scss';
@@ -161,14 +161,14 @@ class Modules extends Component {
 									modules={modules}
 								/>
 								{
-									course.hasAdditionalLessons && 
+									course.hasAdditionalLessons &&
 									<ModuleChip
 										state="normal"
 										className="center"
 										completionPercent={100}
 										to={`/learn/more-on/${id}`}
 										name={t('learn.more-on-topic')}
-										iconSource="https://api.sololearn.com/uploads/Courses/assets/more.png"
+										iconSource={`${AppDefaults.downloadHost}/Courses/assets/more.png`}
 									/>
 								}
 							</PaperContainer>
