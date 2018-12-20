@@ -71,6 +71,9 @@ class Comments extends Component {
 			// Need to keep commentsAPI orderBy in sync with view
 			this.commentsAPI.orderBy = this.orderBy;
 		});
+		if(this.commentsAPI.findPostId) {
+			this.loadMore();
+		}
 		// this.initialRequest();
 	}
 
@@ -172,9 +175,13 @@ class Comments extends Component {
 
 	@action getCommentsBelow = async () => {
 		const count = 20;
+		const lastIndex = this.comments.length ? this.comments[this.comments.length-1].index : 0;
+		if(lastIndex < 0) {
+			return;
+		}
 		this.loading = true;
 		const comments = await this.commentsAPI.getComments({
-			index: this.comments.length, count,
+			index: lastIndex, count,
 		});
 		this.loading = false;
 		if (comments.length < count) {
