@@ -112,9 +112,10 @@
 		.header-wrapper {
 			width: 100%;
 			padding: 0 10px;
+			grid-gap: 0;
+			grid-template-columns: minmax(0, 6fr) minmax(0, 2fr);
 			align-items: center;
 			.header-right {
-				flex-grow: 6;
 				.header-search-container {
 					flex-grow: 1;
 				}
@@ -130,7 +131,6 @@
 				}
 			}
 			.header-left {
-				flex-grow: 2;
 				.notifications-button-container,
 				.header-settings-menu-container {
 					flex-grow: 1;
