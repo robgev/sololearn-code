@@ -44,21 +44,14 @@ class CodeBlock extends Component {
 			(
 				<Container className="code-container">
 					{playgroundOpened ?
-						<FlexBox column>
-							<Playground
-								inline
-								codeId={codeId}
-								basePath={basePath}
-								language={language}
-								lessonCodeId={codeId || null}
-							/>
-							<FlatButton
-								className="code-button"
-								onClick={this.closePlayground}
-							>
-								{t('common.close-title')}
-							</FlatButton>
-						</FlexBox> :
+						<Playground
+							inline
+							codeId={codeId}
+							basePath={basePath}
+							language={language}
+							lessonCodeId={codeId || null}
+							onClose={this.closePlayground}
+						/> :
 						<FlexBox column style={{ position: 'relative' }}>
 							<LanguageLabel language={codeLanguage} className="language-label">
 								{codeLanguage}

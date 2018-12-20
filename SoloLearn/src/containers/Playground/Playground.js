@@ -70,7 +70,7 @@ class Playground extends Component {
 								<EditorContainer
 									playground={this.playground}
 								>
-									<Editor playground={this.playground} />
+									<Editor onClose={this.props.onClose} playground={this.playground} />
 									<CodeOutput playground={this.playground} />
 								</EditorContainer>
 								<CodeActions playground={this.playground} />
