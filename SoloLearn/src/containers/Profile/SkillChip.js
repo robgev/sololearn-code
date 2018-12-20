@@ -1,5 +1,5 @@
 import React from 'react';
-import Progressbar from 'components/Progressbar';
+import { AppDefaults } from 'api/service';
 import {
 	Container,
 	Image,
@@ -18,7 +18,7 @@ const SkillChips = ({ t, course, shouldShowLink }) => (
 			<Image
 				alt={course.name}
 				className="course-icon"
-				src={`https://api.sololearn.com/uploads/Courses/${course.id}.png`}
+				src={`${AppDefaults.downloadHost}/Courses/${course.id}.png`}
 			/>
 		</Container>
 		<FlexBox column >

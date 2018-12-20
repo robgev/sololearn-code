@@ -1,6 +1,8 @@
 @import '~styles/colors';
 @import '~styles/variables';
 
+$module-image-size: 70px;
+
 .modules-chips-container {
 	display: flex;
 	flex-flow: row wrap;
@@ -23,8 +25,8 @@
 			position: relative;
 			margin: $primary_gap_size;
 			.module-image {
-				height: $large-avatar-size;
-				width: $large-avatar-size;
+				height: $module-image-size;
+				width: $module-image-size;
 				pointer-events: none;
 			}
 			&.active {

@@ -28,7 +28,7 @@ const ModuleChips = ({
 			const completionPercent = Progress.getModuleProgress(module);
 			const { stateClass } = moduleState;
 			const iconSource =
-					`${AppDefaults.downloadHost}Modules/${courseId}/${module.id}${moduleState.visualState === ProgressState.Disabled ? '_disabled' : ''}.png`;
+					`${AppDefaults.downloadHost}/Modules/${courseId}/${module.id}${moduleState.visualState === ProgressState.Disabled ? '_disabled' : ''}.png`;
 
 			return (
 				<ModuleChip
