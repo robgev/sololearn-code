@@ -189,11 +189,8 @@ class QuizManager extends Component {
 		while (lastUnlockedQuiz >= 0 && !timeline[lastUnlockedQuiz].isCompleted) {
 			lastUnlockedQuiz--;
 		}
-
-		
 		lastUnlockedQuiz += 2;
 		
-
 		return lastUnlockedQuiz;
 		/* let lastUnlockedQuiz = quizNumber;
 
@@ -387,8 +384,10 @@ class QuizManager extends Component {
 			parseInt(this.props.params.quizNumber || timeline.length - 1, 10),
 			timeline.length - 1,
 		);
-		const lastUnlockedQuiz = this.getLastUnlockedQuiz(quizNumber, timeline);
-		
+		let lastUnlockedQuiz = this.getLastUnlockedQuiz(quizNumber, timeline);
+		if (lastUnlockedQuiz >= timeline.length) {
+			lastUnlockedQuiz = 1;
+		}
 		if (!this.props.params.quizNumber || lastUnlockedQuiz < this.props.params.quizNumber) {
 			const {
 				params: {
@@ -399,14 +398,14 @@ class QuizManager extends Component {
 			return;
 		}
 
-		if (!this.props.params.quizNumber) {
+		/*if (!this.props.params.quizNumber) {
 			const {
 				params: {
 					courseName, moduleName, lessonName,
 				},
 			} = this.props;
 			browserHistory.replace(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz || 1}`);
-		}
+		}*/
 	}
 
 	openComments = () => {
