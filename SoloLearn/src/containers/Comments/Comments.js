@@ -120,8 +120,8 @@ class Comments extends Component {
 		const comments = await this.commentsAPI.getComments({
 			index: this.comments.length, count: Comments.DEFAULT_INITAL_COUNT,
 		});
-		this.loading = false;
-		if (comments.length < Comments.DEFAULT_INITAL_COUNT) {
+		
+		if (comments.length < Comments.DEFAULT_INITAL_COUNT && !findPostId) {
 			this.hasMore = false;
 		}
 		let withReplies;
@@ -143,6 +143,7 @@ class Comments extends Component {
 			this.highlight(findPostId);
 		}
 		this.commentsAPI.findPostId = null;
+		this.loading = false;
 	}
 
 	componentDidUpdate(prevProps) {
