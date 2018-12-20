@@ -3,10 +3,12 @@ import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 
 import { Container, Checkbox, FlexBox } from 'components/atoms';
-import { ConsecutiveSnackbar, FlatButton, RaisedButton } from 'components/molecules';
+import { ConsecutiveSnackbar, FlatButton } from 'components/molecules';
 import { Run } from 'components/icons'; // InsertLink
 import SavePopup from './SavePopup';
 // import ExternalResourcePopup from './ExternalResourcePopup';
+
+import './styles.scss';
 
 @translate()
 @observer
@@ -77,7 +79,7 @@ class Toolbar extends Component {
 					</FlatButton>
 
 					<FlatButton
-						color="secondary"
+						className="playground_run-button"
 						disabled={playground.isSaving || playground.isRunning}
 						onClick={playground.isWeb
 							? playground.runWebCode
