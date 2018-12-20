@@ -76,8 +76,8 @@ class Toolbar extends Component {
 						{t('code_playground.actions.reset-code')}
 					</FlatButton>
 
-					<RaisedButton
-						variant="secondary"
+					<FlatButton
+						color="secondary"
 						disabled={playground.isSaving || playground.isRunning}
 						onClick={playground.isWeb
 							? playground.runWebCode
@@ -86,7 +86,7 @@ class Toolbar extends Component {
 					>
 						Run
 						<Run />
-					</RaisedButton>
+					</FlatButton>
 					<SavePopup
 						open={isSavePopupOpen}
 						playground={playground}

@@ -26,7 +26,7 @@ const RemovalPopup = ({
 		<PopupActions>
 			<FlatButton
 				onClick={onClose}
-				variant="secondary"
+				color="secondary"
 			>
 				{t('common.cancel-title')}
 			</FlatButton>

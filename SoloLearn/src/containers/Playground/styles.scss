@@ -1,7 +1,11 @@
 @import '~styles/medias';
+@import '~styles/colors';
 
 .molecule_layout {
 	&.fullscreen {
+		display: grid;
+		grid-template-columns: minmax(0, 5fr) minmax(0, 2fr);
+    align-items: start;
 		max-width: 100%;
 		padding: 0;
 		.playground_main-container {
@@ -12,5 +16,16 @@
 			height: calc(100vh - 50px);
 			overflow-y: hidden;
 		}
+		.playground_sidebar {
+			height: calc(100vh - 50px);
+			overflow-y: scroll;
+		}
 	}
+	&.no-sidebar {
+		grid-template-columns: minmax(0, 7fr);
+	}
+}
+
+.playground_main-container.bordered {
+	border: 1px solid $secondary_background_color;
 }

@@ -21,15 +21,15 @@ import './styles.scss';
 @translate()
 @observer
 class Playground extends Component {
-	playground = new IPlayground({
-		inline: this.props.inline,
-		userId: this.props.userId,
-		publicId: this.props.publicId,
-		language: this.props.language,
-		lessonCodeId: this.props.lessonCodeId,
-	})
-
-	componentDidMount() {
+	constructor(props) {
+		super(props);
+		this.playground = new IPlayground({
+			inline: this.props.inline,
+			userId: this.props.userId,
+			publicId: this.props.publicId,
+			language: this.props.language,
+			lessonCodeId: this.props.lessonCodeId,
+		});
 		this.playground.getCode();
 		ReactGA.ga('send', 'screenView', { screenName: 'Code Editor Page' });
 	}
@@ -51,20 +51,22 @@ class Playground extends Component {
 		} = this.playground;
 		// If it's not a public code or we are not in fullscreen mode
 		// We don't need some of the elements on the page.
-		const isMinimal = !data.id || isInline || isFullscreen || !publicId;
+		const isMinimal = !data.id || isInline || !publicId;
 		const LayoutContainer = isInline ? Container : Layout;
 		const MainContainer = isInline ? Container : PaperContainer;
 		const EditorContainer = !hasLiveOutput ? SplitPane : Fragment;
+		const fullScreenCN = (isFullscreen && !isFetching) ? 'fullscreen' : '';
+		const sidebarCN = (isFullscreen && isMinimal) ? 'no-sidebar' : '';
 		return (
-			<LayoutContainer className={isFullscreen ? 'fullscreen' : ''}>
+			<LayoutContainer className={`${fullScreenCN} ${sidebarCN}`}>
 				{isFetching
 					? <EmptyCard loading paper />
 					: (
 						<Fragment>
-							{ !isMinimal &&
+							{ !(isMinimal || isFullscreen) &&
 								<CodeInfoToolbar playground={this.playground} />
 							}
-							<MainContainer className="playground_main-container">
+							<MainContainer className={`playground_main-container ${isInline ? 'bordered' : ''}`}>
 								<EditorContainer
 									playground={this.playground}
 								>
@@ -75,12 +77,18 @@ class Playground extends Component {
 								<InputPopup playground={this.playground} />
 							</MainContainer>
 							{!isMinimal &&
-								<Comments
-									type={1}
-									commentsType="code"
-									id={data.id}
-									commentsCount={data.comments}
-								/>
+								<Container className="playground_sidebar scrollbar">
+									{ isFullscreen &&
+										<CodeInfoToolbar playground={this.playground} />
+									}
+									<Comments
+										type={1}
+										useWindow={false}
+										commentsType="code"
+										id={data.id}
+										commentsCount={data.comments}
+									/>
+								</Container>
 							}
 						</Fragment>
 					)

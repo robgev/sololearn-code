@@ -4,7 +4,7 @@
 	position: relative;
 	height: 600px;
 	&.split-pane_inline {
-		height: 300px;
+		height: 200px;
 	}
 	&.split-pane_fullscreen {
 		height: calc(100vh - 50px);
