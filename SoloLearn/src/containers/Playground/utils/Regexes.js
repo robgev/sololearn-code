@@ -2,7 +2,7 @@ export const htmlWrapperRegex = new RegExp(/<html>([\s\S]*)<\/html>/);
 export const headWrapperRegex = new RegExp(/<head>([\s\S]*)<\/head>/);
 export const bodyWrapperRegex = new RegExp(/<body>([\s\S]*)<\/body>/);
 export const htmlOpenTag = new RegExp(/<\s*html\s*>/);
-export const htmlCloseTag = new RegExp(/<\s*html\s*\/\s*>/);
+export const htmlCloseTag = new RegExp(/<\s*\/\s*html\s*>/);
 
 export const inputRegexes = {
 	cpp: /(cin\s*>>)|(cin\.getline\s*\([a-zA-Z]*,[0-9]*(,[a-zA-Z]*)?\))|((std::)?getline\s*\((std::)?(cin))/,

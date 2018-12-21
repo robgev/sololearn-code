@@ -223,8 +223,22 @@ class IPlayground {
 			code: this.editorState.sourceCode,
 			value: `<style>${this.editorState.cssCode}</style>`,
 		});
-		const wholeCode = addUserScript({
+		const errorHandlerEmbedded = addExternal({
 			code: htmlWithCss,
+			value: `
+			<script type="text/javascript">
+				window.onerror = (msg, url, line, col, error) => {
+					const lineText = line === 0 ? "" : \`Line: $\{line}\`;
+					const errorMessage = \`$\{msg}
+					$\{lineText}\`;
+					console.error(errorMessage);
+					return false;
+				}
+			</script>
+			`,
+		});
+		const wholeCode = addUserScript({
+			code: errorHandlerEmbedded,
 			value: `<script type="text/javascript">${this.editorState.jsCode}</script>`,
 		});
 		this.showOutput(wholeCode);
