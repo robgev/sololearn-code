@@ -12,10 +12,10 @@ import {
 	ViewStats,
 	ModBadge,
 	ProfileAvatar,
-	LanguageLabel,
 	UsernameLink,
 	DateInfo,
 } from 'components/molecules';
+import LanguageCard from 'components/LanguageCard';
 
 import './styles.scss';
 
@@ -30,38 +30,39 @@ const CodeItem = ({ code, minimal }) => {
 	return (
 		<Fragment>
 			<ListItem className="code-item-wrapper">
-				<ProfileAvatar className="user" user={user} />
+				<LanguageCard className="code-item-language-card" forcedColor="white" language={code.language} />
 				<FlexBox fullWidth column className="details-wrapper">
 					<Link to={`/playground/${code.publicID}`}>
 						<Title>
 							{code.name}
 						</Title>
 					</Link>
-					{!minimal &&
-						<Container>
-							<UsernameLink to={`/profile/${user.id}`}>
-								{user.name}
-							</UsernameLink>
-							<ModBadge
-								badge={user.badge}
-								className="small"
-							/>
-						</Container>
-					}
-					<Container className="stats">
-						<LanguageLabel language={code.language} />
-						<ViewStats votes={code.votes} comments={code.comments} />
-						<Container>
+					<FlexBox align fullWidth justifyBetween>
+						<Container className="stats">
+							<ViewStats votes={code.votes} comments={code.comments} />
 							{!code.isPublic &&
-							<Lock className="code_item-lock" />
+								<Lock className="code_item-lock" />
 							}
 						</Container>
-						{!minimal &&
-							<Container>
-								<DateInfo date={code.modifiedDate} />
-							</Container>
+						{minimal ?
+							<DateInfo date={code.modifiedDate} /> :
+							<FlexBox align>
+								<Container>
+									<Container>
+										<UsernameLink to={`/profile/${user.id}`}>
+											{user.name}
+										</UsernameLink>
+										<ModBadge
+											badge={user.badge}
+											className="small"
+										/>
+									</Container>
+									<DateInfo date={code.modifiedDate} />
+								</Container>
+								<ProfileAvatar className="user" user={user} />
+							</FlexBox>
 						}
-					</Container>
+					</FlexBox>
 				</FlexBox>
 			</ListItem>
 			<HorizontalDivider />
