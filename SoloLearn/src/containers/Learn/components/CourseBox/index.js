@@ -4,11 +4,13 @@ import { toSeoFriendly } from 'utils';
 import { slayItemTypes } from 'constants/ItemTypes';
 import { Image, Container, CircularProgress, SecondaryTextBlock } from 'components/atoms';
 import { ContainerLink, ViewStats } from 'components/molecules';
+import { withCourses } from 'utils/with';
 
 import './styles.scss';
 
 const CourseBox = ({
 	id,
+	getCourseAliasById,
 	name,
 	color,
 	iconUrl,
@@ -22,12 +24,12 @@ const CourseBox = ({
 	return (
 		<Container className="course-box-container">
 			<ContainerLink
-				to={itemType === 5 ? `/learn/collection/${id}` : `/learn/course/${toSeoFriendly(name)}`}
+				to={itemType === 5 ? `/learn/collection/${id}` : `/learn/course/${toSeoFriendly(getCourseAliasById(id))}`}
 				className="course-card-wrapper"
 			>
 				<Container className="image-wrapper" style={{ backgroundColor: color }}>
-					{ isRound &&
-					<CircularProgress percentage={progress * 100} />
+					{isRound &&
+						<CircularProgress percentage={progress * 100} />
 					}
 					<Image
 						src={iconUrl}
@@ -53,4 +55,4 @@ const CourseBox = ({
 
 const mapStateToProps = state => ({ courses: state.courses });
 
-export default connect(mapStateToProps, null)(CourseBox);
+export default withCourses(connect(mapStateToProps, null)(CourseBox));
