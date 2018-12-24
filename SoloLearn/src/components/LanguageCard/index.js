@@ -6,14 +6,17 @@ import './styles.scss';
 
 const getContrast50 = hexcolor => ((parseInt(hexcolor.substring(1), 16) > 0xffffff / 2) ? 'black' : 'white');
 
-const LanguageCard = ({ language, style }) => {
+const LanguageCard = ({
+	language, forcedColor, style, className,
+}) => {
 	const backgroundColor = getLanguageColor(language);
-	const color = getContrast50(backgroundColor);
+	const color = forcedColor || getContrast50(backgroundColor);
 	return (
 		<FlexBox
 			align
 			justify
-			className="colored-box"
+			noShrink
+			className={`colored-box ${className}`}
 			style={{
 				...style, // need for mateial ui injection in ListItem
 				backgroundColor,

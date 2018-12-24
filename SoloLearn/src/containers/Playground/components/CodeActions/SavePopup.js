@@ -90,12 +90,12 @@ class SavePopup extends Component {
 				<PopupActions>
 					<FlatButton
 						onClick={this.onClose}
-						variant="secondary"
+						color="secondary"
 					>
 						{t('common.cancel-title')}
 					</FlatButton>
 					<FlatButton
-						variant="primary"
+						color="primary"
 						disabled={!name.trim()}
 						onClick={this.onConfirm}
 					>

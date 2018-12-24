@@ -123,7 +123,7 @@ class Comments extends Component {
 		const comments = await this.commentsAPI.getComments({
 			index: this.comments.length, count: Comments.DEFAULT_INITAL_COUNT,
 		});
-		
+
 		if (comments.length < Comments.DEFAULT_INITAL_COUNT && !findPostId) {
 			this.hasMore = false;
 		}
@@ -259,13 +259,13 @@ class Comments extends Component {
 	}
 
 	render() {
-		const { t, userProfile } = this.props;
+		const { t, userProfile, useWindow } = this.props;
 		return (
 			<InfiniteScroll
-				
 				loadMore={this.loadMore}
 				hasMore={this.hasMore}
 				isLoading={this.loading}
+				useWindow={useWindow}
 				className="comment-list"
 			>
 				<PaperContainer className="comments-container">

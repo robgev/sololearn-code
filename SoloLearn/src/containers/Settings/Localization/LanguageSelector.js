@@ -5,7 +5,7 @@ import {
 	MenuItem,
 	SecondaryTextBlock,
 	Container,
-	Image
+	Image,
 } from 'components/atoms';
 
 const translations = [
@@ -27,7 +27,7 @@ const translations = [
 ];
 
 const CountrySelector = ({ t, value, onChange }) => (
-	<Container className='settings_language_selector_container'>
+	<Container className="settings_language_selector_container">
 		<SecondaryTextBlock>{t('settings.language')}</SecondaryTextBlock>
 		<Select
 			fullWidth
@@ -35,7 +35,7 @@ const CountrySelector = ({ t, value, onChange }) => (
 			value={value}
 			onChange={onChange}
 			label={t('settings.language')}
-			
+
 		>
 			{ translations.map(item =>
 				(

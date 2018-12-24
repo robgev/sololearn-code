@@ -73,12 +73,12 @@ class ExternalResourcePopup extends Component {
 				<PopupActions>
 					<FlatButton
 						onClick={onClose}
-						variant="secondary"
+						color="secondary"
 					>
 						{t('common.cancel-title')}
 					</FlatButton>
 					<FlatButton
-						variant="primary"
+						color="primary"
 						onClick={this.onConfirm}
 						disabled={!sourceUrl.trim()}
 					>

@@ -9,7 +9,7 @@ export const logout = () => (dispatch) => {
 	Storage.clear();
 	Storage.save('locale', localeBackup);
 	dispatch(setUserProfile(null));
-	dispatch({ type: types.RESET_LOCALE_DATA, payload: localeBackup });
+	dispatch({ type: types.RESET_LOCALE_DATA, payload: localeBackup, noDropCourses: true });
 	dispatch({ type: types.LOGOUT });
 	return Service.request('Logout');
 };
