@@ -1,13 +1,12 @@
 @import '~styles/colors';
 @import '~styles/variables';
 
-$heading_size: $secondary_text_size;
 $heading_color: $primary_color;
 
 .atom_heading {
   display: inline-block;
   text-transform: uppercase;
 	font-size: $heading_size;
-  color: $heading_color;
+	color: $heading_color;
   margin-bottom: $primary_gap_size;
 }

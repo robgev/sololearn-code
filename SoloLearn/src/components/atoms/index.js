@@ -48,3 +48,4 @@ export { default as Popper } from './Popper';
 export { default as Grow } from './Grow';
 export { default as ClickAwayListener } from './ClickAwayListener';
 export { default as MenuList } from './MenuList';
+export { default as IconLabel } from './IconLabel';

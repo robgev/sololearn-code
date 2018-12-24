@@ -4,18 +4,18 @@ import {
 	Container,
 	MenuItem,
 	Select,
-	Title,
+	Heading,
 } from 'components/atoms';
 
 const CommentsToolbar = ({
 	value, count, onChange, t,
 }) => (
 	<Container className="comments-toolbar-container">
-		<Title>
+		<Heading>
 			{count === 1
 				? t('common.comment-format-one')
 				: `${count} ${t('common.comments')}`}
-		</Title>
+		</Heading>
 		<Select
 			value={value}
 			onChange={event => onChange(event.target.value)}

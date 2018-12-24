@@ -71,7 +71,7 @@ class CommentItem extends Component {
 											<SecondaryTextBlock>
 												{updateDate(comment.date)}
 											</SecondaryTextBlock>
-											{ !isEditing && 
+											{ !isEditing &&
 												 <IconMenu >
 													{comment.userID === userProfileId &&
 														[
@@ -86,27 +86,27 @@ class CommentItem extends Component {
 															>{t('common.delete-title')}
 															</MenuItem>,
 														]
-													}
+												 	}
 													{comment.userID !== userProfileId &&
-														<MenuItem
+												<MenuItem
 															onClick={toggleReportPopup}
 														>{t('common.report-action-title')}
 														</MenuItem>
-													}
+												 	}
 													{comment.userID !== userProfileId &&
 														accessLevel > 1 &&
 														[
-															
+
 															<MenuItem
 																onClick={toggleRemovalPopup}
 															>
 																{
-																	t('discuss.forum_request_removal_prompt_title') 
+																	t('discuss.forum_request_removal_prompt_title')
 																}
-															</MenuItem>
+															</MenuItem>,
 														]
-													}
-											</IconMenu>
+												 	}
+												 </IconMenu>
 											}
 										</Container>
 									</FlexBox>
@@ -169,7 +169,7 @@ class CommentItem extends Component {
 									/>
 								</Container>
 								<Container>
-									
+
 									{
 										comment.parentID === null && (
 											<PromiseButton

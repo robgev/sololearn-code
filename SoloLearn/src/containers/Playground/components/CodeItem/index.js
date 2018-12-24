@@ -47,9 +47,9 @@ const CodeItem = ({ code, minimal }) => {
 						{minimal ?
 							<DateInfo date={code.modifiedDate} /> :
 							<FlexBox align>
-								<Container>
+								<FlexBox column justify className="code-item-user-details">
 									<Container>
-										<UsernameLink to={`/profile/${user.id}`}>
+										<UsernameLink className="code-item-user-name" to={`/profile/${user.id}`}>
 											{user.name}
 										</UsernameLink>
 										<ModBadge
@@ -58,7 +58,7 @@ const CodeItem = ({ code, minimal }) => {
 										/>
 									</Container>
 									<DateInfo date={code.modifiedDate} />
-								</Container>
+								</FlexBox>
 								<ProfileAvatar className="user" user={user} />
 							</FlexBox>
 						}

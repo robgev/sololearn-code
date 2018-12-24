@@ -1,7 +1,7 @@
 @import '~styles/variables';
 @import '~styles/colors';
 
-$icon_size: 20px;
+$icon_size: 18px;
 
 .code-item-wrapper {
 	display: flex;
@@ -22,7 +22,13 @@ $icon_size: 20px;
 			.code_item-lock {
 				height: $icon_size;
 				width: $icon_size;
-				color: $secondary_text_color;
+				color: $icon_color;
+			}
+		}
+		.code-item-user-details {
+			align-items: flex-end;
+			.code-item-user-name {
+				margin-right: 10px;
 			}
 		}
 	}

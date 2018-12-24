@@ -1,0 +1,7 @@
+@import '~styles/colors';
+@import '~styles/variables';
+
+.atom_icon-label {
+	font-size: $label_text_size;
+	color: $secondary_text_color;
+}

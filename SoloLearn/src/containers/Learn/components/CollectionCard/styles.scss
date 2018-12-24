@@ -1,11 +1,12 @@
 .meta-info {
-	padding-bottom: 5px;
+	padding-bottom: 2px;
 	&.big-padding-bottom {
 		padding-bottom: 15px;
 	}
 }
 .course-description {
-	padding-bottom: 15px;
+	display: inline-block;
+	padding-bottom: 4px;
 }
 .courses-list {
 	.course-chip-wrapper {
@@ -15,7 +16,7 @@
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
-			margin: 0 5px;
+			margin-right: 10px;
 			margin-top: 3px;
 			transition: all 150ms ease-out;
 			&:not(.round) {
