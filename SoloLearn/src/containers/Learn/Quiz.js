@@ -85,7 +85,6 @@ class Quiz extends Component {
 	}
 
 	handleHint = () => {
-		
 		Progress.applyHint(
 			this.props.activeQuiz.id,
 			PointExchangeTypes.Hint,
@@ -94,11 +93,9 @@ class Quiz extends Component {
 		this.props.deductExp(this.props.activeModule.hintPrice);
 		this.hint();
 		this.closeHintPopup();
-		
 	}
 
 	handleUnlock = () => {
-		
 		Progress.applyHint(
 			this.props.activeQuiz.id,
 			PointExchangeTypes.Skip,
@@ -107,16 +104,15 @@ class Quiz extends Component {
 		this.props.deductExp(this.props.activeModule.skipPrice);
 		this.unlock();
 		this.closeUnlockPopup();
-	
 	}
 
 	check = (force = false) => {
 		const checkResult = force === true ? true : this.quiz.check();
 		Progress.addResult(this.props.activeLessonId, this.props.activeQuiz.id, checkResult, 0);
 		this.setState({ checkResult, isQuizComplete: true });
-		//if (checkResult) {
-			this.props.openComments();
-		//}
+		// if (checkResult) {
+		this.props.openComments();
+		// }
 	}
 
 	continueQuiz = () => {
@@ -148,12 +144,12 @@ class Quiz extends Component {
 						browserHistory.push(`/certificate/${this.props.course.id}`);
 					} else {
 						// Go back to module list
-						browserHistory.push(`/learn/course/${toSeoFriendly(this.props.params.courseName)}`);
+						browserHistory.push(`/learn/course/${toSeoFriendly(this.props.params.alias)}`);
 					}
 				} else {
 					// Else show lessons
 					this.setState({ checkResult: null, isQuizComplete: false });
-					browserHistory.push(`/learn/course/${toSeoFriendly(this.props.params.courseName)}/${toSeoFriendly(this.props.params.moduleName)}`);
+					browserHistory.push(`/learn/course/${toSeoFriendly(this.props.params.alias)}/${toSeoFriendly(this.props.params.moduleName)}`);
 				}
 				// return;
 			}

@@ -99,9 +99,9 @@ export default ([
 
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/collection/:collectionId" component={SlayLessonsPage} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/lesson/:itemType/:lessonId(/:lessonName)(/:pageNumber)" component={SlayLesson} />
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/course/:courseName" component={Modules} />
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/course/:courseName/:moduleName" component={Lessons} />
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/course/:courseName/:moduleName/:lessonName" component={QuizManager}>
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/course/:alias" component={Modules} />
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/course/:alias/:moduleName" component={Lessons} />
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/course/:alias/:moduleName/:lessonName" component={QuizManager}>
 			<Route path=":quizNumber" component={Quiz} />
 		</Route>
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/play" component={Play} />

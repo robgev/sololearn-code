@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
 import { ProgressState } from 'api/progress';
-import { getCourseByCourseName } from 'reducers/courses.reducer';
+import { getCourseByAlias } from 'reducers/courses.reducer';
 
 // Redux modules
 import {
@@ -28,7 +28,7 @@ import { LessonType } from './QuizManager';
 
 const mapStateToProps = (state, ownProps) => ({
 	isLoaded: isLoaded(state, 'lessons'),
-	course: getCourseByCourseName(state, ownProps.params.courseName),
+	course: getCourseByAlias(state, ownProps.params.alias),
 	modules: state.modulesMapping,
 	activeModule: !state.course ? null : state.modulesMapping[state.activeModuleId],
 	lessons: state.lessonsMapping,
@@ -63,7 +63,7 @@ class Lessons extends Component {
 		}
 		this.props.selectLesson(lessonId, lessonState);
 		this.props.selectQuiz(this.getActiveQuiz(this.props.lessons[lessonId]));
-		browserHistory.push(`/learn/course/${toSeoFriendly(params.courseName)}/${toSeoFriendly(params.moduleName)}/${toSeoFriendly(lessonName)}/`);
+		browserHistory.push(`/learn/course/${toSeoFriendly(params.alias)}/${toSeoFriendly(params.moduleName)}/${toSeoFriendly(lessonName)}/`);
 	}
 
 	getActiveQuiz = (lesson) => {
@@ -90,10 +90,7 @@ class Lessons extends Component {
 			course,
 			isLoaded,
 			activeModule,
-			params: {
-				courseName,
-				moduleName,
-			},
+			params,
 		} = this.props;
 
 		if (!isLoaded || !activeModule) {
@@ -114,10 +111,10 @@ class Lessons extends Component {
 			>
 				<Container className="lessons-container">
 					<Container className="lesson-breadcrumbs">
-						<Link className="hoverable" to={`/learn/course/${toSeoFriendly(courseName)}`}>
+						<Link className="hoverable" to={`/learn/course/${toSeoFriendly(params.alias)}`}>
 							{course.name}
 						</Link> &gt;
-						<Link className="hoverable" to={`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}`}>
+						<Link className="hoverable" to={`/learn/course/${toSeoFriendly(params.alias)}/${toSeoFriendly(params.moduleName)}`}>
 							{name}
 						</Link>
 					</Container>
