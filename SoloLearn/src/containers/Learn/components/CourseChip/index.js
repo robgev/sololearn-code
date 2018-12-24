@@ -27,18 +27,15 @@ const CourseChip = ({
 	const roundItem = isCourse || round;
 	return (
 		<WrapperComponent
-			style={{
-				backgroundColor: roundItem ? 'transparent' : color,
-				...wrapperStyle,
-			}}
+			style={wrapperStyle}
 			className={`chip-container ${(roundItem) ? 'round' : ''} ${className}`}
-
 			to={customLink || (isCourse ? `/learn/course/${toSeoFriendly(name)}` : `/learn/lesson/${itemType === 3 ? 'course-lesson' : 'user-lesson'}/${id}/${toSeoFriendly(name, 100)}/1`)}
 		>
 			<Container
 				className={`course-chip-image-container ${(roundItem) ? 'round' : ''} ${noBoxShadow ? '' : 'with-shadow'}`}
 				style={{
 					height: size,
+					backgroundColor: roundItem ? 'transparent' : color,
 					...paperStyle,
 				}}
 			>

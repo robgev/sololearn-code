@@ -7,7 +7,7 @@ const Slider = ({ className, ...props }) => (
 		arrows
 		draggable
 		dots={false}
-		speed={500}
+		speed={750}
 		swipeToSlide
 		variableWidth
 		infinite={false}

@@ -1,5 +1,6 @@
 /* mixin for multiline */
 @mixin multiLineEllipsis($lineHeight: 1.2em, $lineCount: 1, $bgColor: white){
+	box-sizing: content-box;
 	overflow: hidden;
   position: relative;
   line-height: $lineHeight;

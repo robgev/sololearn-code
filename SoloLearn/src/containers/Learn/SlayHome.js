@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
 
 import { refreshLessonCollections, getLessonCollections, getBookmarkLessons } from 'actions/slay';
-import { CollectionCard, LayoutGenerator, SidebarCollectionCard } from 'containers/Learn/components';
+import { CollectionCard, LayoutGenerator } from 'containers/Learn/components';
 
 const mapStateToProps = state => ({
 	bookmarks: state.slay.bookmarks.slice(0, 10),
@@ -14,7 +13,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = { refreshLessonCollections, getLessonCollections, getBookmarkLessons };
 
 @connect(mapStateToProps, mapDispatchToProps)
-@translate()
 class SlayHome extends PureComponent {
 	constructor() {
 		super();
@@ -60,23 +58,17 @@ class SlayHome extends PureComponent {
 	}
 
 	render() {
-		const { t, collections, bookmarks } = this.props;
+		const { collections } = this.props;
 		const { loading, hasMore } = this.state;
 		return (
 			<LayoutGenerator
+				noSidebar
 				noDisplay={false}
 				loading={loading}
 				hasMore={hasMore}
 				items={collections}
 				loadMore={this.loadMore}
 				cardComponent={CollectionCard}
-				sidebarContent={
-					<SidebarCollectionCard
-						bookmarks
-						items={bookmarks}
-						title={t('store.bookmarks.title')}
-					/>
-				}
 			/>
 		);
 	}
