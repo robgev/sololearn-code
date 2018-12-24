@@ -12,6 +12,7 @@ export default (state = [], action) => {
 	case LOAD_COURSES:
 		return addIconLinks(action.payload);
 	case RESET_LOCALE_DATA:
+		if (action.noDropCourses) return state;
 		return [];
 	default:
 		return state;
