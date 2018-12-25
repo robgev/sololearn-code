@@ -10,7 +10,6 @@ import './styles.scss';
 
 const CourseBox = ({
 	id,
-	getCourseAliasById,
 	name,
 	color,
 	iconUrl,
@@ -19,12 +18,13 @@ const CourseBox = ({
 	viewCount,
 	comments,
 	progress,
+	getCourseAliasById,
 }) => {
 	const isRound = itemType === slayItemTypes.course || isCourses;
 	return (
 		<Container className="course-box-container">
 			<ContainerLink
-				to={itemType === 5 ? `/learn/collection/${id}` : `/learn/course/${toSeoFriendly(getCourseAliasById(id))}`}
+				to={itemType !== slayItemTypes.course ? `/learn/collection/${id}` : `/learn/course/${toSeoFriendly(getCourseAliasById(id))}`}
 				className="course-card-wrapper"
 			>
 				<Container className="image-wrapper" style={{ backgroundColor: color }}>
@@ -53,6 +53,4 @@ const CourseBox = ({
 	);
 };
 
-const mapStateToProps = state => ({ courses: state.courses });
-
-export default withCourses(connect(mapStateToProps, null)(CourseBox));
+export default withCourses(CourseBox);
