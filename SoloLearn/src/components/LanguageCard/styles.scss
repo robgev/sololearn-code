@@ -7,4 +7,8 @@ $box-size: $small-avatar-size;
 	height: $box-size;
 	font-size: $secondary_text_size;
 	margin: 0px 10px 0 0;
+	&.big {
+		width: $box-size + 5px;
+		height: $box-size + 5px;
+	}
 }

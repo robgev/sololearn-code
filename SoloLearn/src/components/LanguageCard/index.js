@@ -15,16 +15,16 @@ const getContrast50 = (hexcolor) => {
 };
 
 const LanguageCard = ({
-	language, forcedColor, style, className,
+	big, language, style, className,
 }) => {
 	const backgroundColor = getLanguageColor(language);
-	const color = forcedColor || getContrast50(backgroundColor);
+	const color = getContrast50(backgroundColor);
 	return (
 		<FlexBox
 			align
 			justify
 			noShrink
-			className={`colored-box ${className}`}
+			className={`colored-box ${big ? 'big' : ''} ${className}`}
 			style={{
 				...style, // need for mateial ui injection in ListItem
 				backgroundColor,

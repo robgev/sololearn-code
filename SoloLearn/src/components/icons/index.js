@@ -31,4 +31,5 @@ export {
 	EventNote as Date,
 	ThumbDown,
 	Edit,
+	DragIndicator as DragIcon,
 } from '@material-ui/icons';

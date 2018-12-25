@@ -21,7 +21,7 @@ const CourseChip = ({
 	progress,
 	isCourse,
 	language,
-	size = 95,
+	size = 85,
 	className,
 	paperStyle,
 	customLink,

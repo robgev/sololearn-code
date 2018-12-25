@@ -10,6 +10,7 @@ const LayoutGenerator = ({
 	paper,
 	items,
 	loading,
+	heading,
 	children,
 	hasMore,
 	loadMore,
@@ -30,6 +31,7 @@ const LayoutGenerator = ({
 				title={title}
 				paper={paper}
 				isBusy={loading}
+				heading={heading}
 				style={wrapperStyle}
 				noDisplay={noDisplay}
 				loadingComponent={LoadingComponent ?

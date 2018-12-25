@@ -1,3 +1,5 @@
+@import '~styles/colors';
+
 .question-container {
 	display: flex;
 	flex-direction: column;
@@ -48,7 +50,10 @@
 		overflow: hidden;
 	}
 	.reorder-item {
-		cursor: pointer;
+		cursor: grab;
+		.drag-icon {
+			color: $main_text_color;
+		}
 		.unselectable-text {
 			-webkit-touch-callout: none;
 			-webkit-user-select: none;

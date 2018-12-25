@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import { shuffleArray } from 'utils';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 import { List, ListItem, FlexBox, TextBlock } from 'components/atoms';
-import { MoreVert } from 'components/icons';
+import { DragIcon } from 'components/icons';
 import quizType from './types';
 
 // Utility components
 
 const SortableItem = SortableElement(({ value }) => (
-	<ListItem>
-		<FlexBox className="reorder-item" fullWidth justifyBetween>
+	<ListItem className="reorder-item">
+		<FlexBox fullWidth justifyBetween>
 			<TextBlock className="unselectable-text">
 				{value}
 			</TextBlock>
-			<MoreVert />
+			<DragIcon className="drag-icon" />
 		</FlexBox>
 	</ListItem>
 ));

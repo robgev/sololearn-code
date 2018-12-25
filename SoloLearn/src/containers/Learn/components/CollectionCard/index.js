@@ -79,6 +79,7 @@ const CollectionCard = ({
 								round={round}
 								noName={noName}
 								isCourse={isCourses}
+								size={(isCourses || round) ? 85 : 95}
 								className="collection-card-chip"
 								noBoxShadow={!(isCourses && round)}
 								customLink={lessonItem.itemType === 5 ? `/learn/collection/${lessonItem.id}` : null}

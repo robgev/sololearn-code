@@ -5,6 +5,9 @@
 	margin-bottom: 10px;
 	.toolbar-left {
 		flex-grow: 1;
+		.code-info-toolbar_code-data {
+			align-items: stretch;
+		}
 	}
 	.toolbar-right {
 		display: flex;
