@@ -1,8 +1,14 @@
 @import '~styles/colors';
+@import '~styles/variables';
 
 .atom_select {
+	font-size: $secondary_text_size;
+	color: $primary_color;
 	&:after {
-		border-bottom-color: $primary_color;
+		border: none;
+	}
+	&:before {
+		content: none;
 	}
 	div[aria-pressed]:focus {
 		background: none;

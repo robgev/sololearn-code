@@ -18,7 +18,7 @@ export {
 	Bookmark,
 	BookmarkBorder,
 	Notifications,
-	SwapVert as Arrows,
+	ThumbsUpDown as Arrows,
 	Lock,
 	Fullscreen,
 	FullscreenExit,

@@ -8,7 +8,7 @@ $arrow-size: 30px;
 	.slick-arrow {
 		z-index: 1;
 		&.slick-disabled {
-			opacity: .3;
+			opacity: 0;
 		}
 		&:before {
 			transition: opacity .2s;

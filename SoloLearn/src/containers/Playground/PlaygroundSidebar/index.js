@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { Container, Heading, SecondaryTextBlock, Title, FlexBox, List } from 'components/atoms';
+import { Heading, SecondaryTextBlock, Title, FlexBox, List } from 'components/atoms';
 import { ViewMoreLink, RaisedButton } from 'components/molecules';
 import { sidebarCodesSelector } from 'reducers/codes.reducer';
 import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
 });
 
 const PlaygroundSidebar = ({ t, sidebarItems, userID }) => (
-	<Container className="playground_sidebar">
+	<FlexBox column className="playground_sidebar">
 		<Heading>{t('code.filter.my-codes')}</Heading>
 		{sidebarItems === null
 			? <SidebarShimmer round noTitle />
@@ -46,11 +46,11 @@ const PlaygroundSidebar = ({ t, sidebarItems, userID }) => (
 		}
 		{sidebarItems && sidebarItems.length > 0 && sidebarItems.length === 10 &&
 		// Check if got whole 10 else no more code available
-			<ViewMoreLink to={`/profile/${userID}/codes`} >
+			<ViewMoreLink className="playground_view-more-link" to={`/profile/${userID}/codes`} >
 				{t('common.loadMore')}
 			</ViewMoreLink>
 		}
-	</Container>
+	</FlexBox>
 );
 
 export default connect(mapStateToProps)(translate()(PlaygroundSidebar));

@@ -4,7 +4,15 @@ import { getLanguageColor } from 'utils';
 
 import './styles.scss';
 
-const getContrast50 = hexcolor => ((parseInt(hexcolor.substring(1), 16) > 0xffffff / 2) ? 'black' : 'white');
+const getContrast50 = (hexcolor) => {
+	// For more info check
+	// http://www.w3.org/TR/AERT#color-contrast
+	const red = parseInt(hexcolor.substring(1, 3), 16) * 299;
+	const green = parseInt(hexcolor.substring(3, 5), 16) * 587;
+	const blue = parseInt(hexcolor.substring(5, 7), 16) * 114;
+	const contrast = Math.round((red + green + blue) / 1000);
+	return contrast > 200 ? 'black' : 'white';
+};
 
 const LanguageCard = ({
 	language, forcedColor, style, className,

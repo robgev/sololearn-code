@@ -18,7 +18,7 @@ import {
 } from 'actions/learn';
 import { getModuleByName } from 'reducers/reducer_modules';
 import { getLessonByName } from 'reducers/reducer_lessons';
-import { getCourseByCourseName } from 'reducers/courses.reducer';
+import { getCourseByAlias } from 'reducers/courses.reducer';
 
 // Utils
 import Progress, { ProgressState } from 'api/progress';
@@ -39,7 +39,7 @@ export const LessonType = {
 
 const isQuizCompleted = ({ quizID, lessonProgress }) => {
 	if (lessonProgress === null) return false;
-	if(lessonProgress.isCompleted === true) {
+	if (lessonProgress.isCompleted === true) {
 		return true;
 	}
 	const progress = lessonProgress.quizzes.find(el => el.quizID === quizID);
@@ -48,7 +48,7 @@ const isQuizCompleted = ({ quizID, lessonProgress }) => {
 
 const mapStateToProps = (state, ownProps) => ({
 	isLoaded: isLoaded(state, 'quizzes'),
-	course: getCourseByCourseName(state, ownProps.params.courseName),
+	course: getCourseByAlias(state, ownProps.params.alias),
 	lessons: state.lessonsMapping,
 	activeQuiz: state.activeQuiz,
 	lesson: getLessonByName(state, ownProps.params.lessonName),
@@ -95,7 +95,7 @@ class QuizManager extends Component {
 			// 3 - Module is finished
 			const {
 				params: {
-					courseName, moduleName, lessonName,
+					moduleName, lessonName, alias,
 				},
 			} = this.props;
 
@@ -119,12 +119,12 @@ class QuizManager extends Component {
 						localProgress[localProgress.length - 1].lessonID :
 						lessons[0].id;
 					this.setActiveLesson(activeLessonId, activeModuleId);
-					browserHistory.replace(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${this.props.activeQuiz.number}`);
+					browserHistory.replace(`/learn/course/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${this.props.activeQuiz.number}`);
 				} else {
 					const { localProgress } = Progress;
 					const activeLessonId = localProgress[localProgress.length - 1].lessonID;
 					this.setActiveLesson(activeLessonId, moduleId);
-					browserHistory.replace(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${this.props.activeQuiz.number}`);
+					browserHistory.replace(`/learn/course/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${this.props.activeQuiz.number}`);
 				}
 			} else {
 				this.setActiveLesson(lessonId, moduleId);
@@ -190,7 +190,7 @@ class QuizManager extends Component {
 			lastUnlockedQuiz--;
 		}
 		lastUnlockedQuiz += 2;
-		
+
 		return lastUnlockedQuiz;
 		/* let lastUnlockedQuiz = quizNumber;
 
@@ -287,7 +287,7 @@ class QuizManager extends Component {
 		const lastActive = this.getLastUnlockedQuiz(timeline.length, timeline);
 
 		const percent = isModuleQuiz
-			? (100 * ((lastActive-1) / (count - 1)))
+			? (100 * ((lastActive - 1) / (count - 1)))
 			: (100 * (Math.floor(lastActive / 2) / (count - 1)));
 		return (
 			<div
@@ -345,13 +345,13 @@ class QuizManager extends Component {
 		}
 		const {
 			params: {
-				courseName,
 				moduleName,
+				alias,
 			},
 			activeLesson,
 		} = this.props;
 		this.getCommentsCount({ quizId, type: isText ? 1 : 3 });
-		browserHistory.push(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(activeLesson.name)}/${number}`);
+		browserHistory.push(`/learn/course/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(activeLesson.name)}/${number}`);
 		this.props.selectQuiz({ id: quizId, number, isText });
 	}
 
@@ -391,21 +391,11 @@ class QuizManager extends Component {
 		if (!this.props.params.quizNumber || lastUnlockedQuiz < this.props.params.quizNumber) {
 			const {
 				params: {
-					courseName, moduleName, lessonName,
+					moduleName, lessonName, alias,
 				},
 			} = this.props;
-			browserHistory.replace(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz || 1}`);
-			return;
+			browserHistory.replace(`/learn/course/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz || 1}`);
 		}
-
-		/*if (!this.props.params.quizNumber) {
-			const {
-				params: {
-					courseName, moduleName, lessonName,
-				},
-			} = this.props;
-			browserHistory.replace(`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz || 1}`);
-		}*/
 	}
 
 	openComments = () => {
@@ -420,8 +410,8 @@ class QuizManager extends Component {
 			activeLesson,
 			activeModule,
 			params: {
-				courseName,
 				moduleName,
+				alias,
 			},
 		} = this.props;
 		const { loading, commentsCount, commentsOpened } = this.state;
@@ -457,13 +447,13 @@ class QuizManager extends Component {
 				<PaperContainer className="quiz-container">
 					<Container style={{ padding: 15 }}>
 						<Container className="lesson-breadcrumbs">
-							<Link to={`/learn/course/${toSeoFriendly(courseName)}`}>
+							<Link to={`/learn/course/${toSeoFriendly(alias)}`}>
 								{course.name} &gt; {' '}
 							</Link>
-							<Link to={`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}`}>
+							<Link to={`/learn/course/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}`}>
 								{activeModule.name} &gt; {' '}
 							</Link>
-							<Link to={`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(activeLesson.name, 100)}/1`}>
+							<Link to={`/learn/course/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(activeLesson.name, 100)}/1`}>
 								{activeLesson.name}
 							</Link>
 						</Container>

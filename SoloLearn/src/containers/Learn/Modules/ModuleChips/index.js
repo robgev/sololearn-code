@@ -19,7 +19,7 @@ const ModuleChips = ({
 	onClick,
 	modules,
 	courseId,
-	courseName,
+	alias,
 }) => (
 	<Container className="modules-chips-container">
 		{modules.map((module) => {
@@ -39,7 +39,7 @@ const ModuleChips = ({
 					className={alignmentClass}
 					completionPercent={completionPercent}
 					onClick={e => onClick(e, module.id, moduleState)}
-					to={`/learn/course/${toSeoFriendly(courseName)}/${toSeoFriendly(module.name)}`}
+					to={`/learn/course/${toSeoFriendly(alias)}/${toSeoFriendly(module.name)}`}
 				/>
 			);
 		})}

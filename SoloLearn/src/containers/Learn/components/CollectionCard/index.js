@@ -21,6 +21,7 @@ const generateBreakpoints = (numberOfItems, roundItems) => {
 			breakpoint: currentPoint,
 			settings: {
 				slidesToShow,
+				slidesToScroll: 2 * slidesToShow,
 			},
 		};
 	});
@@ -40,7 +41,8 @@ const CollectionCard = ({
 }) => {
 	// lessons are the old Sololearn-created courses, like learn HTML, C# etc.
 	const isCourses = type === collectionTypes.courses;
-	const slidesToShow = (isCourses || round) ? 3 : 2;
+	const slidesToShow = 3;
+	const slidesToScroll = 2 * slidesToShow;
 	return (
 		<PaperContainer
 			elevation={1}
@@ -64,6 +66,7 @@ const CollectionCard = ({
 			}
 			<Slider
 				slidesToShow={slidesToShow}
+				slidesToScroll={slidesToScroll}
 				className={`courses-list ${(isCourses || round) ? 'round' : ''}`}
 				responsive={generateBreakpoints(items.length, isCourses || round)}
 			>

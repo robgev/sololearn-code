@@ -1,28 +1,27 @@
 .meta-info {
-	padding-bottom: 5px;
+	padding-bottom: 2px;
 	&.big-padding-bottom {
 		padding-bottom: 15px;
 	}
 }
 .course-description {
-	padding-bottom: 15px;
+	display: inline-block;
+	padding-bottom: 4px;
 }
 .courses-list {
 	.course-chip-wrapper {
 		.collection-card-chip {
 			display: flex;
-			width: 150px;
+			width: 130px;
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
-			margin: 0 5px;
+			margin-right: 10px;
 			margin-top: 3px;
 			transition: all 150ms ease-out;
 			&:not(.round) {
-				width: 235px;
 				&:hover {
 					transform: translateY(-3px);
-					box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
 				}
 			}
 			.course-chip-image-container {
