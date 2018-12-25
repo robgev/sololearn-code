@@ -27,6 +27,7 @@ $arrow-size: 30px;
 	}
 
 	.slick-prev, .slick-next {
+		top: 36%;
 		width: $arrow-size;
 		height: $arrow-size;
 		&:before {

@@ -16,14 +16,15 @@ const getProgress = (skills, courseId) => {
 
 const CodePenCard = ({
 	id,
-	getCourseAliasById,
 	color,
+	name,
 	skills,
 	iconUrl,
 	itemType,
 	language,
 	viewCount,
 	comments,
+	getCourseAliasById,
 }) => (
 	<Container className="code-pen-container">
 		<ContainerLink
