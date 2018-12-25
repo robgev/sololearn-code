@@ -19,6 +19,9 @@
 			margin-right: 10px;
 			margin-top: 3px;
 			transition: all 150ms ease-out;
+			&.round {
+				margin-top: 4px;
+			}
 			&:not(.round) {
 				&:hover {
 					transform: translateY(-3px);
@@ -30,15 +33,13 @@
 					align-items: flex-start;
 					.chip-image {
 						width: 95px;
+						height: 95px;
 					}
 				}
 			}
 			.round {
 				height: 85px;
 				width: 85px;
-			}
-			.course-chip-info.round-course-item {
-				height: 24px;
 			}
 		}
 	}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Title, PaperContainer, Container } from 'components/atoms';
+import { Heading, Title, PaperContainer, Container } from 'components/atoms';
 
 import 'styles/busyWrapper.scss';
 
@@ -8,6 +8,7 @@ const BusyWrapper = ({
 	style,
 	paper,
 	isBusy,
+	heading,
 	children,
 	className,
 	noDisplay,
@@ -26,8 +27,11 @@ const BusyWrapper = ({
 				}}
 			>
 				{!title ?
-					null :
-					<Title>{title}</Title>
+					null : (
+						heading ?
+							<Heading>{title}</Heading> :
+							<Title>{title}</Title>
+					)
 				}
 				{children}
 			</ContentContainer>

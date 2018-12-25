@@ -30,7 +30,7 @@ const CodeItem = ({ code, minimal }) => {
 	return (
 		<Fragment>
 			<ListItem className="code-item-wrapper">
-				<LanguageCard className="code-item-language-card" forcedColor="white" language={code.language} />
+				<LanguageCard big language={code.language} />
 				<FlexBox fullWidth column className="details-wrapper">
 					<Link to={`/playground/${code.publicID}`}>
 						<Title>
