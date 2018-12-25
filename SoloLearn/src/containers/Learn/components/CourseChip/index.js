@@ -2,10 +2,17 @@ import React from 'react';
 import { toSeoFriendly } from 'utils';
 import { Container, Image, CircularProgress, SecondaryTextBlock } from 'components/atoms';
 import { ContainerLink } from 'components/molecules';
+import { getCourseAliasById } from 'reducers/courses.reducer';
+import { connect } from 'react-redux';
 import './styles.scss';
+
+const mapStateToProps = state => ({
+	courses: state.courses,
+});
 
 const CourseChip = ({
 	id,
+	courses,
 	name,
 	round,
 	iconUrl,
@@ -29,7 +36,7 @@ const CourseChip = ({
 		<WrapperComponent
 			style={wrapperStyle}
 			className={`chip-container ${(roundItem) ? 'round' : ''} ${className}`}
-			to={customLink || (isCourse ? `/learn/course/${toSeoFriendly(name)}` : `/learn/lesson/${itemType === 3 ? 'course-lesson' : 'user-lesson'}/${id}/${toSeoFriendly(name, 100)}/1`)}
+			to={customLink || (isCourse ? `/learn/course/${toSeoFriendly(getCourseAliasById(courses, id))}` : `/learn/lesson/${itemType === 3 ? 'course-lesson' : 'user-lesson'}/${id}/${toSeoFriendly(name, 100)}/1`)}
 		>
 			<Container
 				className={`course-chip-image-container ${(roundItem) ? 'round' : ''} ${noBoxShadow ? '' : 'with-shadow'}`}
@@ -63,4 +70,4 @@ const CourseChip = ({
 	);
 };
 
-export default CourseChip;
+export default connect(mapStateToProps)(CourseChip);

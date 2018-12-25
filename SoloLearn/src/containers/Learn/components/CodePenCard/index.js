@@ -6,6 +6,7 @@ import { getLanguageColor, toSeoFriendly } from 'utils';
 
 import { Container, Progress, Image, SecondaryTextBlock } from 'components/atoms';
 import { ContainerLink, ViewStats } from 'components/molecules';
+import { withCourses } from 'utils/with';
 import './styles.scss';
 
 const getProgress = (skills, courseId) => {
@@ -15,7 +16,7 @@ const getProgress = (skills, courseId) => {
 
 const CodePenCard = ({
 	id,
-	name,
+	getCourseAliasById,
 	color,
 	skills,
 	iconUrl,
@@ -28,7 +29,7 @@ const CodePenCard = ({
 		<ContainerLink
 			to={
 				itemType === slayItemTypes.course
-					? `/learn/course/${toSeoFriendly(name)}`
+					? `/learn/course/${toSeoFriendly(getCourseAliasById(id))}`
 					: `/learn/lesson/${itemType === slayItemTypes.courseLesson ? 'course-lesson' : 'user-lesson'}/${id}/${toSeoFriendly(name, 100)}/1`}
 			className="code-pen-wrapper"
 		>
@@ -63,4 +64,4 @@ const CodePenCard = ({
 
 const mapStateToProps = state => ({ courses: state.courses, skills: state.userProfile.skills });
 
-export default connect(mapStateToProps)(CodePenCard);
+export default withCourses(connect(mapStateToProps)(CodePenCard));

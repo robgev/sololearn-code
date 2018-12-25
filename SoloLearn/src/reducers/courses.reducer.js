@@ -21,11 +21,16 @@ export default (state = [], action) => {
 
 export const getCoursesReducer = state => state.courses;
 
-export const getCourseByCourseName = (state, courseName) => {
-	if (state.course && toSeoFriendly(state.course.name) === toSeoFriendly(courseName)) {
+export const getCourseByAlias = (state, alias) => {
+	if (state.course && toSeoFriendly(state.course.alias) === toSeoFriendly(alias)) {
 		return state.course;
 	}
 	const courses = getCoursesReducer(state);
-	const res = courses.find(c => toSeoFriendly(c.name) === toSeoFriendly(courseName));
+	const res = courses.find(c => toSeoFriendly(c.alias) === toSeoFriendly(alias));
 	return res;
+};
+
+export const getCourseAliasById = (courses, id) => {
+	const course = courses.find(course => course.id === id);
+	return course.alias;
 };

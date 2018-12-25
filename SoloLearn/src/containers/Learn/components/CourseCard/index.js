@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { getCourseNameById, toSeoFriendly } from 'utils';
+import { toSeoFriendly } from 'utils';
+import { getCourseAliasById } from 'reducers/courses.reducer';
 import { slayItemTypes } from 'constants/ItemTypes';
 
 import { Heading, Container, Link, Image, SecondaryTextBlock, Title } from 'components/atoms';
@@ -29,21 +30,21 @@ const CourseCard = ({
 	<Container className={`course-card-container ${small ? 'small' : ''} ${className || ''}`}>
 		{
 			title &&
-			<Fragment>
-				{	small
-					? <Heading>{title}</Heading>
-					: (
-						<Container className="meta-info">
-							<SecondaryTextBlock>{title}</SecondaryTextBlock>
-						</Container>
-					)
-				}
-			</Fragment>
+				<Fragment>
+					{small
+						? <Heading>{title}</Heading>
+						: (
+							<Container className="meta-info">
+								<SecondaryTextBlock>{title}</SecondaryTextBlock>
+							</Container>
+						)
+					}
+				</Fragment>
 		}
 		<Link
 			to={
 				itemType === slayItemTypes.course || isCourses ?
-					`/learn/course/${toSeoFriendly(getCourseNameById(courses, id))}` :
+					`/learn/course/${toSeoFriendly(getCourseAliasById(courses, id))}` :
 					`/learn/lesson/${itemType === slayItemTypes.courseLesson ? 'course-lesson' : 'user-lesson'}/${id}/${toSeoFriendly(name, 100)}/1`
 			}
 			className="course-card-wrapper"
@@ -70,10 +71,10 @@ const CourseCard = ({
 					/>
 				</Container>
 				{(!minimal && (Number.isInteger(viewCount) && Number.isInteger(comments))) &&
-				<ViewStats
-					views={viewCount}
-					comments={comments}
-				/>
+						<ViewStats
+							views={viewCount}
+							comments={comments}
+						/>
 				}
 			</Container>
 		</Link>

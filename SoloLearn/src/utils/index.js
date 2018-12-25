@@ -15,7 +15,6 @@ import getLanguageColor from './getLanguageColor';
 import calculateProgress from './calculateProgress';
 import findCommonPrefix from './findCommonPrefix';
 import getChallengeStatus from './getChallengeStatus';
-import getCourseNameById from './getCourseNameById';
 import determineAccessLevel from './determineAccessLevel';
 import determineBadge from './modBadgeUtils';
 
@@ -61,6 +60,5 @@ export {
 	getLanguageColor,
 	findCommonPrefix,
 	getChallengeStatus,
-	getCourseNameById,
 	determineAccessLevel,
 };

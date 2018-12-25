@@ -23,7 +23,7 @@ import {
 } from 'components/molecules';
 
 import { loadCourseInternal, toggleCourseInternal, toggleCourse, selectModule } from 'actions/learn';
-import { getCourseByCourseName } from 'reducers/courses.reducer';
+import { getCourseByAlias } from 'reducers/courses.reducer';
 import { isCourseLoaded } from 'reducers/reducer_course';
 
 import Service, { AppDefaults } from 'api/service';
@@ -38,8 +38,8 @@ import Certificate from './Certificate';
 import AddCourse from './AddCourse';
 
 const mapStateToProps = (state, ownProps) => ({
-	isLoaded: isCourseLoaded(state, ownProps.params.courseName),
-	course: getCourseByCourseName(state, ownProps.params.courseName),
+	isLoaded: isCourseLoaded(state, ownProps.params.alias),
+	course: getCourseByAlias(state, ownProps.params.alias),
 	courses: state.courses,
 	userProfile: state.userProfile,
 });
@@ -123,7 +123,7 @@ class Modules extends Component {
 		const {
 			t,
 			course,
-			params: { itemType, courseName },
+			params: { itemType, alias },
 			isLoaded: isModuleLoaded,
 		} = this.props;
 		const { loading, resetPopupOpened } = this.state;
@@ -154,7 +154,7 @@ class Modules extends Component {
 									modules={modules}
 									itemType={itemType}
 									onClick={this.handleClick}
-									courseName={courseName}
+									alias={alias}
 								/>
 								<Certificate
 									courseId={id}
