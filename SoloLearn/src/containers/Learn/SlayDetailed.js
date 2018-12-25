@@ -75,6 +75,7 @@ class SlayDetailed extends PureComponent {
 		return (
 			<LayoutGenerator
 				paper
+				heading
 				noSidebar
 				loading={loading}
 				hasMore={hasMore}

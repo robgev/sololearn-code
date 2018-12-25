@@ -12,19 +12,20 @@ import {
 	SecondaryTextBlock,
 } from 'components/atoms';
 import {
+	DateInfo,
 	IconMenu,
 	ProfileAvatar,
 	RaisedButton,
 	UsernameLink,
-	LanguageIndicator,
 	ConsecutiveSnackbar,
 } from 'components/molecules';
 import { VoteActions } from 'components/organisms';
 import { Delete } from 'components/icons';
 import ReportPopup from 'components/ReportPopup';
+import LanguageCard from 'components/LanguageCard';
 import ReportItemTypes from 'constants/ReportItemTypes';
 
-import { determineAccessLevel, updateDate } from 'utils';
+import { determineAccessLevel } from 'utils';
 import { removeCode } from 'actions/playground';
 
 import RemovalPopup from './RemovalPopup';
@@ -108,26 +109,29 @@ class CodeInfoToolbar extends Component {
 		return (
 			<PaperContainer className="top-toolbar">
 				<Container className="toolbar-left">
-					<FlexBox align>
-						<ProfileAvatar user={userData} />
+					<FlexBox className="code-info-toolbar_code-data">
+						<LanguageCard big language={language} />
 						<FlexBox column>
 							<SecondaryTextBlock>
-								{name} <LanguageIndicator language={language} />
+								{name}
 							</SecondaryTextBlock>
-							<UsernameLink to={`/profile/${userID}`}>
-								{userName}
-							</UsernameLink>
+							<VoteActions
+								id={id}
+								type="code"
+								initialVote={vote}
+								initialCount={votes}
+							/>
 						</FlexBox>
 					</FlexBox>
 				</Container>
 				<Container className="toolbar-right">
 					<FlexBox align className="my-code-actions">
-						{isMe &&
+						{/* {isMe &&
 						<RaisedButton className="delete-button" onClick={this.togglePopup}>
 							<Delete />
 							{t('common.delete-title')}
 						</RaisedButton>
-						}
+						} */}
 						{(isMe || accessLevel > 1) &&
 						<SwitchToggle
 							defaultChecked={this.props.playground.data.isPublic}
@@ -152,15 +156,15 @@ class CodeInfoToolbar extends Component {
 							</MenuItem>
 						</IconMenu>
 					</FlexBox>
-					<VoteActions
-						id={id}
-						type="code"
-						initialVote={vote}
-						initialCount={votes}
-					/>
-					<SecondaryTextBlock>
-						{updateDate(this.props.playground.data.createdDate)}
-					</SecondaryTextBlock>
+					<FlexBox align>
+						<FlexBox column>
+							<UsernameLink to={`/profile/${userID}`}>
+								{userName}
+							</UsernameLink>
+							<DateInfo date={this.props.playground.data.modifiedDate} />
+						</FlexBox>
+						<ProfileAvatar user={userData} />
+					</FlexBox>
 				</Container>
 				<ReportPopup
 					itemId={id}

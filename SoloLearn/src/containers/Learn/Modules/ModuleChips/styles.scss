@@ -23,6 +23,7 @@ $module-image-size: 70px;
 			border-radius: 100%;
 			transition: all ease-in 150ms;
 			position: relative;
+			padding: $primary_gap_size;
 			margin: $primary_gap_size;
 			.module-image {
 				height: $module-image-size;
