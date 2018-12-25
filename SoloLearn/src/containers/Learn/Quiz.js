@@ -52,12 +52,28 @@ class Quiz extends Component {
 		isQuizComplete: false,
 	};
 
+	reset = () => {
+		this.setState({
+			isHintPopupOpen: false,
+			isUnlockPopupOpen: false,
+			notAvailable: false,
+			checkResult: null,
+			isQuizComplete: false,
+		});
+	}
+
 	closeNotAvailablePopup = () => {
 		this.setState({ notAvailable: false });
 	}
 
 	componentDidMount() {
 		ReactGA.ga('send', 'screenView', { screenName: 'Lesson Quiz Page' });
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.activeQuiz.id !== this.props.activeQuiz.id) {
+			this.reset();
+		}
 	}
 
 	openHintPopup = () => {
