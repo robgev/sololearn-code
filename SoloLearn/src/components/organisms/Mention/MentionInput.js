@@ -106,13 +106,17 @@ class MentionInput extends Component {
 
 	onSearchChange = (e) => {
 		const { value } = e;
-		this.getUsers(value)
+		const getUsersId = this.getUsers(value);
+		this.getUsersPromiseId = getUsersId;
+		getUsersId
 			.then((users) => {
-				const mentions = this.getMentions();
-				if (mentions.length < 10) {
-					const suggestions = users
-						.filter(user => !mentions.some(mentioned => mentioned.id === user.id));
-					this.setState({ suggestions });
+				if (this.getUsersPromiseId === getUsersId) {
+					const mentions = this.getMentions();
+					if (mentions.length < 10) {
+						const suggestions = users
+							.filter(user => !mentions.some(mentioned => mentioned.id === user.id));
+						this.setState({ suggestions });
+					}
 				}
 			});
 	};
