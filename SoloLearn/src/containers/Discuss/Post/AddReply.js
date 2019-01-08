@@ -21,17 +21,11 @@ class AddReply extends Component {
 		this.props.submit(this.input.current.popValue());
 	}
 
-	render() {
-		const { t, postID } = this.props;
+	renderSubmitButton = ({ isExpanded, charCount }) => {
+		const { t } = this.props;
 		const { isSubmitEnabled } = this.state;
-		return (
-			<Container className="add-reply">
-				<CountingMentionInput
-					ref={this.input}
-					placeholder={t('discuss.new-answer-placeholder')}
-					getUsers={{ type: 'discuss', params: { postId: postID } }}
-					onSubmitEnabledChange={this.setIsSubmitEnabled}
-				/>
+		return isExpanded || charCount > 0
+			? (
 				<RaisedButton
 					className={`post-button ${isSubmitEnabled ? 'enabled' : ''}`}
 					disabled={!isSubmitEnabled}
@@ -39,6 +33,21 @@ class AddReply extends Component {
 				>
 					{t('common.post-action-title')}
 				</RaisedButton>
+			)
+			: null;
+	}
+
+	render() {
+		const { t, postID } = this.props;
+		return (
+			<Container className="add-reply">
+				<CountingMentionInput
+					ref={this.input}
+					placeholder={t('discuss.new-answer-placeholder')}
+					getUsers={{ type: 'discuss', params: { postId: postID } }}
+					onSubmitEnabledChange={this.setIsSubmitEnabled}
+					renderButton={this.renderSubmitButton}
+				/>
 				<HorizontalDivider />
 			</Container>
 		);
