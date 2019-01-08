@@ -1,13 +1,10 @@
 // -------------- Text sizes etc. ---------------
-$primary_text_size: 16px;
+$primary_text_size: 15px;
 $secondary_text_size: 14px;
-$heading_size: 15px;
 $link_size: 14px;
-$badge_size: $secondary_text_size;
-$label_text_size: 12px;
+$label_text_size: 0.8em;
+$badge_size: $label_text_size;
 $empty_card_size: 200px;
-$title_size: 16px;
-$title_weight: 500;
 $expanded_editor_height: 100px;
 
 // ------------Margins ----------------

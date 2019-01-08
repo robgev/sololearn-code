@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Container, SecondaryTextBlock } from 'components/atoms';
+import { Container, SecondaryTextBlock, FlexBox } from 'components/atoms';
 import MentionInput from './MentionInput';
 import './countingMentionInput.scss';
 
 class CountingMentionInput extends Component {
 	static defaultProps = {
 		maxLength: 2048,
+		renderButton: () => null,
 		onSubmitEnabledChange: () => { }, // noop
 	}
 	constructor(props) {
@@ -37,7 +38,10 @@ class CountingMentionInput extends Component {
 	}
 	isEmpty = () => this.getValue().trim().length === 0;
 	render() {
-		const { containerStyle, counterStyle, ...rest } = this.props;
+		const {
+			containerStyle, counterStyle, renderButton, ...rest
+		} = this.props;
+		const { isExpanded, charCount } = this.state;
 		return (
 			<Container className="organism_counting-mention-input">
 				<MentionInput
@@ -45,12 +49,15 @@ class CountingMentionInput extends Component {
 					onLengthChange={this.onLengthChange}
 					onFocus={this.onFocus}
 					onBlur={this.onBlur}
-					className={this.state.isExpanded ? 'expanded' : ''}
+					className={isExpanded ? 'expanded' : ''}
 					{...rest}
 				/>
-				<SecondaryTextBlock className="counter">
-					{this.state.charCount} / {this.props.maxLength}
-				</SecondaryTextBlock>
+				<FlexBox className="bottom-toolbar-container">
+					<SecondaryTextBlock className="counter">
+						{charCount} / {this.props.maxLength}
+					</SecondaryTextBlock>
+					{renderButton({ isExpanded })}
+				</FlexBox>
 			</Container>
 		);
 	}

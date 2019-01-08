@@ -13,4 +13,7 @@
 	div[aria-pressed]:focus {
 		background: none;
 	}
+	.atom_select-icon {
+		top: calc(50% - 14px);
+	}
 }

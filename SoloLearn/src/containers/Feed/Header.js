@@ -74,7 +74,7 @@ class Header extends PureComponent {
 				</Container>
 				<Container className="actions">
 					<ContainerLink to="/discover">
-						<RaisedButton>
+						<RaisedButton color="secondary">
 							{t('discover_peers.title')}
 						</RaisedButton>
 					</ContainerLink>

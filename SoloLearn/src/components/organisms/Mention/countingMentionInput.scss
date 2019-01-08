@@ -11,4 +11,7 @@
 	.expanded {
 		min-height: $expanded_editor_height;
 	}
+	.bottom-toolbar-container {
+		justify-content: flex-end;
+	}
 }

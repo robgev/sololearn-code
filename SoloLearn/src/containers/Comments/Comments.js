@@ -71,7 +71,7 @@ class Comments extends Component {
 			// Need to keep commentsAPI orderBy in sync with view
 			this.commentsAPI.orderBy = this.orderBy;
 		});
-		if(this.commentsAPI.findPostId) {
+		if (this.commentsAPI.findPostId) {
 			this.loadMore();
 		}
 		// this.initialRequest();
@@ -175,8 +175,8 @@ class Comments extends Component {
 
 	@action getCommentsBelow = async () => {
 		const count = 20;
-		const lastIndex = this.comments.length ? this.comments[this.comments.length-1].index : 0;
-		if(lastIndex < 0) {
+		const lastIndex = this.comments.length ? this.comments[this.comments.length - 1].index : 0;
+		if (lastIndex < 0) {
 			return;
 		}
 		this.loading = true;
@@ -282,14 +282,21 @@ class Comments extends Component {
 							getUsers={this.commentsAPI.getMentionUsers}
 							placeholder={t('comments.write-comment-placeholder')}
 							maxLength={1024}
+							renderButton={({ isExpanded }) => (isExpanded
+								? (
+									<FlatButton
+										onMouseDown={this.addComment}
+										disabled={!this.isSubmitEnabled}
+									>
+						Comment
+									</FlatButton>
+								)
+								: null)
+
+							}
 						/>
 					</Container>
-					<FlatButton
-						onMouseDown={this.addComment}
-						disabled={!this.isSubmitEnabled}
-					>
-						Comment
-					</FlatButton>
+
 					{
 						this.isOnReply &&
 						<FlatButton onClick={this.reset} >

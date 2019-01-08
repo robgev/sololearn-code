@@ -1,4 +1,5 @@
-$gap-size: 5px;
+@import '~styles/colors';
+@import '~styles/variables';
 
 .lesssons-in-enter, .lesssons-in-appear {
 	transform: translateY(100px);
@@ -26,23 +27,24 @@ $gap-size: 5px;
 
 	.lesson-item {
 		display: inline-block;
-		padding: $gap-size * 1.5 $gap-size;
+		margin: $secondary_gap_size * 1.5 $secondary_gap_size;
 		cursor: pointer;
 		backface-visibility: hidden;
 		transform: translate3d(0,0,0);
-		width: calc(100% / 3);
+		width: calc(100% / 3 - 10px);
 		&:nth-child(3n) {
-			padding-right: 0;
-			padding-left: 2 * $gap-size;
+			margin-right: 0;
+		margin-left: 2 * $secondary_gap_size;
 		}
 		&:nth-child(3n - 2) {
-			padding-left: 0;
-			padding-right: 2 * $gap-size;
+		margin-left: 0;
+			margin-right: 2 * $secondary_gap_size;
 		}
 		.lesson {
 			position: relative;
 			display: inline-block;
 			height: 0;
+			padding: 0;
 			padding-top: 100%;
 			width: 100%;
 			transition: all ease-in 150ms;
@@ -55,14 +57,15 @@ $gap-size: 5px;
 				right: 0;
 			}
 			.name {
-				padding: 20px 10px;
+				padding: 20px;
 				text-align: left;
 				height: 115px;
-				width: 115px;
+				width: 135px;
 				color: #565656;
 				font-size: 15px;
 				position: absolute;
 				top: 0;
+				left: 0;
 			}
 			.info {
 				position: absolute;
@@ -74,20 +77,23 @@ $gap-size: 5px;
 				text-align: left;
 				text-transform: lowercase;
 				&.active {
-					background-color: #607d8b;
-					color: #fff;
+					background-color: $primary_color;
+					.lesson-tiles_questions {
+						color: #fff;
+					}
 				}
 				&.normal {
-					background-color: #8bc34a;
-					color: #fff;
+					background-color: $secondary_color;
+					.lesson-tiles_questions {
+						color: #fff;
+					}
 				}
 				&.disabled {
 					background-color: inherit;
-					color: #565656;
 				}
 			}
 			&.disabled {
-				background-color: #e4e4e4 !important;
+				background-color: #e4e4e4;
 				cursor: default;
 			}
 			&:hover {

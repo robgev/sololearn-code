@@ -8,7 +8,6 @@ import {
 	List, ListItem, SecondaryTextBlock,
 } from 'components/atoms';
 import { UsernameLink, ViewMoreLink, ProfileAvatar, ModBadge } from 'components/molecules';
-//import ProfileAvatar from './ProfileAvatar';
 import './sidebar.scss';
 
 const mapStateToProps = state => ({
@@ -17,7 +16,7 @@ const mapStateToProps = state => ({
 });
 
 const FeedSuggestions = ({ t, discoverIds, discoverEntities }) => (
-	<Container className="feed-sidebar">
+	<FlexBox column justify className="feed-sidebar">
 		<Heading>{t('discover_peers.title')}</Heading>
 		{discoverEntities === null
 			? <SidebarShimmer round noTitle />
@@ -63,11 +62,11 @@ const FeedSuggestions = ({ t, discoverIds, discoverEntities }) => (
 			)
 		}
 		{discoverEntities && discoverIds.length > 0 &&
-			<ViewMoreLink to="/discover">
+			<ViewMoreLink className="feed-sidebar_view-more" to="/discover">
 				{t('common.loadMore')}
 			</ViewMoreLink>
 		}
-	</Container>
+	</FlexBox>
 );
 
 export default connect(mapStateToProps)(FeedSuggestions);

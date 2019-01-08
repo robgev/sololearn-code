@@ -1,6 +1,9 @@
 @import '~styles/colors';
 @import '~styles/variables';
 
+$title_size: $primary_text_size;
+$title_weight: 500;
+
 .atom_title {
   font-size: $title_size;
   color: $main_text_color;

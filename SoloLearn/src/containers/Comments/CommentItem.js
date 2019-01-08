@@ -85,9 +85,7 @@ render() {
 																maxLength={1024}
 															/>
 														</Container>
-														<FlatButton
-															onMouseDown={toggleEdit}
-														>
+														<FlatButton onMouseDown={toggleEdit}>
 															{t('common.cancel-title')}
 														</FlatButton>
 														<FlatButton
@@ -116,9 +114,9 @@ render() {
 										}
 									</Container>
 								</FlexBox>
-								<Container>
+								<Container className="comment-item_icon-menu">
 									{ !isEditing &&
-									<IconMenu >
+									<IconMenu>
 										{comment.userID === userProfileId &&
 										<Fragment>
 											<MenuItem onClick={toggleEdit}>

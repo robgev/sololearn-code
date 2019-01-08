@@ -5,8 +5,12 @@
 	.comment-item_bubble-container {
 		background-color: $background_color;
 		border-radius: 2 * $primary_gap_size;
-		padding: $secondary_gap_size 2 * $primary_gap_size;
+		padding: $primary_gap_size 2 * $primary_gap_size;
 		margin-left: 10px;
+		.comment-item_icon-menu {
+			align-self: flex-start;
+			margin-top: 8px;
+		}
 	}
 	.reply-input {
 		.editor {

@@ -2,8 +2,10 @@ import React, { Fragment } from 'react';
 import { translate } from 'react-i18next';
 
 import { CourseCard } from 'containers/Learn/components';
-import { Container, List, ListItem, HorizontalDivider, Heading } from 'components/atoms';
+import { FlexBox, List, ListItem, HorizontalDivider, Heading } from 'components/atoms';
 import { EmptyCard, ViewMoreLink } from 'components/molecules';
+
+import './styles.scss';
 
 const SidebarCollection = ({
 	t,
@@ -13,7 +15,7 @@ const SidebarCollection = ({
 	bookmarks,
 	noViewMore = false,
 }) => (
-	<Container>
+	<FlexBox column justify>
 		<Heading>{title}</Heading>
 		{
 			items.length === 0
@@ -41,12 +43,12 @@ const SidebarCollection = ({
 				)
 		}
 		{!noViewMore && items.length > 1 && (
-			<ViewMoreLink to={bookmarks ? 'learn/bookmarks' : `/learn/more/author/${userID}`} >
+			<ViewMoreLink className="learn-sidebar_view-more" to={bookmarks ? 'learn/bookmarks' : `/learn/more/author/${userID}`} >
 				{t('common.loadMore')}
 			</ViewMoreLink>
 		)
 		}
-	</Container>
+	</FlexBox>
 );
 
 export default translate()(SidebarCollection);

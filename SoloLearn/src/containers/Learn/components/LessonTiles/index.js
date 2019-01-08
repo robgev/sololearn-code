@@ -54,7 +54,7 @@ const LessonTiles = ({
 							<SecondaryTextBlock className="name">{lesson.name}</SecondaryTextBlock>
 							{ !slayLessons &&
 							<Container className={`info ${lessonState.stateClass}`}>
-								<SecondaryTextBlock>{lesson.quizzes.length} {t('learn.questions-format')}</SecondaryTextBlock>
+								<SecondaryTextBlock className="lesson-tiles_questions">{lesson.quizzes.length} {t('learn.questions-format')}</SecondaryTextBlock>
 							</Container>
 							}
 							{ slayLessons &&
