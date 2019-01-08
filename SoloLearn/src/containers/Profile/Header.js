@@ -14,14 +14,12 @@ import {
 	MenuItem,
 	SecondaryTextBlock,
 	Snackbar,
-	Link,
 } from 'components/atoms';
 import {
 	RaisedButton,
 	IconMenu,
 	UsernameLink,
 	ProgressBar,
-	ContainerLink,
 } from 'components/molecules';
 
 import DeactivationPopup from './DeactivationPopup';

@@ -4,23 +4,18 @@ import { translate } from 'react-i18next';
 import { observer } from 'mobx-react';
 import { connect } from 'react-redux';
 
-// Material UI components
-import Dialog from 'components/StyledDialog';
-
 // Utils and defaults
 import types from 'defaults/appTypes';
-import FeedShimmer from 'components/Shimmers/FeedShimmer';
-import FeedPin from './FeedPin';
-import FeedItem from './FeedItem';
 import {
 	Container,
 	Title,
-	Popup,
-	PopupContent,
 } from 'components/atoms';
-import { InfiniteScroll} from 'components/molecules'
+import { InfiniteScroll } from 'components/molecules';
+import FeedShimmer from 'components/Shimmers/FeedShimmer';
 
 import 'styles/Feed/FeedList.scss';
+import FeedPin from './FeedPin';
+import FeedItem from './FeedItem';
 
 const mapStateToProps = state => ({
 	skills: state.userProfile.skills,
@@ -38,8 +33,8 @@ class FeedList extends Component {
 	}
 
 	componentDidMount() {
-		window.scrollTo(0,0);
-		setTimeout(()=>this.setState({ shouldShowFeed: true }), 0);
+		window.scrollTo(0, 0);
+		setTimeout(() => this.setState({ shouldShowFeed: true }), 0);
 	}
 
 	toggleCoursePopup = (courseId = null) => {
@@ -50,8 +45,6 @@ class FeedList extends Component {
 		const {
 			t,
 			feed,
-			skills,
-			courses,
 			hasMore,
 			feedPins,
 			loadMore,
@@ -59,8 +52,8 @@ class FeedList extends Component {
 			voteFeedItem,
 			loading,
 		} = this.props;
-		const { coursePopupOpen, courseId, shouldShowFeed } = this.state;
-		
+		const { shouldShowFeed } = this.state;
+
 		return (
 			<Container>
 				{
@@ -70,7 +63,7 @@ class FeedList extends Component {
 						(
 							<Container>
 								{
-									hasMore && ( feedPins === null || feed.length === 0)
+									hasMore && (feedPins === null || feed.length === 0)
 										? (
 											<Container>
 												{header}
@@ -102,15 +95,17 @@ class FeedList extends Component {
 														loadMore={loadMore}
 														isLoading={loading}
 													>
-														{feed.map((feedItem, index) => ( index > 20 && !shouldShowFeed? null: 
-															<FeedItem
-																key={feedItem.type === types.mergedChallange ?
-																	`feedGroup${feedItem.toId}` :
-																	`feedItem${feedItem.id}`}
-																feedItem={feedItem}
-																voteFeedItem={voteFeedItem}
-															/>
-														))}
+														{feed.map((feedItem, index) => (index > 20 && !shouldShowFeed
+															? null : (
+																<FeedItem
+																	key={feedItem.type === types.mergedChallange
+																		?	`feedGroup${feedItem.toId}`
+																		:	`feedItem${feedItem.id}`
+																	}
+																	feedItem={feedItem}
+																	voteFeedItem={voteFeedItem}
+																/>
+															)))}
 													</InfiniteScroll>
 												}
 											</Container>

@@ -1,0 +1,26 @@
+
+.slay-detailed-shimmer-wrapper {
+	width: 100%;
+	padding: 20px;
+	.collection-title {
+		width: 215px;
+		height: 16px;
+	}
+	.course-chips {
+		flex-flow: row wrap;
+		.shimmer-chip-container {
+			width: calc(100% / 3 - 30px);
+			margin-right: 15px;
+			margin-top: 15px;
+			.chip-body {
+				width: 100%;
+				padding-top: 53%;
+			}
+			.chip-name {
+				width: 100%;
+			}
+		}
+	}
+}
+
+

@@ -1,0 +1,14 @@
+.sidebar-shimmer-wrapper {
+	width: 100%;
+	.sidebar-shimmer-container {
+		display: flex;
+		align-items: center;
+		margin: 10px 0;
+		.sidebar-info {
+			margin-left: 10px;
+			flex: 1;
+		}
+	}
+}
+
+// background-color: $shimmer-dark-color;

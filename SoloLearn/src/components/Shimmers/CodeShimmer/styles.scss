@@ -1,0 +1,17 @@
+@import '~styles/colors';
+
+.code-shimmer-root {
+	max-height: 100vh;
+	overflow: hidden;
+	.code-shimmer-container {
+		display: flex;
+		width: 100%;
+		margin:  10px 0;
+		.code-text-info {
+			padding: 5px 10px;
+			height: 100%;
+			width: 90%;
+			border-bottom: 1px solid $shimmer-border-color;
+		}
+	}
+}

@@ -1,0 +1,18 @@
+
+.feed-shimmer_paper-container {
+	height: 150px;
+	padding: 15px;
+	margin-bottom: 10px;
+	.feed-shimmer-container {
+		height: 100%;
+		.post-head {
+			margin-bottom: 10px;
+			.shimmer_avatar {
+				margin-right: 10px;
+			}
+		}
+		.date {
+			margin-bottom: 0;
+		}
+	}
+}

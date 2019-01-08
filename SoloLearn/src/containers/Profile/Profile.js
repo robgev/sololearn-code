@@ -14,7 +14,6 @@ import QuestionList, { AddQuestionButton } from 'containers/Discuss/QuestionsLis
 import {
 	Tabs,
 	Tab,
-	SecondaryTextBlock,
 	TextBlock,
 	PaperContainer,
 	Container,

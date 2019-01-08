@@ -1,0 +1,18 @@
+@import '~styles/colors';
+
+.discuss-shimmer-wrapper {
+	width: 100%;
+	max-height: 100vh;
+	overflow: hidden;
+	.discuss-shimmer-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		padding: 15px;
+		height: 80px;
+		border-bottom: 1px solid $shimmer-border-color;
+		.post-tags {
+			width: 50%;
+		}
+	}
+}

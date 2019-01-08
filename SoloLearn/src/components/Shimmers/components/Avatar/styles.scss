@@ -1,0 +1,13 @@
+@import '~styles/variables';
+
+.shimmer_avatar {
+	height: $small-avatar-size;
+	width: $small-avatar-size;
+	&.round {
+		border-radius: 100%;
+	}
+	&.big {
+		height: $xtra-large-avatar-size;
+		width: $xtra-large-avatar-size;
+	}
+}

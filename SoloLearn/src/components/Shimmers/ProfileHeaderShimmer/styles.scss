@@ -1,0 +1,13 @@
+.profile-header-shimmer-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 239px;
+	width: 100%;
+	.shimmer_avatar {
+		margin-top: 20px;
+	}
+	.user-info {
+    padding: 5px 10px;
+	}
+}

@@ -6,7 +6,9 @@ import './styles.scss';
 const FlexBox = forwardRef(({
 	justify,
 	justifyBetween,
+	justifyEnd,
 	align,
+	alignEnd,
 	column,
 	className,
 	noShrink,
@@ -17,9 +19,11 @@ const FlexBox = forwardRef(({
 	const justifyCN = justify ? 'justify-center' : '';
 	const alignCN = align ? 'align-center' : '';
 	const justifyBetweenCN = justifyBetween ? 'justify-between' : '';
+	const justifyEndCN = justifyEnd ? 'justify-end' : '';
+	const alignEndCN = alignEnd ? 'align-end' : '';
 	const fullWidthCN = fullWidth ? 'full-width' : '';
 	const noShrinkCN = noShrink ? 'no-shrink' : '';
-	const fullCN = `atom_flexbox ${fullWidthCN} ${columnCN} ${justifyCN} ${alignCN} ${justifyBetweenCN} ${noShrinkCN} ${className}`;
+	const fullCN = `atom_flexbox ${fullWidthCN} ${columnCN} ${justifyCN} ${alignCN} ${justifyBetweenCN} ${justifyEndCN} ${alignEndCN} ${noShrinkCN} ${className}`;
 
 	return (
 		<Container
