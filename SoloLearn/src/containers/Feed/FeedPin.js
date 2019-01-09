@@ -9,7 +9,7 @@ import { CourseCard } from 'containers/Learn/components';
 // Additional data and components
 import Course from './FeedTemplates/Course';
 import Post from './FeedTemplates/Post';
-//import ProfileAvatar from './ProfileAvatar';
+// import ProfileAvatar from './ProfileAvatar';
 import {
 	Container,
 	PaperContainer,
@@ -124,7 +124,7 @@ class FeedPin extends Component {
 				const firstPost = pin.userPosts[0];
 				url = `/userPost/${firstPost.id}`;
 			} else if (pin.courses) {
-				url = `/learn/course/${toSeoFriendly(pin.courses[0].name)}`
+				url = `/learn/course/${toSeoFriendly(pin.courses[0].name)}`;
 			}
 		} else {
 			const parts = url.split('/');
@@ -145,7 +145,7 @@ class FeedPin extends Component {
 				url = `/learn/more/${parts[2]}`;
 				break;
 			default:
-				//url = `/${primaryPart}`;
+				// url = `/${primaryPart}`;
 				break;
 			}
 		}
@@ -158,11 +158,10 @@ class FeedPin extends Component {
 		return (
 			<ContainerLink className="feed-pin-wrapper" to={this.getPinUrl()} target="_blank">
 				<PaperContainer className="feed-pin-content">
-					<Container className="heading" >
+					<FlexBox column className="heading">
 						<Title className="title" >{pin.title}</Title>
-						&nbsp;
 						<SecondaryTextBlock >{pin.message}</SecondaryTextBlock>
-					</Container>
+					</FlexBox>
 					{pin.imageUrl &&
 						<Image
 							alt="Pinned item"
@@ -177,7 +176,7 @@ class FeedPin extends Component {
 					{pin.posts && <Container className="posts" >{this.generatePosts()}</Container>}
 					<FlexBox className="actions">
 						<FlatButton color="primary">
-							<Link to={this.getPinUrl()}  >
+							<Link to={this.getPinUrl()}>
 								{pin.actionName}
 							</Link>
 						</FlatButton>

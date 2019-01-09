@@ -115,14 +115,15 @@ class CodeInfoToolbar extends Component {
 							<SecondaryTextBlock>
 								{name}
 							</SecondaryTextBlock>
-							<VoteActions
-								id={id}
-								type="code"
-								initialVote={vote}
-								initialCount={votes}
-							/>
+							<DateInfo date={this.props.playground.data.modifiedDate} />
 						</FlexBox>
 					</FlexBox>
+					<VoteActions
+						id={id}
+						type="code"
+						initialVote={vote}
+						initialCount={votes}
+					/>
 				</Container>
 				<Container className="toolbar-right">
 					<FlexBox align className="my-code-actions">
@@ -161,7 +162,6 @@ class CodeInfoToolbar extends Component {
 							<UsernameLink to={`/profile/${userID}`}>
 								{userName}
 							</UsernameLink>
-							<DateInfo date={this.props.playground.data.modifiedDate} />
 						</FlexBox>
 						<ProfileAvatar user={userData} />
 					</FlexBox>
