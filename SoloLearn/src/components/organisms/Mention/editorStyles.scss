@@ -1,14 +1,15 @@
 @import '~styles/variables';
+@import '~styles/colors';
 
 .editor {
   box-sizing: content-box;
-  border: 1px solid #efefef;
+  border: 1px solid $border-color;
   cursor: text;
   padding: 11px;
   border-radius: 20px;
 	margin-bottom: 0;
 	margin-left: $primary_gap_size;
-  background: #f7f7f7;
+  background: $background_color;
   &.expanded {
     .DraftEditor-root {
       min-height: $expanded_editor_height;

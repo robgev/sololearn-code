@@ -18,6 +18,7 @@ const CommentsToolbar = ({
 		</Heading>
 		<Select
 			value={value}
+			className="comments-tooblar_select"
 			onChange={event => onChange(event.target.value)}
 		>
 			<MenuItem value={2}>{t('comments.filter.most-popular')}</MenuItem>

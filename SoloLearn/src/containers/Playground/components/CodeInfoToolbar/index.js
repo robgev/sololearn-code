@@ -15,12 +15,10 @@ import {
 	DateInfo,
 	IconMenu,
 	ProfileAvatar,
-	RaisedButton,
 	UsernameLink,
 	ConsecutiveSnackbar,
 } from 'components/molecules';
 import { VoteActions } from 'components/organisms';
-import { Delete } from 'components/icons';
 import ReportPopup from 'components/ReportPopup';
 import LanguageCard from 'components/LanguageCard';
 import ReportItemTypes from 'constants/ReportItemTypes';
@@ -107,7 +105,7 @@ class CodeInfoToolbar extends Component {
 			id: userID,
 		};
 		return (
-			<PaperContainer className="top-toolbar">
+			<PaperContainer className={`top-toolbar ${this.props.playground.isFullscreen ? 'fullscreen' : ''}`}>
 				<Container className="toolbar-left">
 					<FlexBox className="code-info-toolbar_code-data">
 						<LanguageCard big language={language} />
@@ -123,10 +121,11 @@ class CodeInfoToolbar extends Component {
 						type="code"
 						initialVote={vote}
 						initialCount={votes}
+						className="code-info-toolbar_vote-actions"
 					/>
 				</Container>
 				<Container className="toolbar-right">
-					<FlexBox align className="my-code-actions">
+					<FlexBox className={`my-code-actions ${isMe ? 'justify-between' : ''}`}>
 						{/* {isMe &&
 						<RaisedButton className="delete-button" onClick={this.togglePopup}>
 							<Delete />
@@ -135,9 +134,10 @@ class CodeInfoToolbar extends Component {
 						} */}
 						{(isMe || accessLevel > 1) &&
 						<SwitchToggle
-							defaultChecked={this.props.playground.data.isPublic}
-							onChange={this.togglePublic}
 							labelPlacement="start"
+							onChange={this.togglePublic}
+							labelClassName="code-info-toolbar_switch-label"
+							defaultChecked={this.props.playground.data.isPublic}
 							label={t('code_playground.popups.save-popup-public-toggle-title')}
 						/>
 						}
@@ -158,11 +158,9 @@ class CodeInfoToolbar extends Component {
 						</IconMenu>
 					</FlexBox>
 					<FlexBox align>
-						<FlexBox column>
-							<UsernameLink to={`/profile/${userID}`}>
-								{userName}
-							</UsernameLink>
-						</FlexBox>
+						<UsernameLink className="code-info-toolbar_user-name" to={`/profile/${userID}`}>
+							{userName}
+						</UsernameLink>
 						<ProfileAvatar user={userData} />
 					</FlexBox>
 				</Container>

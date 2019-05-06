@@ -5,6 +5,7 @@
 	.comment-item_bubble-container {
 		background-color: $background_color;
 		border-radius: 2 * $primary_gap_size;
+		border: 1px solid $border-color;
 		padding: $primary_gap_size 1.5 * $primary_gap_size;
 		margin-left: 10px;
 		.comment-item_icon-menu {

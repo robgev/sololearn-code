@@ -15,9 +15,15 @@ import { 	Fullscreen, FullscreenExit, Close } from 'components/icons';
 import { languageNames } from 'containers/Playground/utils/Mappings';
 
 import WebTabs from './WebTabs';
+import './styles.scss';
 
 const PlaygroundTabs = ({ t, playground, onClose }) => (
-	<FlexBox justifyBetween align noShrink>
+	<FlexBox
+		justifyBetween
+		align
+		noShrink
+		className={`playground_editor-tabs-root ${playground.isFullscreen ? 'fullscreen' : ''}`}
+	>
 		{ playground.hasLiveOutput
 			?	<WebTabs playground={playground} languages={languageNames} />
 			: <TextContainer>{languageNames[playground.language]}</TextContainer>
