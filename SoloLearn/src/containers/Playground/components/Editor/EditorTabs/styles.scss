@@ -1,0 +1,7 @@
+@import '~styles/colors';
+
+.playground_editor-tabs-root {
+	&.fullscreen {
+		border-right: 1px solid $secondary_background_color;
+	}
+}

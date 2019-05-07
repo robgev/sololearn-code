@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { IconButton, Container, SecondaryTextBlock } from 'components/atoms';
+import { IconButton, FlexBox, SecondaryTextBlock } from 'components/atoms';
 import { ArrowUp, ArrowDown } from 'components/icons';
 import PropTypes from 'prop-types';
 
@@ -15,7 +15,9 @@ const VoteActionsView = ({
 	onLabelClick,
 	...props
 }) => (
-	<Container
+	<FlexBox
+		align
+		justify
 		className={`organism_vote-actions ${vertical ? 'vertical' : 'horizontal'} ${className}`}
 		{...props}
 	>
@@ -28,7 +30,7 @@ const VoteActionsView = ({
 		<IconButton active={likes.userVote === -1} onClick={onDownvote}>
 			<ArrowDown />
 		</IconButton>
-	</Container>
+	</FlexBox>
 );
 
 VoteActionsView.propTypes = {

@@ -3,7 +3,9 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { TextBlock } from 'components/atoms';
 
-const SwitchToggle = ({ label, labelPlacement, ...props }) => (
+const SwitchToggle = ({
+	label, labelPlacement, labelClassName, ...props
+}) => (
 	<FormControlLabel
 		control={
 			<Switch
@@ -11,8 +13,9 @@ const SwitchToggle = ({ label, labelPlacement, ...props }) => (
 				{...props}
 			/>
 		}
-		label={<TextBlock>{label}</TextBlock>}
+		className={labelClassName}
 		labelPlacement={labelPlacement}
+		label={<TextBlock>{label}</TextBlock>}
 	/>
 );
 

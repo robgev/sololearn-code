@@ -53,9 +53,11 @@ class CountingMentionInput extends Component {
 					{...rest}
 				/>
 				<FlexBox className="bottom-toolbar-container">
-					<SecondaryTextBlock className="counter">
-						{charCount} / {this.props.maxLength}
-					</SecondaryTextBlock>
+					{isExpanded &&
+						<SecondaryTextBlock className="counter">
+							{charCount} / {this.props.maxLength}
+						</SecondaryTextBlock>
+					}
 					{renderButton({ isExpanded, charCount })}
 				</FlexBox>
 			</Container>

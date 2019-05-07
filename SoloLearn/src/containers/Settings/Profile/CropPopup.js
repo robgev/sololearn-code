@@ -7,7 +7,7 @@ import {
 	Popup,
 	PopupActions,
 	PopupContent,
-	PopupTitle
+	PopupTitle,
 } from 'components/atoms';
 import { updateAvatar } from 'actions/settings';
 
@@ -57,7 +57,7 @@ class Profile extends PureComponent {
 			<Popup
 				open={open}
 				onClose={this.onRequestClose}
-				classes={{paper:'crop-dialog'}}
+				classes={{ paper: 'crop-dialog' }}
 			>
 				<PopupTitle>
 					{t('settings.edit-photo')}
@@ -72,7 +72,7 @@ class Profile extends PureComponent {
 						minCropBoxWidth={256}
 						minCropBoxHeight={256}
 						toggleDragModeOnDblclick={false}
-						style={{ height: 400, width: '100%' }}
+						style={{ width: '100%' }}
 					/>
 				</PopupContent>
 				<PopupActions>
