@@ -52,7 +52,7 @@ namespace SoloLearn
 		app.UseDeveloperExceptionPage();
 	  }
 	  app.UseCors(builder =>
-			  builder.WithOrigins("http://localhost:3000")
+			  builder.WithOrigins(Configuration["ClientUrl"])
 			  .AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials().SetPreflightMaxAge(TimeSpan.FromDays(356))
 			  );
 
