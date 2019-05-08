@@ -5,7 +5,11 @@ import { getBackgroundStyle, getFontSize } from '../utils';
 
 import './styles.scss';
 
-function UserPostEditor({ background, setTextInfo }) {
+const DraftEditor = ({
+	background,
+	setEditorHasText,
+	setEditorText,
+}) => {
 	const [ editorState, setEditorState ] = useState(EditorState.createEmpty());
 	const [ fontSize, setFontSize ] = useState(36);
 
@@ -23,10 +27,12 @@ function UserPostEditor({ background, setTextInfo }) {
 	}, [ background ]);
 
 	useEffect(() => {
-		const text = editorState.getCurrentContent().getPlainText();
+		const currentContent = editorState.getCurrentContent();
+		setEditorHasText(currentContent.hasText());
+		const text = currentContent.getPlainText();
+		setEditorText(text);
 		const newLinesCount = (text.match(/\n/g) || []).length;
 		setFontSize(getFontSize(text.length, newLinesCount));
-		setTextInfo({ length: text.length, newLinesCount });
 	}, [ editorState ]);
 
 	return (
@@ -51,6 +57,6 @@ function UserPostEditor({ background, setTextInfo }) {
 			</Container>
 		</FlexBox>
 	);
-}
+};
 
-export default UserPostEditor;
+export default DraftEditor;
