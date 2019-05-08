@@ -33,7 +33,7 @@ namespace SoloLearn
 	  services.AddCors();
 
 	  services.AddDataProtection()
-				.PersistKeysToFileSystem(new DirectoryInfo(@"C:\DataProtection"))
+				.PersistKeysToFileSystem(new DirectoryInfo(Configuration["DataProtectionStore"]))
 				.SetDefaultKeyLifetime(TimeSpan.FromDays(365 * 10))
 				.UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration()
 				{
