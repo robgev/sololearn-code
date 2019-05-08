@@ -5,9 +5,7 @@ import { RoundImage, IconMenu } from 'components/molecules';
 
 import './styles.scss';
 
-const ManageLessonCard = (props) => {
-	console.log(props);
-	return (
+const ManageLessonCard = (props) => (
 		<FlexBox fullWidth align className="manage-lesson-card">
 			<Container>
 				<RoundImage
@@ -15,9 +13,9 @@ const ManageLessonCard = (props) => {
 					classes={{ root: 'manage-course-chip' }}
 				/>
 			</Container>
-			<FlexBox column fullWidth>
+			<FlexBox column fullWidth className="lesson-text-content">
 				<Container>{ props.name }</Container>
-				<Container>
+				<Container className="secondary-text">
 					{
 						props.progress === undefined
 							? props.learners
@@ -32,6 +30,5 @@ const ManageLessonCard = (props) => {
 			</Container>
 		</FlexBox>
 	);
-};
 
 export default ManageLessonCard;

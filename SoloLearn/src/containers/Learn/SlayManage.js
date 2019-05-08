@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { PaperContainer, MenuItem } from 'components/atoms';
+import { PaperContainer, MenuItem, Title } from 'components/atoms';
 import { Layout } from 'components/molecules';
 import { ManageLessonCard } from './components';
+
+import './SlayManage.scss';
 
 class SlayManage extends Component {
 	render() {
 		const { skills: myCourses, courses } = this.props;
 		const availableCourses = courses.filter(c => !myCourses.find(s => s.id === c.id && (s.iconUrl = c.iconUrl)));
-		console.log(availableCourses);
-		console.log(myCourses);
 		return (
 			<Layout>
+				<Title className="title">My Courses</Title>
 				<PaperContainer>
 					{
 						myCourses.map(course => (
@@ -20,7 +21,7 @@ class SlayManage extends Component {
 								{...course}
 								actions={
 									[
-										<MenuItem onClick={() => { console.log('Glossary') ;}} >Glossary</MenuItem>,
+										<MenuItem onClick={() => { console.log('Glossary'); }} >Glossary</MenuItem>,
 										<MenuItem onClick={() => { console.log('Reset Progress'); }} >Reset Progress</MenuItem>,
 										<MenuItem onClick={() => { console.log('Remove'); }} >Remove</MenuItem>,
 									]
@@ -29,6 +30,7 @@ class SlayManage extends Component {
 						))
 					}
 				</PaperContainer>
+				<Title className="title">Available Courses</Title>
 				<PaperContainer>
 					{
 						availableCourses.map(course => (
@@ -37,7 +39,7 @@ class SlayManage extends Component {
 								actions={
 									[
 										<MenuItem onClick={() => { console.log('Glossary'); }} >Glossary</MenuItem>,
-										<MenuItem onClick={() => { console.log('Add to My Courses') ;}} >Add to My Courses</MenuItem>,
+										<MenuItem onClick={() => { console.log('Add to My Courses'); }} >Add to My Courses</MenuItem>,
 									]
 								}
 							/>

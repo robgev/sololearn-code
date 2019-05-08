@@ -1,9 +1,20 @@
+@import '~styles/colors';
+@import '~styles/variables';
+
 .manage-lesson-card {
-	border: 1px solid black;
+	border-bottom: 1px solid $divider_color;
+	padding: $primary_gap_size;
 
 	.manage-course-chip {
-
 		height: 85px;
 		width: 85px;
+	}
+
+	.lesson-text-content {
+		margin: 0 $primary_gap_size;
+	}
+
+	.secondary-text {
+		margin-top: $secondary_gap_size;
 	}
 }
