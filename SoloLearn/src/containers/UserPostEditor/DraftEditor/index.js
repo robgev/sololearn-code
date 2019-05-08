@@ -5,28 +5,14 @@ import { getBackgroundStyle, getFontSize } from '../utils';
 
 import './styles.scss';
 
-function UserPostEditor({ background, setSelectedBackgroundId }) {
+function UserPostEditor({ background, setTextInfo }) {
 	const [ editorState, setEditorState ] = useState(EditorState.createEmpty());
 	const [ fontSize, setFontSize ] = useState(36);
-	const [ lastSelectedBackgroundId, setLastSelectedBackgroundId ] = useState(null);
 
 	const editorRef = useRef(null);
 	const style = background === null
 		? {}
 		: getBackgroundStyle(background, { isPreview: false });
-
-	const removeBackground = () => {
-		if (background.id !== -1) {
-			setLastSelectedBackgroundId(background.id);
-		}
-		setSelectedBackgroundId(-1);
-	};
-
-	const bringBackBackground = () => {
-		if (lastSelectedBackgroundId !== null && lastSelectedBackgroundId !== -1) {
-			setSelectedBackgroundId(lastSelectedBackgroundId);
-		}
-	};
 
 	useEffect(() => {
 		editorRef.current.focus();
@@ -39,12 +25,8 @@ function UserPostEditor({ background, setSelectedBackgroundId }) {
 	useEffect(() => {
 		const text = editorState.getCurrentContent().getPlainText();
 		const newLinesCount = (text.match(/\n/g) || []).length;
-		if (text.length > 200 || newLinesCount > 4) {
-			removeBackground();
-		} else {
-			bringBackBackground();
-		}
 		setFontSize(getFontSize(text.length, newLinesCount));
+		setTextInfo({ length: text.length, newLinesCount });
 	}, [ editorState ]);
 
 	return (

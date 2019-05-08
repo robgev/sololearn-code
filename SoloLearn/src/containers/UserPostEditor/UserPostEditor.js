@@ -22,15 +22,27 @@ import EditorActions from './EditorActions';
 import BackgroundIconButton from './BackgroundIconButton';
 import UploadImageInput from './UploadImageInput';
 
-import { getPostBackgrounds, createPost } from './userpost.actions';
+import { getPostBackgrounds } from './userpost.actions';
 
 import './styles.scss';
 
 const UserPostEditor = ({ params }) => {
 	const [ backgrounds, setBackgrounds ] = useState([]);
+	const [ textInfo, setTextInfo ] = useState({ length: 0, newLinesCount: 0 });
+	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
 	const [ selectedBackgroundId, setSelectedBackgroundId ] = useState(-1);
 	const imageInputRef = useRef();
 	const [ imageSource, setImageSource ] = useState(null);
+
+	const computeCanApplyBackground = () => {
+		if (textInfo.length > 200
+			|| textInfo.newLinesCount > 4
+			|| imageSource !== null) {
+			setCanApplyBackground(false);
+		} else {
+			setCanApplyBackground(true);
+		}
+	};
 
 	useEffect(() => {
 		getPostBackgrounds()
@@ -40,13 +52,20 @@ const UserPostEditor = ({ params }) => {
 	}, []);
 
 	const onImageSelect = (e) => {
-		setSelectedBackgroundId(-1);
 		setImageSource(window.URL.createObjectURL(e.target.files[0]));
 	};
 
-	const background = selectedBackgroundId === null
-		? { type: 'none', id: -1 }
-		: backgrounds.find(b => b.id === selectedBackgroundId);
+	const removeImage = () => {
+		setImageSource(null);
+	};
+
+	useEffect(() => {
+		computeCanApplyBackground();
+	}, [ textInfo, imageSource ]);
+
+	const backgroundId = canApplyBackground ? selectedBackgroundId : -1;
+
+	const background = backgrounds.find(b => b.id === backgroundId);
 
 	const profile = Storage.load('profile');
 	return (
@@ -66,12 +85,15 @@ const UserPostEditor = ({ params }) => {
 						/>
 						<DraftEditor
 							background={background}
-							setSelectedBackgroundId={setSelectedBackgroundId}
+							setTextInfo={setTextInfo}
 						/>
 						<FlexBox justify align>
 							<Container className="user-post-image-preview-container">
 								<IconButton
-									onClick={() => { console.log(imageInputRef); imageInputRef.current.value = ''; setImageSource(null); }}
+									onClick={() => {
+										imageInputRef.current.value = '';
+										removeImage();
+									}}
 									className="image-preview-remove-icon"
 									style={{ display: imageSource ? 'block' : 'none' }}
 								>
@@ -89,17 +111,20 @@ const UserPostEditor = ({ params }) => {
 							/>
 							<UploadImageInput inputRef={imageInputRef} handleChange={onImageSelect} />
 							{
-								!imageSource ?
-									<FlexBox className="backgrounds-container">
-										{
-											backgrounds.map(el =>
-												<BackgroundIconButton onSelect={setSelectedBackgroundId} background={el} />)
-										}
-									</FlexBox>
-									:
-									null
+								!imageSource
+									? (
+										<FlexBox className="backgrounds-container">
+											{
+												backgrounds.map(el =>
+													(<BackgroundIconButton
+														onSelect={setSelectedBackgroundId}
+														background={el}
+													/>))
+											}
+										</FlexBox>
+									)
+									: null
 							}
-
 						</FlexBox>
 						<EditorActions />
 					</FlexBox>
