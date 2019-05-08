@@ -5,7 +5,12 @@ import { getBackgroundStyle, getFontSize } from '../utils';
 
 import './styles.scss';
 
-function UserPostEditor({ background, setSelectedBackgroundId }) {
+const DraftEditor = ({
+	background,
+	setSelectedBackgroundId,
+	setEditorHasText,
+	setEditorText,
+}) => {
 	const [ editorState, setEditorState ] = useState(EditorState.createEmpty());
 	const [ fontSize, setFontSize ] = useState(36);
 	const [ lastSelectedBackgroundId, setLastSelectedBackgroundId ] = useState(null);
@@ -37,7 +42,10 @@ function UserPostEditor({ background, setSelectedBackgroundId }) {
 	}, [ background ]);
 
 	useEffect(() => {
-		const text = editorState.getCurrentContent().getPlainText();
+		const currentContent = editorState.getCurrentContent();
+		setEditorHasText(currentContent.hasText());
+		const text = currentContent.getPlainText();
+		setEditorText(text);
 		const newLinesCount = (text.match(/\n/g) || []).length;
 		if (text.length > 200 || newLinesCount > 4) {
 			removeBackground();
@@ -69,6 +77,6 @@ function UserPostEditor({ background, setSelectedBackgroundId }) {
 			</Container>
 		</FlexBox>
 	);
-}
+};
 
-export default UserPostEditor;
+export default DraftEditor;

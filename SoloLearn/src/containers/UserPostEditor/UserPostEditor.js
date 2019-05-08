@@ -27,10 +27,17 @@ import { getPostBackgrounds, createPost } from './userpost.actions';
 import './styles.scss';
 
 const UserPostEditor = ({ params }) => {
+	const profile = Storage.load('profile');
+
 	const [ backgrounds, setBackgrounds ] = useState([]);
 	const [ selectedBackgroundId, setSelectedBackgroundId ] = useState(-1);
+
 	const imageInputRef = useRef();
 	const [ imageSource, setImageSource ] = useState(null);
+
+	const [ isPostButtonDisabled, togglePostButtonDisabled ] = useState(true);
+	const [ editorHasText, setEditorHasText ] = useState(false);
+	const [ editorText, setEditorText ] = useState('');
 
 	useEffect(() => {
 		getPostBackgrounds()
@@ -38,6 +45,15 @@ const UserPostEditor = ({ params }) => {
 				setBackgrounds([ { type: 'none', id: -1 }, ...res.backgrounds ]);
 			});
 	}, []);
+
+	// Post button toggler
+	useEffect(() => {
+		if (editorHasText || imageSource) {
+			togglePostButtonDisabled(false);
+		} else {
+			togglePostButtonDisabled(true);
+		}
+	}, [ editorHasText, imageSource ]);
 
 	const onImageSelect = (e) => {
 		setSelectedBackgroundId(-1);
@@ -48,13 +64,22 @@ const UserPostEditor = ({ params }) => {
 		? { type: 'none', id: -1 }
 		: backgrounds.find(b => b.id === selectedBackgroundId);
 
-	const profile = Storage.load('profile');
+	// const createNewPostHandler = () => {
+	// 	if(imageSource) {
+
+	// 	}
+	// 	createPost({
+	// 		message: editorText,
+	// 	})
+	// };
+
 	return (
 		<Layout>
 			{backgrounds && backgrounds.length ?
 				<PaperContainer className="user-post-main-container">
 					<FlexBox column fullWith>
 						<Title className="user-post-main-title">{`${params.id ? 'Edit post' : 'New Post'}`}</Title>
+
 						<ProfileAvatar
 							userId={profile.id}
 							avatarUrl={profile.avatarUrl}
@@ -64,10 +89,14 @@ const UserPostEditor = ({ params }) => {
 							withBorder
 							className="profile-avatar-container"
 						/>
+
 						<DraftEditor
 							background={background}
 							setSelectedBackgroundId={setSelectedBackgroundId}
+							setEditorHasText={setEditorHasText}
+							setEditorText={setEditorText}
 						/>
+
 						<FlexBox justify align>
 							<Container className="user-post-image-preview-container">
 								<IconButton
@@ -80,6 +109,7 @@ const UserPostEditor = ({ params }) => {
 								<Image src={imageSource || ''} className="user-post-image-preview" />
 							</Container>
 						</FlexBox>
+
 						<FlexBox align justify className="add-image-and-backgrounds-container">
 							<Chip
 								icon={<AddPhotoAlternate className="add-image-icon" />}
@@ -99,9 +129,13 @@ const UserPostEditor = ({ params }) => {
 									:
 									null
 							}
-
 						</FlexBox>
-						<EditorActions />
+
+						<EditorActions
+							isPostButtonDisabled={isPostButtonDisabled}
+						// createNewPostHandler={createNewPostHandler}
+						/>
+
 					</FlexBox>
 				</PaperContainer>
 				:
