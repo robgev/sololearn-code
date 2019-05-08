@@ -1,4 +1,5 @@
 @import '~styles/colors';
+@import '~styles/medias';
 
 .background-icon-button {
 	width: 45px;
@@ -7,4 +8,11 @@
 	margin-right: 5px;
 	cursor: pointer;
 	border: 1px solid $primary_color;
+}
+
+@include for-until-desktop {
+	.background-icon-button {
+		width: 25px;
+		height: 25px;
+	}
 }
