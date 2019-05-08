@@ -138,7 +138,7 @@ const UserPostEditor = ({ params }) => {
 							/>
 							<UploadImageInput inputRef={imageInputRef} handleChange={onImageSelect} />
 							{
-								!imageSource
+								canApplyBackground
 									? (
 										<FlexBox className="backgrounds-container">
 											{
