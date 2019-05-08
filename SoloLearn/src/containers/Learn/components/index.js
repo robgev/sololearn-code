@@ -10,3 +10,4 @@ export { default as Parser } from './Parser';
 export { default as RelatedLessons } from './RelatedLessons';
 export { default as SidebarCollectionCard } from './SidebarCollectionCard';
 export { default as UserProgressToolbar } from './UserProgressToolbar';
+export { default as ManageLessonCard } from './ManageLessonCard';
