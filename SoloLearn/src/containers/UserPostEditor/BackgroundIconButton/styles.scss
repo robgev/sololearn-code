@@ -1,0 +1,10 @@
+@import '~styles/colors';
+
+.background-icon-button {
+	width: 45px;
+	height: 45px;
+	border-radius: 3px;
+	margin-right: 5px;
+	cursor: pointer;
+	border: 1px solid $primary_color;
+}
