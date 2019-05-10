@@ -11,6 +11,7 @@ import {
 	Container,
 	Image,
 	IconButton,
+	SecondaryTextBlock,
 } from 'components/atoms';
 import { Layout } from 'components/molecules';
 import ProfileAvatar from 'components/ProfileAvatar';
@@ -25,6 +26,8 @@ import UploadImageInput from './UploadImageInput';
 import { getPostBackgrounds, uploadPostImage, createPost } from './userpost.actions';
 
 import './styles.scss';
+
+export const USER_POST_MAX_LENGTH = 1024;
 
 const UserPostEditor = ({ params, profile }) => {
 	const [ backgrounds, setBackgrounds ] = useState([]);
@@ -122,6 +125,11 @@ const UserPostEditor = ({ params, profile }) => {
 							background={background}
 							setEditorText={setEditorText}
 						/>
+						<FlexBox justifyEnd>
+							<SecondaryTextBlock className="count">
+								{editorText.length} / {USER_POST_MAX_LENGTH}
+							</SecondaryTextBlock>
+						</FlexBox>
 						<FlexBox justify align>
 							<Container className="user-post-image-preview-container">
 								<IconButton
