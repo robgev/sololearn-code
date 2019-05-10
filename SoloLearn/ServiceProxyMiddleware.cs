@@ -59,7 +59,7 @@ namespace SoloLearn
 
         public async Task Invoke(HttpContext context)
         {
-            if (context.Request.Method == HttpMethods.Options || !context.Request.Path.StartsWithSegments(new PathString("/api")))
+            if (context.Request.Method == HttpMethods.Options || !context.Request.Path.StartsWithSegments(new PathString(_options.Path)))
             {
                 await _next.Invoke(context);
                 return;
@@ -83,9 +83,10 @@ namespace SoloLearn
                     requestMessage.Content?.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
                 }
             }
+								requestMessage.Headers.TryAddWithoutValidation("ApiLevel", "9");
 
-            string path = context.Request.Path;
-            path = path.Substring("/api".Length);
+								string path = context.Request.Path;
+								path = path.Substring(_options.Path.Length);
 
 
             requestMessage.Headers.Host = _options.Host + ":" + _options.Port;
