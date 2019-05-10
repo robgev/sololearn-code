@@ -35,7 +35,15 @@ class FeedItem extends Component {
 	}
 
 	handleChallengesOpen = () => {
-		this.setState({ isOpened: !this.state.isOpened });
+		this.setState({ isOpened: !this.state.isOpened }, () => {
+			this.props.measure();
+		});
+	}
+
+	componentDidMount() {
+		if (this.props.updatePosition) {
+			this.props.updatePosition();
+		}
 	}
 
 	renderFeedItem = () => {
@@ -168,17 +176,17 @@ class FeedItem extends Component {
 	}
 
 	render() {
-		const { feedItem } = this.props;
+		const { feedItem, style } = this.props;
 		// Render only suggestions
 		if (feedItem.type === types.suggestions) {
 			return (
-				<Container>
+				<Container style={style}>
 					{this.renderFeedItem()}
 				</Container>
 			);
 		} else if (feedItem.type === types.mergedChallange) {
 			return (
-				<Container>
+				<Container style={style}>
 					<PaperContainer
 						zDepth={1}
 						className="feedItem"
@@ -196,8 +204,8 @@ class FeedItem extends Component {
 					<Container
 						id="feed-items"
 						className={`merged-items-container ${this.state.isOpened ? 'open' : ''}`}
-						//style={{ height: this.state.isOpened ? ((feedItem.groupedItems.length * 139) - 10) : 0 }} // 10 = last item margin bottom
-						//style={{'display': this.state.isOpened? 'block' : 'none'}}
+						// style={{ height: this.state.isOpened ? ((feedItem.groupedItems.length * 139) - 10) : 0 }} // 10 = last item margin bottom
+						// style={{'display': this.state.isOpened? 'block' : 'none'}}
 					>
 						{feedItem.groupedItems.map(currentItem => (
 							<FeedItem
@@ -213,7 +221,7 @@ class FeedItem extends Component {
 			);
 		}
 		return (
-			<Container className="feedItemWrapper">
+			<Container style={style} className="feedItemWrapper">
 				<PaperContainer zDepth={1} className="feedItem">
 					<FeedItemBase
 						feedItemId={feedItem.id}

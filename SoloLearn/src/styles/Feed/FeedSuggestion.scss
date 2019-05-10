@@ -1,5 +1,23 @@
 .feed-suggestions {
-	margin-bottom: 10px;
+	height: 150px;
+	margin: 10px;
+	margin-top: -5px;
+	margin-bottom: 5px;
+	.feed-suggestions_slider.slick-slider {
+		.slick-arrow {
+			top: 0;
+			bottom: 0;
+			margin: auto;
+		}
+		.slick-next {
+			transform: none;
+			right: -20px;
+		}
+		.slick-prev {
+			transform: none;
+			left: -20px;
+		}
+	}
 	.user {
 			display: inline-flex;
 			justify-content: center;
@@ -8,8 +26,8 @@
 			flex-direction: column;
 			height: 140px;
 			width: 140px;
-			margin: 0 5px;
-		
+			margin: 5px;
+
 
 		.userName {
 			font-size: 13px;
