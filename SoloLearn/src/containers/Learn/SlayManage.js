@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-
+import { toSeoFriendly } from 'utils';
+import { getCourseAliasById } from 'reducers/courses.reducer';
 import { PaperContainer, MenuItem, Title } from 'components/atoms';
 import { Layout } from 'components/molecules';
 import { ManageLessonCard } from './components';
@@ -11,6 +12,7 @@ import './SlayManage.scss';
 class SlayManage extends Component {
 	render() {
 		const { skills: myCourses, courses, t } = this.props;
+
 		const availableCourses = courses.filter(c => !myCourses.find(s => s.id === c.id && (s.iconUrl = c.iconUrl)));
 		return (
 			<Layout>
@@ -20,6 +22,7 @@ class SlayManage extends Component {
 						myCourses.map(course => (
 							<ManageLessonCard
 								{...course}
+								url={`/learn/course/${toSeoFriendly(getCourseAliasById(courses, course.id))}`}
 								actions={
 									[
 										<MenuItem onClick={() => { console.log('Glossary'); }} >{t('course_picker.action.glossary')}</MenuItem>,
@@ -37,6 +40,7 @@ class SlayManage extends Component {
 						availableCourses.map(course => (
 							<ManageLessonCard
 								{...course}
+								url={`/learn/course/${toSeoFriendly(getCourseAliasById(courses, course.id))}`}
 								actions={
 									[
 										<MenuItem onClick={() => { console.log('Glossary'); }} >{t('course_picker.action.glossary')}</MenuItem>,

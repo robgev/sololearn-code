@@ -2,31 +2,35 @@ import React from 'react';
 import { translate } from 'react-i18next';
 
 import { Container, FlexBox, Progress } from 'components/atoms';
-import { RoundImage, IconMenu } from 'components/molecules';
+import { RoundImage, IconMenu, ContainerLink } from 'components/molecules';
 import { numberFormatter } from 'utils';
 
 import './styles.scss';
 
-const ManageLessonCard = ({ 
-iconUrl, name, learners, progress, actions, t 
+const ManageLessonCard = ({
+	iconUrl, name, learners, progress, actions, url, t,
 }) => (
 	<FlexBox fullWidth align className="manage-lesson-card">
-		<Container>
-			<RoundImage
-				src={iconUrl}
-				classes={{ root: 'manage-course-chip' }}
-			/>
-		</Container>
-		<FlexBox column fullWidth className="lesson-text-content">
-			<Container>{ name }</Container>
-			<Container className="secondary-text">
-				{
-					progress === undefined
-						? `${numberFormatter(learners)} ${t('learn.course-learners-format')}`
-						: <Progress value={progress * 100} />
-				}
-			</Container>
-		</FlexBox>
+		<ContainerLink className="manage-lesson-card-link-container" to={url}>
+			<FlexBox fullWidth align>
+				<Container>
+					<RoundImage
+						src={iconUrl}
+						classes={{ root: 'manage-course-chip' }}
+					/>
+				</Container>
+				<FlexBox column fullWidth className="lesson-text-content">
+					<Container>{ name }</Container>
+					<Container className="secondary-text">
+						{
+							progress === undefined
+								? `${numberFormatter(learners)} ${t('learn.course-learners-format')}`
+								: <Progress value={progress * 100} />
+						}
+					</Container>
+				</FlexBox>
+			</FlexBox>
+		</ContainerLink>
 		<Container>
 			<IconMenu>
 				{actions}
