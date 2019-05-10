@@ -90,7 +90,6 @@ const UserPostEditor = ({ params }) => {
 		if (imageSource) {
 			return uploadPostImage(imageData, 'postimage.jpg')
 				.then((res) => {
-					console.log('res: ', res);
 					createPost({
 						message: editorText,
 						imageUrl: res.imageUrl,
