@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Editor, EditorState } from 'draft-js';
+import hexToRgba from 'hex-to-rgba';
 import { Container, FlexBox } from 'components/atoms';
 import { getBackgroundStyle, getFontSize } from '../utils';
 import { USER_POST_MAX_LENGTH } from '../UserPostEditor';
@@ -43,7 +44,7 @@ const DraftEditor = ({
 			align={background ? background.type !== 'none' && true : false}
 			justify={background ? background.type !== 'none' && true : false}
 			style={background.type !== 'none' ?
-				{ ...style, color: background ? background.textColor : 'black', fontSize }
+				{ ...style, color: background ? hexToRgba(background.textColor) : 'black', fontSize }
 				:
 				{ color: background ? background.textColor : 'black', fontSize }
 			}
