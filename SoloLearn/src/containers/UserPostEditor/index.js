@@ -1,3 +1,1 @@
-import UserPostEditor from './UserPostEditor';
-
-export default UserPostEditor;
+export { default } from './UserPostEditor';

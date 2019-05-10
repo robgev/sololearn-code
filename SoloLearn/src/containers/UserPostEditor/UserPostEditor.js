@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
+import { getUserSelector } from 'reducers/reducer_user';
 import { withRouter } from 'react-router';
 import {
 	Title,
@@ -14,8 +16,6 @@ import { Layout } from 'components/molecules';
 import ProfileAvatar from 'components/ProfileAvatar';
 import { AddPhotoAlternate, Close } from 'components/icons';
 
-import Storage from 'api/storage';
-
 import EditorActions from './EditorActions';
 import DraftEditor from './DraftEditor';
 
@@ -26,9 +26,7 @@ import { getPostBackgrounds, uploadPostImage, createPost } from './userpost.acti
 
 import './styles.scss';
 
-const UserPostEditor = ({ params }) => {
-	const profile = Storage.load('profile');
-
+const UserPostEditor = ({ params, profile }) => {
 	const [ backgrounds, setBackgrounds ] = useState([]);
 	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
 	const [ selectedBackgroundId, setSelectedBackgroundId ] = useState(-1);
@@ -181,4 +179,8 @@ const UserPostEditor = ({ params }) => {
 	);
 };
 
-export default withRouter(UserPostEditor);
+const mapStateToProps = state => ({
+	profile: getUserSelector(state),
+});
+
+export default connect(mapStateToProps)(withRouter(UserPostEditor));
