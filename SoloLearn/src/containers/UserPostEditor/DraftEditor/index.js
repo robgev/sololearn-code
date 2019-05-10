@@ -23,6 +23,13 @@ const DraftEditor = ({
 		return 'not_handled';
 	};
 
+	const handlePastedText = (_, __, editorState) => {
+		if (editorState.getCurrentContent().getPlainText().length >= USER_POST_MAX_LENGTH) {
+			return 'handled';
+		}
+		return 'not_handled';
+	};
+
 	const style = background === null
 		? {}
 		: getBackgroundStyle(background, { isPreview: false });
@@ -55,6 +62,7 @@ const DraftEditor = ({
 				<Editor
 					editorState={editorState}
 					handleBeforeInput={handeBeforeInput}
+					handlePastedText={handlePastedText}
 					onChange={setEditorState}
 					textAlignment={background ? background.type !== 'none' && 'center' : 'left'}
 					ref={editorRef}
