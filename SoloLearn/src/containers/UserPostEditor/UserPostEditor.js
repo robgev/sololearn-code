@@ -90,15 +90,15 @@ const UserPostEditor = ({ params, profile }) => {
 				.then((res) => {
 					createPost({
 						message: editorText,
-						imageUrl: res.imageUrl,
 						backgroundId: null,
+						imageUrl: res.imageUrl,
 					});
 				});
 		}
 		return createPost({
 			message: editorText,
-			imageUrl: null,
 			backgroundId: canApplyBackground && selectedBackgroundId !== -1 ? selectedBackgroundId : null,
+			imageUrl: null,
 		});
 	};
 

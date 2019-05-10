@@ -3,11 +3,11 @@ import Service from 'api/service';
 export const getUserPost = id =>
 	Service.request('Profile/GetPost', { id });
 
-export const createPost = ({ message = null, imageUrl = null, backgroundId = null }) =>
+export const createPost = ({ message = null, backgroundId = null, imageUrl = null }) =>
 	Service.request('Profile/CreatePost', {
 		message,
-		imageUrl,
 		backgroundId,
+		imageUrl,
 	});
 
 export const uploadPostImage = (file, name) =>

@@ -19,10 +19,6 @@ const DraftEditor = ({
 
 	useEffect(() => {
 		editorRef.current.focus();
-	}, []);
-
-	useEffect(() => {
-		editorRef.current.focus();
 	}, [ background ]);
 
 	useEffect(() => {

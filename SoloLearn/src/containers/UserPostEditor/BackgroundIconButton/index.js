@@ -8,8 +8,6 @@ const BackgroundIconButton = ({ background, onSelect }) => {
 	const { id } = background;
 	const style = getBackgroundStyle(background, { isPreview: true });
 
-	console.warn(style);
-
 	return (
 		<Container className="background-icon-button" onClick={() => onSelect(id)} style={style} />
 	);
