@@ -22,7 +22,7 @@ import DraftEditor from './DraftEditor';
 import BackgroundIconButton from './BackgroundIconButton';
 import UploadImageInput from './UploadImageInput';
 
-import { getPostBackgrounds } from './userpost.actions';
+import { getPostBackgrounds, uploadPostImage, createPost } from './userpost.actions';
 
 import './styles.scss';
 
@@ -30,14 +30,13 @@ const UserPostEditor = ({ params }) => {
 	const profile = Storage.load('profile');
 
 	const [ backgrounds, setBackgrounds ] = useState([]);
-	// const [ textInfo, setTextInfo ] = useState({ length: 0, newLinesCount: 0 });
 	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
 	const [ selectedBackgroundId, setSelectedBackgroundId ] = useState(-1);
 
 	const imageInputRef = useRef();
 	const [ imageSource, setImageSource ] = useState(null);
+	const [ imageData, setImageData ] = useState(null);
 	const [ isPostButtonDisabled, togglePostButtonDisabled ] = useState(true);
-	const [ editorHasText, setEditorHasText ] = useState(false);
 	const [ editorText, setEditorText ] = useState('');
 
 	const computeCanApplyBackground = () => {
@@ -58,17 +57,21 @@ const UserPostEditor = ({ params }) => {
 			});
 	}, []);
 
-	// Post button toggler
+	// Post button disabled toggler
 	useEffect(() => {
-		if (editorHasText || imageSource) {
+		if (editorText || imageSource) {
 			togglePostButtonDisabled(false);
 		} else {
 			togglePostButtonDisabled(true);
 		}
-	}, [ editorHasText, imageSource ]);
+	}, [ editorText, imageSource ]);
 
-	const onImageSelect = (e) => {
-		setImageSource(window.URL.createObjectURL(e.target.files[0]));
+	const onImageSelect = async (e) => {
+		const newImageSource = window.URL.createObjectURL(e.target.files[0]);
+		setImageSource(newImageSource);
+		const data = await fetch(newImageSource);
+		const dataBlob = await data.blob();
+		setImageData(dataBlob);
 	};
 
 	const removeImage = () => {
@@ -83,14 +86,24 @@ const UserPostEditor = ({ params }) => {
 
 	const background = backgrounds.find(b => b.id === backgroundId);
 
-	// const createNewPostHandler = () => {
-	// 	if(imageSource) {
-
-	// 	}
-	// 	createPost({
-	// 		message: editorText,
-	// 	})
-	// };
+	const createNewPostHandler = () => {
+		if (imageSource) {
+			return uploadPostImage(imageData, 'postimage.jpg')
+				.then((res) => {
+					console.log('res: ', res);
+					createPost({
+						message: editorText,
+						imageUrl: res.imageUrl,
+						backgroundId: null,
+					});
+				});
+		}
+		return createPost({
+			message: editorText,
+			imageUrl: null,
+			backgroundId: canApplyBackground && selectedBackgroundId !== -1 ? selectedBackgroundId : null,
+		});
+	};
 
 	return (
 		<Layout>
@@ -110,7 +123,6 @@ const UserPostEditor = ({ params }) => {
 						/>
 						<DraftEditor
 							background={background}
-							setEditorHasText={setEditorHasText}
 							setEditorText={setEditorText}
 						/>
 						<FlexBox justify align>
@@ -156,7 +168,7 @@ const UserPostEditor = ({ params }) => {
 
 						<EditorActions
 							isPostButtonDisabled={isPostButtonDisabled}
-						// createNewPostHandler={createNewPostHandler}
+							createNewPostHandler={createNewPostHandler}
 						/>
 
 					</FlexBox>

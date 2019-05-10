@@ -10,7 +10,7 @@ const EditorActions = ({ isPostButtonDisabled, createNewPostHandler }) => (
 	<FlexBox justifyEnd className="user-post-actions-container">
 		<PromiseButton
 			raised
-			fire={() => getUserPost(91111)}
+			fire={() => getUserPost(97699)}
 			style={{ marginRight: '10px' }}
 		>
 			Get Post (test)

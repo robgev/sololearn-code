@@ -7,7 +7,6 @@ import './styles.scss';
 
 const DraftEditor = ({
 	background,
-	setEditorHasText,
 	setEditorText,
 }) => {
 	const [ editorState, setEditorState ] = useState(EditorState.createEmpty());
@@ -28,7 +27,6 @@ const DraftEditor = ({
 
 	useEffect(() => {
 		const currentContent = editorState.getCurrentContent();
-		setEditorHasText(currentContent.hasText());
 		const text = currentContent.getPlainText();
 		setEditorText(text);
 		const newLinesCount = (text.match(/\n/g) || []).length;
