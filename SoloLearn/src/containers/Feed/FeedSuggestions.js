@@ -36,6 +36,7 @@ const FeedSuggestions = ({ suggestions }) => (
 			slidesToShow={3}
 			slidesToScroll={4}
 			responsive={generateBreakpoints()}
+			className="feed-suggestions_slider"
 		>
 			{suggestions.map(suggestion => (
 				<Container

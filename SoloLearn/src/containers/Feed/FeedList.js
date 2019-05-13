@@ -3,14 +3,21 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { observer } from 'mobx-react';
 import { connect } from 'react-redux';
+import {
+	WindowScroller,
+	AutoSizer,
+	List,
+	CellMeasurer,
+	CellMeasurerCache,
+	InfiniteLoader,
+} from 'react-virtualized';
 
-// Utils and defaults
-import types from 'defaults/appTypes';
 import {
 	Container,
 	Title,
 } from 'components/atoms';
-import { InfiniteScroll } from 'components/molecules';
+import { EmptyCard } from 'components/molecules';
+import { InfiniteVirtualizedList } from 'components/organisms';
 import FeedShimmer from 'components/Shimmers/FeedShimmer';
 
 import 'styles/Feed/FeedList.scss';
@@ -41,18 +48,54 @@ class FeedList extends Component {
 		this.setState(state => ({ coursePopupOpen: !state.coursePopupOpen, courseId }));
 	}
 
+	_rowRenderer = ({
+		style,
+		index,
+		measure,
+		updatePosition,
+	}) => {
+		const { feed, voteFeedItem, loading } = this.props;
+		const { shouldShowFeed } = this.state;
+		const feedItem = feed[index];
+
+		if (loading && index >= feed.length) {
+			return (
+				<EmptyCard loading />
+			);
+		}
+
+		return (
+			<React.Fragment>
+				{(index > 20 && !shouldShowFeed
+					? null : (
+						<FeedItem
+							style={style}
+							measure={measure}
+							feedItem={feedItem}
+							voteFeedItem={voteFeedItem}
+							updatePosition={updatePosition}
+						/>
+					))
+				}
+			</React.Fragment>
+		);
+	};
+
+	isRowLoaded = index => !!this.props.feed[index];
+
+	hasMore = index => index >= this.props.feed.length;
+
 	render() {
 		const {
 			t,
 			feed,
 			hasMore,
-			feedPins,
 			loadMore,
+			feedPins,
 			header = null,
-			voteFeedItem,
 			loading,
 		} = this.props;
-		const { shouldShowFeed } = this.state;
+		const rowCount = loading ? feed.length + 1 : feed.length;
 
 		return (
 			<Container>
@@ -89,24 +132,16 @@ class FeedList extends Component {
 												</Container>
 												{ feed.length === 0 && !hasMore
 													? <Title className="empty-feed">{t('common.empty-activity-message')}</Title>
-													:
-													<InfiniteScroll
-														hasMore={hasMore}
-														loadMore={loadMore}
-														isLoading={loading}
-													>
-														{feed.map((feedItem, index) => (index > 20 && !shouldShowFeed
-															? null : (
-																<FeedItem
-																	key={feedItem.type === types.mergedChallange
-																		?	`feedGroup${feedItem.toId}`
-																		:	`feedItem${feedItem.id}`
-																	}
-																	feedItem={feedItem}
-																	voteFeedItem={voteFeedItem}
-																/>
-															)))}
-													</InfiniteScroll>
+													: (
+														<InfiniteVirtualizedList
+															rowRenderer={this._rowRenderer}
+															loading={loading}
+															hasMore={this.hasMore}
+															isRowLoaded={this.isRowLoaded}
+															loadMore={loadMore}
+															rowCount={rowCount}
+														/>
+													)
 												}
 											</Container>
 										)}
