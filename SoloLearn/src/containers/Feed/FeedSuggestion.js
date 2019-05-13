@@ -2,11 +2,11 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
-//import ProfileAvatar from './ProfileAvatar';
+// import ProfileAvatar from './ProfileAvatar';
 import { followUserSuggestion } from 'actions/feed';
 import { numberFormatter } from 'utils';
-import { PaperContainer, SecondaryTextBlock, } from 'components/atoms';
-import { UsernameLink, RaisedButton, ProfileAvatar } from 'components/molecules'
+import { PaperContainer, SecondaryTextBlock } from 'components/atoms';
+import { UsernameLink, RaisedButton, ProfileAvatar } from 'components/molecules';
 
 import 'styles/Feed/FeedSuggestion.scss';
 
@@ -17,14 +17,11 @@ const mapDispatchToProps = {
 const FeedSuggestion = ({ t, suggestion, followUser }) => {
 	const {
 		id,
-		name,
 		followers,
-		avatarUrl,
 		isFollowing,
 	} = suggestion;
 	return (
 		<PaperContainer className="user">
-			
 			<ProfileAvatar
 				user={suggestion}
 				className="feed-suggestion-avatar"

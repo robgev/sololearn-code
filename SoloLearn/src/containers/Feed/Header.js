@@ -73,6 +73,11 @@ class Header extends PureComponent {
 					</Container>
 				</Container>
 				<Container className="actions">
+					<ContainerLink to="/user-post" style={{ marginRight: '7px' }}>
+						<RaisedButton color="primary">
+							Create a Post
+						</RaisedButton>
+					</ContainerLink>
 					<ContainerLink to="/discover">
 						<RaisedButton color="secondary">
 							{t('discover_peers.title')}

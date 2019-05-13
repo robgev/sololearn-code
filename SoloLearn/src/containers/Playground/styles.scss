@@ -22,6 +22,11 @@
 		.playground_sidebar {
 			height: calc(100vh - 50px);
 			overflow-y: scroll;
+			.comments-container {
+				margin-top: 0;
+				box-shadow: none;
+				border-radius: 0;
+			}
 		}
 	}
 	&.no-sidebar {

@@ -86,6 +86,7 @@ measureFileSizesBeforeBuild(paths.appBuild)
 				buildFolder,
 				useYarn,
 			);
+			fs.copySync(`${paths.appBuild}/index.html`, paths.viewPath);
 		},
 		(err) => {
 			console.log(chalk.red('Failed to compile.\n'));

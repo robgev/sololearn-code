@@ -15,7 +15,9 @@
 	};
 
 	.heading {
-		padding: 15px 20px 10px 20px;
+		display: flex;
+    flex-direction: column;
+    padding: 20px 20px 10px 20px;
 	};
 
 	.title {
@@ -113,4 +115,3 @@
 	}
 }
 
-	

@@ -83,9 +83,9 @@ class Playground extends Component {
 									}
 									<Comments
 										type={1}
+										id={data.id}
 										useWindow={false}
 										commentsType="code"
-										id={data.id}
 										commentsCount={data.comments}
 									/>
 								</Container>

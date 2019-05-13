@@ -81,6 +81,9 @@ const QuizFactoryRate = Loadable({
 	loader: () => import('containers/QuizFactory').then(mod => mod.QuizFactoryRate),
 });
 
+// User Post
+const UserPostEditor = Loadable({ loader: () => import('containers/UserPostEditor') });
+
 export default ([
 	<Route onEnter={() => window.scrollTo(0, 0)} path="/signin" component={Login} />,
 	<Route onEnter={() => window.scrollTo(0, 0)} path="/signup" component={Login} />,
@@ -117,6 +120,9 @@ export default ([
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss/filter/:query" component={Questions} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss/:id(/:questionName)(/:replyId)" component={Post} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/feed" component={Feed} />
+
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/user-post(/:id)" component={UserPostEditor} />
+
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/profile/:id(/:tab)" component={Profile} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/certificate/:id" component={Certificate} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/leaderboards(/:userId)" component={Leaderboards} />

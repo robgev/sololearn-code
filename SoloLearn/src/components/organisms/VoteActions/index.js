@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { observable, action } from 'mobx';
 import { vote } from 'actions/vote';
+import { Snackbar } from 'components/atoms';
+import getFaultReason from 'utils/faultGenerator';
 import ILikes from './ILikes';
 import VoteButtons from './VoteButtons';
 import LikesPopup from './LikesPopup';
-import { Snackbar } from 'components/atoms';
-import getFaultReason from 'utils/faultGenerator';
 import './styles.scss';
 
 const mapDispatchToProps = { vote };
@@ -66,7 +66,6 @@ class VoteActions extends Component {
 	}
 
 	onDownvote = () => {
-		
 		const { type, id, vote } = this.props;
 		this.likes.vote({ newVote: -1 })
 			.then(() => {
@@ -79,12 +78,13 @@ class VoteActions extends Component {
 	}
 
 	render() {
-		const { t, vertical } = this.props;
+		const { t, vertical, className } = this.props;
 		return (
 			<Fragment>
 				<VoteButtons
 					vertical={vertical}
 					likes={this.likes}
+					className={className}
 					onUpvote={this.onUpvote}
 					onDownvote={this.onDownvote}
 					onLabelClick={this.toggleOpen}
@@ -108,11 +108,11 @@ VoteActions.defaultProps = {
 VoteActions.propTypes = {
 	id: PropTypes.number.isRequired,
 	type: PropTypes
-		.oneOf(['code', 'post', 'lessonComment', 'userLessonComment', 'codeComment']).isRequired,
+		.oneOf([ 'code', 'post', 'lessonComment', 'userLessonComment', 'codeComment' ]).isRequired,
 	vertical: PropTypes.bool,
 	onChange: PropTypes.func,
 	initialCount: PropTypes.number.isRequired,
-	initialVote: PropTypes.oneOf([1, 0, -1]).isRequired,
+	initialVote: PropTypes.oneOf([ 1, 0, -1 ]).isRequired,
 };
 
 export default VoteActions;

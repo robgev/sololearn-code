@@ -1,0 +1,13 @@
+@import '~styles/_colors';
+
+.draft-editor-container {
+	min-height: 300px;
+	margin: 5px 0;
+	border-radius: 5px;
+	border: 1px solid $primary_color;
+	cursor: text;
+	.draft-editor-inner-container {
+		width: 100%;
+		padding: 10px;
+	}
+}

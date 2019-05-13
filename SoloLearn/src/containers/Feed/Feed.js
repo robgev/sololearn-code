@@ -74,11 +74,10 @@ class FeedItemsBase extends Component {
 	}
 
 	getFeedItems = () => {
-		this.setState({loading: true});
+		this.setState({ loading: true });
 		this.props.getFeedItems()
-			.then(()=>{this.setState({loading: false});})
+			.then(() => { this.setState({ loading: false }); })
 			.catch(e => showError(e, 'Something went wrong when trying to get feed'));
-		
 	}
 
 	// Scroll to top of the feed

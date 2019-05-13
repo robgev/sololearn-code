@@ -1,0 +1,54 @@
+@import '~styles/colors';
+@import '~styles/medias';
+
+.user-post-main-container {
+	.user-post-main-title {
+		margin-bottom: 5px;
+	}
+	.profile-avatar-container {
+		margin: 5px 0;
+	}
+	.add-image-and-backgrounds-container {
+		.add-image-chip {
+			margin-right: 30px;
+			padding: 5px;
+			.add-image-icon {
+				color: $primary_color;
+			}
+		}
+		.backgrounds-container {
+			margin: 5px 0;
+			align-self: center;
+		}
+	}
+
+	.user-post-image-preview-container {
+		position: relative;
+		.image-preview-remove-icon {
+			position: absolute;
+			color: white;
+			right: 5px;
+			top: 5px;
+			z-index: 200;
+			mix-blend-mode: difference;
+		}
+		.user-post-image-preview {
+			max-width: 350px;
+			border-radius: 3px;
+		}
+	}
+	.user-post-max-length-container {
+		margin: 5px 0;
+	}
+}
+
+@include for-until-desktop {
+	.user-post-main-container {
+		.add-image-and-backgrounds-container {
+			flex-direction: column;
+			.add-image-chip {
+				margin: 10px 0;
+			}
+		}
+	}
+}

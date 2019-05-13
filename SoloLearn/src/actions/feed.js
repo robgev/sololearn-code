@@ -19,7 +19,7 @@ export const clearFeedItems = () => ({ type: types.CLEAR_FEED });
 
 export const getFeedItemsInternal = () => async (dispatch, getState) => {
 	try {
-		const requestLimitCount = 20;
+		const requestLimitCount = 60;
 		const { feed: { entities: feed }, discoverSuggestions } = getState();
 		const filteredFeed = feed.filter(item => item.type !== feedTypes.suggestions);
 		const suggestionsBatch = feed.length - filteredFeed.length;
@@ -137,7 +137,7 @@ export const voteFeedItem = ({
 }) => {
 	const userVote = vote === newVote ? 0 : newVote;
 	const votes = (totalVotes + userVote) - vote;
-	
+
 	return {
 		type: types.SET_FEED_ITEM_VOTE_DATA,
 		payload: {
