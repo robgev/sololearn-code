@@ -101,14 +101,16 @@ const DraftEditor = ({
 		setFontSize(getFontSize(text.length, newLinesCount));
 	}, [ editorState ]);
 
+	const getRgbaHexFromArgbHex = color => `#${color.substring(3, color.length)}${color.substring(1, 3)}`;
+
 	return (
 		<FlexBox
 			align={background ? background.type !== 'none' && true : false}
 			justify={background ? background.type !== 'none' && true : false}
 			style={background.type !== 'none' ?
-				{ ...style, color: background ? hexToRgba(background.textColor) : 'black', fontSize }
+				{ ...style, color: background ? background.textColor.length > 6 ? hexToRgba(getRgbaHexFromArgbHex(background.textColor)) : background.textColor : 'black', fontSize }
 				:
-				{ color: background ? background.textColor : 'black', fontSize }
+				{ color: 'black', fontSize }
 			}
 			className="draft-editor-container"
 			onClick={() => { editorRef.current.focus(); }}
