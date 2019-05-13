@@ -11,6 +11,7 @@ export const LESSON_SELECTED = 'LESSON_SELECTED';
 export const QUIZ_SELECTED = 'QUIZ_SELECTED ';
 export const SET_SHORTCUT_LESSON = 'SET_SHORTCUT_LESSON';
 export const DEDUCT_EXP = 'DEDUCT_EXP';
+export const CHANGE_PROGRESS = 'CHANGE_PROGRESS';
 
 // Playground types
 export const SET_CODES = 'SET_CODES';

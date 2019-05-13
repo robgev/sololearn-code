@@ -121,3 +121,7 @@ export const deductExp = exp => ({
 	type: types.DEDUCT_EXP,
 	payload: exp,
 });
+
+export const changeProgress = (courseId, progress) => (dispatch) => {
+	dispatch({type: types.CHANGE_PROGRESS, payload: {courseId, progress}})
+}

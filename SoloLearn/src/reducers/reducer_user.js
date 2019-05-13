@@ -1,4 +1,4 @@
-import { GET_USER_PROFILE, UPDATE_PROFILE_DATA, TOGGLE_COURSE, DEDUCT_EXP } from 'constants/ActionTypes';
+import { GET_USER_PROFILE, UPDATE_PROFILE_DATA, TOGGLE_COURSE, DEDUCT_EXP, CHANGE_PROGRESS } from 'constants/ActionTypes';
 import { createSelector } from 'reselect';
 
 export default (state = null, action) => {
@@ -13,6 +13,17 @@ export default (state = null, action) => {
 		});
 	case DEDUCT_EXP:
 		return { ...state, xp: state.xp - action.payload };
+	case CHANGE_PROGRESS:
+		const {courseId, progress} = action.payload;
+		const { skills } = state;
+		const newSkills = [...skills];
+		const index = newSkills.findIndex(item => item.id === courseId);
+		if(index !== -1){
+			newSkills[index].progress = progress;
+		}
+		return Object.assign({}, state, {
+			skills: newSkills,
+		});
 	default:
 		return state;
 	}
