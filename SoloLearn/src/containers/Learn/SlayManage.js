@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { toSeoFriendly } from 'utils';
 import { getCourseAliasById } from 'reducers/courses.reducer';
-import { changeProgress } from 'actions/learn';
+import { changeProgress, toggleCourseInternal } from 'actions/learn';
 import { PaperContainer, MenuItem, Title } from 'components/atoms';
 import { Layout } from 'components/molecules';
 import { ManageLessonCard } from './components';
-import {resetProgress} from './SlayManage.api';
+import { resetProgress } from './SlayManage.api';
 
 import './SlayManage.scss';
 import Glossary from './components/Glossary';
@@ -36,6 +36,10 @@ class SlayManage extends Component {
 		resetProgress(courseId);
 	}
 
+	toggleCourse=(courseId, isEnabled) => {
+		this.props.toggleCourseInternal(courseId, isEnabled);
+	}
+
 	render() {
 		const { skills: myCourses, courses, t } = this.props;
 		const {
@@ -56,7 +60,7 @@ class SlayManage extends Component {
 									[
 										<MenuItem onClick={() => this.openGlossary(course.id, course.name)} >{t('course_picker.action.glossary')}</MenuItem>,
 										<MenuItem onClick={() => { this.resetProgress(course.id); }} >{t('course_picker.action.reset-progress')}</MenuItem>,
-										<MenuItem onClick={() => { console.log('Remove'); }} >{t('course_picker.action.remove')}</MenuItem>,
+										<MenuItem onClick={() => this.toggleCourse(course.id, false)} >{t('course_picker.action.remove')}</MenuItem>,
 									]
 								}
 							/>
@@ -73,7 +77,7 @@ class SlayManage extends Component {
 								actions={
 									[
 										<MenuItem onClick={() => this.openGlossary(course.id, course.name)} >{t('course_picker.action.glossary')}</MenuItem>,
-										<MenuItem onClick={() => { console.log('Add to My Courses'); }} >{t('course_picker.action.add-to-my-courses')}</MenuItem>,
+										<MenuItem onClick={() => this.toggleCourse(course.id, true)} >{t('course_picker.action.add-to-my-courses')}</MenuItem>,
 									]
 								}
 							/>
@@ -97,5 +101,6 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
 	changeProgress,
+	toggleCourseInternal,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(translate()(SlayManage));

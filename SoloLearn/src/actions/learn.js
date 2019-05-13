@@ -79,7 +79,7 @@ export const toggleCourseInternal = (courseId, enable) => (dispatch, getState) =
 		if (!enable) {
 			const index = profile.skills.findIndex(item => item.id === courseId);
 			profile.skills.splice(index, 1);
-			dispatch(toggleCourse(profile.skills));
+			dispatch(toggleCourse([ ...profile.skills ]));
 		} else {
 			dispatch(getProfileInternal(profile.id));
 		}
@@ -123,5 +123,6 @@ export const deductExp = exp => ({
 });
 
 export const changeProgress = (courseId, progress) => (dispatch) => {
-	dispatch({type: types.CHANGE_PROGRESS, payload: {courseId, progress}})
-}
+	dispatch({ type: types.CHANGE_PROGRESS, payload: { courseId, progress } });
+};
+
