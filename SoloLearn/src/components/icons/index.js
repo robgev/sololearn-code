@@ -32,4 +32,5 @@ export {
 	ThumbDown,
 	Edit,
 	DragIndicator as DragIcon,
+	AddPhotoAlternate,
 } from '@material-ui/icons';
