@@ -1,0 +1,873 @@
+{
+	"Localizable": {},
+	"Created by Robert Gevorgyan and Erik Davtyan": {},
+	"Copyright © 2018 SoloLearn Inc": {
+		" All rights reserved": {}
+	},
+	"common": {
+		"cancel-title": "Cancel",
+		"remove-title": "Remove",
+		"option-select": "Select",
+		"confirm-title": "Confirm",
+		"ok-title": "OK",
+		"delete-title": "Delete",
+		"edit-action-title": "Edit",
+		"done-title": "Done",
+		"submit-action-title": "Submit",
+		"later-action-title": "Later",
+		"back-action-title": "Back",
+		"add-action-title": "Add",
+		"loading": "Loading...",
+		"close-title": "Close",
+		"try-again-title": "TRY AGAIN",
+		"no-connection-title": "No Connection",
+		"no-connection-message": "Please check your internet connection and try again.",
+		"block-user": "Block",
+		"unblock-user": "Unblock",
+		"user-level": "Level",
+		"user-following": "FOLLOWING",
+		"user-followers-one": "Follower",
+		"user-followers": "Followers",
+		"follow-user": "Follow",
+		"share-title": "Share",
+		"email-title": "Email",
+		"empty-activity-message": "No Activity",
+		"empty-list-message": "Nothing to show",
+		"rate": "Rate",
+		"loadMore": "View More",
+		"platinum-status": "platinum",
+		"search-placeholder": "Search..",
+		"post-action-title": "Post",
+		"copy-text-action-title": "Copy Text",
+		"report-action-title": "Report",
+		"deactivate-action-title": "Deactivate",
+		"report-more-hint": "Please, specify the reason",
+		"comments-format": "COMMENTS",
+		"comments": "COMMENTS",
+		"comment-format-one": "1 COMMENT",
+		"input_message_hint": "Write your message…",
+		"error": {
+			"generic-title": "Error",
+			"generic-message": "Something went wrong",
+			"try-again-message": "Please try again later"
+		},
+		"saved-message": "Saved",
+		"save-action-title": "Save",
+		"author-format": "by",
+		"success-title": "Success",
+		"no-results": "No Results Found",
+		"follow-limit-reached": "You've hit a follow limit.",
+		"hide-title": "Hide"
+	},
+	"comments": {
+		"hide-comment-alert-title": "Hide comment",
+		"hide-comment-popup-message": "Are you sure you want to hide this comment?",
+		"write-comment-placeholder": "Write a comment",
+		"delete-comment-alert-title": "Delete comment",
+		"filter": {
+			"title": "Sort by:",
+			"most-recent": "Most Recent",
+			"most-popular": "Most Popular"
+		},
+		"replying-to-format": "Replying to",
+		"write-reply-placeholder": "Write a reply",
+		"delete-comment-popup-message": "Are you sure you want to delete this comment?",
+		"replies-other": "Replies",
+		"replies-one": "1 Reply",
+		"lesson_comment_remove_title": "Remove comment",
+		"lesson_comment_remove_message": "Are you sure you want to remove this comment?",
+		"lesson_comment_request_removal_title": "Request Removal",
+		"lesson_comment_request_removal_message": "Are you sure you want to mark this comment for removal?",
+		"reply": "Reply",
+		"add": "Add"
+	},
+	"date": {
+		"now-past": "just now",
+		"now-future": "in a few seconds",
+		"seconds-past": "seconds",
+		"seconds-future": "in  seconds",
+		"one-minute-past": "1 minute",
+		"one-minute-future": "in 1 minute",
+		"minutes-past": "minutes",
+		"minutes-future": "in  minutes",
+		"one-hour-past": "last hour",
+		"one-hour-future": "next hour",
+		"hours-past": "hours",
+		"hours-future": "in  hours",
+		"one-day-past": "yesterday",
+		"one-day-future": "tomorrow",
+		"days-past": "days",
+		"days-future": "in  days",
+		"one-week-past": "last week",
+		"weeks-past": "weeks",
+		"one-week-future": "next week",
+		"weeks-future": "in  weeks",
+		"one-month-past": "last month",
+		"one-month-future": "next month",
+		"months-past": "months",
+		"months-future": "in  months",
+		"one-year-past": "last year",
+		"one-year-future": "next year",
+		"years-past": "years",
+		"years-future": "in  years",
+		"hour": "hr",
+		"min": "min"
+	},
+	"tab": {
+		"learn": "Learn",
+		"play": "Play",
+		"feed": "Feed",
+		"code": "Code",
+		"discuss": "Discuss"
+	},
+	"search_bar": {
+		"placeholder": "Search",
+		"lessons-title": "Lessons",
+		"codes-title": "Codes",
+		"posts-title": "Questions",
+		"users-title": "Users",
+		"cancel-button-title": "Cancel"
+	},
+	"auth": {
+		"create-new-account-title": "Create new Account",
+		"signin-title": "Sign in",
+		"signin-message": "Sign in to SoloLearn",
+		"facebook-signin-title": "Sign in with Facebook",
+		"google-signin-title": "Sign in with Google",
+		"email-placeholder": "E-mail",
+		"password-placeholder": "Password",
+		"invalid-input": "Invalid Input",
+		"invalid-email": "The provided email is not valid.",
+		"invalid-password": "Your password must contain minimum 6 characters.",
+		"activate-account-title": "Activate Account",
+		"activate-account-message": "Please activate your account. Activation instructions have been sent to your email.",
+		"activate-account-success": "Activation instructions have been sent to your email."
+	},
+	"activate_account": {
+		"change-email": "Provide another email",
+		"title": "Activate account",
+		"email-placeholder": "Enter your email",
+		"send-email": "Send email",
+		"keep-email": "Keep existing email"
+	},
+	"onboarding": {
+		"learn-title": "Learn",
+		"learn-message": "Coding basics right at your fingertips",
+		"play-title": "Play",
+		"play-message": "Challenge peers and compete in interactive code battles",
+		"code-title": "Code",
+		"code-message": "Write and run code right on your mobile with our Code Playground",
+		"discuss-title": "Discuss",
+		"discuss-message": "Ask questions and give answers in our Q&A Discussion Forums",
+		"profile-title": "Your Profile",
+		"profile-message": "Build and showcase your unique coder profile on SoloLearn!"
+	},
+	"login": {
+		"forgot-password-title": "Forgot Password?",
+		"error": {
+			"incorrect-email-title": "Incorrect email.",
+			"wrong-credentials-title": "Invalid email/password combination.",
+			"not-activated-title": "Please activate your account. Activation instructions have been sent to your email.",
+			"device-not-found-title": "An unexpected error occurred.",
+			"access-denied-title": "Your user has been blocked",
+			"access-denied-message": "Please contact us at info@sololearn.com for more information.",
+			"generic-title": "Could not sign in. Please try again in a little bit.",
+			"social-conflict-title": "This account is already connected to another user",
+			"email-required-title": "Email Required",
+			"email-required-message": "Grant access to your email to continue",
+			"user-friends-list-required-title": "Something went wrong",
+			"user-friends-list-required-message": "Please try again in a little bit."
+		}
+	},
+	"register": {
+		"error": {
+			"incorrect-email-title": "Incorrect email.",
+			"incorrect-name-title": "Invalid name.",
+			"existing-email-title": "This email address is already registered.",
+			"incorrect-password-title": "Incorrect password.",
+			"device-not-found-title": "An unexpected error occurred.",
+			"social-conflict-title": "This account is already connected to another user",
+			"generic-title": "Could not sign up. Please try again."
+		},
+		"tos": "Terms of Use",
+		"tos-message": "By signing up you agree to our ",
+		"invalid-name": "The provided name is not valid.",
+		"passwords-not-match": "Passwords do not match.",
+		"create-new-account-title": "Create new Account",
+		"name-placeholder": "Name",
+		"retype-password-placeholder": "Retype Password",
+		"signup-button-title": "Sign up"
+	},
+	"forgot_password": {
+		"title": "Forgot your password?",
+		"message": "Please enter your email address so we can send you a password reset link.",
+		"invalid-email": "Please enter a valid E-Mail",
+		"email-sent-message": "We've sent an email to reset your password.",
+		"error": {
+			"user-required-title": "Incorrect email.",
+			"user-required-message": "This email address is not registered at SoloLearn",
+			"generic-title": "Something went wrong"
+		},
+		"send-title": "Send"
+	},
+	"settings": {
+		"title": "Settings",
+		"account-section-title": "Account",
+		"settings-section-title": "Settings",
+		"signout-action-title": "Sign Out",
+		"signout-message": "Are you sure you want to sign out?",
+		"edit-profile": "Edit Profile",
+		"change-password": "Change Password",
+		"connected-accounts": "Connected Accounts",
+		"blocked-accounts": "Blocked Accounts",
+		"manage-weapons": "Manage Weapons",
+		"activity-feed": "Activity Feed",
+		"push-notifications": "Push Notifications",
+		"sound-title": "Sound",
+		"sound-message": "Enable in-app sounds.",
+		"location-services-title": "Location Services",
+		"location-services-message": "Allow app to use your location and provide more personalized experience.",
+		"language": "Language",
+		"edit-photo": "Edit Photo"
+	},
+	"edit_account": {
+		"choose-from-library-action-title": "Choose from library",
+		"take-photo-action-title": "Take profile photo",
+		"error": {
+			"incorrect-email": "Incorrect email.",
+			"existing-email": "Existing email.",
+			"incorrect-name": "Name is very short",
+			"invalid-email": "Please enter a valid E-Mail",
+			"changes-not-saved-title": "Error",
+			"changes-not-saved-message": "An error occured. Please try again."
+		},
+		"changes-saved-title": "Success",
+		"changes-saved-message": "Your data was successfully updated.",
+		"change-avatar-title": "Change Avatar",
+		"country-section-title": "Location",
+		"user-name": "Name"
+	},
+	"country": {
+		"title": "Location",
+		"not-set-item-title": "Not set"
+	},
+	"change_password": {
+		"changes-saved-title": "Success",
+		"changes-saved-message": "Your password changed successfully"
+	},
+	"chnage_password": {
+		"new-password-placeholder": "new password",
+		"confirm-password-placeholder": "confirm password"
+	},
+	"connected_accounts": {
+		"facebook-title": "Facebook",
+		"google-title": "Google",
+		"add-new-account-title": "Add New",
+		"disconnect-account-title": "Disconnect",
+		"error": {
+			"generic-title": "Error",
+			"generic-message": "Something went wrong"
+		}
+	},
+	"weapons": {
+		"picker": {
+			"title": "Choose your weapon"
+		},
+		"section-header-title": "Accept challenges using these weapons:"
+	},
+	"notification_settings": {
+		"feed-section-title": "Customize Your Feed",
+		"feed-profile-updates": "Profile Updates",
+		"feed-questions": "Questions",
+		"feed-answers": "Answers",
+		"feed-codes": "Codes",
+		"feed-courses": "Courses",
+		"feed-lessons": "Lessons",
+		"feed-challenges": "Challenges",
+		"feed-lesson-comments": "Lesson Comments",
+		"feed-code-comments": "Code Comments",
+		"feed-user-posts": "Posts",
+		"push-general-section-title": "General",
+		"push-product-updates": "Product Updates",
+		"push-profile-updates": "Profile Updates",
+		"push-q&a-section-title": "Q&A",
+		"push-post-upvotes": "Post Upvotes",
+		"push-question-replies": "Question Replies",
+		"push-playground-section-title": "Playground",
+		"push-code-upvotes": "Code Upvotes",
+		"push-code-comments": "Code Comments",
+		"push-challenges-section-title": "Challenges",
+		"push-challenge-invitations": "Challenge Invitations",
+		"push-challenge-results": "Challenge Results",
+		"push-quiz-factory": "Quiz Factory",
+		"push-comments-section-title": "Comments",
+		"push-comment-replies": "Comment Replies",
+		"push-comment-upvotes": "Comment Upvotes",
+		"push-lesson-comments": "Lesson Comments"
+	},
+	"language": {
+		"change-language-message": "Warning: After changing the app language you will need to re-download the course assets for offline learning."
+	},
+	"discover_peers": {
+		"title": "Discover Peers",
+		"skip-item-title": "Skip",
+		"invite-friends": "Invite Friends",
+		"find-contacts": "Find Contacts",
+		"facebook-friends": "Facebook Friends",
+		"find-friends-section-title": "FIND FRIENDS",
+		"suggestions-section-title": "SUGGESTIONS",
+		"search": {
+			"invalid-input": "Please enter at least 3 charactes"
+		},
+		"location-permission-title": "Discover People Nearby",
+		"location-permission-message": "Allow access to your location for personalized suggestions",
+		"later-title": "LATER",
+		"discover-title": "DISCOVER",
+		"open-settings-title": "OPEN SETTINGS"
+	},
+	"invite_friends": {
+		"title": "Find Friends",
+		"message": "SoloLearn is better with friends!",
+		"sms-title": "SMS",
+		"invite": "INVITE",
+		"invite-all": "INVITE ALL",
+		"invited": "INVITED",
+		"discover": {
+			"message": "To help you connect with your friends, well need to sync your contacts with our servers. You can always change your Settings later."
+		},
+		"discover-title": "DISCOVER CONTACTS",
+		"invitations-sent": "Invitations Sent",
+		"message-a": "Scrolling through cat pics? Scrolling through SoloLearn moves you more. https://www.sololearn.com/?ref",
+		"message-b": "Addictive code learning for All. Free. Check it out! https://www.sololearn.com/?ref",
+		"invite-friends-title": "Want to learn faster?",
+		"invite-friends-message": "Compete with a friend on SoloLearn.",
+		"popup": {
+			"okAction-title": "Invite"
+		}
+	},
+	"invite_friend": {
+		"find-friends-message": "Make your SoloLearn experence even better. Build your own community!",
+		"not-now-button-title": "Not now"
+	},
+	"feedback": {
+		"message-placeholder": "Please provide your feedback here",
+		"filter-section-title": "Type",
+		"filter-alert-title": "Type:",
+		"feedback-sent-title": "Feedback Submitted",
+		"feedback-sent-message": "We value every piece of feedback we receive and use it to improve your SoloLearn experience.",
+		"feedback-required-message": "Feedback is required",
+		"type": {
+			"general": "General Feedback",
+			"bug-report": "Bug Report",
+			"suggestion": "Suggestion",
+			"other": "Other"
+		},
+		"title": "Feedback",
+		"send-item-title": "Send"
+	},
+	"leaderboard": {
+		"title": "Leaderboard",
+		"tab": {
+			"following-title": "FOLLOWING",
+			"local-title": "LOCAL",
+			"global-title": "GLOBAL"
+		},
+		"header": {
+			"own-title": "... YOU ARE NEXT",
+			"they-title": "... THEY ARE NEXT",
+			"social-own-title": "YOUR NETWORK",
+			"social-their-title": "THEIR NETWORK",
+			"global-title": "LEADERS"
+		},
+		"picker": {
+			"day-title": "Today",
+			"week-title": "This Week",
+			"month-title": "This Month",
+			"global-title": "All Time"
+		},
+		"action": {
+			"find-me": "You are #",
+			"find-them": "They are #"
+		},
+		"rank": {
+			"placeholder": "Check out the Leaderboards",
+			"month": "{{rank}} this month",
+			"week": "{{rank}} this week",
+			"country": "{{rank}} in {{country}}",
+			"country-month": "{{rank}} in {{country}} this month",
+			"country-week": "{{rank}} in {{country}} this week",
+			"percent-format": "Top {{number}}%",
+			"default-format": "#{{number}}"
+		},
+		"no-country-specified-title": "No Location specified",
+		"no-country-specified-message": "Select your location to see your rank.",
+		"no-country-specified-action": "SELECT LOCATION",
+		"no-social-message": "Expand your network and see how you compare to your peers.",
+		"no-social-button": "FOLLOW PEERS"
+	},
+	"notifications": {
+		"mark-all-as-read-action-title": "Mark all as Read",
+		"see-all": "See All",
+		"title": "Notifications"
+	},
+	"feed": {
+		"title": "Activity Feed",
+		"most-recent-title": "Most Recent",
+		"groupped-chellenge-format": "has completed {{challengesCount}} challenges",
+		"suggestions": "Suggestions",
+		"new-activity-title": "New Activity",
+		"discover-peers-title": "It's Lonely Here",
+		"discover-peers-message": "Follow peers and get updates!"
+	},
+	"course_picker": {
+		"title": "Select Course",
+		"my-courses-section-title": "My Courses",
+		"available-courses-section-title": "Available Courses",
+		"action": {
+			"glossary": "Glossary",
+			"add-to-my-courses": "Add To My Courses",
+			"remove": "Remove",
+			"reset-progress": "Reset Progress",
+			"make-available-offline": "Make Available Offline"
+		}
+	},
+	"question": {
+		"title": "New Question",
+		"title-placeholder": "Question",
+		"message-placeholder": "Description",
+		"tags-placeholder": "Relevant Tags",
+		"invalid-title": "Please enter a title",
+		"empty-tags": "Please enter at least one tag"
+	},
+	"discuss": {
+		"title": "Q&A Discussions",
+		"editTitle": "Edit Post",
+		"votes-title": "Votes",
+		"filter": {
+			"trending": "Trending",
+			"your-network": "Your Network",
+			"most-recent": "Most Recent",
+			"most-popular": "Most Popular",
+			"unanswered": "Unanswered",
+			"my-questions": "My Questions",
+			"my-answers": "My Answers",
+			"title": "Sort Posts by:",
+			"hot-today": "Hot Today"
+		},
+		"answers": {
+			"filter": {
+				"title": "Sort by:",
+				"vote": "Vote",
+				"date": "Date"
+			}
+		},
+		"invalid-answer": "Please enter a valid answer",
+		"delete-question-title": "Delete post",
+		"delete-question-message": "Are you sure you want to delete this post?",
+		"new-answer-placeholder": "Write new answer",
+		"edit-answer-placeholder": "Your Answer",
+		"answer-other-format": "Answers",
+		"answer-one-format": "Answer",
+		"following-title": "You are now following this Q&A thread",
+		"not-following-title": "You are no longer following this Q&A thread",
+		"answer-accepted": "Marked as the best answer",
+		"date-by-name-format": "by",
+		"invalid-thread": "Question not found",
+		"hide-post-popup-title": "Hide post",
+		"hide-post-popup-message": "Are you sure you want to hide this post?",
+		"edited-by-format": "Edited by  ()",
+		"forum_remove_prompt_title": "Remove post",
+		"forum_remove_prompt_text": "Are you sure you want to remove this post?",
+		"forum_request_removal_prompt_title": "Request Removal",
+		"forum_request_removal_prompt_text": "Are you sure you want to mark this post for removal?"
+	},
+	"report": {
+		"report-submitted-title": "Report Submitted",
+		"report-submitted-message": "Your feedback is important in helping us improve the quality of SoloLearn content.",
+		"report-popup-title": "Why are you reporting this?",
+		"report-option-1": "This is inappropriate for SoloLearn",
+		"report-option-2": "It's spam, a scam or a fake account",
+		"report-option-3": "This account may have been hacked",
+		"report-option-4": "It's something else",
+		"challenge-report-option-1": "Spelling Errors",
+		"challenge-report-option-2": "Wrong Question",
+		"challenge-report-option-3": "Wrong Answer",
+		"challenge-report-option-4": "Off Topic",
+		"challenge-report-option-5": "Other"
+	},
+	"deactivate": {
+		"deactivate-popup-title": "Please provide the reason of deactivation.",
+		"deactivate-option-1": "Offensive language",
+		"deactivate-option-2": "Spam posts/comments/answers",
+		"deactivate-option-3": "Fake account",
+		"deactivate-option-4": "Suspicious activity in Play section",
+		"deactivate-option-5": "Other",
+		"deactivate_successful_title": "Report Submitted",
+		"deactivate_successful_message": "Your feedback is important in helping us improve the quality of SoloLearn content.",
+		"deactivate_instant_successful_title": "Profile Deactivated",
+		"deactivate_instant_successful_message": "Thanks for keeping SoloLearn safe."
+	},
+	"code": {
+		"title": "Code",
+		"filter": {
+			"title": "SORT CODES BY:",
+			"trending": "Trending",
+			"your-network": "Your Network",
+			"most-recent": "Most Recent",
+			"most-popular": "Most Popular",
+			"my-codes": "My Codes",
+			"hot-today": "Hot Today"
+		},
+		"language-picker-title": "Choose a language",
+		"language-filter": {
+			"all": "All"
+		},
+		"no-saved-code-title": "No Codes Saved",
+		"no-saved-code-message": "Start building your own code portfolio",
+		"no-saved-code-action-title": "CODE NOW"
+	},
+	"code_playground": {
+		"title": "Code Playground",
+		"alert": {
+			"no-connection-title": "Error",
+			"saved-title": "Saved",
+			"failed-title": "Failed",
+			"public-title": "Your code is now public",
+			"private-title": "Your code is now private",
+			"invalid-name-title": "Invalid code name",
+			"invalid-name-message": "Code name cannot contain more than 100 characters",
+			"input-needs-title": "Looks like your program needs input",
+			"input-needs-message": "Use new lines to separate multiple inputs"
+		},
+		"details": {
+			"title": "Details",
+			"name": "Title",
+			"author": "Author",
+			"modified": "Last Modified",
+			"date": "Creation Date",
+			"lines": "Line Count",
+			"chars": "Character Count"
+		},
+		"popups": {
+			"save-popup-title": "Save Code",
+			"save-popup-code-name-placeholder": "Code name",
+			"save-popup-public-toggle-title": "Public:",
+			"rename-code-title": "Rename Code",
+			"delete-code-title": "Delete code",
+			"delete-code-description": "Are you sure you want to delete this code?"
+		},
+		"popusp": {
+			"save-changes-title": "Save Changes",
+			"save-changes-description": "Do you want to save your changes?"
+		},
+		"actions": {
+			"save-as": "Save As",
+			"rename": "Rename",
+			"reset-code": "Reset Code",
+			"delete-code": "Delete",
+			"reset-font-size": "Reset font size"
+		},
+		"no-output": "No output",
+		"output": "OUTPUT",
+		"popups-dont-save": "Don't Save",
+		"dark-theme": "Dark Theme",
+		"console": {
+			"title": "Console"
+		}
+	},
+	"profile": {
+		"tab": {
+			"codes": "CODES",
+			"posts": "POSTS",
+			"activity": "ACTIVITY",
+			"skills": "SKILLS",
+			"badges": "BADGES"
+		},
+		"no-codes": "No Codes",
+		"edit-prfile": "EDIT PROFILE",
+		"challenge": "CHALLENGE",
+		"status-text-one": "more level to  status",
+		"status-text-other": "more levels to  status",
+		"show-profile": "SHOW PROFILE",
+		"status-bronze": "Bronze",
+		"status-silver": "Silver",
+		"status-gold": "Gold",
+		"status-platinum": "Platinum",
+		"user-blocked-message": "This user has been blocked."
+	},
+	"skills": {
+		"skills-section-title": "SKILLS",
+		"challenges-section-title": "CHALLENGES",
+		"view-certificate": "VIEW CERTIFICATE",
+		"status-plus-rank": "STATUS + RANK",
+		"languages": "LANGUAGES",
+		"coming-soon": "Coming Soon",
+		"no-chart-data-placeholder": "NOT ENOUGH DATA",
+		"chart-coder": "Coder",
+		"chart-contributor": "Contributor",
+		"chart-influencer": "Influencer",
+		"chart-learner": "Learner",
+		"chart-challenger": "Challenger",
+		"challenge-pie-won": "Won",
+		"challenge-pie-draw": "Draw",
+		"challenge-pie-lost": "Lost",
+		"platinum_mod": "PLATINUM MODERATOR",
+		"gold_mod": "GOLD MODERATOR",
+		"mod": "MODERATOR",
+		"challenge-daily-performance": "Daily Performance"
+	},
+	"block": {
+		"user": {
+			"title": "Block ?",
+			"message": "They won't be able to find your profile and posts on SoloLearn. We won't let them know you blocked item."
+		}
+	},
+	"blocked": {
+		"user": {
+			"title": "Blocked",
+			"message": "You can unblock them anytime from the Settings page."
+		}
+	},
+	"followers": {
+		"tab": {
+			"followers-title": "FOLLOWERS"
+		}
+	},
+	"play": {
+		"choose-opponent-title": "Choose Opponent",
+		"all-players": "ALL PLAYERS",
+		"random-opponent": "Random Opponent",
+		"section": {
+			"completed": "COMPLETED",
+			"invites": "INVITES",
+			"ongoing": "ONGOING"
+		},
+		"result": {
+			"answers-bonus": "ANSWERS BONUS",
+			"match-result": "MATCH\\nRESULT",
+			"total-xp": "TOTAL XP",
+			"reach-to-level": "to LEVEL",
+			"rounds-summary-title": "ROUNDS SUMMARY",
+			"self-result-title": "YOU",
+			"opponent-result-title": "OPPONENT",
+			"waiting-for-opponent": "WAITING FOR OPPONENT",
+			"view-correct-answers": "VIEW CORRECT ANSWERS",
+			"status-won": "YOU WON",
+			"status-lost": "YOU LOST",
+			"status-your-turn": "YOUR TURN",
+			"status-waiting": "WAITING",
+			"status-draw": "DRAW",
+			"status-expired": "EXPIRED",
+			"rematch": "REMATCH",
+			"accept-challenge": "ACCEPT",
+			"decline-challenge": "DECLINE",
+			"challenge-declined": "DECLINED",
+			"winner-gets-title": "WINNER\\nGETS",
+			"start-challenge": "START",
+			"continue-challenge": "CONTINUE",
+			"quit-challenge-popup-title": "Quit Challenge",
+			"quit-challenge-descripion": "Are you sure? You will lose the current round."
+		},
+		"title": "Challenge",
+		"answers": {
+			"round-title": "ROUND /5",
+			"current-round-format": "Round",
+			"correct-answer": "Correct!",
+			"wrong-answer": "Wrong",
+			"time-out": "Time Out"
+		},
+		"start-challenge": "START A CHALLENGE",
+		"challanged-me": "challenged you!",
+		"challenge-expire-format": "Expires in",
+		"level-format": "LEVEL\\n",
+		"level": "LEVEL",
+		"vs": "VS",
+		"challenge-declined": "Challenge Declined",
+		"challenge-limit-reached": "Challenge Limit Reached",
+		"user-challenges-not-accept": "This user does not accept challenges.",
+		"complete-ongoing-challenges": "Complete your ongoing challenges and try again.",
+		"challenge-creation-error-title": "Could not create challenge",
+		"challenge-creation-error-message": "You have reached the limit of ongoing challenges",
+		"clear-challenges-button-title": "Clear",
+		"challenge-won-format": "won",
+		"challenge-lost-format": "lost",
+		"challenge-won-empty-format": "won",
+		"challenge-lost-empty-format": "lost"
+	},
+	"learn": {
+		"course-picker-title": "CHANGE",
+		"buttons-continue": "CONTINUE",
+		"buttons-check": "CHECK",
+		"buttons-try-again": "TRY AGAIN",
+		"buttons-unlock-answer": "UNLOCK",
+		"buttons-hint-answer": "HINT",
+		"popups": {
+			"unlock-popup-title": "Unlock Answer",
+			"unlock": {
+				"description": "Use {{price}} XP of your {{total}} XP to unlock the correct answer."
+			},
+			"unlock-popup-ok-action-title": "Unlock",
+			"hint-popup-ok-action-title": "Get Hint",
+			"reset-font-size": "Reset font size"
+		},
+		"take-shortcut": "Take a Shortcut",
+		"questions-format": "questions",
+		"test-out": "Test Out",
+		"test-completed-message": "You have successfully completed the test!",
+		"answer-check-attemps-left-format": "attempts left",
+		"answer-correct": "CORRECT",
+		"answer-wrong": "WRONG",
+		"try-it-yourself": "TRY IT YOURSELF",
+		"achievement-unlocked": "Achievement Unlocked",
+		"hint-popup-title": "Hint",
+		"hint-not-enough-xp": "You don't have enough XP to use this feature",
+		"get-hint-format": "Use {{price}} XP of your {{total}} XP to get a hint.",
+		"reset-course-popup-title": "Reset",
+		"reset-course-popup-message": "All your course progress, including challenge history, will be lost. Are you sure you want to continue?",
+		"module-locked-title": "Module locked",
+		"module-locked-message": "Complete the previous modules to unlock this one.",
+		"lesson-locked-title": "Lesson locked",
+		"lesson-locked-message": "Complete the previous lessons to unlock this one.",
+		"lesson-test-leave-message": "Are you sure you want to leave the test?",
+		"lesson-test-failed-message": "Test Out failed. You ran out of lives.",
+		"open-course-action-tite": "OPEN COURSE",
+		"course-learners-format": "Users",
+		"noImage-tryAgain": "Try Again",
+		"noImage-title": "Could not load image",
+		"add-courses-button-title": "ADD COURSES",
+		"add-courses-title": "No Courses\\n",
+		"more-on-topic": "More on the Topic",
+		"add-courses-message": "Start Learning Now!"
+	},
+	"logout": {
+		"alert-title": "Session expired.",
+		"alert-description": "Please login again.",
+		"alert-sign-out-action-title": "Sign Out"
+	},
+	"upvotes": {
+		"title": "Recent Upvotes"
+	},
+	"downvotes": {
+		"title": "Recent Downvotes"
+	},
+	"certificate": {
+		"title": "Certificate",
+		"completed-successfully": "You've successfully completed the  course.",
+		"congrats-title": "CONGRATULATIONS",
+		"complete-course-message": "Complete the course to unlock your certificate"
+	},
+	"photo-library-permission-required-title": "Permission Required",
+	"photo-library-permission-required-message": "Please allow access to your Photo Library from Settings",
+	"quiz": {
+		"select-all-message": "Select all that apply",
+		"help-alert-title": "Having Trouble?",
+		"get-hint-message": "Get a hint",
+		"unlock-answer-message": "Unlock the correct answer"
+	},
+	"rate": {
+		"alert-title": "Rate Us",
+		"alert-message": "Do you enjoy learning with SoloLearn? Take a minute and rate your experience"
+	},
+	"glossary": {
+		"title": "Glossary"
+	},
+	"discover_quiz": {
+		"comments-title": "Need Help?",
+		"comments-text": "Tap here for community comments"
+	},
+	"lesson": {
+		"run-code-showcase-title": "Run Code Run!",
+		"run-code-showcase-message": "Compile, Save, Modify Codes to learn for real.",
+		"discuss-showcase-title": "Q&A Forum",
+		"discuss-showcase-message": "Get help and help your peers",
+		"implementations": "Implementations",
+		"up-next": "Up Next",
+		"see-also": "See Also",
+		"view-more-by-author": "More by",
+		"lessonsBy": "Lessons by",
+		"copy-link": "Copy Link",
+		"bookmark-added": "Added to your bookmarks",
+		"bookmark-removed": "Removed from your bookmarks",
+		"font-size": "Font Size",
+		"font-size-small": "Small",
+		"font-size-default": "Default",
+		"font-size-large": "Large",
+		"font-size-largest": "Largest"
+	},
+	"store": {
+		"bookmarks": {
+			"title-offline": "Bookmarks (Offline)",
+			"title": "Bookmarks"
+		},
+		"collection": {
+			"courses": "Learn the Basics",
+			"available-offline": "Available Offline",
+			"view-more": "View More"
+		},
+		"showcase": {
+			"learn-title": "New lessons added every day",
+			"learn-message": "Check out our new learning collections",
+			"search-title": "Find what you want to learn next",
+			"search-message": "Search thousands of community lessons",
+			"bookmarks-title": "Bookmark the lessons of your choice",
+			"bookmarks-message": "Get easy and offline access anytime"
+		}
+	},
+	"lesson-factory": {
+		"title": "Lesson Factory"
+	},
+	"factory": {
+		"title": "Quiz Factory",
+		"suggest_quiz": "Suggest a Quiz",
+		"suggest_quiz_description": "Get an exclusive \"Creator\" badge for 20 created and published quizzes",
+		"rate_submissions": "Rate Submissions",
+		"rate_submissions_description": "Rate quizzes suggested by the community. We will review and publish the most upvoted ones.",
+		"my_submissions": "My Submissions",
+		"my_submissions_description": "Check the status of your submissions",
+		"quiz-title": "Quiz Factory",
+		"quiz-create-title": "Submit a New Quiz",
+		"quiz-type-multiple-choice": "Multiple Choice",
+		"quiz-type-guess-the-output": "Guess the Output",
+		"quiz-type-fill-in-the-blanks": "Fill in the Blank(s)",
+		"quiz-multiple-choice-answers-title": "Answers",
+		"quiz-multiple-choice-answers-description": "Enter at least two options and check the box(es) for correct one(s). Each question can have one or multiple correct answers.",
+		"quiz-guess-the-output-question-title": "What is the output of this code? ",
+		"quiz-guess-the-output-answers-title": "Answer",
+		"quiz-fill-in-the-blanks-question-title": "Fill in the blanks to ",
+		"quiz-fill-in-the-blanks-answer-title": "Code",
+		"quiz-fill-in-the-blanks-answer-description": "Enter your code, select the keyword(s) to be left blank and tap \"Mark\". Please make sure there is only one correct answer for each blank.",
+		"quiz-question-placeholder": "Type in Your Question",
+		"quiz-answer-placeholder": "Type in the Correct Answer",
+		"quiz-choose-language-title": "Choose Language",
+		"quiz-blank-answer-error": "Please mark at least one blank",
+		"quiz-one-answer-error": "Select at least one correct answer",
+		"quiz-question-title": "Question",
+		"quiz-preview-title": "Preview",
+		"quiz-option": "Option",
+		"button-like": "LIKE",
+		"button-dislike": "DISLIKE",
+		"skip-item-title": "Skip",
+		"action-clone": "Clone",
+		"quiz-contribution-message": "Thanks for your contribution!",
+		"quiz-submission-received-title": "Your submission is received!",
+		"quiz-submission-received-description": "We will notify you on the status of your submission soon.",
+		"delete-submission-title": "Delete Submission",
+		"delete-submission-message": "Are you sure you want to delete this submission?",
+		"lesson-title-placeholder": "Type in The Lesson Title",
+		"submission-all": "All",
+		"submission-pending": "PENDING",
+		"submission-declined": "DECLINED",
+		"submission-approved": "APPROVED",
+		"submission-draft": "Draft",
+		"status-filter-label": "Status:",
+		"no-submissions": "No Submissions",
+		"no-submissions-text": "You have not submitted a quiz yet.",
+		"create-a-quiz": "Create a Quiz",
+		"quiz.leave-alert-title": "Quit",
+		"quiz.leave-alert-message": "All changes will be lost.",
+		"highlight": "Mark"
+	},
+	"votes": {
+		"not-activated-account": "Your account is not activated. Check your email for activation instructions."
+	}
+}
