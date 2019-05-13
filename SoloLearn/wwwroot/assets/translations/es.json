@@ -54,7 +54,8 @@
     "save-action-title": "Guardar",
     "author-format": "por",
     "success-title": "Éxito",
-    "no-results": "No se encontraron Resultados",
+		"no-results": "No se encontraron Resultados",
+		"manage": "Manage",
     "follow-limit-reached": "Has alcanzado un límite de seguimiento.",
     "loadMore": "Ver más",
     "hide-title": "Ocultar"

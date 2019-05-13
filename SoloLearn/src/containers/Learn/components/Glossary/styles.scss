@@ -1,0 +1,17 @@
+@import '~styles/colors';
+
+.glossaryPopup{
+    padding: 10px;
+
+    .groupContainer{
+        margin: 10px;
+
+        .termContainer{
+            margin:10px 0;
+
+            .glossaryTerm{
+                color:$primary-color;
+            }
+        }
+    }
+}

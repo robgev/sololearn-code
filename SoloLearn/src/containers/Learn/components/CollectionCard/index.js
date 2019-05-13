@@ -55,10 +55,15 @@ const CollectionCard = ({
 		>
 			<FlexBox align justifyBetween className={`meta-info ${!description ? 'big-padding-bottom' : ''}`}>
 				<Title>{name}</Title>
-				{!noViewMore &&
-					<ViewMoreLink to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} >
-						{t('common.loadMore')}
-					</ViewMoreLink>
+				{
+					id === -1
+						? <ViewMoreLink to="/learn/manage" >
+							{t('common.manage')}
+        </ViewMoreLink>
+						: !noViewMore &&
+						<ViewMoreLink to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} >
+							{t('common.loadMore')}
+						</ViewMoreLink>
 				}
 			</FlexBox>
 			{description &&

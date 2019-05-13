@@ -54,7 +54,8 @@
     "save-action-title": "Сохранить",
     "author-format": "",
     "success-title": "Успешно",
-    "no-results": "Результатов не найдено",
+		"no-results": "Результатов не найдено",
+		"manage": "Manage",
     "follow-limit-reached": "Вы достигли лимита подписок.",
     "loadMore": "Eщё",
     "hide-title": "Скрыть"

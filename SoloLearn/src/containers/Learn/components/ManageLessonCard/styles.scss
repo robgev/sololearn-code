@@ -1,0 +1,24 @@
+@import '~styles/colors';
+@import '~styles/variables';
+
+.manage-lesson-card {
+	border-bottom: 1px solid $divider_color;
+	padding: $primary_gap_size;
+
+	.manage-lesson-card-link-container {
+		width: 100%;
+	}
+
+	.manage-course-chip {
+		height: 85px;
+		width: 85px;
+	}
+
+	.lesson-text-content {
+		margin: 0 $primary_gap_size;
+	}
+
+	.secondary-text {
+		margin-top: $secondary_gap_size;
+	}
+}
