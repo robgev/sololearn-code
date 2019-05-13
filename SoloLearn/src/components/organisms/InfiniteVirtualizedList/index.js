@@ -9,8 +9,8 @@ import {
 } from 'react-virtualized';
 import {
 	Container,
+	Loading,
 } from 'components/atoms';
-import { EmptyCard } from 'components/molecules';
 
 import './styles.scss';
 
@@ -21,6 +21,7 @@ const InfiniteVirtualizedList = ({
 	loadMore,
 	rowCount,
 	hasMore,
+	listRowCount,
 }) => {
 	const _windowScroller = useRef(null);
 	const _cache_ = useRef(null);
@@ -50,32 +51,24 @@ const InfiniteVirtualizedList = ({
 		style,
 		index,
 		parent,
-	}) => {
-		if (loading && hasMore(index)) {
-			return (
-				<EmptyCard loading />
-			);
-		}
-
-		return (
-			<CellMeasurer
-				cache={_cache}
-				columnIndex={0}
-				key={key}
-				rowIndex={index}
-				parent={parent}
-			>
-				{({ measure }) => (
-					rowRenderer({
-						style,
-						index,
-						measure,
-						updatePosition,
-					})
-				)}
-			</CellMeasurer>
-		);
-	};
+	}) => (
+		<CellMeasurer
+			cache={_cache}
+			columnIndex={0}
+			key={key}
+			rowIndex={index}
+			parent={parent}
+		>
+			{({ measure }) => (
+				rowRenderer({
+					style,
+					index,
+					measure,
+					updatePosition,
+				})
+			)}
+		</CellMeasurer>
+	);
 	const _isRowLoaded = index => isRowLoaded(index);
 	const _loadMore = loading ? () => {} : loadMore;
 
@@ -99,7 +92,7 @@ const InfiniteVirtualizedList = ({
 											width={width}
 											height={height}
 											ref={registerChild}
-											rowCount={rowCount}
+											rowCount={listRowCount}
 											scrollTop={scrollTop}
 											overscanRowCount={5}
 											isScrolling={isScrolling}
@@ -116,6 +109,9 @@ const InfiniteVirtualizedList = ({
 					</WindowScroller>
 				)}
 			</InfiniteLoader>
+			{ (loading && hasMore) &&
+				<Loading />
+			}
 		</Container>
 	);
 };
