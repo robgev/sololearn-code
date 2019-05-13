@@ -1,7 +1,7 @@
 import Storage from './storage';
 
 export const AppDefaults = {
-	baseUrl: 'http://localhost:8443',
+	baseUrl: '',
 	downloadHost: 'https://api.sololearn.com/uploads',
 };
 
