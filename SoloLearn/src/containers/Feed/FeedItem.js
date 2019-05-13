@@ -186,7 +186,7 @@ class FeedItem extends Component {
 			);
 		} else if (feedItem.type === types.mergedChallange) {
 			return (
-				<Container style={style}>
+				<Container style={style} className="feedItemWrapper">
 					<PaperContainer
 						zDepth={1}
 						className="feedItem"

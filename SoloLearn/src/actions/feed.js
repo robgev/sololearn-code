@@ -19,7 +19,7 @@ export const clearFeedItems = () => ({ type: types.CLEAR_FEED });
 
 export const getFeedItemsInternal = () => async (dispatch, getState) => {
 	try {
-		const requestLimitCount = 60;
+		const requestLimitCount = 20;
 		const { feed: { entities: feed }, discoverSuggestions } = getState();
 		const filteredFeed = feed.filter(item => item.type !== feedTypes.suggestions);
 		const suggestionsBatch = feed.length - filteredFeed.length;
