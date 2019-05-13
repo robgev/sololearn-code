@@ -3,20 +3,11 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { observer } from 'mobx-react';
 import { connect } from 'react-redux';
-import {
-	WindowScroller,
-	AutoSizer,
-	List,
-	CellMeasurer,
-	CellMeasurerCache,
-	InfiniteLoader,
-} from 'react-virtualized';
 
 import {
 	Container,
 	Title,
 } from 'components/atoms';
-import { EmptyCard } from 'components/molecules';
 import { InfiniteVirtualizedList } from 'components/organisms';
 import FeedShimmer from 'components/Shimmers/FeedShimmer';
 
@@ -54,15 +45,9 @@ class FeedList extends Component {
 		measure,
 		updatePosition,
 	}) => {
-		const { feed, voteFeedItem, loading } = this.props;
+		const { feed, voteFeedItem } = this.props;
 		const { shouldShowFeed } = this.state;
 		const feedItem = feed[index];
-
-		if (loading && index >= feed.length) {
-			return (
-				<EmptyCard loading />
-			);
-		}
 
 		return (
 			<React.Fragment>
@@ -95,7 +80,6 @@ class FeedList extends Component {
 			header = null,
 			loading,
 		} = this.props;
-		const rowCount = loading ? feed.length + 1 : feed.length;
 
 		return (
 			<Container>
@@ -139,7 +123,8 @@ class FeedList extends Component {
 															hasMore={this.hasMore}
 															isRowLoaded={this.isRowLoaded}
 															loadMore={loadMore}
-															rowCount={rowCount}
+															rowCount={Number.MAX_SAFE_INTEGER}
+															listRowCount={feed.length}
 														/>
 													)
 												}
