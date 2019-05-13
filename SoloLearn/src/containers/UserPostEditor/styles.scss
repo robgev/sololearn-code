@@ -37,7 +37,9 @@
 			border-radius: 3px;
 		}
 	}
-
+	.user-post-max-length-container {
+		margin: 5px 0;
+	}
 }
 
 @include for-until-desktop {

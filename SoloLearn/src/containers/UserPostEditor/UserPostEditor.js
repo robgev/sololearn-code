@@ -113,7 +113,7 @@ const UserPostEditor = ({ params, profile }) => {
 						<Title className="user-post-main-title">{`${params.id ? 'Edit post' : 'New Post'}`}</Title>
 
 						<ProfileAvatar
-							userId={profile.id}
+							userID={profile.id}
 							avatarUrl={profile.avatarUrl}
 							badge={profile.badge}
 							userName={profile.name}
@@ -125,7 +125,7 @@ const UserPostEditor = ({ params, profile }) => {
 							background={background}
 							setEditorText={setEditorText}
 						/>
-						<FlexBox justifyEnd>
+						<FlexBox justifyEnd className="user-post-max-length-container">
 							<SecondaryTextBlock className="count">
 								{editorText.length} / {USER_POST_MAX_LENGTH}
 							</SecondaryTextBlock>
