@@ -8,6 +8,7 @@ import {
 	TextBlock,
 	Title,
 	SecondaryTextBlock,
+	PopupContent,
 } from 'components/atoms';
 
 import './styles.scss';
@@ -23,28 +24,30 @@ const Glossary = ({
 	onClose={onClose}
 >
 	<PopupTitle>{courseName}</PopupTitle>
-	{
-		content
-			? content.map(group =>
-				(
-					<Container className="groupContainer">
-						<Title>{group.name}</Title>
-						{
-							group.terms.map(term =>
-								(<Container className="termContainer">
-									<TextBlock className="glossaryTerm">
-										{term.term}
-									</TextBlock>
-									<br />
-									<SecondaryTextBlock>
-										{term.text}
-									</SecondaryTextBlock>
-								</Container>))
-						}
-					</Container>
+	<PopupContent>
+		{
+			content
+				? content.map(group =>
+					(
+						<Container className="groupContainer">
+							<Title>{group.name}</Title>
+							{
+								group.terms.map(term =>
+									(<Container className="termContainer">
+										<TextBlock className="glossaryTerm">
+											{term.term}
+										</TextBlock>
+										<br />
+										<SecondaryTextBlock>
+											{term.text}
+										</SecondaryTextBlock>
+          </Container>))
+							}
+						</Container>
 						   ))
-			: <Loading />
-	}
+				: <Loading />
+		}
+	</PopupContent>
 </Popup>);
 
 export default Glossary;

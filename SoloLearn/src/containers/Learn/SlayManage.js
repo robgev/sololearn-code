@@ -21,7 +21,7 @@ class SlayManage extends Component {
 
 	openGlossary=(courseId, courseName) => {
 		getCourse(courseId)
-			.then(({ course }) => { console.log(course); this.setState({ glossaryContent: course.glossary }); });
+			.then(({ course }) => this.setState({ glossaryContent: course.glossary }));
 		this.setState({ openGlossary: true, glossaryCourseId: courseId, glossaryTitle: courseName });
 	}
 
@@ -65,7 +65,7 @@ class SlayManage extends Component {
 								url={`/learn/course/${toSeoFriendly(getCourseAliasById(courses, course.id))}`}
 								actions={
 									[
-										<MenuItem onClick={() => this.openGlossary(course.id)} >{t('course_picker.action.glossary')}</MenuItem>,
+										<MenuItem onClick={() => this.openGlossary(course.id, course.name)} >{t('course_picker.action.glossary')}</MenuItem>,
 										<MenuItem onClick={() => { console.log('Add to My Courses'); }} >{t('course_picker.action.add-to-my-courses')}</MenuItem>,
 									]
 								}
