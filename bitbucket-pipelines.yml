@@ -1,0 +1,37 @@
+# This is a sample build configuration for .NET Core.
+# Check our guides at https://confluence.atlassian.com/x/5Q4SMw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image:
+  name: nexus.sololearn.com/nodejs-dotnet:2.1-sdk 
+  username: $NEXUSUSERNAME
+  password: $NEXUSPASSWORD
+
+pipelines:
+  branches:
+    refactor:
+    - step:
+        services:
+          - docker
+        caches:
+          - docker
+        script:
+          - docker login -u $NEXUSUSERNAME -p $NEXUSPASSWORD https://$NEXUSURL
+          - docker build -t $NEXUSURL/web:latest .
+          - docker push $NEXUSURL/web:latest
+    - step:
+        name: Deploy to staging
+        deployment: staging   # can be test, staging or production.
+        # trigger: manual  # Uncomment to make this a manual deployment.
+        script:
+          - echo "Deploying to staging environment"
+          #- ssh lkhachat@$HOST '/opt/scripts/updateTalent.sh $NEXUSURL/talent:latest'
+
+options:
+  docker: true
+  size: 2x
+definitions:
+    services:
+      docker:
+        memory: 2048
