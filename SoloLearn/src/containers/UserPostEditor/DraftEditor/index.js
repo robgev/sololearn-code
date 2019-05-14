@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Editor, EditorState, Modifier } from 'draft-js';
+import { EditorState, Modifier } from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
+import createMentionPlugin from 'draft-js-mention-plugin';
+import { getMentionsList } from 'utils';
 import hexToRgba from 'hex-to-rgba';
 import { Container, FlexBox } from 'components/atoms';
+import { Entry } from 'components/organisms';
 import { getBackgroundStyle, getFontSize } from '../utils';
 import { USER_POST_MAX_LENGTH } from '../UserPostEditor';
 
@@ -13,6 +17,19 @@ const DraftEditor = ({
 }) => {
 	const [ editorState, setEditorState ] = useState(EditorState.createEmpty());
 	const [ fontSize, setFontSize ] = useState(36);
+	const [ suggestions, setSuggestions ] = useState([]);
+	const mentionPluginRef = useRef(createMentionPlugin({
+		mentionComponent: ({ children }) => <b>{children}</b>,
+	}));
+	const { MentionSuggestions } = mentionPluginRef.current;
+	const plugins = [ mentionPluginRef.current ];
+
+	const getSuggestions = ({ value }) => {
+		getMentionsList({ type: 'userPost' })(value)
+			.then((users) => {
+				setSuggestions(users.slice(0, 5));
+			});
+	};
 
 	const editorRef = useRef(null);
 
@@ -32,7 +49,6 @@ const DraftEditor = ({
 			const startSelectedTextLength = startBlockTextLength - currentSelection.getStartOffset();
 			const endSelectedTextLength = currentSelection.getEndOffset();
 			const keyAfterEnd = currentContent.getKeyAfter(endKey);
-			console.log(currentSelection);
 			if (isStartAndEndBlockAreTheSame) {
 				length += currentSelection.getEndOffset() - currentSelection.getStartOffset();
 			} else {
@@ -56,7 +72,8 @@ const DraftEditor = ({
 
 	const handeBeforeInput = (_, editorState) => {
 		const selectedTextLength = _getLengthOfSelectedText();
-		if (editorState.getCurrentContent().getPlainText().length - selectedTextLength >= USER_POST_MAX_LENGTH) {
+		if (editorState.getCurrentContent().getPlainText().length - selectedTextLength
+			>= USER_POST_MAX_LENGTH) {
 			return 'handled';
 		}
 		return 'not_handled';
@@ -89,8 +106,12 @@ const DraftEditor = ({
 		? {}
 		: getBackgroundStyle(background, { isPreview: false });
 
-	useEffect(() => {
+	const focus = () => {
 		editorRef.current.focus();
+	};
+
+	useEffect(() => {
+		setTimeout(focus, 0);
 	}, [ background ]);
 
 	useEffect(() => {
@@ -118,13 +139,19 @@ const DraftEditor = ({
 			<Container className="draft-editor-inner-container">
 				<Editor
 					editorState={editorState}
+					stripPastedStyles
 					handleBeforeInput={handeBeforeInput}
 					handlePastedText={handlePastedText}
-					onChange={setEditorState}
+					onChange={editorState => setEditorState(editorState)}
 					textAlignment={background ? background.type !== 'none' && 'center' : 'left'}
 					ref={editorRef}
 					placeholder={background.type === 'none' ? 'Share coding tips, articles, snippets and anything code-related' : ''}
-
+					plugins={plugins}
+				/>
+				<MentionSuggestions
+					onSearchChange={getSuggestions}
+					suggestions={suggestions}
+					entryComponent={Entry}
 				/>
 			</Container>
 		</FlexBox>
