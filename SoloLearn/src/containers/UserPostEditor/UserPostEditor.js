@@ -13,7 +13,6 @@ import {
 	IconButton,
 	SecondaryTextBlock,
 } from 'components/atoms';
-import { Layout } from 'components/molecules';
 import ProfileAvatar from 'components/ProfileAvatar';
 import { AddPhotoAlternate, Close } from 'components/icons';
 
@@ -29,7 +28,7 @@ import './styles.scss';
 
 export const USER_POST_MAX_LENGTH = 1024;
 
-const UserPostEditor = ({ params, profile }) => {
+const UserPostEditor = ({ params, profile, closePopup }) => {
 	const [ backgrounds, setBackgrounds ] = useState([]);
 	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
 	const [ selectedBackgroundId, setSelectedBackgroundId ] = useState(-1);
@@ -106,7 +105,7 @@ const UserPostEditor = ({ params, profile }) => {
 	};
 
 	return (
-		<Layout>
+		<Container>
 			{backgrounds && backgrounds.length ?
 				<PaperContainer className="user-post-main-container">
 					<FlexBox column fullWith>
@@ -174,16 +173,17 @@ const UserPostEditor = ({ params, profile }) => {
 						<EditorActions
 							isPostButtonDisabled={isPostButtonDisabled}
 							createNewPostHandler={createNewPostHandler}
+							closePopup={closePopup}
 						/>
 
 					</FlexBox>
 				</PaperContainer>
 				:
-				<FlexBox fullWith>
+				<PaperContainer className="user-post-loader-container">
 					<Loading />
-				</FlexBox>
+				</PaperContainer>
 			}
-		</Layout>
+		</Container>
 	);
 };
 

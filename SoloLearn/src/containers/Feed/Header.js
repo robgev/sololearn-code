@@ -6,6 +6,7 @@ import {
 	Container,
 	PaperContainer,
 	FlexBox,
+	Popup,
 } from 'components/atoms';
 import {
 	RaisedButton,
@@ -15,6 +16,8 @@ import {
 	ProfileAvatar,
 	ModBadge,
 } from 'components/molecules';
+
+import UserPostEditor from 'containers/UserPostEditor';
 
 import 'styles/Feed/Header.scss';
 
@@ -43,6 +46,9 @@ class Header extends PureComponent {
 			this.maxXp = currentXp;
 			[ this.nextMilestone ] = badge ? badge.split('|') : '';
 		}
+		this.state = {
+			isCreatePostPopupOpen: false,
+		};
 	}
 
 	render() {
@@ -73,17 +79,18 @@ class Header extends PureComponent {
 					</Container>
 				</Container>
 				<Container className="actions">
-					<ContainerLink to="/user-post" style={{ marginRight: '7px' }}>
-						<RaisedButton color="primary">
-							Create a Post
-						</RaisedButton>
-					</ContainerLink>
+					<RaisedButton onClick={() => this.setState({ isCreatePostPopupOpen: true })} color="primary" style={{ marginRight: '7px' }}>
+						Create a Post
+					</RaisedButton>
 					<ContainerLink to="/discover">
 						<RaisedButton color="secondary">
 							{t('discover_peers.title')}
 						</RaisedButton>
 					</ContainerLink>
 				</Container>
+				<Popup open={this.state.isCreatePostPopupOpen} onClos={() => this.setState({ isCreatePostPopupOpen: false })}>
+					<UserPostEditor closePopup={() => this.setState({ isCreatePostPopupOpen: false })} />
+				</Popup>
 			</PaperContainer>
 
 		);

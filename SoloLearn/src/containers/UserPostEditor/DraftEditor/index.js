@@ -123,7 +123,7 @@ const DraftEditor = ({
 					onChange={setEditorState}
 					textAlignment={background ? background.type !== 'none' && 'center' : 'left'}
 					ref={editorRef}
-					placeholder="Share coding tips, articles, snippets and anything code-related"
+					placeholder={background.type === 'none' ? 'Share coding tips, articles, snippets and anything code-related' : ''}
 
 				/>
 			</Container>
