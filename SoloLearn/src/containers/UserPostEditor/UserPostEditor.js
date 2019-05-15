@@ -90,19 +90,17 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 
 	const createNewPostHandler = () => {
 		if (imageSource) {
-			return uploadPostImage(imageData, 'postimage.jpg')
-				.then((res) => {
-					createPost({
-						message: editorText,
-						backgroundId: null,
-						imageUrl: res.imageUrl,
-					})
-						.then((res) => {
-							if (res) {
-								toggleSuccessPopupIsOpen(true);
-							}
-						});
-				});
+			uploadPostImage(imageData, 'postimage.jpg')
+				.then(res => createPost({
+					message: editorText,
+					backgroundId: null,
+					imageUrl: res.imageUrl,
+				})
+					.then((res) => {
+						if (res) {
+							toggleSuccessPopupIsOpen(true);
+						}
+					}));
 		}
 		return createPost({
 			message: editorText,

@@ -8,6 +8,7 @@ import { CourseCard } from 'containers/Learn/components';
 import {
 	Container,
 	PaperContainer,
+	FlexBox,
 } from 'components/atoms';
 import types from 'defaults/appTypes';
 
@@ -22,6 +23,8 @@ import Comment from './FeedTemplates/Comment';
 import Challenge from './FeedTemplates/Challenge';
 import FeedSuggestions from './FeedSuggestions';
 import BottomToolbar from './FeedBottomToolbar';
+
+import UserPost from './FeedTemplates/UserPost';
 
 @observer
 class FeedItem extends Component {
@@ -170,6 +173,21 @@ class FeedItem extends Component {
 					/>
 				</Container>
 			);
+		case types.userPost:
+			return (
+				<Container>
+					<UserPost
+						background={feedItem.userPost.background}
+						message={feedItem.userPost.message}
+						imageUrl={feedItem.userPost.imageUrl}
+						type={feedItem.type}
+						date={feedItem.date}
+						id={feedItem.id}
+						vote={feedItem.vote}
+						votes={feedItem.votes}
+					/>
+				</Container>
+			);
 		default:
 			return null;
 		}
@@ -204,8 +222,8 @@ class FeedItem extends Component {
 					<Container
 						id="feed-items"
 						className={`merged-items-container ${this.state.isOpened ? 'open' : ''}`}
-						// style={{ height: this.state.isOpened ? ((feedItem.groupedItems.length * 139) - 10) : 0 }} // 10 = last item margin bottom
-						// style={{'display': this.state.isOpened? 'block' : 'none'}}
+					// style={{ height: this.state.isOpened ? ((feedItem.groupedItems.length * 139) - 10) : 0 }} // 10 = last item margin bottom
+					// style={{'display': this.state.isOpened? 'block' : 'none'}}
 					>
 						{feedItem.groupedItems.map(currentItem => (
 							<FeedItem

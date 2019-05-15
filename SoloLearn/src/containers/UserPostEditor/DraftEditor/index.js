@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { EditorState, Modifier } from 'draft-js';
+import { EditorState, Modifier, ContentState } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 import createMentionPlugin from 'draft-js-mention-plugin';
 import { getMentionsList } from 'utils';
@@ -13,9 +13,11 @@ import './styles.scss';
 
 const DraftEditor = ({
 	background,
-	setEditorText,
+	setEditorText = null,
+	isEditorReadOnly = false,
+	editorInitialText = '',
 }) => {
-	const [ editorState, setEditorState ] = useState(EditorState.createEmpty());
+	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(ContentState.createFromText(editorInitialText)));
 	const [ fontSize, setFontSize ] = useState(36);
 	const [ suggestions, setSuggestions ] = useState([]);
 	const mentionPluginRef = useRef(createMentionPlugin({
@@ -111,13 +113,13 @@ const DraftEditor = ({
 	};
 
 	useEffect(() => {
-		setTimeout(focus, 0);
+		if (!isEditorReadOnly) { setTimeout(focus, 0); }
 	}, [ background ]);
 
 	useEffect(() => {
 		const currentContent = editorState.getCurrentContent();
 		const text = currentContent.getPlainText();
-		setEditorText(text);
+		if (setEditorText) { setEditorText(text); }
 		const newLinesCount = (text.match(/\n/g) || []).length;
 		setFontSize(getFontSize(text.length, newLinesCount));
 	}, [ editorState ]);
@@ -129,14 +131,24 @@ const DraftEditor = ({
 			align={background ? background.type !== 'none' && true : false}
 			justify={background ? background.type !== 'none' && true : false}
 			style={background.type !== 'none' ?
-				{ ...style, color: background ? background.textColor.length > 6 ? hexToRgba(getRgbaHexFromArgbHex(background.textColor)) : background.textColor : 'black', fontSize }
+				{
+					...style,
+					color: background ? background.textColor.length > 6 ? hexToRgba(getRgbaHexFromArgbHex(background.textColor)) : background.textColor : 'black',
+					fontSize,
+					cursor: isEditorReadOnly ? 'default' : 'text',
+				}
 				:
-				{ color: 'black', fontSize }
+				{
+					color: 'black',
+					fontSize,
+					cursor: isEditorReadOnly ? 'default' : 'text',
+					height: isEditorReadOnly ? '100%' : '250px',
+				}
 			}
-			className="draft-editor-container"
+			className={isEditorReadOnly ? 'draft-editor-container read-only' : 'draft-editor-container'}
 			onClick={() => { editorRef.current.focus(); }}
 		>
-			<Container className="draft-editor-inner-container">
+			<Container className={isEditorReadOnly && background.type === 'none' ? 'draft-editor-inner-container no-padding' : 'draft-editor-inner-container'}>
 				<Editor
 					editorState={editorState}
 					stripPastedStyles
@@ -147,6 +159,7 @@ const DraftEditor = ({
 					ref={editorRef}
 					placeholder={background.type === 'none' ? 'Share coding tips, articles, snippets and anything code-related' : ''}
 					plugins={plugins}
+					readOnly={isEditorReadOnly}
 				/>
 				<MentionSuggestions
 					onSearchChange={getSuggestions}
