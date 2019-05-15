@@ -9,8 +9,8 @@ import './styles.scss';
 import SlayManage from '../../SlayManage';
 
 const collectionTypes = {
-	slayLessons: 1,
-	courses: 2,
+	slayLessons: [ 1 ],
+	courses: [ 2, 4 ],
 };
 
 const generateBreakpoints = (numberOfItems, roundItems) => {
@@ -42,7 +42,7 @@ const CollectionCard = ({
 }) => {
 	// lessons are the old Sololearn-created courses, like learn HTML, C# etc.
 	const [ openSlayManage, toggleSlayManage ] = useState(false);
-	const isCourses = type === collectionTypes.courses || type === 4;
+	const isCourses = collectionTypes.courses.indexOf(type) !== -1;
 	const slidesToShow = items.length <= 6 ? items.length : 3;
 	const slidesToScroll = 2 * slidesToShow;
 	return (
