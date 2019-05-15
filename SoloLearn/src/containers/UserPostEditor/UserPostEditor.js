@@ -13,6 +13,7 @@ import {
 	IconButton,
 	SecondaryTextBlock,
 } from 'components/atoms';
+import { SuccessPopup } from 'components/molecules';
 import ProfileAvatar from 'components/ProfileAvatar';
 import { AddPhotoAlternate, Close } from 'components/icons';
 
@@ -32,6 +33,7 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 	const [ backgrounds, setBackgrounds ] = useState([]);
 	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
 	const [ selectedBackgroundId, setSelectedBackgroundId ] = useState(-1);
+	const [ isSuccessPopupOpen, toggleSuccessPopupIsOpen ] = useState(false);
 
 	const imageInputRef = useRef();
 	const [ imageSource, setImageSource ] = useState(null);
@@ -94,14 +96,24 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 						message: editorText,
 						backgroundId: null,
 						imageUrl: res.imageUrl,
-					});
+					})
+						.then((res) => {
+							if (res) {
+								toggleSuccessPopupIsOpen(true);
+							}
+						});
 				});
 		}
 		return createPost({
 			message: editorText,
 			backgroundId: canApplyBackground && selectedBackgroundId !== -1 ? selectedBackgroundId : null,
 			imageUrl: null,
-		});
+		})
+			.then((res) => {
+				if (res) {
+					toggleSuccessPopupIsOpen(true);
+				}
+			});
 	};
 
 	return (
@@ -183,6 +195,7 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 					<Loading />
 				</PaperContainer>
 			}
+			<SuccessPopup open={isSuccessPopupOpen} onClose={() => { toggleSuccessPopupIsOpen(false); closePopup(); }} text="Post Created" />
 		</Container>
 	);
 };
