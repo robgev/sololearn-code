@@ -7,6 +7,7 @@ import {
 	PaperContainer,
 	FlexBox,
 	Popup,
+	Input,
 } from 'components/atoms';
 import {
 	RaisedButton,
@@ -51,6 +52,11 @@ class Header extends PureComponent {
 		};
 	}
 
+	inputClickHandler = (e) => {
+		e.target.blur();
+		this.setState({ isCreatePostPopupOpen: true });
+	}
+
 	render() {
 		const { profile, t } = this.props;
 		const { xp: currentXp, rank, badge } = profile;
@@ -78,21 +84,21 @@ class Header extends PureComponent {
 						</Container>
 					</Container>
 				</Container>
-				<Container className="actions">
-					<RaisedButton onClick={() => this.setState({ isCreatePostPopupOpen: true })} color="primary" style={{ marginRight: '7px' }}>
-						Create a Post
-					</RaisedButton>
+				<FlexBox justifyBetween className="actions">
+					<Input
+						onClick={this.inputClickHandler}
+						placeholder="What's on your mind ?"
+					/>
 					<ContainerLink to="/discover">
 						<RaisedButton color="secondary">
 							{t('discover_peers.title')}
 						</RaisedButton>
 					</ContainerLink>
-				</Container>
+				</FlexBox>
 				<Popup open={this.state.isCreatePostPopupOpen} onClos={() => this.setState({ isCreatePostPopupOpen: false })}>
 					<UserPostEditor closePopup={() => this.setState({ isCreatePostPopupOpen: false })} />
 				</Popup>
 			</PaperContainer>
-
 		);
 	}
 }
