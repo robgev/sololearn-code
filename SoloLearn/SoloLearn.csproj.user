@@ -6,5 +6,6 @@
   <PropertyGroup>
     <ActiveDebugProfile>SoloLearn</ActiveDebugProfile>
     <ToolsVersionPromptShown>0.0</ToolsVersionPromptShown>
+    <NameOfLastUsedPublishProfile>FolderProfile</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

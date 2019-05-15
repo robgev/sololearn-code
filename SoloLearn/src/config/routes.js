@@ -26,6 +26,7 @@ const SlayHome = Loadable({ loader: () => import('containers/Learn/SlayHome') })
 const SlaySearch = Loadable({ loader: () => import('containers/Learn/SlaySearch') });
 const SlayLesson = Loadable({ loader: () => import('containers/Learn/SlayLesson') });
 const SlayDetailed = Loadable({ loader: () => import('containers/Learn/SlayDetailed') });
+const SlayManage = Loadable({ loader: () => import('containers/Learn/SlayManage') });
 const SlayBookmarks = Loadable({ loader: () => import('containers/Learn/SlayBookmarks') });
 const SlayMoreOnTopic = Loadable({ loader: () => import('containers/Learn//SlayMoreOnTopic') });
 const SlayMoreByAuthor = Loadable({ loader: () => import('containers/Learn/SlayMoreByAuthor') });
@@ -99,6 +100,7 @@ export default ([
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/more-on/:courseId" component={SlayMoreOnTopic} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/more/author/:userId" component={SlayMoreByAuthor} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/more/:collectionId" component={SlayDetailed} />
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/manage" component={SlayManage} />
 
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/collection/:collectionId" component={SlayLessonsPage} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/lesson/:itemType/:lessonId(/:lessonName)(/:pageNumber)" component={SlayLesson} />
