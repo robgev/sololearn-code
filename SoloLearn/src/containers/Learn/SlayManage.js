@@ -4,13 +4,12 @@ import { translate } from 'react-i18next';
 import { toSeoFriendly } from 'utils';
 import { getCourseAliasById } from 'reducers/courses.reducer';
 import { changeProgress, toggleCourseInternal } from 'actions/learn';
-import { PaperContainer, MenuItem, Title } from 'components/atoms';
-import { Layout } from 'components/molecules';
+import { PaperContainer, MenuItem, Title, Popup } from 'components/atoms';
 import { ManageLessonCard } from './components';
 import { resetProgress } from './SlayManage.api';
 
 import './SlayManage.scss';
-import Glossary from './components/Glossary';
+// import Glossary from './components/Glossary';
 import { getCourse } from './glossary.api';
 
 class SlayManage extends Component {
@@ -41,14 +40,23 @@ class SlayManage extends Component {
 	}
 
 	render() {
-		const { skills: myCourses, courses, t } = this.props;
 		const {
-			openGlossary, glossaryCourseId, glossaryContent, glossaryTitle,
-		} = this.state;
+			skills: myCourses, courses, t, open, onClose,
+		} = this.props;
+		// const {
+		// 	openGlossary, glossaryCourseId, glossaryContent, glossaryTitle,
+		// } = this.state;
 		const availableCourses = courses.filter(c => !myCourses.find(s => s.id === c.id && (s.iconUrl = c.iconUrl)));
 
 		return (
-			<Layout>
+			<Popup
+				open={open}
+				onClose={onClose}
+				classes={{
+					paper: 'slayManagePopup',
+
+				}}
+			>
 				<Title className="title">{t('course_picker.my-courses-section-title')}</Title>
 				<PaperContainer>
 					{
@@ -58,7 +66,7 @@ class SlayManage extends Component {
 								url={`/learn/course/${toSeoFriendly(getCourseAliasById(courses, course.id))}`}
 								actions={
 									[
-										<MenuItem onClick={() => this.openGlossary(course.id, course.name)} >{t('course_picker.action.glossary')}</MenuItem>,
+										// <MenuItem onClick={() => this.openGlossary(course.id, course.name)} >{t('course_picker.action.glossary')}</MenuItem>,
 										<MenuItem onClick={() => { this.resetProgress(course.id); }} >{t('course_picker.action.reset-progress')}</MenuItem>,
 										<MenuItem onClick={() => this.toggleCourse(course.id, false)} >{t('course_picker.action.remove')}</MenuItem>,
 									]
@@ -76,7 +84,7 @@ class SlayManage extends Component {
 								url={`/learn/course/${toSeoFriendly(getCourseAliasById(courses, course.id))}`}
 								actions={
 									[
-										<MenuItem onClick={() => this.openGlossary(course.id, course.name)} >{t('course_picker.action.glossary')}</MenuItem>,
+										// <MenuItem onClick={() => this.openGlossary(course.id, course.name)} >{t('course_picker.action.glossary')}</MenuItem>,
 										<MenuItem onClick={() => this.toggleCourse(course.id, true)} >{t('course_picker.action.add-to-my-courses')}</MenuItem>,
 									]
 								}
@@ -84,14 +92,14 @@ class SlayManage extends Component {
 						))
 					}
 				</PaperContainer>
-				<Glossary
+				{/* <Glossary
 					open={openGlossary}
 					courseId={glossaryCourseId}
 					courseName={glossaryTitle}
 					onClose={this.closeGlossary}
 					content={glossaryContent}
-				/>
-			</Layout>
+				/> */}
+			</Popup>
 		);
 	}
 }

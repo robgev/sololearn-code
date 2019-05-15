@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { Title, SecondaryTextBlock, PaperContainer, Container, FlexBox } from 'components/atoms';
@@ -6,6 +6,7 @@ import { Slider, ViewMoreLink } from 'components/molecules';
 
 import { CourseChip } from 'containers/Learn/components';
 import './styles.scss';
+import SlayManage from '../../SlayManage';
 
 const collectionTypes = {
 	slayLessons: 1,
@@ -40,8 +41,9 @@ const CollectionCard = ({
 	noViewMore = false,
 }) => {
 	// lessons are the old Sololearn-created courses, like learn HTML, C# etc.
-	const isCourses = type === collectionTypes.courses;
-	const slidesToShow = 3;
+	const [ openSlayManage, toggleSlayManage ] = useState(false);
+	const isCourses = type === collectionTypes.courses || type === 4;
+	const slidesToShow = items.length <= 6 ? items.length : 3;
 	const slidesToScroll = 2 * slidesToShow;
 	return (
 		<PaperContainer
@@ -57,9 +59,9 @@ const CollectionCard = ({
 				<Title>{name}</Title>
 				{
 					id === -1
-						? <ViewMoreLink to="/learn/manage" >
+						? <ViewMoreLink className="manage-button" onClick={() => toggleSlayManage(!openSlayManage)}>
 							{t('common.manage')}
-        </ViewMoreLink>
+						</ViewMoreLink>
 						: !noViewMore &&
 						<ViewMoreLink to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} >
 							{t('common.loadMore')}
@@ -93,6 +95,10 @@ const CollectionCard = ({
 					))
 				}
 			</Slider>
+			<SlayManage
+				open={openSlayManage}
+				onClose={() => toggleSlayManage(!openSlayManage)}
+			/>
 		</PaperContainer>
 	);
 };
