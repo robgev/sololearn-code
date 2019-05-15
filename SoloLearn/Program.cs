@@ -13,12 +13,7 @@ namespace SoloLearn
   {
 	public static void Main(string[] args)
 	{
-	  var config = new ConfigurationBuilder()
-		  .SetBasePath(Directory.GetCurrentDirectory())
-		  .AddJsonFile("appsettings.json", optional: false)
-		  .Build();
-
-	  CreateWebHostBuilder(args).UseUrls(config.GetSection("ApplicationUrl").Value).Build().Run();
+	  CreateWebHostBuilder(args).Build().Run();
 	}
 
 	public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

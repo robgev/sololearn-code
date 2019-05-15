@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 
 namespace SoloLearn
 {
@@ -73,16 +74,16 @@ namespace SoloLearn
 	  }));
 
 	  // Initialise ReactJS.NET. Must be before static files.
-	 
+
 
 	  var cachePeriod = env.IsDevelopment() ? "600" : "604800";
 	  app.UseStaticFiles(new StaticFileOptions
 	  {
 		OnPrepareResponse = ctx =>
 		{
-				  // Requires the following import:
-				  // using Microsoft.AspNetCore.Http;
-				  ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={cachePeriod}");
+		  // Requires the following import:
+		  // using Microsoft.AspNetCore.Http;
+		  ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={cachePeriod}");
 		}
 	  });
 
@@ -92,7 +93,20 @@ namespace SoloLearn
 			name: "GetSession",
 			template: "{controller=Ajax}/{action=GetSession}");
 
-		routes.MapRoute("default", "{*url}", new { controller = "Home", action = "Index" });
+		routes.MapRoute(
+					name: "default",
+					template: "{controller}/{action=Index}/{id?}");
+	  });
+
+	  app.UseSpa(spa =>
+	  {
+		spa.Options.SourcePath = "src";
+
+		if (env.IsDevelopment())
+		{
+		  spa.UseReactDevelopmentServer(npmScript: "start");
+
+		}
 	  });
 	}
   }
