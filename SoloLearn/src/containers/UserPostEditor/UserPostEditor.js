@@ -83,12 +83,21 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 				90, // is the quality of the  new image
 				0, // is the rotatoion of the  new image
 				(uri) => {
-					setImageSource(uri);
-					fetch(uri)
-						.then(data => data.blob())
-						.then((dataBlob) => {
-							setImageData(dataBlob);
-						});
+					const img = new Image();
+					img.src = uri;
+					img.onload = () => {
+						if (img.width < 100 || img.height < 50) {
+							setSnackMessage('The Image is too small');
+							toggleSnackBarIsOpen(true);
+						} else {
+							setImageSource(uri);
+							fetch(uri)
+								.then(data => data.blob())
+								.then((dataBlob) => {
+									setImageData(dataBlob);
+								});
+						}
+					};
 				}, // is the callBack function of the new image URI
 				'base64', // is the output type of the new image
 			);
