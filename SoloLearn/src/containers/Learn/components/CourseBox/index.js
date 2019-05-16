@@ -39,14 +39,7 @@ const CourseBox = ({
 				</Container>
 				<Container className="info-container">
 					<SecondaryTextBlock className={`course-name ${isCourses ? 'centered' : ''}`} title={name}>{name}</SecondaryTextBlock>
-					{(Number.isInteger(viewCount)
-						&& Number.isInteger(comments)) &&
-						<ViewStats
-							views={viewCount}
-							comments={comments}
-							iconStyle={{ height: 18, width: 18 }}
-						/>
-					}
+
 				</Container>
 			</ContainerLink>
 		</Container>
