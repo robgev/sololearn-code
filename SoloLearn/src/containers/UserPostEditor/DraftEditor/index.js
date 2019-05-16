@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { EditorState, Modifier, ContentState } from 'draft-js';
+import { Link } from 'react-router';
+import { EditorState, Modifier } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 import createMentionPlugin from 'draft-js-mention-plugin';
-import { getMentionsList } from 'utils';
+import createLinkifyPlugin from 'draft-js-linkify-plugin';
+import 'draft-js-linkify-plugin/lib/plugin.css';
+import { getMentionsList, makeEditableContent } from 'utils';
 import hexToRgba from 'hex-to-rgba';
 import { Container, FlexBox } from 'components/atoms';
 import { Entry } from 'components/organisms';
@@ -11,6 +14,8 @@ import { USER_POST_MAX_LENGTH } from '../UserPostEditor';
 
 import './styles.scss';
 
+const linkifyPlugin = createLinkifyPlugin();
+
 const DraftEditor = ({
 	background,
 	measure,
@@ -18,14 +23,18 @@ const DraftEditor = ({
 	isEditorReadOnly = false,
 	editorInitialText = '',
 }) => {
-	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(ContentState.createFromText(editorInitialText)));
+	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
 	const [ fontSize, setFontSize ] = useState(36);
 	const [ suggestions, setSuggestions ] = useState([]);
 	const mentionPluginRef = useRef(createMentionPlugin({
-		mentionComponent: ({ children }) => <b>{children}</b>,
+		mentionComponent: ({ children, mention }) => (isEditorReadOnly
+			? <b><Link className="hoverable" style={{ color: '#0645AD' }} to={`/profile/${mention.id}`}>{children}</Link></b>
+			: <b>{children}</b>),
 	}));
 	const { MentionSuggestions } = mentionPluginRef.current;
-	const plugins = [ mentionPluginRef.current ];
+	const plugins = isEditorReadOnly
+		? [ mentionPluginRef.current, linkifyPlugin ]
+		: [ mentionPluginRef.current ];
 
 	const getSuggestions = ({ value }) => {
 		getMentionsList({ type: 'userPost' })(value)
