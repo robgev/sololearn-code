@@ -116,8 +116,8 @@ const DraftEditor = ({
 
 	useEffect(() => {
 		const currentContent = editorState.getCurrentContent();
+		setEditorText(currentContent);
 		const text = currentContent.getPlainText();
-		setEditorText(text);
 		const newLinesCount = (text.match(/\n/g) || []).length;
 		setFontSize(getFontSize(text.length, newLinesCount));
 	}, [ editorState ]);

@@ -18,7 +18,7 @@ import getChallengeStatus from './getChallengeStatus';
 import determineAccessLevel from './determineAccessLevel';
 import determineBadge from './modBadgeUtils';
 
-export { replaceMention, getMentionsList, mentionUsers } from './mention';
+export { replaceMention, getMentionsList, mentionUsers, getMentionsFromRawEditorContent, getMentionsValue } from './mention';
 export { default as getCommonPrefix } from './getCommonPrefix';
 export { default as filterExisting } from './filterExisting';
 export { default as EnumNameMapper } from './enumNameMapper';
