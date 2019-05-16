@@ -13,6 +13,7 @@ import './styles.scss';
 
 const DraftEditor = ({
 	background,
+	measure,
 	setEditorText = null,
 	isEditorReadOnly = false,
 	editorInitialText = '',
@@ -122,6 +123,7 @@ const DraftEditor = ({
 		if (setEditorText) { setEditorText(text); }
 		const newLinesCount = (text.match(/\n/g) || []).length;
 		setFontSize(getFontSize(text.length, newLinesCount));
+		measure();
 	}, [ editorState ]);
 
 	const getRgbaHexFromArgbHex = color => `#${color.substring(3, color.length)}${color.substring(1, 3)}`;
@@ -143,6 +145,7 @@ const DraftEditor = ({
 					fontSize,
 					cursor: isEditorReadOnly ? 'default' : 'text',
 					height: isEditorReadOnly ? '100%' : '250px',
+					minHeight: 50,
 				}
 			}
 			className={isEditorReadOnly ? 'draft-editor-container read-only' : 'draft-editor-container'}
@@ -169,6 +172,10 @@ const DraftEditor = ({
 			</Container>
 		</FlexBox>
 	);
+};
+
+DraftEditor.defaultProps = {
+	measure: () => {},
 };
 
 export default DraftEditor;
