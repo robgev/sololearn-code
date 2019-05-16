@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { getUserSelector } from 'reducers/reducer_user';
 import { withRouter } from 'react-router';
+import { convertToRaw } from 'draft-js';
 import {
 	Title,
 	PaperContainer,
@@ -16,6 +17,7 @@ import {
 import { SuccessPopup } from 'components/molecules';
 import ProfileAvatar from 'components/ProfileAvatar';
 import { AddPhotoAlternate, Close } from 'components/icons';
+import { getMentionsValue } from 'utils';
 
 import EditorActions from './EditorActions';
 import DraftEditor from './DraftEditor';
@@ -42,13 +44,16 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 	const [ editorText, setEditorText ] = useState('');
 
 	const computeCanApplyBackground = () => {
-		const newLinesCount = (editorText.match(/\n/g) || []).length;
-		if (editorText.length > 200
-			|| newLinesCount > 4
-			|| imageSource !== null) {
-			setCanApplyBackground(false);
-		} else {
-			setCanApplyBackground(true);
+		if (editorText) {
+			const text = editorText.getPlainText();
+			const newLinesCount = (text.match(/\n/g) || []).length;
+			if (text.length > 200
+				|| newLinesCount > 4
+				|| imageSource !== null) {
+				setCanApplyBackground(false);
+			} else {
+				setCanApplyBackground(true);
+			}
 		}
 	};
 
@@ -89,6 +94,7 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 	const background = backgrounds.find(b => b.id === backgroundId);
 
 	const createNewPostHandler = () => {
+		const text = getMentionsValue(convertToRaw(editorText));
 		if (imageSource) {
 			uploadPostImage(imageData, 'postimage.jpg')
 				.then(res => createPost({
@@ -103,7 +109,7 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 					}));
 		}
 		return createPost({
-			message: editorText,
+			message: text,
 			backgroundId: canApplyBackground && selectedBackgroundId !== -1 ? selectedBackgroundId : null,
 			imageUrl: null,
 		})
