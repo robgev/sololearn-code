@@ -9,6 +9,7 @@ const mentionTypes = {
 	codeComment: 'Discussion/SearchCodeCommentMentionUsers', // int codeId, string query
 	userLessonComment: 'Discussion/SearchUserLessonCommentMentionUsers', // int lessonId, string query
 	postComment: 'Discussion/SearchPostCommentMentionUsers', // int postId, string query
+	userPost: 'Discussion/SearchPostCommentMentionUsers',
 };
 
 export const replaceMention = (text) => {

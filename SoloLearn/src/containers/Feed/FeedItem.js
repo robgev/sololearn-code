@@ -8,6 +8,7 @@ import { CourseCard } from 'containers/Learn/components';
 import {
 	Container,
 	PaperContainer,
+	FlexBox,
 } from 'components/atoms';
 import types from 'defaults/appTypes';
 
@@ -22,6 +23,8 @@ import Comment from './FeedTemplates/Comment';
 import Challenge from './FeedTemplates/Challenge';
 import FeedSuggestions from './FeedSuggestions';
 import BottomToolbar from './FeedBottomToolbar';
+
+import UserPost from './FeedTemplates/UserPost';
 
 @observer
 class FeedItem extends Component {
@@ -173,6 +176,22 @@ class FeedItem extends Component {
 						iconUrl={feedItem.userLesson.iconUrl}
 						viewCount={feedItem.userLesson.viewCount}
 						comments={feedItem.userLesson.comments}
+					/>
+				</Container>
+			);
+		case types.userPost:
+			return (
+				<Container>
+					<UserPost
+						background={feedItem.userPost.background}
+						message={feedItem.userPost.message}
+						imageUrl={feedItem.userPost.imageUrl}
+						type={feedItem.type}
+						date={feedItem.date}
+						id={feedItem.id}
+						vote={feedItem.vote}
+						votes={feedItem.votes}
+						measure={this.props.measure}
 					/>
 				</Container>
 			);
