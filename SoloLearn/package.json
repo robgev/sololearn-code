@@ -19,6 +19,7 @@
     "brace": "^0.10.0",
     "console-feed": "^2.8.5",
     "draft-js": "^0.10.5",
+    "draft-js-linkify-plugin": "^2.0.1",
     "draft-js-mention-plugin": "^3.0.4",
     "draft-js-plugins-editor": "^2.0.8",
     "eslint": "^5.1.0",
