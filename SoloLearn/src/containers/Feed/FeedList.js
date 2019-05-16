@@ -10,6 +10,7 @@ import {
 } from 'components/atoms';
 import { InfiniteVirtualizedList } from 'components/organisms';
 import FeedShimmer from 'components/Shimmers/FeedShimmer';
+import types from 'defaults/appTypes';
 
 import 'styles/Feed/FeedList.scss';
 import FeedPin from './FeedPin';
@@ -28,6 +29,7 @@ class FeedList extends Component {
 		courseId: null,
 		coursePopupOpen: false,
 		shouldShowFeed: false,
+		openIds: [],
 	}
 
 	componentDidMount() {
@@ -39,6 +41,15 @@ class FeedList extends Component {
 		this.setState(state => ({ coursePopupOpen: !state.coursePopupOpen, courseId }));
 	}
 
+	openItem = (id, callback) => {
+		console.log('Opening');
+		this.setState(s => ({ openIds: [ ...s.openIds, id ] }), callback);
+	}
+
+	closeItem = (id, callback) => {
+		this.setState(s => ({ openIds: s.openIds.filter(i => i !== id) }), callback);
+	}
+
 	_rowRenderer = ({
 		style,
 		index,
@@ -46,17 +57,20 @@ class FeedList extends Component {
 		updatePosition,
 	}) => {
 		const { feed, voteFeedItem } = this.props;
-		const { shouldShowFeed } = this.state;
+		const { shouldShowFeed, openIds } = this.state;
 		const feedItem = feed[index];
-
+		const open = feedItem.type === types.mergedChallange && openIds.includes(feedItem.id);
 		return (
 			<React.Fragment>
 				{(index > 20 && !shouldShowFeed
 					? null : (
 						<FeedItem
 							style={style}
+							open={open}
 							measure={measure}
 							feedItem={feedItem}
+							openItem={this.openItem}
+							closeItem={this.closeItem}
 							voteFeedItem={voteFeedItem}
 							updatePosition={updatePosition}
 						/>
