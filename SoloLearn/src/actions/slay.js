@@ -86,7 +86,7 @@ export const setSelectedCollection = collectionId => async (dispatch, getState) 
 			await Service.request('GetCollection', { id: collectionId });
 		dispatch({
 			type: types.SET_CURRENT_LESSON_COLLECTION,
-			payload: collection,
+			payload: collection || {}, // GetCollection does not return collection if collectionId < 0. remove || {} after fix
 		});
 	} else {
 		dispatch({
@@ -186,8 +186,6 @@ export const getLessonsByAuthor = (excludeLessonId, userId, pagingData) => async
 	}
 };
 
-export const unsetCollection = () => {
-	return {
-		type: types.UNSET_COLLECTION
-	}
-}
+export const unsetCollection = () => ({
+	type: types.UNSET_COLLECTION,
+});

@@ -83,7 +83,7 @@ namespace SoloLearn
                     requestMessage.Content?.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
                 }
             }
-								requestMessage.Headers.TryAddWithoutValidation("ApiLevel", "9");
+								requestMessage.Headers.TryAddWithoutValidation("ApiLevel", "11");
 
 								string path = context.Request.Path;
 								path = path.Substring(_options.Path.Length);

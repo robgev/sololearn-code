@@ -13,17 +13,19 @@ const UserPost = ({
 	id,
 	vote,
 	votes,
+	measure,
 }) => (
 	<Container>
 		{message ?
 			<UserPostEditor
+				measure={measure}
 				background={background || { type: 'none', id: -1 }}
 				editorInitialText={message}
 				isEditorReadOnly
 			/>
 			: null
 		}
-		{imageUrl ? <Image src={imageUrl} style={{ maxWidth: '400px' }} alt="" /> : null}
+		{imageUrl ? <Image src={imageUrl} onLoad={measure} style={{ maxWidth: '400px' }} alt="" /> : null}
 		<BottomToolbarWithVotes
 			type={type}
 			date={date}
