@@ -119,9 +119,10 @@ const DraftEditor = ({
 
 	useEffect(() => {
 		const currentContent = editorState.getCurrentContent();
-		setEditorText(currentContent);
 		const text = currentContent.getPlainText();
-		if (setEditorText) { setEditorText(text); }
+		if (setEditorText) {
+			setEditorText(currentContent);
+		}
 		const newLinesCount = (text.match(/\n/g) || []).length;
 		setFontSize(getFontSize(text.length, newLinesCount));
 		measure();
@@ -176,7 +177,7 @@ const DraftEditor = ({
 };
 
 DraftEditor.defaultProps = {
-	measure: () => {},
+	measure: () => { },
 };
 
 export default DraftEditor;
