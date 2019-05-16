@@ -1,8 +1,13 @@
 @import '~styles/utils';
 
-.title {
-	@extend %title-text;
-		display: block;
-		padding: 15px 5px;
-		padding-bottom: 14px;
+.slayManagePopup{
+	width:500px;
+
+	.title {
+		@extend %title-text;
+			display: block;
+			padding: 15px 5px;
+			padding-bottom: 14px;
+	}
 }
+
