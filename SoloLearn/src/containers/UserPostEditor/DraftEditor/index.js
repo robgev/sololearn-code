@@ -134,20 +134,21 @@ const DraftEditor = ({
 		<FlexBox
 			align={background ? background.type !== 'none' && true : false}
 			justify={background ? background.type !== 'none' && true : false}
-			style={background.type !== 'none' ?
+			style={background.type === 'none' ?
+				{
+					color: 'black',
+					fontSize,
+					cursor: isEditorReadOnly ? 'default' : 'text',
+					height: isEditorReadOnly ? '100%' : 250,
+					minHeight: isEditorReadOnly ? 50 : 250,
+				}
+				:
 				{
 					...style,
 					color: background ? background.textColor.length > 6 ? hexToRgba(getRgbaHexFromArgbHex(background.textColor)) : background.textColor : 'black',
 					fontSize,
 					cursor: isEditorReadOnly ? 'default' : 'text',
-				}
-				:
-				{
-					color: 'black',
-					fontSize,
-					cursor: isEditorReadOnly ? 'default' : 'text',
-					height: isEditorReadOnly ? '100%' : '250px',
-					minHeight: 50,
+					height: 250,
 				}
 			}
 			className={isEditorReadOnly ? 'draft-editor-container read-only' : 'draft-editor-container'}

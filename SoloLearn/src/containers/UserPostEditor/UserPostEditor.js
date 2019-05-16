@@ -118,7 +118,7 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 		if (imageSource) {
 			uploadPostImage(imageData, 'postimage.jpg')
 				.then(res => createPost({
-					message: editorText,
+					message: text,
 					backgroundId: null,
 					imageUrl: res.imageUrl,
 				})
@@ -162,7 +162,7 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 						/>
 						<FlexBox justifyEnd className="user-post-max-length-container">
 							<SecondaryTextBlock className="count">
-								{editorText.length} / {USER_POST_MAX_LENGTH}
+								{editorText ? editorText.getPlainText().length : 0} / {USER_POST_MAX_LENGTH}
 							</SecondaryTextBlock>
 						</FlexBox>
 						<FlexBox justify align>
