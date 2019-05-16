@@ -71,10 +71,8 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 
 	// Post button disabled toggler
 	useEffect(() => {
-		if (editorText || imageSource) {
-			if (editorText.getPlainText().trim() || imageSource) {
-				togglePostButtonDisabled(false);
-			}
+		if ((editorText && editorText.getPlainText().trim()) || imageSource) {
+			togglePostButtonDisabled(false);
 		} else {
 			togglePostButtonDisabled(true);
 		}
