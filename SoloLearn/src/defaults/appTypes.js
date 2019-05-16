@@ -8,6 +8,8 @@ const types = {
 	following: 5,
 	upvote: 6,
 
+	userPost: 20,
+
 	courseStarted: 101,
 	moduleCompleted: 102,
 	courseCompleted: 103,
