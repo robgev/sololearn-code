@@ -30,7 +30,7 @@ export const getBackgroundStyle = (background, { isPreview }) => {
 
 export const getFontSize = (textLength, newLineCount) => {
 	if (textLength < 50) {
-		if (newLineCount < 5) { return 34; }
+		if (newLineCount < 5) { return 30; }
 		return 24;
 	} else if (textLength < 200) {
 		if (newLineCount < 5) { return 20; }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
+import Resizer from 'react-image-file-resizer';
 import { getUserSelector } from 'reducers/reducer_user';
 import { withRouter } from 'react-router';
 import {
@@ -9,9 +10,10 @@ import {
 	Chip,
 	Loading,
 	Container,
-	Image,
+	Image as AtomImage,
 	IconButton,
 	SecondaryTextBlock,
+	Snackbar,
 } from 'components/atoms';
 import { SuccessPopup } from 'components/molecules';
 import ProfileAvatar from 'components/ProfileAvatar';
@@ -41,6 +43,9 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 	const [ isPostButtonDisabled, togglePostButtonDisabled ] = useState(true);
 	const [ editorText, setEditorText ] = useState('');
 
+	const [ isSnackBarOpen, toggleSnackBarIsOpen ] = useState(false);
+	const [ snackMessage, setSnackMessage ] = useState('');
+
 	const computeCanApplyBackground = () => {
 		const newLinesCount = (editorText.match(/\n/g) || []).length;
 		if (editorText.length > 200
@@ -61,7 +66,7 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 
 	// Post button disabled toggler
 	useEffect(() => {
-		if (editorText || imageSource) {
+		if (editorText.trim() || imageSource) {
 			togglePostButtonDisabled(false);
 		} else {
 			togglePostButtonDisabled(true);
@@ -69,15 +74,30 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 	}, [ editorText, imageSource ]);
 
 	const onImageSelect = async (e) => {
-		const newImageSource = window.URL.createObjectURL(e.target.files[0]);
-		setImageSource(newImageSource);
-		const data = await fetch(newImageSource);
-		const dataBlob = await data.blob();
-		setImageData(dataBlob);
+		if (e.target.files[0]) {
+			Resizer.imageFileResizer(
+				e.target.files[0], // is the file of the new image that can now be uploaded...
+				1200, // is the maxWidth of the  new image
+				1200, // is the maxHeight of the  new image
+				'JPEG', // is the compressFormat of the  new image
+				90, // is the quality of the  new image
+				0, // is the rotatoion of the  new image
+				(uri) => {
+					setImageSource(uri);
+					fetch(uri)
+						.then(data => data.blob())
+						.then((dataBlob) => {
+							setImageData(dataBlob);
+						});
+				}, // is the callBack function of the new image URI
+				'base64', // is the output type of the new image
+			);
+		}
 	};
 
 	const removeImage = () => {
 		setImageSource(null);
+		setImageData(null);
 	};
 
 	useEffect(() => {
@@ -151,7 +171,7 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 								>
 									<Close />
 								</IconButton>
-								<Image src={imageSource || ''} className="user-post-image-preview" />
+								<AtomImage src={imageSource || ''} className="user-post-image-preview" />
 							</Container>
 						</FlexBox>
 
@@ -193,6 +213,16 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 					<Loading />
 				</PaperContainer>
 			}
+			<Snackbar
+				anchorOrigin={{
+					vertical: 'bottom',
+					horizontal: 'right',
+				}}
+				open={isSnackBarOpen}
+				autoHideDuration={5000}
+				onClose={() => toggleSnackBarIsOpen(false)}
+				message={snackMessage}
+			/>
 			<SuccessPopup open={isSuccessPopupOpen} onClose={() => { toggleSuccessPopupIsOpen(false); closePopup(); }} text="Post Created" />
 		</Container>
 	);
