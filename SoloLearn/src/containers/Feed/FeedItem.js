@@ -27,17 +27,23 @@ import BottomToolbar from './FeedBottomToolbar';
 class FeedItem extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			isOpened: false,
-		};
 		this.votes = null;
 		this.url = '';
 	}
 
 	handleChallengesOpen = () => {
-		this.setState({ isOpened: !this.state.isOpened }, () => {
-			this.props.measure();
-		});
+		const {
+			open,
+			measure,
+			openItem,
+			closeItem,
+			feedItem: { id },
+		} = this.props;
+		if (open) {
+			closeItem(id, measure);
+		} else {
+			openItem(id, measure);
+		}
 	}
 
 	componentDidMount() {
@@ -201,22 +207,34 @@ class FeedItem extends Component {
 						/>
 						<BottomToolbar date={feedItem.date} />
 					</PaperContainer>
+					{ this.props.open &&
 					<Container
 						id="feed-items"
-						className={`merged-items-container ${this.state.isOpened ? 'open' : ''}`}
-						// style={{ height: this.state.isOpened ? ((feedItem.groupedItems.length * 139) - 10) : 0 }} // 10 = last item margin bottom
-						// style={{'display': this.state.isOpened? 'block' : 'none'}}
+						className={`merged-items-container ${this.props.open ? 'open' : ''}`}
 					>
 						{feedItem.groupedItems.map(currentItem => (
-							<FeedItem
+							<Container
 								key={currentItem.type === types.mergedChallange ?
 									`feedGroup${currentItem.toId}` :
 									`feedItem${currentItem.id}`}
-								feedItem={currentItem}
-								openCoursePopup={this.props.openCoursePopup}
-							/>
+								className="feedItemWrapper"
+							>
+								<PaperContainer zDepth={1} className="feedItem">
+									<FeedItemBase
+										feedItemId={currentItem.id}
+										title={currentItem.title}
+										user={currentItem.user}
+										votes={this.votes}
+									>
+										{/* this.url = `/profile/${currentItem.contest.player.id}`; */}
+										<Challenge date={currentItem.date} contest={currentItem.contest} />
+									</FeedItemBase>
+								</PaperContainer>
+
+							</Container>
 						))}
 					</Container>
+					}
 				</Container>
 			);
 		}
