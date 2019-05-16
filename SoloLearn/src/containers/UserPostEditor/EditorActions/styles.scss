@@ -1,3 +1,9 @@
+@import '~styles/colors';
+
 .user-post-actions-container {
 	margin-top: 25px;
+	.user-post-cancel-button {
+		margin-right: 7px;
+		color: $error_red;
+	}
 }

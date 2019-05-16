@@ -13,7 +13,7 @@ import {
 	IconButton,
 	SecondaryTextBlock,
 } from 'components/atoms';
-import { Layout } from 'components/molecules';
+import { SuccessPopup } from 'components/molecules';
 import ProfileAvatar from 'components/ProfileAvatar';
 import { AddPhotoAlternate, Close } from 'components/icons';
 
@@ -29,10 +29,11 @@ import './styles.scss';
 
 export const USER_POST_MAX_LENGTH = 1024;
 
-const UserPostEditor = ({ params, profile }) => {
+const UserPostEditor = ({ params, profile, closePopup }) => {
 	const [ backgrounds, setBackgrounds ] = useState([]);
 	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
 	const [ selectedBackgroundId, setSelectedBackgroundId ] = useState(-1);
+	const [ isSuccessPopupOpen, toggleSuccessPopupIsOpen ] = useState(false);
 
 	const imageInputRef = useRef();
 	const [ imageSource, setImageSource ] = useState(null);
@@ -89,24 +90,32 @@ const UserPostEditor = ({ params, profile }) => {
 
 	const createNewPostHandler = () => {
 		if (imageSource) {
-			return uploadPostImage(imageData, 'postimage.jpg')
-				.then((res) => {
-					createPost({
-						message: editorText,
-						backgroundId: null,
-						imageUrl: res.imageUrl,
-					});
-				});
+			uploadPostImage(imageData, 'postimage.jpg')
+				.then(res => createPost({
+					message: editorText,
+					backgroundId: null,
+					imageUrl: res.imageUrl,
+				})
+					.then((res) => {
+						if (res) {
+							toggleSuccessPopupIsOpen(true);
+						}
+					}));
 		}
 		return createPost({
 			message: editorText,
 			backgroundId: canApplyBackground && selectedBackgroundId !== -1 ? selectedBackgroundId : null,
 			imageUrl: null,
-		});
+		})
+			.then((res) => {
+				if (res) {
+					toggleSuccessPopupIsOpen(true);
+				}
+			});
 	};
 
 	return (
-		<Layout>
+		<Container>
 			{backgrounds && backgrounds.length ?
 				<PaperContainer className="user-post-main-container">
 					<FlexBox column fullWith>
@@ -174,16 +183,18 @@ const UserPostEditor = ({ params, profile }) => {
 						<EditorActions
 							isPostButtonDisabled={isPostButtonDisabled}
 							createNewPostHandler={createNewPostHandler}
+							closePopup={closePopup}
 						/>
 
 					</FlexBox>
 				</PaperContainer>
 				:
-				<FlexBox fullWith>
+				<PaperContainer className="user-post-loader-container">
 					<Loading />
-				</FlexBox>
+				</PaperContainer>
 			}
-		</Layout>
+			<SuccessPopup open={isSuccessPopupOpen} onClose={() => { toggleSuccessPopupIsOpen(false); closePopup(); }} text="Post Created" />
+		</Container>
 	);
 };
 

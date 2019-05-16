@@ -6,6 +6,8 @@ import {
 	Container,
 	PaperContainer,
 	FlexBox,
+	Popup,
+	Input,
 } from 'components/atoms';
 import {
 	RaisedButton,
@@ -15,6 +17,8 @@ import {
 	ProfileAvatar,
 	ModBadge,
 } from 'components/molecules';
+
+import UserPostEditor from 'containers/UserPostEditor';
 
 import 'styles/Feed/Header.scss';
 
@@ -43,6 +47,14 @@ class Header extends PureComponent {
 			this.maxXp = currentXp;
 			[ this.nextMilestone ] = badge ? badge.split('|') : '';
 		}
+		this.state = {
+			isCreatePostPopupOpen: false,
+		};
+	}
+
+	inputClickHandler = (e) => {
+		e.target.blur();
+		this.setState({ isCreatePostPopupOpen: true });
 	}
 
 	render() {
@@ -72,20 +84,21 @@ class Header extends PureComponent {
 						</Container>
 					</Container>
 				</Container>
-				<Container className="actions">
-					<ContainerLink to="/user-post" style={{ marginRight: '7px' }}>
-						<RaisedButton color="primary">
-							Create a Post
-						</RaisedButton>
-					</ContainerLink>
+				<FlexBox justifyBetween className="actions">
+					<Input
+						onClick={this.inputClickHandler}
+						placeholder="What's on your mind ?"
+					/>
 					<ContainerLink to="/discover">
 						<RaisedButton color="secondary">
 							{t('discover_peers.title')}
 						</RaisedButton>
 					</ContainerLink>
-				</Container>
+				</FlexBox>
+				<Popup open={this.state.isCreatePostPopupOpen} onClos={() => this.setState({ isCreatePostPopupOpen: false })}>
+					<UserPostEditor closePopup={() => this.setState({ isCreatePostPopupOpen: false })} />
+				</Popup>
 			</PaperContainer>
-
 		);
 	}
 }
