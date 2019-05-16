@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { EditorState, Modifier, ContentState } from 'draft-js';
+import { Link } from 'react-router';
+import { EditorState, Modifier } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 import createMentionPlugin from 'draft-js-mention-plugin';
-import { getMentionsList } from 'utils';
+import createLinkifyPlugin from 'draft-js-linkify-plugin';
+import 'draft-js-linkify-plugin/lib/plugin.css';
+import { getMentionsList, makeEditableContent } from 'utils';
 import hexToRgba from 'hex-to-rgba';
 import { Container, FlexBox } from 'components/atoms';
 import { Entry } from 'components/organisms';
@@ -11,6 +14,8 @@ import { USER_POST_MAX_LENGTH } from '../UserPostEditor';
 
 import './styles.scss';
 
+const linkifyPlugin = createLinkifyPlugin();
+
 const DraftEditor = ({
 	background,
 	measure,
@@ -18,14 +23,18 @@ const DraftEditor = ({
 	isEditorReadOnly = false,
 	editorInitialText = '',
 }) => {
-	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(ContentState.createFromText(editorInitialText)));
+	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
 	const [ fontSize, setFontSize ] = useState(36);
 	const [ suggestions, setSuggestions ] = useState([]);
 	const mentionPluginRef = useRef(createMentionPlugin({
-		mentionComponent: ({ children }) => <b>{children}</b>,
+		mentionComponent: ({ children, mention }) => (isEditorReadOnly
+			? <b><Link className="hoverable" style={{ color: '#0645AD' }} to={`/profile/${mention.id}`}>{children}</Link></b>
+			: <b>{children}</b>),
 	}));
 	const { MentionSuggestions } = mentionPluginRef.current;
-	const plugins = [ mentionPluginRef.current ];
+	const plugins = isEditorReadOnly
+		? [ mentionPluginRef.current, linkifyPlugin ]
+		: [ mentionPluginRef.current ];
 
 	const getSuggestions = ({ value }) => {
 		getMentionsList({ type: 'userPost' })(value)
@@ -120,7 +129,9 @@ const DraftEditor = ({
 	useEffect(() => {
 		const currentContent = editorState.getCurrentContent();
 		const text = currentContent.getPlainText();
-		if (setEditorText) { setEditorText(text); }
+		if (setEditorText) {
+			setEditorText(currentContent);
+		}
 		const newLinesCount = (text.match(/\n/g) || []).length;
 		setFontSize(getFontSize(text.length, newLinesCount));
 		measure();
@@ -132,20 +143,21 @@ const DraftEditor = ({
 		<FlexBox
 			align={background ? background.type !== 'none' && true : false}
 			justify={background ? background.type !== 'none' && true : false}
-			style={background.type !== 'none' ?
+			style={background.type === 'none' ?
+				{
+					color: 'black',
+					fontSize,
+					cursor: isEditorReadOnly ? 'default' : 'text',
+					height: isEditorReadOnly ? '100%' : 250,
+					minHeight: isEditorReadOnly ? 50 : 250,
+				}
+				:
 				{
 					...style,
 					color: background ? background.textColor.length > 6 ? hexToRgba(getRgbaHexFromArgbHex(background.textColor)) : background.textColor : 'black',
 					fontSize,
 					cursor: isEditorReadOnly ? 'default' : 'text',
-				}
-				:
-				{
-					color: 'black',
-					fontSize,
-					cursor: isEditorReadOnly ? 'default' : 'text',
-					height: isEditorReadOnly ? '100%' : '250px',
-					minHeight: 50,
+					height: 250,
 				}
 			}
 			className={isEditorReadOnly ? 'draft-editor-container read-only' : 'draft-editor-container'}
@@ -175,7 +187,7 @@ const DraftEditor = ({
 };
 
 DraftEditor.defaultProps = {
-	measure: () => {},
+	measure: () => { },
 };
 
 export default DraftEditor;

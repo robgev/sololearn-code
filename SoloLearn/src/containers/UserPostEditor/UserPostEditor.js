@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Resizer from 'react-image-file-resizer';
 import { getUserSelector } from 'reducers/reducer_user';
 import { withRouter } from 'react-router';
+import { convertToRaw } from 'draft-js';
 import {
 	Title,
 	PaperContainer,
@@ -18,6 +19,7 @@ import {
 import { SuccessPopup } from 'components/molecules';
 import ProfileAvatar from 'components/ProfileAvatar';
 import { AddPhotoAlternate, Close } from 'components/icons';
+import { getMentionsValue } from 'utils';
 
 import EditorActions from './EditorActions';
 import DraftEditor from './DraftEditor';
@@ -47,13 +49,16 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 	const [ snackMessage, setSnackMessage ] = useState('');
 
 	const computeCanApplyBackground = () => {
-		const newLinesCount = (editorText.match(/\n/g) || []).length;
-		if (editorText.length > 200
-			|| newLinesCount > 4
-			|| imageSource !== null) {
-			setCanApplyBackground(false);
-		} else {
-			setCanApplyBackground(true);
+		if (editorText) {
+			const text = editorText.getPlainText();
+			const newLinesCount = (text.match(/\n/g) || []).length;
+			if (text.length > 200
+				|| newLinesCount > 4
+				|| imageSource !== null) {
+				setCanApplyBackground(false);
+			} else {
+				setCanApplyBackground(true);
+			}
 		}
 	};
 
@@ -66,7 +71,7 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 
 	// Post button disabled toggler
 	useEffect(() => {
-		if (editorText.trim() || imageSource) {
+		if ((editorText && editorText.getPlainText().trim()) || imageSource) {
 			togglePostButtonDisabled(false);
 		} else {
 			togglePostButtonDisabled(true);
@@ -83,12 +88,21 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 				90, // is the quality of the  new image
 				0, // is the rotatoion of the  new image
 				(uri) => {
-					setImageSource(uri);
-					fetch(uri)
-						.then(data => data.blob())
-						.then((dataBlob) => {
-							setImageData(dataBlob);
-						});
+					const img = new Image();
+					img.src = uri;
+					img.onload = () => {
+						if (img.width < 100 || img.height < 50) {
+							setSnackMessage('The Image is too small');
+							toggleSnackBarIsOpen(true);
+						} else {
+							setImageSource(uri);
+							fetch(uri)
+								.then(data => data.blob())
+								.then((dataBlob) => {
+									setImageData(dataBlob);
+								});
+						}
+					};
 				}, // is the callBack function of the new image URI
 				'base64', // is the output type of the new image
 			);
@@ -109,10 +123,11 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 	const background = backgrounds.find(b => b.id === backgroundId);
 
 	const createNewPostHandler = () => {
+		const text = getMentionsValue(convertToRaw(editorText));
 		if (imageSource) {
 			uploadPostImage(imageData, 'postimage.jpg')
 				.then(res => createPost({
-					message: editorText,
+					message: text,
 					backgroundId: null,
 					imageUrl: res.imageUrl,
 				})
@@ -123,7 +138,7 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 					}));
 		}
 		return createPost({
-			message: editorText,
+			message: text,
 			backgroundId: canApplyBackground && selectedBackgroundId !== -1 ? selectedBackgroundId : null,
 			imageUrl: null,
 		})
@@ -156,7 +171,7 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 						/>
 						<FlexBox justifyEnd className="user-post-max-length-container">
 							<SecondaryTextBlock className="count">
-								{editorText.length} / {USER_POST_MAX_LENGTH}
+								{editorText ? editorText.getPlainText().length : 0} / {USER_POST_MAX_LENGTH}
 							</SecondaryTextBlock>
 						</FlexBox>
 						<FlexBox justify align>
