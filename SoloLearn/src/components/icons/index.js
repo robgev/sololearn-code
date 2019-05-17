@@ -34,4 +34,5 @@ export {
 	DragIndicator as DragIcon,
 	AddPhotoAlternate,
 	CheckCircle,
+	Comment as CommentIcon,
 } from '@material-ui/icons';
