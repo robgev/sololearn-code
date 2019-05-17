@@ -13,6 +13,8 @@ import {
 	SET_BOOKMARK_COLLECTION_ITEMS,
 	APPEND_BOOKMARK_COLLECTION_ITEMS,
 	UNSET_COLLECTION,
+	TOGGLE_COURSE,
+	CHANGE_PROGRESS,
 } from 'constants/ActionTypes';
 import uniqBy from 'lodash/uniqBy';
 import map from 'lodash/map';
@@ -29,10 +31,27 @@ const refreshCollections = (currentCollections, changedCollections) => {
 			: c));
 };
 
+const resetCourseProgress = (state, { courseId, progress }) => {
+	console.log(state);
+	const collections = [ ...state ];
+	collections.forEach((c) => {
+		if (c.id < 0) {
+			c.items.find(i => i.id === courseId && (i.progress = progress));
+		}
+	});
+	return collections;
+};
+
 const slayCollections = (state = [], action) => {
 	switch (action.type) {
 	case SET_LESSON_COLLECTIONS:
 		return uniqBy([ ...state, ...action.payload ], 'id');
+	case TOGGLE_COURSE:
+		const myCourses = state.find(c => c.id === -1);
+		myCourses.items = action.payload;
+		return refreshCollections(state, myCourses);
+	case CHANGE_PROGRESS:
+		return resetCourseProgress(state, action.payload);
 	case REFRESH_COLLECTIONS_PROGRESS:
 		return refreshCollections(state, action.payload);
 	case RESET_LOCALE_DATA:

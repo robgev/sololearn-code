@@ -43,8 +43,8 @@ const CollectionCard = ({
 	// lessons are the old Sololearn-created courses, like learn HTML, C# etc.
 	const [ openSlayManage, toggleSlayManage ] = useState(false);
 	const isCourses = collectionTypes.courses.indexOf(type) !== -1;
-	const slidesToShow = items.length <= 6 ? items.length : 3;
-	const slidesToScroll = 2 * slidesToShow;
+	const slidesToShow = items.length <= 6 ? items.length : 6;
+	const slidesToScroll = 6;// 2 * slidesToShow;
 	return (
 		<PaperContainer
 			elevation={1}
@@ -61,7 +61,7 @@ const CollectionCard = ({
 					id === -1
 						? <ViewMoreLink className="manage-button" onClick={() => toggleSlayManage(!openSlayManage)}>
 							{t('common.manage')}
-						</ViewMoreLink>
+        </ViewMoreLink>
 						: !noViewMore &&
 						<ViewMoreLink to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} >
 							{t('common.loadMore')}

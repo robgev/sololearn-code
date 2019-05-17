@@ -4,7 +4,8 @@ import { translate } from 'react-i18next';
 import { toSeoFriendly } from 'utils';
 import { getCourseAliasById } from 'reducers/courses.reducer';
 import { changeProgress, toggleCourseInternal } from 'actions/learn';
-import { PaperContainer, MenuItem, Title, Popup } from 'components/atoms';
+import { PopupActions, MenuItem, Title, Popup, PopupContent, Container } from 'components/atoms';
+import { FlatButton } from 'components/molecules';
 import ConfirmationPopup from 'components/ConfirmationPopup';
 import { ManageLessonCard } from './components';
 import { resetProgress } from './SlayManage.api';
@@ -67,56 +68,62 @@ class SlayManage extends Component {
 
 					}}
 				>
-					<Title className="title">{t('course_picker.my-courses-section-title')}</Title>
-					<PaperContainer>
-						{
-							myCourses.map(course => (
-								<ManageLessonCard
-									{...course}
-									url={`/learn/course/${toSeoFriendly(getCourseAliasById(courses, course.id))}`}
-									actions={
-										[
-										// <MenuItem onClick={() => this.openGlossary(course.id, course.name)} >{t('course_picker.action.glossary')}</MenuItem>,
-											<MenuItem onClick={() => { this.toggleResetConfirmation(course.id); }} >{t('course_picker.action.reset-progress')}</MenuItem>,
-											<MenuItem onClick={() => this.toggleCourse(course.id, false)} >{t('course_picker.action.remove')}</MenuItem>,
-										]
-									}
-								/>
-							))
-						}
-					</PaperContainer>
-					<Title className="title">Available Courses</Title>
-					<PaperContainer>
-						{
-							availableCourses.map(course => (
-								<ManageLessonCard
-									{...course}
-									url={`/learn/course/${toSeoFriendly(getCourseAliasById(courses, course.id))}`}
-									actions={
-										[
-										// <MenuItem onClick={() => this.openGlossary(course.id, course.name)} >{t('course_picker.action.glossary')}</MenuItem>,
-											<MenuItem onClick={() => this.toggleCourse(course.id, true)} >{t('course_picker.action.add-to-my-courses')}</MenuItem>,
-										]
-									}
-								/>
-							))
-						}
-					</PaperContainer>
-					{/* <Glossary
+					<PopupContent>
+						{myCourses && myCourses.length > 0 && <Title className="title">{t('course_picker.my-courses-section-title')}</Title>}
+						<Container>
+							{
+								myCourses.map(course => (
+									<ManageLessonCard
+										{...course}
+										url={`/learn/course/${toSeoFriendly(getCourseAliasById(courses, course.id))}`}
+										actions={
+											[
+												// <MenuItem onClick={() => this.openGlossary(course.id, course.name)} >{t('course_picker.action.glossary')}</MenuItem>,
+												<MenuItem onClick={() => { this.toggleResetConfirmation(course.id); }} >{t('course_picker.action.reset-progress')}</MenuItem>,
+												<MenuItem onClick={() => this.toggleCourse(course.id, false)} >{t('course_picker.action.remove')}</MenuItem>,
+											]
+										}
+										/>
+								))
+							}
+						</Container>
+						{availableCourses && availableCourses.length > 0 && <Title className="title">{t('course_picker.my-courses-section-title')}</Title>}
+						<Container>
+							{
+								availableCourses.map(course => (
+									<ManageLessonCard
+										{...course}
+										url={`/learn/course/${toSeoFriendly(getCourseAliasById(courses, course.id))}`}
+										actions={
+											[
+												// <MenuItem onClick={() => this.openGlossary(course.id, course.name)} >{t('course_picker.action.glossary')}</MenuItem>,
+												<MenuItem onClick={() => this.toggleCourse(course.id, true)} >{t('course_picker.action.add-to-my-courses')}</MenuItem>,
+											]
+										}
+									/>
+								))
+							}
+						</Container>
+						{/* <Glossary
 					open={openGlossary}
 					courseId={glossaryCourseId}
 					courseName={glossaryTitle}
 					onClose={this.closeGlossary}
 					content={glossaryContent}
 				/> */}
+					</PopupContent>
+					<PopupActions>
+						<FlatButton onClick={onClose}>{t('common.close-title')}</FlatButton>
+					</PopupActions>
 				</Popup>
 				<ConfirmationPopup
 					open={openResetConfirmation}
 					onCancel={this.toggleResetConfirmation}
 					onConfirm={this.resetProgress}
-					confirmButtonLabel="Reset"
+					title={t('learn.reset-course-popup-title')}
+					confirmButtonLabel={t('learn.reset-course-popup-title')}
 				>
-				Are you sure you want to reset progress?
+					{t('learn.reset-course-popup-message')}
 				</ConfirmationPopup>
 			</React.Fragment>
 		);
