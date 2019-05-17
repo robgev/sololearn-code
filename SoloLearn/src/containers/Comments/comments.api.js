@@ -22,6 +22,8 @@ class CommentsAPI {
 			return { codeId: id };
 		case 'userLesson':
 			return { lessonId: id };
+		case 'post':
+			return { postId: id };
 		default:
 			return null;
 		}

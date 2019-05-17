@@ -147,7 +147,7 @@ const DraftEditor = ({
 				{
 					color: 'black',
 					fontSize,
-					cursor: isEditorReadOnly ? 'default' : 'text',
+					cursor: isEditorReadOnly ? 'cursor' : 'text',
 					height: isEditorReadOnly ? '100%' : 250,
 					minHeight: isEditorReadOnly ? 50 : 250,
 				}
@@ -156,7 +156,7 @@ const DraftEditor = ({
 					...style,
 					color: background ? background.textColor.length > 6 ? hexToRgba(getRgbaHexFromArgbHex(background.textColor)) : background.textColor : 'black',
 					fontSize,
-					cursor: isEditorReadOnly ? 'default' : 'text',
+					cursor: isEditorReadOnly ? 'cursor' : 'text',
 					height: 250,
 				}
 			}

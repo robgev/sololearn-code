@@ -105,7 +105,7 @@ class Comment extends Component {
 		const index = comment.repliesArray.findIndex(i => i.id === id);
 		comment.repliesArray.splice(index, 1);
 		comment.replies -= 1;
-		for(let i = index; i < comment.repliesArray.length; i++) {
+		for (let i = index; i < comment.repliesArray.length; i++) {
 			comment.repliesArray[i].index--;
 		}
 		this.props.commentsAPI.deleteComment({ id })
@@ -183,12 +183,6 @@ class Comment extends Component {
 		const oldVote = comment.vote;
 		comment.votes += (newVote - oldVote);
 		comment.vote = newVote;
-		this.props.commentsAPI.voteComment({ id: comment.id, vote: comment.vote })
-			.catch((e) => {
-				comment.vote = oldVote;
-				comment.votes -= (newVote - oldVote);
-				showError(e, 'Something went wrong when trying to vote');
-			});
 	}
 
 	@action reply = async ({ message }) => {

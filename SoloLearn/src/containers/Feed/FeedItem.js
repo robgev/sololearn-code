@@ -186,12 +186,15 @@ class FeedItem extends Component {
 						background={feedItem.userPost.background}
 						message={feedItem.userPost.message}
 						imageUrl={feedItem.userPost.imageUrl}
-						type={feedItem.type}
+						type="post"
 						date={feedItem.date}
 						id={feedItem.id}
 						vote={feedItem.vote}
 						votes={feedItem.votes}
 						measure={this.props.measure}
+						userPostId={feedItem.userPost.id}
+						comments={feedItem.userPost.comments}
+						views={feedItem.userPost.viewCount}
 					/>
 				</Container>
 			);
