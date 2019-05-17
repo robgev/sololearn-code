@@ -71,7 +71,7 @@ class SlayDetailed extends PureComponent {
 			selectedCollection,
 		} = this.props;
 		const collectionId = parseInt(params.collectionId, 10);
-		const isCourses = collectionId < 0;
+		const isCourses = collectionId === -1;
 		return (
 			<LayoutGenerator
 				paper
