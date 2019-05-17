@@ -30,6 +30,7 @@ export const getUserProfileAsync = () => async (dispatch) => {
 export const getProfileInternal = userId => async (dispatch) => {
 	const { profile } = await Service.request('Profile/GetProfile', { id: userId });
 	dispatch(getProfile(profile));
+	dispatch({ type: types.TOGGLE_COURSE, payload: profile.skills });
 };
 
 export const getProfileQuestions = questions => ({
