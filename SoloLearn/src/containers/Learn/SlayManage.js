@@ -83,11 +83,11 @@ class SlayManage extends Component {
 												<MenuItem onClick={() => this.toggleCourse(course.id, false)} >{t('course_picker.action.remove')}</MenuItem>,
 											]
 										}
-									/>
+										/>
 								))
 							}
 						</Container>
-						{availableCourses && availableCourses.length > 0 && <Title className="title">Available Courses</Title>}
+						{availableCourses && availableCourses.length > 0 && <Title className="title">{t('course_picker.my-courses-section-title')}</Title>}
 						<Container>
 							{
 								availableCourses.map(course => (
@@ -120,9 +120,10 @@ class SlayManage extends Component {
 					open={openResetConfirmation}
 					onCancel={this.toggleResetConfirmation}
 					onConfirm={this.resetProgress}
-					confirmButtonLabel="Reset"
+					title={t('learn.reset-course-popup-title')}
+					confirmButtonLabel={t('learn.reset-course-popup-title')}
 				>
-				Are you sure you want to reset progress?
+					{t('learn.reset-course-popup-message')}
 				</ConfirmationPopup>
 			</React.Fragment>
 		);
