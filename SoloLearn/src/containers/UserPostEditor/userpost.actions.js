@@ -7,6 +7,16 @@ export const createPost = ({ message = null, backgroundId = null, imageUrl = nul
 		imageUrl,
 	});
 
+export const editPost = ({
+ id, message = null, backgroundId = null, imageUrl = null
+}) =>
+	Service.request('Profile/EditPost', {
+		id,
+		message,
+		backgroundId,
+		imageUrl,
+	});
+
 export const uploadPostImage = (file, name) =>
 	Service.fileRequest(`Profile/UploadPostImage?name=${name}`, file);
 
