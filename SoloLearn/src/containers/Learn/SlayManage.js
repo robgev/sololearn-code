@@ -91,7 +91,7 @@ class SlayManage extends Component {
 								))
 							}
 						</Container>
-						{availableCourses && availableCourses.length > 0 && <Title className="title">{t('course_picker.my-courses-section-title')}</Title>}
+						{availableCourses && availableCourses.length > 0 && <Title className="title">{t('course_picker.available-courses-section-title')}</Title>}
 						<Container>
 							{
 								availableCourses.map(course => (
