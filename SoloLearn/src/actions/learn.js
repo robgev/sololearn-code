@@ -74,8 +74,9 @@ export const toggleCourse = skills => ({
 
 export const toggleCourseInternal = (courseId, enable) => (dispatch, getState) => {
 	const { userProfile: profile } = getState();
-
+	dispatch({ type: types.TOGGLING_COURSE, payload: true });
 	return Service.request('Profile/ToggleCourse', { courseId, enable }).then(() => {
+		dispatch({ type: types.TOGGLING_COURSE, payload: false });
 		if (!enable) {
 			const index = profile.skills.findIndex(item => item.id === courseId);
 			profile.skills.splice(index, 1);
@@ -84,6 +85,7 @@ export const toggleCourseInternal = (courseId, enable) => (dispatch, getState) =
 			dispatch(getProfileInternal(profile.id));
 		}
 	}).catch((error) => {
+		dispatch({ type: types.TOGGLING_COURSE, payload: false });
 		console.log(error);
 	});
 };

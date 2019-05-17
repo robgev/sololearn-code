@@ -15,6 +15,7 @@ import {
 	UNSET_COLLECTION,
 	TOGGLE_COURSE,
 	CHANGE_PROGRESS,
+	TOGGLING_COURSE,
 } from 'constants/ActionTypes';
 import uniqBy from 'lodash/uniqBy';
 import map from 'lodash/map';
@@ -31,8 +32,7 @@ const refreshCollections = (currentCollections, changedCollections) => {
 			: c));
 };
 
-const resetCourseProgress = (state, { courseId, progress }) => {
-	console.log(state);
+const resetCourseProgress = (state = [], { courseId, progress }) => {
 	const collections = [ ...state ];
 	collections.forEach((c) => {
 		if (c.id < 0) {
@@ -128,6 +128,15 @@ const lessonsByUser = (state = [], action) => {
 	}
 };
 
+const togglingCourse = (state = false, action) => {
+	switch (action.type) {
+	case TOGGLING_COURSE:
+		return action.payload;
+	default:
+		return state;
+	}
+};
+
 export const slaySelector = state => state.slay;
 export const slayCollectionsSelector = state =>
 	slaySelector(state).slayCollections;
@@ -142,4 +151,5 @@ export default combineReducers({
 	slayCollections,
 	selectedCollection,
 	filteredCollectionItems,
+	togglingCourse,
 });

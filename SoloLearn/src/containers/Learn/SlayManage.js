@@ -7,7 +7,7 @@ import { changeProgress, toggleCourseInternal } from 'actions/learn';
 import { PopupActions, MenuItem, Title, Popup, PopupContent, Container } from 'components/atoms';
 import { FlatButton } from 'components/molecules';
 import ConfirmationPopup from 'components/ConfirmationPopup';
-import { ManageLessonCard } from './components';
+import { ManageLessonCard, OverlayLoading } from './components';
 import { resetProgress } from './SlayManage.api';
 
 import './SlayManage.scss';
@@ -51,7 +51,7 @@ class SlayManage extends Component {
 
 	render() {
 		const {
-			skills: myCourses, courses, t, open, onClose,
+			skills: myCourses, courses, t, open, onClose, toggling,
 		} = this.props;
 		const { openResetConfirmation } = this.state;
 		// const {
@@ -69,6 +69,10 @@ class SlayManage extends Component {
 					}}
 				>
 					<PopupContent>
+						{
+							toggling &&
+							<OverlayLoading />
+						}
 						{myCourses && myCourses.length > 0 && <Title className="title">{t('course_picker.my-courses-section-title')}</Title>}
 						<Container>
 							{
@@ -83,7 +87,7 @@ class SlayManage extends Component {
 												<MenuItem onClick={() => this.toggleCourse(course.id, false)} >{t('course_picker.action.remove')}</MenuItem>,
 											]
 										}
-										/>
+									/>
 								))
 							}
 						</Container>
@@ -132,6 +136,7 @@ class SlayManage extends Component {
 const mapStateToProps = state => ({
 	skills: state.userProfile.skills,
 	courses: state.courses,
+	toggling: state.slay.togglingCourse,
 });
 const mapDispatchToProps = {
 	changeProgress,

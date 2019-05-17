@@ -3,6 +3,7 @@ export const LOAD_COURSES = 'LOAD_COURSES';
 export const LOAD_LEVELS = 'LOAD_LEVELS';
 export const LOAD_COURSE = 'LOAD_COURSE';
 export const TOGGLE_COURSE = 'TOGGLE_COURSE';
+export const TOGGLING_COURSE = 'TOGGLING_COURSE';
 export const MAP_MODULES = 'MAP_MODULES';
 export const MAP_LESSONS = 'MAP_LESSONS';
 export const MAP_QUIZZES = 'MAP_QUIZZES';
