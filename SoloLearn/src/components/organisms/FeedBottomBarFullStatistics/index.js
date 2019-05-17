@@ -1,10 +1,8 @@
-import React from 'react';
-import { updateDate } from 'utils';
-import { SecondaryTextBlock, Container, FlexBox } from 'components/atoms';
-import { ViewStats } from 'components/molecules';
-import { VoteActions } from 'components/organisms';
-
-import './styles.scss';
+import React from './node_modules/react';
+import { updateDate } from './node_modules/utils';
+import { SecondaryTextBlock, Container, FlexBox } from './node_modules/components/atoms';
+import { ViewStats } from './node_modules/components/molecules';
+import { VoteActions } from './node_modules/components/organisms';
 
 const FeedBottomBarFullStatistics = ({
 	date,
