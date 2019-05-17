@@ -1,4 +1,5 @@
 import React from 'react';
+import { translate } from 'react-i18next';
 
 import {
 	Popup,
@@ -9,7 +10,7 @@ import {
 import { RaisedButton, FlatButton } from 'components/molecules';
 
 const ConfirmationPopup = ({
-	open, onCancel, onConfirm, confirmButtonLabel, title = 'Confirm', children,
+	open, onCancel, onConfirm, confirmButtonLabel, title = 'Confirm', children, t,
 }) => (
 	<Popup open={open} onClose={onCancel}>
 		<PopupTitle>{title}</PopupTitle>
@@ -18,7 +19,7 @@ const ConfirmationPopup = ({
 		</PopupContent>
 		<PopupActions>
 			<FlatButton onClick={onCancel}>
-				Cancel
+				{t('common.cancel-title')}
 			</FlatButton>
 
 			<RaisedButton color="primary" onClick={onConfirm}>
@@ -29,4 +30,4 @@ const ConfirmationPopup = ({
 	</Popup>
 );
 
-export default ConfirmationPopup;
+export default translate()(ConfirmationPopup);

@@ -56,7 +56,8 @@
     "success-title": "Успешно",
     "no-results": "Результатов не найдено",
     "follow-limit-reached": "Вы достигли лимита подписок.",
-    "loadMore": "Eщё",
+		"loadMore": "Eщё",
+		"manage": "Настроить",
     "hide-title": "Скрыть"
   },
   "comments": {

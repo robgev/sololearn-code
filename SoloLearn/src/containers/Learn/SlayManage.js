@@ -85,7 +85,7 @@ class SlayManage extends Component {
 							))
 						}
 					</PaperContainer>
-					<Title className="title">Available Courses</Title>
+					<Title className="title">{t('course_picker.available-courses-section-title')}</Title>
 					<PaperContainer>
 						{
 							availableCourses.map(course => (
@@ -114,9 +114,10 @@ class SlayManage extends Component {
 					open={openResetConfirmation}
 					onCancel={this.toggleResetConfirmation}
 					onConfirm={this.resetProgress}
-					confirmButtonLabel="Reset"
+					title={t('learn.reset-course-popup-title')}
+					confirmButtonLabel={t('learn.reset-course-popup-title')}
 				>
-				Are you sure you want to reset progress?
+					{t('learn.reset-course-popup-message')}
 				</ConfirmationPopup>
 			</React.Fragment>
 		);
