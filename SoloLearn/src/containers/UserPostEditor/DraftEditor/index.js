@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router';
+<<<<<<< HEAD
 import { EditorState, Modifier } from 'draft-js';
 import { RefLink } from 'components/molecules';
+=======
+import { EditorState, Modifier, convertToRaw } from 'draft-js';
+>>>>>>> 988f18a13642ba2d1a41198a56638a9d9a992f55
 import Editor from 'draft-js-plugins-editor';
 import createMentionPlugin from 'draft-js-mention-plugin';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
 import 'draft-js-linkify-plugin/lib/plugin.css';
-import { getMentionsList, makeEditableContent } from 'utils';
+import 'draft-js-mention-plugin/lib/plugin.css';
+import { getMentionsList, makeEditableContent, getMentionsFromRawEditorContent } from 'utils';
 import hexToRgba from 'hex-to-rgba';
 import { Container, FlexBox } from 'components/atoms';
 import { Entry } from 'components/organisms';
@@ -22,10 +27,19 @@ const DraftEditor = ({
 	isEditorReadOnly = false,
 	editorInitialText = '',
 }) => {
+<<<<<<< HEAD
 	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
 	const [fontSize, setFontSize] = useState(36);
 	const [suggestions, setSuggestions] = useState([]);
 	const hasBackground = background && background.type !== 'none' ;
+=======
+	const [
+		editorState,
+		setEditorState,
+	] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
+	const [ fontSize, setFontSize ] = useState(36);
+	const [ suggestions, setSuggestions ] = useState([]);
+>>>>>>> 988f18a13642ba2d1a41198a56638a9d9a992f55
 	const mentionPluginRef = useRef(createMentionPlugin({
 		mentionComponent: ({ children, mention }) => (isEditorReadOnly
 			? (
@@ -59,9 +73,14 @@ const DraftEditor = ({
 		: [ mentionPluginRef.current ];
 
 	const getSuggestions = ({ value }) => {
+		setSuggestions([]);
+		const currentMentions =
+			getMentionsFromRawEditorContent(convertToRaw(editorState.getCurrentContent()));
+		const currentMentionIds = currentMentions.map(mention => mention.id);
 		getMentionsList({ type: 'userPost' })(value)
 			.then((users) => {
-				setSuggestions(users.slice(0, 5));
+				const filteredSuggestions = users.filter(u => !currentMentionIds.includes(u.id));
+				setSuggestions(filteredSuggestions.slice(0, 5));
 			});
 	};
 
