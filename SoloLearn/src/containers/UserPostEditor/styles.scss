@@ -2,7 +2,7 @@
 @import '~styles/medias';
 
 .user-post-main-container {
-	min-width: 520px;
+	width: 500px;
 	min-height: 300px;
 	.user-post-main-title {
 		margin-bottom: 5px;
@@ -55,7 +55,7 @@
 
 @include for-until-desktop {
 	.user-post-main-container {
-		min-width: 390px;
+		width: 100%;
 	}
 	.user-post-loader-container {
 		min-width: 400px;
