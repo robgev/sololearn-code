@@ -11,6 +11,9 @@ import {
 	UsernameLink,
 	ContainerLink,
 } from 'components/molecules';
+import {
+	Mention,
+} from 'components/organisms';
 
 import './NotificationToaster.scss';
 
@@ -44,6 +47,11 @@ class NotificationToaster extends Component {
 	}
 
 	static getTitle = (fullTitle, notification) => {
+		const mentionRegex = /\[user id ?= ?"?(\d+)"?\](.+?)\[\/user\]/.exec(fullTitle);
+		if (mentionRegex !== null) {
+			fullTitle = fullTitle.replace(mentionRegex[0], `${mentionRegex[2]}`);
+		}
+
 		if (fullTitle.includes('{other}')) {
 			return fullTitle.replace('{other}', notification.groupedItems.length);
 		}
@@ -143,6 +151,15 @@ class NotificationToaster extends Component {
 		case types.lessonReviewRejected:
 		case types.lessonReviewPublished:
 			return '/lesson-factory/my-submissions';
+		case types.userPostComment:
+		case types.userPostCommentReply:
+		case types.userPostCommentUpvote:
+		case types.userPostCommentMention:
+			return `/post/${notification.userPost.id}?commentId=${notification.userPostComment.id}`;
+		case types.userPost:
+		case types.userPostUpvote:
+		case types.userPostMention:
+			return `/post/${notification.userPost.id}`;
 		default:
 			throw new Error('Unknown notification link');
 		}

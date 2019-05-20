@@ -9,6 +9,12 @@ const types = {
 	upvote: 6,
 
 	userPost: 20,
+	userPostComment: 21,
+	userPostCommentReply: 22,
+	userPostUpvote: 23,
+	userPostCommentUpvote: 24,
+	userPostMention: 27,
+	userPostCommentMention: 28,
 
 	courseStarted: 101,
 	moduleCompleted: 102,
