@@ -1,20 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router';
-import { EditorState, Modifier } from 'draft-js';
+import { EditorState, Modifier, convertToRaw } from 'draft-js';
+import createLinkifyPlugin from 'draft-js-linkify-plugin';
 import Editor from 'draft-js-plugins-editor';
 import createMentionPlugin from 'draft-js-mention-plugin';
-import createLinkifyPlugin from 'draft-js-linkify-plugin';
-import 'draft-js-linkify-plugin/lib/plugin.css';
-import { getMentionsList, makeEditableContent } from 'utils';
+import { getMentionsList, makeEditableContent, getMentionsFromRawEditorContent } from 'utils';
 import hexToRgba from 'hex-to-rgba';
 import { Container, FlexBox } from 'components/atoms';
 import { Entry } from 'components/organisms';
 import { getBackgroundStyle, getFontSize } from '../utils';
 import { USER_POST_MAX_LENGTH } from '../UserPostEditor';
 
+import 'draft-js-linkify-plugin/lib/plugin.css';
 import './styles.scss';
-
-const linkifyPlugin = createLinkifyPlugin();
 
 const DraftEditor = ({
 	background,
@@ -26,20 +24,48 @@ const DraftEditor = ({
 	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
 	const [ fontSize, setFontSize ] = useState(36);
 	const [ suggestions, setSuggestions ] = useState([]);
+	const hasBackground = background && background.type !== 'none';
 	const mentionPluginRef = useRef(createMentionPlugin({
 		mentionComponent: ({ children, mention }) => (isEditorReadOnly
-			? <b><Link className="hoverable" style={{ color: '#0645AD' }} to={`/profile/${mention.id}`}>{children}</Link></b>
+			? (
+				<b>
+					<Link
+						className="hoverable"
+						style={{ color: hasBackground ? background.textColor : '#607D8B' }}
+						to={`/profile/${mention.id}`}
+					>
+						{children}
+					</Link>
+				</b>
+			)
 			: <b>{children}</b>),
+	}));
+	const linkifyPluginRef = useRef(createLinkifyPlugin({
+		target: '_blank',
+		component: ({ children, href }) => (
+			<Link
+				className={hasBackground ? 'underline' : null}
+				style={{ color: hasBackground ? background.textColor : '#607D8B' }}
+				to={href}
+			>
+				{children}
+			</Link>
+		),
 	}));
 	const { MentionSuggestions } = mentionPluginRef.current;
 	const plugins = isEditorReadOnly
-		? [ mentionPluginRef.current, linkifyPlugin ]
+		? [ mentionPluginRef.current, linkifyPluginRef.current ]
 		: [ mentionPluginRef.current ];
 
 	const getSuggestions = ({ value }) => {
+		setSuggestions([]);
+		const currentMentions =
+			getMentionsFromRawEditorContent(convertToRaw(editorState.getCurrentContent()));
+		const currentMentionIds = currentMentions.map(mention => mention.id);
 		getMentionsList({ type: 'userPost' })(value)
 			.then((users) => {
-				setSuggestions(users.slice(0, 5));
+				const filteredSuggestions = users.filter(u => !currentMentionIds.includes(u.id));
+				setSuggestions(filteredSuggestions.slice(0, 5));
 			});
 	};
 
@@ -147,7 +173,7 @@ const DraftEditor = ({
 				{
 					color: 'black',
 					fontSize,
-					cursor: isEditorReadOnly ? 'default' : 'text',
+					cursor: isEditorReadOnly ? 'cursor' : 'text',
 					height: isEditorReadOnly ? '100%' : 250,
 					minHeight: isEditorReadOnly ? 50 : 250,
 				}
@@ -156,7 +182,7 @@ const DraftEditor = ({
 					...style,
 					color: background ? background.textColor.length > 6 ? hexToRgba(getRgbaHexFromArgbHex(background.textColor)) : background.textColor : 'black',
 					fontSize,
-					cursor: isEditorReadOnly ? 'default' : 'text',
+					cursor: isEditorReadOnly ? 'cursor' : 'text',
 					height: 250,
 				}
 			}

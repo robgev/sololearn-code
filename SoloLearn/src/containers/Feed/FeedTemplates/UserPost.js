@@ -1,8 +1,9 @@
 import React from 'react';
 import { Container, Image } from 'components/atoms';
+import { ContainerLink } from 'components/molecules';
 
 import UserPostEditor from 'containers/UserPostEditor/DraftEditor';
-import BottomToolbarWithVotes from '../BottomToolbarWithVotes';
+import { FeedBottomBarFullStatistics } from 'components/organisms';
 
 const UserPost = ({
 	background,
@@ -13,27 +14,32 @@ const UserPost = ({
 	id,
 	vote,
 	votes,
-	measure,
+	measure = null,
+	userPostId,
+	comments,
+	views,
 }) => (
-	<Container>
+	<ContainerLink to={`post/${userPostId}`}>
 		{message ?
 			<UserPostEditor
-				measure={measure}
+				measure={measure || (() => {})}
 				background={background || { type: 'none', id: -1 }}
 				editorInitialText={message}
 				isEditorReadOnly
 			/>
 			: null
 		}
-		{imageUrl ? <Image src={imageUrl} onLoad={measure} style={{ maxWidth: '400px' }} alt="" /> : null}
-		<BottomToolbarWithVotes
+		{imageUrl ? <Image src={imageUrl} onLoad={measure || (() => {})} style={{ maxWidth: '400px' }} alt="" /> : null}
+		<FeedBottomBarFullStatistics
 			type={type}
 			date={date}
 			id={id}
 			userVote={vote}
 			totalVotes={votes}
+			comments={comments}
+			views={views}
 		/>
-	</Container>
+	</ContainerLink>
 );
 
 export default UserPost;

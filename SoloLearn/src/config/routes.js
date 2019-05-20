@@ -81,6 +81,8 @@ const QuizFactoryRate = Loadable({
 	loader: () => import('containers/QuizFactory').then(mod => mod.QuizFactoryRate),
 });
 
+const UserPostDetails = Loadable({ loader: () => import('containers/UserPostDetails') });
+
 export default ([
 	<Route onEnter={() => window.scrollTo(0, 0)} path="/signin" component={Login} />,
 	<Route onEnter={() => window.scrollTo(0, 0)} path="/signup" component={Login} />,
@@ -106,6 +108,9 @@ export default ([
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/course/:alias/:moduleName/:lessonName" component={QuizManager}>
 			<Route path=":quizNumber" component={Quiz} />
 		</Route>
+
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/post/:id" component={UserPostDetails} />
+
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/play" component={Play} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/lesson-factory" component={LessonFactory} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/codes" component={Codes} />

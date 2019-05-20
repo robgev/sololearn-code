@@ -41,13 +41,13 @@ export const mentionUsers = (text, mentions, ranges) => (ranges.length > 0 ? ran
 		return `${acc}${currentText}${idx === arr.length - 1 ? text.substring(curr.offset + curr.length) : ''}`;
 	}, '') : text);
 
-export const getMentionsFromEditorContent = rawEditorContent =>
+export const getMentionsFromRawEditorContent = rawEditorContent =>
 	Object.values(rawEditorContent.entityMap)
 		.map(el => el.data.mention);
 
 export const getMentionsValue = (rawEditorContent) => {
 	const { blocks } = rawEditorContent;
-	const mentions = getMentionsFromEditorContent(rawEditorContent);
+	const mentions = getMentionsFromRawEditorContent(rawEditorContent);
 	const { result } = blocks.reduce((acc, curr) => {
 		const { text, entityRanges } = curr;
 		const mentionIndex = acc.mentionIndex + entityRanges.length;
