@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router';
-import { EditorState, Modifier } from 'draft-js';
+import { EditorState, Modifier, convertToRaw } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 import createMentionPlugin from 'draft-js-mention-plugin';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
 import 'draft-js-linkify-plugin/lib/plugin.css';
-import { getMentionsList, makeEditableContent } from 'utils';
+import 'draft-js-mention-plugin/lib/plugin.css';
+import { getMentionsList, makeEditableContent, getMentionsFromRawEditorContent } from 'utils';
 import hexToRgba from 'hex-to-rgba';
 import { Container, FlexBox } from 'components/atoms';
 import { Entry } from 'components/organisms';
@@ -23,7 +24,10 @@ const DraftEditor = ({
 	isEditorReadOnly = false,
 	editorInitialText = '',
 }) => {
-	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
+	const [
+		editorState,
+		setEditorState,
+	] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
 	const [ fontSize, setFontSize ] = useState(36);
 	const [ suggestions, setSuggestions ] = useState([]);
 	const mentionPluginRef = useRef(createMentionPlugin({
@@ -37,9 +41,14 @@ const DraftEditor = ({
 		: [ mentionPluginRef.current ];
 
 	const getSuggestions = ({ value }) => {
+		setSuggestions([]);
+		const currentMentions =
+			getMentionsFromRawEditorContent(convertToRaw(editorState.getCurrentContent()));
+		const currentMentionIds = currentMentions.map(mention => mention.id);
 		getMentionsList({ type: 'userPost' })(value)
 			.then((users) => {
-				setSuggestions(users.slice(0, 5));
+				const filteredSuggestions = users.filter(u => !currentMentionIds.includes(u.id));
+				setSuggestions(filteredSuggestions.slice(0, 5));
 			});
 	};
 
