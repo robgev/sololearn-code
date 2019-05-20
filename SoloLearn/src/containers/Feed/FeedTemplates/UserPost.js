@@ -19,7 +19,7 @@ const UserPost = ({
 	comments,
 	views,
 }) => (
-	<ContainerLink to={`user-post/${userPostId}`}>
+	<ContainerLink to={`post/${userPostId}`}>
 		{message ?
 			<UserPostEditor
 				measure={measure || (() => {})}

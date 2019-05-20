@@ -2,25 +2,28 @@ import React from 'react';
 import { FlexBox } from 'components/atoms';
 import { PromiseButton, FlatButton } from 'components/molecules';
 
-import { getUserPost } from '../userpost.actions';
-
 import './styles.scss';
 
-const EditorActions = ({ isPostButtonDisabled, createNewPostHandler, closePopup }) => (
+const EditorActions = ({
+	isPostButtonDisabled,
+	createOrEditPostHandler,
+	closePopup,
+	initialUserPostId,
+}) => (
 	<FlexBox justifyEnd className="user-post-actions-container">
 		<FlatButton
 			onClick={closePopup}
 			className="user-post-cancel-button"
 		>
-			Cancel
+				Cancel
 		</FlatButton>
 		<PromiseButton
 			raised
 			color="primary"
 			disabled={isPostButtonDisabled}
-			fire={createNewPostHandler}
+			fire={createOrEditPostHandler}
 		>
-			Create Post
+			{initialUserPostId ? 'Save' : 'Create Post'}
 		</PromiseButton>
 	</FlexBox>
 );

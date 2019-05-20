@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import Resizer from 'react-image-file-resizer';
-import { getUserSelector } from 'reducers/reducer_user';
 import { withRouter } from 'react-router';
 import { convertToRaw } from 'draft-js';
+
 import {
 	Title,
 	PaperContainer,
@@ -21,26 +21,41 @@ import ProfileAvatar from 'components/ProfileAvatar';
 import { AddPhotoAlternate, Close } from 'components/icons';
 import { getMentionsValue } from 'utils';
 
+import { getUserSelector } from 'reducers/reducer_user';
+
 import EditorActions from './EditorActions';
 import DraftEditor from './DraftEditor';
-
 import BackgroundIconButton from './BackgroundIconButton';
 import UploadImageInput from './UploadImageInput';
 
-import { getPostBackgrounds, uploadPostImage, createPost } from './userpost.actions';
+import {
+	getPostBackgrounds,
+	uploadPostImage,
+	createPost,
+	editPost,
+} from './userpost.actions';
 
 import './styles.scss';
 
 export const USER_POST_MAX_LENGTH = 1024;
 
-const UserPostEditor = ({ params, profile, closePopup }) => {
+const UserPostEditor = ({
+	params,
+	alternateSuccessPopupHandler = null,
+	profile,
+	closePopup,
+	draftEditorInitialText = '',
+	initialSelectedBackgroundId = -1,
+	initialImageSource = null,
+	initialUserPostId = null,
+}) => {
 	const [ backgrounds, setBackgrounds ] = useState([]);
 	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
-	const [ selectedBackgroundId, setSelectedBackgroundId ] = useState(-1);
+	const [ selectedBackgroundId, setSelectedBackgroundId ] = useState(initialSelectedBackgroundId);
 	const [ isSuccessPopupOpen, toggleSuccessPopupIsOpen ] = useState(false);
 
 	const imageInputRef = useRef();
-	const [ imageSource, setImageSource ] = useState(null);
+	const [ imageSource, setImageSource ] = useState(initialImageSource || null);
 	const [ imageData, setImageData ] = useState(null);
 	const [ isPostButtonDisabled, togglePostButtonDisabled ] = useState(true);
 	const [ editorText, setEditorText ] = useState('');
@@ -67,6 +82,9 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 			.then((res) => {
 				setBackgrounds([ { type: 'none', id: -1 }, ...res.backgrounds ]);
 			});
+		if (initialImageSource) {
+			setImageSource(initialImageSource);
+		}
 	}, []);
 
 	// Post button disabled toggler
@@ -122,10 +140,10 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 
 	const background = backgrounds.find(b => b.id === backgroundId);
 
-	const createNewPostHandler = () => {
+	const createPostHandler = () => {
 		const text = getMentionsValue(convertToRaw(editorText));
 		if (imageSource) {
-			uploadPostImage(imageData, 'postimage.jpg')
+			return uploadPostImage(imageData, 'postimage.jpg')
 				.then(res => createPost({
 					message: text,
 					backgroundId: null,
@@ -148,14 +166,53 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 				}
 			});
 	};
+	const editRequestHandler = ({ backgroundId, imageUrl, text }) => editPost({
+		id: initialUserPostId,
+		message: text,
+		backgroundId,
+		imageUrl,
+	})
+		.then((res) => {
+			if (res) {
+				toggleSuccessPopupIsOpen(true);
+			}
+		});
+	const editPostHandler = () => {
+		const text = getMentionsValue(convertToRaw(editorText));
+		if (imageData) {
+			return uploadPostImage(imageData, 'postimage.jpg')
+				.then(res => editRequestHandler({
+					backgroundId: null,
+					imageUrl: res.imageUrl,
+					text,
+				}));
+		}
+		return editRequestHandler({
+			backgroundId: canApplyBackground && selectedBackgroundId !== -1 ? selectedBackgroundId : null,
+			imageUrl: initialImageSource && imageSource ? initialImageSource : '',
+			text,
+		});
+	};
+
+	const successPopupHandler = () => {
+		toggleSuccessPopupIsOpen(false);
+		closePopup();
+		if (alternateSuccessPopupHandler) {
+			alternateSuccessPopupHandler();
+		}
+	};
 
 	return (
 		<Container>
 			{backgrounds && backgrounds.length ?
 				<PaperContainer className="user-post-main-container">
 					<FlexBox column fullWith>
-						<Title className="user-post-main-title">{`${params.id ? 'Edit post' : 'New Post'}`}</Title>
-
+						<FlexBox justifyBetween align>
+							<Title className="user-post-main-title">{`${params.id ? 'Edit post' : 'New Post'}`}</Title>
+							<IconButton onClick={() => closePopup()}>
+								<Close />
+							</IconButton>
+						</FlexBox>
 						<ProfileAvatar
 							userID={profile.id}
 							avatarUrl={profile.avatarUrl}
@@ -168,6 +225,7 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 						<DraftEditor
 							background={background}
 							setEditorText={setEditorText}
+							editorInitialText={draftEditorInitialText}
 						/>
 						<FlexBox justifyEnd className="user-post-max-length-container">
 							<SecondaryTextBlock className="count">
@@ -217,8 +275,9 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 
 						<EditorActions
 							isPostButtonDisabled={isPostButtonDisabled}
-							createNewPostHandler={createNewPostHandler}
+							createOrEditPostHandler={initialUserPostId ? editPostHandler : createPostHandler}
 							closePopup={closePopup}
+							initialUserPostId={initialUserPostId}
 						/>
 
 					</FlexBox>
@@ -238,7 +297,11 @@ const UserPostEditor = ({ params, profile, closePopup }) => {
 				onClose={() => toggleSnackBarIsOpen(false)}
 				message={snackMessage}
 			/>
-			<SuccessPopup open={isSuccessPopupOpen} onClose={() => { toggleSuccessPopupIsOpen(false); closePopup(); }} text="Post Created" />
+			<SuccessPopup
+				open={isSuccessPopupOpen}
+				onClose={successPopupHandler}
+				text={initialUserPostId ? 'Post Saved!' : 'Post Created'}
+			/>
 		</Container>
 	);
 };
