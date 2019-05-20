@@ -1,16 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router';
-<<<<<<< HEAD
-import { EditorState, Modifier } from 'draft-js';
-import { RefLink } from 'components/molecules';
-=======
 import { EditorState, Modifier, convertToRaw } from 'draft-js';
->>>>>>> 988f18a13642ba2d1a41198a56638a9d9a992f55
+import createLinkifyPlugin from 'draft-js-linkify-plugin';
 import Editor from 'draft-js-plugins-editor';
 import createMentionPlugin from 'draft-js-mention-plugin';
-import createLinkifyPlugin from 'draft-js-linkify-plugin';
-import 'draft-js-linkify-plugin/lib/plugin.css';
-import 'draft-js-mention-plugin/lib/plugin.css';
 import { getMentionsList, makeEditableContent, getMentionsFromRawEditorContent } from 'utils';
 import hexToRgba from 'hex-to-rgba';
 import { Container, FlexBox } from 'components/atoms';
@@ -18,6 +11,7 @@ import { Entry } from 'components/organisms';
 import { getBackgroundStyle, getFontSize } from '../utils';
 import { USER_POST_MAX_LENGTH } from '../UserPostEditor';
 
+import 'draft-js-linkify-plugin/lib/plugin.css';
 import './styles.scss';
 
 const DraftEditor = ({
@@ -27,19 +21,10 @@ const DraftEditor = ({
 	isEditorReadOnly = false,
 	editorInitialText = '',
 }) => {
-<<<<<<< HEAD
 	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
-	const [fontSize, setFontSize] = useState(36);
-	const [suggestions, setSuggestions] = useState([]);
-	const hasBackground = background && background.type !== 'none' ;
-=======
-	const [
-		editorState,
-		setEditorState,
-	] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
 	const [ fontSize, setFontSize ] = useState(36);
 	const [ suggestions, setSuggestions ] = useState([]);
->>>>>>> 988f18a13642ba2d1a41198a56638a9d9a992f55
+	const hasBackground = background && background.type !== 'none';
 	const mentionPluginRef = useRef(createMentionPlugin({
 		mentionComponent: ({ children, mention }) => (isEditorReadOnly
 			? (
@@ -165,7 +150,7 @@ const DraftEditor = ({
 
 	useEffect(() => {
 		if (!isEditorReadOnly) { setTimeout(focus, 0); }
-	}, [background]);
+	}, [ background ]);
 
 	useEffect(() => {
 		const currentContent = editorState.getCurrentContent();
@@ -176,7 +161,7 @@ const DraftEditor = ({
 		const newLinesCount = (text.match(/\n/g) || []).length;
 		setFontSize(getFontSize(text.length, newLinesCount));
 		measure();
-	}, [editorState]);
+	}, [ editorState ]);
 
 	const getRgbaHexFromArgbHex = color => `#${color.substring(3, color.length)}${color.substring(1, 3)}`;
 
