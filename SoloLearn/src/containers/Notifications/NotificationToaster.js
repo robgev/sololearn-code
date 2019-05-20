@@ -155,7 +155,7 @@ class NotificationToaster extends Component {
 		case types.userPostCommentReply:
 		case types.userPostCommentUpvote:
 		case types.userPostCommentMention:
-			return `/post/${notification.userPost.id}?commentId=${notification.userPostComment.id}`;
+			return `/post/${notification.userPost.id}?commentID=${notification.userPostComment.id}`;
 		case types.userPost:
 		case types.userPostUpvote:
 		case types.userPostMention:
