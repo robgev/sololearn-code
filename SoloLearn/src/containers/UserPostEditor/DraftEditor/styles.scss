@@ -12,6 +12,9 @@
 	.draft-editor-inner-container {
 		width: 100%;
 		padding: 15px;
+		.underline {
+			text-decoration: underline;
+		}
 		&.no-padding {
 			padding: 0px;
 		}

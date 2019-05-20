@@ -45,24 +45,23 @@ const UserPostEditor = ({
 	profile,
 	closePopup,
 	draftEditorInitialText = '',
-	draftEditorInitialBackground = null,
 	initialSelectedBackgroundId = -1,
 	initialImageSource = null,
 	initialUserPostId = null,
 }) => {
-	const [backgrounds, setBackgrounds] = useState([]);
-	const [canApplyBackground, setCanApplyBackground] = useState(true);
-	const [selectedBackgroundId, setSelectedBackgroundId] = useState(initialSelectedBackgroundId);
-	const [isSuccessPopupOpen, toggleSuccessPopupIsOpen] = useState(false);
+	const [ backgrounds, setBackgrounds ] = useState([]);
+	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
+	const [ selectedBackgroundId, setSelectedBackgroundId ] = useState(initialSelectedBackgroundId);
+	const [ isSuccessPopupOpen, toggleSuccessPopupIsOpen ] = useState(false);
 
 	const imageInputRef = useRef();
-	const [imageSource, setImageSource] = useState(initialImageSource || null);
-	const [imageData, setImageData] = useState(null);
-	const [isPostButtonDisabled, togglePostButtonDisabled] = useState(true);
-	const [editorText, setEditorText] = useState('');
+	const [ imageSource, setImageSource ] = useState(initialImageSource || null);
+	const [ imageData, setImageData ] = useState(null);
+	const [ isPostButtonDisabled, togglePostButtonDisabled ] = useState(true);
+	const [ editorText, setEditorText ] = useState('');
 
-	const [isSnackBarOpen, toggleSnackBarIsOpen] = useState(false);
-	const [snackMessage, setSnackMessage] = useState('');
+	const [ isSnackBarOpen, toggleSnackBarIsOpen ] = useState(false);
+	const [ snackMessage, setSnackMessage ] = useState('');
 
 	const computeCanApplyBackground = () => {
 		if (editorText) {
@@ -81,9 +80,9 @@ const UserPostEditor = ({
 	useEffect(() => {
 		getPostBackgrounds()
 			.then((res) => {
-				setBackgrounds([{ type: 'none', id: -1 }, ...res.backgrounds]);
+				setBackgrounds([ { type: 'none', id: -1 }, ...res.backgrounds ]);
 			});
-		if(initialImageSource) {
+		if (initialImageSource) {
 			setImageSource(initialImageSource);
 		}
 	}, []);
@@ -95,7 +94,7 @@ const UserPostEditor = ({
 		} else {
 			togglePostButtonDisabled(true);
 		}
-	}, [editorText, imageSource]);
+	}, [ editorText, imageSource ]);
 
 	const onImageSelect = async (e) => {
 		if (e.target.files[0]) {
@@ -135,7 +134,7 @@ const UserPostEditor = ({
 
 	useEffect(() => {
 		computeCanApplyBackground();
-	}, [editorText, imageSource]);
+	}, [ editorText, imageSource ]);
 
 	const backgroundId = canApplyBackground ? selectedBackgroundId : -1;
 
@@ -167,51 +166,53 @@ const UserPostEditor = ({
 				}
 			});
 	};
-
+	const editRequestHandler = ({ backgroundId, imageUrl, text }) => editPost({
+		id: initialUserPostId,
+		message: text,
+		backgroundId,
+		imageUrl,
+	})
+		.then((res) => {
+			if (res) {
+				toggleSuccessPopupIsOpen(true);
+			}
+		});
 	const editPostHandler = () => {
 		const text = getMentionsValue(convertToRaw(editorText));
 		if (imageData) {
 			return uploadPostImage(imageData, 'postimage.jpg')
-				.then(res => editPost({
-					id: initialUserPostId,
-					message: text,
+				.then(res => editRequestHandler({
 					backgroundId: null,
 					imageUrl: res.imageUrl,
-				})
-					.then((res) => {
-						if (res) {
-							toggleSuccessPopupIsOpen(true);
-						}
-					}));
+					text,
+				}));
 		}
-		return editPost({
-			id: initialUserPostId,
-			message: text,
+		return editRequestHandler({
 			backgroundId: canApplyBackground && selectedBackgroundId !== -1 ? selectedBackgroundId : null,
 			imageUrl: initialImageSource && imageSource ? initialImageSource : '',
-		})
-			.then((res) => {
-				if (res) {
-					toggleSuccessPopupIsOpen(true);
-				}
-			});
+			text,
+		});
 	};
 
 	const successPopupHandler = () => {
 		toggleSuccessPopupIsOpen(false);
 		closePopup();
-		if(alternateSuccessPopupHandler) {
+		if (alternateSuccessPopupHandler) {
 			alternateSuccessPopupHandler();
 		}
-	}
+	};
 
 	return (
 		<Container>
 			{backgrounds && backgrounds.length ?
 				<PaperContainer className="user-post-main-container">
 					<FlexBox column fullWith>
-						<Title className="user-post-main-title">{`${params.id ? 'Edit post' : 'New Post'}`}</Title>
-
+						<FlexBox justifyBetween align>
+							<Title className="user-post-main-title">{`${params.id ? 'Edit post' : 'New Post'}`}</Title>
+							<IconButton onClick={() => closePopup()}>
+								<Close />
+							</IconButton>
+						</FlexBox>
 						<ProfileAvatar
 							userID={profile.id}
 							avatarUrl={profile.avatarUrl}
@@ -222,7 +223,7 @@ const UserPostEditor = ({
 							className="profile-avatar-container"
 						/>
 						<DraftEditor
-							background={draftEditorInitialBackground || background}
+							background={background}
 							setEditorText={setEditorText}
 							editorInitialText={draftEditorInitialText}
 						/>

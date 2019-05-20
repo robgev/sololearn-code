@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, browserHistory } from 'react-router';
 import { getUserSelector } from 'reducers/reducer_user';
-import { AppDefaults } from 'api/service';
 
 import {
 	Loading,
@@ -28,7 +27,7 @@ import { getUserPost, deleteUserPost } from './userpostdetails.actions';
 import './styles.scss';
 
 const UserPostDetails = ({
-	params, location, profile
+	params, profile,
 }) => {
 	const [userPost, setUserPost] = useState(null);
 
@@ -44,17 +43,22 @@ const UserPostDetails = ({
 	const deletePostHandler = () => {
 		deleteUserPost(userPost.id);
 		browserHistory.push('/feed');
-	}
+	};
 
 	const editPostHandler = () => {
 		getUserPost(userPost.id)
 			.then(res => setUserPost(res.post));
-	}
+	};
+
+	useEffect(() => {
+		if (userPost)
+			console.log('message: ', userPost.message);
+	}, [userPost]);
 
 	return (
 		<Layout>
 			{userPost ?
-				<Container>
+				<Container className="user-post-details-page-container">
 					<PaperContainer className="user-post-details-main-container">
 						<FlexBox fullwidth column>
 							<FlexBox justifyBetween align>
@@ -71,10 +75,10 @@ const UserPostDetails = ({
 									<IconMenu>
 										<MenuItem onClick={() => setIsCreatePostPopupOpen(true)}>
 											Edit
-										</MenuItem>
+         					</MenuItem>
 										<MenuItem onClick={deletePostHandler}>
 											Delete
-										</MenuItem>
+         					</MenuItem>
 									</IconMenu>
 									:
 									null
@@ -82,6 +86,7 @@ const UserPostDetails = ({
 							</FlexBox>
 							{userPost.message ?
 								<UserPostDraftEditor
+									key={userPost.message}
 									measure={() => { }}
 									background={userPost.background || { type: 'none', id: -1 }}
 									editorInitialText={userPost.message}
@@ -94,7 +99,7 @@ const UserPostDetails = ({
 								<FlexBox justifyEnd>
 									<Chip
 										icon={<ShareIcon />}
-										label={'Share'}
+										label="Share"
 										onClick={() => setIsCreatePostPopupOpen(true)}
 										className="user-post-details-share-chip"
 									/>
@@ -129,14 +134,14 @@ const UserPostDetails = ({
 								draftEditorInitialText={userPost.message ? userPost.message : ''}
 								draftEditorInitialBackground={userPost.background ? userPost.background : null}
 								initialImageSource={userPost.imageUrl ? userPost.imageUrl : null}
-								initialSelectedBackgroundId={userPost.bacgroundId ? userPost.bacgroundId : -1}
+								initialSelectedBackgroundId={userPost.backgroundID ? userPost.backgroundID : -1}
 								initialUserPostId={userPost.id}
 								alternateSuccessPopupHandler={editPostHandler}
 							/>
 							:
 							<UserPostEditor
 								closePopup={() => setIsCreatePostPopupOpen(false)}
-								draftEditorInitialText={`${AppDefaults.baseUrl}${location.pathname}`}
+								draftEditorInitialText={window.location.href}
 							/>
 						}
 					</Popup>

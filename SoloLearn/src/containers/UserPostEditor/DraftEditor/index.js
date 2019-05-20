@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 import { EditorState, Modifier } from 'draft-js';
+import { RefLink } from 'components/molecules';
 import Editor from 'draft-js-plugins-editor';
 import createMentionPlugin from 'draft-js-mention-plugin';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
@@ -14,8 +15,6 @@ import { USER_POST_MAX_LENGTH } from '../UserPostEditor';
 
 import './styles.scss';
 
-const linkifyPlugin = createLinkifyPlugin();
-
 const DraftEditor = ({
 	background,
 	measure,
@@ -24,16 +23,39 @@ const DraftEditor = ({
 	editorInitialText = '',
 }) => {
 	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
-	const [ fontSize, setFontSize ] = useState(36);
-	const [ suggestions, setSuggestions ] = useState([]);
+	const [fontSize, setFontSize] = useState(36);
+	const [suggestions, setSuggestions] = useState([]);
+	const hasBackground = background && background.type !== 'none' ;
 	const mentionPluginRef = useRef(createMentionPlugin({
 		mentionComponent: ({ children, mention }) => (isEditorReadOnly
-			? <b><Link className="hoverable" style={{ color: '#0645AD' }} to={`/profile/${mention.id}`}>{children}</Link></b>
+			? (
+				<b>
+					<Link
+						className="hoverable"
+						style={{ color: hasBackground ? background.textColor : '#607D8B' }}
+						to={`/profile/${mention.id}`}
+					>
+						{children}
+					</Link>
+				</b>
+			)
 			: <b>{children}</b>),
+	}));
+	const linkifyPluginRef = useRef(createLinkifyPlugin({
+		target: '_blank',
+		component: ({ children, href }) => (
+			<Link
+				className={hasBackground ? 'underline' : null}
+				style={{ color: hasBackground ? background.textColor : '#607D8B' }}
+				to={href}
+			>
+				{children}
+			</Link>
+		),
 	}));
 	const { MentionSuggestions } = mentionPluginRef.current;
 	const plugins = isEditorReadOnly
-		? [ mentionPluginRef.current, linkifyPlugin ]
+		? [ mentionPluginRef.current, linkifyPluginRef.current ]
 		: [ mentionPluginRef.current ];
 
 	const getSuggestions = ({ value }) => {
@@ -124,7 +146,7 @@ const DraftEditor = ({
 
 	useEffect(() => {
 		if (!isEditorReadOnly) { setTimeout(focus, 0); }
-	}, [ background ]);
+	}, [background]);
 
 	useEffect(() => {
 		const currentContent = editorState.getCurrentContent();
@@ -135,7 +157,7 @@ const DraftEditor = ({
 		const newLinesCount = (text.match(/\n/g) || []).length;
 		setFontSize(getFontSize(text.length, newLinesCount));
 		measure();
-	}, [ editorState ]);
+	}, [editorState]);
 
 	const getRgbaHexFromArgbHex = color => `#${color.substring(3, color.length)}${color.substring(1, 3)}`;
 

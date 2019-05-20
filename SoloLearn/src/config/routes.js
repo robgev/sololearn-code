@@ -109,7 +109,7 @@ export default ([
 			<Route path=":quizNumber" component={Quiz} />
 		</Route>
 
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/user-post/:id" component={UserPostDetails} />
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/post/:id" component={UserPostDetails} />
 
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/play" component={Play} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/lesson-factory" component={LessonFactory} />
