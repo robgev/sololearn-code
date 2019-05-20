@@ -174,7 +174,7 @@ const DraftEditor = ({
 					color: 'black',
 					fontSize,
 					cursor: isEditorReadOnly ? 'cursor' : 'text',
-					height: isEditorReadOnly ? '100%' : 250,
+					height: '100%',
 					minHeight: isEditorReadOnly ? 50 : 250,
 				}
 				:
