@@ -29,9 +29,9 @@ import './styles.scss';
 const UserPostDetails = ({
 	params, profile,
 }) => {
-	const [userPost, setUserPost] = useState(null);
+	const [ userPost, setUserPost ] = useState(null);
 
-	const [isCreatePostPopupOpen, setIsCreatePostPopupOpen] = useState(false);
+	const [ isCreatePostPopupOpen, setIsCreatePostPopupOpen ] = useState(false);
 
 	useEffect(() => {
 		if (params.id) {
@@ -51,9 +51,8 @@ const UserPostDetails = ({
 	};
 
 	useEffect(() => {
-		if (userPost)
-			console.log('message: ', userPost.message);
-	}, [userPost]);
+		if (userPost) { console.log('message: ', userPost.message); }
+	}, [ userPost ]);
 
 	return (
 		<Layout>
@@ -75,10 +74,10 @@ const UserPostDetails = ({
 									<IconMenu>
 										<MenuItem onClick={() => setIsCreatePostPopupOpen(true)}>
 											Edit
-         					</MenuItem>
+										</MenuItem>
 										<MenuItem onClick={deletePostHandler}>
 											Delete
-         					</MenuItem>
+										</MenuItem>
 									</IconMenu>
 									:
 									null
@@ -120,8 +119,8 @@ const UserPostDetails = ({
 						</FlexBox>
 					</PaperContainer>
 					<Comments
+						useWindow
 						id={userPost.id}
-						useWindow={false}
 						commentsType="post"
 						commentsCount={userPost.comments}
 					/>
