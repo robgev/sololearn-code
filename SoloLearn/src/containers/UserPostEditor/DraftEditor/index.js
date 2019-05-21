@@ -69,6 +69,12 @@ const DraftEditor = ({
 			});
 	};
 
+	useEffect(() => {
+		if (editorInitialText.startsWith('\n')) {
+
+		}
+	}, []);
+
 	const editorRef = useRef(null);
 
 	const _getLengthOfSelectedText = () => {
@@ -174,7 +180,7 @@ const DraftEditor = ({
 					color: 'black',
 					fontSize,
 					cursor: isEditorReadOnly ? 'cursor' : 'text',
-					height: '100%',
+					height: isEditorReadOnly ? '100%' : 250,
 					minHeight: isEditorReadOnly ? 50 : 250,
 				}
 				:
@@ -198,7 +204,7 @@ const DraftEditor = ({
 					onChange={editorState => setEditorState(editorState)}
 					textAlignment={background ? background.type !== 'none' && 'center' : 'left'}
 					ref={editorRef}
-					placeholder={background.type === 'none' ? 'Share coding tips, articles, snippets and anything code-related' : ''}
+					placeholder="Share coding tips, articles, snippets and anything code-related"
 					plugins={plugins}
 					readOnly={isEditorReadOnly}
 				/>

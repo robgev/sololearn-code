@@ -29,9 +29,9 @@ import './styles.scss';
 const UserPostDetails = ({
 	params, profile,
 }) => {
-	const [userPost, setUserPost] = useState(null);
+	const [ userPost, setUserPost ] = useState(null);
 
-	const [isCreatePostPopupOpen, setIsCreatePostPopupOpen] = useState(false);
+	const [ isCreatePostPopupOpen, setIsCreatePostPopupOpen ] = useState(false);
 
 	useEffect(() => {
 		if (params.id) {
@@ -42,18 +42,12 @@ const UserPostDetails = ({
 
 	const deletePostHandler = () => {
 		deleteUserPost(userPost.id);
-		browserHistory.push('/feed');
+		browserHistory.push('feed');
 	};
 
-	const editPostHandler = () => {
-		getUserPost(userPost.id)
-			.then(res => setUserPost(res.post));
+	const editPostHandler = (editedPost) => {
+		setUserPost({ ...userPost, ...editedPost });
 	};
-
-	useEffect(() => {
-		if (userPost)
-			console.log('message: ', userPost.message);
-	}, [userPost]);
 
 	return (
 		<Layout>
@@ -74,11 +68,11 @@ const UserPostDetails = ({
 								{profile.id === userPost.userID ?
 									<IconMenu>
 										<MenuItem onClick={() => setIsCreatePostPopupOpen(true)}>
-											Edit
-         					</MenuItem>
+											{'Edit'}
+										</MenuItem>
 										<MenuItem onClick={deletePostHandler}>
-											Delete
-         					</MenuItem>
+											{'Delete'}
+										</MenuItem>
 									</IconMenu>
 									:
 									null
@@ -95,28 +89,29 @@ const UserPostDetails = ({
 								: null
 							}
 							{userPost.imageUrl ? <Image src={userPost.imageUrl} onLoad={() => { }} style={{ maxWidth: '400px' }} alt="" /> : null}
-							{profile.id !== userPost.userID ?
-								<FlexBox justifyEnd>
+							<FlexBox align justifyBetween>
+								<FeedBottomBarFullStatistics
+									type="post"
+									date={userPost.date}
+									id={userPost.id}
+									userVote={userPost.vote}
+									totalVotes={userPost.votes}
+									className="user-post-details-bottom-bar"
+									comments={userPost.comments}
+									views={userPost.viewCount}
+									withDate={false}
+								/>
+								{profile.id !== userPost.userID ?
 									<Chip
 										icon={<ShareIcon />}
-										label="Share"
+										label="Repost"
 										onClick={() => setIsCreatePostPopupOpen(true)}
 										className="user-post-details-share-chip"
 									/>
-								</FlexBox>
-								:
-								null
-							}
-							<FeedBottomBarFullStatistics
-								type="post"
-								date={userPost.date}
-								id={userPost.id}
-								userVote={userPost.vote}
-								totalVotes={userPost.votes}
-								className="user-post-details-bottom-bar"
-								comments={userPost.comments}
-								views={userPost.viewCount}
-							/>
+									:
+									null
+								}
+							</FlexBox>
 						</FlexBox>
 					</PaperContainer>
 					<Comments
@@ -136,12 +131,12 @@ const UserPostDetails = ({
 								initialImageSource={userPost.imageUrl ? userPost.imageUrl : null}
 								initialSelectedBackgroundId={userPost.backgroundID ? userPost.backgroundID : -1}
 								initialUserPostId={userPost.id}
-								alternateSuccessPopupHandler={editPostHandler}
+								afterPostCallback={editPostHandler}
 							/>
 							:
 							<UserPostEditor
 								closePopup={() => setIsCreatePostPopupOpen(false)}
-								draftEditorInitialText={window.location.href}
+								draftEditorInitialText={`\n${window.location.href}`}
 							/>
 						}
 					</Popup>

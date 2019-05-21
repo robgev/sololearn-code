@@ -19,17 +19,21 @@ const UserPost = ({
 	comments,
 	views,
 }) => (
-	<ContainerLink to={`post/${userPostId}`}>
-		{message ?
-			<UserPostEditor
-				measure={measure || (() => {})}
-				background={background || { type: 'none', id: -1 }}
-				editorInitialText={message}
-				isEditorReadOnly
-			/>
-			: null
-		}
-		{imageUrl ? <Image src={imageUrl} onLoad={measure || (() => {})} style={{ maxWidth: '400px' }} alt="" /> : null}
+	<Container>
+		<ContainerLink to={`post/${userPostId}`}>
+			<Container>
+				{message ?
+					<UserPostEditor
+						measure={measure || (() => { })}
+						background={background || { type: 'none', id: -1 }}
+						editorInitialText={message}
+						isEditorReadOnly
+					/>
+					: null
+				}
+				{imageUrl ? <Image src={imageUrl} onLoad={measure || (() => { })} style={{ maxWidth: '400px' }} alt="" /> : null}
+			</Container>
+		</ContainerLink>
 		<FeedBottomBarFullStatistics
 			type={type}
 			date={date}
@@ -39,7 +43,7 @@ const UserPost = ({
 			comments={comments}
 			views={views}
 		/>
-	</ContainerLink>
+	</Container>
 );
 
 export default UserPost;

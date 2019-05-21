@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import Resizer from 'react-image-file-resizer';
-import { withRouter } from 'react-router';
+import { withRouter, browserHistory } from 'react-router';
 import { convertToRaw } from 'draft-js';
 
 import {
@@ -16,7 +16,6 @@ import {
 	SecondaryTextBlock,
 	Snackbar,
 } from 'components/atoms';
-import { SuccessPopup } from 'components/molecules';
 import ProfileAvatar from 'components/ProfileAvatar';
 import { AddPhotoAlternate, Close } from 'components/icons';
 import { getMentionsValue } from 'utils';
@@ -41,7 +40,7 @@ export const USER_POST_MAX_LENGTH = 1024;
 
 const UserPostEditor = ({
 	params,
-	alternateSuccessPopupHandler = null,
+	afterPostCallback = null,
 	profile,
 	closePopup,
 	draftEditorInitialText = '',
@@ -52,7 +51,6 @@ const UserPostEditor = ({
 	const [ backgrounds, setBackgrounds ] = useState([]);
 	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
 	const [ selectedBackgroundId, setSelectedBackgroundId ] = useState(initialSelectedBackgroundId);
-	const [ isSuccessPopupOpen, toggleSuccessPopupIsOpen ] = useState(false);
 
 	const imageInputRef = useRef();
 	const [ imageSource, setImageSource ] = useState(initialImageSource || null);
@@ -140,43 +138,58 @@ const UserPostEditor = ({
 
 	const background = backgrounds.find(b => b.id === backgroundId);
 
-	const createPostHandler = () => {
-		const text = getMentionsValue(convertToRaw(editorText));
-		if (imageSource) {
-			return uploadPostImage(imageData, 'postimage.jpg')
-				.then(res => createPost({
-					message: text,
-					backgroundId: null,
-					imageUrl: res.imageUrl,
-				})
-					.then((res) => {
-						if (res) {
-							toggleSuccessPopupIsOpen(true);
-						}
-					}));
+	// Calback after post create-edit-repost
+	const afterPostHandler = (post) => {
+		closePopup();
+		if (afterPostCallback) {
+			afterPostCallback({ ...post, background });
+		} else {
+			browserHistory.push('feed');
 		}
-		return createPost({
-			message: text,
-			backgroundId: canApplyBackground && selectedBackgroundId !== -1 ? selectedBackgroundId : null,
-			imageUrl: null,
-		})
-			.then((res) => {
-				if (res) {
-					toggleSuccessPopupIsOpen(true);
-				}
-			});
 	};
-	const editRequestHandler = ({ backgroundId, imageUrl, text }) => editPost({
-		id: initialUserPostId,
-		message: text,
+
+	// Create Post Handlers
+	const createRequestHandler = ({ backgroundId, imageUrl, message }) => createPost({
+		message,
 		backgroundId,
 		imageUrl,
 	})
 		.then((res) => {
 			if (res) {
-				toggleSuccessPopupIsOpen(true);
+				afterPostHandler(res.post);
 			}
 		});
+
+	const createPostHandler = () => {
+		const text = getMentionsValue(convertToRaw(editorText));
+		if (imageSource) {
+			return uploadPostImage(imageData, 'postimage.jpg')
+				.then(res => createRequestHandler({
+					message: text,
+					backgroundId: null,
+					imageUrl: res.imageUrl,
+				}));
+		}
+		return createRequestHandler({
+			message: text,
+			backgroundId: canApplyBackground && selectedBackgroundId !== -1 ? selectedBackgroundId : null,
+			imageUrl: null,
+		});
+	};
+
+	// Edit Post handlers
+	const editRequestHandler = ({ backgroundId, imageUrl, message }) => editPost({
+		id: initialUserPostId,
+		message,
+		backgroundId,
+		imageUrl,
+	})
+		.then((res) => {
+			if (res) {
+				afterPostHandler(res.post);
+			}
+		});
+
 	const editPostHandler = () => {
 		const text = getMentionsValue(convertToRaw(editorText));
 		if (imageData) {
@@ -184,22 +197,14 @@ const UserPostEditor = ({
 				.then(res => editRequestHandler({
 					backgroundId: null,
 					imageUrl: res.imageUrl,
-					text,
+					message: text,
 				}));
 		}
 		return editRequestHandler({
 			backgroundId: canApplyBackground && selectedBackgroundId !== -1 ? selectedBackgroundId : null,
 			imageUrl: initialImageSource && imageSource ? initialImageSource : '',
-			text,
+			message: text,
 		});
-	};
-
-	const successPopupHandler = () => {
-		toggleSuccessPopupIsOpen(false);
-		closePopup();
-		if (alternateSuccessPopupHandler) {
-			alternateSuccessPopupHandler();
-		}
 	};
 
 	return (
@@ -296,11 +301,6 @@ const UserPostEditor = ({
 				autoHideDuration={5000}
 				onClose={() => toggleSnackBarIsOpen(false)}
 				message={snackMessage}
-			/>
-			<SuccessPopup
-				open={isSuccessPopupOpen}
-				onClose={successPopupHandler}
-				text={initialUserPostId ? 'Post Saved!' : 'Post Created'}
 			/>
 		</Container>
 	);
