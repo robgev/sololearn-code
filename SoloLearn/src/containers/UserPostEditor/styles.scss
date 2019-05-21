@@ -2,6 +2,8 @@
 @import '~styles/medias';
 
 .user-post-main-container {
+	width: 500px;
+	min-height: 300px;
 	.user-post-main-title {
 		margin-bottom: 5px;
 	}
@@ -9,8 +11,9 @@
 		margin: 5px 0;
 	}
 	.add-image-and-backgrounds-container {
+		flex-direction: column;
 		.add-image-chip {
-			margin-right: 30px;
+			margin: 10px 0;
 			padding: 5px;
 			.add-image-icon {
 				color: $primary_color;
@@ -33,7 +36,7 @@
 			mix-blend-mode: difference;
 		}
 		.user-post-image-preview {
-			max-width: 350px;
+			max-width: 200px;
 			border-radius: 3px;
 		}
 	}
@@ -42,13 +45,20 @@
 	}
 }
 
+.user-post-loader-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-width: 520px;
+	min-height: 498px;
+}
+
 @include for-until-desktop {
 	.user-post-main-container {
-		.add-image-and-backgrounds-container {
-			flex-direction: column;
-			.add-image-chip {
-				margin: 10px 0;
-			}
-		}
+		width: 100%;
+	}
+	.user-post-loader-container {
+		min-width: 400px;
+		min-height: 488px;
 	}
 }

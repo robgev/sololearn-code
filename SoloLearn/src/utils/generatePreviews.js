@@ -26,13 +26,21 @@ const generatePreviews = (message) => {
 	// const profileRegex = /https?:\/\/(?:www\.)?sololearn\.com\/profile\/(\d+)/gi;
 	const codeRegex = /https?:\/\/code\.sololearn\.com\/([a-zA-Z0-9]{10,})/gi;
 	const discussRegex = /https?:\/\/(?:www\.)?sololearn\.com\/discuss\/(\d+)/gi;
+	const userPostRegex = /https?:\/\/(?:www\.)?sololearn\.com\/post\/(\d+)/gi;
 
 	const lessonPreviewData = createPreviewData({ message, regexp: lessonRegex, type: 'slayLesson' });
 	const codePreviewData = createPreviewData({ message, regexp: codeRegex, type: 'code' });
 	const discussPreviewData = createPreviewData({ message, regexp: discussRegex, type: 'discuss' });
 	const coursePreviewData = createPreviewData({ message, regexp: courseRegex, type: 'course' });
+	const userPostPreviewData = createPreviewData({ message, regexp: userPostRegex, type: 'userPost' });
 
-	return [ ...lessonPreviewData, ...codePreviewData, ...discussPreviewData, ...coursePreviewData ];
+	return [
+		...lessonPreviewData,
+		...codePreviewData,
+		...discussPreviewData,
+		...coursePreviewData,
+		...userPostPreviewData,
+	];
 };
 
 export default generatePreviews;

@@ -81,8 +81,7 @@ const QuizFactoryRate = Loadable({
 	loader: () => import('containers/QuizFactory').then(mod => mod.QuizFactoryRate),
 });
 
-// User Post
-const UserPostEditor = Loadable({ loader: () => import('containers/UserPostEditor') });
+const UserPostDetails = Loadable({ loader: () => import('containers/UserPostDetails') });
 
 export default ([
 	<Route onEnter={() => window.scrollTo(0, 0)} path="/signin" component={Login} />,
@@ -109,6 +108,9 @@ export default ([
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/course/:alias/:moduleName/:lessonName" component={QuizManager}>
 			<Route path=":quizNumber" component={Quiz} />
 		</Route>
+
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/post/:id" component={UserPostDetails} />
+
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/play" component={Play} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/lesson-factory" component={LessonFactory} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/codes" component={Codes} />
@@ -120,9 +122,6 @@ export default ([
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss/filter/:query" component={Questions} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss/:id(/:questionName)(/:replyId)" component={Post} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/feed" component={Feed} />
-
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/user-post(/:id)" component={UserPostEditor} />
-
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/profile/:id(/:tab)" component={Profile} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/certificate/:id" component={Certificate} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/leaderboards(/:userId)" component={Leaderboards} />

@@ -12,8 +12,9 @@ const FeedToolbar = ({
 	type,
 	onChange,
 	id,
+	className = '',
 }) => (
-	<Container className="feed-toolbar-container">
+	<Container className={`feed-toolbar-container ${className}`}>
 		<VoteActions
 			id={id}
 			type={type}

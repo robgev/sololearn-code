@@ -101,6 +101,7 @@ class ILikes {
 		case 'lessonComment':
 		case 'codeComment':
 		case 'userLessonComment':
+		case 'postComment':
 			return { commentId: this.id };
 		default:
 			throw new Error('Couldn\'t find likes type');
@@ -120,6 +121,8 @@ class ILikes {
 			return `Discussion/${act}CodeComment`;
 		case 'userLessonComment':
 			return `Discussion/${act}UserLessonComment`;
+		case 'postComment':
+			return `Discussion/${act}PostComment`;
 		default:
 			throw new Error('Couldn\'t find likes type');
 		}

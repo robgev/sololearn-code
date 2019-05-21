@@ -1,0 +1,12 @@
+.user-post-details-page-container {
+	height: calc(100vh);
+	overflow: auto;
+	.user-post-details-main-container {
+		.user-post-details-bottom-bar {
+			margin-left: 0;
+		}
+		.user-post-details-share-chip {
+			padding: 5px;
+		}
+	}
+}

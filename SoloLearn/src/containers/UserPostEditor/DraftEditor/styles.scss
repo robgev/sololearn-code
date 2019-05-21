@@ -1,13 +1,22 @@
 @import '~styles/_colors';
 
 .draft-editor-container {
-	min-height: 300px;
+	width: 100%;
+	box-sizing: border-box;
 	margin: 5px 0;
 	border-radius: 5px;
 	border: 1px solid $primary_color;
-	cursor: text;
+	&.read-only {
+		border: none;
+	}
 	.draft-editor-inner-container {
 		width: 100%;
-		padding: 10px;
+		padding: 15px;
+		.underline {
+			text-decoration: underline;
+		}
+		&.no-padding {
+			padding: 0px;
+		}
 	}
 }

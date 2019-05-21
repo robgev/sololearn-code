@@ -1,4 +1,5 @@
 import React from 'react';
+import './mentionStyles.scss';
 
 const Entry = (props) => {
 	const {

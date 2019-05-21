@@ -1,18 +1,73 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Editor, EditorState, Modifier } from 'draft-js';
+import { Link } from 'react-router';
+import { EditorState, Modifier, convertToRaw } from 'draft-js';
+import createLinkifyPlugin from 'draft-js-linkify-plugin';
+import Editor from 'draft-js-plugins-editor';
+import createMentionPlugin from 'draft-js-mention-plugin';
+import { getMentionsList, makeEditableContent, getMentionsFromRawEditorContent } from 'utils';
 import hexToRgba from 'hex-to-rgba';
 import { Container, FlexBox } from 'components/atoms';
+import { Entry } from 'components/organisms';
 import { getBackgroundStyle, getFontSize } from '../utils';
 import { USER_POST_MAX_LENGTH } from '../UserPostEditor';
 
+import 'draft-js-linkify-plugin/lib/plugin.css';
 import './styles.scss';
 
 const DraftEditor = ({
 	background,
-	setEditorText,
+	measure,
+	setEditorText = null,
+	isEditorReadOnly = false,
+	editorInitialText = '',
 }) => {
-	const [ editorState, setEditorState ] = useState(EditorState.createEmpty());
+	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
 	const [ fontSize, setFontSize ] = useState(36);
+	const [ suggestions, setSuggestions ] = useState([]);
+	const hasBackground = background && background.type !== 'none';
+	const mentionPluginRef = useRef(createMentionPlugin({
+		mentionComponent: ({ children, mention }) => (isEditorReadOnly
+			? (
+				<b>
+					<Link
+						className="hoverable"
+						style={{ color: hasBackground ? background.textColor : '#607D8B' }}
+						to={`/profile/${mention.id}`}
+					>
+						{children}
+					</Link>
+				</b>
+			)
+			: <b>{children}</b>),
+	}));
+	const linkifyPluginRef = useRef(createLinkifyPlugin({
+		target: '_blank',
+		component: ({ children, href }) => (
+			<Link
+				className={hasBackground ? 'underline' : null}
+				style={{ color: hasBackground ? background.textColor : '#607D8B' }}
+				to={href}
+			>
+				{children}
+			</Link>
+		),
+	}));
+	const { MentionSuggestions } = mentionPluginRef.current;
+	const plugins = isEditorReadOnly
+		? [ mentionPluginRef.current, linkifyPluginRef.current ]
+		: [ mentionPluginRef.current ];
+
+	const getSuggestions = ({ value }) => {
+		setSuggestions([]);
+		const currentMentions =
+			getMentionsFromRawEditorContent(convertToRaw(editorState.getCurrentContent()));
+		const currentMentionIds = currentMentions.map(mention => mention.id);
+		getMentionsList({ type: 'userPost' })(value)
+			.then((users) => {
+				const filteredSuggestions = users.filter(u => !currentMentionIds.includes(u.id));
+				setSuggestions(filteredSuggestions.slice(0, 5));
+			});
+	};
 
 	const editorRef = useRef(null);
 
@@ -32,7 +87,6 @@ const DraftEditor = ({
 			const startSelectedTextLength = startBlockTextLength - currentSelection.getStartOffset();
 			const endSelectedTextLength = currentSelection.getEndOffset();
 			const keyAfterEnd = currentContent.getKeyAfter(endKey);
-			console.log(currentSelection);
 			if (isStartAndEndBlockAreTheSame) {
 				length += currentSelection.getEndOffset() - currentSelection.getStartOffset();
 			} else {
@@ -56,7 +110,8 @@ const DraftEditor = ({
 
 	const handeBeforeInput = (_, editorState) => {
 		const selectedTextLength = _getLengthOfSelectedText();
-		if (editorState.getCurrentContent().getPlainText().length - selectedTextLength >= USER_POST_MAX_LENGTH) {
+		if (editorState.getCurrentContent().getPlainText().length - selectedTextLength
+			>= USER_POST_MAX_LENGTH) {
 			return 'handled';
 		}
 		return 'not_handled';
@@ -89,16 +144,23 @@ const DraftEditor = ({
 		? {}
 		: getBackgroundStyle(background, { isPreview: false });
 
-	useEffect(() => {
+	const focus = () => {
 		editorRef.current.focus();
+	};
+
+	useEffect(() => {
+		if (!isEditorReadOnly) { setTimeout(focus, 0); }
 	}, [ background ]);
 
 	useEffect(() => {
 		const currentContent = editorState.getCurrentContent();
 		const text = currentContent.getPlainText();
-		setEditorText(text);
+		if (setEditorText) {
+			setEditorText(currentContent);
+		}
 		const newLinesCount = (text.match(/\n/g) || []).length;
 		setFontSize(getFontSize(text.length, newLinesCount));
+		measure();
 	}, [ editorState ]);
 
 	const getRgbaHexFromArgbHex = color => `#${color.substring(3, color.length)}${color.substring(1, 3)}`;
@@ -107,28 +169,51 @@ const DraftEditor = ({
 		<FlexBox
 			align={background ? background.type !== 'none' && true : false}
 			justify={background ? background.type !== 'none' && true : false}
-			style={background.type !== 'none' ?
-				{ ...style, color: background ? background.textColor.length > 6 ? hexToRgba(getRgbaHexFromArgbHex(background.textColor)) : background.textColor : 'black', fontSize }
+			style={background.type === 'none' ?
+				{
+					color: 'black',
+					fontSize,
+					cursor: isEditorReadOnly ? 'cursor' : 'text',
+					height: '100%',
+					minHeight: isEditorReadOnly ? 50 : 250,
+				}
 				:
-				{ color: 'black', fontSize }
+				{
+					...style,
+					color: background ? background.textColor.length > 6 ? hexToRgba(getRgbaHexFromArgbHex(background.textColor)) : background.textColor : 'black',
+					fontSize,
+					cursor: isEditorReadOnly ? 'cursor' : 'text',
+					height: 250,
+				}
 			}
-			className="draft-editor-container"
+			className={isEditorReadOnly ? 'draft-editor-container read-only' : 'draft-editor-container'}
 			onClick={() => { editorRef.current.focus(); }}
 		>
-			<Container className="draft-editor-inner-container">
+			<Container className={isEditorReadOnly && background.type === 'none' ? 'draft-editor-inner-container no-padding' : 'draft-editor-inner-container'}>
 				<Editor
 					editorState={editorState}
+					stripPastedStyles
 					handleBeforeInput={handeBeforeInput}
 					handlePastedText={handlePastedText}
-					onChange={setEditorState}
+					onChange={editorState => setEditorState(editorState)}
 					textAlignment={background ? background.type !== 'none' && 'center' : 'left'}
 					ref={editorRef}
-					placeholder="Share coding tips, articles, snippets and anything code-related"
-
+					placeholder={background.type === 'none' ? 'Share coding tips, articles, snippets and anything code-related' : ''}
+					plugins={plugins}
+					readOnly={isEditorReadOnly}
+				/>
+				<MentionSuggestions
+					onSearchChange={getSuggestions}
+					suggestions={suggestions}
+					entryComponent={Entry}
 				/>
 			</Container>
 		</FlexBox>
 	);
+};
+
+DraftEditor.defaultProps = {
+	measure: () => { },
 };
 
 export default DraftEditor;

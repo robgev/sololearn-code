@@ -8,6 +8,7 @@ import { CourseCard } from 'containers/Learn/components';
 import {
 	Container,
 	PaperContainer,
+	FlexBox,
 } from 'components/atoms';
 import types from 'defaults/appTypes';
 
@@ -23,21 +24,29 @@ import Challenge from './FeedTemplates/Challenge';
 import FeedSuggestions from './FeedSuggestions';
 import BottomToolbar from './FeedBottomToolbar';
 
+import UserPost from './FeedTemplates/UserPost';
+
 @observer
 class FeedItem extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			isOpened: false,
-		};
 		this.votes = null;
 		this.url = '';
 	}
 
 	handleChallengesOpen = () => {
-		this.setState({ isOpened: !this.state.isOpened }, () => {
-			this.props.measure();
-		});
+		const {
+			open,
+			measure,
+			openItem,
+			closeItem,
+			feedItem: { id },
+		} = this.props;
+		if (open) {
+			closeItem(id, measure);
+		} else {
+			openItem(id, measure);
+		}
 	}
 
 	componentDidMount() {
@@ -170,6 +179,25 @@ class FeedItem extends Component {
 					/>
 				</Container>
 			);
+		case types.userPost:
+			return (
+				<Container>
+					<UserPost
+						background={feedItem.userPost.background}
+						message={feedItem.userPost.message}
+						imageUrl={feedItem.userPost.imageUrl}
+						type="post"
+						date={feedItem.date}
+						id={feedItem.id}
+						vote={feedItem.vote}
+						votes={feedItem.votes}
+						measure={this.props.measure}
+						userPostId={feedItem.userPost.id}
+						comments={feedItem.userPost.comments}
+						views={feedItem.userPost.viewCount}
+					/>
+				</Container>
+			);
 		default:
 			return null;
 		}
@@ -201,22 +229,34 @@ class FeedItem extends Component {
 						/>
 						<BottomToolbar date={feedItem.date} />
 					</PaperContainer>
+					{ this.props.open &&
 					<Container
 						id="feed-items"
-						className={`merged-items-container ${this.state.isOpened ? 'open' : ''}`}
-						// style={{ height: this.state.isOpened ? ((feedItem.groupedItems.length * 139) - 10) : 0 }} // 10 = last item margin bottom
-						// style={{'display': this.state.isOpened? 'block' : 'none'}}
+						className={`merged-items-container ${this.props.open ? 'open' : ''}`}
 					>
 						{feedItem.groupedItems.map(currentItem => (
-							<FeedItem
+							<Container
 								key={currentItem.type === types.mergedChallange ?
 									`feedGroup${currentItem.toId}` :
 									`feedItem${currentItem.id}`}
-								feedItem={currentItem}
-								openCoursePopup={this.props.openCoursePopup}
-							/>
+								className="feedItemWrapper"
+							>
+								<PaperContainer zDepth={1} className="feedItem">
+									<FeedItemBase
+										feedItemId={currentItem.id}
+										title={currentItem.title}
+										user={currentItem.user}
+										votes={this.votes}
+									>
+										{/* this.url = `/profile/${currentItem.contest.player.id}`; */}
+										<Challenge date={currentItem.date} contest={currentItem.contest} />
+									</FeedItemBase>
+								</PaperContainer>
+
+							</Container>
 						))}
 					</Container>
+					}
 				</Container>
 			);
 		}
