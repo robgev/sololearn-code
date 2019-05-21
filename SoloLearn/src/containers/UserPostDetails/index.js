@@ -88,7 +88,13 @@ const UserPostDetails = ({
 								/>
 								: null
 							}
-							{userPost.imageUrl ? <Image src={userPost.imageUrl} onLoad={() => { }} style={{ maxWidth: '400px' }} alt="" /> : null}
+							{userPost.imageUrl ?
+								<Image
+									src={userPost.imageUrl}
+									onLoad={() => { }}
+									className="up-details-image"
+								/>
+								: null}
 							<FlexBox align justifyBetween>
 								<FeedBottomBarFullStatistics
 									type="post"
