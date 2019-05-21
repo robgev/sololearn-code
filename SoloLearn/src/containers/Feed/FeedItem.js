@@ -24,7 +24,7 @@ import Challenge from './FeedTemplates/Challenge';
 import FeedSuggestions from './FeedSuggestions';
 import BottomToolbar from './FeedBottomToolbar';
 
-import UserPost from './FeedTemplates/UserPost';
+import UserPost from './FeedTemplates/UserPost/';
 
 @observer
 class FeedItem extends Component {
@@ -179,25 +179,6 @@ class FeedItem extends Component {
 					/>
 				</Container>
 			);
-		case types.userPost:
-			return (
-				<Container>
-					<UserPost
-						background={feedItem.userPost.background}
-						message={feedItem.userPost.message}
-						imageUrl={feedItem.userPost.imageUrl}
-						type="post"
-						date={feedItem.date}
-						id={feedItem.id}
-						vote={feedItem.vote}
-						votes={feedItem.votes}
-						measure={this.props.measure}
-						userPostId={feedItem.userPost.id}
-						comments={feedItem.userPost.comments}
-						views={feedItem.userPost.viewCount}
-					/>
-				</Container>
-			);
 		default:
 			return null;
 		}
@@ -257,6 +238,31 @@ class FeedItem extends Component {
 						))}
 					</Container>
 					}
+				</Container>
+			);
+		} else if (feedItem.type === types.userPost) {
+			return (
+				<Container style={style} className="feedItemWrapper">
+					<PaperContainer
+						zDepth={1}
+						className="feedItem userPost"
+					>
+						<UserPost
+							user={feedItem.user}
+							background={feedItem.userPost.background}
+							message={feedItem.userPost.message}
+							imageUrl={feedItem.userPost.imageUrl}
+							type="post"
+							date={feedItem.date}
+							id={feedItem.id}
+							vote={feedItem.vote}
+							votes={feedItem.votes}
+							measure={this.props.measure}
+							userPostId={feedItem.userPost.id}
+							comments={feedItem.userPost.comments}
+							views={feedItem.userPost.viewCount}
+						/>
+					</PaperContainer>
 				</Container>
 			);
 		}

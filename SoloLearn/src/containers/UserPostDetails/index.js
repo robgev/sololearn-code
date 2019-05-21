@@ -80,7 +80,7 @@ const UserPostDetails = ({
 							</FlexBox>
 							{userPost.message ?
 								<UserPostDraftEditor
-									key={userPost.message}
+									key={`${userPost.message}:${userPost.backgroundID ? userPost.backgroundID : -1}`}
 									measure={() => { }}
 									background={userPost.background || { type: 'none', id: -1 }}
 									editorInitialText={userPost.message}
