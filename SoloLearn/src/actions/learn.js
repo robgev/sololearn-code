@@ -127,3 +127,7 @@ export const deductExp = exp => ({
 export const changeProgress = (courseId, progress) => (dispatch) => {
 	dispatch({ type: types.CHANGE_PROGRESS, payload: { courseId, progress } });
 };
+
+export const resetLocalLesson = () => (dispatch) => {
+	dispatch({ type: types.RESET_LOCAL_LESSON });
+};
