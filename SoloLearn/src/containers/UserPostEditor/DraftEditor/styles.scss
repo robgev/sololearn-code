@@ -2,10 +2,11 @@
 
 .draft-editor-container {
 	width: 100%;
+	overflow: auto;
 	box-sizing: border-box;
 	margin: 5px 0;
-	border-radius: 5px;
-	border: 1px solid $primary_color;
+	border-top: 1px solid $primary_color;
+	border-bottom: 1px solid $primary_color;
 	&.read-only {
 		border: none;
 	}
