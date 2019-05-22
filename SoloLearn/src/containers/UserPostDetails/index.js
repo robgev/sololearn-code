@@ -83,10 +83,10 @@ const UserPostDetails = ({
 								{profile.id === userPost.userID ?
 									<IconMenu>
 										<MenuItem onClick={() => setIsCreatePostPopupOpen(true)}>
-											{'Edit'}
+											Edit
 										</MenuItem>
 										<MenuItem onClick={deletePostHandler}>
-											{'Delete'}
+											Delete
 										</MenuItem>
 									</IconMenu>
 									:
@@ -138,8 +138,8 @@ const UserPostDetails = ({
 						</FlexBox>
 					</PaperContainer>
 					<Comments
+						useWindow
 						id={userPost.id}
-						useWindow={false}
 						commentsType="post"
 						commentsCount={userPost.comments}
 					/>
