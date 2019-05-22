@@ -50,6 +50,14 @@ class Header extends PureComponent {
 		this.state = {
 			isCreatePostPopupOpen: false,
 		};
+		this.userPostHintsArray = [
+			'user_post.hints.user-post-form-hint-1',
+			'user_post.hints.user-post-form-hint-2',
+			'user_post.hints.user-post-form-hint-3',
+		];
+		this.randomHint = this.userPostHintsArray[
+			Math.floor(Math.random() * this.userPostHintsArray.length)
+		];
 	}
 
 	inputClickHandler = (e) => {
@@ -87,7 +95,7 @@ class Header extends PureComponent {
 				<FlexBox justifyBetween className="actions">
 					<Input
 						onClick={this.inputClickHandler}
-						placeholder="What's on your mind ?"
+						placeholder={t(this.randomHint)}
 					/>
 					<ContainerLink to="/discover">
 						<RaisedButton color="secondary">
