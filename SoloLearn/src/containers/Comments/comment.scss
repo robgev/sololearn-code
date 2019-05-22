@@ -24,9 +24,9 @@
 
 		.comment-preview {
 			display: flex;
-			padding: 0 49px;
+			max-width: 100%;
 		}
-		
+
 		> .Linkify > p {
 			font-size: 14px;
 	    color: rgb(130, 126, 126);

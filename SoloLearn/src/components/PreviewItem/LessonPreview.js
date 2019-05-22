@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import Service from 'api/service';
+import { PaperContainer, FlexBox, SecondaryTextBlock, Link } from 'components/atoms';
 import { CourseChip } from 'containers/Learn/components';
-import { PaperContainer, SecondaryTextBlock, Link } from 'components/atoms';
 
 class CodePreview extends PureComponent {
 	constructor() {
@@ -45,8 +45,10 @@ class CodePreview extends PureComponent {
 					color={color}
 					iconUrl={iconUrl}
 				/>
-				<Link className="item">{name}</Link>
-				<SecondaryTextBlock className="item">{userName}</SecondaryTextBlock>
+				<FlexBox className="preview-info" column>
+					<Link className="item">{name}</Link>
+					<SecondaryTextBlock className="item">{userName}</SecondaryTextBlock>
+				</FlexBox>
 			</PaperContainer>
 		);
 	}
