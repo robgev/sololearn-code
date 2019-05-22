@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { Title, SecondaryTextBlock, PaperContainer, Container, FlexBox } from 'components/atoms';
-import { Slider, ViewMoreLink, RaisedButton } from 'components/molecules';
+import { Slider, ViewMoreLink, RaisedButton,ContainerLink } from 'components/molecules';
 
 import { CourseChip } from 'containers/Learn/components';
 import './styles.scss';
 import SlayManage from '../../SlayManage';
 import { refreshMyCourses } from 'actions/slay';
 import Service from 'api/service';
+import { toSeoFriendly } from 'utils';
+import { getCourseAliasById } from 'reducers/courses.reducer';
 
 const collectionTypes = {
 	slayLessons: [ 1 ],
@@ -42,12 +44,13 @@ const CollectionCard = ({
 	noName = false,
 	noViewMore = false,
 	refreshMyCourses,
+	courses,
 }) => {
 	// lessons are the old Sololearn-created courses, like learn HTML, C# etc.
 	const [ openSlayManage, toggleSlayManage ] = useState(false);
 	const [ toggling, togglingCourses ] = useState(false);
 	const isCourses = collectionTypes.courses.indexOf(type) !== -1;
-	const slidesToShow = items && items.length < 6 ? items.length : 6;
+	const slidesToShow = items && items.length < 6 ? items.length === 1 && id === -1 ? 2 : items.length : 6;
 	const slidesToScroll = 6;// 2 * slidesToShow;
 
 	const toggleCourse = async (courseId, enable) => {
@@ -74,7 +77,7 @@ const CollectionCard = ({
 						? items && items.length > 0
 							? <ViewMoreLink className="manage-button" onClick={() => toggleSlayManage(!openSlayManage)}>
 								{t('common.manage')}
-							</ViewMoreLink>
+         			</ViewMoreLink>
 							: null
 						: !noViewMore &&
 						<ViewMoreLink to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} >
@@ -91,7 +94,7 @@ const CollectionCard = ({
 						slidesToShow={slidesToShow}
 						slidesToScroll={slidesToScroll}
 						className={`courses-list ${(isCourses || round) ? 'round' : ''}`}
-						responsive={items && generateBreakpoints(items.length, isCourses || round)}
+						responsive={generateBreakpoints(items.length, isCourses || round)}
 					>
 						{
 							items.map(lessonItem => (
@@ -110,8 +113,22 @@ const CollectionCard = ({
 								</Container>
 							))
 						}
-
-					</Slider>
+						{
+							items.length === 1 && id === -1
+								&& <FlexBox align> 
+								<ContainerLink
+									to={`/learn/course/${toSeoFriendly(getCourseAliasById(courses, items[0].id))}`}
+								>
+									<RaisedButton
+										color="secondary"
+										onClick={() => toggleSlayManage(!openSlayManage)}
+									>
+										{t('learn.buttons-continue')}
+									</RaisedButton>
+								</ContainerLink>
+								</FlexBox>
+						}
+       					</Slider>
 					: <FlexBox justify column align>
 						<SecondaryTextBlock>
 							{t('learn.no-selected-courses-message')}
@@ -122,7 +139,7 @@ const CollectionCard = ({
 						>
 							{t('learn.add-courses-message')}
 						</RaisedButton>
-					</FlexBox>
+       </FlexBox>
 			}
 			{
 				id === -1
