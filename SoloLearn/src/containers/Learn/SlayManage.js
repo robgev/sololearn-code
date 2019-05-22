@@ -22,6 +22,8 @@ class SlayManage extends Component {
 		// glossaryTitle: null,
 
 		openResetConfirmation: false,
+		resetting: false,
+		courseToReset: null,
 	}
 
 	// openGlossary=(courseId, courseName) => {
@@ -35,14 +37,17 @@ class SlayManage extends Component {
 	// }
 
 	toggleResetConfirmation = (courseId) => {
-		this.courseToReset = courseId;
+		this.setState({ courseToReset: courseId });
 		this.setState(s => ({ openResetConfirmation: !s.openResetConfirmation }));
 	}
 
-	resetProgress = () => {
-		this.props.changeProgress(this.courseToReset, 0);
-		resetProgress(this.courseToReset);
+	resetProgress =async () => {
+		const { courseToReset } = this.state;
 		this.toggleResetConfirmation();
+		this.setState({ resetting: true });
+		await resetProgress(courseToReset);
+		this.setState({ resetting: false });
+		this.props.changeProgress(courseToReset, 0);
 	}
 
 	toggleCourse=(courseId, isEnabled) => {
@@ -53,13 +58,12 @@ class SlayManage extends Component {
 		const {
 			 myCourses, courses, t, open, onClose, toggling,
 		} = this.props;
-
-		console.log(myCourses);
-		const { openResetConfirmation } = this.state;
+		const { openResetConfirmation, resetting } = this.state;
 		// const {
 		// 	openGlossary, glossaryCourseId, glossaryContent, glossaryTitle,
 		// } = this.state;
 		const availableCourses = courses.filter(c => !myCourses.find(s => s.id === c.id && (s.iconUrl = c.iconUrl)));
+
 		return (
 			<React.Fragment>
 				<Popup
@@ -72,7 +76,7 @@ class SlayManage extends Component {
 				>
 					<PopupContent>
 						{
-							toggling &&
+							(toggling || resetting) &&
 							<OverlayLoading />
 						}
 						{myCourses && myCourses.length > 0 && <Title className="title">{t('course_picker.my-courses-section-title')}</Title>}
@@ -85,7 +89,7 @@ class SlayManage extends Component {
 										actions={
 											[
 												// <MenuItem onClick={() => this.openGlossary(course.id, course.name)} >{t('course_picker.action.glossary')}</MenuItem>,
-												<MenuItem onClick={() => { this.toggleResetConfirmation(course.id); }} >{t('course_picker.action.reset-progress')}</MenuItem>,
+												<MenuItem onClick={() => this.toggleResetConfirmation(course.id)} >{t('course_picker.action.reset-progress')}</MenuItem>,
 												<MenuItem onClick={() => this.toggleCourse(course.id, false)} >{t('course_picker.action.remove')}</MenuItem>,
 											]
 										}
