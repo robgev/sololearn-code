@@ -6,8 +6,10 @@ import Editor from 'draft-js-plugins-editor';
 import createMentionPlugin from 'draft-js-mention-plugin';
 import { getMentionsList, makeEditableContent, getMentionsFromRawEditorContent } from 'utils';
 import hexToRgba from 'hex-to-rgba';
+import { translate } from 'react-i18next';
 import { Container, FlexBox } from 'components/atoms';
 import { Entry } from 'components/organisms';
+
 import { getBackgroundStyle, getFontSize } from '../utils';
 import { USER_POST_MAX_LENGTH } from '../UserPostEditor';
 
@@ -20,6 +22,7 @@ const DraftEditor = ({
 	setEditorText = null,
 	isEditorReadOnly = false,
 	editorInitialText = '',
+	t,
 }) => {
 	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
 	const [ fontSize, setFontSize ] = useState(36);
@@ -204,7 +207,7 @@ const DraftEditor = ({
 					onChange={editorState => setEditorState(editorState)}
 					textAlignment={background ? background.type !== 'none' && 'center' : 'left'}
 					ref={editorRef}
-					placeholder="Share coding tips, articles, snippets and anything code-related"
+					placeholder={t('user_post.user-post-placeholder')}
 					plugins={plugins}
 					readOnly={isEditorReadOnly}
 				/>
@@ -222,4 +225,4 @@ DraftEditor.defaultProps = {
 	measure: () => { },
 };
 
-export default DraftEditor;
+export default translate()(DraftEditor);

@@ -218,15 +218,17 @@ const UserPostEditor = ({
 								<Close />
 							</IconButton>
 						</FlexBox>
-						<ProfileAvatar
-							userID={profile.id}
-							avatarUrl={profile.avatarUrl}
-							badge={profile.badge}
-							userName={profile.name}
-							withUserNameBox
-							withBorder
-							className="profile-avatar-container"
-						/>
+						<Container>
+							<ProfileAvatar
+								userID={profile.id}
+								avatarUrl={profile.avatarUrl}
+								badge={profile.badge}
+								userName={profile.name}
+								withUserNameBox
+								withBorder
+								className="profile-avatar-container"
+							/>
+						</Container>
 						<DraftEditor
 							background={background}
 							setEditorText={setEditorText}

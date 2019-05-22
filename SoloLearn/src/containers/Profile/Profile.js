@@ -150,6 +150,7 @@ class Profile extends Component {
 							hasMore={feed.hasMore}
 							loadMore={this.profile.getFeed}
 							voteFeedItem={this.profile.voteFeedItem}
+							showFab
 						/>
 					</Container>
 				}

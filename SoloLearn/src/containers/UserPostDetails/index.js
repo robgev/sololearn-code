@@ -13,8 +13,13 @@ import {
 	MenuItem,
 	Chip,
 } from 'components/atoms';
-import { Layout, IconMenu } from 'components/molecules';
-import ProfileAvatar from 'components/ProfileAvatar';
+import {
+	Layout,
+	IconMenu,
+	ProfileAvatar,
+	UsernameLink,
+	ModBadge,
+} from 'components/molecules';
 import { FeedBottomBarFullStatistics } from 'components/organisms';
 import { ShareIcon } from 'components/icons';
 
@@ -55,16 +60,21 @@ const UserPostDetails = ({
 				<Container className="user-post-details-page-container">
 					<PaperContainer className="user-post-details-main-container">
 						<FlexBox fullwidth column>
-							<FlexBox justifyBetween align>
-								<ProfileAvatar
-									userID={userPost.userID}
-									avatarUrl={userPost.avatarUrl}
-									badge={userPost.badge}
-									userName={userPost.userName}
-									withUserNameBox
-									withBorder
-									className="profile-avatar-container"
-								/>
+							<FlexBox justifyBetween align className="up-details-top-bar-container">
+								<FlexBox align>
+									<ProfileAvatar
+										user={profile}
+									/>
+									<UsernameLink
+										to={`/profile/${profile.id}`}
+										className="up-profile-username-link"
+									>
+										{profile.name}
+									</UsernameLink>
+									<ModBadge
+										badge={profile.badge}
+									/>
+								</FlexBox>
 								{profile.id === userPost.userID ?
 									<IconMenu>
 										<MenuItem onClick={() => setIsCreatePostPopupOpen(true)}>
@@ -78,16 +88,18 @@ const UserPostDetails = ({
 									null
 								}
 							</FlexBox>
-							{userPost.message ?
-								<UserPostDraftEditor
-									key={`${userPost.message}:${userPost.backgroundID ? userPost.backgroundID : -1}`}
-									measure={() => { }}
-									background={userPost.background || { type: 'none', id: -1 }}
-									editorInitialText={userPost.message}
-									isEditorReadOnly
-								/>
-								: null
-							}
+							<Container style={{ padding: userPost.background ? 0 : '0 15px' }}>
+								{userPost.message ?
+									<UserPostDraftEditor
+										key={`${userPost.message}:${userPost.backgroundID ? userPost.backgroundID : -1}`}
+										measure={() => { }}
+										background={userPost.background || { type: 'none', id: -1 }}
+										editorInitialText={userPost.message}
+										isEditorReadOnly
+									/>
+									: null
+								}
+							</Container>
 							{userPost.imageUrl ?
 								<Image
 									src={userPost.imageUrl}
@@ -95,7 +107,7 @@ const UserPostDetails = ({
 									className="up-details-image"
 								/>
 								: null}
-							<FlexBox align justifyBetween>
+							<FlexBox align justifyBetween className="up-details-bottom-bar-container">
 								<FeedBottomBarFullStatistics
 									type="post"
 									date={userPost.date}

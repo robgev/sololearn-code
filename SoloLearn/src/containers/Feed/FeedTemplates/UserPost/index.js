@@ -3,6 +3,7 @@ import {
 	Container,
 	Image,
 	FlexBox,
+	TextBlock,
 } from 'components/atoms';
 import {
 	ContainerLink,
@@ -47,22 +48,25 @@ const UserPost = ({
 			/>
 		</FlexBox>
 		<ContainerLink to={`/post/${userPostId}`}>
-			<Container style={{ padding: background ? 0 : '0 20px' }}>
-				{message ?
+			{message ?
+				<Container style={{ padding: background ? 0 : '0 15px' }}>
 					<UserPostEditor
 						measure={measure || (() => { })}
 						background={background || { type: 'none', id: -1 }}
 						editorInitialText={
-							message.length > 200 ?
-								`${message.slice(0, 200)}...Continue reading`
+							(message.match(/\n/g) || []).length > 5 ?
+								`${message.slice(0, 100)}`
 								:
 								message
 						}
 						isEditorReadOnly
 					/>
-					: null
-				}
-			</Container>
+					{(message.match(/\n/g) || []).length > 5 ?
+						<TextBlock className="up-feed-item-continue-reading-text">...Continue Reading</TextBlock> : null
+					}
+				</Container>
+				: null
+			}
 			{imageUrl ?
 				<Image
 					src={imageUrl}
