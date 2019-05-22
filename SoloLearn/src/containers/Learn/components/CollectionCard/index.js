@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { Title, SecondaryTextBlock, PaperContainer, Container, FlexBox } from 'components/atoms';
-import { Slider, ViewMoreLink } from 'components/molecules';
+import { Slider, ViewMoreLink, RaisedButton } from 'components/molecules';
 
 import { CourseChip } from 'containers/Learn/components';
 import './styles.scss';
 import SlayManage from '../../SlayManage';
+import { refreshMyCourses } from 'actions/slay';
+import Service from 'api/service';
 
 const collectionTypes = {
 	slayLessons: [ 1 ],
@@ -39,12 +41,22 @@ const CollectionCard = ({
 	round = false,
 	noName = false,
 	noViewMore = false,
+	refreshMyCourses,
 }) => {
 	// lessons are the old Sololearn-created courses, like learn HTML, C# etc.
 	const [ openSlayManage, toggleSlayManage ] = useState(false);
+	const [ toggling, togglingCourses ] = useState(false);
 	const isCourses = collectionTypes.courses.indexOf(type) !== -1;
-	const slidesToShow = items.length <= 6 ? items.length : 6;
+	const slidesToShow = items && items.length < 6 ? items.length : 6;
 	const slidesToScroll = 6;// 2 * slidesToShow;
+
+	const toggleCourse = async (courseId, enable) => {
+		togglingCourses(true);
+		await Service.request('Profile/ToggleCourse', { courseId, enable });
+		await refreshMyCourses(-1);
+		togglingCourses(false);
+	};
+
 	return (
 		<PaperContainer
 			elevation={1}
@@ -59,9 +71,11 @@ const CollectionCard = ({
 				<Title>{name}</Title>
 				{
 					id === -1
-						? <ViewMoreLink className="manage-button" onClick={() => toggleSlayManage(!openSlayManage)}>
-							{t('common.manage')}
-        </ViewMoreLink>
+						? items && items.length > 0
+							? <ViewMoreLink className="manage-button" onClick={() => toggleSlayManage(!openSlayManage)}>
+								{t('common.manage')}
+							</ViewMoreLink>
+							: null
 						: !noViewMore &&
 						<ViewMoreLink to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} >
 							{t('common.loadMore')}
@@ -71,38 +85,64 @@ const CollectionCard = ({
 			{description &&
 				<SecondaryTextBlock className="course-description">{description}</SecondaryTextBlock>
 			}
-			<Slider
-				slidesToShow={slidesToShow}
-				slidesToScroll={slidesToScroll}
-				className={`courses-list ${(isCourses || round) ? 'round' : ''}`}
-				responsive={generateBreakpoints(items.length, isCourses || round)}
-			>
-				{
-					items.map(lessonItem => (
-						lessonItem.itemType !== 4 &&
-						<Container className="course-chip-wrapper" key={`${lessonItem.name}-${lessonItem.id}`}>
-							<CourseChip
-								{...lessonItem}
-								round={round}
-								noName={noName}
-								isCourse={isCourses}
-								size={(isCourses || round) ? 85 : 95}
-								className="collection-card-chip"
-								noBoxShadow={!(isCourses && round)}
-								customLink={lessonItem.itemType === 5 ? `/learn/collection/${lessonItem.id}` : null}
-							/>
-						</Container>
-					))
-				}
-			</Slider>
-			<SlayManage
-				open={openSlayManage}
-				onClose={() => toggleSlayManage(!openSlayManage)}
-			/>
+			{
+				items && items.length > 0
+					? <Slider
+						slidesToShow={slidesToShow}
+						slidesToScroll={slidesToScroll}
+						className={`courses-list ${(isCourses || round) ? 'round' : ''}`}
+						responsive={items && generateBreakpoints(items.length, isCourses || round)}
+					>
+						{
+							items.map(lessonItem => (
+								lessonItem.itemType !== 4 &&
+								<Container className="course-chip-wrapper" key={`${lessonItem.name}-${lessonItem.id}`}>
+									<CourseChip
+										{...lessonItem}
+										round={round}
+										noName={noName}
+										isCourse={isCourses}
+										size={(isCourses || round) ? 85 : 95}
+										className="collection-card-chip"
+										noBoxShadow={!(isCourses && round)}
+										customLink={lessonItem.itemType === 5 ? `/learn/collection/${lessonItem.id}` : null}
+									/>
+								</Container>
+							))
+						}
+
+					</Slider>
+					: <FlexBox justify column align>
+						<SecondaryTextBlock>
+							{t('learn.no-selected-courses-message')}
+						</SecondaryTextBlock>
+						<RaisedButton
+							color="secondary"
+							onClick={() => toggleSlayManage(!openSlayManage)}
+						>
+							{t('learn.add-courses-message')}
+						</RaisedButton>
+					</FlexBox>
+			}
+			{
+				id === -1
+					? <SlayManage
+						open={openSlayManage}
+						myCourses={items}
+						toggleCourse={toggleCourse}
+						toggling={toggling}
+						onClose={() => toggleSlayManage(!openSlayManage)}
+					/>
+					: null
+			}
 		</PaperContainer>
 	);
 };
 
 const mapStateToProps = state => ({ courses: state.courses, skills: state.userProfile.skills });
 
-export default connect(mapStateToProps, null)(translate()(CollectionCard));
+const mapDispatchToProps = {
+	refreshMyCourses,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(translate()(CollectionCard));

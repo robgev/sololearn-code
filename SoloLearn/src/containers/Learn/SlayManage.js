@@ -16,23 +16,23 @@ import { getCourse } from './glossary.api';
 
 class SlayManage extends Component {
 	state={
-		openGlossary: false,
-		glossaryCourseId: null,
-		glossaryContent: null,
-		glossaryTitle: null,
+		// openGlossary: false,
+		// glossaryCourseId: null,
+		// glossaryContent: null,
+		// glossaryTitle: null,
 
 		openResetConfirmation: false,
 	}
 
-	openGlossary=(courseId, courseName) => {
-		getCourse(courseId)
-			.then(({ course }) => this.setState({ glossaryContent: course.glossary }));
-		this.setState({ openGlossary: true, glossaryCourseId: courseId, glossaryTitle: courseName });
-	}
+	// openGlossary=(courseId, courseName) => {
+	// 	getCourse(courseId)
+	// 		.then(({ course }) => this.setState({ glossaryContent: course.glossary }));
+	// 	this.setState({ openGlossary: true, glossaryCourseId: courseId, glossaryTitle: courseName });
+	// }
 
-	closeGlossary=() => {
-		this.setState({ openGlossary: false, glossaryContent: null, glossaryTitle: null });
-	}
+	// closeGlossary=() => {
+	// 	this.setState({ openGlossary: false, glossaryContent: null, glossaryTitle: null });
+	// }
 
 	toggleResetConfirmation = (courseId) => {
 		this.courseToReset = courseId;
@@ -46,13 +46,15 @@ class SlayManage extends Component {
 	}
 
 	toggleCourse=(courseId, isEnabled) => {
-		this.props.toggleCourseInternal(courseId, isEnabled);
+		this.props.toggleCourse(courseId, isEnabled);
 	}
 
 	render() {
 		const {
-			skills: myCourses, courses, t, open, onClose, toggling,
+			 myCourses, courses, t, open, onClose, toggling,
 		} = this.props;
+
+		console.log(myCourses);
 		const { openResetConfirmation } = this.state;
 		// const {
 		// 	openGlossary, glossaryCourseId, glossaryContent, glossaryTitle,
@@ -136,7 +138,6 @@ class SlayManage extends Component {
 const mapStateToProps = state => ({
 	skills: state.userProfile.skills,
 	courses: state.courses,
-	toggling: state.slay.togglingCourse,
 });
 const mapDispatchToProps = {
 	changeProgress,

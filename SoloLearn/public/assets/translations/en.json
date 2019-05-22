@@ -738,7 +738,8 @@
 		"add-courses-button-title": "ADD COURSES",
 		"add-courses-title": "No Courses\\n",
 		"more-on-topic": "More on the Topic",
-		"add-courses-message": "Start Learning Now!"
+		"add-courses-message": "Start Learning Now!",
+		"no-selected-courses-message": "No Selected Courses"
 	},
 	"logout": {
 		"alert-title": "Session expired.",
