@@ -63,16 +63,21 @@ const UserPostDetails = ({
 							<FlexBox justifyBetween align className="up-details-top-bar-container">
 								<FlexBox align>
 									<ProfileAvatar
-										user={profile}
+										user={{
+											name: userPost.userName,
+											id: userPost.userID,
+											badge: userPost.badge,
+											avatarUrl: userPost.avatarUrl,
+										}}
 									/>
 									<UsernameLink
-										to={`/profile/${profile.id}`}
+										to={`/profile/${userPost.userId}`}
 										className="up-profile-username-link"
 									>
-										{profile.name}
+										{userPost.userName}
 									</UsernameLink>
 									<ModBadge
-										badge={profile.badge}
+										badge={userPost.badge}
 									/>
 								</FlexBox>
 								{profile.id === userPost.userID ?
