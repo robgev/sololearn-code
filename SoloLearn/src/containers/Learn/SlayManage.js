@@ -104,6 +104,7 @@ class SlayManage extends Component {
 									<ManageLessonCard
 										{...course}
 										url={`/learn/course/${toSeoFriendly(getCourseAliasById(courses, course.id))}`}
+										addCourse={() => this.toggleCourse(course.id, true)}
 										actions={
 											[
 												// <MenuItem onClick={() => this.openGlossary(course.id, course.name)} >{t('course_picker.action.glossary')}</MenuItem>,

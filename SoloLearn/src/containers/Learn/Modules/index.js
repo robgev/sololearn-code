@@ -128,9 +128,7 @@ class Modules extends Component {
 		} = this.props;
 		const { loading, resetPopupOpened } = this.state;
 		const { modules, id } = course;
-		const userCourses = this.props.userProfile.skills;
-
-		console.log(isModuleLoaded);
+		// const userCourses = this.props.userProfile.skills;
 
 		return (
 			<LayoutWithSidebar sidebar={<UserProgressToolbar />}>

@@ -76,6 +76,10 @@
 				font-size: 14px;
 				text-align: left;
 				text-transform: lowercase;
+
+				.lesson-tiles_comments{
+					color:#fff;
+				}
 				&.active {
 					background-color: $primary_color;
 					.lesson-tiles_questions {

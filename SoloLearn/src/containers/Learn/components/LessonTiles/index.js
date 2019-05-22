@@ -59,7 +59,7 @@ const LessonTiles = ({
 							}
 							{ slayLessons &&
 								<Container className={`info ${lessonState.stateClass}`}>
-									<SecondaryTextBlock>
+									<SecondaryTextBlock class="lesson-tiles_comments">
 										{
 											lesson.comments === 1 ?
 												t('common.comment-format-one') :
