@@ -1,10 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import VisibilitySensor from 'react-visibility-sensor';
 import {
 	Container,
-	Image,
 	FlexBox,
 	TextBlock,
+	Image as ImageAtom,
 } from 'components/atoms';
 import {
 	ContainerLink,
@@ -38,6 +38,18 @@ const UserPost = ({
 	views,
 }) => {
 	const impressionTimeoutIdRef = useRef();
+	const [ imageShouldWrap, setImageShouldWrap ] = useState(false);
+
+	useEffect(() => {
+		const img = new Image();
+		img.src = imageUrl;
+		img.onload = () => {
+			console.log('image height', img.height);
+			if (img.height > window.innerHeight * 0.5) {
+				setImageShouldWrap(true);
+			}
+		};
+	}, []);
 
 	const cancelImpressionTimer = () => {
 		if (impressionTimeoutIdRef.current) {
@@ -77,32 +89,36 @@ const UserPost = ({
 						badge={user.badge}
 					/>
 				</FlexBox>
-				<ContainerLink to={`/post/${userPostId}`}>
-					{message ?
-						<Container style={{ padding: background ? 0 : '0 15px' }}>
-							<UserPostEditor
-								measure={measure || (() => { })}
-								background={background || { type: 'none', id: -1 }}
-								editorInitialText={
-									(message.match(/\n/g) || []).length > 5 ?
-										`${message.slice(0, 100)}`
-										:
-										message
-								}
-								isEditorReadOnly
-							/>
-							{(message.match(/\n/g) || []).length > 5 ?
-								<TextBlock className="up-feed-item-continue-reading-text">...Continue Reading</TextBlock> : null
+				{message ?
+					<Container style={{ padding: background ? 0 : '0 15px' }}>
+						<UserPostEditor
+							measure={measure || (() => { })}
+							background={background || { type: 'none', id: -1 }}
+							editorInitialText={
+								(message.match(/\n/g) || []).length > 5 ?
+									`${message.slice(0, 100)}`
+									:
+									message
 							}
-						</Container>
-						: null
-					}
-					{imageUrl ?
-						<Image
-							src={imageUrl}
-							onLoad={measure || (() => { })}
-							className="user-post-feed-image"
+							isEditorReadOnly
 						/>
+						{(message.match(/\n/g) || []).length > 5 &&
+							<ContainerLink to={`/post/${userPostId}`}>
+								<TextBlock className="up-feed-item-continue-reading-text">...Continue Reading</TextBlock>
+							</ContainerLink>
+						}
+					</Container>
+					: null
+				}
+				<ContainerLink to={`/post/${userPostId}`}>
+					{imageUrl ?
+						<Container
+							onLoad={measure || (() => { })}
+							className={imageShouldWrap ? 'user-post-feed-image-container wrap' : 'user-post-feed-image-container'}
+						>
+							<ImageAtom src={imageUrl} className="user-post-feed-image" />
+							{imageShouldWrap && <Container className="up-feed-image-shadow" />}
+						</Container>
 						: null}
 				</ContainerLink>
 				<FeedBottomBarFullStatistics
@@ -114,6 +130,7 @@ const UserPost = ({
 					comments={comments}
 					views={views}
 					className="up-feed-item-bottom-bar"
+					commentIconLink={`/post/${userPostId}`}
 				/>
 			</FlexBox>
 		</VisibilitySensor>
