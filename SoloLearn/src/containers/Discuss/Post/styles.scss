@@ -71,11 +71,15 @@
 				}
 			}
 			.question {
-				width: 100%;
 				display: flex;
+				width: 100%;
+				min-width: 0;
 				flex-direction: column;
 				align-items: flex-start;
 				word-break: break-word;
+				.question-preview-container {
+					max-width: 100%;
+				}
 				.title, .tags, .message, .preview {
 					margin: $secondary_gap_size 0 0 0;
 				}

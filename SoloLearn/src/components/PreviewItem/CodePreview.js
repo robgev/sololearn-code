@@ -1,7 +1,12 @@
 import React, { PureComponent } from 'react';
 import Service from 'api/service';
+import {
+	Link,
+	FlexBox,
+	PaperContainer,
+	SecondaryTextBlock,
+} from 'components/atoms';
 import { LanguageLabel } from 'components/molecules';
-import { PaperContainer, SecondaryTextBlock, Link } from 'components/atoms';
 
 class CodePreview extends PureComponent {
 	constructor() {
@@ -34,10 +39,12 @@ class CodePreview extends PureComponent {
 			language, name, userName,
 		} = codeData;
 		return (
-			<PaperContainer>
-				<LanguageLabel language={language} />
-				<Link to={this.props.to} className="item">{name}</Link>
-				<SecondaryTextBlock className="item"> {userName}</SecondaryTextBlock>
+			<PaperContainer className="preview-wrapper">
+				<LanguageLabel className="code-preview_language-label" language={language} />
+				<FlexBox className="preview-info" column>
+					<Link to={this.props.to} className="item">{name}</Link>
+					<SecondaryTextBlock className="item"> {userName}</SecondaryTextBlock>
+				</FlexBox>
 			</PaperContainer>
 		);
 	}
