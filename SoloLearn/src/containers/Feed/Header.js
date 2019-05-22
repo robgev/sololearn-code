@@ -87,7 +87,7 @@ class Header extends PureComponent {
 						<Container className="profile-progress-wrapper">
 							<ProgressBar
 								value={100 * currentXp / this.maxXp}
-								minText={t(`profile.status-${this.currentBadge}`)}
+								minText={this.currentBadge ? t(`profile.status-${this.currentBadge}`) : ''}
 								maxText={t(`profile.status-${this.nextMilestone}`)}
 							/>
 						</Container>
