@@ -50,14 +50,15 @@ class Header extends PureComponent {
 		this.state = {
 			isCreatePostPopupOpen: false,
 		};
-		this.userPostHintsArray = [
-			'user_post.hints.user-post-form-hint-1',
-			'user_post.hints.user-post-form-hint-2',
-			'user_post.hints.user-post-form-hint-3',
-		];
-		this.randomHint = this.userPostHintsArray[
-			Math.floor(Math.random() * this.userPostHintsArray.length)
-		];
+		// this is for random hint selection in the input form like mobile ->
+		// this.userPostHintsArray = [
+		// 	'user_post.hints.user-post-form-hint-1',
+		// 	'user_post.hints.user-post-form-hint-2',
+		// 	'user_post.hints.user-post-form-hint-3',
+		// ];
+		// this.randomHint = this.userPostHintsArray[
+		// 	Math.floor(Math.random() * this.userPostHintsArray.length)
+		// ];
 	}
 
 	inputClickHandler = (e) => {
@@ -92,16 +93,10 @@ class Header extends PureComponent {
 						</Container>
 					</Container>
 				</Container>
-				<FlexBox justifyBetween className="actions">
-					<Input
-						onClick={this.inputClickHandler}
-						placeholder={t(this.randomHint)}
-					/>
-					<ContainerLink to="/discover">
-						<RaisedButton color="secondary">
-							{t('discover_peers.title')}
-						</RaisedButton>
-					</ContainerLink>
+				<FlexBox justifyEnd className="actions">
+					<RaisedButton color="primary" onClick={() => this.setState({ isCreatePostPopupOpen: true })}>
+						Create a Post
+					</RaisedButton>
 				</FlexBox>
 				<Popup
 					open={this.state.isCreatePostPopupOpen}
