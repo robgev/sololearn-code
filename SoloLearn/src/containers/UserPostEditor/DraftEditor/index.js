@@ -25,7 +25,7 @@ const DraftEditor = ({
 	t,
 }) => {
 	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
-	const [ fontSize, setFontSize ] = useState(36);
+	const [ fontSize, setFontSize ] = useState(isEditorReadOnly ? 15 : 36);
 	const [ suggestions, setSuggestions ] = useState([]);
 	const hasBackground = background && background.type !== 'none';
 	const mentionPluginRef = useRef(createMentionPlugin({
@@ -168,7 +168,9 @@ const DraftEditor = ({
 			setEditorText(currentContent);
 		}
 		const newLinesCount = (text.match(/\n/g) || []).length;
-		setFontSize(getFontSize(text.length, newLinesCount));
+		if (!isEditorReadOnly) {
+			setFontSize(getFontSize(text.length, newLinesCount));
+		}
 		measure();
 	}, [ editorState ]);
 
@@ -185,6 +187,7 @@ const DraftEditor = ({
 					cursor: isEditorReadOnly ? 'cursor' : 'text',
 					height: isEditorReadOnly ? '100%' : 250,
 					minHeight: isEditorReadOnly ? 50 : 250,
+					overflow: isEditorReadOnly ? 'hidden' : 'auto',
 				}
 				:
 				{

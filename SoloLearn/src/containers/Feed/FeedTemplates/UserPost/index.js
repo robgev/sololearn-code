@@ -38,6 +38,8 @@ const UserPost = ({
 	views,
 }) => {
 	const impressionTimeoutIdRef = useRef();
+	const textContainerRef = useRef();
+	const [ textShouldWrap, setTextShouldWrap ] = useState(false);
 	const [ imageShouldWrap, setImageShouldWrap ] = useState(false);
 
 	useEffect(() => {
@@ -50,6 +52,13 @@ const UserPost = ({
 			}
 		};
 	}, []);
+
+	useEffect(() => {
+		console.log('textRef', textContainerRef.height);
+		if (textContainerRef.offsetHeight > 75) {
+			setTextShouldWrap(true);
+		}
+	}, [ textContainerRef ]);
 
 	const cancelImpressionTimer = () => {
 		if (impressionTimeoutIdRef.current) {
@@ -90,22 +99,28 @@ const UserPost = ({
 					/>
 				</FlexBox>
 				{message ?
-					<Container style={{ padding: background ? 0 : '0 15px' }}>
-						<UserPostEditor
-							measure={measure || (() => { })}
-							background={background || { type: 'none', id: -1 }}
-							editorInitialText={
-								(message.match(/\n/g) || []).length > 5 ?
-									`${message.slice(0, 100)}`
-									:
-									message
-							}
-							isEditorReadOnly
-						/>
-						{(message.match(/\n/g) || []).length > 5 &&
+					<Container style={{
+						padding: background ? 0 : '0 15px',
+					}}
+					>
+						<Container style={{
+							height: !background ? '95px' : '100%',
+							overflow: 'hidden',
+						}}
+						>
+							<UserPostEditor
+								measure={measure || (() => { })}
+								background={background || { type: 'none', id: -1 }}
+								editorInitialText={message}
+								isEditorReadOnly
+							/>
+						</Container>
+						{(message.match(/\n/g) || []).length > 5 || message.length > 200 ?
 							<ContainerLink to={`/post/${userPostId}`}>
 								<TextBlock className="up-feed-item-continue-reading-text">...Continue Reading</TextBlock>
 							</ContainerLink>
+							:
+							null
 						}
 					</Container>
 					: null
