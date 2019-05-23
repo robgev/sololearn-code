@@ -104,7 +104,7 @@ const UserPost = ({
 					}}
 					>
 						<Container style={{
-							height: !background ? '95px' : '100%',
+							height: !background && message.length > 50 ? '95px' : '100%',
 							overflow: 'hidden',
 						}}
 						>

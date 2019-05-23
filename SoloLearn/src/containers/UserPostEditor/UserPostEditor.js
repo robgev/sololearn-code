@@ -5,8 +5,7 @@ import { withRouter, browserHistory } from 'react-router';
 import { convertToRaw } from 'draft-js';
 
 import {
-	Title,
-	PaperContainer,
+	PopupTitle,
 	FlexBox,
 	Chip,
 	Loading,
@@ -48,18 +47,18 @@ const UserPostEditor = ({
 	initialImageSource = null,
 	initialUserPostId = null,
 }) => {
-	const [ backgrounds, setBackgrounds ] = useState([]);
-	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
-	const [ selectedBackgroundId, setSelectedBackgroundId ] = useState(initialSelectedBackgroundId);
+	const [backgrounds, setBackgrounds] = useState([]);
+	const [canApplyBackground, setCanApplyBackground] = useState(true);
+	const [selectedBackgroundId, setSelectedBackgroundId] = useState(initialSelectedBackgroundId);
 
 	const imageInputRef = useRef();
-	const [ imageSource, setImageSource ] = useState(initialImageSource || null);
-	const [ imageData, setImageData ] = useState(null);
-	const [ isPostButtonDisabled, togglePostButtonDisabled ] = useState(true);
-	const [ editorText, setEditorText ] = useState('');
+	const [imageSource, setImageSource] = useState(initialImageSource || null);
+	const [imageData, setImageData] = useState(null);
+	const [isPostButtonDisabled, togglePostButtonDisabled] = useState(true);
+	const [editorText, setEditorText] = useState('');
 
-	const [ isSnackBarOpen, toggleSnackBarIsOpen ] = useState(false);
-	const [ snackMessage, setSnackMessage ] = useState('');
+	const [isSnackBarOpen, toggleSnackBarIsOpen] = useState(false);
+	const [snackMessage, setSnackMessage] = useState('');
 
 	const computeCanApplyBackground = () => {
 		if (editorText) {
@@ -78,7 +77,7 @@ const UserPostEditor = ({
 	useEffect(() => {
 		getPostBackgrounds()
 			.then((res) => {
-				setBackgrounds([ { type: 'none', id: -1 }, ...res.backgrounds ]);
+				setBackgrounds([{ type: 'none', id: -1 }, ...res.backgrounds]);
 			});
 		if (initialImageSource) {
 			setImageSource(initialImageSource);
@@ -92,7 +91,7 @@ const UserPostEditor = ({
 		} else {
 			togglePostButtonDisabled(true);
 		}
-	}, [ editorText, imageSource ]);
+	}, [editorText, imageSource]);
 
 	const onImageSelect = async (e) => {
 		if (e.target.files[0]) {
@@ -132,7 +131,7 @@ const UserPostEditor = ({
 
 	useEffect(() => {
 		computeCanApplyBackground();
-	}, [ editorText, imageSource ]);
+	}, [editorText, imageSource]);
 
 	const backgroundId = canApplyBackground ? selectedBackgroundId : -1;
 
@@ -209,101 +208,104 @@ const UserPostEditor = ({
 
 	return (
 		<Container>
-			{backgrounds && backgrounds.length ?
-				<PaperContainer className="user-post-main-container">
-					<FlexBox column fullWith>
-						<FlexBox justifyBetween align>
-							<Title className="user-post-main-title">{`${params.id ? 'Edit post' : 'New Post'}`}</Title>
-							<IconButton onClick={() => closePopup()}>
-								<Close />
-							</IconButton>
-						</FlexBox>
-						<Container>
-							<ProfileAvatar
-								userID={profile.id}
-								avatarUrl={profile.avatarUrl}
-								badge={profile.badge}
-								userName={profile.name}
-								withUserNameBox
-								withBorder
-								className="profile-avatar-container"
-							/>
-						</Container>
-						<DraftEditor
-							background={background}
-							setEditorText={setEditorText}
-							editorInitialText={draftEditorInitialText}
-						/>
-						<FlexBox justifyEnd className="user-post-max-length-container">
-							<SecondaryTextBlock className="count">
-								{editorText ? editorText.getPlainText().length : 0} / {USER_POST_MAX_LENGTH}
-							</SecondaryTextBlock>
-						</FlexBox>
-						<FlexBox justify align>
-							<Container className="user-post-image-preview-container">
-								<IconButton
-									onClick={() => {
-										imageInputRef.current.value = '';
-										removeImage();
-									}}
-									className="image-preview-remove-icon"
-									style={{ display: imageSource ? 'block' : 'none' }}
-								>
-									<Close />
-								</IconButton>
-								<AtomImage src={imageSource || ''} className="user-post-image-preview" />
+			<Container className="user-post-main-container">
+				<FlexBox justifyBetween align>
+					<PopupTitle className="user-post-main-title">
+						{`${params.id ? 'Edit post' : 'New Post'}`}
+					</PopupTitle>
+					<IconButton onClick={() => closePopup()}>
+						<Close />
+					</IconButton>
+				</FlexBox>
+				<Container className="user-post-main-content">
+					{backgrounds && backgrounds.length ?
+						<FlexBox column fullWith>
+							<Container>
+								<ProfileAvatar
+									userID={profile.id}
+									avatarUrl={profile.avatarUrl}
+									badge={profile.badge}
+									userName={profile.name}
+									withUserNameBox
+									withBorder
+									className="profile-avatar-container"
+								/>
 							</Container>
-						</FlexBox>
-
-						<FlexBox align justify className="add-image-and-backgrounds-container">
-							<Chip
-								icon={<AddPhotoAlternate className="add-image-icon" />}
-								label={imageSource ? 'Change Image' : 'Add Image'}
-								className="add-image-chip"
-								onClick={() => imageInputRef.current.click()}
+							<DraftEditor
+								background={background}
+								setEditorText={setEditorText}
+								editorInitialText={draftEditorInitialText}
 							/>
-							<UploadImageInput inputRef={imageInputRef} handleChange={onImageSelect} />
-							{
-								canApplyBackground
-									? (
-										<FlexBox className="backgrounds-container">
-											{
-												backgrounds.map(el =>
-													(<BackgroundIconButton
-														onSelect={setSelectedBackgroundId}
-														background={el}
-													/>))
-											}
-										</FlexBox>
-									)
-									: null
-							}
+							<FlexBox justifyEnd className="user-post-max-length-container">
+								<SecondaryTextBlock className="count">
+									{editorText ? editorText.getPlainText().length : 0} / {USER_POST_MAX_LENGTH}
+								</SecondaryTextBlock>
+							</FlexBox>
+							<FlexBox justify align>
+								<Container className="user-post-image-preview-container">
+									<IconButton
+										onClick={() => {
+											imageInputRef.current.value = '';
+											removeImage();
+										}}
+										className="image-preview-remove-icon"
+										style={{ display: imageSource ? 'block' : 'none' }}
+									>
+										<Close />
+									</IconButton>
+									<AtomImage src={imageSource || ''} className="user-post-image-preview" />
+								</Container>
+							</FlexBox>
+
+							<FlexBox align justify className="add-image-and-backgrounds-container">
+								<Chip
+									icon={<AddPhotoAlternate className="add-image-icon" />}
+									label={imageSource ? 'Change Image' : 'Add Image'}
+									className="add-image-chip"
+									onClick={() => imageInputRef.current.click()}
+								/>
+								<UploadImageInput inputRef={imageInputRef} handleChange={onImageSelect} />
+								{
+									canApplyBackground
+										? (
+											<FlexBox className="backgrounds-container">
+												{
+													backgrounds.map(el =>
+														(<BackgroundIconButton
+															onSelect={setSelectedBackgroundId}
+															background={el}
+														/>))
+												}
+											</FlexBox>
+										)
+										: null
+								}
+							</FlexBox>
+
 						</FlexBox>
-
-						<EditorActions
-							isPostButtonDisabled={isPostButtonDisabled}
-							createOrEditPostHandler={initialUserPostId ? editPostHandler : createPostHandler}
-							closePopup={closePopup}
-							initialUserPostId={initialUserPostId}
-						/>
-
-					</FlexBox>
-				</PaperContainer>
-				:
-				<PaperContainer className="user-post-loader-container">
-					<Loading />
-				</PaperContainer>
-			}
-			<Snackbar
-				anchorOrigin={{
-					vertical: 'bottom',
-					horizontal: 'right',
-				}}
-				open={isSnackBarOpen}
-				autoHideDuration={5000}
-				onClose={() => toggleSnackBarIsOpen(false)}
-				message={snackMessage}
-			/>
+						:
+						<FlexBox fullWith justify align className="up-loader-container">
+							<Loading />
+						</FlexBox>
+					}
+				</Container>
+				<EditorActions
+					isPostButtonDisabled={isPostButtonDisabled}
+					createOrEditPostHandler={initialUserPostId ? editPostHandler : createPostHandler}
+					closePopup={closePopup}
+					initialUserPostId={initialUserPostId}
+				/>
+				<Snackbar
+					anchorOrigin={{
+						vertical: 'bottom',
+						horizontal: 'right',
+					}}
+					open={isSnackBarOpen}
+					autoHideDuration={5000}
+					onClose={() => toggleSnackBarIsOpen(false)}
+					message={snackMessage}
+				/>
+			</Container>
 		</Container>
 	);
 };

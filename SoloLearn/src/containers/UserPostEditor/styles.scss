@@ -4,67 +4,63 @@
 .user-post-main-container {
 	padding: 0px;
 	width: 500px;
-	min-height: 300px;
+	min-height: 400px;
 	.user-post-main-title {
 		margin-bottom: 5px;
 		padding: 10px;
 	}
-	.profile-avatar-container {
-		margin: 5px 0;
-		padding: 10px;
-	}
-	.add-image-and-backgrounds-container {
-		padding: 0 10px;
-		flex-direction: column;
-		.add-image-chip {
-			margin: 10px 0;
-			padding: 5px;
-			.add-image-icon {
-				color: $primary_color;
+	.user-post-main-content {
+		min-width: 400px;
+		min-height: 310px;
+		height: 100%;
+		.profile-avatar-container {
+			margin: 5px 0;
+			padding: 10px;
+		}
+		.add-image-and-backgrounds-container {
+			padding: 0 10px;
+			flex-direction: column;
+			.add-image-chip {
+				margin: 10px 0;
+				padding: 5px;
+				.add-image-icon {
+					color: $primary_color;
+				}
+			}
+			.backgrounds-container {
+				margin: 5px 0;
+				align-self: center;
+				flex-flow: wrap;
 			}
 		}
-		.backgrounds-container {
+		.up-loader-container {
+			min-height: 400px;
+			height: 100%;
+		}
+		.user-post-image-preview-container {
+			position: relative;
+			.image-preview-remove-icon {
+				position: absolute;
+				color: white;
+				right: 5px;
+				top: 5px;
+				z-index: 200;
+				mix-blend-mode: difference;
+			}
+			.user-post-image-preview {
+				max-width: 200px;
+				border-radius: 3px;
+			}
+		}
+		.user-post-max-length-container {
 			margin: 5px 0;
-			align-self: center;
-			flex-flow: wrap;
+			padding-right: 10px;
 		}
 	}
 
-	.user-post-image-preview-container {
-		position: relative;
-		.image-preview-remove-icon {
-			position: absolute;
-			color: white;
-			right: 5px;
-			top: 5px;
-			z-index: 200;
-			mix-blend-mode: difference;
-		}
-		.user-post-image-preview {
-			max-width: 200px;
-			border-radius: 3px;
-		}
-	}
-	.user-post-max-length-container {
-		margin: 5px 0;
-		padding-right: 10px;
-	}
 }
-
-.user-post-loader-container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	min-width: 520px;
-	min-height: 498px;
-}
-
 @include for-until-desktop {
 	.user-post-main-container {
 		width: 100%;
-	}
-	.user-post-loader-container {
-		min-width: 400px;
-		min-height: 488px;
 	}
 }
