@@ -38,27 +38,13 @@ const UserPost = ({
 	views,
 }) => {
 	const impressionTimeoutIdRef = useRef();
-	const textContainerRef = useRef();
-	const [ textShouldWrap, setTextShouldWrap ] = useState(false);
 	const [ imageShouldWrap, setImageShouldWrap ] = useState(false);
 
-	useEffect(() => {
-		const img = new Image();
-		img.src = imageUrl;
-		img.onload = () => {
-			console.log('image height', img.height);
-			if (img.height > window.innerHeight * 0.5) {
-				setImageShouldWrap(true);
-			}
-		};
-	}, []);
-
-	useEffect(() => {
-		console.log('textRef', textContainerRef.height);
-		if (textContainerRef.offsetHeight > 75) {
-			setTextShouldWrap(true);
+	const onImageLoad = (e) => {
+		if (e.target.height > window.innerHeight * 0.5) {
+			setImageShouldWrap(true);
 		}
-	}, [ textContainerRef ]);
+	};
 
 	const cancelImpressionTimer = () => {
 		if (impressionTimeoutIdRef.current) {
@@ -131,7 +117,7 @@ const UserPost = ({
 							onLoad={measure || (() => { })}
 							className={imageShouldWrap ? 'user-post-feed-image-container wrap' : 'user-post-feed-image-container'}
 						>
-							<ImageAtom src={imageUrl} className="user-post-feed-image" />
+							<ImageAtom src={imageUrl} className="user-post-feed-image" onLoad={onImageLoad} />
 							{imageShouldWrap && <Container className="up-feed-image-shadow" />}
 						</Container>
 						: null}
