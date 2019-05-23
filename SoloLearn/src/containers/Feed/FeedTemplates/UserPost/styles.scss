@@ -1,0 +1,22 @@
+@import "~styles/colors";
+
+.user-post-feed-item-container {
+	.user-post-feed-item-profile-container {
+		padding: 15px;
+		.up-profile-username-link {
+			padding: 0 5px;
+		}
+	}
+	.user-post-feed-image {
+		width: 100%;
+	}
+	.up-feed-item-bottom-bar {
+		margin-left: 0;
+		padding: 0 15px;
+	}
+	.up-feed-item-continue-reading-text {
+		font-weight: 500;
+		font-size: 12px;
+		color: $primary_color;
+	}
+}
