@@ -64,6 +64,12 @@ const UserPost = ({
 		}
 	};
 
+	useEffect(() => {
+		if (imageShouldWrap) {
+			measure();
+		}
+	}, [ imageShouldWrap ]);
+
 	return (
 		<VisibilitySensor onChange={onVisibilityChange}>
 			<FlexBox column className="user-post-feed-item-container">
@@ -92,7 +98,6 @@ const UserPost = ({
 						}}
 						>
 							<UserPostEditor
-								measure={measure || (() => { })}
 								background={background || { type: 'none', id: -1 }}
 								editorInitialText={message}
 								isEditorReadOnly
