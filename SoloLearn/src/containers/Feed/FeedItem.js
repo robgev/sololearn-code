@@ -252,9 +252,9 @@ class FeedItem extends Component {
 							background={feedItem.userPost.background}
 							message={feedItem.userPost.message}
 							imageUrl={feedItem.userPost.imageUrl}
-							type="post"
+							type="userPost"
 							date={feedItem.date}
-							id={feedItem.id}
+							id={feedItem.userPost.id}
 							vote={feedItem.vote}
 							votes={feedItem.votes}
 							measure={this.props.measure}
