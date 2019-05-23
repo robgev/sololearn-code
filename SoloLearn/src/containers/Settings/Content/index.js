@@ -15,7 +15,7 @@ import {
 	Loading,
 	Container,
 	TextBlock,
-	HorizontalDivider
+	HorizontalDivider,
 } from 'components/atoms';
 
 const mapStateToProps = ({ settings: { feedSettings } }) => ({ feedSettings });
@@ -43,7 +43,7 @@ class Content extends PureComponent {
 	}
 
 	resetFeed = () => {
-		if(this.feedTimer) {
+		if (this.feedTimer) {
 			window.clearTimeout(this.feedTimer);
 		}
 
@@ -53,26 +53,26 @@ class Content extends PureComponent {
 			clearFeedItems();
 			getFeedItems();
 			getPinnedFeedItems();
-		},1000);
+		}, 1000);
 	}
 
 	onToggle = (event) => {
 		const { feedSettings, updateSetting } = this.props;
 		const currentSettingKey = event.target.name;
-		updateSetting({[currentSettingKey]: !feedSettings[currentSettingKey]});
+		updateSetting({ [currentSettingKey]: !feedSettings[currentSettingKey] });
 		this.resetFeed();
-	} 
+	}
 
 	render() {
 		const { loading } = this.state;
 		const { feedSettings, updateSetting } = this.props;
-		return loading? (<Loading className="settings_loading"/>) : (
+		return loading ? (<Loading className="settings_loading" />) : (
 			<Container
 				className="content-settings-container"
 			>
 				<Container className="content-setting-banner">
 					<TextBlock>{texts.customizeFeed}</TextBlock>
-					<HorizontalDivider/>
+					<HorizontalDivider />
 				</Container>
 				{feedSettings && Object.keys(feedSettings).map(currentSettingKey => (
 					<FeedSettingToggle
@@ -80,7 +80,7 @@ class Content extends PureComponent {
 						name={currentSettingKey}
 						isSettingOn={feedSettings[currentSettingKey]}
 						onToggle={this.onToggle}
-						
+
 					/>
 				))}
 			</Container>

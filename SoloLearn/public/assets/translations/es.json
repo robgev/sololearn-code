@@ -412,7 +412,8 @@
     "title": "Notificaciones"
   },
   "feed": {
-    "title": "Actividad Reciente",
+		"title": "Actividad Reciente",
+		"weekly-title": "Popular esta Semana",
     "most-recent-title": "Más Reciente",
     "groupped-chellenge-format": "completó {{challengesCount}} desafío",
     "suggestions": "Sugerencias",

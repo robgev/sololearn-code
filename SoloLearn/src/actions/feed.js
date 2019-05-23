@@ -17,14 +17,18 @@ export const clearProfileFeedItems = () => ({ type: types.CLEAR_PROFILE_FEED_ITE
 
 export const clearFeedItems = () => ({ type: types.CLEAR_FEED });
 
-export const getFeedItemsInternal = () => async (dispatch, getState) => {
+export const getFeedItemsInternal = isHighlights => async (dispatch, getState) => {
 	try {
 		const requestLimitCount = 20;
 		const { feed: { entities: feed }, discoverSuggestions } = getState();
 		const filteredFeed = feed.filter(item => item.type !== feedTypes.suggestions);
 		const suggestionsBatch = feed.length - filteredFeed.length;
 		const fromId = filteredFeed.length ? filteredFeed[filteredFeed.length - 1].id : null;
-		const response = await Service.request('Profile/GetFeed', { fromId, count: requestLimitCount });
+		const endpoint = isHighlights ? 'Profile/GetFeedHighlights' : 'Profile/GetFeed';
+		const params = isHighlights
+			? { index: filteredFeed.length, count: requestLimitCount }
+			: { fromId, count: requestLimitCount };
+		const response = await Service.request(endpoint, params);
 		const { length } = response.feed;
 		const feedItems = groupFeedItems(response.feed);
 		const isFirstItemGrouppedChallenge = feed.length === 0 && feedItems.length && feedItems[0].type === feedTypes.mergedChallange;
@@ -45,8 +49,8 @@ export const getFeedItemsInternal = () => async (dispatch, getState) => {
 		if (feedItemsCount < requestLimitCount / 2) {
 			const lastItem = feedItems[feedItems.length - 1];
 			if (lastItem !== undefined) {
-				const startId = lastItem.type === 444 ? lastItem.toId : lastItem.id;
-				dispatch(getFeedItemsInternal(startId));
+				// const startId = lastItem.type === 444 ? lastItem.toId : lastItem.id;
+				dispatch(getFeedItemsInternal());
 			}
 		}
 		if (length === 0) {

@@ -1,10 +1,16 @@
 @import '~styles/utils';
 
 .feed-items-wrapper {
-	.sub-title {
-		@extend %title-text;
-		display: block;
-		padding: 15px 5px;
-		padding-bottom: 14px;
+	.feed-items_select {
+		.atom_select-input {
+			padding-top: 0;
+			padding-bottom: 0;
+			.sub-title {
+				@extend %title-text;
+				display: block;
+				padding: 15px 5px;
+				padding-bottom: 14px;
+			}
+		}
 	}
 }

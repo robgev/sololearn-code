@@ -412,7 +412,8 @@
     "title": "Уведомления"
   },
   "feed": {
-    "title": "Лента",
+		"title": "Лента",
+		"weekly-title": "Лучшее за Неделю",
     "most-recent-title": "Последние",
     "groupped-chellenge-format": "завершил {{challengesCount}} матчей",
     "suggestions": "Предложения",
