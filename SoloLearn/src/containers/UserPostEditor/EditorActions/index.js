@@ -1,4 +1,5 @@
 import React from 'react';
+import { translate } from 'react-i18next';
 import { Container, PopupActions } from 'components/atoms';
 import { PromiseButton, FlatButton } from 'components/molecules';
 
@@ -9,6 +10,7 @@ const EditorActions = ({
 	createOrEditPostHandler,
 	closePopup,
 	initialUserPostId,
+	t,
 }) => (
 	<PopupActions>
 		<Container className="user-post-actions-container">
@@ -16,7 +18,7 @@ const EditorActions = ({
 				onClick={closePopup}
 				className="user-post-cancel-button"
 			>
-					Cancel
+				{t('common.cancel-title')}
 			</FlatButton>
 			<PromiseButton
 				raised
@@ -24,10 +26,10 @@ const EditorActions = ({
 				disabled={isPostButtonDisabled}
 				fire={createOrEditPostHandler}
 			>
-				{initialUserPostId ? 'Save' : 'Create Post'}
+				{initialUserPostId ? t('common.save-action-title') : 'Create Post'}
 			</PromiseButton>
 		</Container>
 	</PopupActions>
 );
 
-export default EditorActions;
+export default translate()(EditorActions);
