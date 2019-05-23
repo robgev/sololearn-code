@@ -148,7 +148,7 @@ class FeedList extends Component {
 																rowCount={Number.MAX_SAFE_INTEGER}
 																listRowCount={feed.length}
 															/>
-															{showFab ?
+															{showFab &&
 																<FloatingActionButton
 																	color="secondary"
 																	alignment="right"
@@ -156,7 +156,7 @@ class FeedList extends Component {
 																>
 																	<Add />
 																</FloatingActionButton>
-																: null}
+															}
 														</Container>
 													)
 												}
