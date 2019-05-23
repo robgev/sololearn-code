@@ -27,7 +27,7 @@ import UserPostDraftEditor from 'containers/UserPostEditor/DraftEditor';
 import UserPostEditor from 'containers/UserPostEditor';
 import Comments from 'containers/Comments/CommentsBase';
 
-import { getUserPost, deleteUserPost } from './userpostdetails.actions';
+import { getUserPost, deleteUserPost, sendImpressionByPostId } from './userpostdetails.actions';
 
 import './styles.scss';
 
@@ -43,6 +43,10 @@ const UserPostDetails = ({
 			getUserPost(parseInt(params.id, 10))
 				.then(res => setUserPost(res.post));
 		}
+	}, []);
+
+	useEffect(() => {
+		sendImpressionByPostId(parseInt(params.id, 10));
 	}, []);
 
 	const deletePostHandler = () => {

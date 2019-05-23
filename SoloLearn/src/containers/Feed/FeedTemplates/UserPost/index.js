@@ -15,12 +15,9 @@ import {
 import { FeedBottomBarFullStatistics } from 'components/organisms';
 
 import UserPostEditor from 'containers/UserPostEditor/DraftEditor';
-import Service from 'api/service';
+import { sendImpressionByPostId } from 'containers/UserPostDetails/userpostdetails.actions';
 
 import './styles.scss';
-
-const sendImpressionByPostId = id =>
-	Service.request(`Profile/AddPostImpression?id=${id}`);
 
 const UserPost = ({
 	user,
