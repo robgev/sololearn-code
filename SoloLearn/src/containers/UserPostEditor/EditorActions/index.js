@@ -1,5 +1,6 @@
 import React from 'react';
-import { FlexBox } from 'components/atoms';
+import { translate } from 'react-i18next';
+import { Container, PopupActions } from 'components/atoms';
 import { PromiseButton, FlatButton } from 'components/molecules';
 
 import './styles.scss';
@@ -9,23 +10,26 @@ const EditorActions = ({
 	createOrEditPostHandler,
 	closePopup,
 	initialUserPostId,
+	t,
 }) => (
-	<FlexBox justifyEnd className="user-post-actions-container">
-		<FlatButton
-			onClick={closePopup}
-			className="user-post-cancel-button"
-		>
-				Cancel
-		</FlatButton>
-		<PromiseButton
-			raised
-			color="primary"
-			disabled={isPostButtonDisabled}
-			fire={createOrEditPostHandler}
-		>
-			{initialUserPostId ? 'Save' : 'Create Post'}
-		</PromiseButton>
-	</FlexBox>
+	<PopupActions>
+		<Container className="user-post-actions-container">
+			<FlatButton
+				onClick={closePopup}
+				className="user-post-cancel-button"
+			>
+				{t('common.cancel-title')}
+			</FlatButton>
+			<PromiseButton
+				raised
+				color="primary"
+				disabled={isPostButtonDisabled}
+				fire={createOrEditPostHandler}
+			>
+				{initialUserPostId ? t('common.save-action-title') : 'Create Post'}
+			</PromiseButton>
+		</Container>
+	</PopupActions>
 );
 
-export default EditorActions;
+export default translate()(EditorActions);

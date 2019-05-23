@@ -1,10 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import VisibilitySensor from 'react-visibility-sensor';
 import {
 	Container,
-	Image,
 	FlexBox,
 	TextBlock,
+	Image as ImageAtom,
 } from 'components/atoms';
 import {
 	ContainerLink,
@@ -35,6 +35,13 @@ const UserPost = ({
 	views,
 }) => {
 	const impressionTimeoutIdRef = useRef();
+	const [ imageShouldWrap, setImageShouldWrap ] = useState(false);
+
+	const onImageLoad = (e) => {
+		if (e.target.height > window.innerHeight * 0.5) {
+			setImageShouldWrap(true);
+		}
+	};
 
 	const cancelImpressionTimer = () => {
 		if (impressionTimeoutIdRef.current) {
@@ -74,32 +81,42 @@ const UserPost = ({
 						badge={user.badge}
 					/>
 				</FlexBox>
-				<ContainerLink to={`/post/${userPostId}`}>
-					{message ?
-						<Container style={{ padding: background ? 0 : '0 15px' }}>
+				{message ?
+					<Container style={{
+						padding: background ? 0 : '0 15px',
+					}}
+					>
+						<Container style={{
+							height: !background && message.length > 50 ? '95px' : '100%',
+							overflow: 'hidden',
+						}}
+						>
 							<UserPostEditor
 								measure={measure || (() => { })}
 								background={background || { type: 'none', id: -1 }}
-								editorInitialText={
-									(message.match(/\n/g) || []).length > 5 ?
-										`${message.slice(0, 100)}`
-										:
-										message
-								}
+								editorInitialText={message}
 								isEditorReadOnly
 							/>
-							{(message.match(/\n/g) || []).length > 5 ?
-								<TextBlock className="up-feed-item-continue-reading-text">...Continue Reading</TextBlock> : null
-							}
 						</Container>
-						: null
-					}
+						{(message.match(/\n/g) || []).length > 5 || message.length > 200 ?
+							<ContainerLink to={`/post/${userPostId}`}>
+								<TextBlock className="up-feed-item-continue-reading-text">...Continue Reading</TextBlock>
+							</ContainerLink>
+							:
+							null
+						}
+					</Container>
+					: null
+				}
+				<ContainerLink to={`/post/${userPostId}`}>
 					{imageUrl ?
-						<Image
-							src={imageUrl}
+						<Container
 							onLoad={measure || (() => { })}
-							className="user-post-feed-image"
-						/>
+							className={imageShouldWrap ? 'user-post-feed-image-container wrap' : 'user-post-feed-image-container'}
+						>
+							<ImageAtom src={imageUrl} className="user-post-feed-image" onLoad={onImageLoad} />
+							{imageShouldWrap && <Container className="up-feed-image-shadow" />}
+						</Container>
 						: null}
 				</ContainerLink>
 				<FeedBottomBarFullStatistics
@@ -111,6 +128,7 @@ const UserPost = ({
 					comments={comments}
 					views={views}
 					className="up-feed-item-bottom-bar"
+					commentIconLink={`/post/${userPostId}`}
 				/>
 			</FlexBox>
 		</VisibilitySensor>
