@@ -413,6 +413,7 @@
 	},
 	"feed": {
 		"title": "Activity Feed",
+		"weekly-title": "Weekly Highlights",
 		"most-recent-title": "Most Recent",
 		"groupped-chellenge-format": "has completed {{challengesCount}} challenges",
 		"suggestions": "Suggestions",
