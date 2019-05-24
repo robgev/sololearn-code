@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { toSeoFriendly } from 'utils';
 import { getCourseAliasById } from 'reducers/courses.reducer';
-import { changeProgress, toggleCourseInternal } from 'actions/learn';
+import { changeProgress, toggleCourseInternal, resetLocalLesson } from 'actions/learn';
 import { PopupActions, MenuItem, Title, Popup, PopupContent, Container } from 'components/atoms';
 import { FlatButton } from 'components/molecules';
 import ConfirmationPopup from 'components/ConfirmationPopup';
@@ -48,6 +48,7 @@ class SlayManage extends Component {
 		await resetProgress(courseToReset);
 		this.setState({ resetting: false });
 		this.props.changeProgress(courseToReset, 0);
+		this.props.resetLocalLesson(courseToReset);
 	}
 
 	toggleCourse=(courseId, isEnabled) => {
@@ -147,5 +148,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
 	changeProgress,
 	toggleCourseInternal,
+	resetLocalLesson,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(translate()(SlayManage));
