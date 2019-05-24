@@ -128,4 +128,9 @@ export const changeProgress = (courseId, progress) => (dispatch) => {
 	dispatch({ type: types.CHANGE_PROGRESS, payload: { courseId, progress } });
 };
 
-export const resetLocalLesson = () => ({ type: types.RESET_LOCAL_LESSON });
+export const resetLocalLesson = courseId => (dispatch) => {
+	if (Progress.courseId === courseId) {
+		Progress.reset();
+		dispatch({ type: types.RESET_LOCAL_LESSON });
+	}
+};

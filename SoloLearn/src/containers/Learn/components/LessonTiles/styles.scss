@@ -76,16 +76,20 @@
 				font-size: 14px;
 				text-align: left;
 				text-transform: lowercase;
+
+				.lesson-tiles_comments{
+					color:$white;
+				}
 				&.active {
 					background-color: $primary_color;
 					.lesson-tiles_questions {
-						color: #fff;
+						color: $white;
 					}
 				}
 				&.normal {
 					background-color: $secondary_color;
 					.lesson-tiles_questions {
-						color: #fff;
+						color: $white;
 					}
 				}
 				&.disabled {

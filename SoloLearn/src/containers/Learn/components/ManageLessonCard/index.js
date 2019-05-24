@@ -8,11 +8,11 @@ import { numberFormatter } from 'utils';
 import './styles.scss';
 
 const ManageLessonCard = ({
-	iconUrl, name, learners, progress, actions, url, t,
+	iconUrl, name, learners, progress, actions, url, t, addCourse,
 }) => (
 	<FlexBox fullWidth align className="manage-lesson-card">
 		<ContainerLink className="manage-lesson-card-link-container" to={url}>
-			<FlexBox fullWidth align>
+			<FlexBox fullWidth align onClick={addCourse}>
 				<Container>
 					<RoundImage
 						src={iconUrl}
@@ -38,5 +38,9 @@ const ManageLessonCard = ({
 		</Container>
 	</FlexBox>
 );
+
+ManageLessonCard.defaultProps = {
+	addCourse: () => {},
+};
 
 export default translate()(ManageLessonCard);
