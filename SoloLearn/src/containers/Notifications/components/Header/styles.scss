@@ -6,4 +6,13 @@
 	.notifications_mark-read {
 		cursor: pointer;
 	}
+
+	.diasbale_mark-read{
+		color:#ddd;
+		cursor: default;
+	}
+
+	.diasbale_mark-read:hover{
+		text-decoration: none;
+	}
 }
