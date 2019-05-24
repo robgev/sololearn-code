@@ -47,18 +47,19 @@ const UserPostEditor = ({
 	initialImageSource = null,
 	initialUserPostId = null,
 }) => {
-	const [backgrounds, setBackgrounds] = useState([]);
-	const [canApplyBackground, setCanApplyBackground] = useState(true);
-	const [selectedBackgroundId, setSelectedBackgroundId] = useState(initialSelectedBackgroundId);
+	const [ backgrounds, setBackgrounds ] = useState([]);
+	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
+	const [ selectedBackgroundId, setSelectedBackgroundId ] = useState(initialSelectedBackgroundId);
 
 	const imageInputRef = useRef();
-	const [imageSource, setImageSource] = useState(initialImageSource || null);
-	const [imageData, setImageData] = useState(null);
-	const [isPostButtonDisabled, togglePostButtonDisabled] = useState(true);
-	const [editorText, setEditorText] = useState('');
+	const [ imageSource, setImageSource ] = useState(initialImageSource || null);
+	const [ imageData, setImageData ] = useState(null);
+	const [ imageType, setImageType ] = useState('.jpg');
+	const [ isPostButtonDisabled, togglePostButtonDisabled ] = useState(true);
+	const [ editorText, setEditorText ] = useState('');
 
-	const [isSnackBarOpen, toggleSnackBarIsOpen] = useState(false);
-	const [snackMessage, setSnackMessage] = useState('');
+	const [ isSnackBarOpen, toggleSnackBarIsOpen ] = useState(false);
+	const [ snackMessage, setSnackMessage ] = useState('');
 
 	const computeCanApplyBackground = () => {
 		if (editorText) {
@@ -77,7 +78,7 @@ const UserPostEditor = ({
 	useEffect(() => {
 		getPostBackgrounds()
 			.then((res) => {
-				setBackgrounds([{ type: 'none', id: -1 }, ...res.backgrounds]);
+				setBackgrounds([ { type: 'none', id: -1 }, ...res.backgrounds ]);
 			});
 		if (initialImageSource) {
 			setImageSource(initialImageSource);
@@ -91,36 +92,52 @@ const UserPostEditor = ({
 		} else {
 			togglePostButtonDisabled(true);
 		}
-	}, [editorText, imageSource]);
+	}, [ editorText, imageSource ]);
+
+	const onImageLoad = (e, uri) => {
+		if (e.target.width < 100 || e.target.height < 50) {
+			setSnackMessage('The Image is too small');
+			toggleSnackBarIsOpen(true);
+		} else if (e.target.width > 2048 || e.target.height > 2048 || e.target.width * 4 < 1200) {
+			setSnackMessage('The Image is too big');
+			toggleSnackBarIsOpen(true);
+		} else {
+			console.log('uri: ', uri);
+			console.log('image source: ', imageSource);
+			setImageSource(uri);
+			fetch(uri)
+				.then(data => data.blob())
+				.then((dataBlob) => {
+					setImageData(dataBlob);
+				});
+		}
+	};
 
 	const onImageSelect = async (e) => {
-		if (e.target.files[0]) {
+		console.log('target.files', e.target.files[0]);
+		if (e.target.files[0] && e.target.files[0].type !== 'image/gif') {
 			Resizer.imageFileResizer(
 				e.target.files[0], // is the file of the new image that can now be uploaded...
 				1200, // is the maxWidth of the  new image
 				1200, // is the maxHeight of the  new image
 				'JPEG', // is the compressFormat of the  new image
 				90, // is the quality of the  new image
-				0, // is the rotatoion of the  new image
+				0, // is the rotation of the  new image
 				(uri) => {
 					const img = new Image();
 					img.src = uri;
-					img.onload = () => {
-						if (img.width < 100 || img.height < 50) {
-							setSnackMessage('The Image is too small');
-							toggleSnackBarIsOpen(true);
-						} else {
-							setImageSource(uri);
-							fetch(uri)
-								.then(data => data.blob())
-								.then((dataBlob) => {
-									setImageData(dataBlob);
-								});
-						}
-					};
+					img.onload = e => onImageLoad(e, uri);
+					setImageType('.jpg');
 				}, // is the callBack function of the new image URI
 				'base64', // is the output type of the new image
 			);
+		} else if (e.target.files[0] && e.target.files[0].type === 'image/gif') {
+			const gifImageSource = window.URL.createObjectURL(e.target.files[0]);
+			setImageSource(gifImageSource);
+			const gif = new Image();
+			gif.src = gifImageSource;
+			gif.onload = e => onImageLoad(e, gifImageSource);
+			setImageType('.gif');
 		}
 	};
 
@@ -131,7 +148,7 @@ const UserPostEditor = ({
 
 	useEffect(() => {
 		computeCanApplyBackground();
-	}, [editorText, imageSource]);
+	}, [ editorText, imageSource ]);
 
 	const backgroundId = canApplyBackground ? selectedBackgroundId : -1;
 
@@ -161,8 +178,9 @@ const UserPostEditor = ({
 
 	const createPostHandler = () => {
 		const text = getMentionsValue(convertToRaw(editorText));
+		console.log('Image Data: ', imageData);
 		if (imageSource) {
-			return uploadPostImage(imageData, 'postimage.jpg')
+			return uploadPostImage(imageData, `postimage${imageType}`)
 				.then(res => createRequestHandler({
 					message: text,
 					backgroundId: null,
@@ -192,7 +210,7 @@ const UserPostEditor = ({
 	const editPostHandler = () => {
 		const text = getMentionsValue(convertToRaw(editorText));
 		if (imageData) {
-			return uploadPostImage(imageData, 'postimage.jpg')
+			return uploadPostImage(imageData, `postimage${imageType}`)
 				.then(res => editRequestHandler({
 					backgroundId: null,
 					imageUrl: res.imageUrl,

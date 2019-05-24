@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router';
 import { EditorState, Modifier, convertToRaw } from 'draft-js';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
 import Editor from 'draft-js-plugins-editor';
 import createMentionPlugin from 'draft-js-mention-plugin';
-import { getMentionsList, makeEditableContent, getMentionsFromRawEditorContent } from 'utils';
 import hexToRgba from 'hex-to-rgba';
 import { translate } from 'react-i18next';
-import { Container, FlexBox } from 'components/atoms';
+import { Container, FlexBox, Link } from 'components/atoms';
+import { RefLink } from 'components/molecules';
 import { Entry } from 'components/organisms';
 
+import { getMentionsList, makeEditableContent, getMentionsFromRawEditorContent } from 'utils';
 import { getBackgroundStyle, getFontSize } from '../utils';
 import { USER_POST_MAX_LENGTH } from '../UserPostEditor';
 
@@ -31,28 +31,26 @@ const DraftEditor = ({
 	const mentionPluginRef = useRef(createMentionPlugin({
 		mentionComponent: ({ children, mention }) => (isEditorReadOnly
 			? (
-				<b>
-					<Link
-						className="hoverable"
-						style={{ color: hasBackground ? background.textColor : '#607D8B' }}
-						to={`/profile/${mention.id}`}
-					>
-						{children}
-					</Link>
-				</b>
+				<Link
+					className="hoverable"
+					style={{ color: hasBackground ? background.textColor : '#607D8B' }}
+					to={`/profile/${mention.id}`}
+				>
+					{children}
+				</Link>
 			)
 			: <b>{children}</b>),
 	}));
 	const linkifyPluginRef = useRef(createLinkifyPlugin({
 		target: '_blank',
 		component: ({ children, href }) => (
-			<Link
+			<RefLink
 				className={hasBackground ? 'underline' : null}
 				style={{ color: hasBackground ? background.textColor : '#607D8B' }}
 				to={href}
 			>
 				{children}
-			</Link>
+			</RefLink>
 		),
 	}));
 	const { MentionSuggestions } = mentionPluginRef.current;
@@ -185,7 +183,7 @@ const DraftEditor = ({
 					color: 'black',
 					fontSize,
 					cursor: isEditorReadOnly ? 'cursor' : 'text',
-					minHeight: isEditorReadOnly ? 50 : 110,
+					minHeight: isEditorReadOnly ? 50 : 140,
 					maxHeight: isEditorReadOnly ? '100%' : 250,
 					overflow: isEditorReadOnly ? 'default' : 'auto',
 				}

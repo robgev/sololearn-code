@@ -51,7 +51,7 @@ const UserPostDetails = ({
 
 	const deletePostHandler = () => {
 		deleteUserPost(userPost.id);
-		browserHistory.push('feed');
+		browserHistory.push('/feed');
 	};
 
 	const editPostHandler = (editedPost) => {
@@ -97,7 +97,7 @@ const UserPostDetails = ({
 									null
 								}
 							</FlexBox>
-							<Container style={{ padding: userPost.background ? 0 : '0 15px' }}>
+							<Container style={{ padding: userPost.background && userPost.background.type !== 'none' ? 0 : '0 15px' }}>
 								{userPost.message ?
 									<UserPostDraftEditor
 										key={`${userPost.message}:${userPost.backgroundID ? userPost.backgroundID : -1}`}
