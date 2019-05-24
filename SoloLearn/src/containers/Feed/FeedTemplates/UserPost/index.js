@@ -34,15 +34,17 @@ const UserPost = ({
 	comments,
 	views,
 }) => {
+	const lineHeightDefault = 20;
 	const impressionTimeoutIdRef = useRef();
+	const textContainerRef = useRef();
 	const [ imageShouldWrap, setImageShouldWrap ] = useState(false);
+	const [ textShouldWrap, setTextShouldWrap ] = useState(false);
 
 	const onImageLoad = (e) => {
 		if (e.target.height > window.innerHeight * 0.5) {
 			setImageShouldWrap(true);
 		}
 	};
-
 	const cancelImpressionTimer = () => {
 		if (impressionTimeoutIdRef.current) {
 			clearTimeout(impressionTimeoutIdRef.current);
@@ -65,10 +67,16 @@ const UserPost = ({
 	};
 
 	useEffect(() => {
-		if (imageShouldWrap) {
+		if (imageShouldWrap || textShouldWrap) {
 			measure();
 		}
-	}, [ imageShouldWrap ]);
+	}, [ imageShouldWrap, textShouldWrap ]);
+
+	useEffect(() => {
+		if (!background && textContainerRef.current.clientHeight > lineHeightDefault * 5) {
+			setTextShouldWrap(true);
+		}
+	}, []);
 
 	return (
 		<VisibilitySensor onChange={onVisibilityChange}>
@@ -88,14 +96,15 @@ const UserPost = ({
 					/>
 				</FlexBox>
 				{message ?
-					<Container style={{
-						padding: background ? 0 : '0 15px',
-					}}
-					>
-						<Container style={{
-							height: !background && message.length > 50 ? '95px' : '100%',
-							overflow: 'hidden',
-						}}
+					<Container>
+						<Container
+							style={{
+								padding: background ? 0 : '0 15px',
+								lineHeight: !background ? `${lineHeightDefault}px` : '',
+								height: !background && textShouldWrap ? lineHeightDefault * 5.2 : '100%',
+								overflow: !background && textShouldWrap ? 'hidden' : 'auto',
+							}}
+							ref={textContainerRef}
 						>
 							<UserPostEditor
 								background={background || { type: 'none', id: -1 }}
@@ -103,12 +112,10 @@ const UserPost = ({
 								isEditorReadOnly
 							/>
 						</Container>
-						{(message.match(/\n/g) || []).length > 5 || message.length > 200 ?
+						{textShouldWrap &&
 							<ContainerLink to={`/post/${userPostId}`}>
 								<TextBlock className="up-feed-item-continue-reading-text">...Continue Reading</TextBlock>
 							</ContainerLink>
-							:
-							null
 						}
 					</Container>
 					: null

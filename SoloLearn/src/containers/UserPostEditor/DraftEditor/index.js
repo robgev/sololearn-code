@@ -25,7 +25,7 @@ const DraftEditor = ({
 	t,
 }) => {
 	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
-	const [ fontSize, setFontSize ] = useState(isEditorReadOnly ? 15 : 36);
+	const [ fontSize, setFontSize ] = useState(isEditorReadOnly && background.type === 'none' ? 15 : 30);
 	const [ suggestions, setSuggestions ] = useState([]);
 	const hasBackground = background && background.type !== 'none';
 	const mentionPluginRef = useRef(createMentionPlugin({
@@ -186,7 +186,8 @@ const DraftEditor = ({
 					fontSize,
 					cursor: isEditorReadOnly ? 'cursor' : 'text',
 					minHeight: isEditorReadOnly ? 50 : 110,
-					overflow: isEditorReadOnly ? 'hidden' : 'auto',
+					maxHeight: isEditorReadOnly ? '100%' : 250,
+					overflow: isEditorReadOnly ? 'default' : 'auto',
 				}
 				:
 				{
