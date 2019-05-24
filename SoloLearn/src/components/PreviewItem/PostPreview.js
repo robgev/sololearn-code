@@ -2,11 +2,12 @@ import React, { PureComponent } from 'react';
 import Service from 'api/service';
 
 import {
+	Link,
+	FlexBox,
 	PaperContainer,
 	SecondaryTextBlock,
-	Link,
 } from 'components/atoms';
-import { Avatar } from 'components/molecules';
+import { ProfileAvatar } from 'components/molecules';
 
 class PostPreview extends PureComponent {
 	constructor() {
@@ -36,19 +37,19 @@ class PostPreview extends PureComponent {
 			return null;
 		}
 		const {
-			avatarUrl, title, userName, badge,
+			title, userName,
 		} = postData;
 		// Will need badge in future too. Destructure badge if needed.
 		return (
 			<PaperContainer className="preview-wrapper">
-				<Avatar
+				<ProfileAvatar
 					disabled
-					badge={badge}
-					avatarUrl={avatarUrl}
-					userName={userName}
+					user={postData}
 				/>
-				<Link to={this.props.to} className="item">{title}</Link>
-				<SecondaryTextBlock className="item">{userName}</SecondaryTextBlock>
+				<FlexBox className="preview-info" column>
+					<Link to={this.props.to} className="item">{title}</Link>
+					<SecondaryTextBlock className="item">{userName}</SecondaryTextBlock>
+				</FlexBox>
 			</PaperContainer>
 		);
 	}

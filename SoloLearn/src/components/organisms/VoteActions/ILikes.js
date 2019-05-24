@@ -98,6 +98,8 @@ class ILikes {
 			return { codeId: this.id };
 		case 'post':
 			return { postId: this.id };
+		case 'userPost':
+			return { id: this.id };
 		case 'lessonComment':
 		case 'codeComment':
 		case 'userLessonComment':
@@ -115,6 +117,8 @@ class ILikes {
 			return `Playground/${act}Code`;
 		case 'post':
 			return `Discussion/${act}Post`;
+		case 'userPost':
+			return `Profile/${act}Post`;
 		case 'lessonComment':
 			return `Discussion/${act}LessonComment`;
 		case 'codeComment':
