@@ -46,19 +46,20 @@ const UserPostEditor = ({
 	initialSelectedBackgroundId = -1,
 	initialImageSource = null,
 	initialUserPostId = null,
+	updateListItems = () => { },
 }) => {
-	const [backgrounds, setBackgrounds] = useState([]);
-	const [canApplyBackground, setCanApplyBackground] = useState(true);
-	const [selectedBackgroundId, setSelectedBackgroundId] = useState(initialSelectedBackgroundId);
+	const [ backgrounds, setBackgrounds ] = useState([]);
+	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
+	const [ selectedBackgroundId, setSelectedBackgroundId ] = useState(initialSelectedBackgroundId);
 
 	const imageInputRef = useRef();
-	const [imageSource, setImageSource] = useState(initialImageSource || null);
-	const [imageData, setImageData] = useState(null);
-	const [isPostButtonDisabled, togglePostButtonDisabled] = useState(true);
-	const [editorText, setEditorText] = useState('');
+	const [ imageSource, setImageSource ] = useState(initialImageSource || null);
+	const [ imageData, setImageData ] = useState(null);
+	const [ isPostButtonDisabled, togglePostButtonDisabled ] = useState(true);
+	const [ editorText, setEditorText ] = useState('');
 
-	const [isSnackBarOpen, toggleSnackBarIsOpen] = useState(false);
-	const [snackMessage, setSnackMessage] = useState('');
+	const [ isSnackBarOpen, toggleSnackBarIsOpen ] = useState(false);
+	const [ snackMessage, setSnackMessage ] = useState('');
 
 	const computeCanApplyBackground = () => {
 		if (editorText) {
@@ -77,7 +78,7 @@ const UserPostEditor = ({
 	useEffect(() => {
 		getPostBackgrounds()
 			.then((res) => {
-				setBackgrounds([{ type: 'none', id: -1 }, ...res.backgrounds]);
+				setBackgrounds([ { type: 'none', id: -1 }, ...res.backgrounds ]);
 			});
 		if (initialImageSource) {
 			setImageSource(initialImageSource);
@@ -91,7 +92,7 @@ const UserPostEditor = ({
 		} else {
 			togglePostButtonDisabled(true);
 		}
-	}, [editorText, imageSource]);
+	}, [ editorText, imageSource ]);
 
 	const onImageSelect = async (e) => {
 		if (e.target.files[0]) {
@@ -131,7 +132,7 @@ const UserPostEditor = ({
 
 	useEffect(() => {
 		computeCanApplyBackground();
-	}, [editorText, imageSource]);
+	}, [ editorText, imageSource ]);
 
 	const backgroundId = canApplyBackground ? selectedBackgroundId : -1;
 
@@ -157,7 +158,8 @@ const UserPostEditor = ({
 			if (res) {
 				afterPostHandler(res.post);
 			}
-		});
+		})
+		.then(() => updateListItems());
 
 	const createPostHandler = () => {
 		const text = getMentionsValue(convertToRaw(editorText));

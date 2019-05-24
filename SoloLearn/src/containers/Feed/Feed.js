@@ -59,6 +59,10 @@ class FeedItemsBase extends Component {
 		}
 	}
 
+	updateListItems = () => {
+		this.props.getNewFeedItems();
+	}
+
 	// Check availability of new items above
 	loadNewFeedItems = async () => {
 		const firstItem = this.props.feed[0];
@@ -101,7 +105,11 @@ class FeedItemsBase extends Component {
 				sidebar={<FeedSidebar t={t} />}
 			>
 				<Container className="feed-items-wrapper">
-					<Header profile={userProfile} levels={levels} />
+					<Header
+						profile={userProfile}
+						levels={levels}
+						updateListItems={this.updateListItems}
+					/>
 					<Title className="sub-title">{t('feed.title')}</Title>
 					<FeedList
 						feed={feed}

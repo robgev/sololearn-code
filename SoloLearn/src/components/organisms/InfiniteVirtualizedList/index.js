@@ -70,7 +70,7 @@ const InfiniteVirtualizedList = ({
 		</CellMeasurer>
 	);
 	const _isRowLoaded = index => isRowLoaded(index);
-	const _loadMore = loading ? () => {} : loadMore;
+	const _loadMore = loading ? () => { } : loadMore;
 
 	return (
 		<Container className="infinite-loader_container">
@@ -109,7 +109,7 @@ const InfiniteVirtualizedList = ({
 					</WindowScroller>
 				)}
 			</InfiniteLoader>
-			{ (loading && hasMore) &&
+			{(loading && hasMore) &&
 				<Loading />
 			}
 		</Container>
