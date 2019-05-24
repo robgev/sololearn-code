@@ -8,7 +8,7 @@ import { numberFormatter } from 'utils';
 import './styles.scss';
 
 const ManageLessonCard = ({
-	iconUrl, name, learners, progress, actions, url, t, addCourse = () => {},
+	iconUrl, name, learners, progress, actions, url, t, addCourse,
 }) => (
 	<FlexBox fullWidth align className="manage-lesson-card">
 		<ContainerLink className="manage-lesson-card-link-container" to={url}>
@@ -38,5 +38,9 @@ const ManageLessonCard = ({
 		</Container>
 	</FlexBox>
 );
+
+ManageLessonCard.defaultProps = {
+	addCourse: () => {},
+};
 
 export default translate()(ManageLessonCard);

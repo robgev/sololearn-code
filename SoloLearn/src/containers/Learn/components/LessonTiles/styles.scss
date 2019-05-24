@@ -78,18 +78,18 @@
 				text-transform: lowercase;
 
 				.lesson-tiles_comments{
-					color:#fff;
+					color:$white;
 				}
 				&.active {
 					background-color: $primary_color;
 					.lesson-tiles_questions {
-						color: #fff;
+						color: $white;
 					}
 				}
 				&.normal {
 					background-color: $secondary_color;
 					.lesson-tiles_questions {
-						color: #fff;
+						color: $white;
 					}
 				}
 				&.disabled {
