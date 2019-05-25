@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container } from 'components/atoms';
 
-import 'styles/components/PreviewItem.scss';
 import './styles.scss';
 
 import LessonPreview from './LessonPreview';

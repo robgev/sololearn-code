@@ -60,10 +60,10 @@ render() {
 					<Container>
 						<ProfileAvatar user={profile} />
 					</Container>
-					<FlexBox column fullWidth>
+					<FlexBox column fullWidth className="comment-item_wrapper">
 						<FlexBox className="comment-item_bubble-container">
 							<FlexBox fullWidth align justifyBetween>
-								<FlexBox column fullWidth>
+								<FlexBox column fullWidth className="comment-item_body">
 									<FlexBox justifyBetween fullWidth align>
 										<UsernameLink to={`/profile/${profile.id}`}>
 											{profile.name}

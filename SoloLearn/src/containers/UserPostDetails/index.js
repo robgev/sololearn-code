@@ -118,7 +118,7 @@ const UserPostDetails = ({
 								: null}
 							<FlexBox align justifyBetween className="up-details-bottom-bar-container">
 								<FeedBottomBarFullStatistics
-									type="post"
+									type="userPost"
 									date={userPost.date}
 									id={userPost.id}
 									userVote={userPost.vote}

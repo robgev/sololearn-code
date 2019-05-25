@@ -4,8 +4,9 @@ import {
 	PaperContainer,
 	SecondaryTextBlock,
 	Link,
+	FlexBox,
 } from 'components/atoms';
-import { Avatar } from 'components/molecules';
+import { ProfileAvatar, UsernameLink } from 'components/molecules';
 
 import './styles.scss';
 
@@ -18,16 +19,21 @@ const UserPost = ({ id, to }) => {
 	return (
 		post === null
 			? null
-			: <PaperContainer className="preview-wrapper">
-				<Avatar
-					disabled
-					badge={post.badge}
-					avatarUrl={post.avatarUrl}
-					userName={post.userName}
-				/>
-				<SecondaryTextBlock className="item">{post.userName}</SecondaryTextBlock>
-				<Link to={to} className="item">{post.message}</Link>
-     </PaperContainer>
+			: (
+				<PaperContainer className="preview-wrapper">
+					<ProfileAvatar
+						user={post}
+					/>
+					<FlexBox className="preview-info" column>
+						<UsernameLink className="item">{post.userName}</UsernameLink>
+						<SecondaryTextBlock className="item">
+							<Link to={to}>
+								{post.message}
+							</Link>
+						</SecondaryTextBlock>
+					</FlexBox>
+				</PaperContainer>
+			)
 	);
 };
 

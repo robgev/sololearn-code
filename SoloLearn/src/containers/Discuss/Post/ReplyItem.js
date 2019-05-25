@@ -143,7 +143,7 @@ class ReplyItem extends Component {
 								<Container>
 									<Mention text={reply.message} />
 								</Container>
-								<Container>
+								<Container className="question-preview-container">
 									{generatePreviews(reply.message).map(preview => (
 										<Container key={preview.link} className="preview">
 											<PreviewItem
