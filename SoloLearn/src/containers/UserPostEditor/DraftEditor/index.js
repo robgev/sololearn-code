@@ -71,7 +71,7 @@ const DraftEditor = ({
 	};
 
 	useEffect(() => {
-		// setting the cursor position to the case of repost
+		// setting the cursor position to the start in case of repost
 		if (editorInitialText.startsWith('\n')) {
 			const selectionBefore = editorState.getCurrentContent().getSelectionBefore();
 			setEditorState(EditorState.acceptSelection(editorState, selectionBefore));
@@ -119,7 +119,7 @@ const DraftEditor = ({
 
 	const handeBeforeInput = (_, editorState) => {
 		const selectedTextLength = _getLengthOfSelectedText();
-		if (editorState.getCurrentContent().getPlainText().length - selectedTextLength
+		if (editorState.getCurrentContent().getPlainText(' ').length - selectedTextLength
 			>= USER_POST_MAX_LENGTH) {
 			return 'handled';
 		}
