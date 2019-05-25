@@ -71,8 +71,10 @@ const DraftEditor = ({
 	};
 
 	useEffect(() => {
+		// setting the cursor position to the case of repost
 		if (editorInitialText.startsWith('\n')) {
-
+			const selectionBefore = editorState.getCurrentContent().getSelectionBefore();
+			setEditorState(EditorState.acceptSelection(editorState, selectionBefore));
 		}
 	}, []);
 

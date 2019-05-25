@@ -98,12 +98,10 @@ const UserPostEditor = ({
 		if (e.target.width < 100 || e.target.height < 50) {
 			setSnackMessage('The Image is too small');
 			toggleSnackBarIsOpen(true);
-		} else if (e.target.width > 2048 || e.target.height > 2048 || e.target.width * 4 < 1200) {
+		} else if (e.target.width > 2048 || e.target.height > 2048 || e.target.width * 4 < e.target.height) {
 			setSnackMessage('The Image is too big');
 			toggleSnackBarIsOpen(true);
 		} else {
-			console.log('uri: ', uri);
-			console.log('image source: ', imageSource);
 			setImageSource(uri);
 			fetch(uri)
 				.then(data => data.blob())
@@ -114,7 +112,6 @@ const UserPostEditor = ({
 	};
 
 	const onImageSelect = async (e) => {
-		console.log('target.files', e.target.files[0]);
 		if (e.target.files[0] && e.target.files[0].type !== 'image/gif') {
 			Resizer.imageFileResizer(
 				e.target.files[0], // is the file of the new image that can now be uploaded...
@@ -178,7 +175,6 @@ const UserPostEditor = ({
 
 	const createPostHandler = () => {
 		const text = getMentionsValue(convertToRaw(editorText));
-		console.log('Image Data: ', imageData);
 		if (imageSource) {
 			return uploadPostImage(imageData, `postimage${imageType}`)
 				.then(res => createRequestHandler({
