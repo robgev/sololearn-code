@@ -13,9 +13,14 @@
 		min-width: 400px;
 		min-height: 310px;
 		height: 100%;
-		.profile-avatar-container {
-			margin: 5px 0;
-			padding: 10px;
+		.up-top-bar {
+			padding: 0 15px;
+			.emojiSelect {
+				height: 200px;
+			}
+			.up-profile-username-link {
+				padding: 0 7px;
+			}
 		}
 		.add-image-and-backgrounds-container {
 			padding: 0 10px;
@@ -54,7 +59,7 @@
 		}
 		.user-post-max-length-container {
 			margin: 5px 0;
-			padding-right: 10px;
+			padding: 0 10px;
 		}
 	}
 
