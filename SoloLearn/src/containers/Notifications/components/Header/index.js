@@ -9,10 +9,8 @@ import { notificationsSelector } from 'reducers/notifications.reducer';
 import './styles.scss';
 
 const isAllRead = (notifications) => {
-	console.log(notifications);
 	const isRead = notifications.find(not => not.isClicked === false);
-	console.log(isRead);
-	return isRead;
+	return !!isRead;
 };
 
 const NotificationHeader = ({ t, markRead, notifications }) => {
