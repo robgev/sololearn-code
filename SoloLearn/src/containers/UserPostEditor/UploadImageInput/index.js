@@ -8,7 +8,7 @@ const UploadImageInput = ({ inputRef, handleChange }) => (
 		className="upload-image-native-input"
 		ref={inputRef}
 		onChange={handleChange}
-		accept=".png, .jpg, .jpeg"
+		accept="image/*"
 	/>
 );
 

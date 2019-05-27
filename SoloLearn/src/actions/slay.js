@@ -32,6 +32,19 @@ export const refreshLessonCollections = () => async (dispatch, getState) => {
 	});
 };
 
+export const refreshMyCourses = id => async (dispatch) => {
+	const res = await Service.request(
+		'GetCollectionItems',
+		{ collectionId: id, index: 0, count: 100 },
+		{ id },
+	);
+
+	dispatch({
+		type: types.REFRESH_COLLECTIONS_PROGRESS,
+		payload: [ res ],
+	});
+};
+
 export const getCollectionItems = (collectionId, pagingData) => async (dispatch) => {
 	try {
 		const { lessons } =

@@ -7,6 +7,7 @@ const Select = React.forwardRef(({ className, ...props }, ref) => (
 		ref={ref}
 		classes={{
 			icon: 'atom_select-icon',
+			select: 'atom_select-input',
 		}}
 		className={`atom_select ${className}`}
 		{...props}

@@ -5,6 +5,7 @@ import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import {
 	voteFeedItem,
+	clearFeedItems,
 	getFeedItemsInternal,
 	getNewFeedItemsInternal,
 	getPinnedFeedItemsInternal,
@@ -14,8 +15,9 @@ import {
 } from 'actions/discover';
 import { feedSelector, feedHasMoreSelector } from 'reducers/feed.reducer';
 import { LayoutWithSidebar } from 'components/molecules';
-import { Container, Title } from 'components/atoms';
+import { Container, Select, MenuItem, Title } from 'components/atoms';
 import { showError } from 'utils';
+import Storage from 'api/storage';
 import Header from './Header';
 import FeedList from './FeedList';
 import FeedSidebar from './FeedSidebar';
@@ -32,6 +34,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
 	voteFeedItem,
+	clearFeedItems,
 	getFeedItems: getFeedItemsInternal,
 	getPinnedFeedItems: getPinnedFeedItemsInternal,
 	getDiscoverSuggestions,
@@ -41,10 +44,15 @@ const mapDispatchToProps = {
 @translate()
 @connect(mapStateToProps, mapDispatchToProps)
 class FeedItemsBase extends Component {
-	state = {
-		hasNewItems: false,
-		loading: false,
-	};
+	constructor(props) {
+		super(props);
+		const currentFilter = Storage.load('currentFilter') || 0;
+		this.state = {
+			hasNewItems: false,
+			loading: false,
+			currentFilter,
+		};
+	}
 
 	componentDidMount() {
 		const { isLoaded } = this.props;
@@ -78,10 +86,25 @@ class FeedItemsBase extends Component {
 	}
 
 	getFeedItems = () => {
+		const isHighlights = this.state.currentFilter === 1;
 		this.setState({ loading: true });
-		this.props.getFeedItems()
+		this.props.getFeedItems(isHighlights)
 			.then(() => { this.setState({ loading: false }); })
 			.catch(e => showError(e, 'Something went wrong when trying to get feed'));
+	}
+
+	handleFeedFilterChange = (e) => {
+		const {
+			clearFeedItems,
+			getPinnedFeedItems,
+		} = this.props;
+		const { value: currentFilter } = e.target;
+		this.setState({ currentFilter }, () => {
+			clearFeedItems();
+			this.getFeedItems();
+			getPinnedFeedItems(null, null, null);
+			Storage.save('currentFilter', currentFilter);
+		});
 	}
 
 	// Scroll to top of the feed
@@ -99,18 +122,29 @@ class FeedItemsBase extends Component {
 			levels,
 			voteFeedItem,
 		} = this.props;
-		const { loading } = this.state;
+		const { loading, currentFilter } = this.state;
 		return (
 			<LayoutWithSidebar
 				sidebar={<FeedSidebar t={t} />}
 			>
 				<Container className="feed-items-wrapper">
-					<Header
-						profile={userProfile}
-						levels={levels}
-						updateListItems={this.updateListItems}
-					/>
-					<Title className="sub-title">{t('feed.title')}</Title>
+					<Header profile={userProfile} levels={levels} />
+					<Select
+						value={currentFilter}
+						className="feed-items_select"
+						onChange={this.handleFeedFilterChange}
+					>
+						<MenuItem value={0}>
+							<Title className="sub-title">
+								{t('feed.title')}
+							</Title>
+						</MenuItem>
+						<MenuItem value={1}>
+							<Title className="sub-title">
+								{t('feed.weekly-title')}
+							</Title>
+						</MenuItem>
+					</Select>
 					<FeedList
 						feed={feed}
 						feedPins={feedPins}
