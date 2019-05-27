@@ -14,6 +14,8 @@ const FeedBottomBarFullStatistics = ({
 	className = '',
 	views = null,
 	comments = null,
+	withDate = true,
+	commentIconLink,
 }) => (
 	<Container className={`feed-toolbar-container ${className}`}>
 		<FlexBox>
@@ -27,9 +29,10 @@ const FeedBottomBarFullStatistics = ({
 			<ViewStats
 				views={views}
 				comments={comments}
+				link={commentIconLink}
 			/>
 		</FlexBox>
-		<SecondaryTextBlock className="date">{updateDate(date)}</SecondaryTextBlock>
+		{withDate ? <SecondaryTextBlock className="date">{updateDate(date)}</SecondaryTextBlock> : null}
 	</Container>
 );
 

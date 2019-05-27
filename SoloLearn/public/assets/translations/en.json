@@ -871,5 +871,13 @@
 	},
 	"votes": {
 		"not-activated-account": "Your account is not activated. Check your email for activation instructions."
+	},
+	"user_post": {
+		"hints": {
+			"user-post-form-hint-1": "What's going on?",
+			"user-post-form-hint-2": "Share your thoughts",
+			"user-post-form-hint-3": "What's on your mind?"
+		},
+		"user-post-placeholder":"Share coding tips, articles, snippets and anything code-related"
 	}
 }

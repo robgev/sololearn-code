@@ -877,5 +877,13 @@
   },
   "votes": {
     "not-activated-account": "Tu cuenta no está activa. Revisa tu email para las instrucciones de activación."
-  }
+  },
+	"user_post": {
+		"hints": {
+			"user-post-form-hint-1": "¿Qué esta pasando?",
+			"user-post-form-hint-2": "Comparte tus ideas",
+			"user-post-form-hint-3": "¿En qué estás pensando?"
+		},
+		"user-post-placeholder": "Comparte consejos, artículos, segmentos de tu código o cualquier cosa relacionada con la programación",
+	}
 }
