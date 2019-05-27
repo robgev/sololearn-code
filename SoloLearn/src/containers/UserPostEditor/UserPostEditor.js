@@ -157,7 +157,7 @@ const UserPostEditor = ({
 		if (afterPostCallback) {
 			afterPostCallback({ ...post, background });
 		} else {
-			browserHistory.push('feed');
+			browserHistory.push('/feed');
 		}
 	};
 
