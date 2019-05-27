@@ -119,7 +119,7 @@ const DraftEditor = ({
 
 	const handeBeforeInput = (_, editorState) => {
 		const selectedTextLength = _getLengthOfSelectedText();
-		if (editorState.getCurrentContent().getPlainText(' ').length - selectedTextLength
+		if (editorState.getCurrentContent().getPlainText().length - selectedTextLength
 			>= USER_POST_MAX_LENGTH) {
 			return 'handled';
 		}
@@ -128,7 +128,7 @@ const DraftEditor = ({
 
 	const handlePastedText = (pastedText) => {
 		const currentContent = editorState.getCurrentContent();
-		const currentContentLength = currentContent.getPlainText('').length;
+		const currentContentLength = currentContent.getPlainText().length;
 		const selection = editorState.getSelection();
 		const selectedTextLength = _getLengthOfSelectedText();
 		let nextEditorState = EditorState.createEmpty();
@@ -151,7 +151,7 @@ const DraftEditor = ({
 
 	const handleReturn = () => {
 		const currentContent = editorState.getCurrentContent();
-		const currentContentLength = currentContent.getPlainText('').length;
+		const currentContentLength = currentContent.getPlainText().length;
 		const selectedTextLength = _getLengthOfSelectedText();
 		if (currentContentLength - selectedTextLength >= USER_POST_MAX_LENGTH) {
 			return 'handled';
