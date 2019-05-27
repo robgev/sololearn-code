@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
 	WindowScroller,
 	AutoSizer,
@@ -22,8 +22,11 @@ const InfiniteVirtualizedList = ({
 	rowCount,
 	hasMore,
 	listRowCount,
+	shouldReset,
+	afterReset,
 }) => {
 	const _windowScroller = useRef(null);
+	const _list = useRef(null);
 	const _cache_ = useRef(null);
 	// Cache shouldn't change on every render
 	// We need to lazily set cache
@@ -46,6 +49,19 @@ const InfiniteVirtualizedList = ({
 			_windowScroller.current.updatePosition();
 		}
 	};
+
+	useEffect(() => {
+		// This hook handles the cases when
+		// a new item is created, or one of the items
+		// is deleted. This should be called anytime
+		// the list indices of feed items change.
+		if (shouldReset && _list.current) {
+			_cache.clearAll();
+			_list.current.recomputeRowHeights();
+			afterReset();
+		}
+	}, [ shouldReset ]);
+
 	const _rowRenderer = ({
 		key,
 		style,
@@ -91,7 +107,10 @@ const InfiniteVirtualizedList = ({
 											autoHeight
 											width={width}
 											height={height}
-											ref={registerChild}
+											ref={(el) => {
+												registerChild(el);
+												_list.current = el;
+											}}
 											scrollTop={scrollTop}
 											overscanRowCount={5}
 											rowCount={listRowCount}

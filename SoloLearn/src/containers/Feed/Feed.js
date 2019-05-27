@@ -67,22 +67,20 @@ class FeedItemsBase extends Component {
 		}
 	}
 
-	updateListItems = () => {
-		this.props.getNewFeedItems();
-	}
-
 	// Check availability of new items above
 	loadNewFeedItems = async () => {
-		const firstItem = this.props.feed[0];
-		const fromId = !firstItem.groupedItems ? firstItem.toId : firstItem.id;
 		try {
-			const count = await this.props.getNewFeedItems(fromId, this.props.userId);
+			const count = await this.props.getNewFeedItems();
 			if (!this.state.hasNewItems && count > 0) {
 				this.setState({ hasNewItems: true });
 			}
 		} catch (e) {
 			console.log(e);
 		}
+	}
+
+	resetNewFlag = () => {
+		this.setState({ hasNewItems: false });
 	}
 
 	getFeedItems = () => {
@@ -122,13 +120,17 @@ class FeedItemsBase extends Component {
 			levels,
 			voteFeedItem,
 		} = this.props;
-		const { loading, currentFilter } = this.state;
+		const { loading, currentFilter, hasNewItems } = this.state;
 		return (
 			<LayoutWithSidebar
 				sidebar={<FeedSidebar t={t} />}
 			>
 				<Container className="feed-items-wrapper">
-					<Header profile={userProfile} levels={levels} />
+					<Header
+						profile={userProfile}
+						levels={levels}
+						updateListItems={this.loadNewFeedItems}
+					/>
 					<Select
 						value={currentFilter}
 						className="feed-items_select"
@@ -150,8 +152,10 @@ class FeedItemsBase extends Component {
 						feedPins={feedPins}
 						hasMore={hasMore}
 						loading={loading}
+						hasNewItems={hasNewItems}
 						loadMore={this.getFeedItems}
 						voteFeedItem={voteFeedItem}
+						resetNewFlag={this.resetNewFlag}
 					/>
 				</Container>
 			</LayoutWithSidebar>

@@ -35,8 +35,8 @@ const UserPost = ({
 	views,
 }) => {
 	const lineHeightDefault = 20;
-	const impressionTimeoutIdRef = useRef();
-	const textContainerRef = useRef();
+	const impressionTimeoutIdRef = useRef(null);
+	const textContainerRef = useRef(null);
 	const [ imageShouldWrap, setImageShouldWrap ] = useState(false);
 	const [ textShouldWrap, setTextShouldWrap ] = useState(false);
 
@@ -73,9 +73,10 @@ const UserPost = ({
 	}, [ imageShouldWrap, textShouldWrap ]);
 
 	useEffect(() => {
-		if (textContainerRef && textContainerRef.current &&
-			!background &&
-			textContainerRef.current.clientHeight > lineHeightDefault * 5) {
+		if (!background &&
+			textContainerRef.current &&
+			textContainerRef.current.clientHeight > lineHeightDefault * 5
+		) {
 			setTextShouldWrap(true);
 		}
 	}, []);

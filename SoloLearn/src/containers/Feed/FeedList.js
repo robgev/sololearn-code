@@ -48,7 +48,6 @@ class FeedList extends Component {
 	}
 
 	openItem = (id, callback) => {
-		console.log('Opening');
 		this.setState(s => ({ openIds: [ ...s.openIds, id ] }), callback);
 	}
 
@@ -100,8 +99,9 @@ class FeedList extends Component {
 			header = null,
 			loading,
 			showFab = false,
+			hasNewItems,
+			resetNewFlag,
 		} = this.props;
-
 		return (
 			<Container>
 				{
@@ -140,6 +140,8 @@ class FeedList extends Component {
 													: (
 														<Container className="feed-list-virtualized-list-and-fab-container">
 															<InfiniteVirtualizedList
+																shouldReset={hasNewItems}
+																afterReset={resetNewFlag}
 																rowRenderer={this._rowRenderer}
 																loading={loading}
 																hasMore={this.hasMore}
