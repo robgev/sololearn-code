@@ -8,7 +8,6 @@ import { CourseCard } from 'containers/Learn/components';
 import {
 	Container,
 	PaperContainer,
-	FlexBox,
 } from 'components/atoms';
 import types from 'defaults/appTypes';
 
@@ -24,7 +23,7 @@ import Challenge from './FeedTemplates/Challenge';
 import FeedSuggestions from './FeedSuggestions';
 import BottomToolbar from './FeedBottomToolbar';
 
-import UserPost from './FeedTemplates/UserPost/';
+import UserPost from './FeedTemplates/UserPost';
 
 @observer
 class FeedItem extends Component {

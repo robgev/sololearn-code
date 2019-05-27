@@ -73,7 +73,9 @@ const UserPost = ({
 	}, [ imageShouldWrap, textShouldWrap ]);
 
 	useEffect(() => {
-		if (!background && textContainerRef.current.clientHeight > lineHeightDefault * 5) {
+		if (textContainerRef && textContainerRef.current &&
+			!background &&
+			textContainerRef.current.clientHeight > lineHeightDefault * 5) {
 			setTextShouldWrap(true);
 		}
 	}, []);
