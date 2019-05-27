@@ -142,7 +142,7 @@ class FeedPin extends Component {
 				}
 				break;
 			case 'collection':
-				url = `/learn/more/${parts[2]}`;
+				url = `/collection/${parts[2]}`;
 				break;
 			default:
 				// url = `/${primaryPart}`;

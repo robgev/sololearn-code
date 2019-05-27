@@ -93,15 +93,25 @@ export default ([
 	<Route onEnter={() => window.scrollTo(0, 0)} path="/terms-of-service" component={ToS} />,
 	<Route component={redirector(MainLayout)} key="mainLayoutRoutes">
 		<Redirect exact path="/" to="/feed" />
+		{/*alternativ paths */}
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn" component={SlayHome} />
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/courses" component={SlayHome} />
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/course" component={SlayHome} />
+
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/search/:query" component={SlaySearch} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/bookmarks" component={SlayBookmarks} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/more-on/:courseId" component={SlayMoreOnTopic} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/more/author/:userId" component={SlayMoreByAuthor} />
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/more/:collectionId" component={SlayDetailed} />
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/manage" component={SlayManage} />
 
+		{/* change /learn/more/:collectionId to /collection/:collectionId */}
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/more/:collectionId" component={SlayDetailed} />
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/collection/:collectionId" component={SlayDetailed} />
+
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/manage" component={SlayManage} />
+		{/* change /learn/collection/:collectionId to /collections/:collectionId */}
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/collection/:collectionId" component={SlayLessonsPage} />
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/collections/:collectionId" component={SlayLessonsPage} />
+
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/lesson/:itemType/:lessonId(/:lessonName)(/:pageNumber)" component={SlayLesson} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/course/:alias" component={Modules} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/course/:alias/:moduleName" component={Lessons} />

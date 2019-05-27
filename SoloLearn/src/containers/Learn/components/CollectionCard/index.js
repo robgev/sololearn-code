@@ -63,7 +63,7 @@ const CollectionCard = ({
 							{t('common.manage')}
         </ViewMoreLink>
 						: !noViewMore &&
-						<ViewMoreLink to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} >
+						<ViewMoreLink to={userID ? `/learn/more/author/${userID}` : `/collection/${id}`} >
 							{t('common.loadMore')}
 						</ViewMoreLink>
 				}
@@ -89,7 +89,7 @@ const CollectionCard = ({
 								size={(isCourses || round) ? 85 : 95}
 								className="collection-card-chip"
 								noBoxShadow={!(isCourses && round)}
-								customLink={lessonItem.itemType === 5 ? `/learn/collection/${lessonItem.id}` : null}
+								customLink={lessonItem.itemType === 5 ? `/collections/${lessonItem.id}` : null}
 							/>
 						</Container>
 					))
