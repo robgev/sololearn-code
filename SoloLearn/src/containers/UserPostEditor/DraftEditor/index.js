@@ -149,6 +149,16 @@ const DraftEditor = ({
 		return 'not_handled';
 	};
 
+	const handleReturn = () => {
+		const currentContent = editorState.getCurrentContent();
+		const currentContentLength = currentContent.getPlainText('').length;
+		const selectedTextLength = _getLengthOfSelectedText();
+		if (currentContentLength - selectedTextLength >= USER_POST_MAX_LENGTH) {
+			return 'handled';
+		}
+		return 'not_handled';
+	};
+
 	const style = background === null
 		? {}
 		: getBackgroundStyle(background, { isPreview: false });
@@ -175,6 +185,11 @@ const DraftEditor = ({
 	}, [ editorState ]);
 
 	const getRgbaHexFromArgbHex = color => `#${color.substring(3, color.length)}${color.substring(1, 3)}`;
+
+	const currentContentLength = editorState.getCurrentContent().getPlainText('').length;
+
+	const filteredSuggestions = suggestions.filter(mention =>
+		mention.name.length + currentContentLength <= USER_POST_MAX_LENGTH);
 
 	return (
 		<FlexBox
@@ -207,6 +222,7 @@ const DraftEditor = ({
 					stripPastedStyles
 					handleBeforeInput={handeBeforeInput}
 					handlePastedText={handlePastedText}
+					handleReturn={handleReturn}
 					onChange={editorState => setEditorState(editorState)}
 					textAlignment={background ? background.type !== 'none' && 'center' : 'left'}
 					ref={editorRef}
@@ -216,7 +232,7 @@ const DraftEditor = ({
 				/>
 				<MentionSuggestions
 					onSearchChange={getSuggestions}
-					suggestions={suggestions}
+					suggestions={filteredSuggestions}
 					entryComponent={Entry}
 				/>
 			</Container>

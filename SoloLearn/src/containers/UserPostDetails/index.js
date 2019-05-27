@@ -12,9 +12,10 @@ import {
 	Popup,
 	MenuItem,
 	Chip,
+	TextBlock,
 } from 'components/atoms';
 import {
-	Layout,
+	LayoutWithSidebar,
 	IconMenu,
 	ProfileAvatar,
 	UsernameLink,
@@ -59,7 +60,9 @@ const UserPostDetails = ({
 	};
 
 	return (
-		<Layout>
+		<LayoutWithSidebar
+			sidebar={<TextBlock>Coming Soon...</TextBlock>}
+		>
 			{userPost ?
 				<Container className="user-post-details-page-container">
 					<PaperContainer className="user-post-details-main-container">
@@ -171,7 +174,7 @@ const UserPostDetails = ({
 				:
 				<Loading />
 			}
-		</Layout>
+		</LayoutWithSidebar>
 	);
 };
 
