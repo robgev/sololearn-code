@@ -32,6 +32,7 @@ namespace SoloLearn.Service
 							{ "browser", browser },
 							{ "browserVersion", browserVersion },
 							{ "os", os },
+							{ "locale",locale},
 						}.Where(f => f.Value != null).ToDictionary(x => x.Key, x => x.Value)))
 	  {
 		using (var response = await client.PostAsync(url, content))
