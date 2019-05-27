@@ -3,6 +3,7 @@ import { EditorState, Modifier, convertToRaw } from 'draft-js';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
 import Editor from 'draft-js-plugins-editor';
 import createMentionPlugin from 'draft-js-mention-plugin';
+import createEmojiPlugin from 'draft-js-emoji-plugin';
 import hexToRgba from 'hex-to-rgba';
 import { translate } from 'react-i18next';
 import { Container, FlexBox, Link } from 'components/atoms';
@@ -14,6 +15,7 @@ import { getBackgroundStyle, getFontSize } from '../utils';
 import { USER_POST_MAX_LENGTH } from '../UserPostEditor';
 
 import 'draft-js-linkify-plugin/lib/plugin.css';
+import 'draft-js-emoji-plugin/lib/plugin.css';
 import './styles.scss';
 
 const DraftEditor = ({
@@ -53,10 +55,13 @@ const DraftEditor = ({
 			</RefLink>
 		),
 	}));
+	const emojiPlugin = useRef(createEmojiPlugin({ useNativeArt: true }));
+	const { EmojiSuggestions, EmojiSelect } = emojiPlugin.current;
+
 	const { MentionSuggestions } = mentionPluginRef.current;
 	const plugins = isEditorReadOnly
 		? [ mentionPluginRef.current, linkifyPluginRef.current ]
-		: [ mentionPluginRef.current ];
+		: [ mentionPluginRef.current, emojiPlugin.current ];
 
 	const getSuggestions = ({ value }) => {
 		setSuggestions([]);
@@ -195,6 +200,7 @@ const DraftEditor = ({
 		<FlexBox
 			align={background ? background.type !== 'none' && true : false}
 			justify={background ? background.type !== 'none' && true : false}
+			column
 			style={background.type === 'none' ?
 				{
 					color: 'black',
@@ -236,6 +242,12 @@ const DraftEditor = ({
 					entryComponent={Entry}
 				/>
 			</Container>
+			{!isEditorReadOnly &&
+				<Container className="up-emojies-container">
+					<EmojiSuggestions />
+					<EmojiSelect />
+				</Container>
+			}
 		</FlexBox>
 	);
 };
