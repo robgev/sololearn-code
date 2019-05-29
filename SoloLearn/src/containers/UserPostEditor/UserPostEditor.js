@@ -265,9 +265,7 @@ const UserPostEditor = ({
 							/>
 							<FlexBox justifyBetween align className="user-post-max-length-container">
 								<Container>
-									{!draftEditorInitialText &&
-										<EmojiSelect />
-									}
+									<EmojiSelect />
 								</Container>
 								<SecondaryTextBlock className="count">
 									{editorText ? editorText.getPlainText().length : 0} / {USER_POST_MAX_LENGTH}
