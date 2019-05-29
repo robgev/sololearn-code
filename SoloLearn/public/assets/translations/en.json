@@ -413,6 +413,7 @@
 	},
 	"feed": {
 		"title": "Activity Feed",
+		"weekly-title": "Weekly Highlights",
 		"most-recent-title": "Most Recent",
 		"groupped-chellenge-format": "has completed {{challengesCount}} challenges",
 		"suggestions": "Suggestions",
@@ -738,7 +739,8 @@
 		"add-courses-button-title": "ADD COURSES",
 		"add-courses-title": "No Courses\\n",
 		"more-on-topic": "More on the Topic",
-		"add-courses-message": "Start Learning Now!"
+		"add-courses-message": "Start Learning Now!",
+		"no-selected-courses-message": "No Selected Courses"
 	},
 	"logout": {
 		"alert-title": "Session expired.",
@@ -870,5 +872,13 @@
 	},
 	"votes": {
 		"not-activated-account": "Your account is not activated. Check your email for activation instructions."
+	},
+	"user_post": {
+		"hints": {
+			"user-post-form-hint-1": "What's going on?",
+			"user-post-form-hint-2": "Share your thoughts",
+			"user-post-form-hint-3": "What's on your mind?"
+		},
+		"user-post-placeholder":"Share coding tips, articles, snippets and anything code-related"
 	}
 }

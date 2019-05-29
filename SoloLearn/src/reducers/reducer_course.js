@@ -1,4 +1,4 @@
-import { LOAD_COURSE, RESET_LOCALE_DATA } from 'constants/ActionTypes';
+import { LOAD_COURSE, RESET_LOCALE_DATA, RESET_LOCAL_LESSON } from 'constants/ActionTypes';
 import { toSeoFriendly } from 'utils';
 
 export default function (state = null, action) {
@@ -6,6 +6,7 @@ export default function (state = null, action) {
 	case LOAD_COURSE:
 		return action.payload;
 	case RESET_LOCALE_DATA:
+	case RESET_LOCAL_LESSON:
 		return null;
 	default:
 		return state;

@@ -128,40 +128,39 @@ class Modules extends Component {
 		} = this.props;
 		const { loading, resetPopupOpened } = this.state;
 		const { modules, id } = course;
-		const userCourses = this.props.userProfile.skills;
+		// const userCourses = this.props.userProfile.skills;
 
 		return (
 			<LayoutWithSidebar sidebar={<UserProgressToolbar />}>
-				{loading || (!isModuleLoaded && this.props.userProfile.skills.length > 0)
+				{loading || (!isModuleLoaded)// && this.props.userProfile.skills.length > 0)
 					? <EmptyCard paper loading />
-					: userCourses.length > 0
-						? (
-							<PaperContainer>
-								<FlexBox justifyBetween>
-									<Heading>{course.name}</Heading>
-									<IconMenu
-										icon={MoreVert}
-										anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-										transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-									>
-										<MenuItem onClick={() => this.handleResetPopupOpen(course.id)}>
-											{t('course_picker.action.reset-progress')}
-										</MenuItem>
-									</IconMenu>
-								</FlexBox>
-								<ModuleChips
-									courseId={id}
-									modules={modules}
-									itemType={itemType}
-									onClick={this.handleClick}
-									alias={alias}
-								/>
-								<Certificate
-									courseId={id}
-									modules={modules}
-								/>
-								{
-									course.hasAdditionalLessons &&
+					: (
+						<PaperContainer>
+							<FlexBox justifyBetween>
+								<Heading>{course.name}</Heading>
+								<IconMenu
+									icon={MoreVert}
+									anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+									transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+								>
+									<MenuItem onClick={() => this.handleResetPopupOpen(course.id)}>
+										{t('course_picker.action.reset-progress')}
+									</MenuItem>
+								</IconMenu>
+							</FlexBox>
+							<ModuleChips
+								courseId={id}
+								modules={modules}
+								itemType={itemType}
+								onClick={this.handleClick}
+								alias={alias}
+							/>
+							<Certificate
+								courseId={id}
+								modules={modules}
+							/>
+							{
+								course.hasAdditionalLessons &&
 									<ModuleChip
 										state="normal"
 										className="center"
@@ -170,10 +169,9 @@ class Modules extends Component {
 										name={t('learn.more-on-topic')}
 										iconSource={`${AppDefaults.downloadHost}/Courses/assets/more.png`}
 									/>
-								}
-							</PaperContainer>
-						)
-						: <AddCourse />
+							}
+						</PaperContainer>
+					)
 				}
 				<Popup
 					open={resetPopupOpened}

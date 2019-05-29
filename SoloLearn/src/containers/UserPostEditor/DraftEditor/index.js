@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router';
 import { EditorState, Modifier, convertToRaw } from 'draft-js';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
 import Editor from 'draft-js-plugins-editor';
 import createMentionPlugin from 'draft-js-mention-plugin';
-import { getMentionsList, makeEditableContent, getMentionsFromRawEditorContent } from 'utils';
 import hexToRgba from 'hex-to-rgba';
-import { Container, FlexBox } from 'components/atoms';
+import { translate } from 'react-i18next';
+import { Container, FlexBox, Link } from 'components/atoms';
+import { RefLink } from 'components/molecules';
 import { Entry } from 'components/organisms';
+
+import { getMentionsList, makeEditableContent, getMentionsFromRawEditorContent } from 'utils';
 import { getBackgroundStyle, getFontSize } from '../utils';
 import { USER_POST_MAX_LENGTH } from '../UserPostEditor';
 
@@ -20,36 +22,35 @@ const DraftEditor = ({
 	setEditorText = null,
 	isEditorReadOnly = false,
 	editorInitialText = '',
+	t,
 }) => {
 	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
-	const [ fontSize, setFontSize ] = useState(36);
+	const [ fontSize, setFontSize ] = useState(isEditorReadOnly && background.type === 'none' ? 15 : 30);
 	const [ suggestions, setSuggestions ] = useState([]);
 	const hasBackground = background && background.type !== 'none';
 	const mentionPluginRef = useRef(createMentionPlugin({
 		mentionComponent: ({ children, mention }) => (isEditorReadOnly
 			? (
-				<b>
-					<Link
-						className="hoverable"
-						style={{ color: hasBackground ? background.textColor : '#607D8B' }}
-						to={`/profile/${mention.id}`}
-					>
-						{children}
-					</Link>
-				</b>
+				<Link
+					className="hoverable"
+					style={{ color: hasBackground ? background.textColor : '#607D8B' }}
+					to={`/profile/${mention.id}`}
+				>
+					{children}
+				</Link>
 			)
 			: <b>{children}</b>),
 	}));
 	const linkifyPluginRef = useRef(createLinkifyPlugin({
 		target: '_blank',
 		component: ({ children, href }) => (
-			<Link
+			<RefLink
 				className={hasBackground ? 'underline' : null}
 				style={{ color: hasBackground ? background.textColor : '#607D8B' }}
 				to={href}
 			>
 				{children}
-			</Link>
+			</RefLink>
 		),
 	}));
 	const { MentionSuggestions } = mentionPluginRef.current;
@@ -68,6 +69,14 @@ const DraftEditor = ({
 				setSuggestions(filteredSuggestions.slice(0, 5));
 			});
 	};
+
+	useEffect(() => {
+		// setting the cursor position to the start in case of repost
+		if (editorInitialText.startsWith('\n')) {
+			const selectionBefore = editorState.getCurrentContent().getSelectionBefore();
+			setEditorState(EditorState.acceptSelection(editorState, selectionBefore));
+		}
+	}, []);
 
 	const editorRef = useRef(null);
 
@@ -119,7 +128,7 @@ const DraftEditor = ({
 
 	const handlePastedText = (pastedText) => {
 		const currentContent = editorState.getCurrentContent();
-		const currentContentLength = currentContent.getPlainText('').length;
+		const currentContentLength = currentContent.getPlainText().length;
 		const selection = editorState.getSelection();
 		const selectedTextLength = _getLengthOfSelectedText();
 		let nextEditorState = EditorState.createEmpty();
@@ -135,6 +144,16 @@ const DraftEditor = ({
 				'insert-characters',
 			);
 			setEditorState(nextEditorState);
+			return 'handled';
+		}
+		return 'not_handled';
+	};
+
+	const handleReturn = () => {
+		const currentContent = editorState.getCurrentContent();
+		const currentContentLength = currentContent.getPlainText().length;
+		const selectedTextLength = _getLengthOfSelectedText();
+		if (currentContentLength - selectedTextLength >= USER_POST_MAX_LENGTH) {
 			return 'handled';
 		}
 		return 'not_handled';
@@ -159,11 +178,18 @@ const DraftEditor = ({
 			setEditorText(currentContent);
 		}
 		const newLinesCount = (text.match(/\n/g) || []).length;
-		setFontSize(getFontSize(text.length, newLinesCount));
+		if (!isEditorReadOnly) {
+			setFontSize(getFontSize(text.length, newLinesCount));
+		}
 		measure();
 	}, [ editorState ]);
 
 	const getRgbaHexFromArgbHex = color => `#${color.substring(3, color.length)}${color.substring(1, 3)}`;
+
+	const currentContentLength = editorState.getCurrentContent().getPlainText('').length;
+
+	const filteredSuggestions = suggestions.filter(mention =>
+		mention.name.length + currentContentLength <= USER_POST_MAX_LENGTH);
 
 	return (
 		<FlexBox
@@ -174,8 +200,9 @@ const DraftEditor = ({
 					color: 'black',
 					fontSize,
 					cursor: isEditorReadOnly ? 'cursor' : 'text',
-					height: '100%',
-					minHeight: isEditorReadOnly ? 50 : 250,
+					minHeight: isEditorReadOnly ? 50 : 140,
+					maxHeight: isEditorReadOnly ? '100%' : 250,
+					overflow: isEditorReadOnly ? 'default' : 'auto',
 				}
 				:
 				{
@@ -195,16 +222,17 @@ const DraftEditor = ({
 					stripPastedStyles
 					handleBeforeInput={handeBeforeInput}
 					handlePastedText={handlePastedText}
+					handleReturn={handleReturn}
 					onChange={editorState => setEditorState(editorState)}
 					textAlignment={background ? background.type !== 'none' && 'center' : 'left'}
 					ref={editorRef}
-					placeholder={background.type === 'none' ? 'Share coding tips, articles, snippets and anything code-related' : ''}
+					placeholder={t('user_post.user-post-placeholder')}
 					plugins={plugins}
 					readOnly={isEditorReadOnly}
 				/>
 				<MentionSuggestions
 					onSearchChange={getSuggestions}
-					suggestions={suggestions}
+					suggestions={filteredSuggestions}
 					entryComponent={Entry}
 				/>
 			</Container>
@@ -216,4 +244,4 @@ DraftEditor.defaultProps = {
 	measure: () => { },
 };
 
-export default DraftEditor;
+export default translate()(DraftEditor);
