@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container } from 'components/atoms';
-import {	RaisedButton } from 'components/molecules';
+import { RaisedButton } from 'components/molecules';
 import { UserCard as Card } from 'components/organisms';
 
 // i18n
