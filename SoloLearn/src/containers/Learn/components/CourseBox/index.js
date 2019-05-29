@@ -24,7 +24,7 @@ const CourseBox = ({
 	return (
 		<Container className="course-box-container">
 			<ContainerLink
-				to={itemType !== slayItemTypes.course ? `/collections/${id}` : `/learn/course/${toSeoFriendly(getCourseAliasById(id))}`}
+				to={itemType !== slayItemTypes.course ? `/collections/${id}` : `/learn/${toSeoFriendly(getCourseAliasById(id))}`}
 				className="course-card-wrapper"
 			>
 				<Container className="image-wrapper" style={{ backgroundColor: color }}>

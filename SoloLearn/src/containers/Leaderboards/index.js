@@ -193,7 +193,6 @@ class Leaderboards extends PureComponent {
 			shouldHideButton,
 			loadingData,
 		} = this.state;
-		console.log(loading);
 		return (
 			<Layout className="leaderboards-container">
 				<PaperContainer className="leaderboards-header-container">

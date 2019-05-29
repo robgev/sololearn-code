@@ -80,11 +80,11 @@ class Parser extends Component {
 	static Link = ({ children, strAttributes }) => {
 		let [ , fullLink ] = Parser.linkRegex.exec(strAttributes);
 		if (fullLink.includes('sololearn.com')) {
-			if(fullLink[fullLink.length-1] === '/') {
-				fullLink = fullLink.substring(0, fullLink.length-1)
+			if (fullLink[fullLink.length - 1] === '/') {
+				fullLink = fullLink.substring(0, fullLink.length - 1);
 			}
 			const userLessonId = fullLink.substring(fullLink.lastIndexOf('/') + 1);
-			return <RefLink href={`/learn/lesson/user-lesson/${userLessonId}`}>{children}</RefLink>;
+			return <RefLink href={`/learn/${userLessonId}`}>{children}</RefLink>;
 		}
 		return <Linkify href={fullLink}>{children}</Linkify>;
 	}
@@ -119,11 +119,11 @@ class Parser extends Component {
 		let current = text;
 		let idx = 0;
 		const result = [];
-		
+
 		if (!Parser.tagRegex.test(current)) {
 			return this.noTagParse(current);
 		}
-		let skipGlossary = false;
+		const skipGlossary = false;
 		while (Parser.tagRegex.test(current)) {
 			const regexed = Parser.tagRegex.exec(current);
 			const [ match, tag, args, innerText ] = regexed;

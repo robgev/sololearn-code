@@ -48,7 +48,6 @@ class FeedList extends Component {
 	}
 
 	openItem = (id, callback) => {
-		console.log('Opening');
 		this.setState(s => ({ openIds: [ ...s.openIds, id ] }), callback);
 	}
 

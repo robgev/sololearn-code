@@ -35,11 +35,10 @@ import { UserProgressToolbar } from '../components';
 import ModuleChips from './ModuleChips';
 import ModuleChip from './ModuleChips/ModuleChip';
 import Certificate from './Certificate';
-import AddCourse from './AddCourse';
 
 const mapStateToProps = (state, ownProps) => ({
-	isLoaded: isCourseLoaded(state, ownProps.params.alias),
-	course: getCourseByAlias(state, ownProps.params.alias),
+	isLoaded: isCourseLoaded(state, ownProps.alias),
+	course: getCourseByAlias(state, ownProps.alias),
 	courses: state.courses,
 	userProfile: state.userProfile,
 });
@@ -123,7 +122,7 @@ class Modules extends Component {
 		const {
 			t,
 			course,
-			params: { itemType, alias },
+			alias,
 			isLoaded: isModuleLoaded,
 		} = this.props;
 		const { loading, resetPopupOpened } = this.state;
@@ -151,7 +150,6 @@ class Modules extends Component {
 							<ModuleChips
 								courseId={id}
 								modules={modules}
-								itemType={itemType}
 								onClick={this.handleClick}
 								alias={alias}
 							/>

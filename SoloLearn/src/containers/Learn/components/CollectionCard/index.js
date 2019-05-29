@@ -77,7 +77,7 @@ const CollectionCard = ({
 						? items && items.length > 0
 							? <ViewMoreLink className="manage-button" onClick={() => toggleSlayManage(!openSlayManage)}>
 								{t('common.manage')}
-         </ViewMoreLink>
+							</ViewMoreLink>
 							: null
 						: !noViewMore &&
 						<ViewMoreLink to={userID ? `/learn/more/author/${userID}` : `/collection/${id}`} >
@@ -117,7 +117,7 @@ const CollectionCard = ({
 							items.length === 1 && id === -1
 								&& <FlexBox align>
 									<ContainerLink
-										to={`/learn/course/${toSeoFriendly(getCourseAliasById(courses, items[0].id))}`}
+										to={`/learn/${toSeoFriendly(getCourseAliasById(courses, items[0].id))}`}
 									>
 										<RaisedButton
 											color="secondary"
@@ -126,9 +126,9 @@ const CollectionCard = ({
 											{t('learn.buttons-continue')}
 										</RaisedButton>
 									</ContainerLink>
-								</FlexBox>
+           </FlexBox>
 						}
-       </Slider>
+					</Slider>
 					: <FlexBox justify column align>
 						<SecondaryTextBlock>
 							{t('learn.no-selected-courses-message')}
@@ -139,7 +139,7 @@ const CollectionCard = ({
 						>
 							{t('learn.add-courses-message')}
 						</RaisedButton>
-       </FlexBox>
+					</FlexBox>
 			}
 			{
 				id === -1

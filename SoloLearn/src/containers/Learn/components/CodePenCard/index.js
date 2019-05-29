@@ -30,8 +30,8 @@ const CodePenCard = ({
 		<ContainerLink
 			to={
 				itemType === slayItemTypes.course
-					? `/learn/course/${toSeoFriendly(getCourseAliasById(id))}`
-					: `/learn/lesson/${itemType === slayItemTypes.courseLesson ? 'course-lesson' : 'user-lesson'}/${id}/${toSeoFriendly(name, 100)}/1`}
+					? `/learn/${toSeoFriendly(getCourseAliasById(id))}`
+					: `/learn/${id}/${toSeoFriendly(name, 100)}/1`}
 			className="code-pen-wrapper"
 		>
 			<Container className="image-wrapper" style={{ backgroundColor: itemType === slayItemTypes.course ? getLanguageColor(language) : color }}>

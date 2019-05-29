@@ -6,7 +6,7 @@ import { translate } from 'react-i18next';
 
 import { toggleLessonBookmark } from 'actions/slay';
 import { updateDate } from 'utils';
-//import Snackbar from 'material-ui/Snackbar';
+// import Snackbar from 'material-ui/Snackbar';
 import SlayLessonToolbar from './SlayLessonToolbar';
 import { Parser } from './components';
 import { Container, Snackbar } from 'components/atoms';
@@ -39,9 +39,9 @@ class QuizText extends Component {
 	}
 
 	handleSnackBarClose = (reason) => {
-		//if (reason !== 'clickaway') {
-			this.setState({ snackbarOpened: false });
-		//}
+		// if (reason !== 'clickaway') {
+		this.setState({ snackbarOpened: false });
+		// }
 	}
 
 	render() {
@@ -53,12 +53,13 @@ class QuizText extends Component {
 			userData,
 			withAuthorInfo,
 			courseLanguage,
+			textContent,
 		} = this.props;
 		return (
 			<Container className="text-container" style={styles.textContainer}>
 				<Parser
 					courseLanguage={courseLanguage}
-					text={this.props.textContent}
+					text={textContent}
 					glossary={this.props.glossary}
 				/>
 				<SlayLessonToolbar
