@@ -1,10 +1,6 @@
 import React from 'react';
-import { Container, SecondaryTextBlock } from 'components/atoms';
-import {
-	Avatar,
-	RaisedButton,
-	UsernameLink
-} from 'components/molecules';
+import { Container } from 'components/atoms';
+import {	RaisedButton } from 'components/molecules';
 import { UserCard as Card } from 'components/organisms';
 
 // i18n
