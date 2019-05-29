@@ -24,7 +24,6 @@ const UserPost = ({
 	background,
 	message,
 	imageUrl,
-	type,
 	date,
 	id,
 	vote,
@@ -134,7 +133,7 @@ const UserPost = ({
 						: null}
 				</ContainerLink>
 				<FeedBottomBarFullStatistics
-					type={type}
+					type="userPost"
 					date={date}
 					id={id}
 					userVote={vote}
