@@ -45,12 +45,12 @@ const findBestRank = (ranks = {}) =>
 				const percentOrRank = isCurrentRank ? 'r' : 'p';
 				const formattedKey = `${monthOrWeek}${totalOrCountry}${percentOrRank}`;
 				const queryParams = {
-					mode:	isTotal ? 0 : 2,
 					range: isMonthly ? 30 : 7,
 				};
 				return {
 					key: formattedKey,
 					rank: ranks[key],
+					tab:	isTotal ? 'global' : 'local',
 					queryParams,
 				};
 			}

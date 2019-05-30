@@ -107,7 +107,7 @@ export default ([
 
 		{/* change /learn/more/:collectionId to /collection/:collectionId */}
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/more/:collectionId" component={SlayDetailed} />
-			<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/manage" component={SlayManage} />
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/manage" component={SlayManage} />
 		{/* change /learn/collection/:collectionId to /collections/:collectionId */}
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/collection/:collectionId" component={SlayLessonsPage} />
 
@@ -129,7 +129,8 @@ export default ([
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/feed" component={Feed} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/profile(/:id)(/:tab)" component={Profile} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/certificate/:id" component={Certificate} />
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/leaderboards(/:userId)" component={Leaderboards} />
+		{/* change /leaderboards(/:userId) to /leaderboard(/:tab)(/:userId) */}
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/leaderboard(/:tab)(/:userId)" component={Leaderboards} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/notifications" component={Notifications} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discover(/:query)" component={DiscoverContainer} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/quiz-factory" component={QuizFactoryMenu} />
