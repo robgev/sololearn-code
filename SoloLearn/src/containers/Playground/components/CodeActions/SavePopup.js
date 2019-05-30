@@ -67,7 +67,6 @@ class SavePopup extends Component {
 			>
 				<PopupTitle>{t('code_playground.popups.save-popup-title')}</PopupTitle>
 				<PopupContent>
-					<PopupContentText>{t('code_playground.popups.save-popup-code-name-placeholder')}</PopupContentText>
 					<Input
 						fullWidth
 						value={name}
@@ -90,7 +89,6 @@ class SavePopup extends Component {
 				<PopupActions>
 					<FlatButton
 						onClick={this.onClose}
-						color="secondary"
 					>
 						{t('common.cancel-title')}
 					</FlatButton>
