@@ -66,7 +66,7 @@ class App extends PureComponent {
 			? null
 			: (
 				<React.Fragment>
-					<DevTools />
+					{/* <DevTools /> */}
 					<Router history={browserHistory} routes={routes} />
 					<ToastContainer
 						draggable

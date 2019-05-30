@@ -63,7 +63,7 @@ class Post extends Component {
 								onDelete={this.handleDelete}
 							/>
 						)
-						: <EmptyCard paper />
+						: <EmptyCard paper className='pxik'/>
 				}
 				{
 					this.post.data !== null

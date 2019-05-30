@@ -118,6 +118,7 @@ class IProfile {
 					this.getCodesPromise = null;
 				});
 		}
+		console.log(this.codes.hasMore)
 		return this.getCodesPromise;
 	}
 

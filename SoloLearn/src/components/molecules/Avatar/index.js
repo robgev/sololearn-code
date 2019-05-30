@@ -16,6 +16,7 @@ const Avatar = ({
 	avatarUrl,
 	userName,
 	link,
+	className,
 	...props
 }) => {
 	const ConditionalContainer = disabled ? Container : Link;
@@ -25,7 +26,7 @@ const Avatar = ({
 		<ConditionalContainer
 			to={link || `/profile/${userID}`}
 			onClick={stopPropagation}
-			className="avatar-container"
+			className={`avatar-container ${className}`}
 			{...props}
 		>
 			{avatarUrl
@@ -55,12 +56,14 @@ Avatar.propTypes = {
 	disabled: PropTypes.bool,
 	userName: PropTypes.string.isRequired,
 	variant: PropTypes.oneOf([ 'small', 'normal', 'big' ]),
+	className:PropTypes.string,
 };
 
 Avatar.defaultProps = {
 	badge: null,
 	disabled: false,
 	variant: 'small',
+	className:'',
 };
 
 export default Avatar;

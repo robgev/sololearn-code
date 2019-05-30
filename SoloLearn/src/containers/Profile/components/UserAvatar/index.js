@@ -16,6 +16,7 @@ const UserAvatar = ({ size, user, link }) => {
 			className={`profile_user-avatar-container ${modBadge || ''}`}
 		>
 			<Avatar
+				className="userAvatar"
 				disabled={!link}
 				variant={size}
 				userID={user.id}
