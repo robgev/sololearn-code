@@ -34,7 +34,7 @@ import {
 	editPost,
 } from './userpost.actions';
 
-import 'draft-js-emoji-plugin/lib/plugin.css';
+import './emojiPlugin.css';
 import './styles.scss';
 
 export const USER_POST_MAX_LENGTH = 1024;
@@ -66,7 +66,7 @@ const UserPostEditor = ({
 	const emojiPlugin = useRef(createEmojiPlugin({
 		useNativeArt: true,
 	}));
-	const { EmojiSelect } = emojiPlugin.current;
+	const { EmojiSuggestions, EmojiSelect } = emojiPlugin.current;
 
 	const computeCanApplyBackground = () => {
 		if (editorText) {
@@ -266,6 +266,7 @@ const UserPostEditor = ({
 							<FlexBox justifyBetween align className="user-post-max-length-container">
 								<Container>
 									<EmojiSelect />
+									<EmojiSuggestions />
 								</Container>
 								<SecondaryTextBlock className="count">
 									{editorText ? editorText.getPlainText().length : 0} / {USER_POST_MAX_LENGTH}
