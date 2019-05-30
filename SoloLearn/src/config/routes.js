@@ -127,7 +127,7 @@ export default ([
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss/filter/:query" component={Questions} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss/:id(/:questionName)(/:replyId)" component={Post} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/feed" component={Feed} />
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/profile/:id(/:tab)" component={Profile} />
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/profile(/:id)(/:tab)" component={Profile} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/certificate/:id" component={Certificate} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/leaderboards(/:userId)" component={Leaderboards} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/notifications" component={Notifications} />

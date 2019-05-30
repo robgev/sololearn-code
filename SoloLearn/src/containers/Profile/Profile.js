@@ -30,6 +30,13 @@ import ProfileSidebar from './ProfileSidebar';
 import IProfile from './IProfile';
 
 const capitalize = str => str.charAt(0).toUpperCase() + str.substr(1);
+const TABS = {
+	codes: 'codes',
+	discussion:'discussion',
+	activity:'activity',
+	skills:'skills',
+	badges:'badges',
+}
 
 @translate()
 @observer
@@ -43,13 +50,29 @@ class Profile extends Component {
 	@observable followerPopupOpen = false;
 
 	componentWillMount() {
-		const { tab } = this.props.params;
-		this.handleTabChange(null, tab || 'activity');
+		const { id, tab } = this.props.params;
+		if(!id) {
+			browserHistory.replace({
+				...this.props.location,
+				pathname: `/profile/${this.props.userId}/${TABS['activity']}`,
+			});
+			return;
+		}
+		if(TABS[id]) { // if first parameter is tab name
+			browserHistory.replace({
+				...this.props.location,
+				pathname: `/profile/${this.props.userId}/${id}`,
+			});
+			return;
+		}
+
+		this.handleTabChange(null, tab || TABS['activity']);
 		ReactGA.ga('send', 'screenView', { screenName: 'Profile Page' });
 	}
 
 	componentWillReceiveProps(newProps) {
 		const { id, tab } = newProps.params;
+
 		if (this.props.params.id !== id) {
 			this.profile = new IProfile({ id });
 			this.followerPopupOpen = false;
@@ -58,7 +81,7 @@ class Profile extends Component {
 			const { location } = newProps;
 			browserHistory.replace({
 				...location,
-				pathname: `/profile/${id}/${tab || 'activity'}`,
+				pathname: `/profile/${id}/${tab || TABS['activity']}`,
 			});
 			this.activeTab = tab || 'activity';
 		}
@@ -107,22 +130,22 @@ class Profile extends Component {
 							onChange={this.handleTabChange}
 						>
 							<Tab
-								value="codes"
+								value={TABS["codes"]}
 								label={<TextBlock>{t('profile.tab.codes')}</TextBlock>}
 								icon={<TextBlock>{data.codes}</TextBlock>}
 							/>
 							<Tab
-								value="discussion"
+								value={TABS["discussion"]}
 								label={<TextBlock>{t('profile.tab.posts')}</TextBlock>}
 								icon={<TextBlock>{data.posts}</TextBlock>}
 							/>
 							<Tab
-								value="activity"
+								value={TABS["activity"]}
 								label={<TextBlock>{t('profile.tab.activity')}</TextBlock>}
 								icon={<Feed className="feed-icon" />}
 							/>
 							<Tab
-								value="skills"
+								value={TABS["skills"]}
 								label={<TextBlock>{t('profile.tab.skills')}</TextBlock>}
 								icon={
 									<TextBlock>
@@ -131,7 +154,7 @@ class Profile extends Component {
 								}
 							/>
 							<Tab
-								value="badges"
+								value={TABS["badges"]}
 								label={<TextBlock>{t('profile.tab.badges')}</TextBlock>}
 								icon={
 									<TextBlock>
@@ -143,7 +166,7 @@ class Profile extends Component {
 					</BusyWrapper>
 				</PaperContainer>
 				{
-					data.id !== undefined && this.activeTab === 'activity' &&
+					data.id !== undefined && this.activeTab === TABS['activity'] &&
 					<Container className="section">
 						<FeedList
 							feed={feed.entities}
@@ -155,7 +178,7 @@ class Profile extends Component {
 					</Container>
 				}
 				{
-					data.id !== undefined && this.activeTab === 'codes' &&
+					data.id !== undefined && this.activeTab === TABS['codes'] &&
 					<InfiniteScroll
 						hasMore={codes.hasMore}
 						isLoading={this.profile.isCodesFetching}
@@ -176,7 +199,7 @@ class Profile extends Component {
 					</InfiniteScroll>
 				}
 				{
-					data.id !== undefined && this.activeTab === 'discussion' && (
+					data.id !== undefined && this.activeTab === TABS['discussion'] && (
 						<InfiniteScroll
 							hasMore={questions.hasMore}
 							isLoading={this.profile.isQuestionsFetching}
@@ -195,7 +218,7 @@ class Profile extends Component {
 					)
 				}
 				{
-					data.id !== undefined && this.activeTab === 'skills' &&
+					data.id !== undefined && this.activeTab === TABS['skills'] &&
 					<Skills
 						levels={levels}
 						profile={data}
@@ -204,7 +227,7 @@ class Profile extends Component {
 					/>
 				}
 				{
-					data.id !== undefined && this.activeTab === 'badges' && data.badges &&
+					data.id !== undefined && this.activeTab === TABS['badges'] && data.badges &&
 					<Badges
 						badges={data.badges}
 						key={this.props.location.query.badgeID || 0}
