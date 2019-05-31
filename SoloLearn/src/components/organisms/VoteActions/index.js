@@ -108,7 +108,7 @@ VoteActions.defaultProps = {
 VoteActions.propTypes = {
 	id: PropTypes.number.isRequired,
 	type: PropTypes
-		.oneOf([ 'code', 'post', 'lessonComment', 'userLessonComment', 'codeComment' ]).isRequired,
+		.oneOf([ 'code', 'post', 'userPost', 'lessonComment', 'userLessonComment', 'codeComment' ]).isRequired,
 	vertical: PropTypes.bool,
 	onChange: PropTypes.func,
 	initialCount: PropTypes.number.isRequired,
