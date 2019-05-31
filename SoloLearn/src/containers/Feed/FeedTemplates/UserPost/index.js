@@ -110,6 +110,7 @@ const UserPost = ({
 							ref={textContainerRef}
 						>
 							<UserPostEditor
+								key={userPostId}
 								background={background || { type: 'none', id: -1 }}
 								editorInitialText={message}
 								isEditorReadOnly
