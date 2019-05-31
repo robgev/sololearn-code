@@ -86,7 +86,6 @@ class Profile extends PureComponent {
 	}
 
 	handlePopupClose = (newUrl) => {
-		console.log('new', newUrl);
 		const { avatarUrl } = this.props.userProfile;
 		this.setState({
 			open: false,
