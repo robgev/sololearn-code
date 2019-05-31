@@ -7,10 +7,11 @@ const IconWithText = ({
 	Icon,
 	children,
 	className,
+	iconClassname = '',
 	...props
 }) => (
 	<FlexBox align className={`molecule_icon-with-text ${className}`} {...props}>
-		<Icon className="icon" />
+		<Icon className={`${iconClassname} icon`} />
 		{children}
 	</FlexBox>
 );
