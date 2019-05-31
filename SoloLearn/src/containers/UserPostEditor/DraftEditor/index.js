@@ -23,6 +23,7 @@ const DraftEditor = ({
 	isEditorReadOnly = false,
 	editorInitialText = '',
 	t,
+	// emojiPlugin = null,
 }) => {
 	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
 	const [ fontSize, setFontSize ] = useState(isEditorReadOnly && background.type === 'none' ? 15 : 30);
@@ -53,10 +54,14 @@ const DraftEditor = ({
 			</RefLink>
 		),
 	}));
+
 	const { MentionSuggestions } = mentionPluginRef.current;
 	const plugins = isEditorReadOnly
 		? [ mentionPluginRef.current, linkifyPluginRef.current ]
-		: [ mentionPluginRef.current ];
+		: [
+			mentionPluginRef.current,
+			// emojiPlugin.current,
+		];
 
 	const getSuggestions = ({ value }) => {
 		setSuggestions([]);
@@ -195,10 +200,10 @@ const DraftEditor = ({
 		<FlexBox
 			align={background ? background.type !== 'none' && true : false}
 			justify={background ? background.type !== 'none' && true : false}
+			column
 			style={background.type === 'none' ?
 				{
 					color: 'black',
-					fontSize,
 					cursor: isEditorReadOnly ? 'cursor' : 'text',
 					minHeight: isEditorReadOnly ? 50 : 140,
 					maxHeight: isEditorReadOnly ? '100%' : 250,
@@ -208,7 +213,6 @@ const DraftEditor = ({
 				{
 					...style,
 					color: background ? background.textColor.length > 6 ? hexToRgba(getRgbaHexFromArgbHex(background.textColor)) : background.textColor : 'black',
-					fontSize,
 					cursor: isEditorReadOnly ? 'cursor' : 'text',
 					height: 250,
 				}
@@ -216,7 +220,10 @@ const DraftEditor = ({
 			className={isEditorReadOnly ? 'draft-editor-container read-only' : 'draft-editor-container'}
 			onClick={() => { editorRef.current.focus(); }}
 		>
-			<Container className={isEditorReadOnly && background.type === 'none' ? 'draft-editor-inner-container no-padding' : 'draft-editor-inner-container'}>
+			<Container
+				className={isEditorReadOnly && background.type === 'none' ? 'draft-editor-inner-container no-padding' : 'draft-editor-inner-container'}
+				style={{ fontSize }}
+			>
 				<Editor
 					editorState={editorState}
 					stripPastedStyles
