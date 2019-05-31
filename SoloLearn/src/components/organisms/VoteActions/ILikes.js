@@ -97,9 +97,8 @@ class ILikes {
 		case 'code':
 			return { codeId: this.id };
 		case 'post':
-			return { postId: this.id };
 		case 'userPost':
-			return { id: this.id };
+			return { postId: this.id };
 		case 'lessonComment':
 		case 'codeComment':
 		case 'userLessonComment':

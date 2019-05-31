@@ -97,7 +97,7 @@ $settings_section_width: 200px;
 			justify-content: flex-start;
 			.user-card-container {
 				margin-bottom: 5px;
-				display: flex; 
+				display: flex;
 				justify-content: space-between;
 			}
 			&.center-vertical {
@@ -110,6 +110,7 @@ $settings_section_width: 200px;
 
 			&.unblock {
 				background-color: $secondary_color;
+				color: white;
 			}
 		}
 		.arsenal-settings-container {
