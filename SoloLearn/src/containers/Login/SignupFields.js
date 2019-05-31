@@ -24,6 +24,7 @@ const SignupFields = ({
 				onChange={updateState}
 				onKeyPress={handleEnter}
 				name="name"
+				autoComplete="new-password"
 				placeholder={t('register.name-placeholder')}
 			/>
 			<input
@@ -35,6 +36,7 @@ const SignupFields = ({
 				name="email"
 				autoCapitalize="off"
 				autoCorrect="off"
+				autoComplete="new-password"
 				placeholder={t('auth.email-placeholder')}
 			/>
 			<input
@@ -44,6 +46,7 @@ const SignupFields = ({
 				onKeyPress={handleEnter}
 				name="password"
 				type="password"
+				autoComplete="new-password"
 				placeholder={t('auth.password-placeholder')}
 			/>
 			<input
@@ -51,8 +54,10 @@ const SignupFields = ({
 				value={retypePass}
 				onChange={updateState}
 				onKeyPress={handleEnter}
-				name="retypePass"
 				type="password"
+				name="retypePass"
+				autoComplete="new-password"
+
 				placeholder={t('register.retype-password-placeholder')}
 			/>
 			{ alertMessage &&
