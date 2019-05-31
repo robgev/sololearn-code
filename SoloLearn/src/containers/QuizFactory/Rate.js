@@ -152,6 +152,7 @@ class Rate extends Component {
 							>
 								<IconWithText
 									Icon={ThumbUp}
+									iconClassname="vote-icon"
 								>
 									{t('factory.button-like')}
 								</IconWithText>
@@ -162,6 +163,7 @@ class Rate extends Component {
 							>
 								<IconWithText
 									Icon={ThumbDown}
+									iconClassname="vote-icon"
 								>
 									{t('factory.button-dislike')}
 								</IconWithText>
