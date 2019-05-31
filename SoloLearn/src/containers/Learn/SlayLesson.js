@@ -96,8 +96,6 @@ class SlayLesson extends PureComponent {
 		return activeLesson.id;
 	}
 
-	getCommentsType = () => 'userLesson'
-
 	getLessonsByAuthor = async () => {
 		const { activeLesson, getLessonsByAuthor } = this.props;
 		const { id, userID } = activeLesson;
@@ -206,7 +204,7 @@ class SlayLesson extends PureComponent {
 										key={this.getCommentsId()}
 										id={this.getCommentsId()}
 										type={1}
-										commentsType={this.getCommentsType()}
+										commentsType="userLesson"
 										commentsCount={commentsCount}
 									/>
 								}

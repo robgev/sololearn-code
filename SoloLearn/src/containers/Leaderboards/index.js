@@ -36,9 +36,8 @@ const TABS = {
 	local: 2,
 	global: 0,
 };
-const getKeyByValue = (object, value) => {
-  return Object.keys(object).find(key => object[key] === value);
-}
+const getKeyByValue = (object, value) => Object.keys(object).find(key => object[key] === value);
+
 const sendGoogleEvent = (mode) => {
 	switch (mode) {
 	case 0:
@@ -90,7 +89,7 @@ class Leaderboards extends PureComponent {
 		const query = {
 			...filters,
 			...location.query,
-			"mode": TABS[tab],
+			mode: TABS[tab],
 		};
 		this.props.setFilters(query);
 		const changed = queryDifference(DEFAULT_FILTERS, query);
@@ -118,11 +117,11 @@ class Leaderboards extends PureComponent {
 			leaderboards: newLeaderboards,
 			params: { tab },
 		} = newProps;
-		if(!tab || TABS[tab] === undefined) {
+		if (!tab || TABS[tab] === undefined) {
 			browserHistory.replace({
 				...newLocation,
-				query: { ...newLocation.query, },
-				pathname: `/leaderboard/following`,
+				query: { ...newLocation.query },
+				pathname: '/leaderboard/following',
 			});
 			return;
 		}
@@ -177,7 +176,7 @@ class Leaderboards extends PureComponent {
 		const { location } = this.props;
 		browserHistory.replace({
 			...location,
-			query: { ...location.query, },
+			query: { ...location.query },
 			pathname: `/leaderboard/${getKeyByValue(TABS, value)}`,
 		});
 	}
@@ -206,7 +205,7 @@ class Leaderboards extends PureComponent {
 			countryCode,
 			leaderboards,
 			userId: currentUserId,
-			params:{tab}
+			params:{ tab }
 		} = this.props;
 		const {
 			userId,

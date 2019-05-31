@@ -50,7 +50,7 @@ const findBestRank = (ranks = {}) =>
 				return {
 					key: formattedKey,
 					rank: ranks[key],
-					tab:	isTotal ? 'global' : 'local',
+					tab: isTotal ? 'global' : 'local',
 					queryParams,
 				};
 			}
