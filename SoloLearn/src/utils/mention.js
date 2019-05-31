@@ -41,20 +41,106 @@ export const mentionUsers = (text, mentions, ranges) => (ranges.length > 0 ? ran
 		return `${acc}${currentText}${idx === arr.length - 1 ? text.substring(curr.offset + curr.length) : ''}`;
 	}, '') : text);
 
+const getEntityMapFromRawEditorContent = rawEditorContent =>
+	Object.values(rawEditorContent.entityMap);
+
 export const getMentionsFromRawEditorContent = rawEditorContent =>
 	Object.values(rawEditorContent.entityMap)
-		.map(el => el.data.mention);
+		.map((el, index) => ({ ...el, index }))
+		.filter(el => el.type === 'mention')
+		.map(el => ({ ...el.data.mention, entityIndex: el.index }));
+
+const _groupEntityMapByBlocks = (blocks, entityMap) => {
+	if (blocks.length === 0) {
+		return [];
+	}
+	const [ block, ...tail ] = blocks;
+	const entitiesCount = block.entityRanges.length;
+	const currentBlockEntities = entityMap
+		.slice(0, entitiesCount)
+		.map((entity, index) =>
+			({ ...entity, ranges: block.entityRanges[index] }));
+	const currentBlockWithEntities = {
+		...block,
+		entities: currentBlockEntities,
+	};
+	return [
+		currentBlockWithEntities,
+		..._groupEntityMapByBlocks(tail, entityMap.slice(entitiesCount)),
+	];
+};
+
+const groupEntityMapByBlocks = (rawEditorContent) => {
+	const entityMap = getEntityMapFromRawEditorContent(rawEditorContent);
+	const { blocks } = rawEditorContent;
+	return _groupEntityMapByBlocks(blocks, entityMap);
+};
+
+const getTextFromEntity = (entity) => {
+	if (entity.type === 'mention') {
+		return `[user id="${entity.data.mention.id}"]${entity.data.mention.name}[/user]`;
+	} else if (entity.type === 'emoji') {
+		return entity.data.emojiUnicode;
+	}
+	throw new Error('Entity type mismatch');
+};
+
+const _convertBlockToText = (text, entities, initOffset) => {
+	// Initial offset is used to take into account the text that has already been converted
+	// when calculating the range offset of the entity
+	if (entities.length === 0) {
+		return text;
+	}
+	const [ entity, ...tailEntities ] = entities;
+	const realOffset = entity.ranges.offset - initOffset;
+	const preText = text.slice(0, realOffset);
+	const continuationText = text.slice(realOffset + entity.ranges.length);
+	const entityText = getTextFromEntity(entity);
+	const curr = `${preText}${entityText}`;
+	return `${curr}${_convertBlockToText(
+		continuationText,
+		tailEntities,
+		initOffset + text.lastIndexOf(continuationText),
+	)}`;
+};
+
+const fixRangesOfEntities = (entities) => {
+	let emojiCountBefore = 0;
+	const fixedEntities = entities.map((entity) => {
+		if (entity.type === 'emoji') {
+			const fixedEntity = {
+				...entity,
+				ranges: {
+					...entity.ranges,
+					offset: entity.ranges.offset + emojiCountBefore,
+					length: 2,
+				},
+			};
+			emojiCountBefore++;
+			return fixedEntity;
+		} else if (entity.type === 'mention') {
+			return {
+				...entity,
+				ranges: {
+					...entity.ranges,
+					offset: entity.ranges.offset + emojiCountBefore,
+				},
+			};
+		}
+		throw new Error('Entity type mismatch');
+	});
+	return fixedEntities;
+};
+
+const convertBlockToText = ({ text, entities }) => {
+	const fixedEntities = fixRangesOfEntities(entities);
+	return _convertBlockToText(text, fixedEntities, 0);
+};
 
 export const getMentionsValue = (rawEditorContent) => {
-	const { blocks } = rawEditorContent;
-	const mentions = getMentionsFromRawEditorContent(rawEditorContent);
-	const { result } = blocks.reduce((acc, curr) => {
-		const { text, entityRanges } = curr;
-		const mentionIndex = acc.mentionIndex + entityRanges.length;
-		const lineMentions = mentions.slice(acc.mentionIndex, mentionIndex);
-		return { result: `${acc.result}${mentionUsers(text, lineMentions, entityRanges)}\n`, mentionIndex };
-	}, { result: '', mentionIndex: 0 });
-	return result.trim();
+	const blocksWithEntities = groupEntityMapByBlocks(rawEditorContent);
+	const text = blocksWithEntities.reduce((acc, curr) => `${acc}${convertBlockToText(curr).trim()}\n`, '').trim();
+	return text;
 };
 
 export const makeEditableContent = (text) => {
