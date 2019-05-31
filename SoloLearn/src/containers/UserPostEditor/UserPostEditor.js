@@ -16,7 +16,11 @@ import {
 	SecondaryTextBlock,
 	Snackbar,
 } from 'components/atoms';
-import { ProfileAvatar, UsernameLink, ModBadge } from 'components/molecules';
+import {
+	ProfileAvatar,
+	UsernameLink,
+	ModBadge,
+} from 'components/molecules';
 import { AddPhotoAlternate, Close } from 'components/icons';
 import { getMentionsValue } from 'utils';
 
@@ -180,6 +184,7 @@ const UserPostEditor = ({
 		});
 
 	const createPostHandler = () => {
+		togglePostButtonDisabled(true);
 		const text = getMentionsValue(convertToRaw(editorText));
 		if (imageSource) {
 			return uploadPostImage(imageData, `postimage${imageType}`)
@@ -210,6 +215,7 @@ const UserPostEditor = ({
 		});
 
 	const editPostHandler = () => {
+		togglePostButtonDisabled(true);
 		const text = getMentionsValue(convertToRaw(editorText));
 		if (imageData) {
 			return uploadPostImage(imageData, `postimage${imageType}`)
@@ -260,7 +266,7 @@ const UserPostEditor = ({
 								background={background}
 								setEditorText={setEditorText}
 								editorInitialText={draftEditorInitialText}
-								// emojiPlugin={emojiPlugin}
+							// emojiPlugin={emojiPlugin}
 							/>
 							<FlexBox justifyEnd align className="user-post-max-length-container">
 								{/* <Container>

@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, browserHistory } from 'react-router';
 import { getUserSelector } from 'reducers/reducer_user';
+import { translate } from 'react-i18next';
+
+import { clearFeedItems } from 'actions/feed';
 
 import {
 	Loading,
@@ -21,6 +24,7 @@ import {
 	UsernameLink,
 	ModBadge,
 } from 'components/molecules';
+import ConfirmationPopup from 'components/ConfirmationPopup';
 import { FeedBottomBarFullStatistics } from 'components/organisms';
 import { ShareIcon } from 'components/icons';
 
@@ -31,20 +35,44 @@ import Comments from 'containers/Comments/CommentsBase';
 import { getUserPost, deleteUserPost, sendImpressionByPostId } from './userpostdetails.actions';
 
 import './styles.scss';
+import ReportPopup from '../../components/ReportPopup';
 
 const UserPostDetails = ({
-	params, profile,
+	params, profile, t, clearFeedItems,
 }) => {
 	const [ userPost, setUserPost ] = useState(null);
+	const [ isError, setError ] = useState(false);
 
-	const [ isCreatePostPopupOpen, setIsCreatePostPopupOpen ] = useState(false);
+	const [ isCreatePostPopupOpen, toggleCreatePostPopupOpen ] = useState(false);
+	const [ isDeleteConfirmationOpen, toggleDeleteConfirmationOpen ] = useState(false);
+	const [ isReportPopupOpen, toggleReportPopup ] = useState(false);
+
+	const setPostRequest = () => {
+		console.clear();
+		console.log('setPostReq');
+		getUserPost(parseInt(params.id, 10))
+			.then((res) => {
+				if (res.error) {
+					setError(true);
+					return;
+				}
+				setUserPost(res.post);
+			})
+			.catch(() => {
+				setError(true);
+			});
+	};
 
 	useEffect(() => {
 		if (params.id) {
-			getUserPost(parseInt(params.id, 10))
-				.then(res => setUserPost(res.post));
+			setPostRequest();
 		}
 	}, []);
+
+	useEffect(() => {
+		setUserPost(null);
+		setPostRequest();
+	}, [ params.id ]);
 
 	useEffect(() => {
 		sendImpressionByPostId(parseInt(params.id, 10));
@@ -52,6 +80,7 @@ const UserPostDetails = ({
 
 	const deletePostHandler = () => {
 		deleteUserPost(userPost.id);
+		clearFeedItems();
 		browserHistory.push('/feed');
 	};
 
@@ -63,7 +92,7 @@ const UserPostDetails = ({
 		<LayoutWithSidebar
 			sidebar={<TextBlock>Coming Soon...</TextBlock>}
 		>
-			{userPost ?
+			{userPost &&
 				<Container className="user-post-details-page-container">
 					<PaperContainer className="user-post-details-main-container">
 						<FlexBox fullwidth column>
@@ -78,7 +107,7 @@ const UserPostDetails = ({
 										}}
 									/>
 									<UsernameLink
-										to={`/profile/${userPost.userId}`}
+										to={`/profile/${userPost.userID}`}
 										className="up-profile-username-link"
 									>
 										{userPost.userName}
@@ -89,16 +118,33 @@ const UserPostDetails = ({
 								</FlexBox>
 								{profile.id === userPost.userID ?
 									<IconMenu>
-										<MenuItem onClick={() => setIsCreatePostPopupOpen(true)}>
+										<MenuItem onClick={() => toggleCreatePostPopupOpen(true)}>
 											Edit
 										</MenuItem>
-										<MenuItem onClick={deletePostHandler}>
+										<MenuItem onClick={() => toggleDeleteConfirmationOpen(true)}>
 											Delete
 										</MenuItem>
 									</IconMenu>
 									:
-									null
+									<IconMenu>
+										<MenuItem onClick={() => toggleReportPopup(true)}>
+											Report
+										</MenuItem>
+									</IconMenu>
 								}
+								<ConfirmationPopup
+									open={isDeleteConfirmationOpen}
+									onCancel={() => toggleDeleteConfirmationOpen(false)}
+									onConfirm={deletePostHandler}
+									confirmButtonLabel={t('common.delete-title')}
+									title="Are you sure you want to permanently remove this post?"
+								/>
+								<ReportPopup
+									open={isReportPopupOpen}
+									onClose={() => toggleReportPopup(false)}
+									itemId={userPost.id}
+									itemType={9}
+								/>
 							</FlexBox>
 							<Container style={{ padding: userPost.background && userPost.background.type !== 'none' ? 0 : '0 15px' }}>
 								{userPost.message ?
@@ -131,15 +177,13 @@ const UserPostDetails = ({
 									views={userPost.viewCount}
 									withDate={false}
 								/>
-								{profile.id !== userPost.userID ?
+								{profile.id !== userPost.userID &&
 									<Chip
 										icon={<ShareIcon />}
 										label="Repost"
-										onClick={() => setIsCreatePostPopupOpen(true)}
+										onClick={() => toggleCreatePostPopupOpen(true)}
 										className="user-post-details-share-chip"
 									/>
-									:
-									null
 								}
 							</FlexBox>
 						</FlexBox>
@@ -155,7 +199,7 @@ const UserPostDetails = ({
 					>
 						{profile.id === userPost.userID ?
 							<UserPostEditor
-								closePopup={() => setIsCreatePostPopupOpen(false)}
+								closePopup={() => toggleCreatePostPopupOpen(false)}
 								draftEditorInitialText={userPost.message ? userPost.message : ''}
 								draftEditorInitialBackground={userPost.background ? userPost.background : null}
 								initialImageSource={userPost.imageUrl ? userPost.imageUrl : null}
@@ -165,14 +209,20 @@ const UserPostDetails = ({
 							/>
 							:
 							<UserPostEditor
-								closePopup={() => setIsCreatePostPopupOpen(false)}
+								closePopup={() => toggleCreatePostPopupOpen(false)}
 								draftEditorInitialText={`\n${window.location.href}`}
 							/>
 						}
 					</Popup>
 				</Container>
-				:
-				<Loading />
+			}
+			{!userPost && !isError && <Loading />}
+			{isError &&
+				<PaperContainer className="up-details-error-container">
+					<TextBlock>
+						{'Page not found.'}
+					</TextBlock>
+				</PaperContainer>
 			}
 		</LayoutWithSidebar>
 	);
@@ -182,4 +232,4 @@ const mapStateToProps = state => ({
 	profile: getUserSelector(state),
 });
 
-export default connect(mapStateToProps)(withRouter(UserPostDetails));
+export default translate()(connect(mapStateToProps, { clearFeedItems })(withRouter(UserPostDetails)));

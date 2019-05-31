@@ -87,6 +87,9 @@ class Profile extends Component {
 			levels,
 			userId,
 		} = this.props;
+		console.clear();
+		console.log('Logging data: ', data.id);
+		console.log('Logging userId: ', userId);
 
 		return (
 			<LayoutWithSidebar className="profile-container" sidebar={<ProfileSidebar />}>
@@ -150,7 +153,7 @@ class Profile extends Component {
 							hasMore={feed.hasMore}
 							loadMore={this.profile.getFeed}
 							voteFeedItem={this.profile.voteFeedItem}
-							showFab
+							showFab={data.id === userId}
 						/>
 					</Container>
 				}
