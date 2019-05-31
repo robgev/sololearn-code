@@ -23,7 +23,7 @@ const DraftEditor = ({
 	isEditorReadOnly = false,
 	editorInitialText = '',
 	t,
-	emojiPlugin = null,
+	// emojiPlugin = null,
 }) => {
 	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
 	const [ fontSize, setFontSize ] = useState(isEditorReadOnly && background.type === 'none' ? 15 : 30);
@@ -58,7 +58,10 @@ const DraftEditor = ({
 	const { MentionSuggestions } = mentionPluginRef.current;
 	const plugins = isEditorReadOnly
 		? [ mentionPluginRef.current, linkifyPluginRef.current ]
-		: [ mentionPluginRef.current, emojiPlugin.current ];
+		: [
+			mentionPluginRef.current,
+			// emojiPlugin.current,
+		];
 
 	const getSuggestions = ({ value }) => {
 		setSuggestions([]);

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Resizer from 'react-image-file-resizer';
 import { withRouter, browserHistory } from 'react-router';
 import { convertToRaw } from 'draft-js';
-import createEmojiPlugin from 'draft-js-emoji-plugin';
+// import createEmojiPlugin from 'draft-js-emoji-plugin';
 
 import {
 	PopupTitle,
@@ -34,13 +34,12 @@ import {
 	editPost,
 } from './userpost.actions';
 
-import './emojiPlugin.css';
+// import './emojiPlugin.css';
 import './styles.scss';
 
 export const USER_POST_MAX_LENGTH = 1024;
 
 const UserPostEditor = ({
-	params,
 	afterPostCallback = null,
 	profile,
 	closePopup,
@@ -63,10 +62,10 @@ const UserPostEditor = ({
 	const [ isSnackBarOpen, toggleSnackBarIsOpen ] = useState(false);
 	const [ snackMessage, setSnackMessage ] = useState('');
 
-	const emojiPlugin = useRef(createEmojiPlugin({
-		useNativeArt: true,
-	}));
-	const { EmojiSuggestions, EmojiSelect } = emojiPlugin.current;
+	// const emojiPlugin = useRef(createEmojiPlugin({
+	// 	useNativeArt: true,
+	// }));
+	// const { EmojiSuggestions, EmojiSelect } = emojiPlugin.current;
 
 	const computeCanApplyBackground = () => {
 		if (editorText) {
@@ -232,7 +231,7 @@ const UserPostEditor = ({
 			<Container className="user-post-main-container">
 				<FlexBox justifyBetween align>
 					<PopupTitle className="user-post-main-title">
-						{`${params.id ? 'Edit post' : 'New Post'}`}
+						{`${draftEditorInitialText || initialImageSource ? 'Edit post' : 'New Post'}`}
 					</PopupTitle>
 					<IconButton onClick={() => closePopup()}>
 						<Close />
@@ -261,13 +260,13 @@ const UserPostEditor = ({
 								background={background}
 								setEditorText={setEditorText}
 								editorInitialText={draftEditorInitialText}
-								emojiPlugin={emojiPlugin}
+								// emojiPlugin={emojiPlugin}
 							/>
-							<FlexBox justifyBetween align className="user-post-max-length-container">
-								<Container>
+							<FlexBox justifyEnd align className="user-post-max-length-container">
+								{/* <Container>
 									<EmojiSelect />
 									<EmojiSuggestions />
-								</Container>
+								</Container> */}
 								<SecondaryTextBlock className="count">
 									{editorText ? editorText.getPlainText().length : 0} / {USER_POST_MAX_LENGTH}
 								</SecondaryTextBlock>
