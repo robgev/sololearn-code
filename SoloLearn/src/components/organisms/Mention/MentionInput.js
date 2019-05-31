@@ -192,6 +192,9 @@ class MentionInput extends Component {
 		const { MentionSuggestions } = this.mentionPlugin;
 		const plugins = [ this.mentionPlugin ];
 
+		const lengthConformingSuggestions = this.state.suggestions.filter(s =>
+			this.getText().length + s.name.length <= this.props.maxLength);
+
 		return (
 			<Container
 				className={`editor ${this.props.className}`}
@@ -214,7 +217,7 @@ class MentionInput extends Component {
 				/>
 				<MentionSuggestions
 					onSearchChange={this.onSearchChange}
-					suggestions={this.state.suggestions}
+					suggestions={lengthConformingSuggestions}
 					entryComponent={Entry}
 				/>
 			</Container>
