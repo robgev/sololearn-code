@@ -62,12 +62,6 @@ const UserPostDetails = ({
 	};
 
 	useEffect(() => {
-		if (params.id) {
-			setPostRequest();
-		}
-	}, []);
-
-	useEffect(() => {
 		setUserPost(null);
 		setPostRequest();
 	}, [ params.id ]);

@@ -109,7 +109,7 @@ export default ([
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/more/:collectionId" component={SlayDetailed} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/manage" component={SlayManage} />
 		{/* change /learn/collection/:collectionId to /collections/:collectionId */}
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/collection/:collectionId" component={SlayLessonsPage} />
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/collection/:collectionId" component={SlayLessonsPage} />
 
 		{/* change /learn/lesson/:lessonid and /learn/course/:alias to /learn/:idoralias */}
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/:idOrAlias(/:lessonName)(/:index)(/:quizNumber)" component={LessonManager} />
