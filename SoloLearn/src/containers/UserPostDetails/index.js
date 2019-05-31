@@ -62,10 +62,9 @@ const UserPostDetails = ({
 	};
 
 	useEffect(() => {
-		if (params.id) {
-			setPostRequest();
-		}
-	}, []);
+		setUserPost(null);
+		setPostRequest();
+	}, [ params.id ]);
 
 	useEffect(() => {
 		sendImpressionByPostId(parseInt(params.id, 10));
