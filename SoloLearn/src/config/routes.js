@@ -119,8 +119,11 @@ export default ([
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/play" component={Play} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/lesson-factory" component={LessonFactory} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/codes" component={Codes} />
+		{/* added new route */}
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/playground" component={Codes} />
+		{/* made publicId non-optional */}
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/playground/:publicId" component={Playground} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/settings(/:settingID)" component={Settings} />
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/playground(/:publicId)" component={Playground} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss" component={Questions} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss/new" component={NewQuestion} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss/edit/:id" component={EditQuestion} />
