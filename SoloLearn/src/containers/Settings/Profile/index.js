@@ -3,31 +3,29 @@ import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
-import { updateProfile } from 'actions/settings';
-
-import Snackbar from 'material-ui/Snackbar';
-import TextField from 'material-ui/TextField';
-import { Edit } from 'components/icons';
-import ProfileAvatar from 'components/ProfileAvatar';
-
 import {
 	Container,
 	Input,
+	Snackbar,
+	Image,
 } from 'components/atoms';
 import {
-	FlatButton,
+	PromiseButton,
 	RoundImage,
 	Avatar,
 } from 'components/molecules';
+import { Edit } from 'components/icons';
+
+import countries from 'constants/Countries.json';
+
+import { updateProfile } from 'actions/settings';
 
 import CropPopup from './CropPopup';
 import CountrySelector from './CountrySelector';
 
-import countries from 'constants/Countries.json';
-
 // preload images for CountrySelector
 const images = countries.map(country => (
-	<img
+	<Image
 		src={`/assets/flags/${country.code.toLowerCase()}.png`}
 	/>
 ));
@@ -49,13 +47,12 @@ class Profile extends PureComponent {
 		} = props.userProfile;
 		this.state = {
 			open: false,
-			isSaving: false,
 			name: name || '',
 			email: email || '',
 			image: avatarUrl,
 			newImage: null,
 			snackbarOpen: false,
-			countryCode: countryCode === '' ? 'NST' : countryCode,
+			countryCode: countryCode || 'NST',
 		};
 	}
 
@@ -107,33 +104,34 @@ class Profile extends PureComponent {
 			countryCode: oldCountryCode,
 		} = this.props.userProfile;
 		return (name.trim() === oldName.trim()
-							&& email.trim() === oldEmail.trim()
-							&& countryCode === oldCountryCode
-							&& image === avatarUrl)
-							|| email.trim() === ''
-							|| name.trim() === '';
+			&& email.trim() === oldEmail.trim()
+			&& countryCode === oldCountryCode
+			&& image === avatarUrl)
+			|| email.trim() === ''
+			|| name.trim() === '';
 	}
 
-	submitSettings = async (e) => {
-		e.preventDefault();
+	submitSettings = async () => {
 		const {
 			name,
 			email,
 			countryCode,
 		} = this.state;
-		this.setState({ snackbarOpen: true, isSaving: true });
-		await this.props.updateProfile({
+		return this.props.updateProfile({
 			name,
 			email,
-			countryCode: countryCode !== 'NST' ? countryCode : '', // Not set value is NST. This is done to fix the cosmetic bug with material-ui
-		});
-		this.setState({ isSaving: false });
+			countryCode: countryCode || 'NST', // Not set value is NST. This is done to fix the cosmetic bug with material-ui
+		})
+			.then(() => {
+				this.setState({ snackbarOpen: true });
+			});
 	}
 
-	handleSnackBarClose = (reason) => {
-		if (reason !== 'clickaway') {
-			this.setState({ snackbarOpen: false });
+	snackbarCloseHandler = (_, reason) => {
+		if (reason === 'clickaway') {
+			return;
 		}
+		this.setState({ snackbarOpen: false });
 	}
 
 	clearImage = (e) => {
@@ -146,12 +144,11 @@ class Profile extends PureComponent {
 			name,
 			email,
 			image,
-			isSaving,
 			countryCode,
 			snackbarOpen,
 			newImage,
 		} = this.state;
-		
+
 		const { t, userProfile } = this.props;
 		return (
 			<Container className="profile-settings-container">
@@ -181,7 +178,7 @@ class Profile extends PureComponent {
 						/>
 					</Container>
 				</Container>
-				<form onSubmit={this.submitSettings} className="settings-form-container">
+				<Container className="settings-form-container">
 					<Container className="settings-group">
 						<Input
 							name="name"
@@ -205,15 +202,14 @@ class Profile extends PureComponent {
 						onChange={this.handleSelectionChange}
 					/>
 					<Container className="settings-button">
-						<FlatButton
-							primary
-							type="submit"
+						<PromiseButton
+							fire={this.submitSettings}
 							disabled={this.shouldDisable()}
 						>
 							{t('common.save-action-title')}
-						</FlatButton>
+						</PromiseButton>
 					</Container>
-				</form>
+				</Container>
 				<CropPopup
 					t={t}
 					open={open}
@@ -222,14 +218,14 @@ class Profile extends PureComponent {
 				/>
 				<Snackbar
 					open={snackbarOpen}
-					autoHideDuration={isSaving ? 5000 : 1000}
-					onClose={this.handleSnackBarClose}
-					message={isSaving ? 'Saving New Settings' : t('code_playground.alert.saved-title')}
+					autoHideDuration={4000}
+					onClose={this.snackbarCloseHandler}
+					message={t('code_playground.alert.saved-title')}
 				/>
 
 				<Container
 					style={{ display: 'none' }}
-					// preload images for CountrySelector
+				// preload images for CountrySelector
 				>
 					{images}
 				</Container>

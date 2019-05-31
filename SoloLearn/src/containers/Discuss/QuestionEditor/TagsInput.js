@@ -118,6 +118,7 @@ class TagsInput extends Component {
 					newChipKeyCodes: [ 13, 32 ],
 					error,
 					chipRenderer: TagsInput.Chip,
+					className: 'autosuggest-input',
 				}}
 			/>
 		);

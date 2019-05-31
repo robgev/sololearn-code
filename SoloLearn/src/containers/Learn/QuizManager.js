@@ -31,6 +31,7 @@ import { Link, Container, PaperContainer } from 'components/atoms';
 
 import StepIcon from './StepIcon';
 import { UserProgressToolbar } from './components';
+import Quiz from './Quiz';
 
 export const LessonType = {
 	Checkpoint: 0,
@@ -48,11 +49,11 @@ const isQuizCompleted = ({ quizID, lessonProgress }) => {
 
 const mapStateToProps = (state, ownProps) => ({
 	isLoaded: isLoaded(state, 'quizzes'),
-	course: getCourseByAlias(state, ownProps.params.alias),
+	course: getCourseByAlias(state, ownProps.alias),
 	lessons: state.lessonsMapping,
 	activeQuiz: state.activeQuiz,
-	lesson: getLessonByName(state, ownProps.params.lessonName),
-	module: getModuleByName(state, ownProps.params.moduleName),
+	lesson: getLessonByName(state, ownProps.lessonName),
+	module: getModuleByName(state, ownProps.moduleName),
 	activeModule: !state.course ? null : state.modulesMapping[state.activeModuleId],
 	activeLesson: !state.course ? null : state.lessonsMapping[state.activeLessonId],
 });
@@ -94,9 +95,8 @@ class QuizManager extends Component {
 			// 2 - Module is active
 			// 3 - Module is finished
 			const {
-				params: {
-					moduleName, lessonName, alias,
-				},
+
+				moduleName, lessonName, alias,
 			} = this.props;
 
 			const { _visualState: lessonState } = Progress.getLessonStateById(lessonId);
@@ -119,12 +119,12 @@ class QuizManager extends Component {
 						localProgress[localProgress.length - 1].lessonID :
 						lessons[0].id;
 					this.setActiveLesson(activeLessonId, activeModuleId);
-					browserHistory.replace(`/learn/course/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${this.props.activeQuiz.number}`);
+					browserHistory.replace(`/learn/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${this.props.activeQuiz.number}`);
 				} else {
 					const { localProgress } = Progress;
 					const activeLessonId = localProgress[localProgress.length - 1].lessonID;
 					this.setActiveLesson(activeLessonId, moduleId);
-					browserHistory.replace(`/learn/course/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${this.props.activeQuiz.number}`);
+					browserHistory.replace(`/learn/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${this.props.activeQuiz.number}`);
 				}
 			} else {
 				this.setActiveLesson(lessonId, moduleId);
@@ -140,8 +140,8 @@ class QuizManager extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.timeline.length && nextProps.params.quizNumber !== this.props.params.quizNumber) {
-			const number = parseInt(nextProps.params.quizNumber, 10);
+		if (this.timeline.length && nextProps.quizNumber !== this.props.quizNumber) {
+			const number = parseInt(nextProps.quizNumber, 10);
 			const {
 				quizId, isText, state,
 			} = this.timeline.find(q => q.number === number);
@@ -344,20 +344,18 @@ class QuizManager extends Component {
 			return;
 		}
 		const {
-			params: {
-				moduleName,
-				alias,
-			},
+			moduleName,
+			alias,
 			activeLesson,
 		} = this.props;
 		this.getCommentsCount({ quizId, type: isText ? 1 : 3 });
-		browserHistory.push(`/learn/course/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(activeLesson.name)}/${number}`);
 		this.props.selectQuiz({ id: quizId, number, isText });
+		browserHistory.push(`/learn/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(activeLesson.name)}/${number}`);
 	}
 
 	getActiveQuiz = (lesson) => {
 		const { quizzes } = lesson;
-		const currentNumber = parseInt(this.props.params.quizNumber || quizzes.length, 10);
+		const currentNumber = parseInt(this.props.quizNumber || quizzes.length, 10);
 		const activeQuiz = {};
 		const isCheckpoint = lesson.type === LessonType.Checkpoint;
 		for (let i = 0; i < quizzes.length; i += 1) {
@@ -381,20 +379,18 @@ class QuizManager extends Component {
 
 		const timeline = this.generateTimeline(quizzes, activeQuiz);
 		const quizNumber = Math.min(
-			parseInt(this.props.params.quizNumber || timeline.length - 1, 10),
+			parseInt(this.props.quizNumber || timeline.length - 1, 10),
 			timeline.length - 1,
 		);
 		let lastUnlockedQuiz = this.getLastUnlockedQuiz(quizNumber, timeline);
 		if (lastUnlockedQuiz >= timeline.length) {
 			lastUnlockedQuiz = 1;
 		}
-		if (!this.props.params.quizNumber || lastUnlockedQuiz < this.props.params.quizNumber) {
+		if (!this.props.quizNumber || lastUnlockedQuiz < this.props.quizNumber) {
 			const {
-				params: {
-					moduleName, lessonName, alias,
-				},
+				moduleName, lessonName, alias,
 			} = this.props;
-			browserHistory.replace(`/learn/course/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz || 1}`);
+			browserHistory.replace(`/learn/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/${lastUnlockedQuiz || 1}`);
 		}
 	}
 
@@ -409,17 +405,16 @@ class QuizManager extends Component {
 			activeQuiz,
 			activeLesson,
 			activeModule,
-			params: {
-				moduleName,
-				alias,
-			},
+
+			moduleName,
+			alias,
 		} = this.props;
 		const { loading, commentsCount, commentsOpened } = this.state;
 
 		if (loading || (!isLoaded) ||
 			(!activeQuiz) ||
 			(activeQuiz.number === undefined) ||
-			(this.props.params.quizNumber && !this.props.activeQuiz)) {
+			(this.props.quizNumber && !this.props.activeQuiz)) {
 			return (
 				<LayoutWithSidebar
 					sidebar={<UserProgressToolbar />}
@@ -431,14 +426,22 @@ class QuizManager extends Component {
 
 		const { quizzes, tags } = activeLesson;
 
-		const childrenWithProps = React.Children.map(
-			this.props.children,
-			child => React.cloneElement(child, {
-				loadLessonLink: this.loadLessonLink,
-				openComments: this.openComments,
-				activeLesson,
-			}),
-		);
+		// const childrenWithProps = React.Children.map(
+		// 	this.props.children,
+		// 	child => React.cloneElement(child, {
+		// 		loadLessonLink: this.loadLessonLink,
+		// 		openComments: this.openComments,
+		// 		activeLesson,
+		// 	}),
+		// );
+
+		const childrenWithProps = (<Quiz
+			loadLessonLink={this.loadLessonLink}
+			openComments={this.openComments}
+			activeLesson={activeLesson}
+			alias={alias}
+			moduleName={moduleName}
+		/>);
 
 		return (
 			<LayoutWithSidebar
@@ -447,13 +450,13 @@ class QuizManager extends Component {
 				<PaperContainer className="quiz-container">
 					<Container style={{ padding: 15 }}>
 						<Container className="lesson-breadcrumbs">
-							<Link to={`/learn/course/${toSeoFriendly(alias)}`}>
+							<Link to={`/learn/${toSeoFriendly(alias)}`}>
 								{course.name} &gt; {' '}
 							</Link>
-							<Link to={`/learn/course/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}`}>
+							<Link to={`/learn/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}`}>
 								{activeModule.name} &gt; {' '}
 							</Link>
-							<Link to={`/learn/course/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(activeLesson.name, 100)}/1`}>
+							<Link to={`/learn/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(activeLesson.name, 100)}/1`}>
 								{activeLesson.name}
 							</Link>
 						</Container>

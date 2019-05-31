@@ -45,7 +45,7 @@ const PlaygroundTabs = ({ t, playground, onClose }) => (
 					<IconButton onClick={
 						playground.isInline
 							?	() => browserHistory.push({
-								pathname: '/playground',
+								pathname: '/playground/new',
 								query: { lessonCodeId: playground.lessonCodeId, language: playground.language },
 							})
 							:	playground.toggleFullScreen

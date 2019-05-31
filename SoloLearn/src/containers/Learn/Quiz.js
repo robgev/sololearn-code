@@ -160,12 +160,12 @@ class Quiz extends Component {
 						browserHistory.push(`/certificate/${this.props.course.id}`);
 					} else {
 						// Go back to module list
-						browserHistory.push(`/learn/course/${toSeoFriendly(this.props.params.alias)}`);
+						browserHistory.push(`/learn/${toSeoFriendly(this.props.alias)}`);
 					}
 				} else {
 					// Else show lessons
 					this.setState({ checkResult: null, isQuizComplete: false });
-					browserHistory.push(`/learn/course/${toSeoFriendly(this.props.params.alias)}/${toSeoFriendly(this.props.params.moduleName)}`);
+					browserHistory.push(`/learn/${toSeoFriendly(this.props.alias)}/${toSeoFriendly(this.props.moduleName)}`);
 				}
 				// return;
 			}

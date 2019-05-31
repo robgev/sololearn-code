@@ -31,6 +31,13 @@ import LeaderboardCard from './LeaderboardCard';
 
 import './index.scss';
 
+const TABS = {
+	following: 1,
+	local: 2,
+	global: 0,
+};
+const getKeyByValue = (object, value) => Object.keys(object).find(key => object[key] === value);
+
 const sendGoogleEvent = (mode) => {
 	switch (mode) {
 	case 0:
@@ -78,16 +85,18 @@ class Leaderboards extends PureComponent {
 		const {
 			userId, startIndex, loadCount,
 		} = this.state;
-		const { location, filters } = this.props;
+		const { location, filters, params: { tab } } = this.props;
 		const query = {
 			...filters,
 			...location.query,
+			mode: TABS[tab],
 		};
 		this.props.setFilters(query);
 		const changed = queryDifference(DEFAULT_FILTERS, query);
 		browserHistory.replace({ ...location, query: changed });
 		const length = await this.props.getLeaderboard({
 			userId,
+			mode: TABS[tab],
 			index: startIndex,
 			count: loadCount,
 		}); // The last two are provisional params for initial load of all time leaderboard
@@ -106,9 +115,18 @@ class Leaderboards extends PureComponent {
 		const {
 			location: newLocation,
 			leaderboards: newLeaderboards,
+			params: { tab },
 		} = newProps;
+		if (!tab || TABS[tab] === undefined) {
+			browserHistory.replace({
+				...newLocation,
+				query: { ...newLocation.query },
+				pathname: '/leaderboard/following',
+			});
+			return;
+		}
 		const { location, leaderboards } = this.props;
-		if (!isEqual(newLocation.query, location.query)) {
+		if (!isEqual(newLocation.query, location.query) || tab !== this.props.params.tab) {
 			this.setState({ loading: true });
 			sendGoogleEvent(newProps.filters.mode);
 			// Check against default filters and show only the ones that are different
@@ -116,9 +134,11 @@ class Leaderboards extends PureComponent {
 			const changed = queryDifference(DEFAULT_FILTERS, newLocation.query);
 			browserHistory.replace({ ...newLocation, query: changed });
 			// Keep the redux filters up to date with the route url
-			this.props.setFilters({ ...DEFAULT_FILTERS, ...newLocation.query });
+			this.props.setFilters({ ...DEFAULT_FILTERS, ...newLocation.query, mode: TABS[tab] });
 			// Fetch and send google event
-			const length = await this.props.getLeaderboard({ userId, index: 0, count: 20 });
+			const length = await this.props.getLeaderboard({
+ userId, mode: TABS[tab], index: 0, count: 20
+});
 			this.setState({ loading: false, startIndex: length, hasMore: length === loadCount });
 		} else if (newLeaderboards.length !== leaderboards.length
 			|| !isEqual(newLeaderboards, leaderboards)) {
@@ -156,7 +176,8 @@ class Leaderboards extends PureComponent {
 		const { location } = this.props;
 		browserHistory.replace({
 			...location,
-			query: { ...location.query, mode: value },
+			query: { ...location.query },
+			pathname: `/leaderboard/${getKeyByValue(TABS, value)}`,
 		});
 	}
 
@@ -184,6 +205,7 @@ class Leaderboards extends PureComponent {
 			countryCode,
 			leaderboards,
 			userId: currentUserId,
+			params:{ tab }
 		} = this.props;
 		const {
 			userId,
@@ -197,17 +219,17 @@ class Leaderboards extends PureComponent {
 			<Layout className="leaderboards-container">
 				<PaperContainer className="leaderboards-header-container">
 					<Container className="leaderboards-topbar">
-						<Tabs onChange={this.tabChange} value={filters.mode}>
+						<Tabs onChange={this.tabChange} value={TABS[tab]}>
 							<Tab
-								value={1}
+								value={TABS.following}
 								label={texts.following}
 							/>
 							<Tab
-								value={2}
+								value={TABS.local}
 								label={texts.local}
 							/>
 							<Tab
-								value={0}
+								value={TABS.global}
 								label={texts.global}
 							/>
 						</Tabs>
@@ -225,7 +247,7 @@ class Leaderboards extends PureComponent {
 						wrapperClassName="leaderboards-body"
 						loadingComponent={<LeaderboardShimmer />}
 					>
-						{countryCode
+						{countryCode || TABS[tab] !== TABS.local
 							? (
 								<Fragment>
 									{

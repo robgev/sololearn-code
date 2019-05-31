@@ -34,7 +34,7 @@ class SettingsMenu extends PureComponent {
 	}
 
 	goToLeaderboards = () => {
-		browserHistory.push('/leaderboards');
+		browserHistory.push('/leaderboard');
 	}
 
 	goToLessonFactory = () => {

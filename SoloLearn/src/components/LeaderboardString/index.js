@@ -28,12 +28,13 @@ class LeaderboardString extends Component {
 		const { ranks, t } = this.props;
 		if (ranks !== null) {
 			const localePrefix = 'leaderboard.rank';
-			const { key, rank, queryParams } = findBestRank(ranks);
+			const { key, rank, queryParams, tab } = findBestRank(ranks);
 			if (key !== null) {
 				const localeFormat = this.getRightLocaleFormat(key);
 				const numberFormat = key.endsWith('p') ? 'percent-format' : 'default-format';
 				return {
 					queryParams,
+					tab,
 					string: t(`${localePrefix}.${localeFormat}`, {
 						rank: t(`${localePrefix}.${numberFormat}`, { number: +rank.toFixed(2) }),
 						country: getCountryName(ranks.countryCode),
@@ -49,12 +50,13 @@ class LeaderboardString extends Component {
 
 	render() {
 		const { userID } = this.props;
-		const { queryParams: query, string } = this.getLeaderboardString();
+		const { queryParams: query, string, tab } = this.getLeaderboardString();
+
 		return (
 			<UsernameLink
 				to={query
-					? { pathname: `/leaderboards/${userID}`, query }
-					: '/leaderboards'
+					? { pathname: `/leaderboard/${tab}/${userID}`, query }
+					: '/leaderboard'
 				}
 				className="leaderboard-link hoverable"
 			>

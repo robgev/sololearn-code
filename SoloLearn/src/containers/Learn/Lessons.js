@@ -28,7 +28,7 @@ import { LessonType } from './QuizManager';
 
 const mapStateToProps = (state, ownProps) => ({
 	isLoaded: isLoaded(state, 'lessons'),
-	course: getCourseByAlias(state, ownProps.params.alias),
+	course: getCourseByAlias(state, ownProps.alias),
 	modules: state.modulesMapping,
 	activeModule: !state.course ? null : state.modulesMapping[state.activeModuleId],
 	lessons: state.lessonsMapping,
@@ -47,7 +47,7 @@ class Lessons extends Component {
 	componentWillMount() {
 		if (!this.props.isLoaded) {
 			this.props.loadCourseInternal(this.props.course.id).then(() => {
-				this.props.selectModuleByName(this.props.params.moduleName);
+				this.props.selectModuleByName(this.props.moduleName);
 			});
 		}
 		document.title = `${this.props.activeModule ? this.props.activeModule.name : 'Learn'}`;
@@ -56,19 +56,20 @@ class Lessons extends Component {
 
 	handleClick = (lessonId, lessonState, lessonName) => {
 		const {
-			params,
+			alias,
+			moduleName,
 		} = this.props;
 		if (lessonState.visualState === ProgressState.Disabled) {
 			return;
 		}
 		this.props.selectLesson(lessonId, lessonState);
 		this.props.selectQuiz(this.getActiveQuiz(this.props.lessons[lessonId]));
-		browserHistory.push(`/learn/course/${toSeoFriendly(params.alias)}/${toSeoFriendly(params.moduleName)}/${toSeoFriendly(lessonName)}/`);
+		browserHistory.push(`/learn/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}/${toSeoFriendly(lessonName)}/`);
 	}
 
 	getActiveQuiz = (lesson) => {
 		const { quizzes } = lesson;
-		const currentNumber = this.props.params.quizNumber || 1;
+		const currentNumber = 1;
 		const activeQuiz = {};
 		const isCheckpoint = lesson.type == LessonType.Checkpoint;
 		for (let i = 0; i < quizzes.length; i++) {
@@ -90,7 +91,8 @@ class Lessons extends Component {
 			course,
 			isLoaded,
 			activeModule,
-			params,
+			alias,
+			moduleName,
 		} = this.props;
 
 		if (!isLoaded || !activeModule) {
@@ -111,10 +113,10 @@ class Lessons extends Component {
 			>
 				<Container className="lessons-container">
 					<Container className="lesson-breadcrumbs">
-						<Link className="hoverable" to={`/learn/course/${toSeoFriendly(params.alias)}`}>
+						<Link className="hoverable" to={`/learn/${toSeoFriendly(alias)}`}>
 							{course.name}
 						</Link> &gt;
-						<Link className="hoverable" to={`/learn/course/${toSeoFriendly(params.alias)}/${toSeoFriendly(params.moduleName)}`}>
+						<Link className="hoverable" to={`/learn/${toSeoFriendly(alias)}/${toSeoFriendly(moduleName)}`}>
 							{name}
 						</Link>
 					</Container>

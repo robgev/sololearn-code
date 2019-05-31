@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { Title, SecondaryTextBlock, PaperContainer, Container, FlexBox } from 'components/atoms';
-import { Slider, ViewMoreLink, RaisedButton,ContainerLink } from 'components/molecules';
+import { Slider, ViewMoreLink, RaisedButton, ContainerLink } from 'components/molecules';
 
 import { CourseChip } from 'containers/Learn/components';
 import './styles.scss';
@@ -77,10 +77,10 @@ const CollectionCard = ({
 						? items && items.length > 0
 							? <ViewMoreLink className="manage-button" onClick={() => toggleSlayManage(!openSlayManage)}>
 								{t('common.manage')}
-         			</ViewMoreLink>
+							</ViewMoreLink>
 							: null
 						: !noViewMore &&
-						<ViewMoreLink to={userID ? `/learn/more/author/${userID}` : `/learn/more/${id}`} >
+						<ViewMoreLink to={userID ? `/learn/more/author/${userID}` : `/collection/${id}`} >
 							{t('common.loadMore')}
 						</ViewMoreLink>
 				}
@@ -108,27 +108,27 @@ const CollectionCard = ({
 										size={(isCourses || round) ? 85 : 95}
 										className="collection-card-chip"
 										noBoxShadow={!(isCourses && round)}
-										customLink={lessonItem.itemType === 5 ? `/learn/collection/${lessonItem.id}` : null}
+										customLink={lessonItem.itemType === 5 ? `/collection/${lessonItem.id}` : null}
 									/>
 								</Container>
 							))
 						}
 						{
 							items.length === 1 && id === -1
-								&& <FlexBox align> 
-								<ContainerLink
-									to={`/learn/course/${toSeoFriendly(getCourseAliasById(courses, items[0].id))}`}
-								>
-									<RaisedButton
-										color="secondary"
-										onClick={() => toggleSlayManage(!openSlayManage)}
+								&& <FlexBox align>
+									<ContainerLink
+										to={`/learn/${toSeoFriendly(getCourseAliasById(courses, items[0].id))}`}
 									>
-										{t('learn.buttons-continue')}
-									</RaisedButton>
-								</ContainerLink>
-								</FlexBox>
+										<RaisedButton
+											color="secondary"
+											onClick={() => toggleSlayManage(!openSlayManage)}
+										>
+											{t('learn.buttons-continue')}
+										</RaisedButton>
+									</ContainerLink>
+           </FlexBox>
 						}
-       					</Slider>
+					</Slider>
 					: <FlexBox justify column align>
 						<SecondaryTextBlock>
 							{t('learn.no-selected-courses-message')}
@@ -139,13 +139,13 @@ const CollectionCard = ({
 						>
 							{t('learn.add-courses-message')}
 						</RaisedButton>
-       </FlexBox>
+					</FlexBox>
 			}
 			{
 				id === -1
 					? <SlayManage
 						open={openSlayManage}
-						myCourses={items}
+						myCourses={items || []}
 						toggleCourse={toggleCourse}
 						toggling={toggling}
 						onClose={() => toggleSlayManage(!openSlayManage)}
