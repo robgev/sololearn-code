@@ -7,17 +7,13 @@ import { connect } from 'react-redux';
 import {
 	Container,
 	Title,
-	Popup,
 } from 'components/atoms';
-import { FloatingActionButton } from 'components/molecules';
 import { InfiniteVirtualizedList } from 'components/organisms';
-import { Add } from 'components/icons';
 import FeedShimmer from 'components/Shimmers/FeedShimmer';
 import types from 'defaults/appTypes';
 
 import FeedPin from './FeedPin';
 import FeedItem from './FeedItem';
-import UserPostEditor from 'containers/UserPostEditor';
 
 import 'styles/Feed/FeedList.scss';
 
@@ -98,9 +94,9 @@ class FeedList extends Component {
 			feedPins,
 			header = null,
 			loading,
-			showFab = false,
+			hasNewItems,
+			resetNewFlag,
 		} = this.props;
-
 		return (
 			<Container>
 				{
@@ -139,6 +135,8 @@ class FeedList extends Component {
 													: (
 														<Container className="feed-list-virtualized-list-and-fab-container">
 															<InfiniteVirtualizedList
+																shouldReset={hasNewItems}
+																afterReset={resetNewFlag}
 																rowRenderer={this._rowRenderer}
 																loading={loading}
 																hasMore={this.hasMore}
@@ -147,15 +145,7 @@ class FeedList extends Component {
 																rowCount={Number.MAX_SAFE_INTEGER}
 																listRowCount={feed.length}
 															/>
-															{showFab &&
-																<FloatingActionButton
-																	color="secondary"
-																	alignment="right"
-																	onClick={() => this.setState({ isCreatePostPopupOpen: true })}
-																>
-																	<Add />
-																</FloatingActionButton>
-															}
+
 														</Container>
 													)
 												}
@@ -164,12 +154,7 @@ class FeedList extends Component {
 							</Container>
 						)
 				}
-				<Popup
-					open={this.state.isCreatePostPopupOpen}
-				// onClose={() => this.setState({ isCreatePostPopupOpen: false })}
-				>
-					<UserPostEditor closePopup={() => this.setState({ isCreatePostPopupOpen: false })} />
-				</Popup>
+
 			</Container>
 		);
 	}
