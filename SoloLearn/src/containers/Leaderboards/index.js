@@ -247,7 +247,7 @@ class Leaderboards extends PureComponent {
 						wrapperClassName="leaderboards-body"
 						loadingComponent={<LeaderboardShimmer />}
 					>
-						{countryCode
+						{countryCode || TABS[tab] !== TABS.local
 							? (
 								<Fragment>
 									{
