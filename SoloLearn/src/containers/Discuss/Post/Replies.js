@@ -116,7 +116,14 @@ class Replies extends Component {
 							submit={this.addReply}
 						/>
 						{this.replies.canLoadAbove
-							? <RaisedButton onClick={this.replies.getRepliesAbove}>Load above</RaisedButton>
+							? (
+								<RaisedButton
+									className="post-button"
+									onClick={this.replies.getRepliesAbove}
+								>
+									Load above
+								</RaisedButton>
+							)
 							: null
 						}
 						{this.replies.entities.length !== 0 || (this.replies.isFetching && this.replies.hasMore)
