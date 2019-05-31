@@ -44,8 +44,8 @@ const CourseCard = ({
 		<Link
 			to={
 				itemType === slayItemTypes.course || isCourses ?
-					`/learn/course/${toSeoFriendly(getCourseAliasById(courses, id))}` :
-					`/learn/lesson/${itemType === slayItemTypes.courseLesson ? 'course-lesson' : 'user-lesson'}/${id}/${toSeoFriendly(name, 100)}/1`
+					`/learn/${toSeoFriendly(getCourseAliasById(courses, id))}` :
+					`/learn/${id}/${toSeoFriendly(name, 100)}/1`
 			}
 			className="course-card-wrapper"
 		>
@@ -71,7 +71,7 @@ const CourseCard = ({
 					/>
 				</Container>
 				{(!minimal && (Number.isInteger(viewCount) && Number.isInteger(comments))) &&
-						<ViewStats
+				<ViewStats
 							views={viewCount}
 							comments={comments}
 						/>

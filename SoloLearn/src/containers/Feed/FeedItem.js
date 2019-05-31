@@ -64,10 +64,10 @@ class FeedItem extends Component {
 			this.url = `/profile/${feedItem.user.id}/badges?badgeID=${feedItem.achievement.id}`;
 			return <Badge date={feedItem.date} achievement={feedItem.achievement} url={this.url} />;
 		case types.courseStarted:
-			this.url = `/learn/course/${toSeoFriendly(feedItem.course.name)}`;
+			this.url = `/learn/${toSeoFriendly(feedItem.course.name)}`;
 			return <Course date={feedItem.date} course={feedItem.course} openPopup={this.props.openCoursePopup} />;
 		case types.courseCompleted:
-			this.url = `/learn/course/${toSeoFriendly(feedItem.course.name)}`;
+			this.url = `/learn/${toSeoFriendly(feedItem.course.name)}`;
 			return <Course date={feedItem.date} course={feedItem.course} openPopup={this.props.openCoursePopup} />;
 		case types.postedQuestion:
 			this.url = `/discuss/${feedItem.post.id}`;
@@ -119,7 +119,7 @@ class FeedItem extends Component {
 			return <FeedSuggestions number={feedItem.number} />;
 		case types.postedLessonComment:
 		case types.postedLessonCommentReply:
-			this.url = `/learn/course/${toSeoFriendly(feedItem.course.name)}?commentID=${feedItem.comment.id}`;
+			this.url = `/learn/${toSeoFriendly(feedItem.course.name)}?commentID=${feedItem.comment.id}`;
 			return (
 				<Comment
 					url={this.url}
@@ -133,7 +133,7 @@ class FeedItem extends Component {
 			);
 		case types.postedUserLessonComment:
 		case types.postedUserLessonCommentReply:
-			this.url = `/learn/lesson/${feedItem.userLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${feedItem.userLesson.id}/${toSeoFriendly(feedItem.userLesson.name, 100)}/1?commentID=${feedItem.comment.id}`;
+			this.url = `/learn/${feedItem.userLesson.id}/${toSeoFriendly(feedItem.userLesson.name, 100)}/1?commentID=${feedItem.comment.id}`;
 			return (
 				<Comment
 					url={this.url}
@@ -161,7 +161,7 @@ class FeedItem extends Component {
 				/>
 			);
 		case types.lessonCreated:
-			this.url = `/learn/lesson/${feedItem.userLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${feedItem.userLesson.id}/${toSeoFriendly(feedItem.userLesson.name, 100)}/1`;
+			this.url = `/learn/${feedItem.userLesson.id}/${toSeoFriendly(feedItem.userLesson.name, 100)}/1`;
 			return (
 				<Container>
 					<CourseCard

@@ -86,7 +86,7 @@ class SlayManage extends Component {
 								myCourses.map(course => (
 									<ManageLessonCard
 										{...course}
-										url={`/learn/course/${toSeoFriendly(getCourseAliasById(courses, course.id))}`}
+										url={`/learn/${toSeoFriendly(getCourseAliasById(courses, course.id))}`}
 										actions={
 											[
 												// <MenuItem onClick={() => this.openGlossary(course.id, course.name)} >{t('course_picker.action.glossary')}</MenuItem>,
@@ -104,7 +104,7 @@ class SlayManage extends Component {
 								availableCourses.map(course => (
 									<ManageLessonCard
 										{...course}
-										url={`/learn/course/${toSeoFriendly(getCourseAliasById(courses, course.id))}`}
+										url={`/learn/${toSeoFriendly(getCourseAliasById(courses, course.id))}`}
 										addCourse={() => this.toggleCourse(course.id, true)}
 										actions={
 											[

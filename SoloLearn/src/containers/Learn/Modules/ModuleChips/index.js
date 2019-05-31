@@ -39,7 +39,7 @@ const ModuleChips = ({
 					className={alignmentClass}
 					completionPercent={completionPercent}
 					onClick={e => onClick(e, module.id, moduleState)}
-					to={moduleState.visualState === ProgressState.Disabled ? null : `/learn/course/${toSeoFriendly(alias)}/${toSeoFriendly(module.name)}`}
+					to={moduleState.visualState === ProgressState.Disabled ? null : `/learn/${toSeoFriendly(alias)}/${toSeoFriendly(module.name)}`}
 				/>
 			);
 		})}

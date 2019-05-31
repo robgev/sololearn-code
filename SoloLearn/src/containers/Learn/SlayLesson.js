@@ -44,32 +44,21 @@ class SlayLesson extends PureComponent {
 	}
 
 	componentWillMount() {
-		const { lessonId } = this.props.params;
+		const { lessonId } = this.props;
 		this.loadLesson(lessonId);
 	}
 
 	async componentWillReceiveProps(newProps) {
-		const { params: newParams } = newProps;
-		const { params } = this.props;
-		if (newParams.lessonId !== params.lessonId) {
-			this.loadLesson(newParams.lessonId);
-		} else if (newParams.pageNumber !== params.pageNumber) {
+		if (newProps.lessonId !== this.props.lessonId) {
+			this.loadLesson(newProps.lessonId);
+		} else if (newProps.pageNumber !== this.props.pageNumber) {
 			this.setState({ commentsCount: null });
 			this.loadCommentsCount();
 		}
 	}
 
 	loadCommentsCount = async () => {
-		switch (this.props.params.itemType) {
-		case 'course-lesson':
-			this.setState({ commentsCount: await this.loadCourseLessonCommentsCount() });
-			break;
-		case 'user-lesson':
-			this.setState({ commentsCount: await this.loadUserLessonCommentsCount() });
-			break;
-		default:
-			throw new Error('Could not find lesson type');
-		}
+		this.setState({ commentsCount: await this.loadUserLessonCommentsCount() });
 	}
 
 	loadUserLessonCommentsCount = async () => {
@@ -79,33 +68,18 @@ class SlayLesson extends PureComponent {
 	}
 
 	loadCourseLessonCommentsCount = async () => {
-		const { id } = this.props.activeLesson.parts[this.props.params.pageNumber - 1];
+		const { id } = this.props.activeLesson.parts[this.props.pageNumber - 1];
 		const { count } = await Service.request('Discussion/GetLessonCommentCount', { quizId: id });
 		return count;
 	}
 
 	loadLesson = async (lessonId) => {
-		const { getCourseLesson, getLesson } = this.props;
-		const {
-			itemType = 1,
-		} = this.props.params;
+		const { getLesson } = this.props;
 		this.setState({ loading: true });
-		switch (itemType) {
-		case 'course-lesson': {
-			await getCourseLesson(lessonId);
-			await this.getLessonsByAuthor();
-			this.setState({ loading: false });
-			break;
-		}
-		case 'user-lesson': {
-			await getLesson(lessonId);
-			await this.getLessonsByAuthor();
-			this.setState({ loading: false });
-			break;
-		}
-		default:
-			break;
-		}
+		await getLesson(lessonId);
+		await this.getLessonsByAuthor();
+		this.setState({ loading: false });
+
 		const { name } = this.props.activeLesson;
 		this.loadCommentsCount();
 		document.title = `${name}`;
@@ -117,26 +91,9 @@ class SlayLesson extends PureComponent {
 	}
 
 	getCommentsId = () => {
-		const { params, activeLesson } = this.props;
-		switch (params.itemType) {
-		case 'course-lesson':
-			return activeLesson.parts[params.pageNumber - 1].id;
-		case 'user-lesson':
-			return activeLesson.id;
-		default:
-			throw new Error('Unkown lesson type');
-		}
-	}
+		const { activeLesson } = this.props;
 
-	getCommentsType = () => {
-		switch (this.props.params.itemType) {
-		case 'course-lesson':
-			return 'lesson';
-		case 'user-lesson':
-			return 'userLesson';
-		default:
-			throw new Error('Unkown lesson type');
-		}
+		return activeLesson.id;
 	}
 
 	getLessonsByAuthor = async () => {
@@ -146,29 +103,27 @@ class SlayLesson extends PureComponent {
 	}
 
 	goToNextLesson = () => {
-		const {activeLesson, params} = this.props;
-		const {pageNumber} = params;
-		const {id, name, parts, nextLesson} = activeLesson;
-		const url = `/learn/lesson/${nextLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}`;
+		const { activeLesson, pageNumber } = this.props;
+		const { parts, nextLesson } = activeLesson;
+		const url = '/learn/';
 		if (parts && pageNumber < parts.length) {
-			browserHistory.push(`${url}/${this.props.activeLesson.id}/${toSeoFriendly(this.props.activeLesson.name, 100)}/${Number(pageNumber)+1}`);
+			browserHistory.push(`${url}/${this.props.activeLesson.id}/${toSeoFriendly(this.props.activeLesson.name, 100)}/${Number(pageNumber) + 1}`);
 		} else {
 			browserHistory.push(`${url}/${nextLesson.id}/${toSeoFriendly(nextLesson.name, 100)}/1`);
 		}
 	}
 
 	handleStepClick = (index) => {
-		const { params, activeLesson } = this.props; 
-		const url = `/learn/lesson/${params.itemType}`;
-		browserHistory.push(`${url}/${activeLesson.id}/${toSeoFriendly(activeLesson.name, 100)}/${Number(index)+1}`);
+		const { activeLesson } = this.props;
+		const url = '/learn/';
+		browserHistory.push(`${url}/${activeLesson.id}/${toSeoFriendly(activeLesson.name, 100)}/${Number(index) + 1}`);
 	}
 
 	render() {
 		const { loading, commentsCount } = this.state;
 		const {
-			t, lessonsByUser, activeLesson, params,
+			t, lessonsByUser, activeLesson, pageNumber,
 		} = this.props;
-		const { pageNumber } = params;
 		const {
 			id,
 			date,
@@ -180,7 +135,6 @@ class SlayLesson extends PureComponent {
 			userID,
 			content,
 			language,
-			itemType,
 			comments,
 			userName,
 			avatarUrl,
@@ -227,7 +181,6 @@ class SlayLesson extends PureComponent {
 											parts={parts}
 											withAuthorInfo
 											userData={userData}
-											itemType={itemType}
 											textContent={content}
 											pageNumber={pageNumber}
 											activeLesson={activeLesson}
@@ -237,7 +190,7 @@ class SlayLesson extends PureComponent {
 											handleStepClick={this.handleStepClick}
 										/>
 										{hasNext &&
-											<RaisedButton 
+											<RaisedButton
 												color="secondary"
 												onClick={this.goToNextLesson}
 											>
@@ -251,7 +204,7 @@ class SlayLesson extends PureComponent {
 										key={this.getCommentsId()}
 										id={this.getCommentsId()}
 										type={1}
-										commentsType={this.getCommentsType()}
+										commentsType="userLesson"
 										commentsCount={commentsCount}
 									/>
 								}

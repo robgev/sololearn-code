@@ -140,11 +140,11 @@ class NotificationToaster extends Component {
 		case types.postedUserLessonComment:
 		case types.postedUserLessonCommentReply:
 		case types.upvoteUserLessonComment:
-			return `/learn/lesson/${notification.userLesson.itemType === 3 ? 'course-lesson' : 'user-lesson'}/${notification.userLesson.id}/${toSeoFriendly(notification.userLesson.name, 100)}/1?commentID=${notification.userLessonComment.id}`;
+			return `/learn/${notification.userLesson.id}/${toSeoFriendly(notification.userLesson.name, 100)}/1?commentID=${notification.userLessonComment.id}`;
 		case types.postedLessonComment:
 		case types.postedLessonCommentReply:
 		case types.upvoteComment:
-			return `/learn/course/${toSeoFriendly(notification.course.name)}?commentID=${notification.comment.id}`;
+			return `/learn/${toSeoFriendly(notification.course.name)}?commentID=${notification.comment.id}`;
 		case types.challangeReviewRejected:
 		case types.challangeReviewPublished:
 			return `/quiz-factory/my-submissions?id=${notification.challenge.id}`;

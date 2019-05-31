@@ -24,7 +24,7 @@ class SlayLessonContent extends Component {
 
 	render() {
 		const {
- t, parts, lessonId, handleStepClick 
+ t, parts, lessonId, handleStepClick
 } = this.props;
 		const { isReportPopupOpen } = this.state;
 		const { textContent, pageNumber, ...childProps } = this.props;
