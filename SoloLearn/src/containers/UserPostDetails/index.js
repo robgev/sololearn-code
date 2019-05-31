@@ -48,8 +48,6 @@ const UserPostDetails = ({
 	const [ isReportPopupOpen, toggleReportPopup ] = useState(false);
 
 	const setPostRequest = () => {
-		console.clear();
-		console.log('setPostReq');
 		getUserPost(parseInt(params.id, 10))
 			.then((res) => {
 				if (res.error) {
