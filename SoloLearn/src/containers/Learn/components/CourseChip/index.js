@@ -36,7 +36,7 @@ const CourseChip = ({
 		<WrapperComponent
 			style={wrapperStyle}
 			className={`chip-container ${(roundItem) ? 'round' : ''} ${className}`}
-			to={customLink || (isCourse ? `/learn/course/${toSeoFriendly(getCourseAliasById(courses, id))}` : `/learn/lesson/${itemType === 3 ? 'course-lesson' : 'user-lesson'}/${id}/${toSeoFriendly(name, 100)}/1`)}
+			to={customLink || (isCourse ? `/learn/${toSeoFriendly(getCourseAliasById(courses, id))}` : `/learn/${id}/${toSeoFriendly(name, 100)}/1`)}
 		>
 			<Container
 				className={`course-chip-image-container ${(roundItem) ? 'round' : ''} ${noBoxShadow ? '' : 'with-shadow'}`}
