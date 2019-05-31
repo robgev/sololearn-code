@@ -20,6 +20,7 @@ import {
 } from 'components/atoms';
 import { LayoutWithSidebar, InfiniteScroll, FloatingActionButton } from 'components/molecules';
 import { Feed, Add } from 'components/icons';
+import { ProfileFeed } from './components';
 import 'containers/Discuss/QuestionsList/styles.scss';
 import 'styles/Profile/index.scss';
 import Header from './Header';
@@ -144,15 +145,14 @@ class Profile extends Component {
 				</PaperContainer>
 				{
 					data.id !== undefined && this.activeTab === 'activity' &&
-					<Container className="section">
-						<FeedList
-							feed={feed.entities}
-							hasMore={feed.hasMore}
-							loadMore={this.profile.getFeed}
-							voteFeedItem={this.profile.voteFeedItem}
-							showFab
-						/>
-					</Container>
+					<ProfileFeed
+						feed={feed.entities}
+						hasMore={feed.hasMore}
+						loadMore={this.profile.getFeed}
+						voteFeedItem={this.profile.voteFeedItem}
+						loading={this.profile.getFeedPromise !== null}
+						showFab={data.id === userId}
+					/>
 				}
 				{
 					data.id !== undefined && this.activeTab === 'codes' &&
