@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Resizer from 'react-image-file-resizer';
 import { withRouter, browserHistory } from 'react-router';
 import { convertToRaw } from 'draft-js';
+// import createEmojiPlugin from 'draft-js-emoji-plugin';
 
 import {
 	PopupTitle,
@@ -15,7 +16,7 @@ import {
 	SecondaryTextBlock,
 	Snackbar,
 } from 'components/atoms';
-import ProfileAvatar from 'components/ProfileAvatar';
+import { ProfileAvatar, UsernameLink, ModBadge } from 'components/molecules';
 import { AddPhotoAlternate, Close } from 'components/icons';
 import { getMentionsValue } from 'utils';
 
@@ -33,12 +34,12 @@ import {
 	editPost,
 } from './userpost.actions';
 
+// import './emojiPlugin.css';
 import './styles.scss';
 
 export const USER_POST_MAX_LENGTH = 1024;
 
 const UserPostEditor = ({
-	params,
 	afterPostCallback = null,
 	profile,
 	closePopup,
@@ -60,6 +61,11 @@ const UserPostEditor = ({
 
 	const [ isSnackBarOpen, toggleSnackBarIsOpen ] = useState(false);
 	const [ snackMessage, setSnackMessage ] = useState('');
+
+	// const emojiPlugin = useRef(createEmojiPlugin({
+	// 	useNativeArt: true,
+	// }));
+	// const { EmojiSuggestions, EmojiSelect } = emojiPlugin.current;
 
 	const computeCanApplyBackground = () => {
 		if (editorText) {
@@ -225,7 +231,7 @@ const UserPostEditor = ({
 			<Container className="user-post-main-container">
 				<FlexBox justifyBetween align>
 					<PopupTitle className="user-post-main-title">
-						{`${params.id ? 'Edit post' : 'New Post'}`}
+						{`${draftEditorInitialText || initialImageSource ? 'Edit post' : 'New Post'}`}
 					</PopupTitle>
 					<IconButton onClick={() => closePopup()}>
 						<Close />
@@ -234,23 +240,33 @@ const UserPostEditor = ({
 				<Container className="user-post-main-content">
 					{backgrounds && backgrounds.length ?
 						<FlexBox column fullWith>
-							<Container>
-								<ProfileAvatar
-									userID={profile.id}
-									avatarUrl={profile.avatarUrl}
-									badge={profile.badge}
-									userName={profile.name}
-									withUserNameBox
-									withBorder
-									className="profile-avatar-container"
-								/>
-							</Container>
+							<FlexBox align className="up-top-bar">
+								<FlexBox align>
+									<ProfileAvatar
+										user={profile}
+									/>
+									<UsernameLink
+										to={`/profile/${profile.id}`}
+										className="up-profile-username-link"
+									>
+										{profile.name}
+									</UsernameLink>
+									<ModBadge
+										badge={profile.badge}
+									/>
+								</FlexBox>
+							</FlexBox>
 							<DraftEditor
 								background={background}
 								setEditorText={setEditorText}
 								editorInitialText={draftEditorInitialText}
+								// emojiPlugin={emojiPlugin}
 							/>
-							<FlexBox justifyEnd className="user-post-max-length-container">
+							<FlexBox justifyEnd align className="user-post-max-length-container">
+								{/* <Container>
+									<EmojiSelect />
+									<EmojiSuggestions />
+								</Container> */}
 								<SecondaryTextBlock className="count">
 									{editorText ? editorText.getPlainText().length : 0} / {USER_POST_MAX_LENGTH}
 								</SecondaryTextBlock>
