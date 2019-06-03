@@ -110,6 +110,8 @@ class FeedItemsBase extends Component {
 		window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 	}
 
+	// Should not show feed pins when
+	// filter is on weekly highlights
 	render() {
 		const {
 			t,
@@ -155,6 +157,7 @@ class FeedItemsBase extends Component {
 						hasNewItems={hasNewItems}
 						loadMore={this.getFeedItems}
 						voteFeedItem={voteFeedItem}
+						showPins={currentFilter !== 1}
 						resetNewFlag={this.resetNewFlag}
 					/>
 				</Container>
