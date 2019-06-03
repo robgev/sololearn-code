@@ -95,11 +95,11 @@ class NotificationToaster extends Component {
 						/>
 				}
 				<Container className="additional-details">
-					<SecondaryTextBlock
-						className="title"
+					<Container
+						className="block-with-text"
 					>
 						{title}
-					</SecondaryTextBlock>
+					</Container>
 					<Container className="date-container">
 						<SecondaryTextBlock className="date">{updateDate(notification.date)}</SecondaryTextBlock>
 						{!notification.isClicked && <Container className="notClickedIcon" />}

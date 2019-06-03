@@ -28,10 +28,10 @@ class Post extends Component {
 	post = new IPost({ id: this.props.id })
 
 	handleDelete = () => {
-		this.post.deletePost()
+		return this.post.deletePost()
 			.then(this.props.removePostFromList)
 			.then(() => {
-				browserHistory.replace('/discuss');
+				browserHistory.goBack();
 			});
 	}
 
@@ -63,7 +63,7 @@ class Post extends Component {
 								onDelete={this.handleDelete}
 							/>
 						)
-						: <EmptyCard paper className='pxik'/>
+						: <EmptyCard paper />
 				}
 				{
 					this.post.data !== null
