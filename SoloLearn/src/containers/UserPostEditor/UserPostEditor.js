@@ -51,6 +51,7 @@ const UserPostEditor = ({
 	initialSelectedBackgroundId = -1,
 	initialImageSource = null,
 	initialUserPostId = null,
+	updateListItems = () => { },
 }) => {
 	const [ backgrounds, setBackgrounds ] = useState([]);
 	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
@@ -181,7 +182,8 @@ const UserPostEditor = ({
 			if (res) {
 				afterPostHandler(res.post);
 			}
-		});
+		})
+		.then(() => updateListItems());
 
 	const createPostHandler = () => {
 		togglePostButtonDisabled(true);

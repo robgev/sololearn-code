@@ -16,6 +16,7 @@ class IProfile {
 		this.getQuestionsPromise = null;
 		this.getCodesPromise = null;
 		this.getFeedPromise = null;
+		this.getNewFeedPromise = null;
 		this.getFollowersPromise = null;
 		this.getFollowingsPromise = null;
 		this.getData();
@@ -25,6 +26,8 @@ class IProfile {
 	}
 
 	@observable getQuestionsPromise = null;
+	@observable loadingFollowers = false;
+	@observable loadingFollowings = false;
 
 	@computed get isQuestionsFetching() {
 		return this.getQuestionsPromise !== null;
@@ -35,9 +38,6 @@ class IProfile {
 	}
 
 	@observable data = {};
-
-	@observable loadingFollowers = false;
-	@observable loadingFollowings = false;
 
 	@observable questions = {
 		entities: [],
@@ -130,6 +130,20 @@ class IProfile {
 				? lastItem.toId
 				: lastItem.id;
 	}
+
+	@action getNewFeedItems = () => {
+		const { entities } = this.feed;
+		this.getNewFeedPromise = Service.request('Profile/GetFeed', { toId: entities[0].id, profileId: this._profileID, count: 20 })
+			.then(({ feed }) => {
+				this.getNewFeedPromise = null;
+				if (feed.length > 0) {
+					const feedItems = groupFeedItems(feed);
+					const filtered = filterExisting(entities, feedItems);
+					this.feed.entities = [ ...filtered, ...this.feed.entities ];
+				}
+				return this.getNewFeedPromise;
+			});
+	};
 
 	@action getFeed = () => {
 		if (this.getFeedPromise === null) {

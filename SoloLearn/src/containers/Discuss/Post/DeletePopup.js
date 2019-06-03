@@ -1,7 +1,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { Popup, PopupContent, PopupActions } from 'components/atoms';
-import { FlatButton } from 'components/molecules';
+import { FlatButton,PromiseButton } from 'components/molecules';
 
 const DeletePopup = ({
 	t, onClose, onDelete, open,
@@ -19,11 +19,12 @@ const DeletePopup = ({
 			>
 				{t('common.cancel-title')}
 			</FlatButton>
-			<FlatButton
-				onClick={onDelete}
-			>
-				{t('common.delete-title')}
-			</FlatButton>
+			<PromiseButton
+						className="submit-button"
+						fire={onDelete}
+					>
+						{t('common.delete-title')}
+			</PromiseButton>
 		</PopupActions>
 	</Popup>
 );

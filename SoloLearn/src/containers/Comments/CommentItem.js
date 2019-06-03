@@ -76,7 +76,7 @@ render() {
 													<Container className="comment-input-toolbar">
 														<Container className="input-bar reply-input">
 															<CountingMentionInput
-																style={{ height: 50 }}
+																className="counting-mention-input"
 																ref={(i) => { this.editMentionInput = i; }}
 																getUsers={getMentionUsers}
 																initText={comment.message}
@@ -155,7 +155,7 @@ render() {
 							</Container>
 							<Container>
 								{
-									comment.parentID === null && (
+									comment.parentID === null && comment.replies > 0 && (
 										<PromiseButton
 											fire={onRepliesButtonClick}
 											mouseDown

@@ -4,8 +4,10 @@ import Paper from 'material-ui/Paper';
 import { Layout } from 'components/molecules';
 import RaisedButton from 'material-ui/RaisedButton';
 
-const ComingSoon = () => (
-	<Layout>
+const ComingSoon = () => {
+	document.title='Sololearn | Play'
+
+	return 	<Layout>
 		<Paper style={{
 			display: 'flex',
 			flexDirection: 'column',
@@ -29,6 +31,6 @@ const ComingSoon = () => (
 			</Link>
 		</Paper>
 	</Layout>
-);
+};
 
 export default ComingSoon;

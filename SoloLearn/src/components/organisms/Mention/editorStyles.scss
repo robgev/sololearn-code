@@ -12,6 +12,7 @@
   background: $background_color;
   &.expanded {
     .DraftEditor-root {
+			word-break: break-word;
       min-height: $expanded_editor_height;
     }
   }

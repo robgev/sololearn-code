@@ -20,6 +20,7 @@ import {
 } from 'components/atoms';
 import { LayoutWithSidebar, InfiniteScroll, FloatingActionButton } from 'components/molecules';
 import { Feed, Add } from 'components/icons';
+import { ProfileFeed } from './components';
 import 'containers/Discuss/QuestionsList/styles.scss';
 import 'styles/Profile/index.scss';
 import Header from './Header';
@@ -167,15 +168,15 @@ class Profile extends Component {
 				</PaperContainer>
 				{
 					data.id !== undefined && this.activeTab === TABS.activity &&
-					<Container className="section">
-						<FeedList
-							feed={feed.entities}
-							hasMore={feed.hasMore}
-							loadMore={this.profile.getFeed}
-							voteFeedItem={this.profile.voteFeedItem}
-							showFab={data.id === userId}
-						/>
-					</Container>
+					<ProfileFeed
+						feed={feed.entities}
+						hasMore={feed.hasMore}
+						showFab={data.id === userId}
+						loadMore={this.profile.getFeed}
+						voteFeedItem={this.profile.voteFeedItem}
+						loading={this.profile.getFeedPromise !== null}
+						getNewFeedItems={this.profile.getNewFeedItems}
+					/>
 				}
 				{
 					data.id !== undefined && this.activeTab === TABS.codes &&
@@ -184,11 +185,10 @@ class Profile extends Component {
 						isLoading={this.profile.isCodesFetching}
 						loadMore={this.profile.getCodes}
 					>
-						<PaperContainer className="codes-wrapper section">
+						<PaperContainer className={`codes-wrapper section ${!codes.hasMore && 'wrapper-end'}`}>
 							<CodesList
 								codes={codes.entities}
 								hasMore={codes.hasMore}
-								loadMore={this.profile.getCodes}
 							/>
 							{data.id === userId &&
 								<AddCodeButton>
@@ -205,7 +205,7 @@ class Profile extends Component {
 							isLoading={this.profile.isQuestionsFetching}
 							loadMore={this.profile.getQuestions}
 						>
-							<PaperContainer className="discuss_questions-list">
+							<PaperContainer className={`discuss_questions-list ${!questions.hasMore && 'wrapper-end'}`}>
 								<QuestionList
 									questions={questions.entities}
 									hasMore={questions.hasMore}
