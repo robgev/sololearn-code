@@ -66,6 +66,9 @@
 
 @include for-until-desktop {
 	.user-post-main-container {
-		width: 100%;
+		width: 380px;
+		.user-post-main-content {
+			min-width: 0;
+		}
 	}
 }
