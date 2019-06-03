@@ -171,10 +171,11 @@ class Profile extends Component {
 					<ProfileFeed
 						feed={feed.entities}
 						hasMore={feed.hasMore}
+						showFab={data.id === userId}
 						loadMore={this.profile.getFeed}
 						voteFeedItem={this.profile.voteFeedItem}
 						loading={this.profile.getFeedPromise !== null}
-						showFab={data.id === userId}
+						getNewFeedItems={this.profile.getNewFeedItems}
 					/>
 				}
 				{

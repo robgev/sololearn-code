@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { Container, Popup } from 'components/atoms';
 import { FloatingActionButton } from 'components/molecules';
@@ -7,8 +6,6 @@ import { Add } from 'components/icons';
 
 import FeedList from 'containers/Feed/FeedList';
 import UserPostEditor from 'containers/UserPostEditor';
-
-import { getNewFeedItemsInternal } from 'actions/feed';
 
 import './styles.scss';
 
@@ -19,14 +16,14 @@ const ProfileFeed = ({
 	loadMore,
 	voteFeedItem,
 	showFab,
-	getNewFeedItemsInternal,
+	getNewFeedItems,
 }) => {
 	const [ hasNewItems, setHasNew ] = useState(false);
 	const [ isCreatePostPopupOpen, toggleCreatePostPopup ] = useState(false);
 
 	const loadNewFeedItems = async () => {
 		try {
-			const count = await getNewFeedItemsInternal();
+			const count = await getNewFeedItems();
 			if (!hasNewItems && count > 0) {
 				setHasNew(true);
 			}
@@ -36,7 +33,7 @@ const ProfileFeed = ({
 	};
 
 	const resetNewFlag = () => {
-		this.setState({ hasNewItems: false });
+		setHasNew(false);
 	};
 
 	return (
@@ -63,10 +60,14 @@ const ProfileFeed = ({
 				open={isCreatePostPopupOpen}
 				onClose={() => toggleCreatePostPopup(false)}
 			>
-				<UserPostEditor closePopup={() => toggleCreatePostPopup(false)} updateListItems={loadNewFeedItems} />
+				<UserPostEditor
+					afterPostCallback={() => {}}
+					updateListItems={loadNewFeedItems}
+					closePopup={() => toggleCreatePostPopup(false)}
+				/>
 			</Popup>
 		</Container>
 	);
 };
 
-export default translate()(connect(null, { getNewFeedItemsInternal })(ProfileFeed));
+export default translate()(ProfileFeed);
