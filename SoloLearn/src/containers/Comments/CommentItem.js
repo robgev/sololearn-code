@@ -76,7 +76,7 @@ render() {
 													<Container className="comment-input-toolbar">
 														<Container className="input-bar reply-input">
 															<CountingMentionInput
-																style={{ minHeight: 50 }}
+																className="counting-mention-input"
 																ref={(i) => { this.editMentionInput = i; }}
 																getUsers={getMentionUsers}
 																initText={comment.message}
