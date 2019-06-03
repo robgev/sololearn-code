@@ -89,7 +89,7 @@ const initialStore = {
 export const store = createStore(
 	reducers,
 	initialStore,
-	applyMiddleware(thunk),
+	applyMiddleware(thunk, logger),
 );
 
 // Redux selector for detecting data state

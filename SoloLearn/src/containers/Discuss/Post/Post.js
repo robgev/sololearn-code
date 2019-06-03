@@ -31,7 +31,7 @@ class Post extends Component {
 		return this.post.deletePost()
 			.then(this.props.removePostFromList)
 			.then(() => {
-				browserHistory.goBack();
+				browserHistory.replace('/discuss');
 			});
 	}
 

@@ -87,7 +87,7 @@ class Skills extends PureComponent {
 		if (!skills) {
 			return null;
 		}
-		console.log(currentStatus)
+
 		return (
 			<Container className="skills-container">
 				<PaperContainer className="skills-group">
@@ -124,7 +124,7 @@ class Skills extends PureComponent {
 									</Container>
 								)
 							}
-							
+
 						</Container>
 					</Container>
 				</PaperContainer>
