@@ -20,15 +20,13 @@ class NewQuestion extends Component {
 		this._isMounted = false;
 	}
 
-	submit = ({ title, message, tags }) => {
-		return Service.request('Discussion/CreatePost', { title, message, tags })
-			.then(({ post }) => {
-				this.props.emptyPosts();
-				if (this._isMounted) {
-					browserHistory.push(`/discuss/${post.id}`);
-				}
-			});
-	}
+	submit = ({ title, message, tags }) => Service.request('Discussion/CreatePost', { title, message, tags })
+		.then(({ post }) => {
+			this.props.emptyPosts();
+			if (this._isMounted) {
+				browserHistory.replace(`/discuss/${post.id}`);
+			}
+		})
 
 	render() {
 		return (

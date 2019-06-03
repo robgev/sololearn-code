@@ -14,7 +14,7 @@ import 'styles/Feed/FeedTemplates/Course.scss';
 import BottomToolbar from '../FeedBottomToolbar';
 
 const Course = ({ course, date, showDate = true }) => (
-	<Container to={`/learn/course/${toSeoFriendly(course.alias)}`}>
+	<Container to={`/learn/${toSeoFriendly(course.alias)}`}>
 		<Container
 			tabIndex={0}
 			role="button"
@@ -25,7 +25,7 @@ const Course = ({ course, date, showDate = true }) => (
 				src={`${AppDefaults.downloadHost}/Courses/${course.id}.png`}
 				className="courseIcon"
 			/>
-			<Link to={`/learn/course/${toSeoFriendly(course.alias)}`}>
+			<Link to={`/learn/${toSeoFriendly(course.alias)}`}>
 				<TextBlock className="courseName">{course.name}</TextBlock>
 			</Link>
 		</Container>

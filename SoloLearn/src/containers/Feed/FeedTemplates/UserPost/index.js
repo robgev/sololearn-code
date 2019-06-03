@@ -3,14 +3,14 @@ import VisibilitySensor from 'react-visibility-sensor';
 import {
 	Container,
 	FlexBox,
-	TextBlock,
 	Image as ImageAtom,
+	Link,
 } from 'components/atoms';
 import {
-	ContainerLink,
 	ModBadge,
 	ProfileAvatar,
 	UsernameLink,
+	ContainerLink,
 } from 'components/molecules';
 import { FeedBottomBarFullStatistics } from 'components/organisms';
 
@@ -24,7 +24,6 @@ const UserPost = ({
 	background,
 	message,
 	imageUrl,
-	type,
 	date,
 	id,
 	vote,
@@ -117,9 +116,12 @@ const UserPost = ({
 							/>
 						</Container>
 						{textShouldWrap &&
-							<ContainerLink to={`/post/${userPostId}`}>
-								<TextBlock className="up-feed-item-continue-reading-text">...Continue Reading</TextBlock>
-							</ContainerLink>
+							<Link
+								className="hoverable up-feed-item-continue-reading-text"
+								to={`/post/${userPostId}`}
+							>
+								...Continue Reading
+							</Link>
 						}
 					</Container>
 					: null
@@ -136,7 +138,7 @@ const UserPost = ({
 						: null}
 				</ContainerLink>
 				<FeedBottomBarFullStatistics
-					type={type}
+					type="userPost"
 					date={date}
 					id={id}
 					userVote={vote}

@@ -19,6 +19,7 @@ const LayoutGenerator = ({
 	noSidebar,
 	wrapperStyle,
 	sidebarContent,
+	loadingData,
 	cardComponent: CardComponent,
 	loadingComponent: LoadingComponent,
 }) => {
@@ -43,6 +44,7 @@ const LayoutGenerator = ({
 					pageStart={0}
 					hasMore={hasMore}
 					loadMore={loadMore}
+					isLoading={loadingData}
 					style={{
 						width: '100%',
 						display: 'flex',

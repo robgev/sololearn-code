@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { Container, HorizontalDivider } from 'components/atoms';
-import { RaisedButton } from 'components/molecules';
+import { Container, HorizontalDivider, FlexBox } from 'components/atoms';
+import { RaisedButton, ProfileAvatar } from 'components/molecules';
 import { CountingMentionInput } from 'components/organisms';
+
+const mapStateToProps = ({ userProfile }) => ({ userProfile });
 
 @translate()
 class AddReply extends Component {
@@ -38,20 +41,23 @@ class AddReply extends Component {
 	}
 
 	render() {
-		const { t, postID } = this.props;
+		const { t, postID, userProfile } = this.props;
 		return (
 			<Container className="add-reply">
-				<CountingMentionInput
-					ref={this.input}
-					placeholder={t('discuss.new-answer-placeholder')}
-					getUsers={{ type: 'discuss', params: { postId: postID } }}
-					onSubmitEnabledChange={this.setIsSubmitEnabled}
-					renderButton={this.renderSubmitButton}
-				/>
+				<FlexBox>
+					<ProfileAvatar user={userProfile} />
+					<CountingMentionInput
+						ref={this.input}
+						placeholder={t('discuss.new-answer-placeholder')}
+						getUsers={{ type: 'discuss', params: { postId: postID } }}
+						onSubmitEnabledChange={this.setIsSubmitEnabled}
+						renderButton={this.renderSubmitButton}
+					/>
+				</FlexBox>
 				<HorizontalDivider />
 			</Container>
 		);
 	}
 }
 
-export default AddReply;
+export default connect(mapStateToProps)(AddReply);

@@ -11,6 +11,9 @@
 		width: 100%;
 		display: flex;
 		flex-direction: column;
+		.post-button {
+			margin-top: 10px;
+		}
 		.add-reply {
 			margin-bottom: $primary_gap_size;
 			display: flex;

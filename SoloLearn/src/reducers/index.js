@@ -8,6 +8,7 @@ import userProfile from './reducer_user';
 
 // Learn
 import courses from './courses.reducer';
+import coursesLoading from './coursesLoading.reducer';
 import levels from './reducer_levels';
 import course from './reducer_course';
 import modulesMapping from './reducer_modules';
@@ -57,6 +58,7 @@ const reducers = combineReducers({
 	userProfile,
 	// Learn
 	courses,
+	coursesLoading,
 	course,
 	levels,
 	modulesMapping,

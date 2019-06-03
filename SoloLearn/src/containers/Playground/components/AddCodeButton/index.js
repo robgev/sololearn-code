@@ -24,7 +24,7 @@ class AddCodeButton extends Component {
 	}
 	selectLanguage = (courseItem) => {
 		this.toggleLanguagePopup();
-		browserHistory.push({ pathname: '/playground', query: { language: courseItem.language } });
+		browserHistory.push({ pathname: '/playground/new', query: { language: courseItem.language } });
 	}
 
 	render() {

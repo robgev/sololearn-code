@@ -27,6 +27,8 @@ const LoginFields = ({
 				type="email"
 				autoCapitalize="off"
 				autoCorrect="off"
+				autoComplete={false}
+l
 				disabled={isForgot && loading}
 				placeholder={t('auth.email-placeholder')}
 			/>

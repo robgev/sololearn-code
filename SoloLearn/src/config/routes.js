@@ -31,6 +31,8 @@ const SlayBookmarks = Loadable({ loader: () => import('containers/Learn/SlayBook
 const SlayMoreOnTopic = Loadable({ loader: () => import('containers/Learn//SlayMoreOnTopic') });
 const SlayMoreByAuthor = Loadable({ loader: () => import('containers/Learn/SlayMoreByAuthor') });
 
+const LessonManager = Loadable({ loader: () => import('containers/Learn/LessonManager') });
+
 // Discuss
 const Questions = Loadable({ loader: () => import('containers/Discuss/Questions') });
 const Post = Loadable({ loader: () => import('containers/Discuss/Post/index') });
@@ -93,38 +95,45 @@ export default ([
 	<Route onEnter={() => window.scrollTo(0, 0)} path="/terms-of-service" component={ToS} />,
 	<Route component={redirector(MainLayout)} key="mainLayoutRoutes">
 		<Redirect exact path="/" to="/feed" />
+		{/* alternativ paths */}
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn" component={SlayHome} />
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/courses" component={SlayHome} />
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/course" component={SlayHome} />
+
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/search/:query" component={SlaySearch} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/bookmarks" component={SlayBookmarks} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/more-on/:courseId" component={SlayMoreOnTopic} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/more/author/:userId" component={SlayMoreByAuthor} />
+
+		{/* change /learn/more/:collectionId to /collection/:collectionId */}
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/more/:collectionId" component={SlayDetailed} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/manage" component={SlayManage} />
+		{/* change /learn/collection/:collectionId to /collections/:collectionId */}
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/collection/:collectionId" component={SlayLessonsPage} />
 
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/collection/:collectionId" component={SlayLessonsPage} />
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/lesson/:itemType/:lessonId(/:lessonName)(/:pageNumber)" component={SlayLesson} />
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/course/:alias" component={Modules} />
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/course/:alias/:moduleName" component={Lessons} />
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/course/:alias/:moduleName/:lessonName" component={QuizManager}>
-			<Route path=":quizNumber" component={Quiz} />
-		</Route>
+		{/* change /learn/lesson/:lessonid and /learn/course/:alias to /learn/:idoralias */}
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/:idOrAlias(/:lessonName)(/:index)(/:quizNumber)" component={LessonManager} />
 
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/post/:id" component={UserPostDetails} />
 
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/play" component={Play} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/lesson-factory" component={LessonFactory} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/codes" component={Codes} />
+		{/* added new route */}
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/playground" component={Codes} />
+		{/* made publicId non-optional */}
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/playground/:publicId" component={Playground} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/settings(/:settingID)" component={Settings} />
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/playground(/:publicId)" component={Playground} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss" component={Questions} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss/new" component={NewQuestion} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss/edit/:id" component={EditQuestion} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss/filter/:query" component={Questions} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss/:id(/:questionName)(/:replyId)" component={Post} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/feed" component={Feed} />
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/profile/:id(/:tab)" component={Profile} />
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/profile(/:id)(/:tab)" component={Profile} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/certificate/:id" component={Certificate} />
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/leaderboards(/:userId)" component={Leaderboards} />
+		{/* change /leaderboards(/:userId) to /leaderboard(/:tab)(/:userId) */}
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/leaderboard(/:tab)(/:userId)" component={Leaderboards} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/notifications" component={Notifications} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discover(/:query)" component={DiscoverContainer} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/quiz-factory" component={QuizFactoryMenu} />

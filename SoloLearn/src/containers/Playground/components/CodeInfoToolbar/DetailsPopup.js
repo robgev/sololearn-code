@@ -33,7 +33,6 @@ const DetailsPopup = ({
 		<PopupActions>
 			<FlatButton
 				onClick={onClose}
-				color="secondary"
 			>
 				{t('common.close-title')}
 			</FlatButton>

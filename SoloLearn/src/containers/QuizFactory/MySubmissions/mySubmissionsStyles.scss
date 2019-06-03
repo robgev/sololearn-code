@@ -1,6 +1,10 @@
 @import '~styles/variables';
 @import '~styles/colors';
 
+.quiz_factory-my-submissions-delete-button {
+	color: $error-red;
+}
+
 .quiz_factory-my-submissions {
 	.toolbar {
 		margin-bottom: $secondary_gap_size;

@@ -100,7 +100,7 @@ class Header extends PureComponent {
 				</FlexBox>
 				<Popup
 					open={this.state.isCreatePostPopupOpen}
-				// onClose={() => this.setState({ isCreatePostPopupOpen: false })}
+					onClose={() => this.setState({ isCreatePostPopupOpen: false })}
 				>
 					<UserPostEditor
 						closePopup={() => this.setState({ isCreatePostPopupOpen: false })}

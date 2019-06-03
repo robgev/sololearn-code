@@ -26,7 +26,7 @@ class Playground extends Component {
 		this.playground = new IPlayground({
 			inline: this.props.inline,
 			userId: this.props.userId,
-			publicId: this.props.publicId,
+			publicId: this.props.publicId === 'new' ? null : this.props.publicId,
 			language: this.props.language,
 			lessonCodeId: this.props.lessonCodeId,
 		});

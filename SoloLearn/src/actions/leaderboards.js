@@ -5,7 +5,7 @@ import { leaderboardsFiltersSelector } from 'reducers/leaderboards.reducer';
 export const getLeaderboard = requestParams => async (dispatch, getState) => {
 	const initFilters = leaderboardsFiltersSelector(getState());
 	try {
-		const { leaderboard } = await Service.request('GetLeaderboard', { ...requestParams, ...initFilters });
+		const { leaderboard } = await Service.request('GetLeaderboard', { ...initFilters, ...requestParams });
 		const filters = leaderboardsFiltersSelector(getState());
 		// Proceed with action only when the filters haven't changed
 		// while waiting for the response
