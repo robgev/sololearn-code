@@ -24,7 +24,11 @@ class AddCodeButton extends Component {
 	}
 	selectLanguage = (courseItem) => {
 		this.toggleLanguagePopup();
-		browserHistory.push({ pathname: '/playground/new', query: { language: courseItem.language } });
+		if (courseItem.language !== 'web') {
+			browserHistory.push({ pathname: '/playground/new', query: { language: courseItem.language } });
+		}	else {
+			browserHistory.push({ pathname: '/playground/new', query: { language: 'html' } });
+		}
 	}
 
 	render() {
@@ -36,7 +40,6 @@ class AddCodeButton extends Component {
 					open={isLanguageSelectorOpen}
 					onChoose={this.selectLanguage}
 					onClose={this.toggleLanguageSelector}
-					filter={c => c.language !== 'sql'}
 				/>
 			</Fragment>
 		);
