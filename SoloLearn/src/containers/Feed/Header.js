@@ -67,7 +67,7 @@ class Header extends PureComponent {
 	}
 
 	render() {
-		const { profile, t } = this.props;
+		const { profile, t, updateListItems } = this.props;
 		const { xp: currentXp, rank, badge } = profile;
 
 		return (
@@ -102,7 +102,10 @@ class Header extends PureComponent {
 					open={this.state.isCreatePostPopupOpen}
 					onClose={() => this.setState({ isCreatePostPopupOpen: false })}
 				>
-					<UserPostEditor closePopup={() => this.setState({ isCreatePostPopupOpen: false })} />
+					<UserPostEditor
+						closePopup={() => this.setState({ isCreatePostPopupOpen: false })}
+						updateListItems={updateListItems}
+					/>
 				</Popup>
 			</PaperContainer>
 		);
