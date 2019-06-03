@@ -17,6 +17,7 @@ import {
 	Select,
 	MenuItem,
 	ModBadgeIcon,
+	FlexBox,
 } from 'components/atoms';
 import { ProgressBar } from 'components/molecules';
 import i18n from 'i18n';
@@ -86,7 +87,7 @@ class Skills extends PureComponent {
 		if (!skills) {
 			return null;
 		}
-		
+
 		return (
 			<Container className="skills-container">
 				<PaperContainer className="skills-group">
@@ -95,11 +96,14 @@ class Skills extends PureComponent {
 					<Container className="skills-details">
 						<LeaderboardString userID={profile.id} ranks={profile.rank} />
 						<Container className="country-details">
+							{
+								profile.countryCode &&
 							<Image
 								alt={profile.countryCode}
 								style={{ height: 'initial', width: 26 }}
 								src={`/assets/flags/${profile.countryCode.toLowerCase()}.png`}
 							/>
+							}
 							<TextBlock className="country-name">
 								{ getCountryName(profile.countryCode) }
 							</TextBlock>
@@ -108,7 +112,7 @@ class Skills extends PureComponent {
 							<ProgressBar
 								value={100 * profile.xp / maxXp}
 								className="progress"
-								minText={t(`profile.status-${currentStatus}`)}
+								minText={currentStatus && t(`profile.status-${currentStatus}`)}
 								maxText={t(`profile.status-${status}`)}
 							/>
 							{
@@ -120,7 +124,7 @@ class Skills extends PureComponent {
 									</Container>
 								)
 							}
-							
+
 						</Container>
 					</Container>
 				</PaperContainer>
@@ -135,7 +139,9 @@ class Skills extends PureComponent {
 									shouldShowLink={profile.id === currentUserId}
 								/>
 							)) :
-							<TextBlock>{t('common.empty-list-message')}</TextBlock>
+							<FlexBox justify>
+								<TextBlock>{t('common.empty-list-message')}</TextBlock>
+							</FlexBox>
 						}
 					</Container>
 				</PaperContainer>

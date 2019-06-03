@@ -156,7 +156,7 @@ class Header extends Component {
 						<UserAvatar
 							user={profile}
 							size="big"
-							link={`/profile/${profile.id}/skills`}
+							link={`/profile/${profile.id}`}
 						/>
 					}
 					<UsernameLink to={`/profile/${profile.id}`} className="user-name">{profile.name}</UsernameLink>

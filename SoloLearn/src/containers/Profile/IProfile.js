@@ -26,6 +26,8 @@ class IProfile {
 	}
 
 	@observable getQuestionsPromise = null;
+	@observable loadingFollowers = false;
+	@observable loadingFollowings = false;
 
 	@computed get isQuestionsFetching() {
 		return this.getQuestionsPromise !== null;
@@ -36,9 +38,6 @@ class IProfile {
 	}
 
 	@observable data = {};
-
-	@observable loadingFollowers = false;
-	@observable loadingFollowings = false;
 
 	@observable questions = {
 		entities: [],

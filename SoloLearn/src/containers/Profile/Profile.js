@@ -185,11 +185,10 @@ class Profile extends Component {
 						isLoading={this.profile.isCodesFetching}
 						loadMore={this.profile.getCodes}
 					>
-						<PaperContainer className="codes-wrapper section">
+						<PaperContainer className={`codes-wrapper section ${!codes.hasMore && 'wrapper-end'}`}>
 							<CodesList
 								codes={codes.entities}
 								hasMore={codes.hasMore}
-								loadMore={this.profile.getCodes}
 							/>
 							{data.id === userId &&
 								<AddCodeButton>
@@ -206,7 +205,7 @@ class Profile extends Component {
 							isLoading={this.profile.isQuestionsFetching}
 							loadMore={this.profile.getQuestions}
 						>
-							<PaperContainer className="discuss_questions-list">
+							<PaperContainer className={`discuss_questions-list ${!questions.hasMore && 'wrapper-end'}`}>
 								<QuestionList
 									questions={questions.entities}
 									hasMore={questions.hasMore}
