@@ -2,14 +2,14 @@ import React, { PureComponent } from 'react';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import IconButton from 'material-ui/IconButton';
-import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import ProfileAvatar from 'components/ProfileAvatar';
-import 'styles/Header/HeaderSettingsMenu.scss';
+import { MenuItem } from 'components/atoms';
+import { IconMenu } from 'components/molecules';
+import { ArrowDown } from 'components/icons';
 
 import { logout } from 'actions/login.action';
+
+import 'styles/Header/HeaderSettingsMenu.scss';
 
 const mapStateToProps = ({ userProfile }) => ({
 	avatarUrl: userProfile ? userProfile.avatarUrl : null,
@@ -61,37 +61,34 @@ class SettingsMenu extends PureComponent {
 					avatarStyle={{ border: '1px solid white' }}
 				/>
 				<IconMenu
-					targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-					anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-					iconStyle={{ display: 'flex', alignItems: 'center' }}
-					iconButtonElement={
-						<IconButton style={{ width: 'initial', padding: 0 }}>
-							<div>
-								<ArrowDown color="white" />
-							</div>
-						</IconButton>
-					}
+					icon={ArrowDown}
+					iconProps={{className:"header-icon-menu"}}
 				>
 					<MenuItem
-						primaryText={t('leaderboard.title')}
 						onClick={this.goToLeaderboards}
-					/>
+					>
+						{t('leaderboard.title')}
+					</MenuItem>
 					<MenuItem
-						primaryText={t('lesson-factory.title')}
 						onClick={this.goToLessonFactory}
-					/>
+					>
+						{t('lesson-factory.title')}
+					</MenuItem>
 					<MenuItem
-						primaryText={t('factory.title')}
 						onClick={this.goToQuizFactory}
-					/>
+					>
+						{t('factory.title')}
+					</MenuItem>
 					<MenuItem
-						primaryText={t('settings.title')}
 						onClick={this.goToSettings}
-					/>
+					>
+						{t('settings.title')}
+					</MenuItem>
 					<MenuItem
-						primaryText={t('settings.signout-action-title')}
 						onClick={this.singOut}
-					/>
+					>
+						{t('settings.signout-action-title')}
+					</MenuItem>
 				</IconMenu>
 			</div>
 		);
