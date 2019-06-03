@@ -44,15 +44,12 @@ class NotificationManager extends PureComponent {
 
 	subscribe = async () => {
 		await this.props.getNotifications();
-		this.refreshInterval = setInterval(
-			this.refreshNotifications,
-			NotificationManager.REFRESH_TIMEOUT,
-		);
+		this.refreshNotifications();
 	}
 
 	unsibscribe = () => {
 		if (this.refreshInterval) {
-			clearInterval(this.refreshInterval);
+			clearTimeout(this.refreshInterval);
 		}
 	}
 
@@ -66,6 +63,10 @@ class NotificationManager extends PureComponent {
 				);
 			}
 		});
+		this.refreshInterval = setTimeout(
+			this.refreshNotifications,
+			NotificationManager.REFRESH_TIMEOUT,
+		);
 	}
 
 	toggleNotificationsOpen = () => {
