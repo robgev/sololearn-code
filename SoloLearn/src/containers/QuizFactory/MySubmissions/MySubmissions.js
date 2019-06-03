@@ -205,7 +205,7 @@ class MySubmissions extends Component {
 				>
 					<PaperContainer>
 						<FlexBox className="toolbar" align justifyBetween>
-							<Heading>{t('discuss.title')}</Heading>
+							<Heading>{t('factory.my_submissions')}</Heading>
 							<FlexBox align>
 								<Select
 									className="select"
@@ -271,6 +271,7 @@ class MySubmissions extends Component {
 							? (
 								<FlatButton
 									onClick={this.toggleDeletePopup}
+									className="quiz_factory-my-submissions-delete-button"
 								>
 									{t('common.delete-title')}
 								</FlatButton>

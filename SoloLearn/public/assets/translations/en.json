@@ -858,9 +858,9 @@
 		"delete-submission-message": "Are you sure you want to delete this submission?",
 		"lesson-title-placeholder": "Type in The Lesson Title",
 		"submission-all": "All",
-		"submission-pending": "PENDING",
-		"submission-declined": "DECLINED",
-		"submission-approved": "APPROVED",
+		"submission-pending": "Pending",
+		"submission-declined": "Declined",
+		"submission-approved": "Approved",
 		"submission-draft": "Draft",
 		"status-filter-label": "Status:",
 		"no-submissions": "No Submissions",
@@ -879,6 +879,6 @@
 			"user-post-form-hint-2": "Share your thoughts",
 			"user-post-form-hint-3": "What's on your mind?"
 		},
-		"user-post-placeholder":"Share coding tips, articles, snippets and anything code-related"
+		"user-post-placeholder": "Share coding tips, articles, snippets and anything code-related"
 	}
 }

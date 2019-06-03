@@ -17,7 +17,7 @@ import LanguageCard from 'components/LanguageCard';
 import './styles.scss';
 
 const LanguageSelector = ({
-	t, courses, open, onChoose, onClose, filter,
+	t, courses, open, onChoose, onClose, filter, coursesLoading,
 }) => {
 	const filteredCourses = courses.filter(filter);
 	return (
@@ -27,7 +27,7 @@ const LanguageSelector = ({
 		>
 			<PopupTitle>{t('factory.quiz-choose-language-title')}</PopupTitle>
 			<PopupContent>
-				{filteredCourses.length === 0 ? <EmptyCard /> : null}
+				{filteredCourses.length === 0 ? <EmptyCard loading={coursesLoading} /> : null}
 				<List>
 					{filteredCourses.map(course => (
 						<Container key={course.id} onClick={() => onChoose(course)} tabIndex={0} role="button">
@@ -61,6 +61,7 @@ LanguageSelector.propTypes = {
 	filter: PropTypes.func,
 };
 
-const mapStateToProps = (state, ownProps) => ({ courses: ownProps.courses || state.courses });
+const mapStateToProps = (state, ownProps) =>
+	({ courses: ownProps.courses || state.courses, coursesLoading: state.coursesLoading });
 
 export default connect(mapStateToProps)(translate()(LanguageSelector));
