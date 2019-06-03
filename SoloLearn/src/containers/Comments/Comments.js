@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import { withRouter } from 'react-router';
 import { translate } from 'react-i18next';
 import { CountingMentionInput } from 'components/organisms';
-import { ProfileAvatar, FlatButton, InfiniteScroll } from 'components/molecules';
+import { ProfileAvatar, FlatButton, InfiniteScroll, EmptyCard } from 'components/molecules';
 import { Container, PaperContainer } from 'components/atoms';
 import CommentsAPI from './comments.api';
 import IComment from './IComment';
@@ -210,13 +210,14 @@ class Comments extends Component {
 		this.comments = this.commentsAPI.orderComments(this.comments);
 	}
 
-	@action addComment = async () => {
+	@action addComment = onBlur => async () => {
 		const {
 			level, name, avatarUrl, badge, id,
 		} = this.props.userProfile;
 		const message = this.mentionInput.popValue();
 		const { comment } = await this.commentsAPI.addComment({ message });
 		this.onCommentAdd();
+		onBlur();
 		const newComment = new IComment({
 			replies: 0,
 			vote: 0,
@@ -282,10 +283,10 @@ class Comments extends Component {
 							getUsers={this.commentsAPI.getMentionUsers}
 							placeholder={t('comments.write-comment-placeholder')}
 							maxLength={1024}
-							renderButton={({ isExpanded }) => (isExpanded
+							renderButton={({ isExpanded, onBlur }) => (isExpanded
 								? (
 									<FlatButton
-										onMouseDown={this.addComment}
+										onMouseDown={this.addComment(onBlur)}
 										disabled={!this.isSubmitEnabled}
 									>
 						Comment
@@ -309,15 +310,20 @@ class Comments extends Component {
 							{t('common.loadMore')}
 						</FlatButton>
 					}
-					<CommentList
-						comments={this.comments}
-						onCommentAdd={this.onCommentAdd}
-						onCommentDelete={this.onCommentDelete}
-						commentsRef={this.addRef}
-						delete={this.deleteComment}
-						commentsAPI={this.commentsAPI}
-						key={this.orderBy}
-					/>
+					{ (!this.loading && !this.comments.length)
+						? <EmptyCard />
+						: (
+							<CommentList
+								comments={this.comments}
+								onCommentAdd={this.onCommentAdd}
+								onCommentDelete={this.onCommentDelete}
+								commentsRef={this.addRef}
+								delete={this.deleteComment}
+								commentsAPI={this.commentsAPI}
+								key={this.orderBy}
+							/>
+						)
+					}
 				</PaperContainer>
 			</InfiniteScroll>
 

@@ -58,7 +58,7 @@ class CountingMentionInput extends Component {
 							{charCount} / {this.props.maxLength}
 						</SecondaryTextBlock>
 					}
-					{renderButton({ isExpanded, charCount })}
+					{renderButton({ isExpanded, charCount, onBlur: this.onBlur })}
 				</FlexBox>
 			</Container>
 		);
