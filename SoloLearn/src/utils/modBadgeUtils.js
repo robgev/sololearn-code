@@ -7,9 +7,24 @@ export default (rawBadge) => {
 		};
 	}
 	const splittedBadge = rawBadge.split('|');
-	const modBadge = (splittedBadge.length > 1 && splittedBadge[1].includes('mod')) ? splittedBadge[1] : null;
-	const isPro = splittedBadge.length > 1 && splittedBadge[1] === 'pro';
-	const levelBadge = splittedBadge[0];
+	let modBadge = null;
+	let levelBadge = null;
+	let isPro = false;
+	splittedBadge.forEach((element) => {
+		if (element.includes('mod')) {
+			modBadge = element;
+		}
+		if (element === 'pro') {
+			isPro = true;
+		}
+		if ( element === 'bronze'
+		|| element === 'silver'
+		|| element === 'gold'
+		|| element === 'platinum'
+		) {
+			levelBadge = element;
+		}
+	});
 	return {
 		isPro,
 		modBadge,
