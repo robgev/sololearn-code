@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {
 	WindowScroller,
 	AutoSizer,
@@ -25,6 +25,7 @@ const InfiniteVirtualizedList = ({
 	shouldReset,
 	afterReset,
 }) => {
+	const [ _scrollToIndex, setIndex ] = useState(undefined);
 	const _windowScroller = useRef(null);
 	const _list = useRef(null);
 	const _cache_ = useRef(null);
@@ -58,6 +59,7 @@ const InfiniteVirtualizedList = ({
 		if (shouldReset && _list.current) {
 			_cache.clearAll();
 			_list.current.recomputeRowHeights();
+			setIndex(0);
 			afterReset();
 		}
 	}, [ shouldReset ]);
@@ -118,6 +120,7 @@ const InfiniteVirtualizedList = ({
 											onScroll={onChildScroll}
 											rowRenderer={_rowRenderer}
 											rowHeight={_cache.rowHeight}
+											scrollToIndex={_scrollToIndex}
 											onRowsRendered={onRowsRendered}
 											deferredMeasurementCache={_cache}
 										/>
