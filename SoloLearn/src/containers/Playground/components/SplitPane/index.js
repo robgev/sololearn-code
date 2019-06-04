@@ -12,7 +12,7 @@ const SplitPane = ({ playground, ...props }) => {
 		<Container className={fullCN}>
 			<RSplitPane
 				minSize={0}
-				maxSize={-1}
+				maxSize={-100}
 				primary="first"
 				split="horizontal"
 				allowResize={playground.isOutputOpen}

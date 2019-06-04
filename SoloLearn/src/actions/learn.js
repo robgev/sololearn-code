@@ -20,13 +20,13 @@ const getCoursesSync = () => (dispatch) => {
 const getCoursesAsync = () => async (dispatch) => {
 	dispatch({ type: types.SET_COURSES_LOADING });
 	const { courses, levels } = await Service.request('GetCourses');
-	dispatch({ type: types.SET_COURSES_LOADED });
 	if (courses && levels) {
 		Storage.save('courses', courses);
 		Storage.save('levels', levels);
 		dispatch(setCourses(courses));
 		dispatch(setLevels(levels));
 	}
+	dispatch({ type: types.SET_COURSES_LOADED });
 };
 
 export const getCourses = () => (dispatch) => {
@@ -82,7 +82,7 @@ export const toggleCourseInternal = (courseId, enable) => (dispatch, getState) =
 		if (!enable) {
 			const index = profile.skills.findIndex(item => item.id === courseId);
 			profile.skills.splice(index, 1);
-			dispatch(toggleCourse([...profile.skills]));
+			dispatch(toggleCourse([ ...profile.skills ]));
 		} else {
 			dispatch(getProfileInternal(profile.id));
 		}

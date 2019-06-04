@@ -94,6 +94,7 @@ class FeedList extends Component {
 			feedPins,
 			header = null,
 			loading,
+			showPins,
 			hasNewItems,
 			resetNewFlag,
 		} = this.props;
@@ -115,9 +116,10 @@ class FeedList extends Component {
 										)
 										: (
 											<Container>
-												<Container>
-													<Container className="feed-pins">
-														{feedPins && feedPins.length !== 0 &&
+												{ showPins && (
+													<Container>
+														<Container className="feed-pins">
+															{feedPins && feedPins.length !== 0 &&
 															<React.Fragment>
 																{feedPins.map(pin => (
 																	<FeedPin
@@ -127,9 +129,10 @@ class FeedList extends Component {
 																))}
 																<Title className="sub-title" key="separator">{t('feed.most-recent-title')}</Title>
 															</React.Fragment>
-														}
+															}
+														</Container>
 													</Container>
-												</Container>
+												)}
 												{feed.length === 0 && !hasMore
 													? <Title className="empty-feed">{t('common.empty-activity-message')}</Title>
 													: (

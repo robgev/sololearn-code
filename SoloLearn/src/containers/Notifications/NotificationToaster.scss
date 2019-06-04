@@ -6,9 +6,35 @@
 	width: 100%;
 	.additional-details {
 		width: 100%;
-		overflow: hidden;
-		text-overflow: ellipsis;
 		margin-left:10px;
+
+		.block-with-text {
+			overflow: hidden;
+			position: relative;
+			line-height: 19px;
+			max-height: 57px;
+			font-size: 14px;
+			color: #7F7F7F;
+			padding-right: 10px;
+			word-break: break-all;
+		}
+
+		.block-with-text:before {
+			content: '...';
+			position: absolute;
+			right: 0;
+			bottom: 1px;
+		}
+
+		.block-with-text:after {
+			content: '';
+			position: absolute;
+			right: 0;
+			width: 15px;
+			height: 15px;
+			margin-top: 1px;
+			background: white;
+		}
 
 
 		.date-container {

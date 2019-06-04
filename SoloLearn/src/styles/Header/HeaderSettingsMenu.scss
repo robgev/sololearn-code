@@ -1,4 +1,8 @@
+@import '~styles/colors';
 .header-settings-menu-container {
 	display: flex;
 	align-items: center;
+	.header-icon-menu {
+		color: $white
+	}
 }

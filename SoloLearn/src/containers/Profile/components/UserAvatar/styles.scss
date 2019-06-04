@@ -6,6 +6,11 @@
 		border: 4px solid transparent;
 		border-radius: 100%;
 		box-sizing: content-box;
+
+		.user-avatar{
+			text-decoration: none;
+		}
+
 		.profile_user-avatar-mod-badge {
 			position: absolute;
 			bottom: -5%;
