@@ -23,8 +23,8 @@ const ProfileFeed = ({
 
 	const loadNewFeedItems = async () => {
 		try {
-			const count = await getNewFeedItems();
-			if (!hasNewItems && count > 0) {
+			await getNewFeedItems();
+			if (!hasNewItems && feed.length > 0) {
 				setHasNew(true);
 			}
 		} catch (e) {

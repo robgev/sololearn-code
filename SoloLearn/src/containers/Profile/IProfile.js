@@ -142,8 +142,8 @@ class IProfile {
 					const filtered = filterExisting(entities, feedItems);
 					this.feed.entities = [ ...filtered, ...this.feed.entities ];
 				}
-				return this.getNewFeedPromise;
 			});
+		return this.getNewFeedPromise;
 	};
 
 	@action getFeed = () => {
