@@ -81,7 +81,12 @@ const UserPost = ({
 	}, []);
 
 	return (
-		<VisibilitySensor onChange={onVisibilityChange}>
+		<VisibilitySensor
+			scrollCheck
+			scrollThrottle={100}
+			onChange={onVisibilityChange}
+			delayedCall
+		>
 			<FlexBox column className="user-post-feed-item-container">
 				<FlexBox align className="user-post-feed-item-profile-container">
 					<ProfileAvatar
