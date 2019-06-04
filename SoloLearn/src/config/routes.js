@@ -95,6 +95,7 @@ export default ([
 	<Route onEnter={() => window.scrollTo(0, 0)} path="/terms-of-use" component={ToS} />,
 	<Route component={redirector(MainLayout)} key="mainLayoutRoutes">
 		<Redirect exact path="/" to="/feed" />
+		<Redirect path="/blog" to="/discuss" />
 		<Redirect path="/blog/*" to="/discuss" />
 		{/* alternativ paths */}
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn" component={SlayHome} />
