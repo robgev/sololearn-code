@@ -26,6 +26,10 @@
 			background:rgba(0,0,0,0.3);
 			filter: blur(5px);
 		}
+		.user-post-feed-image-placeholder {
+			height: 300px;
+			background-color: $primary_color;
+		}
 	}
 	.up-feed-item-bottom-bar {
 		margin-left: 0;
