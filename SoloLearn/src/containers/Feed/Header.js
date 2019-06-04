@@ -67,7 +67,7 @@ class Header extends PureComponent {
 	}
 
 	render() {
-		const { profile, t, updateListItems } = this.props;
+		const { profile, t, afterPostCallback } = this.props;
 		const { xp: currentXp, rank, badge } = profile;
 
 		return (
@@ -104,7 +104,7 @@ class Header extends PureComponent {
 				>
 					<UserPostEditor
 						closePopup={() => this.setState({ isCreatePostPopupOpen: false })}
-						updateListItems={updateListItems}
+						afterPostCallback={afterPostCallback}
 					/>
 				</Popup>
 			</PaperContainer>
