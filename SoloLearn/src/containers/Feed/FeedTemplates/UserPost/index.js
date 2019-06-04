@@ -43,7 +43,7 @@ const UserPost = ({
 
 	const onImageLoad = (e) => {
 		setImageLoad(true);
-		if (e.target.height - 250 > window.innerHeight * 0.5) {
+		if (e.target.height - 300 > window.innerHeight * 0.5) {
 			setImageShouldWrap(true);
 		}
 	};
