@@ -39,13 +39,18 @@ const UserPost = ({
 	const textContainerRef = useRef(null);
 	const [ imageShouldWrap, setImageShouldWrap ] = useState(false);
 	const [ textShouldWrap, setTextShouldWrap ] = useState(false);
-	const [ isImageLoaded, setImageLoad ] = useState(false);
+	const [ isImageLoaded, setImageLoaded ] = useState(false);
 
 	const onImageLoad = (e) => {
-		setImageLoad(true);
-		if (e.target.height - 300 > window.innerHeight * 0.5) {
-			setImageShouldWrap(true);
-		}
+		setImageLoaded(true);
+		const el = e.target;
+		window.setTimeout(() => {
+			if (el.height > window.innerHeight * 0.5) {
+				console.clear();
+				console.log(el.src, ': ', el.height);
+				setImageShouldWrap(true);
+			}
+		}, 0);
 	};
 	const cancelImpressionTimer = () => {
 		if (impressionTimeoutIdRef.current) {
@@ -144,10 +149,15 @@ const UserPost = ({
 									align
 									className="user-post-feed-image-placeholder"
 								>
-									<ImageIcon style={{ color: 'white', width: '60px', height: '60px' }} />
+									<ImageIcon className="up-placeholder-image-icon" />
 								</FlexBox>
 							}
-							<ImageAtom src={imageUrl} className="user-post-feed-image" onLoad={onImageLoad} style={{ display: isImageLoaded ? '' : 'none' }} />
+							<ImageAtom
+								src={imageUrl}
+								className="user-post-feed-image"
+								onLoad={onImageLoad}
+								style={{ display: isImageLoaded ? '' : 'none' }}
+							/>
 							{imageShouldWrap && <Container className="up-feed-image-shadow" />}
 						</Container>
 						: null}
