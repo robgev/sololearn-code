@@ -17,15 +17,9 @@ import LanguageCard from 'components/LanguageCard';
 import './styles.scss';
 
 const LanguageSelector = ({
-	t, courses, open, onChoose, onClose, coursesLoading,
+	t, courses, open, onChoose, onClose, filter, coursesLoading,
 }) => {
-	const filteredCourses = courses.filter(course =>
-		course.language !== 'sql'
-		&& course.language !== 'css'
-		&& course.language !== 'js');
-	const htmlItemIndex = filteredCourses.findIndex(el => el.id === 1014);
-	filteredCourses[htmlItemIndex].language = 'web';
-	filteredCourses[htmlItemIndex].languageName = 'Web';
+	const filteredCourses = courses.filter(filter);
 	return (
 		<Popup
 			open={open}
@@ -53,6 +47,7 @@ const LanguageSelector = ({
 
 LanguageSelector.defaultProps = {
 	onClose: () => { }, // noop
+	filter: () => true,
 };
 
 LanguageSelector.propTypes = {
@@ -63,6 +58,7 @@ LanguageSelector.propTypes = {
 	open: PropTypes.bool.isRequired,
 	onChoose: PropTypes.func.isRequired,
 	onClose: PropTypes.func,
+	filter: PropTypes.func,
 };
 
 const mapStateToProps = (state, ownProps) =>

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
 import LanguageSelector from 'components/LanguageSelector';
@@ -26,9 +27,22 @@ class AddCodeButton extends Component {
 		this.toggleLanguagePopup();
 		if (courseItem.language !== 'web') {
 			browserHistory.push({ pathname: '/playground/new', query: { language: courseItem.language } });
-		}	else {
+		} else {
 			browserHistory.push({ pathname: '/playground/new', query: { language: 'html' } });
 		}
+	}
+
+	filter = course => course.language !== 'sql'
+			&& course.language !== 'css'
+			&& course.language !== 'js';
+
+	getFilteredCodeLanguages = () => {
+		const filteredCodeLanguages = this.props.courses.filter(this.filter);
+		const htmlItemIndex = filteredCodeLanguages.findIndex(el => el.id === 1014);
+		filteredCodeLanguages[htmlItemIndex].language = 'web';
+		filteredCodeLanguages[htmlItemIndex].languageName = 'Web';
+		filteredCodeLanguages.push({ language: 'kt', languageName: 'kotlin' });
+		return filteredCodeLanguages;
 	}
 
 	render() {
@@ -40,10 +54,15 @@ class AddCodeButton extends Component {
 					open={isLanguageSelectorOpen}
 					onChoose={this.selectLanguage}
 					onClose={this.toggleLanguageSelector}
+					courses={this.getFilteredCodeLanguages()}
 				/>
 			</Fragment>
 		);
 	}
 }
 
-export default AddCodeButton;
+const mapStateToProps = state => (
+	{ courses: state.courses }
+);
+
+export default connect(mapStateToProps)(AddCodeButton);
