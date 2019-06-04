@@ -97,6 +97,8 @@ export default ([
 		<Redirect exact path="/" to="/feed" />
 		<Redirect path="/blog" to="/discuss" />
 		<Redirect path="/blog/*" to="/discuss" />
+		<Redirect path="/user" to="/profile" />
+		<Redirect path="/user/edit" to="/settings" />
 		{/* alternativ paths */}
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn" component={SlayHome} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/courses" component={SlayHome} />
