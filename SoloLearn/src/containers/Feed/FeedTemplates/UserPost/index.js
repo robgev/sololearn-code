@@ -46,8 +46,6 @@ const UserPost = ({
 		const el = e.target;
 		window.setTimeout(() => {
 			if (el.height > window.innerHeight * 0.5) {
-				console.clear();
-				console.log(el.src, ': ', el.height);
 				setImageShouldWrap(true);
 			}
 		}, 0);
