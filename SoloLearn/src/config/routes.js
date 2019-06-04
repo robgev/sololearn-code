@@ -92,7 +92,7 @@ export default ([
 	<Route onEnter={() => window.scrollTo(0, 0)} path="/privacy" component={Privacy} />,
 	<Route onEnter={() => window.scrollTo(0, 0)} path="/faq" component={Faq} />,
 	<Route onEnter={() => window.scrollTo(0, 0)} path="/contact" component={Contact} />,
-	<Route onEnter={() => window.scrollTo(0, 0)} path="/terms-of-service" component={ToS} />,
+	<Route onEnter={() => window.scrollTo(0, 0)} path="/terms-of-use" component={ToS} />,
 	<Route component={redirector(MainLayout)} key="mainLayoutRoutes">
 		<Redirect exact path="/" to="/feed" />
 		{/* alternativ paths */}
@@ -113,6 +113,8 @@ export default ([
 
 		{/* change /learn/lesson/:lessonid and /learn/course/:alias to /learn/:idoralias */}
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn/:idOrAlias(/:lessonName)(/:index)(/:quizNumber)" component={LessonManager} />
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/courses/:idOrAlias(/:lessonName)(/:index)(/:quizNumber)" component={LessonManager} />
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/course/:idOrAlias(/:lessonName)(/:index)(/:quizNumber)" component={LessonManager} />
 
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/post/:id" component={UserPostDetails} />
 
