@@ -33,7 +33,7 @@ const mapStateToProps = state => ({
 });
 
 const shouldRedirect = (pathname) => {
-	const whiteList = [ 'signin', 'signup', 'forgot', 'terms-of-service', 'contact', 'faq', 'privacy' ];
+	const whiteList = [ 'signin', 'signup', 'forgot', 'terms-of-use', 'contact', 'faq', 'privacy' ];
 	return !whiteList.find(routeName => pathname.includes(routeName));
 };
 
