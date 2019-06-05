@@ -248,6 +248,7 @@ class FeedItem extends Component {
 						className="feedItem userPost"
 					>
 						<UserPost
+							key={feedItem.id}
 							user={feedItem.user}
 							background={feedItem.userPost.background}
 							message={feedItem.userPost.message}
