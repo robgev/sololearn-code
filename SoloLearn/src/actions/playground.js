@@ -9,7 +9,6 @@ import { setSearchValue, toggleSearch, onSearchSectionChange } from 'actions/sea
 import { SECTIONS } from 'reducers/searchBar.reducer';
 
 import codeFilters from 'defaults/codeFilters';
-import { log } from 'util';
 
 export const removeCode = id => (dispatch) => {
 	dispatch({
