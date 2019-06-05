@@ -5,7 +5,7 @@ import { EmptyCard } from 'components/molecules';
 import DiscussShimmer from 'components/Shimmers/DiscussShimmer';
 import Question from './Question';
 
-const QuestionList = ({ questions, hasMore }) => (
+const QuestionList = ({ questions, hasMore, fromProfile }) => (
 	questions.length > 0 || hasMore
 		? (questions.length === 0
 			? <DiscussShimmer />
@@ -13,7 +13,7 @@ const QuestionList = ({ questions, hasMore }) => (
 				<List>
 					{
 						questions.map(question => (
-							<Question key={question.id} question={question} />
+							<Question key={question.id} question={question} fromProfile={fromProfile} />
 						))
 					}
 				</List>
@@ -21,5 +21,9 @@ const QuestionList = ({ questions, hasMore }) => (
 		)
 		: <EmptyCard />
 );
+
+QuestionList.defaultprops = {
+	fromProfile: false,
+};
 
 export default observer(QuestionList);
