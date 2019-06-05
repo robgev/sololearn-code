@@ -50,25 +50,27 @@ class MentionInput extends Component {
 		super(props);
 		this.containerRef = createRef();
 		this.mentionPlugin = createMentionPlugin({
-			// positionSuggestions: ({ decoratorRect }) => {
-			// 	const containerRect = this.containerRef.current.getBoundingClientRect();
-			// 	const baseStyles = {
-			// 		fontSize: 'initial',
-			// 		transform: 'scale(1)',
-			// 		transformOrigin: '1em 0%',
-			// 		transition: 'all 0.25s cubic-bezier(0.3, 1.2, 0.2, 1) 0s',
-			// 	};
-			// 	if (decoratorRect.left - containerRect.left > containerRect.width / 2) {
-			// 		return {
-			// 			...baseStyles,
-			// 			right: `${containerRect.right - decoratorRect.left - decoratorRect.width}px`,
-			// 		};
-			// 	}
-			// 	return {
-			// 		...baseStyles,
-			// 		left: `${decoratorRect.left - containerRect.left}px`,
-			// 	};
-			// },
+			positionSuggestions: ({ decoratorRect }) => {
+				const containerRect = this.containerRef.current.getBoundingClientRect();
+				console.log(decoratorRect);
+				const baseStyles = {
+					fontSize: 'initial',
+					transform: 'scale(1)',
+					transformOrigin: '1em 0%',
+					top: `${decoratorRect.height + 11}px`, // Counting padding in
+					transition: 'all 0.25s cubic-bezier(0.3, 1.2, 0.2, 1) 0s',
+				};
+				if (decoratorRect.right - containerRect.left > (containerRect.width / 2)) {
+					return {
+						...baseStyles,
+						right: `${containerRect.right - decoratorRect.left - decoratorRect.width}px`,
+					};
+				}
+				return {
+					...baseStyles,
+					left: `${decoratorRect.left - containerRect.left}px`,
+				};
+			},
 			mentionComponent: ({ children }) => <b>{children}</b>,
 		});
 		this.isFocused = false;
