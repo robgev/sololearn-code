@@ -29,6 +29,7 @@ const UserPost = ({
 	vote,
 	votes,
 	measure = null,
+	onChange,
 	userPostId,
 	comments,
 	views,
@@ -145,6 +146,7 @@ const UserPost = ({
 					totalVotes={votes}
 					comments={comments}
 					views={views}
+					onChange={onChange}
 					className="up-feed-item-bottom-bar"
 					commentIconLink={`/post/${userPostId}`}
 				/>

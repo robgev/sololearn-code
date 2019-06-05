@@ -59,6 +59,7 @@ class FeedItem extends Component {
 			feedItem,
 			voteFeedItem,
 		} = this.props;
+		console.log('FeedItem render', feedItem);
 		switch (feedItem.type) {
 		case types.badgeUnlocked:
 			this.url = `/profile/${feedItem.user.id}/badges?badgeID=${feedItem.achievement.id}`;
@@ -81,7 +82,7 @@ class FeedItem extends Component {
 					id={feedItem.post.id}
 					vote={feedItem.vote}
 					votes={feedItem.votes}
-					onChange={(vote, newVote) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.post.id })}
+					onChange={({ vote: newVote }) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.post.id })}
 				/>
 			);
 		case types.postedAnswer:
@@ -96,7 +97,7 @@ class FeedItem extends Component {
 					vote={feedItem.vote}
 					date={feedItem.date}
 					votes={feedItem.votes}
-					onChange={({ vote: newVote, votes }) => { voteFeedItem({ ...feedItem, newVote, targetId: feedItem.post.id }); }}
+					onChange={({ vote: newVote }) => { voteFeedItem({ ...feedItem, newVote, targetId: feedItem.post.id }); }}
 				/>
 			);
 		case types.postedCode:
@@ -109,7 +110,7 @@ class FeedItem extends Component {
 					date={feedItem.date}
 					userVote={feedItem.vote}
 					totalVotes={feedItem.votes}
-					onChange={(vote, newVote) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.code.id })}
+					onChange={({ vote: newVote }) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.code.id })}
 				/>
 			);
 		case types.completedChallange:
@@ -128,7 +129,7 @@ class FeedItem extends Component {
 					type="lessonComment"
 					userVote={feedItem.vote}
 					totalVotes={feedItem.votes}
-					onChange={(vote, newVote) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.comment.id })}
+					onChange={({ vote: newVote }) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.comment.id })}
 				/>
 			);
 		case types.postedUserLessonComment:
@@ -142,7 +143,7 @@ class FeedItem extends Component {
 					type="userLessonComment"
 					userVote={feedItem.vote}
 					totalVotes={feedItem.votes}
-					onChange={(vote, newVote) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.comment.id })}
+					onChange={({ vote: newVote }) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.comment.id })}
 				/>
 			);
 		case types.postedCodeComment:
@@ -157,7 +158,7 @@ class FeedItem extends Component {
 					type="codeComment"
 					userVote={feedItem.vote}
 					totalVotes={feedItem.votes}
-					onChange={(vote, newVote) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.comment.id })}
+					onChange={({ vote: newVote }) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.comment.id })}
 				/>
 			);
 		case types.lessonCreated:
@@ -184,7 +185,7 @@ class FeedItem extends Component {
 	}
 
 	render() {
-		const { feedItem, style } = this.props;
+		const { feedItem, style, voteFeedItem } = this.props;
 		// Render only suggestions
 		if (feedItem.type === types.suggestions) {
 			return (
@@ -259,6 +260,7 @@ class FeedItem extends Component {
 							userPostId={feedItem.userPost.id}
 							comments={feedItem.userPost.comments}
 							views={feedItem.userPost.viewCount}
+							onChange={({ vote: newVote }) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.userPost.id })}
 						/>
 					</PaperContainer>
 				</Container>
