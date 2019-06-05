@@ -55,7 +55,7 @@ class MySubmissions extends Component {
 
 	challengesList = createRef();
 
-	componentDidMount() {
+	componentWillMount() {
 		this._isMounted = true;
 		const { location } = this.props;
 		this.setFilters(location.query);

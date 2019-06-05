@@ -36,7 +36,7 @@ const DraftEditor = ({
 		component: ({ children, href }) => (
 			<RefLink
 				className={hasBackground ? 'underline' : null}
-				style={{ color: hasBackground ? background.textColor : '#607D8B' }}
+				style={{ color: hasBackground ? background.textColor : '#607D8B', fontSize }}
 				to={href}
 			>
 				{children}
@@ -67,7 +67,7 @@ const DraftEditor = ({
 			? (
 				<Link
 					className="hoverable"
-					style={{ color: hasBackground ? background.textColor : '#607D8B' }}
+					style={{ color: hasBackground ? background.textColor : '#607D8B', fontSize }}
 					to={`/profile/${mention.id}`}
 				>
 					{children}

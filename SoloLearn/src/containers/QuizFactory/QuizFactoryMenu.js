@@ -18,12 +18,15 @@ class QuizFactory extends Component {
 			isLanguageSelectorOpen: false,
 			courseIds: [],
 			suggestDialogOpen: false,
+			courseIdsLoading: false,
 		};
 		document.title = 'Sololearn | Quiz Factory';
 		this._isMounted = true;
 	}
 	async componentWillMount() {
+		this.setState({ courseIdsLoading: true });
 		const courseIds = await getReviewCourseIds();
+		this.setState({ courseIdsLoading: false });
 		if (this._isMounted) {
 			this.setState({ courseIds });
 		}
@@ -41,7 +44,9 @@ class QuizFactory extends Component {
 		this.setState(state => ({ suggestDialogOpen: !state.suggestDialogOpen }));
 	}
 	render() {
-		const { isLanguageSelectorOpen, courseIds, suggestDialogOpen } = this.state;
+		const {
+			isLanguageSelectorOpen, courseIds, suggestDialogOpen, courseIdsLoading,
+		} = this.state;
 		const { t } = this.props;
 		return (
 			<Layout>
@@ -70,6 +75,7 @@ class QuizFactory extends Component {
 					onClose={this.toggleLanguageSelector}
 					onChoose={this.selectLanguage}
 					filter={course => courseIds.includes(course.id)}
+					loading={courseIdsLoading}
 				/>
 				<Popup
 					open={suggestDialogOpen}
