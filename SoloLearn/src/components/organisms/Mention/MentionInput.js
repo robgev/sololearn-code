@@ -52,7 +52,6 @@ class MentionInput extends Component {
 		this.mentionPlugin = createMentionPlugin({
 			positionSuggestions: ({ decoratorRect }) => {
 				const containerRect = this.containerRef.current.getBoundingClientRect();
-				console.log(decoratorRect);
 				const baseStyles = {
 					fontSize: 'initial',
 					transform: 'scale(1)',
