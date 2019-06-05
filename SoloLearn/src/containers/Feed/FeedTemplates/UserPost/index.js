@@ -138,6 +138,7 @@ const UserPost = ({
 						: null}
 				</ContainerLink>
 				<FeedBottomBarFullStatistics
+					key={id}
 					type="userPost"
 					date={date}
 					id={id}

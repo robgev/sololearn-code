@@ -3,8 +3,11 @@
 		padding: 0;
 		.up-details-top-bar-container {
 			padding: 15px;
-			.up-profile-username-link {
-				padding: 0 5px;
+			.up-profile-username-container {
+				padding: 0 7px;
+				.up-profile-username-link {
+					padding-right: 7px;
+				}
 			}
 		}
 		.up-details-bottom-bar-container {

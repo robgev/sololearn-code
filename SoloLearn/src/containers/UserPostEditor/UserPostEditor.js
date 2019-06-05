@@ -239,7 +239,7 @@ const UserPostEditor = ({
 			<Container className="user-post-main-container">
 				<FlexBox justifyBetween align>
 					<PopupTitle className="user-post-main-title">
-						{`${draftEditorInitialText || initialImageSource ? 'Edit post' : 'New Post'}`}
+						{`${(draftEditorInitialText && initialUserPostId) || (initialImageSource && initialUserPostId) ? 'Edit post' : 'New Post'}`}
 					</PopupTitle>
 					<IconButton onClick={() => closePopup()}>
 						<Close />
@@ -253,15 +253,17 @@ const UserPostEditor = ({
 									<ProfileAvatar
 										user={profile}
 									/>
-									<UsernameLink
-										to={`/profile/${profile.id}`}
-										className="up-profile-username-link"
-									>
-										{profile.name}
-									</UsernameLink>
-									<ModBadge
-										badge={profile.badge}
-									/>
+									<FlexBox>
+										<UsernameLink
+											to={`/profile/${profile.id}`}
+											className="up-profile-username-link"
+										>
+											{profile.name}
+										</UsernameLink>
+										<ModBadge
+											badge={profile.badge}
+										/>
+									</FlexBox>
 								</FlexBox>
 							</FlexBox>
 							<DraftEditor

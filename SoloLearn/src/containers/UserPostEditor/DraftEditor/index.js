@@ -27,7 +27,7 @@ const DraftEditor = ({
 }) => {
 	const hasBackground = background && background.type !== 'none';
 	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
-	const [ fontSize, setFontSize ] = useState(isEditorReadOnly && background.type === 'none' ? 15 : 30);
+	const [ fontSize, setFontSize ] = useState(isEditorReadOnly && background.type === 'none' ? 15 : 24);
 	const [ suggestions, setSuggestions ] = useState([]);
 	const editorRef = useRef(null);
 	const containerRef = useRef(null);
