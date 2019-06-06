@@ -182,7 +182,7 @@ const UserPostDetails = ({
 								/>
 								<Chip
 									icon={<ShareIcon />}
-									label="Repost"
+									label="Repost" // waiting for translation (requested)
 									onClick={() => toggleRepostPopup(true)}
 									className="user-post-details-share-chip"
 								/>
