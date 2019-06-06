@@ -207,6 +207,7 @@ class Profile extends Component {
 						>
 							<PaperContainer className={`discuss_questions-list ${!questions.hasMore && 'wrapper-end'}`}>
 								<QuestionList
+								  fromProfile={true}
 									questions={questions.entities}
 									hasMore={questions.hasMore}
 								/>
