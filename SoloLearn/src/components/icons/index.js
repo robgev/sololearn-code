@@ -9,6 +9,7 @@ export {
 	Clear,
 	RemoveRedEye as Views,
 	Comment,
+	ArrowDropDown,
 	KeyboardArrowUp as ArrowUp,
 	KeyboardArrowDown as ArrowDown,
 	MoreVert,
@@ -17,7 +18,6 @@ export {
 	Check as Accepted,
 	Bookmark,
 	BookmarkBorder,
-	Notifications,
 	ThumbsUpDown as Arrows,
 	Lock,
 	Fullscreen,
@@ -36,3 +36,4 @@ export {
 	CheckCircle,
 	Share as ShareIcon,
 } from '@material-ui/icons';
+export { default as Notifications } from './NotificationIcon';

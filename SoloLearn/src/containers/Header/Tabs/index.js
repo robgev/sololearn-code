@@ -29,7 +29,7 @@ const TabList = ({ pathname, t }) => (
 						className="header_tab-icon"
 						src={`/assets/${tab.imgUrl}${isActive ? '_selected' : ''}.${tab.imgFormat}`}
 					/>
-					<span>{t(tab.name)}</span>
+					<TextBlock className="header_tab-text">{t(tab.name)}</TextBlock>
 				</ContainerLink>
 			);
 		})}
