@@ -175,7 +175,7 @@ class Profile extends Component {
 						loadMore={this.profile.getFeed}
 						voteFeedItem={this.profile.voteFeedItem}
 						loading={this.profile.getFeedPromise !== null}
-						getNewFeedItems={this.profile.getNewFeedItems}
+						appendFeedItem={this.profile.appendFeedItem}
 					/>
 				}
 				{
@@ -207,6 +207,7 @@ class Profile extends Component {
 						>
 							<PaperContainer className={`discuss_questions-list ${!questions.hasMore && 'wrapper-end'}`}>
 								<QuestionList
+								  fromProfile={true}
 									questions={questions.entities}
 									hasMore={questions.hasMore}
 								/>

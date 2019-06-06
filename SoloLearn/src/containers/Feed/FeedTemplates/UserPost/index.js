@@ -29,6 +29,7 @@ const UserPost = ({
 	vote,
 	votes,
 	measure = null,
+	onChange,
 	userPostId,
 	comments,
 	views,
@@ -81,7 +82,12 @@ const UserPost = ({
 	}, []);
 
 	return (
-		<VisibilitySensor onChange={onVisibilityChange}>
+		<VisibilitySensor
+			scrollCheck
+			delayedCall
+			scrollThrottle={100}
+			onChange={onVisibilityChange}
+		>
 			<FlexBox column className="user-post-feed-item-container">
 				<FlexBox align className="user-post-feed-item-profile-container">
 					<ProfileAvatar
@@ -138,6 +144,7 @@ const UserPost = ({
 						: null}
 				</ContainerLink>
 				<FeedBottomBarFullStatistics
+					key={id}
 					type="userPost"
 					date={date}
 					id={id}
@@ -145,6 +152,7 @@ const UserPost = ({
 					totalVotes={votes}
 					comments={comments}
 					views={views}
+					onChange={onChange}
 					className="up-feed-item-bottom-bar"
 					commentIconLink={`/post/${userPostId}`}
 				/>

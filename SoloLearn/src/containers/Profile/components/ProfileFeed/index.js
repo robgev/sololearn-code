@@ -16,17 +16,15 @@ const ProfileFeed = ({
 	loadMore,
 	voteFeedItem,
 	showFab,
-	getNewFeedItems,
+	appendFeedItem,
 }) => {
 	const [ hasNewItems, setHasNew ] = useState(false);
 	const [ isCreatePostPopupOpen, toggleCreatePostPopup ] = useState(false);
 
-	const loadNewFeedItems = async () => {
+	const loadNewFeedItems = (post) => {
 		try {
-			const count = await getNewFeedItems();
-			if (!hasNewItems && count > 0) {
-				setHasNew(true);
-			}
+			appendFeedItem(post);
+			setHasNew(true);
 		} catch (e) {
 			console.log(e);
 		}
@@ -61,8 +59,7 @@ const ProfileFeed = ({
 				onClose={() => toggleCreatePostPopup(false)}
 			>
 				<UserPostEditor
-					afterPostCallback={() => {}}
-					updateListItems={loadNewFeedItems}
+					afterPostCallback={loadNewFeedItems}
 					closePopup={() => toggleCreatePostPopup(false)}
 				/>
 			</Popup>

@@ -40,14 +40,20 @@ class Comment extends Component {
 		this.isEditing = !this.isEditing;
 	}
 
-	@action toggleReplyBox = async ({ id, userID, userName }) => {
+	@action toggleReplyBox = async ({
+		id, userID, userName, isReply,
+	}) => {
 		if (this.props.toggleReplyBox) {
 			// Reply case
-			this.props.toggleReplyBox({ id, userID, userName });
+			this.props.toggleReplyBox({
+				id, userID, userName, isReply,
+			});
 		} else {
 			this.isReplyInputOpen = !this.isReplyInputOpen;
 			if (this.isReplyInputOpen) {
-				this.initText = `[user id="${userID}"]${userName}[/user]`;
+				if (isReply) {
+					this.initText = `[user id="${userID}"]${userName}[/user] `;
+				}
 				setTimeout(() => {
 					if (this.mentionInput) {
 						this.mentionInput.focus();
