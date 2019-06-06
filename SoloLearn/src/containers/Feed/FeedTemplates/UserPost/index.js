@@ -83,9 +83,9 @@ const UserPost = ({
 	return (
 		<VisibilitySensor
 			scrollCheck
+			delayedCall
 			scrollThrottle={100}
 			onChange={onVisibilityChange}
-			delayedCall
 		>
 			<FlexBox column className="user-post-feed-item-container">
 				<FlexBox align className="user-post-feed-item-profile-container">
@@ -143,6 +143,7 @@ const UserPost = ({
 						: null}
 				</ContainerLink>
 				<FeedBottomBarFullStatistics
+					key={id}
 					type="userPost"
 					date={date}
 					id={id}

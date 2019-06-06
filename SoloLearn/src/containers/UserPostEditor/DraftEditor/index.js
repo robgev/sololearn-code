@@ -16,6 +16,9 @@ import { USER_POST_MAX_LENGTH } from '../UserPostEditor';
 import 'draft-js-linkify-plugin/lib/plugin.css';
 import './styles.scss';
 
+const readOnlyFontSizeWithoutBackground = 15;
+const defaultFontSize = 24;
+
 const DraftEditor = ({
 	background,
 	measure,
@@ -27,7 +30,7 @@ const DraftEditor = ({
 }) => {
 	const hasBackground = background && background.type !== 'none';
 	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
-	const [ fontSize, setFontSize ] = useState(isEditorReadOnly && background.type === 'none' ? 15 : 30);
+	const [ fontSize, setFontSize ] = useState(isEditorReadOnly && background.type === 'none' ? readOnlyFontSizeWithoutBackground : defaultFontSize);
 	const [ suggestions, setSuggestions ] = useState([]);
 	const editorRef = useRef(null);
 	const containerRef = useRef(null);

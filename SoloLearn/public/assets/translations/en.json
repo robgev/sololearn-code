@@ -879,6 +879,8 @@
 			"user-post-form-hint-2": "Share your thoughts",
 			"user-post-form-hint-3": "What's on your mind?"
 		},
-		"user-post-placeholder": "Share coding tips, articles, snippets and anything code-related"
+		"user-post-placeholder": "Share coding tips, articles, snippets and anything code-related",
+		"new-post-title": "New Post",
+		"edit-post-title": "Edit Post"
 	}
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import Resizer from 'react-image-file-resizer';
 import { withRouter, browserHistory } from 'react-router';
 import { convertToRaw } from 'draft-js';
@@ -38,6 +39,8 @@ import {
 	editPost,
 } from './userpost.actions';
 
+import { getNewFeedItemsInternal } from 'actions/feed';
+
 // import './emojiPlugin.css';
 import './styles.scss';
 
@@ -52,6 +55,8 @@ const UserPostEditor = ({
 	initialImageSource = null,
 	initialUserPostId = null,
 	updateListItems = () => { },
+	getNewFeedItemsInternal,
+	t,
 }) => {
 	const [ backgrounds, setBackgrounds ] = useState([]);
 	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
@@ -168,7 +173,8 @@ const UserPostEditor = ({
 		if (afterPostCallback) {
 			afterPostCallback({ ...post, background });
 		} else {
-			browserHistory.push('/feed');
+			getNewFeedItemsInternal()
+				.then(() => browserHistory.push('/feed'));
 		}
 	};
 
@@ -239,7 +245,7 @@ const UserPostEditor = ({
 			<Container className="user-post-main-container">
 				<FlexBox justifyBetween align>
 					<PopupTitle className="user-post-main-title">
-						{`${draftEditorInitialText || initialImageSource ? 'Edit post' : 'New Post'}`}
+						{`${(draftEditorInitialText && initialUserPostId) || (initialImageSource && initialUserPostId) ? t('user_post.edit-post-title') : t('user_post.new-post-title')}`}
 					</PopupTitle>
 					<IconButton onClick={() => closePopup()}>
 						<Close />
@@ -253,15 +259,17 @@ const UserPostEditor = ({
 									<ProfileAvatar
 										user={profile}
 									/>
-									<UsernameLink
-										to={`/profile/${profile.id}`}
-										className="up-profile-username-link"
-									>
-										{profile.name}
-									</UsernameLink>
-									<ModBadge
-										badge={profile.badge}
-									/>
+									<FlexBox>
+										<UsernameLink
+											to={`/profile/${profile.id}`}
+											className="up-profile-username-link"
+										>
+											{profile.name}
+										</UsernameLink>
+										<ModBadge
+											badge={profile.badge}
+										/>
+									</FlexBox>
 								</FlexBox>
 							</FlexBox>
 							<DraftEditor
@@ -352,4 +360,4 @@ const mapStateToProps = state => ({
 	profile: getUserSelector(state),
 });
 
-export default connect(mapStateToProps)(withRouter(UserPostEditor));
+export default translate()(connect(mapStateToProps, { getNewFeedItemsInternal })(withRouter(UserPostEditor)));
