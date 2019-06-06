@@ -7,7 +7,6 @@ import ReactGA from 'react-ga';
 import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-import DevTools from 'mobx-react-devtools';
 import { Router, browserHistory } from 'react-router';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { MuiThemeProvider } from '@material-ui/core/styles';
@@ -66,7 +65,6 @@ class App extends PureComponent {
 			? null
 			: (
 				<React.Fragment>
-					<DevTools />
 					<Router history={browserHistory} routes={routes} />
 					<ToastContainer
 						draggable
