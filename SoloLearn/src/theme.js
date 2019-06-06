@@ -3,14 +3,17 @@ import { createMuiTheme } from '@material-ui/core/styles';
 export default createMuiTheme({
 	palette: {
 		primary: {
-			main: '#607D8B',
-			dark: '#587583',
-			light: '#7A97A5',
+			main: '#1ED1AE',
+			dark: '#05B895',
+			light: '#38EBC8',
 			contrastText: '#FFFFFF',
 		},
 		secondary: {
 			main: '#8BC34A',
 			contrastText: '#FFFFFF',
 		},
+	},
+	typography: {
+		fontFamily: '\'Muli\', sans-serif',
 	},
 });

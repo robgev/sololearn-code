@@ -1,36 +1,42 @@
 // React modules
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Image, Container, FlexBox } from 'components/atoms';
+import { ContainerLink } from 'components/molecules';
 import HomeIcon from 'components/HomeIcon';
-import 'styles/header.scss';
-import Search from './SearchBar';
 
-// Additional components
 import TabList from './Tabs';
 import Notifications from '../Notifications';
 import SettingsMenu from './HeaderSettingsMenu';
+
+import './styles.scss';
 
 const mapStateToProps = state => ({
 	isSignedIn: state.userProfile !== null,
 });
 
 const Header = ({ pathname, isSignedIn }) => (
-	<div className="header mui-fixed">
-		<div className="header-wrapper">
-			<div className="header-right">
-				<Link to="/feed" className="home-icon">
-					<HomeIcon />
-				</Link>
-				<Search />
+	<Container className="header mui-fixed">
+		<Container className="header-wrapper">
+			<FlexBox align className="header-logo">
+				<ContainerLink to="/feed" className="home-icon">
+					<Container className="header_home-icon_small">
+						<HomeIcon />
+					</Container>
+					<Container className="header_home-icon_big">
+						<Image className="header_home-icon_image" src="/assets/logo_full.png" />
+					</Container>
+				</ContainerLink>
+			</FlexBox>
+			<FlexBox align className="header-left">
 				<TabList pathname={pathname} />
-			</div>
-			<div className="header-left">
+			</FlexBox>
+			<FlexBox align justifyEnd className="header-right">
 				{isSignedIn && <Notifications />}
 				<SettingsMenu />
-			</div>
-		</div>
-	</div>
+			</FlexBox>
+		</Container>
+	</Container>
 );
 
 export default connect(mapStateToProps)(Header);
