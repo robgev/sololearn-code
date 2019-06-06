@@ -69,6 +69,7 @@ class RemovalPopup extends PureComponent {
 					<FlatButton
 						color="primary"
 						onClick={onClose}
+						autoFocus
 					>
 						{t('common.cancel-title')}
 					</FlatButton>
