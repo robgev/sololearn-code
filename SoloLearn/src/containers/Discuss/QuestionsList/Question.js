@@ -13,7 +13,7 @@ const Question = ({ question, t, fromProfile }) => (
 		<ListItem>
 			<FlexBox column className="question">
 				<FlexBox className="info">
-					<ContainerLink to={`/discuss/${question.id}${fromProfile && '?fromProfile=true'}`}>
+					<ContainerLink to={`/discuss/${question.id}${fromProfile ? '?fromProfile=true' : ''}`}>
 						<FlexBox className="numbers">
 							<NumberWithText
 								number={question.votes}
@@ -26,7 +26,7 @@ const Question = ({ question, t, fromProfile }) => (
 						</FlexBox>
 					</ContainerLink>
 					<FlexBox column className="question-info">
-						<Link to={`/discuss/${question.id}${fromProfile && '?fromProfile=true'}`}>
+						<Link to={`/discuss/${question.id}${fromProfile ? '?fromProfile=true' : ''}`}>
 							<Title>{question.title}</Title>
 						</Link>
 						<Tags tags={question.tags} />
