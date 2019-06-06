@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import Resizer from 'react-image-file-resizer';
 import { withRouter, browserHistory } from 'react-router';
 import { convertToRaw } from 'draft-js';
@@ -55,6 +56,7 @@ const UserPostEditor = ({
 	initialUserPostId = null,
 	updateListItems = () => { },
 	getNewFeedItemsInternal,
+	t,
 }) => {
 	const [ backgrounds, setBackgrounds ] = useState([]);
 	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
@@ -243,7 +245,7 @@ const UserPostEditor = ({
 			<Container className="user-post-main-container">
 				<FlexBox justifyBetween align>
 					<PopupTitle className="user-post-main-title">
-						{`${(draftEditorInitialText && initialUserPostId) || (initialImageSource && initialUserPostId) ? 'Edit post' : 'New Post'}`}
+						{`${(draftEditorInitialText && initialUserPostId) || (initialImageSource && initialUserPostId) ? t('user_post.edit-post-title') : t('user_post.new-post-title')}`}
 					</PopupTitle>
 					<IconButton onClick={() => closePopup()}>
 						<Close />
@@ -358,4 +360,4 @@ const mapStateToProps = state => ({
 	profile: getUserSelector(state),
 });
 
-export default connect(mapStateToProps, { getNewFeedItemsInternal })(withRouter(UserPostEditor));
+export default translate()(connect(mapStateToProps, { getNewFeedItemsInternal })(withRouter(UserPostEditor)));

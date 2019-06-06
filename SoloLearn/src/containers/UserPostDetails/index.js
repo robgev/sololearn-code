@@ -76,11 +76,12 @@ const UserPostDetails = ({
 		sendImpressionByPostId(parseInt(params.id, 10));
 	}, []);
 
-	const deletePostHandler = () => {
-		deleteUserPost(userPost.id);
-		clearFeedItems();
-		browserHistory.push('/feed');
-	};
+	const deletePostHandler = () =>
+		deleteUserPost(userPost.id)
+			.then(() => {
+				clearFeedItems();
+				browserHistory.push('/feed');
+			});
 
 	const editPostHandler = (editedPost) => {
 		setUserPost({ ...userPost, ...editedPost });
@@ -122,16 +123,16 @@ const UserPostDetails = ({
 								{profile.id === userPost.userID ?
 									<IconMenu>
 										<MenuItem onClick={() => toggleCreatePostPopupOpen(true)}>
-											Edit
+											{t('common.edit-action-title')}
 										</MenuItem>
 										<MenuItem onClick={() => toggleDeleteConfirmationOpen(true)}>
-											Delete
+											{t('common.delete-title')}
 										</MenuItem>
 									</IconMenu>
 									:
 									<IconMenu>
 										<MenuItem onClick={() => toggleReportPopup(true)}>
-											Report
+											{t('common.report-action-title')}
 										</MenuItem>
 									</IconMenu>
 								}

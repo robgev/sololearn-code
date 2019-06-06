@@ -10,6 +10,7 @@ import {
 } from 'components/atoms';
 import {
 	FlatButton,
+	PromiseButton,
 } from 'components/molecules';
 
 const RemovePopup = ({
@@ -33,12 +34,12 @@ const RemovePopup = ({
 			>
 				{t('common.cancel-title')}
 			</FlatButton>
-			<FlatButton
+			<PromiseButton
 				variant="contained"
-				onClick={removeAction}
+				fire={removeAction}
 			>
 				{t('common.delete-title')}
-			</FlatButton>
+			</PromiseButton>
 		</PopupActions>
 	</Popup>
 );
