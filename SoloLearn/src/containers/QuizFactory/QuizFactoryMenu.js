@@ -15,10 +15,13 @@ import { getReviewCourseIds } from './api';
 class QuizFactory extends Component {
 	constructor(props) {
 		super(props);
+		const suggestDialogOpen = props.location.state === undefined
+			? false
+			: !!props.location.state.popupOpen;
 		this.state = {
 			isLanguageSelectorOpen: false,
 			courseIds: [],
-			suggestDialogOpen: !!props.location.state.popupOpen,
+			suggestDialogOpen,
 			courseIdsLoading: false,
 		};
 		document.title = 'Sololearn | Quiz Factory';
