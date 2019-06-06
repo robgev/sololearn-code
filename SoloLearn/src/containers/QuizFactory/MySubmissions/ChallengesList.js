@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { List } from 'components/atoms';
-import { EmptyCard } from 'components/molecules';
+import { List, FlexBox, TextBlock, Title } from 'components/atoms';
+import { EmptyCard, RaisedButton, ContainerLink } from 'components/molecules';
 import LanguageCard from 'components/LanguageCard';
 import ChallengeItem from './ChallengeItem';
 
@@ -13,8 +13,23 @@ class ChallengesList extends Component {
 	}
 	render() {
 		const {
-			challenges, preview, courses, isLoading,
+			challenges, preview, courses, isLoading, shouldLinkToSuggest,
 		} = this.props;
+		if (shouldLinkToSuggest) {
+			return (
+				<FlexBox column align>
+					<Title>No submissions</Title>
+					<TextBlock>You have not submitted a quiz yet</TextBlock>
+					<ContainerLink to={{ pathname: '/quiz-factory', state: { popupOpen: true } }}>
+						<RaisedButton
+							color="primary"
+						>
+							Create a quiz
+						</RaisedButton>
+					</ContainerLink>
+				</FlexBox>
+			);
+		}
 		if (challenges.length === 0 && !isLoading) {
 			return <EmptyCard />;
 		}
