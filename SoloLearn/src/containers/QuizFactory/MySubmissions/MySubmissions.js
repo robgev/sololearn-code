@@ -19,14 +19,14 @@ import './mySubmissionsStyles.scss';
 
 const getStringFromType = (type) => {
 	switch (type) {
-	case 1:
-		return 'multiple-choice';
-	case 2:
-		return 'type-in';
-	case 3:
-		return 'fill-in';
-	default:
-		throw new Error('Can\'t identify type of submitted challenge');
+		case 1:
+			return 'multiple-choice';
+		case 2:
+			return 'type-in';
+		case 3:
+			return 'fill-in';
+		default:
+			throw new Error('Can\'t identify type of submitted challenge');
 	}
 };
 
@@ -118,7 +118,7 @@ class MySubmissions extends Component {
 				}
 				this.setState(s => ({
 					isFetching: false,
-					challenges: uniqBy([ ...s.challenges, ...newChallenges ], 'id'),
+					challenges: uniqBy([...s.challenges, ...newChallenges], 'id'),
 				}));
 			}
 		}
@@ -238,7 +238,7 @@ class MySubmissions extends Component {
 							courses={courses}
 							preview={this.preview}
 							shouldLinkToSuggest={
-								challenges.length === 0 && filters.status === 0
+								!isFetching && challenges.length === 0 && filters.status === 0
 								/* SUBMISSIONS.ALL */
 							}
 						/>
