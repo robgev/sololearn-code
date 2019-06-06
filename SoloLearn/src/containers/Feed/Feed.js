@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import {
 	voteFeedItem,
 	clearFeedItems,
+	getNewFeedItems,
 	getFeedItemsInternal,
-	getNewFeedItemsInternal,
 	getPinnedFeedItemsInternal,
 } from 'actions/feed';
 import {
@@ -38,7 +38,7 @@ const mapDispatchToProps = {
 	getFeedItems: getFeedItemsInternal,
 	getPinnedFeedItems: getPinnedFeedItemsInternal,
 	getDiscoverSuggestions,
-	getNewFeedItems: getNewFeedItemsInternal,
+	getNewFeedItems,
 };
 
 @translate()
@@ -68,15 +68,9 @@ class FeedItemsBase extends Component {
 	}
 
 	// Check availability of new items above
-	loadNewFeedItems = async () => {
-		try {
-			const count = await this.props.getNewFeedItems();
-			if (!this.state.hasNewItems && count > 0) {
-				this.setState({ hasNewItems: true });
-			}
-		} catch (e) {
-			console.log(e);
-		}
+	loadNewFeedItems = (feedItem) => {
+		this.props.getNewFeedItems([ feedItem ]);
+		this.setState({ hasNewItems: true });
 	}
 
 	resetNewFlag = () => {
@@ -131,7 +125,7 @@ class FeedItemsBase extends Component {
 					<Header
 						profile={userProfile}
 						levels={levels}
-						updateListItems={this.loadNewFeedItems}
+						afterPostCallback={this.loadNewFeedItems}
 					/>
 					<Select
 						value={currentFilter}

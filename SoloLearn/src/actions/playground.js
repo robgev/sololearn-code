@@ -8,6 +8,8 @@ import {
 import { setSearchValue, toggleSearch, onSearchSectionChange } from 'actions/searchBar';
 import { SECTIONS } from 'reducers/searchBar.reducer';
 
+import codeFilters from 'defaults/codeFilters';
+
 export const removeCode = id => (dispatch) => {
 	dispatch({
 		type: types.REMOVE_CODE,
@@ -36,7 +38,7 @@ export const getCodes = ({
 		const { length } = codesSelector(stateBefore);
 		const index = forceRefresh ? 0 : length; // Update the list when entering the page
 		const { codes } = await Service.request('Playground/GetPublicCodes', {
-			index, query, count, ...filters,
+			index, query, count, ...filters, orderBy: codeFilters[filters.ordering],
 		});
 		// Ignore action if filters changed
 		if (filters === codesFiltersSelector(getState())) {
@@ -51,7 +53,7 @@ export const getCodes = ({
 
 export const getSidebarCodes = () => async (dispatch) => {
 	const { codes } = await Service.request('Playground/GetPublicCodes', {
-		index: 0, query: '', count: 10, orderBy: 3, language: '',
+		index: 0, query: '', count: 10, ordering: 3, language: '',
 	});
 	dispatch({ type: types.SET_SIDEBAR_CODES, payload: codes });
 };
@@ -59,9 +61,6 @@ export const getSidebarCodes = () => async (dispatch) => {
 export const setCodesFilters = filters => (dispatch, getState) => {
 	const oldFilters = codesFiltersSelector(getState());
 	const formattedFilters = { ...filters };
-	if (filters.orderBy) {
-		formattedFilters.orderBy = parseInt(filters.orderBy, 10);
-	}
 	if (filters.query && filters.query !== oldFilters.query) {
 		dispatch(toggleSearch({ open: true }));
 		dispatch(setSearchValue(filters.query));

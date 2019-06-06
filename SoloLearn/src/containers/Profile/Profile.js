@@ -175,7 +175,7 @@ class Profile extends Component {
 						loadMore={this.profile.getFeed}
 						voteFeedItem={this.profile.voteFeedItem}
 						loading={this.profile.getFeedPromise !== null}
-						getNewFeedItems={this.profile.getNewFeedItems}
+						appendFeedItem={this.profile.appendFeedItem}
 					/>
 				}
 				{

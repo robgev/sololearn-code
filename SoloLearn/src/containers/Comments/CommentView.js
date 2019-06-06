@@ -45,8 +45,13 @@ class CommentView extends Component {
 		}, 2000);
 	}
 	onReply = () => {
-		const { id, userID, userName } = this.props.comment;
-		this.props.onReply({ id, userID, userName });
+		const {
+			id, userID, userName, parentID,
+		} = this.props.comment;
+		const isReply = parentID !== null;
+		this.props.onReply({
+			id, userID, userName, isReply,
+		});
 	}
 	render() {
 		const {

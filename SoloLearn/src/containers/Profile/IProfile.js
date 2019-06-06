@@ -131,6 +131,10 @@ class IProfile {
 				: lastItem.id;
 	}
 
+	@action appendFeedItem = (item) => {
+		this.feed.entities = [ item, ...this.feed.entities ];
+	}
+
 	@action getNewFeedItems = () => {
 		const { entities } = this.feed;
 		this.getNewFeedPromise = Service.request('Profile/GetFeed', { toId: entities[0].id, profileId: this._profileID, count: 20 })
@@ -141,8 +145,8 @@ class IProfile {
 					const filtered = filterExisting(entities, feedItems);
 					this.feed.entities = [ ...filtered, ...this.feed.entities ];
 				}
-				return this.getNewFeedPromise;
 			});
+		return this.getNewFeedPromise;
 	};
 
 	@action getFeed = () => {
