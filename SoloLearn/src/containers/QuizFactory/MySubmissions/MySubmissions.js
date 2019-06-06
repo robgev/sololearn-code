@@ -237,6 +237,10 @@ class MySubmissions extends Component {
 							isLoading={isFetching}
 							courses={courses}
 							preview={this.preview}
+							shouldLinkToSuggest={
+								challenges.length === 0 && filters.status === 0
+								/* SUBMISSIONS.ALL */
+							}
 						/>
 					</PaperContainer>
 				</InfiniteScroll>
