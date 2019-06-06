@@ -60,7 +60,6 @@ class FeedList extends Component {
 		const { feed, voteFeedItem } = this.props;
 		const { shouldShowFeed, openIds } = this.state;
 		const feedItem = feed[index];
-		console.log('Feed is here _row ::: ', feed, feedItem, index);
 		const open = feedItem.type === types.mergedChallange && openIds.includes(feedItem.id);
 		return (
 			<React.Fragment>
@@ -99,7 +98,6 @@ class FeedList extends Component {
 			hasNewItems,
 			resetNewFlag,
 		} = this.props;
-		console.log('Feed is here render ::: ', feed);
 		return (
 			<Container>
 				{
