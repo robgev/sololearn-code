@@ -68,6 +68,7 @@ const UserPostDetails = ({
 
 	useEffect(() => {
 		setUserPost(null);
+		setError(false);
 		setPostRequest();
 	}, [ params.id ]);
 

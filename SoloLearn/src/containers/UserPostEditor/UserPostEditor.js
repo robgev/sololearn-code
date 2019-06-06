@@ -38,6 +38,8 @@ import {
 	editPost,
 } from './userpost.actions';
 
+import { getNewFeedItemsInternal } from 'actions/feed';
+
 // import './emojiPlugin.css';
 import './styles.scss';
 
@@ -52,6 +54,7 @@ const UserPostEditor = ({
 	initialImageSource = null,
 	initialUserPostId = null,
 	updateListItems = () => { },
+	getNewFeedItemsInternal,
 }) => {
 	const [ backgrounds, setBackgrounds ] = useState([]);
 	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
@@ -168,7 +171,8 @@ const UserPostEditor = ({
 		if (afterPostCallback) {
 			afterPostCallback({ ...post, background });
 		} else {
-			browserHistory.push('/feed');
+			getNewFeedItemsInternal()
+				.then(() => browserHistory.push('/feed'));
 		}
 	};
 
@@ -354,4 +358,4 @@ const mapStateToProps = state => ({
 	profile: getUserSelector(state),
 });
 
-export default connect(mapStateToProps)(withRouter(UserPostEditor));
+export default connect(mapStateToProps, { getNewFeedItemsInternal })(withRouter(UserPostEditor));
