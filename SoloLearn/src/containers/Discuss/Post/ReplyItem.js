@@ -60,6 +60,16 @@ class ReplyItem extends Component {
 		this.setState(s => ({ isEditing: !s.isEditing }));
 	}
 
+	handleCancelEditEnter = (e) => {
+		if (e.keyCode === 13) { // on enter
+			this.toggleEdit();
+		}
+	}
+	handleEditEnter = (e) => {
+		if (e.keyCode === 13) { // on enter
+			this.edit();
+		}
+	}
 	setCanEdit = (isEditEnabled) => {
 		this.setState({ isEditEnabled });
 	}
@@ -98,6 +108,7 @@ class ReplyItem extends Component {
 					<Container className="buttons">
 						<RaisedButton
 							className="cancel"
+							onKeyDown={this.handleCancelEditEnter}
 							onMouseDown={this.toggleEdit}
 						>
 							{t('common.cancel-title')}
@@ -105,6 +116,7 @@ class ReplyItem extends Component {
 						<RaisedButton
 							color="primary"
 							onMouseDown={this.edit}
+							onKeyDown={this.handleEditEnter}
 							disabled={!isEditEnabled}
 						>
 							{t('common.edit-action-title')}

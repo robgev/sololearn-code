@@ -33,6 +33,7 @@ const DetailsPopup = ({
 		<PopupActions>
 			<FlatButton
 				onClick={onClose}
+				autoFocus
 			>
 				{t('common.close-title')}
 			</FlatButton>

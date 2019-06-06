@@ -241,7 +241,7 @@ const UserPostEditor = ({
 					<PopupTitle className="user-post-main-title">
 						{`${draftEditorInitialText || initialImageSource ? 'Edit post' : 'New Post'}`}
 					</PopupTitle>
-					<IconButton onClick={() => closePopup()}>
+					<IconButton onClick={closePopup}>
 						<Close />
 					</IconButton>
 				</FlexBox>
@@ -268,6 +268,7 @@ const UserPostEditor = ({
 								background={background}
 								setEditorText={setEditorText}
 								editorInitialText={draftEditorInitialText}
+								onEscape={closePopup}
 							// emojiPlugin={emojiPlugin}
 							/>
 							<FlexBox justifyEnd align className="user-post-max-length-container">

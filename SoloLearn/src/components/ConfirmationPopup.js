@@ -18,7 +18,7 @@ const ConfirmationPopup = ({
 			{children}
 		</PopupContent>
 		<PopupActions>
-			<FlatButton onClick={onCancel}>
+			<FlatButton onClick={onCancel} autoFocus>
 				{t('common.cancel-title')}
 			</FlatButton>
 
