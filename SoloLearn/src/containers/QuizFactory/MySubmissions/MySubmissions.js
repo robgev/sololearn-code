@@ -286,6 +286,7 @@ class MySubmissions extends Component {
 								<RaisedButton
 									onClick={this.handleEdit}
 									color="primary"
+									autoFocus
 								>
 									{t('common.edit-action-title')}
 								</RaisedButton>
@@ -296,6 +297,7 @@ class MySubmissions extends Component {
 								<RaisedButton
 									onClick={this.handleEdit}
 									color="primary"
+									autoFocus
 								>
 									{t('factory.action-clone')}
 								</RaisedButton>

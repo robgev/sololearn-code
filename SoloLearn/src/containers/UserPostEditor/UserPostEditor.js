@@ -247,7 +247,7 @@ const UserPostEditor = ({
 					<PopupTitle className="user-post-main-title">
 						{`${(draftEditorInitialText && initialUserPostId) || (initialImageSource && initialUserPostId) ? t('user_post.edit-post-title') : t('user_post.new-post-title')}`}
 					</PopupTitle>
-					<IconButton onClick={() => closePopup()}>
+					<IconButton onClick={closePopup}>
 						<Close />
 					</IconButton>
 				</FlexBox>
@@ -276,6 +276,7 @@ const UserPostEditor = ({
 								background={background}
 								setEditorText={setEditorText}
 								editorInitialText={draftEditorInitialText}
+								onEscape={closePopup}
 							// emojiPlugin={emojiPlugin}
 							/>
 							<FlexBox justifyEnd align className="user-post-max-length-container">

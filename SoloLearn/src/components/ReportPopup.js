@@ -28,7 +28,7 @@ class ReportPopup extends PureComponent {
 	}
 
 	componentWillReceiveProps = () => {
-		this.setState({reportReason: 1, customReason: ''})
+		this.setState({ reportReason: 1, customReason: '' });
 	}
 
 	handleReasonChange = (event) => {
@@ -128,6 +128,7 @@ class ReportPopup extends PureComponent {
 					</FlatButton>
 					<FlatButton
 						color="primary"
+						autoFocus
 						onClick={this.submitReport}
 					>
 						{t('common.report-action-title')}

@@ -5,9 +5,9 @@ import {
 	PopupTitle,
 	PopupContent,
 	PopupContentText,
-	PopupActions
+	PopupActions,
 } from 'components/atoms';
-import { FlatButton } from 'components/molecules'
+import { FlatButton } from 'components/molecules';
 
 const BlockPopup = ({
 	blockUser, onRequestClose, open, t,
@@ -15,6 +15,7 @@ const BlockPopup = ({
 	const actions = [
 		<FlatButton
 			onClick={onRequestClose}
+			autoFocus
 		>
 			{t('common.cancel-title')}
 		</FlatButton>,
@@ -39,7 +40,7 @@ const BlockPopup = ({
 				{actions}
 			</PopupActions>
 		</Popup>
-		
+
 	);
 };
 

@@ -20,6 +20,11 @@ const LanguageSelector = ({
 	t, courses, open, onChoose, onClose, filter, coursesLoading, loading,
 }) => {
 	const filteredCourses = courses.filter(filter);
+	const handleEnter = (e, course) => {
+		if (e.keyCode === 13) { // on enter
+			onChoose(course);
+		}
+	};
 	return (
 		<Popup
 			open={open}
@@ -30,7 +35,7 @@ const LanguageSelector = ({
 				{filteredCourses.length === 0 ? <EmptyCard loading={coursesLoading || loading} /> : null}
 				<List>
 					{filteredCourses.map(course => (
-						<Container key={course.id} onClick={() => onChoose(course)} tabIndex={0} role="button">
+						<Container key={course.id} onKeyDown={e => handleEnter(e, course)} onClick={() => onChoose(course)} tabIndex={0} role="button">
 							<ListItem button>
 								<FlexBox align className="language_selector-card-container">
 									<LanguageCard language={course.language} />

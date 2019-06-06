@@ -70,6 +70,7 @@ class SavePopup extends Component {
 						fullWidth
 						value={name}
 						error={hasError}
+						autoFocus
 						onChange={this.onChange}
 						label={t('code_playground.popups.save-popup-code-name-placeholder')}
 					/>

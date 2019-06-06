@@ -90,6 +90,7 @@ class QuizFactory extends Component {
 					<PopupActions>
 						<FlatButton
 							onClick={this.toggleSuggest}
+							autoFocus
 							primary
 						>
 							{t('common.cancel-title')}
