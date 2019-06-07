@@ -18,7 +18,7 @@ import { LayoutWithSidebar } from 'components/molecules';
 import { Container, Select, MenuItem, Title } from 'components/atoms';
 import { showError } from 'utils';
 import Storage from 'api/storage';
-import Header from './Header';
+import FeedHeader from './FeedHeader';
 import FeedList from './FeedList';
 import FeedSidebar from './FeedSidebar';
 
@@ -122,7 +122,7 @@ class FeedItemsBase extends Component {
 				sidebar={<FeedSidebar t={t} />}
 			>
 				<Container className="feed-items-wrapper">
-					<Header
+					<FeedHeader
 						profile={userProfile}
 						levels={levels}
 						afterPostCallback={this.loadNewFeedItems}

@@ -22,7 +22,7 @@ import {
 	UsernameLink,
 	ModBadge,
 } from 'components/molecules';
-import { AddPhotoAlternate, Close } from 'components/icons';
+import { Close } from 'components/icons';
 import { getMentionsValue } from 'utils';
 
 import { getUserSelector } from 'reducers/reducer_user';
@@ -56,6 +56,7 @@ const UserPostEditor = ({
 	initialUserPostId = null,
 	updateListItems = () => { },
 	getNewFeedItemsInternal,
+	openImageInput = false,
 	t,
 }) => {
 	const [ backgrounds, setBackgrounds ] = useState([]);
@@ -95,6 +96,9 @@ const UserPostEditor = ({
 		getPostBackgrounds()
 			.then((res) => {
 				setBackgrounds([ { type: 'none', id: -1 }, ...res.backgrounds ]);
+				if (openImageInput) {
+					imageInputRef.current.click();
+				}
 			});
 		if (initialImageSource) {
 			setImageSource(initialImageSource);
@@ -306,7 +310,7 @@ const UserPostEditor = ({
 
 							<FlexBox align justify className="add-image-and-backgrounds-container">
 								<Chip
-									icon={<AddPhotoAlternate className="add-image-icon" />}
+									icon={<AtomImage src="assets/ic_image@2x.png" className="add-image-icon" />}
 									label={imageSource ? 'Change Image' : 'Add Image'}
 									className="add-image-chip"
 									onClick={() => imageInputRef.current.click()}
