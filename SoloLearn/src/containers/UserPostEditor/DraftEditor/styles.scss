@@ -1,22 +1,33 @@
 @import '~styles/_colors';
 
-.draft-editor-container {
-	width: 100%;
-	box-sizing: border-box;
-	margin: 5px 0;
-	border-top: 1px solid $primary_color;
-	border-bottom: 1px solid $primary_color;
-	&.read-only {
-		border: none;
-	}
-	.draft-editor-inner-container {
+.draft-editor-wrapper {
+	.draft-editor-container {
 		width: 100%;
-		padding: 15px;
-		.underline {
-			text-decoration: underline;
+		box-sizing: border-box;
+		margin: 5px 0;
+		border-top: 1px solid $primary_color;
+		&.read-only {
+			border: none;
 		}
-		&.no-padding {
-			padding: 0px;
+		.draft-editor-inner-container {
+			width: 100%;
+			padding: 15px;
+			.underline {
+				text-decoration: underline;
+			}
+			&.no-padding {
+				padding: 0px;
+			}
+		}
+	}
+	.user-post-max-length-container {
+		padding: 0 5px 5px 0;
+		&.with-border {
+			border-bottom: 1px solid $primary_color;
+		}
+		.count {
+			font-size: 11px;
+			color: unset;
 		}
 	}
 }

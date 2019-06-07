@@ -283,15 +283,6 @@ const UserPostEditor = ({
 								onEscape={closePopup}
 							// emojiPlugin={emojiPlugin}
 							/>
-							<FlexBox justifyEnd align className="user-post-max-length-container">
-								{/* <Container>
-									<EmojiSelect />
-									<EmojiSuggestions />
-								</Container> */}
-								<SecondaryTextBlock className="count">
-									{editorText ? editorText.getPlainText().length : 0} / {USER_POST_MAX_LENGTH}
-								</SecondaryTextBlock>
-							</FlexBox>
 							<FlexBox justify align>
 								<Container className="user-post-image-preview-container">
 									<IconButton

@@ -104,8 +104,9 @@ class FeedHeader extends PureComponent {
 					<Input
 						variant="outlined"
 						placeholder={`${t(this.randomHint)}, ${profile.name}`}
-						className="user-post-hints-input"
+						className="user-post-hints-input-container"
 						onClick={() => this.setState({ isCreatePostPopupOpen: true })}
+						inputProps={{ className: 'user-post-hints-input' }}
 					/>
 					<Image
 						onClick={() => this.setState({ isCreatePostWithImagePopupOpen: true })}

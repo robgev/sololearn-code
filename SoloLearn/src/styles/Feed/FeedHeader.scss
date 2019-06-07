@@ -31,9 +31,12 @@
 		}
 	}
 	.actions {
-		.user-post-hints-input {
+		.user-post-hints-input-container {
 			width: 90%;
 			padding: 5px;
+			.user-post-hints-input {
+				padding: 12px;
+			}
 		}
 		.user-post-feed-header-image {
 			width: 50px;
