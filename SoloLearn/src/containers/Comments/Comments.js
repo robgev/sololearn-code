@@ -131,10 +131,10 @@ class Comments extends Component {
 		const isFindingReply = comments.length > 0 && comments[0].index === -1;
 		if (isFindingReply) {
 			// FindPostId is a reply id, have to format the replies
-			withReplies = [new IComment({
+			withReplies = [ new IComment({
 				...comments[0],
 				repliesArray: comments.slice(1).map(c => new IComment({ ...c, repliesArray: null })),
-			})];
+			}) ];
 		} else {
 			withReplies = comments.map(comment =>
 				new IComment({ ...comment, repliesArray: [] }));
@@ -233,7 +233,7 @@ class Comments extends Component {
 			badge,
 			date: comment.date,
 		});
-		this.comments.push(newComment);
+		this.comments.unshift(newComment);
 		this.comments = this.commentsAPI.orderComments(this.comments);
 		this.highlight(comment.id);
 	}
