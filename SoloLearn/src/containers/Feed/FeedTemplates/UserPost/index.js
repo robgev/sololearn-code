@@ -103,7 +103,6 @@ const UserPost = ({
 					<Container>
 						<Container
 							style={{
-								padding: background ? 0 : '0 15px',
 								lineHeight: !background ? `${lineHeightDefault}px` : '',
 								height: !background && textShouldWrap ? lineHeightDefault * 5.2 : '100%',
 								overflow: !background && textShouldWrap ? 'hidden' : 'auto',
