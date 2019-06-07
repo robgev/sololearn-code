@@ -9,12 +9,10 @@ import { convertToRaw } from 'draft-js';
 import {
 	PopupTitle,
 	FlexBox,
-	Chip,
 	Loading,
 	Container,
 	Image as AtomImage,
 	IconButton,
-	SecondaryTextBlock,
 	Snackbar,
 } from 'components/atoms';
 import {
@@ -283,7 +281,7 @@ const UserPostEditor = ({
 								onEscape={closePopup}
 							// emojiPlugin={emojiPlugin}
 							/>
-							<FlexBox justify align>
+							<FlexBox justify align >
 								<Container className="user-post-image-preview-container">
 									<IconButton
 										onClick={() => {
@@ -299,12 +297,15 @@ const UserPostEditor = ({
 								</Container>
 							</FlexBox>
 
-							<FlexBox align justify className="add-image-and-backgrounds-container">
-								<Chip
-									icon={<AtomImage src="assets/ic_image@2x.png" className="add-image-icon" />}
-									label={imageSource ? 'Change Image' : 'Add Image'}
-									className="add-image-chip"
+							<FlexBox
+								align
+								justify
+								className="add-image-and-backgrounds-container"
+							>
+								<AtomImage
 									onClick={() => imageInputRef.current.click()}
+									src="assets/ic_image@2x.png"
+									className="add-image-icon"
 								/>
 								<UploadImageInput inputRef={imageInputRef} handleChange={onImageSelect} />
 								{

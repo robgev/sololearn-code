@@ -1,6 +1,7 @@
 @import '~styles/variables';
 .feed-header {
 	padding: 15px;
+	box-shadow: none;
 	.details-wrapper {
 		display: flex;
 		width: 100%;
@@ -39,8 +40,8 @@
 			}
 		}
 		.user-post-feed-header-image {
-			width: 50px;
-			height: 50px;
+			width: 48px;
+			height: 48px;
 			&:hover {
 				cursor: pointer;
 			}

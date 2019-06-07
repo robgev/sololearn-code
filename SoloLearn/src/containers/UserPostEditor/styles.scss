@@ -3,7 +3,6 @@
 
 .user-post-main-container {
 	padding: 0px;
-	width: 500px;
 	min-height: 400px;
 	.user-post-main-title {
 		margin-bottom: 5px;
@@ -23,15 +22,12 @@
 			}
 		}
 		.add-image-and-backgrounds-container {
-			padding: 0 10px;
-			flex-direction: column;
-			.add-image-chip {
-				margin: 10px 0;
-				padding: 5px;
-				.add-image-icon {
-					height: 50px;
-					width: 50px;
-					color: $primary_color;
+			.add-image-icon {
+				height: 48px;
+				width: 48px;
+				color: $primary_color;
+				&:hover {
+					cursor: pointer;
 				}
 			}
 			.backgrounds-container {
@@ -46,6 +42,7 @@
 		}
 		.user-post-image-preview-container {
 			position: relative;
+			margin-top: 5px;
 			.image-preview-remove-icon {
 				position: absolute;
 				color: white;
@@ -65,7 +62,6 @@
 
 @include for-until-desktop {
 	.user-post-main-container {
-		width: 380px;
 		.user-post-main-content {
 			min-width: 0;
 		}
