@@ -35,5 +35,6 @@ export {
 	AddPhotoAlternate,
 	CheckCircle,
 	Share as ShareIcon,
+	Image as ImageIcon,
 } from '@material-ui/icons';
 export { default as Notifications } from './NotificationIcon';

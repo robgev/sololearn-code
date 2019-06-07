@@ -47,6 +47,7 @@ class Profile extends PureComponent {
 			</FlatButton>,
 			<PromiseButton
 				primary
+				autoFocus
 				onClick={this.onCrop}
 				style={{ width: 'initial' }}
 				label={t('common.confirm-title')}

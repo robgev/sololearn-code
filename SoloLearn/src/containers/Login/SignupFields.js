@@ -76,7 +76,7 @@ const SignupFields = ({
 		</form>
 		<div className="tos-disclaimer">
 			<p>
-				{t('register.tos-message')}<Link className="hoverable" target="_blank" to="/terms-of-service">{t('register.tos')}.</Link>
+				{t('register.tos-message')}<Link className="hoverable" target="_blank" to="/terms-of-use">{t('register.tos')}.</Link>
 			</p>
 		</div>
 	</div>
