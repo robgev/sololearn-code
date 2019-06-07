@@ -1,0 +1,18 @@
+@import '~styles/utils';
+@import '~styles/colors';
+
+.feed-items-wrapper {
+	.feed-filters {
+		padding: 23px 14px;
+		.sub-title {
+			@extend %title-text;
+			display: block;
+			cursor: pointer;
+			margin-right: 48px;
+			&.active {
+				font-weight: 800;
+				color: $primary_color_hover;
+			}
+		}
+	}
+}

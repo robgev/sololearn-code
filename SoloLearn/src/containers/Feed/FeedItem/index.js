@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 
 // Additional data and components
-import { updateDate, toSeoFriendly } from 'utils';
+import { toSeoFriendly } from 'utils';
 import { CourseCard } from 'containers/Learn/components';
 import {
 	Container,
@@ -11,19 +11,18 @@ import {
 } from 'components/atoms';
 import types from 'defaults/appTypes';
 
-import 'styles/Feed/FeedItem.scss';
+import FeedItemBase from '../FeedItemBase';
+import Badge from '../FeedTemplates/Badge';
+import Course from '../FeedTemplates/Course';
+import Post from '../FeedTemplates/Post';
+import Code from '../FeedTemplates/Code';
+import Comment from '../FeedTemplates/Comment';
+import Challenge from '../FeedTemplates/Challenge';
+import UserPost from '../FeedTemplates/UserPost';
+import FeedSuggestions from '../FeedSuggestions';
+import BottomToolbar from '../FeedBottomToolbar';
 
-import FeedItemBase from './FeedItemBase';
-import Badge from './FeedTemplates/Badge';
-import Course from './FeedTemplates/Course';
-import Post from './FeedTemplates/Post';
-import Code from './FeedTemplates/Code';
-import Comment from './FeedTemplates/Comment';
-import Challenge from './FeedTemplates/Challenge';
-import FeedSuggestions from './FeedSuggestions';
-import BottomToolbar from './FeedBottomToolbar';
-
-import UserPost from './FeedTemplates/UserPost';
+import './styles.scss';
 
 @observer
 class FeedItem extends Component {
@@ -59,6 +58,7 @@ class FeedItem extends Component {
 			feedItem,
 			voteFeedItem,
 		} = this.props;
+		console.log('FeedItem render', feedItem);
 		switch (feedItem.type) {
 		case types.badgeUnlocked:
 			this.url = `/profile/${feedItem.user.id}/badges?badgeID=${feedItem.achievement.id}`;
@@ -178,13 +178,32 @@ class FeedItem extends Component {
 					/>
 				</Container>
 			);
+		case types.userPost:
+			return (
+				<UserPost
+					key={feedItem.id}
+					user={feedItem.user}
+					background={feedItem.userPost.background}
+					message={feedItem.userPost.message}
+					imageUrl={feedItem.userPost.imageUrl}
+					date={feedItem.date}
+					id={feedItem.userPost.id}
+					vote={feedItem.vote}
+					votes={feedItem.votes}
+					measure={this.props.measure}
+					userPostId={feedItem.userPost.id}
+					comments={feedItem.userPost.comments}
+					views={feedItem.userPost.viewCount}
+					onChange={({ vote: newVote }) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.userPost.id })}
+				/>
+			);
 		default:
 			return null;
 		}
 	}
 
 	render() {
-		const { feedItem, style, voteFeedItem } = this.props;
+		const { feedItem, style } = this.props;
 		// Render only suggestions
 		if (feedItem.type === types.suggestions) {
 			return (
@@ -239,36 +258,10 @@ class FeedItem extends Component {
 					}
 				</Container>
 			);
-		} else if (feedItem.type === types.userPost) {
-			return (
-				<Container style={style} className="feedItemWrapper">
-					<PaperContainer
-						zDepth={1}
-						className="feedItem userPost"
-					>
-						<UserPost
-							key={feedItem.id}
-							user={feedItem.user}
-							background={feedItem.userPost.background}
-							message={feedItem.userPost.message}
-							imageUrl={feedItem.userPost.imageUrl}
-							date={feedItem.date}
-							id={feedItem.userPost.id}
-							vote={feedItem.vote}
-							votes={feedItem.votes}
-							measure={this.props.measure}
-							userPostId={feedItem.userPost.id}
-							comments={feedItem.userPost.comments}
-							views={feedItem.userPost.viewCount}
-							onChange={({ vote: newVote }) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.userPost.id })}
-						/>
-					</PaperContainer>
-				</Container>
-			);
 		}
 		return (
 			<Container style={style} className="feedItemWrapper">
-				<PaperContainer zDepth={1} className="feedItem">
+				<Container className="feedItem">
 					<FeedItemBase
 						feedItemId={feedItem.id}
 						title={feedItem.title}
@@ -277,7 +270,7 @@ class FeedItem extends Component {
 					>
 						{this.renderFeedItem()}
 					</FeedItemBase>
-				</PaperContainer>
+				</Container>
 
 			</Container>
 		);

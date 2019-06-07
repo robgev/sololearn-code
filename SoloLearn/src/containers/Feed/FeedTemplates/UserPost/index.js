@@ -99,20 +99,6 @@ const UserPost = ({
 			onChange={onVisibilityChange}
 		>
 			<FlexBox column className="user-post-feed-item-container">
-				<FlexBox align className="user-post-feed-item-profile-container">
-					<ProfileAvatar
-						user={user}
-					/>
-					<UsernameLink
-						to={`/profile/${user.id}`}
-						className="up-profile-username-link"
-					>
-						{user.name}
-					</UsernameLink>
-					<ModBadge
-						badge={user.badge}
-					/>
-				</FlexBox>
 				{message ?
 					<Container>
 						<Container

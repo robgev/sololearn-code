@@ -20,6 +20,10 @@ $big_desktop_up: 1680px;
   @media screen and (max-width: $big_desktop_media) { @content; }
 }
 
+@mixin for-until-big-desktop-up {
+  @media screen and (max-width: $big_desktop_up) { @content; }
+}
+
 @mixin for-big-desktop-up {
   @media (min-width: $big_desktop_up) { @content; }
 }
