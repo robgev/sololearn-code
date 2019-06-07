@@ -22,7 +22,7 @@ const QuestionList = ({ questions, hasMore, fromProfile }) => (
 		: <EmptyCard />
 );
 
-QuestionList.defaultprops = {
+QuestionList.defaultProps = {
 	fromProfile: false,
 };
 
