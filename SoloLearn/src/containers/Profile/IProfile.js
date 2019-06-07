@@ -26,6 +26,7 @@ class IProfile {
 	}
 
 	@observable getQuestionsPromise = null;
+	@observable getCodesPromise = null;
 	@observable loadingFollowers = false;
 	@observable loadingFollowings = false;
 
