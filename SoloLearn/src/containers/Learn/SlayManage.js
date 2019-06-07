@@ -125,7 +125,7 @@ class SlayManage extends Component {
 				/> */}
 					</PopupContent>
 					<PopupActions>
-						<FlatButton onClick={onClose}>{t('common.close-title')}</FlatButton>
+						<FlatButton autoFocus onClick={onClose}>{t('common.close-title')}</FlatButton>
 					</PopupActions>
 				</Popup>
 				<ConfirmationPopup

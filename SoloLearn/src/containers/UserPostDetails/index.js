@@ -16,6 +16,7 @@ import {
 	MenuItem,
 	Chip,
 	TextBlock,
+	SecondaryTextBlock,
 } from 'components/atoms';
 import {
 	LayoutWithSidebar,
@@ -24,9 +25,12 @@ import {
 	UsernameLink,
 	ModBadge,
 } from 'components/molecules';
-import ConfirmationPopup from 'components/ConfirmationPopup';
 import { FeedBottomBarFullStatistics } from 'components/organisms';
 import { ShareIcon } from 'components/icons';
+
+import { updateDate } from 'utils';
+
+import RemovePopup from './RemovePopup';
 
 import UserPostDraftEditor from 'containers/UserPostEditor/DraftEditor';
 import UserPostEditor from 'containers/UserPostEditor';
@@ -44,6 +48,7 @@ const UserPostDetails = ({
 	const [ isError, setError ] = useState(false);
 
 	const [ isCreatePostPopupOpen, toggleCreatePostPopupOpen ] = useState(false);
+	const [ isRepostPopupOpen, toggleRepostPopup ] = useState(false);
 	const [ isDeleteConfirmationOpen, toggleDeleteConfirmationOpen ] = useState(false);
 	const [ isReportPopupOpen, toggleReportPopup ] = useState(false);
 
@@ -63,6 +68,7 @@ const UserPostDetails = ({
 
 	useEffect(() => {
 		setUserPost(null);
+		setError(false);
 		setPostRequest();
 	}, [ params.id ]);
 
@@ -70,11 +76,12 @@ const UserPostDetails = ({
 		sendImpressionByPostId(parseInt(params.id, 10));
 	}, []);
 
-	const deletePostHandler = () => {
-		deleteUserPost(userPost.id);
-		clearFeedItems();
-		browserHistory.push('/feed');
-	};
+	const deletePostHandler = () =>
+		deleteUserPost(userPost.id)
+			.then(() => {
+				clearFeedItems();
+				browserHistory.push('/feed');
+			});
 
 	const editPostHandler = (editedPost) => {
 		setUserPost({ ...userPost, ...editedPost });
@@ -98,12 +105,17 @@ const UserPostDetails = ({
 											avatarUrl: userPost.avatarUrl,
 										}}
 									/>
-									<UsernameLink
-										to={`/profile/${userPost.userID}`}
-										className="up-profile-username-link"
-									>
-										{userPost.userName}
-									</UsernameLink>
+									<FlexBox column className="up-profile-username-container">
+										<FlexBox>
+											<UsernameLink
+												to={`/profile/${userPost.userID}`}
+												className="up-profile-username-link"
+											>
+												{userPost.userName}
+											</UsernameLink>
+										</FlexBox>
+										<SecondaryTextBlock className="date up-details-date">{updateDate(userPost.date)}</SecondaryTextBlock>
+									</FlexBox>
 									<ModBadge
 										badge={userPost.badge}
 									/>
@@ -111,25 +123,23 @@ const UserPostDetails = ({
 								{profile.id === userPost.userID ?
 									<IconMenu>
 										<MenuItem onClick={() => toggleCreatePostPopupOpen(true)}>
-											Edit
+											{t('common.edit-action-title')}
 										</MenuItem>
 										<MenuItem onClick={() => toggleDeleteConfirmationOpen(true)}>
-											Delete
+											{t('common.delete-title')}
 										</MenuItem>
 									</IconMenu>
 									:
 									<IconMenu>
 										<MenuItem onClick={() => toggleReportPopup(true)}>
-											Report
+											{t('common.report-action-title')}
 										</MenuItem>
 									</IconMenu>
 								}
-								<ConfirmationPopup
+								<RemovePopup
 									open={isDeleteConfirmationOpen}
-									onCancel={() => toggleDeleteConfirmationOpen(false)}
-									onConfirm={deletePostHandler}
-									confirmButtonLabel={t('common.delete-title')}
-									title="Are you sure you want to permanently remove this post?"
+									onClose={() => toggleDeleteConfirmationOpen(false)}
+									removeAction={deletePostHandler}
 								/>
 								<ReportPopup
 									open={isReportPopupOpen}
@@ -138,6 +148,7 @@ const UserPostDetails = ({
 									itemType={9}
 								/>
 							</FlexBox>
+
 							<Container style={{ padding: userPost.background && userPost.background.type !== 'none' ? 0 : '0 15px' }}>
 								{userPost.message ?
 									<UserPostDraftEditor
@@ -169,14 +180,12 @@ const UserPostDetails = ({
 									views={userPost.viewCount}
 									withDate={false}
 								/>
-								{profile.id !== userPost.userID &&
-									<Chip
-										icon={<ShareIcon />}
-										label="Repost"
-										onClick={() => toggleCreatePostPopupOpen(true)}
-										className="user-post-details-share-chip"
-									/>
-								}
+								<Chip
+									icon={<ShareIcon />}
+									label="Repost" // waiting for translation (requested)
+									onClick={() => toggleRepostPopup(true)}
+									className="user-post-details-share-chip"
+								/>
 							</FlexBox>
 						</FlexBox>
 					</PaperContainer>
@@ -189,22 +198,25 @@ const UserPostDetails = ({
 					<Popup
 						open={isCreatePostPopupOpen}
 					>
-						{profile.id === userPost.userID ?
-							<UserPostEditor
-								closePopup={() => toggleCreatePostPopupOpen(false)}
-								draftEditorInitialText={userPost.message ? userPost.message : ''}
-								draftEditorInitialBackground={userPost.background ? userPost.background : null}
-								initialImageSource={userPost.imageUrl ? userPost.imageUrl : null}
-								initialSelectedBackgroundId={userPost.backgroundID ? userPost.backgroundID : -1}
-								initialUserPostId={userPost.id}
-								afterPostCallback={editPostHandler}
-							/>
-							:
-							<UserPostEditor
-								closePopup={() => toggleCreatePostPopupOpen(false)}
-								draftEditorInitialText={`\n${window.location.href}`}
-							/>
-						}
+						<UserPostEditor
+							closePopup={() => toggleCreatePostPopupOpen(false)}
+							draftEditorInitialText={userPost.message ? userPost.message : ''}
+							draftEditorInitialBackground={userPost.background ? userPost.background : null}
+							initialImageSource={userPost.imageUrl ? userPost.imageUrl : null}
+							initialSelectedBackgroundId={userPost.backgroundID ? userPost.backgroundID : -1}
+							initialUserPostId={userPost.id}
+							afterPostCallback={editPostHandler}
+						/>
+
+					</Popup>
+					<Popup
+						open={isRepostPopupOpen}
+					>
+						<UserPostEditor
+							closePopup={() => toggleRepostPopup(false)}
+							draftEditorInitialText={`\n${window.location.href}`}
+						/>
+
 					</Popup>
 				</Container>
 			}

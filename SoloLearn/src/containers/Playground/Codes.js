@@ -50,7 +50,10 @@ class Codes extends Component {
 		if (!isObjectEqual(location.query, this.props.location.query)) {
 			const changed = queryDifference(DEFAULT_CODES_FILTERS, location.query);
 			browserHistory.replace({ ...location, query: changed });
-			this.props.setCodesFilters({ ...DEFAULT_CODES_FILTERS, ...location.query });
+			this.props.setCodesFilters({
+				...DEFAULT_CODES_FILTERS,
+				...location.query,
+			});
 		}
 	}
 	componentWillUnmount() {
@@ -68,7 +71,7 @@ class Codes extends Component {
 		const { location } = this.props;
 		browserHistory.push({
 			...location,
-			query: { ...location.query, orderBy: event.target.value },
+			query: { ...location.query, ordering: event.target.value },
 		});
 	}
 	getCodes = (params) => {
@@ -107,15 +110,15 @@ class Codes extends Component {
 									<MenuItem value="php">PHP</MenuItem>
 								</Select>
 								<Select
-									value={filters.orderBy}
+									value={filters.ordering}
 									onChange={this.handleOrderByFilterChange}
 								>
-									<MenuItem value={6}>{t('code.filter.hot-today')}</MenuItem>
-									<MenuItem value={4}>{t('code.filter.trending')}</MenuItem>
-									<MenuItem value={5}>{t('code.filter.your-network')}</MenuItem>
-									<MenuItem value={2}>{t('code.filter.most-popular')}</MenuItem>
-									<MenuItem value={1}>{t('code.filter.most-recent')}</MenuItem>
-									<MenuItem value={3}>{t('code.filter.my-codes')}</MenuItem>
+									<MenuItem value="HotToday">{t('code.filter.hot-today')}</MenuItem>
+									<MenuItem value="Trending">{t('code.filter.trending')}</MenuItem>
+									<MenuItem value="YourNetwork">{t('code.filter.your-network')}</MenuItem>
+									<MenuItem value="MostPopular">{t('code.filter.most-popular')}</MenuItem>
+									<MenuItem value="MostRecent">{t('code.filter.most-recent')}</MenuItem>
+									<MenuItem value="MyCodes">{t('code.filter.my-codes')}</MenuItem>
 								</Select>
 							</Container>
 						</Container>

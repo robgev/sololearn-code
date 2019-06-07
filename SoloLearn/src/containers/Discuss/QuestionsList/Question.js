@@ -8,12 +8,12 @@ import { updateDate } from 'utils';
 import NumberWithText from './NumberWithText';
 import Tags from '../Tags';
 
-const Question = ({ question, t }) => (
+const Question = ({ question, t, fromProfile }) => (
 	<Fragment>
 		<ListItem>
 			<FlexBox column className="question">
 				<FlexBox className="info">
-					<ContainerLink to={`/discuss/${question.id}`}>
+					<ContainerLink to={`/discuss/${question.id}${fromProfile ? '?fromProfile=true' : ''}`}>
 						<FlexBox className="numbers">
 							<NumberWithText
 								number={question.votes}
@@ -26,7 +26,7 @@ const Question = ({ question, t }) => (
 						</FlexBox>
 					</ContainerLink>
 					<FlexBox column className="question-info">
-						<Link to={`/discuss/${question.id}`}>
+						<Link to={`/discuss/${question.id}${fromProfile ? '?fromProfile=true' : ''}`}>
 							<Title>{question.title}</Title>
 						</Link>
 						<Tags tags={question.tags} />

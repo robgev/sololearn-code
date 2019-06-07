@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { EditorState, convertToRaw, ContentState, SelectionState, Modifier } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
@@ -48,7 +48,28 @@ const makeEditableContent = (text) => {
 class MentionInput extends Component {
 	constructor(props) {
 		super(props);
+		this.containerRef = createRef();
 		this.mentionPlugin = createMentionPlugin({
+			positionSuggestions: ({ decoratorRect }) => {
+				const containerRect = this.containerRef.current.getBoundingClientRect();
+				const baseStyles = {
+					fontSize: 'initial',
+					transform: 'scale(1)',
+					transformOrigin: '1em 0%',
+					top: `${decoratorRect.height + 11}px`, // Counting padding in
+					transition: 'all 0.25s cubic-bezier(0.3, 1.2, 0.2, 1) 0s',
+				};
+				if (decoratorRect.right - containerRect.left > (containerRect.width / 2)) {
+					return {
+						...baseStyles,
+						right: `${containerRect.right - decoratorRect.left - decoratorRect.width}px`,
+					};
+				}
+				return {
+					...baseStyles,
+					left: `${decoratorRect.left - containerRect.left}px`,
+				};
+			},
 			mentionComponent: ({ children }) => <b>{children}</b>,
 		});
 		this.isFocused = false;
@@ -114,7 +135,8 @@ class MentionInput extends Component {
 					const mentions = this.getMentions();
 					if (mentions.length < 10) {
 						const suggestions = users
-							.filter(user => !mentions.some(mentioned => mentioned.id === user.id));
+							.filter(user => !mentions.some(mentioned => mentioned.id === user.id))
+							.slice(0, 5);
 						this.setState({ suggestions });
 					}
 				}
@@ -197,6 +219,7 @@ class MentionInput extends Component {
 
 		return (
 			<Container
+				ref={this.containerRef}
 				className={`editor ${this.props.className}`}
 				style={this.props.style}
 				onClick={this.focus}

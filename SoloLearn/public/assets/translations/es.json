@@ -886,5 +886,7 @@
 			"user-post-form-hint-3": "¿En qué estás pensando?"
 		},
 		"user-post-placeholder": "Comparte consejos, artículos, segmentos de tu código o cualquier cosa relacionada con la programación",
+		"new-post-title": "Nueva publicación",
+		"edit-post-title": "Editar Publicación"
 	}
 }

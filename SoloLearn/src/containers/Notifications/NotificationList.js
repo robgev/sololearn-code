@@ -79,13 +79,13 @@ class NotificationList extends Component {
 				}
 						{
 							!isFetching && notifications.length === 0
-							&& <FlexBox align>
+							&& <FlexBox align justify>
 							<TextBlock>
 								{this.props.t('common.empty-list-message')}
 							</TextBlock>
         </FlexBox>
 		}
-				
+
 			</List>
 		);
 	}

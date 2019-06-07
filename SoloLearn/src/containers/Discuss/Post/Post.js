@@ -31,7 +31,11 @@ class Post extends Component {
 		return this.post.deletePost()
 			.then(this.props.removePostFromList)
 			.then(() => {
-				browserHistory.replace('/discuss');
+				const currentLocation=browserHistory.getCurrentLocation();
+
+				currentLocation.search===''
+				?browserHistory.replace('/discuss')
+				:browserHistory.goBack();
 			});
 	}
 

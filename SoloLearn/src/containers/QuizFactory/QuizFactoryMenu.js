@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
-import { browserHistory } from 'react-router';
+import { browserHistory, withRouter } from 'react-router';
 import {
 	Popup, PopupContent, PopupActions, PopupTitle,
 } from 'components/atoms';
@@ -11,13 +11,17 @@ import Layout from './Layout';
 import Suggest from './Suggest/Suggest';
 import { getReviewCourseIds } from './api';
 
+@withRouter
 class QuizFactory extends Component {
 	constructor(props) {
 		super(props);
+		const suggestDialogOpen = props.location.state === undefined
+			? false
+			: !!props.location.state.popupOpen;
 		this.state = {
 			isLanguageSelectorOpen: false,
 			courseIds: [],
-			suggestDialogOpen: false,
+			suggestDialogOpen,
 			courseIdsLoading: false,
 		};
 		document.title = 'Sololearn | Quiz Factory';
@@ -86,6 +90,7 @@ class QuizFactory extends Component {
 					<PopupActions>
 						<FlatButton
 							onClick={this.toggleSuggest}
+							autoFocus
 							primary
 						>
 							{t('common.cancel-title')}
