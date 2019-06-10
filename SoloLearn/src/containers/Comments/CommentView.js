@@ -111,7 +111,7 @@ class CommentView extends Component {
 					open={this.removalPopupOpen}
 					accessLevel={accessLevel}
 					commentsType={commentsType}
-					onRequestClose={this.toggleRemovalPopup}
+					onClose={this.toggleRemovalPopup}
 					deleteComment={selfDestruct}
 					report={onRequestRemoval}
 				/>
