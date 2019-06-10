@@ -6,32 +6,24 @@ import { IconMenu } from 'components/molecules';
 import { determineAccessLevel } from 'utils';
 
 const mapStateToProps = (state, ownProps) => ({
-	canRequestRemoval: determineAccessLevel(state.userProfile.accessLevel) >= 1,
+	canRequestRemoval: determineAccessLevel(state.userProfile.accessLevel) === 1,
+	canRemove: determineAccessLevel(state.userProfile.accessLevel) > 1,
+	canEdit: determineAccessLevel(state.userProfile.accessLevel) > 1,
 	isMe: state.userProfile.id === ownProps.userID,
 });
 
 @translate()
 @connect(mapStateToProps)
 class Options extends Component {
-	state = {
-		anchorEl: null,
-	}
-	handleClose = () => {
-		this.setState({ anchorEl: null });
-	}
-	handleClick = (e) => {
-		this.setState({ anchorEl: e.currentTarget });
-	}
 	render() {
 		const {
-			isMe, canRequestRemoval, t,
+			isMe, canRequestRemoval, canEdit, canRemove, t,
 			editPost, deletePost, reportPost, requestRemoval,
 		} = this.props;
-		const { anchorEl } = this.state;
 		return (
 			<Fragment>
 				<IconMenu>
-					{isMe || canRequestRemoval
+					{isMe || canEdit
 						? (
 							<MenuItem
 								onClick={editPost}
@@ -41,7 +33,7 @@ class Options extends Component {
 						)
 						: null
 					}
-					{isMe
+					{isMe || canRemove
 						? (
 							<MenuItem
 								onClick={deletePost}

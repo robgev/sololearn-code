@@ -132,7 +132,7 @@ render() {
 											{t('common.report-action-title')}
 										</MenuItem>
 										}
-										{(comment.userID !== userProfileId && accessLevel > 1) &&
+										{(comment.userID !== userProfileId && accessLevel > 0) &&
 										<MenuItem onClick={toggleRemovalPopup}>
 											{ t('discuss.forum_request_removal_prompt_title')}
 										</MenuItem>

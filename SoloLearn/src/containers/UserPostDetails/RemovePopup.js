@@ -17,20 +17,34 @@ const RemovePopup = ({
 	open,
 	onClose,
 	removeAction,
+	canRemove,
 	t,
 }) => (
 	<Popup
 		onClose={onClose}
 		open={open}
 	>
-		<PopupTitle>Remove User Post</PopupTitle>
+		<PopupTitle>
+			{
+				canRemove
+					? 'Remove User Post'
+					: 'Request Removal'
+			}
+		</PopupTitle>
 		<PopupContent>
-			<PopupContentText>Are you sure you want to permanently remove this post?</PopupContentText>
+			<PopupContentText>
+				{
+					canRemove
+						? 'Are you sure you want to permanently remove this post?'
+						: 'Are you sure you want to mark this post for removal?'
+				}
+			</PopupContentText>
 		</PopupContent>
 		<PopupActions>
 			<FlatButton
 				variant="contained"
 				onClick={onClose}
+				autoFocus
 			>
 				{t('common.cancel-title')}
 			</FlatButton>
@@ -38,7 +52,11 @@ const RemovePopup = ({
 				variant="contained"
 				fire={removeAction}
 			>
-				{t('common.delete-title')}
+				{
+					canRemove
+						? t('common.delete-title')
+						: t('common.confirm-title')
+				}
 			</PromiseButton>
 		</PopupActions>
 	</Popup>

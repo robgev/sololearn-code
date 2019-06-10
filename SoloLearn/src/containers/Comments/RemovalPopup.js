@@ -18,10 +18,12 @@ class RemovalPopup extends Component {
 			deleteComment, commentsType, report, onClose, accessLevel,
 		} = this.props;
 		const itemType = ReportItemTypes[`${commentsType}Comment`];
+		console.log(itemType);
 		try {
 			if (accessLevel > 1
-				|| itemType === ReportItemTypes.lessonComment
-				|| itemType === ReportItemTypes.userLessonComment) {
+				&& (itemType === ReportItemTypes.lessonComment
+				|| itemType === ReportItemTypes.userLessonComment
+				|| itemType === ReportItemTypes.codeComment)) {
 				deleteComment();
 			} else {
 				report();
@@ -44,18 +46,18 @@ class RemovalPopup extends Component {
 		const actions = [
 			<FlatButton
 				variant="contained"
+				onClick={onClose}
+			>
+				{t('common.cancel-title')}
+			</FlatButton>,
+			<FlatButton
+				variant="contained"
 				onClick={this.requestRemoval}
 			>
 				{cannotRemove ?
 					t('common.confirm-title') :
 					t('common.remove-title')
 				}
-			</FlatButton>,
-			<FlatButton
-				variant="contained"
-				onClick={onClose}
-			>
-				{t('common.cancel-title')}
 			</FlatButton>,
 		];
 		return (
