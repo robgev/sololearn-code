@@ -36,7 +36,7 @@ const RemovePopup = ({
 				{
 					canRemove
 						? 'Are you sure you want to permanently remove this post?'
-						: 'Are you sure you want to mark this comment for removal?'
+						: 'Are you sure you want to mark this post for removal?'
 				}
 			</PopupContentText>
 		</PopupContent>
