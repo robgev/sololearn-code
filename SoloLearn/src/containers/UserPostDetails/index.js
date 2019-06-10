@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter, browserHistory } from 'react-router';
 import { getUserSelector } from 'reducers/reducer_user';
 import { translate } from 'react-i18next';
+import { determineAccessLevel } from 'utils';
 
 import { clearFeedItems } from 'actions/feed';
 
@@ -36,7 +37,7 @@ import UserPostDraftEditor from 'containers/UserPostEditor/DraftEditor';
 import UserPostEditor from 'containers/UserPostEditor';
 import Comments from 'containers/Comments/CommentsBase';
 
-import { getUserPost, deleteUserPost, sendImpressionByPostId } from './userpostdetails.actions';
+import { getUserPost, deleteUserPost, sendImpressionByPostId, requestPostRemoval } from './userpostdetails.actions';
 
 import './styles.scss';
 import ReportPopup from '../../components/ReportPopup';
@@ -75,13 +76,22 @@ const UserPostDetails = ({
 	useEffect(() => {
 		sendImpressionByPostId(parseInt(params.id, 10));
 	}, []);
-
-	const deletePostHandler = () =>
-		deleteUserPost(userPost.id)
-			.then(() => {
-				clearFeedItems();
-				browserHistory.push('/feed');
-			});
+	const canEdit = userPost && profile.id === userPost.userID;
+	const canReport = userPost && profile.id !== userPost.userID;
+	const canRequestRemoval = userPost && profile.id !== userPost.userID && determineAccessLevel(profile.accessLevel) === 1;
+	const canRemove = userPost && (profile.id === userPost.userID || determineAccessLevel(profile.accessLevel) > 1);
+	console.log(canRemove, determineAccessLevel(profile.accessLevel));
+	const deletePostHandler = () => {
+		if (canRemove) {
+			return deleteUserPost(userPost.id)
+				.then(() => {
+					clearFeedItems();
+					browserHistory.push('/feed');
+				});
+		}
+		return requestPostRemoval(userPost.id)
+			.then(() => toggleDeleteConfirmationOpen(false));
+	};
 
 	const editPostHandler = (editedPost) => {
 		setUserPost({ ...userPost, ...editedPost });
@@ -120,26 +130,41 @@ const UserPostDetails = ({
 										badge={userPost.badge}
 									/>
 								</FlexBox>
-								{profile.id === userPost.userID ?
-									<IconMenu>
-										<MenuItem onClick={() => toggleCreatePostPopupOpen(true)}>
-											{t('common.edit-action-title')}
-										</MenuItem>
-										<MenuItem onClick={() => toggleDeleteConfirmationOpen(true)}>
-											{t('common.delete-title')}
-										</MenuItem>
-									</IconMenu>
-									:
-									<IconMenu>
-										<MenuItem onClick={() => toggleReportPopup(true)}>
-											{t('common.report-action-title')}
-										</MenuItem>
-									</IconMenu>
-								}
+								<IconMenu>
+									{
+										canEdit
+											? <MenuItem onClick={() => toggleCreatePostPopupOpen(true)}>
+												{t('common.edit-action-title')}
+											</MenuItem>
+											: null
+									}
+									{
+										canReport
+											? <MenuItem onClick={() => toggleReportPopup(true)}>
+												{t('common.report-action-title')}
+             </MenuItem>
+											: null
+									}
+									{
+										canRequestRemoval
+											? <MenuItem onClick={() => toggleDeleteConfirmationOpen(true)}>
+												Request Removal
+             </MenuItem>
+											: null
+									}
+									{
+										canRemove
+											? <MenuItem onClick={() => toggleDeleteConfirmationOpen(true)}>
+												{t('common.delete-title')}
+             </MenuItem>
+											: null
+									}
+								</IconMenu>
 								<RemovePopup
 									open={isDeleteConfirmationOpen}
 									onClose={() => toggleDeleteConfirmationOpen(false)}
 									removeAction={deletePostHandler}
+									canRemove={canRemove}
 								/>
 								<ReportPopup
 									open={isReportPopupOpen}

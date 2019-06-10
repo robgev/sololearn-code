@@ -8,3 +8,9 @@ export const deleteUserPost = id =>
 
 export const sendImpressionByPostId = id =>
 	Service.request(`Profile/AddPostImpression?id=${id}`);
+
+export const requestPostRemoval = id => Service.request('ReportItem', {
+	itemType: 9,
+	reason: 100, // Server reason for moderator prompt.
+	itemId: id,
+});
