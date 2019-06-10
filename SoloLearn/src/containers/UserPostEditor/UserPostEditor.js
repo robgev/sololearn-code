@@ -15,11 +15,7 @@ import {
 	IconButton,
 	Snackbar,
 } from 'components/atoms';
-import {
-	ProfileAvatar,
-	UsernameLink,
-	ModBadge,
-} from 'components/molecules';
+import { ProfileAvatar } from 'components/molecules';
 import { Close } from 'components/icons';
 import { getMentionsValue } from 'utils';
 
@@ -55,21 +51,22 @@ const UserPostEditor = ({
 	updateListItems = () => { },
 	getNewFeedItemsInternal,
 	openImageInput = false,
+	toggleImageInput = null,
 	t,
 }) => {
-	const [ backgrounds, setBackgrounds ] = useState([]);
-	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
-	const [ selectedBackgroundId, setSelectedBackgroundId ] = useState(initialSelectedBackgroundId);
+	const [backgrounds, setBackgrounds] = useState([]);
+	const [canApplyBackground, setCanApplyBackground] = useState(true);
+	const [selectedBackgroundId, setSelectedBackgroundId] = useState(initialSelectedBackgroundId);
 
 	const imageInputRef = useRef();
-	const [ imageSource, setImageSource ] = useState(initialImageSource || null);
-	const [ imageData, setImageData ] = useState(null);
-	const [ imageType, setImageType ] = useState('.jpg');
-	const [ isPostButtonDisabled, togglePostButtonDisabled ] = useState(true);
-	const [ editorText, setEditorText ] = useState('');
+	const [imageSource, setImageSource] = useState(initialImageSource || null);
+	const [imageData, setImageData] = useState(null);
+	const [imageType, setImageType] = useState('.jpg');
+	const [isPostButtonDisabled, togglePostButtonDisabled] = useState(true);
+	const [editorText, setEditorText] = useState('');
 
-	const [ isSnackBarOpen, toggleSnackBarIsOpen ] = useState(false);
-	const [ snackMessage, setSnackMessage ] = useState('');
+	const [isSnackBarOpen, toggleSnackBarIsOpen] = useState(false);
+	const [snackMessage, setSnackMessage] = useState('');
 
 	// const emojiPlugin = useRef(createEmojiPlugin({
 	// 	useNativeArt: true,
@@ -93,13 +90,16 @@ const UserPostEditor = ({
 	useEffect(() => {
 		getPostBackgrounds()
 			.then((res) => {
-				setBackgrounds([ { type: 'none', id: -1 }, ...res.backgrounds ]);
+				setBackgrounds([{ type: 'none', id: -1 }, ...res.backgrounds]);
 				if (openImageInput) {
 					imageInputRef.current.click();
 				}
 			});
 		if (initialImageSource) {
 			setImageSource(initialImageSource);
+		}
+		if (toggleImageInput) {
+			return toggleImageInput();
 		}
 	}, []);
 
@@ -110,7 +110,7 @@ const UserPostEditor = ({
 		} else {
 			togglePostButtonDisabled(true);
 		}
-	}, [ editorText, imageSource ]);
+	}, [editorText, imageSource]);
 
 	const onImageLoad = (e, uri) => {
 		if (e.target.width < 100 || e.target.height < 50) {
@@ -163,7 +163,7 @@ const UserPostEditor = ({
 
 	useEffect(() => {
 		computeCanApplyBackground();
-	}, [ editorText, imageSource ]);
+	}, [editorText, imageSource]);
 
 	const backgroundId = canApplyBackground ? selectedBackgroundId : -1;
 
@@ -245,42 +245,33 @@ const UserPostEditor = ({
 	return (
 		<Container>
 			<Container className="user-post-main-container">
-				<FlexBox justifyBetween align>
-					<PopupTitle className="user-post-main-title">
-						{`${(draftEditorInitialText && initialUserPostId) || (initialImageSource && initialUserPostId) ? t('user_post.edit-post-title') : t('user_post.new-post-title')}`}
-					</PopupTitle>
-					<IconButton onClick={closePopup}>
-						<Close />
-					</IconButton>
-				</FlexBox>
+				{!toggleImageInput &&
+					<FlexBox justifyBetween align>
+						<PopupTitle className="user-post-main-title">
+							{`${(draftEditorInitialText && initialUserPostId) || (initialImageSource && initialUserPostId) ? t('user_post.edit-post-title') : t('user_post.new-post-title')}`}
+						</PopupTitle>
+						<IconButton onClick={closePopup}>
+							<Close />
+						</IconButton>
+					</FlexBox>
+				}
 				<Container className="user-post-main-content">
 					{backgrounds && backgrounds.length ?
 						<FlexBox column fullWith>
-							<FlexBox align className="up-top-bar">
-								<FlexBox align>
-									<ProfileAvatar
-										user={profile}
-									/>
-									<FlexBox>
-										<UsernameLink
-											to={`/profile/${profile.id}`}
-											className="up-profile-username-link"
-										>
-											{profile.name}
-										</UsernameLink>
-										<ModBadge
-											badge={profile.badge}
-										/>
-									</FlexBox>
-								</FlexBox>
+							<FlexBox className="up-inner-container">
+								<ProfileAvatar
+									user={profile}
+									className="up-editor-profile-avatar"
+									avatarStyle={{ width: '48px', height: '48px' }}
+								/>
+								<DraftEditor
+									background={background}
+									setEditorText={setEditorText}
+									editorInitialText={draftEditorInitialText}
+									onEscape={closePopup}
+								// emojiPlugin={emojiPlugin}
+								/>
 							</FlexBox>
-							<DraftEditor
-								background={background}
-								setEditorText={setEditorText}
-								editorInitialText={draftEditorInitialText}
-								onEscape={closePopup}
-							// emojiPlugin={emojiPlugin}
-							/>
 							<FlexBox justify align >
 								<Container className="user-post-image-preview-container">
 									<IconButton
@@ -299,12 +290,12 @@ const UserPostEditor = ({
 
 							<FlexBox
 								align
-								justify
-								className="add-image-and-backgrounds-container"
+								justifyBetween
+								className="up-editor-actions-container"
 							>
 								<AtomImage
 									onClick={() => imageInputRef.current.click()}
-									src="assets/ic_image@2x.png"
+									src="/assets/image_icon_2x.png"
 									className="add-image-icon"
 								/>
 								<UploadImageInput inputRef={imageInputRef} handleChange={onImageSelect} />
@@ -323,6 +314,12 @@ const UserPostEditor = ({
 										)
 										: null
 								}
+								<EditorActions
+									isPostButtonDisabled={isPostButtonDisabled}
+									createOrEditPostHandler={initialUserPostId ? editPostHandler : createPostHandler}
+									closePopup={closePopup}
+									initialUserPostId={initialUserPostId}
+								/>
 							</FlexBox>
 
 						</FlexBox>
@@ -332,12 +329,6 @@ const UserPostEditor = ({
 						</FlexBox>
 					}
 				</Container>
-				<EditorActions
-					isPostButtonDisabled={isPostButtonDisabled}
-					createOrEditPostHandler={initialUserPostId ? editPostHandler : createPostHandler}
-					closePopup={closePopup}
-					initialUserPostId={initialUserPostId}
-				/>
 				<Snackbar
 					anchorOrigin={{
 						vertical: 'bottom',

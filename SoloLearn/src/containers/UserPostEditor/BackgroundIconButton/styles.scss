@@ -1,18 +1,10 @@
 @import '~styles/colors';
-@import '~styles/medias';
 
 .background-icon-button {
-	width: 30px;
-	height: 30px;
+	width: 25px;
+	height: 25px;
 	border-radius: 3px;
-	margin-right: 5px;
+	margin: 0 3px 3px 3px;
 	cursor: pointer;
 	border: 1px solid $primary_color;
-}
-
-@include for-until-desktop {
-	.background-icon-button {
-		width: 25px;
-		height: 25px;
-	}
 }

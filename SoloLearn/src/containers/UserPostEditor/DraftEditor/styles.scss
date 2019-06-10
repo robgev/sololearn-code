@@ -1,11 +1,14 @@
 @import '~styles/_colors';
 
 .draft-editor-wrapper {
+	width: calc(100% - 50px);
+	box-sizing: border-box;
 	.draft-editor-container {
 		width: 100%;
 		box-sizing: border-box;
-		margin: 5px 0;
-		border-top: 1px solid $primary_color;
+		border-color: #EAEAEA;
+		border-style: solid;
+		border-width: 1px 1px 0 1px;
 		&.read-only {
 			border: none;
 		}
@@ -23,7 +26,9 @@
 	.user-post-max-length-container {
 		padding: 0 5px 5px 0;
 		&.with-border {
-			border-bottom: 1px solid $primary_color;
+			border-color: #EAEAEA;
+			border-style: solid;
+			border-width: 0px 1px 1px 1px;
 		}
 		.count {
 			font-size: 11px;

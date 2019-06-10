@@ -3,25 +3,22 @@
 
 .user-post-main-container {
 	padding: 0px;
-	min-height: 400px;
+	min-height: 240px;
 	.user-post-main-title {
 		margin-bottom: 5px;
 		padding: 10px;
 	}
 	.user-post-main-content {
 		min-width: 400px;
-		min-height: 310px;
 		height: 100%;
 		.up-top-bar {
 			padding: 0 15px;
-			.emojiSelect {
-				height: 200px;
-			}
-			.up-profile-username-link {
-				padding: 0 7px;
-			}
+			// .emojiSelect {
+			// 	height: 200px;
+			// }
 		}
-		.add-image-and-backgrounds-container {
+		.up-editor-actions-container {
+			padding-bottom: 10px;
 			.add-image-icon {
 				height: 48px;
 				width: 48px;
@@ -37,7 +34,7 @@
 			}
 		}
 		.up-loader-container {
-			min-height: 310px;
+			min-height: 240px;
 			height: 100%;
 		}
 		.user-post-image-preview-container {
@@ -56,7 +53,12 @@
 				border-radius: 3px;
 			}
 		}
-
+		.up-inner-container {
+			padding: 12px 5% 0 0;
+			.up-editor-profile-avatar {
+				padding: 15px;
+			}
+		}
 	}
 }
 
