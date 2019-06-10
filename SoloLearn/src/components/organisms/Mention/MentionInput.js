@@ -134,8 +134,11 @@ class MentionInput extends Component {
 				if (this.getUsersPromiseId === getUsersId) {
 					const mentions = this.getMentions();
 					if (mentions.length < 10) {
+						const textLength = this.getText().length;
 						const suggestions = users
-							.filter(user => !mentions.some(mentioned => mentioned.id === user.id))
+							.filter(user =>
+								textLength + user.name.length <= this.props.maxLength
+								&& !mentions.some(mentioned => mentioned.id === user.id))
 							.slice(0, 5);
 						this.setState({ suggestions });
 					}
@@ -214,9 +217,6 @@ class MentionInput extends Component {
 		const { MentionSuggestions } = this.mentionPlugin;
 		const plugins = [ this.mentionPlugin ];
 
-		const lengthConformingSuggestions = this.state.suggestions.filter(s =>
-			this.getText().length + s.name.length <= this.props.maxLength);
-
 		return (
 			<Container
 				ref={this.containerRef}
@@ -240,7 +240,7 @@ class MentionInput extends Component {
 				/>
 				<MentionSuggestions
 					onSearchChange={this.onSearchChange}
-					suggestions={lengthConformingSuggestions}
+					suggestions={this.state.suggestions}
 					entryComponent={Entry}
 				/>
 			</Container>

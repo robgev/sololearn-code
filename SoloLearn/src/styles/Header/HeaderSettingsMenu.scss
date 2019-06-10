@@ -3,6 +3,7 @@
 	display: flex;
 	align-items: center;
 	.header-icon-menu {
-		color: $white
+		color: $white;
+		margin-right: -12px; // Compensate ripple
 	}
 }

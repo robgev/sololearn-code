@@ -8,9 +8,8 @@ import {
 	SecondaryTextBlock,
 } from 'components/atoms';
 import 'styles/Feed/FeedTemplates/Badge.scss';
-import BottomToolbar from '../FeedBottomToolbar';
 
-const Badge = ({ date, achievement, url }) => (
+const Badge = ({ achievement, url }) => (
 	<Fragment>
 		<Container className="achievement">
 			<Container
@@ -24,7 +23,6 @@ const Badge = ({ date, achievement, url }) => (
 				<SecondaryTextBlock className="description">{achievement.description}</SecondaryTextBlock>
 			</FlexBox>
 		</Container>
-		<BottomToolbar date={date} />
 	</Fragment>
 );
 

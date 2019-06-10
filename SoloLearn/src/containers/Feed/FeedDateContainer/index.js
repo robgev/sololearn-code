@@ -1,13 +1,13 @@
 import React from 'react';
 import { updateDate } from 'utils';
-import { SecondaryTextBlock, Container } from 'components/atoms';
+import { SecondaryTextBlock, FlexBox } from 'components/atoms';
 
-import 'styles/Feed/FeedBottomToolbar.scss';
+import './styles.scss';
 
 const FeedToolbar = ({ date }) => (
-	<Container className="feed-date-container">
+	<FlexBox align className="feed-date-container">
 		<SecondaryTextBlock className="date">{updateDate(date)}</SecondaryTextBlock>
-	</Container>
+	</FlexBox>
 );
 
 export default FeedToolbar;

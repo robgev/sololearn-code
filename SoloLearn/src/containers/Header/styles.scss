@@ -9,12 +9,17 @@
 	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px;
 	.header-wrapper {
 		display: grid;
-		grid-gap: 31px;
-		grid-template-columns: 214px auto 275px;
-		max-width: 85.416%;
+		grid-gap: 12px;
+		grid-template-columns: minmax(0, 3fr) 288px;
+		width: 70.83%;
+		max-width: 1190px;
     min-width: 480px;
-    margin-right: auto;
+    margin: auto;
 		.header-logo {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
 			padding-left: 24px;
 			.home-icon {
 				.header_home-icon_small {
@@ -72,6 +77,34 @@
 			// 		}
 			// 	}
 			// }
+		}
+	}
+}
+
+@include for-until-big-desktop-up {
+	.header {
+		.header-wrapper {
+			.header-logo {
+				.home-icon {
+					.header_home-icon_big {
+						width: 150px;
+					}
+				}
+			}
+		}
+	}
+}
+
+@include for-until-big-desktop {
+	.header {
+		.header-wrapper {
+			.header-logo {
+				.home-icon {
+					.header_home-icon_big {
+						width: 110px;
+					}
+				}
+			}
 		}
 	}
 }

@@ -16,7 +16,7 @@ import { USER_POST_MAX_LENGTH } from '../UserPostEditor';
 import 'draft-js-linkify-plugin/lib/plugin.css';
 import './styles.scss';
 
-const readOnlyFontSizeWithoutBackground = 15;
+const readOnlyFontSizeWithoutBackground = 14;
 const defaultFontSize = 24;
 
 const DraftEditor = ({
@@ -96,7 +96,11 @@ const DraftEditor = ({
 		const currentMentionIds = currentMentions.map(mention => mention.id);
 		getMentionsList({ type: 'userPost' })(value)
 			.then((users) => {
-				const filteredSuggestions = users.filter(u => !currentMentionIds.includes(u.id));
+				const currentContentLength = editorState.getCurrentContent().getPlainText('').length;
+
+				const filteredSuggestions = users.filter(u =>
+					u.name.length + currentContentLength <= USER_POST_MAX_LENGTH &&
+					!currentMentionIds.includes(u.id));
 				setSuggestions(filteredSuggestions.slice(0, 5));
 			});
 	};
@@ -221,11 +225,6 @@ const DraftEditor = ({
 
 	const getRgbaHexFromArgbHex = color => `#${color.substring(3, color.length)}${color.substring(1, 3)}`;
 
-	const currentContentLength = editorState.getCurrentContent().getPlainText('').length;
-
-	const filteredSuggestions = suggestions.filter(mention =>
-		mention.name.length + currentContentLength <= USER_POST_MAX_LENGTH);
-
 	return (
 		<FlexBox column className="draft-editor-wrapper">
 			<FlexBox
@@ -272,7 +271,7 @@ const DraftEditor = ({
 					/>
 					<MentionSuggestions
 						onSearchChange={getSuggestions}
-						suggestions={filteredSuggestions}
+						suggestions={suggestions}
 						entryComponent={Entry}
 						onOpen={() => setSuggestionsOpened(true)}
 						onClose={() => setSuggestionsOpened(false)}
