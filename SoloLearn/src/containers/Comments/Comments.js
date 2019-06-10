@@ -233,7 +233,7 @@ class Comments extends Component {
 			badge,
 			date: comment.date,
 		});
-		this.comments.push(newComment);
+		this.comments.unshift(newComment);
 		this.comments = this.commentsAPI.orderComments(this.comments);
 		this.highlight(comment.id);
 	}
@@ -289,7 +289,7 @@ class Comments extends Component {
 										onMouseDown={this.addComment(onBlur)}
 										disabled={!this.isSubmitEnabled}
 									>
-						Comment
+										Comment
 									</FlatButton>
 								)
 								: null)
@@ -310,7 +310,7 @@ class Comments extends Component {
 							{t('common.loadMore')}
 						</FlatButton>
 					}
-					{ (!this.loading && !this.comments.length)
+					{(!this.loading && !this.comments.length)
 						? <EmptyCard />
 						: (
 							<CommentList

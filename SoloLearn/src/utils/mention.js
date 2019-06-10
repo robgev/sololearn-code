@@ -37,7 +37,10 @@ export const mentionUsers = (text, mentions, ranges) => (ranges.length > 0 ? ran
 		const before = idx === 0
 			? text.substring(0, curr.offset)
 			: text.substring(arr[idx - 1].offset + arr[idx - 1].length, curr.offset);
-		const currentText = `${before}[user id="${mentions[idx].id}"]${text.substr(curr.offset, curr.length)}[/user]`;
+		const mention = mentions[idx]
+			? `[user id="${mentions[idx].id}"]${text.substr(curr.offset, curr.length)}[/user]`
+			: text.substr(curr.offset, curr.length);
+		const currentText = `${before}${mention}`;
 		return `${acc}${currentText}${idx === arr.length - 1 ? text.substring(curr.offset + curr.length) : ''}`;
 	}, '') : text);
 

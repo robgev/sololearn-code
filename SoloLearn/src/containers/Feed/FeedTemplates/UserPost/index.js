@@ -13,6 +13,7 @@ import {
 	ContainerLink,
 } from 'components/molecules';
 import { FeedBottomBarFullStatistics } from 'components/organisms';
+import { ImageIcon } from 'components/icons';
 
 import UserPostEditor from 'containers/UserPostEditor/DraftEditor';
 import { sendImpressionByPostId } from 'containers/UserPostDetails/userpostdetails.actions';
@@ -39,11 +40,16 @@ const UserPost = ({
 	const textContainerRef = useRef(null);
 	const [ imageShouldWrap, setImageShouldWrap ] = useState(false);
 	const [ textShouldWrap, setTextShouldWrap ] = useState(false);
+	const [ isImageLoaded, setImageLoaded ] = useState(false);
 
 	const onImageLoad = (e) => {
-		if (e.target.height > window.innerHeight * 0.5) {
-			setImageShouldWrap(true);
-		}
+		setImageLoaded(true);
+		const el = e.target;
+		window.setTimeout(() => {
+			if (el.height > window.innerHeight * 0.5) {
+				setImageShouldWrap(true);
+			}
+		}, 0);
 	};
 	const cancelImpressionTimer = () => {
 		if (impressionTimeoutIdRef.current) {
@@ -73,6 +79,10 @@ const UserPost = ({
 	}, [ imageShouldWrap, textShouldWrap ]);
 
 	useEffect(() => {
+		measure();
+	}, [ isImageLoaded ]);
+
+	useEffect(() => {
 		if (!background &&
 			textContainerRef.current &&
 			textContainerRef.current.clientHeight > lineHeightDefault * 5
@@ -82,7 +92,12 @@ const UserPost = ({
 	}, []);
 
 	return (
-		<VisibilitySensor onChange={onVisibilityChange}>
+		<VisibilitySensor
+			scrollCheck
+			delayedCall
+			scrollThrottle={100}
+			onChange={onVisibilityChange}
+		>
 			<FlexBox column className="user-post-feed-item-container">
 				<FlexBox align className="user-post-feed-item-profile-container">
 					<ProfileAvatar
@@ -130,15 +145,29 @@ const UserPost = ({
 				<ContainerLink to={`/post/${userPostId}`}>
 					{imageUrl ?
 						<Container
-							onLoad={measure || (() => { })}
 							className={imageShouldWrap ? 'user-post-feed-image-container wrap' : 'user-post-feed-image-container'}
 						>
-							<ImageAtom src={imageUrl} className="user-post-feed-image" onLoad={onImageLoad} />
+							{!isImageLoaded &&
+								<FlexBox
+									justify
+									align
+									className="user-post-feed-image-placeholder"
+								>
+									<ImageIcon className="up-placeholder-image-icon" />
+								</FlexBox>
+							}
+							<ImageAtom
+								src={imageUrl}
+								className="user-post-feed-image"
+								onLoad={onImageLoad}
+								style={{ display: isImageLoaded ? '' : 'none' }}
+							/>
 							{imageShouldWrap && <Container className="up-feed-image-shadow" />}
 						</Container>
 						: null}
 				</ContainerLink>
 				<FeedBottomBarFullStatistics
+					key={id}
 					type="userPost"
 					date={date}
 					id={id}

@@ -1,14 +1,12 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { translate } from 'react-i18next';
 import { List, Container } from 'components/atoms';
-import {EmptyCard} from 'components/molecules';
+import { EmptyCard } from 'components/molecules';
 import CodeShimmer from 'components/Shimmers/CodeShimmer';
 import './styles.scss';
 import CodeItem from '../CodeItem';
 
 const CodesList = ({
-	t,
 	codes,
 	hasMore,
 }) => (
@@ -35,4 +33,4 @@ const CodesList = ({
 	</Container>
 );
 
-export default translate()(observer(CodesList));
+export default observer(CodesList);

@@ -19,14 +19,14 @@ import './mySubmissionsStyles.scss';
 
 const getStringFromType = (type) => {
 	switch (type) {
-	case 1:
-		return 'multiple-choice';
-	case 2:
-		return 'type-in';
-	case 3:
-		return 'fill-in';
-	default:
-		throw new Error('Can\'t identify type of submitted challenge');
+		case 1:
+			return 'multiple-choice';
+		case 2:
+			return 'type-in';
+		case 3:
+			return 'fill-in';
+		default:
+			throw new Error('Can\'t identify type of submitted challenge');
 	}
 };
 
@@ -118,7 +118,7 @@ class MySubmissions extends Component {
 				}
 				this.setState(s => ({
 					isFetching: false,
-					challenges: uniqBy([ ...s.challenges, ...newChallenges ], 'id'),
+					challenges: uniqBy([...s.challenges, ...newChallenges], 'id'),
 				}));
 			}
 		}
@@ -237,6 +237,10 @@ class MySubmissions extends Component {
 							isLoading={isFetching}
 							courses={courses}
 							preview={this.preview}
+							shouldLinkToSuggest={
+								!isFetching && challenges.length === 0 && filters.status === 0
+								/* SUBMISSIONS.ALL */
+							}
 						/>
 					</PaperContainer>
 				</InfiniteScroll>
@@ -282,6 +286,7 @@ class MySubmissions extends Component {
 								<RaisedButton
 									onClick={this.handleEdit}
 									color="primary"
+									autoFocus
 								>
 									{t('common.edit-action-title')}
 								</RaisedButton>
@@ -292,6 +297,7 @@ class MySubmissions extends Component {
 								<RaisedButton
 									onClick={this.handleEdit}
 									color="primary"
+									autoFocus
 								>
 									{t('factory.action-clone')}
 								</RaisedButton>

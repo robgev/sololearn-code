@@ -16,6 +16,9 @@ import { USER_POST_MAX_LENGTH } from '../UserPostEditor';
 import 'draft-js-linkify-plugin/lib/plugin.css';
 import './styles.scss';
 
+const readOnlyFontSizeWithoutBackground = 15;
+const defaultFontSize = 24;
+
 const DraftEditor = ({
 	background,
 	measure,
@@ -23,12 +26,14 @@ const DraftEditor = ({
 	isEditorReadOnly = false,
 	editorInitialText = '',
 	t,
+	onEscape,
 	// emojiPlugin = null,
 }) => {
 	const hasBackground = background && background.type !== 'none';
 	const [ editorState, setEditorState ] = useState(EditorState.createWithContent(makeEditableContent(editorInitialText)));
-	const [ fontSize, setFontSize ] = useState(isEditorReadOnly && background.type === 'none' ? 15 : 30);
+	const [ fontSize, setFontSize ] = useState(isEditorReadOnly && background.type === 'none' ? readOnlyFontSizeWithoutBackground : defaultFontSize);
 	const [ suggestions, setSuggestions ] = useState([]);
+	const [ suggestionsOpened, setSuggestionsOpened ] = useState(false);
 	const editorRef = useRef(null);
 	const containerRef = useRef(null);
 	const linkifyPluginRef = useRef(createLinkifyPlugin({
@@ -91,7 +96,11 @@ const DraftEditor = ({
 		const currentMentionIds = currentMentions.map(mention => mention.id);
 		getMentionsList({ type: 'userPost' })(value)
 			.then((users) => {
-				const filteredSuggestions = users.filter(u => !currentMentionIds.includes(u.id));
+				const currentContentLength = editorState.getCurrentContent().getPlainText('').length;
+
+				const filteredSuggestions = users.filter(u =>
+					u.name.length + currentContentLength <= USER_POST_MAX_LENGTH &&
+					!currentMentionIds.includes(u.id));
 				setSuggestions(filteredSuggestions.slice(0, 5));
 			});
 	};
@@ -208,12 +217,13 @@ const DraftEditor = ({
 		measure();
 	}, [ editorState ]);
 
+	const handleEscape = () => {
+		if (!suggestionsOpened) {
+			onEscape();
+		}
+	};
+
 	const getRgbaHexFromArgbHex = color => `#${color.substring(3, color.length)}${color.substring(1, 3)}`;
-
-	const currentContentLength = editorState.getCurrentContent().getPlainText('').length;
-
-	const filteredSuggestions = suggestions.filter(mention =>
-		mention.name.length + currentContentLength <= USER_POST_MAX_LENGTH);
 
 	return (
 		<FlexBox
@@ -255,12 +265,15 @@ const DraftEditor = ({
 					ref={editorRef}
 					placeholder={t('user_post.user-post-placeholder')}
 					plugins={plugins}
+					onEscape={handleEscape}
 					readOnly={isEditorReadOnly}
 				/>
 				<MentionSuggestions
 					onSearchChange={getSuggestions}
-					suggestions={filteredSuggestions}
+					suggestions={suggestions}
 					entryComponent={Entry}
+					onOpen={() => setSuggestionsOpened(true)}
+					onClose={() => setSuggestionsOpened(false)}
 				/>
 			</Container>
 		</FlexBox>

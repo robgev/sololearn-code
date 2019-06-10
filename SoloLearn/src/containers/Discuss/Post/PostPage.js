@@ -8,7 +8,8 @@ class PostPage extends Component {
 	setRouteAlias = (alias) => {
 		const { id, replyId = '' } = this.props.params;
 		if (this._isMounted) {
-			browserHistory.replace(`/discuss/${id}/${toSeoFriendly(alias)}/${replyId}`);
+			const query = this.props.location.search;
+			browserHistory.replace(`/discuss/${id}/${toSeoFriendly(alias)}/${replyId}${query}`);
 		}
 	}
 
