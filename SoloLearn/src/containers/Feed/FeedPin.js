@@ -124,7 +124,7 @@ class FeedPin extends Component {
 				const firstPost = pin.userPosts[0];
 				url = `/userPost/${firstPost.id}`;
 			} else if (pin.courses) {
-				url = `/learn/${toSeoFriendly(pin.courses[0].name)}`;
+				url = `/learn/${toSeoFriendly(pin.courses[0].alias)}`;
 			}
 		} else {
 			const parts = url.split('/');
