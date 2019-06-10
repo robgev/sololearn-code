@@ -7,9 +7,6 @@ import {
 	Link,
 } from 'components/atoms';
 import {
-	ModBadge,
-	ProfileAvatar,
-	UsernameLink,
 	ContainerLink,
 } from 'components/molecules';
 import { FeedBottomBarFullStatistics } from 'components/organisms';
@@ -21,7 +18,6 @@ import { sendImpressionByPostId } from 'containers/UserPostDetails/userpostdetai
 import './styles.scss';
 
 const UserPost = ({
-	user,
 	background,
 	message,
 	imageUrl,
@@ -152,15 +148,16 @@ const UserPost = ({
 						: null}
 				</ContainerLink>
 				<FeedBottomBarFullStatistics
-					key={id}
-					type="userPost"
-					date={date}
 					id={id}
-					userVote={vote}
-					totalVotes={votes}
-					comments={comments}
+					key={id}
+					date={date}
 					views={views}
+					userVote={vote}
+					type="userPost"
+					withDate={false}
+					totalVotes={votes}
 					onChange={onChange}
+					comments={comments}
 					className="up-feed-item-bottom-bar"
 					commentIconLink={`/post/${userPostId}`}
 				/>

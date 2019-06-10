@@ -1,12 +1,8 @@
 import React from 'react';
-import { updateDate } from 'utils';
-import { SecondaryTextBlock, Container } from 'components/atoms';
+import { FlexBox } from 'components/atoms';
 import { VoteActions } from 'components/organisms';
 
-import 'styles/Feed/FeedBottomToolbar.scss';
-
 const FeedToolbar = ({
-	date,
 	userVote,
 	totalVotes,
 	type,
@@ -14,7 +10,11 @@ const FeedToolbar = ({
 	id,
 	className = '',
 }) => (
-	<Container className={`feed-toolbar-container ${className}`}>
+	<FlexBox
+		align
+		justifyBetween
+		className={`feed-btwv-container ${className}`}
+	>
 		<VoteActions
 			id={id}
 			type={type}
@@ -22,8 +22,7 @@ const FeedToolbar = ({
 			initialCount={totalVotes}
 			onChange={onChange}
 		/>
-		<SecondaryTextBlock className="date">{updateDate(date)}</SecondaryTextBlock>
-	</Container>
+	</FlexBox>
 );
 
 export default FeedToolbar;

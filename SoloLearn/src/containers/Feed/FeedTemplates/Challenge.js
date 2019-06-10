@@ -8,7 +8,6 @@ import {
 } from 'components/atoms';
 import { UsernameLink, ProfileAvatar } from 'components/molecules';
 import 'styles/Feed/FeedTemplates/Challenge.scss';
-import BottomToolbar from '../FeedBottomToolbar';
 
 const Challenge = ({
 	t,
@@ -41,7 +40,6 @@ const Challenge = ({
 				</FlexBox>
 			</FlexBox>
 		</Container>
-		<BottomToolbar date={date} />
 	</Fragment>
 );
 

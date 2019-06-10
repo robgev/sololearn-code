@@ -20,7 +20,6 @@ import Comment from '../FeedTemplates/Comment';
 import Challenge from '../FeedTemplates/Challenge';
 import UserPost from '../FeedTemplates/UserPost';
 import FeedSuggestions from '../FeedSuggestions';
-import BottomToolbar from '../FeedBottomToolbar';
 
 import './styles.scss';
 
@@ -226,7 +225,6 @@ class FeedItem extends Component {
 							date={feedItem.date}
 							votes={this.votes}
 						/>
-						<BottomToolbar date={feedItem.date} />
 					</PaperContainer>
 					{ this.props.open &&
 					<Container
@@ -246,6 +244,7 @@ class FeedItem extends Component {
 										title={currentItem.title}
 										user={currentItem.user}
 										votes={this.votes}
+										date={currentItem.date}
 									>
 										{/* this.url = `/profile/${currentItem.contest.player.id}`; */}
 										<Challenge date={currentItem.date} contest={currentItem.contest} />
@@ -267,6 +266,7 @@ class FeedItem extends Component {
 						title={feedItem.title}
 						user={feedItem.user}
 						votes={this.votes}
+						date={feedItem.date}
 					>
 						{this.renderFeedItem()}
 					</FeedItemBase>
