@@ -68,9 +68,8 @@ class Comments extends Component {
 
 	hideComment=(id, type) => {
 		if (this.comments.length > 0 && type !== 5) {
-			const index = this.comments.findIndex(c => c.id === id);
 			const countToRemove = 1;
-			this.comments.splice(index, 1);
+			this.comments = this.comments.filter(c => c.id !== id);
 			this.onCommentDelete(countToRemove);
 		}
 	}
