@@ -66,6 +66,15 @@ class Comments extends Component {
 		return this.comments.length > 0 && this.comments[0].index === -1;
 	}
 
+	hideComment=(id, type) => {
+		if (this.comments.length > 0 && type !== 5) {
+			const index = this.comments.findIndex(c => c.id === id);
+			const countToRemove = 1;
+			this.comments.splice(index, 1);
+			this.onCommentDelete(countToRemove);
+		}
+	}
+
 	componentDidMount() {
 		this.dispose = autorun(() => {
 			// Need to keep commentsAPI orderBy in sync with view
@@ -321,6 +330,7 @@ class Comments extends Component {
 								delete={this.deleteComment}
 								commentsAPI={this.commentsAPI}
 								key={this.orderBy}
+								hideComment={this.hideComment}
 							/>
 						)
 					}
