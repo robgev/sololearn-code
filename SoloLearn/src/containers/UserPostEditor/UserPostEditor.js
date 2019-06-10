@@ -54,19 +54,19 @@ const UserPostEditor = ({
 	toggleImageInput = null,
 	t,
 }) => {
-	const [backgrounds, setBackgrounds] = useState([]);
-	const [canApplyBackground, setCanApplyBackground] = useState(true);
-	const [selectedBackgroundId, setSelectedBackgroundId] = useState(initialSelectedBackgroundId);
+	const [ backgrounds, setBackgrounds ] = useState([]);
+	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
+	const [ selectedBackgroundId, setSelectedBackgroundId ] = useState(initialSelectedBackgroundId);
 
 	const imageInputRef = useRef();
-	const [imageSource, setImageSource] = useState(initialImageSource || null);
-	const [imageData, setImageData] = useState(null);
-	const [imageType, setImageType] = useState('.jpg');
-	const [isPostButtonDisabled, togglePostButtonDisabled] = useState(true);
-	const [editorText, setEditorText] = useState('');
+	const [ imageSource, setImageSource ] = useState(initialImageSource || null);
+	const [ imageData, setImageData ] = useState(null);
+	const [ imageType, setImageType ] = useState('.jpg');
+	const [ isPostButtonDisabled, togglePostButtonDisabled ] = useState(true);
+	const [ editorText, setEditorText ] = useState('');
 
-	const [isSnackBarOpen, toggleSnackBarIsOpen] = useState(false);
-	const [snackMessage, setSnackMessage] = useState('');
+	const [ isSnackBarOpen, toggleSnackBarIsOpen ] = useState(false);
+	const [ snackMessage, setSnackMessage ] = useState('');
 
 	// const emojiPlugin = useRef(createEmojiPlugin({
 	// 	useNativeArt: true,
@@ -90,7 +90,7 @@ const UserPostEditor = ({
 	useEffect(() => {
 		getPostBackgrounds()
 			.then((res) => {
-				setBackgrounds([{ type: 'none', id: -1 }, ...res.backgrounds]);
+				setBackgrounds([ { type: 'none', id: -1 }, ...res.backgrounds ]);
 				if (openImageInput) {
 					imageInputRef.current.click();
 				}
@@ -110,7 +110,7 @@ const UserPostEditor = ({
 		} else {
 			togglePostButtonDisabled(true);
 		}
-	}, [editorText, imageSource]);
+	}, [ editorText, imageSource ]);
 
 	const onImageLoad = (e, uri) => {
 		if (e.target.width < 100 || e.target.height < 50) {
@@ -163,7 +163,7 @@ const UserPostEditor = ({
 
 	useEffect(() => {
 		computeCanApplyBackground();
-	}, [editorText, imageSource]);
+	}, [ editorText, imageSource ]);
 
 	const backgroundId = canApplyBackground ? selectedBackgroundId : -1;
 
@@ -257,13 +257,13 @@ const UserPostEditor = ({
 				}
 				<Container className="user-post-main-content">
 					{backgrounds && backgrounds.length ?
-						<FlexBox column fullWith>
-							<FlexBox className="up-inner-container">
-								<ProfileAvatar
-									user={profile}
-									className="up-editor-profile-avatar"
-									avatarStyle={{ width: '48px', height: '48px' }}
-								/>
+						<FlexBox className="up-inner-container">
+							<ProfileAvatar
+								user={profile}
+								className="up-editor-profile-avatar"
+								avatarStyle={{ width: '48px', height: '48px' }}
+							/>
+							<FlexBox column fullWidth>
 								<DraftEditor
 									background={background}
 									setEditorText={setEditorText}
@@ -271,55 +271,56 @@ const UserPostEditor = ({
 									onEscape={closePopup}
 								// emojiPlugin={emojiPlugin}
 								/>
-							</FlexBox>
-							<FlexBox justify align >
-								<Container className="user-post-image-preview-container">
-									<IconButton
-										onClick={() => {
-											imageInputRef.current.value = '';
-											removeImage();
-										}}
-										className="image-preview-remove-icon"
-										style={{ display: imageSource ? 'block' : 'none' }}
-									>
-										<Close />
-									</IconButton>
-									<AtomImage src={imageSource || ''} className="user-post-image-preview" />
-								</Container>
-							</FlexBox>
 
-							<FlexBox
-								align
-								justifyBetween
-								className="up-editor-actions-container"
-							>
-								<AtomImage
-									onClick={() => imageInputRef.current.click()}
-									src="/assets/image_icon_2x.png"
-									className="add-image-icon"
-								/>
-								<UploadImageInput inputRef={imageInputRef} handleChange={onImageSelect} />
-								{
-									canApplyBackground
-										? (
-											<FlexBox className="backgrounds-container">
-												{
-													backgrounds.map(el =>
-														(<BackgroundIconButton
-															onSelect={setSelectedBackgroundId}
-															background={el}
-														/>))
-												}
-											</FlexBox>
-										)
-										: null
-								}
-								<EditorActions
-									isPostButtonDisabled={isPostButtonDisabled}
-									createOrEditPostHandler={initialUserPostId ? editPostHandler : createPostHandler}
-									closePopup={closePopup}
-									initialUserPostId={initialUserPostId}
-								/>
+								<FlexBox justify align >
+									<Container className="user-post-image-preview-container">
+										<IconButton
+											onClick={() => {
+												imageInputRef.current.value = '';
+												removeImage();
+											}}
+											className="image-preview-remove-icon"
+											style={{ display: imageSource ? 'block' : 'none' }}
+										>
+											<Close />
+										</IconButton>
+										<AtomImage src={imageSource || ''} className="user-post-image-preview" />
+									</Container>
+								</FlexBox>
+
+								<FlexBox
+									align
+									justifyBetween
+									className="up-editor-actions-container"
+								>
+									<AtomImage
+										onClick={() => imageInputRef.current.click()}
+										src="/assets/image_icon_2x.png"
+										className="add-image-icon"
+									/>
+									<UploadImageInput inputRef={imageInputRef} handleChange={onImageSelect} />
+									{
+										canApplyBackground
+											? (
+												<FlexBox className="backgrounds-container">
+													{
+														backgrounds.map(el =>
+															(<BackgroundIconButton
+																onSelect={setSelectedBackgroundId}
+																background={el}
+															/>))
+													}
+												</FlexBox>
+											)
+											: null
+									}
+									<EditorActions
+										isPostButtonDisabled={isPostButtonDisabled}
+										createOrEditPostHandler={initialUserPostId ? editPostHandler : createPostHandler}
+										closePopup={closePopup}
+										initialUserPostId={initialUserPostId}
+									/>
+								</FlexBox>
 							</FlexBox>
 
 						</FlexBox>

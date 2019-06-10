@@ -1,7 +1,7 @@
 @import '~styles/_colors';
 
 .draft-editor-wrapper {
-	width: calc(100% - 50px);
+	width: 100%;
 	box-sizing: border-box;
 	.draft-editor-container {
 		width: 100%;
@@ -32,7 +32,7 @@
 		}
 		.count {
 			font-size: 11px;
-			color: unset;
+			color: #616B6E;
 		}
 	}
 }
