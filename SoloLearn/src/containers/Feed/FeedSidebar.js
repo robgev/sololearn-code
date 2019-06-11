@@ -36,13 +36,13 @@ const FeedSuggestions = ({ t, discoverIds, discoverEntities }) => (
 												user={discoverEntities[id]}
 											/>
 											<FlexBox column className="profile-info">
-												<Container>
+												<FlexBox align>
 													<UsernameLink to={`/profile/${id}`} >{name}</UsernameLink>
 													<ModBadge
 														className="badge"
 														badge={badge}
 													/>
-												</Container>
+												</FlexBox>
 												<SecondaryTextBlock>
 													{
 														followers === 1

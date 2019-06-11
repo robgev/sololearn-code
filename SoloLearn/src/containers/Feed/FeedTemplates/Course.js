@@ -11,9 +11,7 @@ import { AppDefaults } from 'api/service';
 
 import 'styles/Feed/FeedTemplates/Course.scss';
 
-import BottomToolbar from '../FeedBottomToolbar';
-
-const Course = ({ course, date, showDate = true }) => (
+const Course = ({ course }) => (
 	<Container to={`/learn/${toSeoFriendly(course.alias)}`}>
 		<Container
 			tabIndex={0}
@@ -29,7 +27,6 @@ const Course = ({ course, date, showDate = true }) => (
 				<TextBlock className="courseName">{course.name}</TextBlock>
 			</Link>
 		</Container>
-		{showDate && <BottomToolbar date={date} />}
 	</Container>
 );
 
