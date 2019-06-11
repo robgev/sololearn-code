@@ -23,10 +23,10 @@ const EditorActions = ({
 			<PromiseButton
 				raised
 				color="primary"
-				size="large"
 				disabled={isPostButtonDisabled}
 				fire={createOrEditPostHandler}
 				className="up-share-button"
+				label={{ width: '44px', height: '19px' }}
 			>
 				{initialUserPostId ? t('common.save-action-title') : 'Share'}
 			</PromiseButton>

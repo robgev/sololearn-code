@@ -2,6 +2,8 @@
 
 .user-post-actions-container {
 	margin: 0;
+	width: 220px;
+	height: 32px;
 	font-size: 15px;
 	.user-post-cancel-button {
 		color: $primary_color;
@@ -9,6 +11,8 @@
 		text-transform: none;
 	}
 	.up-share-button {
+		width: 120px;
+		height: 32px;
 		border-radius: 25px;
 		text-transform: none;
 		min-height: 0;

@@ -6,6 +6,7 @@ import {
 	FlexBox,
 	Input,
 	Image,
+	ClickAwayListener,
 } from 'components/atoms';
 import {
 	ProfileAvatar,
@@ -68,14 +69,16 @@ const FeedHeader = ({ profile, t, afterPostCallback }) => {
 				(
 					<React.Fragment>
 						<Container className="up-feed-blur" />
-						<PaperContainer className="up-wrapper-in-feed-header">
-							<UserPostEditor
-								closePopup={() => toggleCreatePost(false)}
-								afterPostCallback={afterPostCallback}
-								openImageInput={openImageInput}
-								toggleImageInput={() => toggleImageInput(false)}
-							/>
-						</PaperContainer>
+						<ClickAwayListener onClickAway={() => toggleCreatePost(false)}>
+							<PaperContainer className="up-wrapper-in-feed-header">
+								<UserPostEditor
+									closePopup={() => toggleCreatePost(false)}
+									afterPostCallback={afterPostCallback}
+									openImageInput={openImageInput}
+									toggleImageInput={() => toggleImageInput(false)}
+								/>
+							</PaperContainer>
+						</ClickAwayListener>
 					</React.Fragment>
 				)
 			}
