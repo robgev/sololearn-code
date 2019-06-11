@@ -29,7 +29,7 @@ class FeedPin extends Component {
 		const { pin } = this.props;
 
 		return pin.courses.map(course => (
-			<Course key={`pinCourse ${course.id} ${pin.id}`} showDate={false} course={course} openPopup={this.props.openPopup} />
+			<Course key={`pinCourse ${course.id} ${pin.id}`} course={course} openPopup={this.props.openPopup} />
 		));
 	}
 

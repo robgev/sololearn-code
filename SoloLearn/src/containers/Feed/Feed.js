@@ -15,14 +15,14 @@ import {
 } from 'actions/discover';
 import { feedSelector, feedHasMoreSelector } from 'reducers/feed.reducer';
 import { LayoutWithSidebar } from 'components/molecules';
-import { Container, Select, MenuItem, Title } from 'components/atoms';
+import { Container, FlexBox, Title } from 'components/atoms';
 import { showError } from 'utils';
 import Storage from 'api/storage';
-import Header from './Header';
+import FeedHeader from './FeedHeader';
 import FeedList from './FeedList';
 import FeedSidebar from './FeedSidebar';
 
-import 'styles/Feed/Feed.scss';
+import './styles.scss';
 
 const mapStateToProps = state => ({
 	feed: feedSelector(state),
@@ -85,12 +85,11 @@ class FeedItemsBase extends Component {
 			.catch(e => showError(e, 'Something went wrong when trying to get feed'));
 	}
 
-	handleFeedFilterChange = (e) => {
+	handleFeedFilterChange = currentFilter => () => {
 		const {
 			clearFeedItems,
 			getPinnedFeedItems,
 		} = this.props;
-		const { value: currentFilter } = e.target;
 		this.setState({ currentFilter }, () => {
 			clearFeedItems();
 			this.getFeedItems();
@@ -122,27 +121,27 @@ class FeedItemsBase extends Component {
 				sidebar={<FeedSidebar t={t} />}
 			>
 				<Container className="feed-items-wrapper">
-					<Header
+					<FeedHeader
 						profile={userProfile}
 						levels={levels}
 						afterPostCallback={this.loadNewFeedItems}
 					/>
-					<Select
-						value={currentFilter}
-						className="feed-items_select"
-						onChange={this.handleFeedFilterChange}
-					>
-						<MenuItem value={0}>
-							<Title className="sub-title">
-								{t('feed.title')}
-							</Title>
-						</MenuItem>
-						<MenuItem value={1}>
-							<Title className="sub-title">
-								{t('feed.weekly-title')}
-							</Title>
-						</MenuItem>
-					</Select>
+					<FlexBox align className="feed-filters">
+						<Title
+							value={0}
+							className={`sub-title ${currentFilter === 0 ? 'active' : ''}`}
+							onClick={this.handleFeedFilterChange(0)}
+						>
+							{t('feed.title')}
+						</Title>
+						<Title
+							value={1}
+							className={`sub-title ${currentFilter === 1 ? 'active' : ''}`}
+							onClick={this.handleFeedFilterChange(1)}
+						>
+							{t('feed.weekly-title')}
+						</Title>
+					</FlexBox>
 					<FeedList
 						feed={feed}
 						feedPins={feedPins}

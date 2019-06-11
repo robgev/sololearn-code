@@ -16,7 +16,7 @@ import { USER_POST_MAX_LENGTH } from '../UserPostEditor';
 import 'draft-js-linkify-plugin/lib/plugin.css';
 import './styles.scss';
 
-const readOnlyFontSizeWithoutBackground = 15;
+const readOnlyFontSizeWithoutBackground = 14;
 const defaultFontSize = 24;
 
 const DraftEditor = ({

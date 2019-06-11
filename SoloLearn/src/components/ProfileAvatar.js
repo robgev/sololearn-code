@@ -17,7 +17,7 @@ const ProfileAvatar = ({
 	badge,
 	userID,
 	vertical,
-	size = 30,
+	size = 48,
 	userName,
 	avatarUrl,
 	className,

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import ProfileAvatar from 'components/ProfileAvatar';
 import { MenuItem } from 'components/atoms';
 import { IconMenu } from 'components/molecules';
-import { ArrowDown } from 'components/icons';
+import { ArrowDropDown } from 'components/icons';
 
 import { logout } from 'actions/login.action';
 
@@ -58,11 +58,16 @@ class SettingsMenu extends PureComponent {
 					userID={userID}
 					userName={userName}
 					avatarUrl={avatarUrl}
-					avatarStyle={{ border: '1px solid white' }}
+					avatarStyle={{
+						width: 36,
+						height: 36,
+						margin: 0,
+						marginLeft: 5,
+					}}
 				/>
 				<IconMenu
-					icon={ArrowDown}
-					iconProps={{className:"header-icon-menu"}}
+					icon={ArrowDropDown}
+					iconProps={{ className: 'header-icon-menu' }}
 				>
 					<MenuItem
 						onClick={this.goToLeaderboards}
