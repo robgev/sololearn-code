@@ -31,8 +31,9 @@
 		}
 	}
 	.up-feed-item-bottom-bar {
-		margin-left: 0;
-		padding: 0 15px;
+		.organism_vote-actions {
+			margin-right: 20px;
+		}
 	}
 	.up-feed-item-continue-reading-text {
 		font-weight: 500;
