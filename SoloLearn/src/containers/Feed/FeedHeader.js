@@ -47,8 +47,7 @@ const FeedHeader = ({ profile, t, afterPostCallback }) => {
 						<FlexBox className="actions" align fullWith>
 							<ProfileAvatar
 								user={profile}
-								className="up-fh-profile-avatar"
-								avatarStyle={{ width: '48px', height: '48px' }}
+								className="up-fh-profile-avatar-container"
 							/>
 							<Input
 								variant="outlined"

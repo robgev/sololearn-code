@@ -9,7 +9,7 @@ import './styles.scss';
 const ProfileAvatar = ({
 	user,
 	size,
-	className,
+	className = '',
 }) => (
 	<UserTooltip userData={user} placement="top">
 		<Container
@@ -23,7 +23,7 @@ const ProfileAvatar = ({
 						userID={user.id}
 						badge={user.badge}
 						variant={size}
-						disabled
+						disable
 					/>
 					{/* { levelBadge &&
 							<Image
