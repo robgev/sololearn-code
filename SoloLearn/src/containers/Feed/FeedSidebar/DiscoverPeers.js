@@ -1,22 +1,15 @@
 import React, { Fragment } from 'react';
-import { connect } from 'react-redux';
-import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
+import { translate } from 'react-i18next';
 import { numberFormatter } from 'utils';
-import { discoverIdsSelector, discoverEntitiesSelector } from 'reducers/discover.reducer';
 import {
-	Container, FlexBox, Heading, HorizontalDivider,
-	List, ListItem, SecondaryTextBlock,
+	Container, FlexBox, HorizontalDivider, PaperContainer,
+	List, ListItem, SecondaryTextBlock, Heading,
 } from 'components/atoms';
 import { UsernameLink, ViewMoreLink, ProfileAvatar, ModBadge } from 'components/molecules';
-import './sidebar.scss';
+import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
 
-const mapStateToProps = state => ({
-	discoverIds: discoverIdsSelector(state),
-	discoverEntities: discoverEntitiesSelector(state),
-});
-
-const FeedSuggestions = ({ t, discoverIds, discoverEntities }) => (
-	<FlexBox column justify className="feed-sidebar">
+const DiscoverPeers = ({ t, discoverEntities, discoverIds }) => (
+	<PaperContainer className="discover-peers">
 		<Heading>{t('discover_peers.title')}</Heading>
 		{discoverEntities === null
 			? <SidebarShimmer round noTitle />
@@ -36,13 +29,13 @@ const FeedSuggestions = ({ t, discoverIds, discoverEntities }) => (
 												user={discoverEntities[id]}
 											/>
 											<FlexBox column className="profile-info">
-												<FlexBox align>
+												<Container>
 													<UsernameLink to={`/profile/${id}`} >{name}</UsernameLink>
 													<ModBadge
 														className="badge"
 														badge={badge}
 													/>
-												</FlexBox>
+												</Container>
 												<SecondaryTextBlock>
 													{
 														followers === 1
@@ -66,7 +59,7 @@ const FeedSuggestions = ({ t, discoverIds, discoverEntities }) => (
 				{t('common.loadMore')}
 			</ViewMoreLink>
 		}
-	</FlexBox>
+	</PaperContainer>
 );
 
-export default connect(mapStateToProps)(FeedSuggestions);
+export default translate()(DiscoverPeers);

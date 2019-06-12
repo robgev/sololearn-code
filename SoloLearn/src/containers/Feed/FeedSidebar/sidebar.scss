@@ -1,0 +1,41 @@
+@import '~styles/variables';
+@import '~styles/colors';
+
+.feed-sidebar {
+	.profile-info {
+		margin-bottom: $secondary_gap_size;
+		.avatar {
+			margin-top: 2px;
+		}
+		.username {
+			margin-top: $primary_gap_size;
+			margin-bottom: 14px;
+		}
+		.progress-section {
+			margin-bottom: 20px;
+			.progress-bar {
+				width: 100%;
+			}
+		}
+		.badge {
+			margin: 0 $secondary_gap_size;
+		}
+		.section-stats {
+			.name {
+				font-weight: 600;
+				font-size: 12px;
+				margin-bottom: 4px;
+			}
+			.stat {
+				font-size: 16px;
+				color: $primary_color;
+			}
+		}
+	}
+	.discover-peers {
+		.feed-sidebar_view-more {
+			margin-top: $primary_gap_size;
+			align-self: center;
+		}
+	}
+}

@@ -63,10 +63,10 @@ class FeedItem extends Component {
 			this.url = `/profile/${feedItem.user.id}/badges?badgeID=${feedItem.achievement.id}`;
 			return <Badge date={feedItem.date} achievement={feedItem.achievement} url={this.url} />;
 		case types.courseStarted:
-			this.url = `/learn/${toSeoFriendly(feedItem.course.name)}`;
+			this.url = `/learn/${toSeoFriendly(feedItem.course.alias)}`;
 			return <Course date={feedItem.date} course={feedItem.course} openPopup={this.props.openCoursePopup} />;
 		case types.courseCompleted:
-			this.url = `/learn/${toSeoFriendly(feedItem.course.name)}`;
+			this.url = `/learn/${toSeoFriendly(feedItem.course.alias)}`;
 			return <Course date={feedItem.date} course={feedItem.course} openPopup={this.props.openCoursePopup} />;
 		case types.postedQuestion:
 			this.url = `/discuss/${feedItem.post.id}`;
@@ -118,7 +118,7 @@ class FeedItem extends Component {
 			return <FeedSuggestions number={feedItem.number} />;
 		case types.postedLessonComment:
 		case types.postedLessonCommentReply:
-			this.url = `/learn/${toSeoFriendly(feedItem.course.name)}?commentID=${feedItem.comment.id}`;
+			this.url = `/learn/${toSeoFriendly(feedItem.course.alias)}?commentID=${feedItem.comment.id}`;
 			return (
 				<Comment
 					url={this.url}

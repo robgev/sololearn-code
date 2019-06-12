@@ -118,7 +118,8 @@ class FeedItemsBase extends Component {
 		const { loading, currentFilter, hasNewItems } = this.state;
 		return (
 			<LayoutWithSidebar
-				sidebar={<FeedSidebar t={t} />}
+				paper={false}
+				sidebar={<FeedSidebar />}
 			>
 				<Container className="feed-items-wrapper">
 					<FeedHeader
