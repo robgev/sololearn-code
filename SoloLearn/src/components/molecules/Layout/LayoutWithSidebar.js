@@ -6,16 +6,21 @@ import Layout from './Layout';
 
 import './styles.scss';
 
-const LayoutWithSidebar = ({ sidebar, sidebarProps, ...props }) => (
-	<Layout className="with-sidebar">
-		<Container {...props} />
-		<StickySidebar>
-			<PaperContainer className="sidebar" {...sidebarProps}>
-				{sidebar}
-			</PaperContainer>
-		</StickySidebar>
-	</Layout>
-);
+const LayoutWithSidebar = ({
+	paper = true, sidebar, sidebarProps, ...props
+}) => {
+	const SidebarContainer = paper ? PaperContainer : Container;
+	return (
+		<Layout className="with-sidebar">
+			<Container {...props} />
+			<StickySidebar>
+				<SidebarContainer className="sidebar" {...sidebarProps}>
+					{sidebar}
+				</SidebarContainer>
+			</StickySidebar>
+		</Layout>
+	);
+};
 
 LayoutWithSidebar.defaultProps = {
 	sidebarProps: {},

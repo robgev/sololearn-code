@@ -3,10 +3,10 @@ import { Progress, Container } from 'components/atoms';
 import './styles.scss';
 
 const ProgressBar = ({
-	className, value, minText, maxText, ...props
+	className, value, minText, maxText, progressProps, ...props
 }) => (
 	<Container className={`molecule_progress-bar ${className}`} {...props}>
-		<Progress value={value} />
+		<Progress value={value} {...progressProps} />
 		<span className="molecule_progress-bar-label molecule_progress-bar-label-left">{minText}</span>
 		<span className="molecule_progress-bar-label molecule_progress-bar-label-right">{maxText}</span>
 	</Container>

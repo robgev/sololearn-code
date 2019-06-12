@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 import { getDiscoverSuggestions } from 'actions/discover';
 import FeedSidebar from 'containers/Feed/FeedSidebar';
@@ -15,7 +14,6 @@ import NotificationList from './NotificationList';
 const mapDispatchToProps = { getDiscoverSuggestions };
 
 @connect(null, mapDispatchToProps)
-@translate()
 class Notifications extends Component {
 	componentDidMount = () => {
 		this.props.getDiscoverSuggestions()
@@ -23,10 +21,10 @@ class Notifications extends Component {
 	}
 
 	render() {
-		const { t } = this.props;
 		return (
 			<LayoutWithSidebar
-				sidebar={<FeedSidebar t={t} />}
+				paper={false}
+				sidebar={<FeedSidebar />}
 			>
 				<PaperContainer>
 					<Header />
