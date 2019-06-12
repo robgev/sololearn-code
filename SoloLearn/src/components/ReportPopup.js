@@ -63,7 +63,7 @@ class ReportPopup extends PureComponent {
 				itemId,
 				itemType,
 				reason: reportReason,
-				message: customReason,
+				message: customReason === '' ? null : customReason,
 			});
 		} catch (e) {
 			console.log(e);
