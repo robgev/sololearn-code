@@ -271,21 +271,23 @@ const UserPostEditor = ({
 								// emojiPlugin={emojiPlugin}
 								/>
 
-								<FlexBox justify align >
-									<Container className="user-post-image-preview-container">
-										<IconButton
-											onClick={() => {
-												imageInputRef.current.value = '';
-												removeImage();
-											}}
-											className="image-preview-remove-icon"
-											style={{ display: imageSource ? 'block' : 'none' }}
-										>
-											<Close />
-										</IconButton>
-										<AtomImage src={imageSource || ''} className="user-post-image-preview" />
-									</Container>
-								</FlexBox>
+								{imageSource &&
+									<FlexBox justify align >
+										<Container className="user-post-image-preview-container">
+											<IconButton
+												onClick={() => {
+													imageInputRef.current.value = '';
+													removeImage();
+												}}
+												className="image-preview-remove-icon"
+												style={{ display: imageSource ? 'block' : 'none' }}
+											>
+												<Close />
+											</IconButton>
+											<AtomImage src={imageSource || ''} className="user-post-image-preview" />
+										</Container>
+									</FlexBox>
+								}
 
 								<FlexBox
 									align
