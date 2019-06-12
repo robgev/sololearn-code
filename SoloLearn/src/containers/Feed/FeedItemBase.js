@@ -11,10 +11,13 @@ import 'styles/Feed/FeedItemBase.scss';
 import FeedDateContainer from './FeedDateContainer';
 
 const FeedItemBase = ({
-	title, user, children, date, hideTitle,
+	title,
+	user,
+	children,
+	date,
+	hideTitle,
 }) => (
 	<Container className="feed-item-content">
-
 		<ProfileAvatar
 			user={user}
 		/>

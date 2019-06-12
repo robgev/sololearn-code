@@ -5,10 +5,7 @@ import { observer } from 'mobx-react';
 // Additional data and components
 import { toSeoFriendly } from 'utils';
 import { CourseCard } from 'containers/Learn/components';
-import {
-	Container,
-	PaperContainer,
-} from 'components/atoms';
+import { Container } from 'components/atoms';
 import types from 'defaults/appTypes';
 
 import FeedItemBase from '../FeedItemBase';
@@ -19,6 +16,7 @@ import Code from '../FeedTemplates/Code';
 import Comment from '../FeedTemplates/Comment';
 import Challenge from '../FeedTemplates/Challenge';
 import UserPost from '../FeedTemplates/UserPost';
+import Achievement from '../FeedTemplates/Achievement';
 import FeedSuggestions from '../FeedSuggestions';
 
 import './styles.scss';
@@ -57,7 +55,6 @@ class FeedItem extends Component {
 			feedItem,
 			voteFeedItem,
 		} = this.props;
-		console.log('FeedItem render', feedItem);
 		switch (feedItem.type) {
 		case types.badgeUnlocked:
 			this.url = `/profile/${feedItem.user.id}/badges?badgeID=${feedItem.achievement.id}`;
@@ -196,6 +193,16 @@ class FeedItem extends Component {
 					onChange={({ vote: newVote }) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.userPost.id })}
 				/>
 			);
+		case types.leveledUp:
+		case types.joined:
+			return (
+				<Achievement
+					user={feedItem.user}
+					title={feedItem.title}
+					measure={this.props.measure}
+					isLevelUp={feedItem.type === types.leveledUp}
+				/>
+			);
 		default:
 			return null;
 		}
@@ -259,6 +266,10 @@ class FeedItem extends Component {
 				</Container>
 			);
 		}
+		const isAchievement =
+			feedItem.type === types.leveledUp ||
+			feedItem.type === types.joined;
+		const isChallenge = feedItem.type === types.completedChallange;
 		return (
 			<Container style={style} className="feedItemWrapper">
 				<Container className="feedItem">
@@ -268,7 +279,7 @@ class FeedItem extends Component {
 						user={feedItem.user}
 						votes={this.votes}
 						date={feedItem.date}
-						hideTitle={feedItem.type === types.completedChallange}
+						hideTitle={isChallenge || isAchievement}
 					>
 						{this.renderFeedItem()}
 					</FeedItemBase>
