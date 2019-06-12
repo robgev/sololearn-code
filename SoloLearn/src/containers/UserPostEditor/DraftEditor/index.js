@@ -248,7 +248,7 @@ const DraftEditor = ({
 					}
 				}
 				className={isEditorReadOnly ? 'draft-editor-container read-only' : 'draft-editor-container'}
-				onClick={() => { editorRef.current.focus(); }}
+				onClick={() => { editorRef.current.focus(); }} // beacause current is undefined at first
 				ref={containerRef}
 			>
 				<Container

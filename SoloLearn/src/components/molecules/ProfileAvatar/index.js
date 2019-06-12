@@ -23,7 +23,7 @@ const ProfileAvatar = ({
 						userID={user.id}
 						badge={user.badge}
 						variant={size}
-						disable
+						disabled
 					/>
 					{/* { levelBadge &&
 							<Image

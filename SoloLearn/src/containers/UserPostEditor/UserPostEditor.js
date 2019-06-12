@@ -261,7 +261,6 @@ const UserPostEditor = ({
 							<ProfileAvatar
 								user={profile}
 								className="up-editor-profile-avatar"
-								avatarStyle={{ width: '48px', height: '48px' }}
 							/>
 							<FlexBox column fullWidth>
 								<DraftEditor

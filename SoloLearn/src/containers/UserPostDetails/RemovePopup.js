@@ -31,7 +31,7 @@ const RemovePopup = ({
 			<FlatButton
 				variant="contained"
 				onClick={onClose}
-				autofocus
+				autoFocus
 			>
 				{t('common.cancel-title')}
 			</FlatButton>
