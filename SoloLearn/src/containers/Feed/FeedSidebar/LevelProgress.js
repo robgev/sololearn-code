@@ -5,8 +5,6 @@ import { ProgressBar } from 'components/molecules';
 
 const getProgressFromProfile = (profile, levels) => {
 	const { level: userLevel, xp: currentXp, badge } = profile;
-	console.clear();
-	console.warn(profile, levels);
 	const nextMilestoneLevelIndex =
 		levels.slice(userLevel).findIndex(lvl => lvl.status !== null);
 	const [ currentBadge ] = badge ? badge.split('|') : '';
@@ -38,8 +36,6 @@ const LevelProgress = ({ profile, levels, t }) => {
 	const {
 		maxXp, nextMilestone, currentBadge, currentXp,
 	} = getProgress();
-
-	console.warn(maxXp, nextMilestone, currentBadge, currentXp);
 
 	return (
 		<FlexBox fullWidth className="progress-section">
