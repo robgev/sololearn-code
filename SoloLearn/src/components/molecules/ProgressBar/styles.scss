@@ -1,20 +1,22 @@
 @import '~styles/colors';
+
+$text-margin: 8px;
+
 .molecule_progress-bar {
 	position: relative;
-	margin-bottom: 5px;
+	margin-bottom: $text-margin;
 
 	.molecule_progress-bar-label {
 		position: absolute;
-		top: 5px;
-		font-size: 10px;
-		font-weight: 500;
-		color: $secondary_text_color;
+		top: $text-margin;
+		font-size: 12px;
+		font-weight: 400;
+		color: $icon_color;
 		&.molecule_progress-bar-label-left {
-			left: 2px;
+			left: 0;
 		}
 		&.molecule_progress-bar-label-right {
-			right: 2px;
+			right: 0;
 		}
 	}
-
 }
