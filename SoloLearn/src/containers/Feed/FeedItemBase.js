@@ -9,37 +9,43 @@ import {
 
 import 'styles/Feed/FeedItemBase.scss';
 import FeedDateContainer from './FeedDateContainer';
+import types from 'defaults/appTypes';
 
 const FeedItemBase = ({
-	title, user, children, date,
+	title, user, children, date, type,
 }) => (
 	<Container className="feed-item-content">
+		<FlexBox fullWidth>
+			<ProfileAvatar
+				user={user}
+			/>
 
-		<ProfileAvatar
-			user={user}
-		/>
-		<Container className="wrapper">
-			<FlexBox align className="feed-item-title">
-				<UsernameLink
-					to={`/profile/${user.id}`}
-					className="user-name-link"
-				>
-					{user.name}
-				</UsernameLink>
-				<ModBadge
-					className="badge"
-					badge={user.badge}
-				/>
-				<TextBlock className="title">
-					{title}
-				</TextBlock>
-			</FlexBox>
-			<Container>
-				<FeedDateContainer date={date} />
+			<Container className="wrapper">
+				<FlexBox align className="feed-item-title">
+					<UsernameLink
+						to={`/profile/${user.id}`}
+						className="user-name-link"
+					>
+						{user.name}
+					</UsernameLink>
+					<ModBadge
+						className="badge"
+						badge={user.badge}
+					/>
+					{
+						type !== types.leveledUp || type !== types.joined
+							? <TextBlock className="title">
+								{title}
+							</TextBlock>
+							: null
+					}
+				</FlexBox>
+				<Container>
+					<FeedDateContainer date={date} />
+				</Container>
 			</Container>
-			{children}
-		</Container>
+		</FlexBox>
+		{children}
 	</Container>
 );
-
 export default FeedItemBase;

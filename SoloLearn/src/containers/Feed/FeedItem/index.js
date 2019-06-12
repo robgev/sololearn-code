@@ -8,6 +8,9 @@ import { CourseCard } from 'containers/Learn/components';
 import {
 	Container,
 	PaperContainer,
+	FlexBox,
+	Image,
+	TextBlock,
 } from 'components/atoms';
 import types from 'defaults/appTypes';
 
@@ -21,6 +24,7 @@ import Challenge from '../FeedTemplates/Challenge';
 import UserPost from '../FeedTemplates/UserPost';
 import FeedSuggestions from '../FeedSuggestions';
 
+// import LevelIcon from '/assets/ic_image@2x.png';
 import './styles.scss';
 
 @observer
@@ -196,6 +200,25 @@ class FeedItem extends Component {
 					onChange={({ vote: newVote }) => voteFeedItem({ ...feedItem, newVote, targetId: feedItem.userPost.id })}
 				/>
 			);
+		case types.leveledUp:
+		case types.joined:
+			console.log(feedItem);
+			return (
+				<FlexBox align justify fullWidth column>
+					<FlexBox align justify>
+						<Image
+							className="levelup-img"
+							src={feedItem.type === types.leveledUp ? '/assets/ic_reached_level.png' : '/assets/ic_join_sololearn.png'}
+							onLoad={this.props.measure}
+						/>
+					</FlexBox>
+					<FlexBox align justify>
+						<TextBlock className="levelup-title">
+							{feedItem.user.name} {feedItem.title}
+						</TextBlock>
+					</FlexBox>
+				</FlexBox>
+			);
 		default:
 			return null;
 		}
@@ -203,6 +226,7 @@ class FeedItem extends Component {
 
 	render() {
 		const { feedItem, style } = this.props;
+
 		// Render only suggestions
 		if (feedItem.type === types.suggestions) {
 			return (
@@ -224,6 +248,7 @@ class FeedItem extends Component {
 							user={feedItem.user}
 							date={feedItem.date}
 							votes={this.votes}
+							type={feedItem.type}
 						/>
 					</PaperContainer>
 					{ this.props.open &&
@@ -245,6 +270,7 @@ class FeedItem extends Component {
 										user={currentItem.user}
 										votes={this.votes}
 										date={currentItem.date}
+										type={currentItem.type}
 									>
 										{/* this.url = `/profile/${currentItem.contest.player.id}`; */}
 										<Challenge date={currentItem.date} contest={currentItem.contest} />
@@ -267,6 +293,7 @@ class FeedItem extends Component {
 						user={feedItem.user}
 						votes={this.votes}
 						date={feedItem.date}
+						type={feedItem.type}
 					>
 						{this.renderFeedItem()}
 					</FeedItemBase>
