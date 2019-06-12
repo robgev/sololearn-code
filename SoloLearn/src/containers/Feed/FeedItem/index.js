@@ -5,13 +5,7 @@ import { observer } from 'mobx-react';
 // Additional data and components
 import { toSeoFriendly } from 'utils';
 import { CourseCard } from 'containers/Learn/components';
-import {
-	Container,
-	PaperContainer,
-	FlexBox,
-	Image,
-	TextBlock,
-} from 'components/atoms';
+import { Container } from 'components/atoms';
 import types from 'defaults/appTypes';
 
 import FeedItemBase from '../FeedItemBase';
@@ -22,9 +16,9 @@ import Code from '../FeedTemplates/Code';
 import Comment from '../FeedTemplates/Comment';
 import Challenge from '../FeedTemplates/Challenge';
 import UserPost from '../FeedTemplates/UserPost';
+import Achievement from '../FeedTemplates/Achievement';
 import FeedSuggestions from '../FeedSuggestions';
 
-// import LevelIcon from '/assets/ic_image@2x.png';
 import './styles.scss';
 
 @observer
@@ -61,7 +55,6 @@ class FeedItem extends Component {
 			feedItem,
 			voteFeedItem,
 		} = this.props;
-		console.log('FeedItem render', feedItem);
 		switch (feedItem.type) {
 		case types.badgeUnlocked:
 			this.url = `/profile/${feedItem.user.id}/badges?badgeID=${feedItem.achievement.id}`;
@@ -202,22 +195,13 @@ class FeedItem extends Component {
 			);
 		case types.leveledUp:
 		case types.joined:
-			console.log(feedItem);
 			return (
-				<FlexBox align justify fullWidth column>
-					<FlexBox align justify>
-						<Image
-							className="levelup-img"
-							src={feedItem.type === types.leveledUp ? '/assets/ic_reached_level.png' : '/assets/ic_join_sololearn.png'}
-							onLoad={this.props.measure}
-						/>
-					</FlexBox>
-					<FlexBox align justify>
-						<TextBlock className="levelup-title">
-							{feedItem.user.name} {feedItem.title}
-						</TextBlock>
-					</FlexBox>
-				</FlexBox>
+				<Achievement
+					user={feedItem.user}
+					title={feedItem.title}
+					measure={this.props.measure}
+					isLevelUp={feedItem.type === types.leveledUp}
+				/>
 			);
 		default:
 			return null;
@@ -226,7 +210,6 @@ class FeedItem extends Component {
 
 	render() {
 		const { feedItem, style } = this.props;
-
 		// Render only suggestions
 		if (feedItem.type === types.suggestions) {
 			return (
@@ -283,6 +266,10 @@ class FeedItem extends Component {
 				</Container>
 			);
 		}
+		const isAchievement =
+			feedItem.type === types.leveledUp ||
+			feedItem.type === types.joined;
+		const isChallenge = feedItem.type === types.completedChallange;
 		return (
 			<Container style={style} className="feedItemWrapper">
 				<Container className="feedItem">
@@ -292,11 +279,7 @@ class FeedItem extends Component {
 						user={feedItem.user}
 						votes={this.votes}
 						date={feedItem.date}
-						hideTitle={
-							feedItem.type === types.completedChallange ||
-							feedItem.type === types.leveledUp ||
-							feedItem.type === types.joined
-						}
+						hideTitle={isChallenge || isAchievement}
 					>
 						{this.renderFeedItem()}
 					</FeedItemBase>

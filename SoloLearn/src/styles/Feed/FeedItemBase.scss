@@ -3,7 +3,6 @@
 .feed-item-content {
 	display: flex;
 	align-items: flex-start;
-	flex-direction: column;
 	.wrapper {
 		margin-left: 16px;
 		flex: 1 0 90%;
@@ -24,7 +23,6 @@
 			}
 		}
 	}
-
 	.course-card {
 		box-shadow: none;
 	}

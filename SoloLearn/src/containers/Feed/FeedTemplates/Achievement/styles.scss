@@ -1,0 +1,14 @@
+@import '~styles/variables';
+
+.feed-item_achievement {
+	// To get the middle of the feed item;
+	margin-right: $small-avatar-size;
+	.levelup-title{
+		font-size: 15px;
+		margin:6px;
+	}
+
+	.levelup-img{
+		margin-top: 10px;
+	}
+}
