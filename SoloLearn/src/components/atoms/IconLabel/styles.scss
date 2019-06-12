@@ -2,6 +2,7 @@
 @import '~styles/variables';
 
 .atom_icon-label {
-	font-size: $label_text_size;
-	color: $secondary_text_color;
+	font-size: 13px;
+	color: $icon_color;
+	font-weight: 700;
 }

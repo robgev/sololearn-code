@@ -2,6 +2,8 @@ import React from 'react';
 import { FlexBox } from 'components/atoms';
 import { VoteActions } from 'components/organisms';
 
+import './styles.scss';
+
 const FeedToolbar = ({
 	userVote,
 	totalVotes,

@@ -1,6 +1,11 @@
+@import '~styles/colors';
+
 .organism_vote-actions {
 	.organism_vote-actions-label {
 		cursor: pointer;
+		font-weight: 700;
+		color: $icon_color;
+		margin: 0 5px;
 	}
 	&.vertical {
 		flex-direction: column;

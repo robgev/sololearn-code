@@ -237,8 +237,7 @@ class FeedItem extends Component {
 		} else if (feedItem.type === types.mergedChallange) {
 			return (
 				<Container style={style} className="feedItemWrapper">
-					<PaperContainer
-						zDepth={1}
+					<Container
 						className="feedItem"
 						onClick={this.handleChallengesOpen}
 					>
@@ -248,9 +247,9 @@ class FeedItem extends Component {
 							user={feedItem.user}
 							date={feedItem.date}
 							votes={this.votes}
-							type={feedItem.type}
+							hideTitle
 						/>
-					</PaperContainer>
+					</Container>
 					{ this.props.open &&
 					<Container
 						id="feed-items"
@@ -263,19 +262,19 @@ class FeedItem extends Component {
 									`feedItem${currentItem.id}`}
 								className="feedItemWrapper"
 							>
-								<PaperContainer zDepth={1} className="feedItem">
+								<Container className="feedItem">
 									<FeedItemBase
 										feedItemId={currentItem.id}
 										title={currentItem.title}
 										user={currentItem.user}
 										votes={this.votes}
 										date={currentItem.date}
-										type={currentItem.type}
+										hideTitle
 									>
 										{/* this.url = `/profile/${currentItem.contest.player.id}`; */}
 										<Challenge date={currentItem.date} contest={currentItem.contest} />
 									</FeedItemBase>
-								</PaperContainer>
+								</Container>
 
 							</Container>
 						))}
@@ -293,7 +292,11 @@ class FeedItem extends Component {
 						user={feedItem.user}
 						votes={this.votes}
 						date={feedItem.date}
-						type={feedItem.type}
+						hideTitle={
+							feedItem.type === types.completedChallange ||
+							feedItem.type === types.leveledUp ||
+							feedItem.type === types.joined
+						}
 					>
 						{this.renderFeedItem()}
 					</FeedItemBase>
