@@ -5,7 +5,7 @@ import Editor from 'draft-js-plugins-editor';
 import createMentionPlugin from 'draft-js-mention-plugin';
 import hexToRgba from 'hex-to-rgba';
 import { translate } from 'react-i18next';
-import { Container, FlexBox, Link } from 'components/atoms';
+import { Container, FlexBox, Link, SecondaryTextBlock } from 'components/atoms';
 import { RefLink } from 'components/molecules';
 import { Entry } from 'components/organisms';
 
@@ -226,56 +226,73 @@ const DraftEditor = ({
 	const getRgbaHexFromArgbHex = color => `#${color.substring(3, color.length)}${color.substring(1, 3)}`;
 
 	return (
-		<FlexBox
-			align={background ? background.type !== 'none' && true : false}
-			justify={background ? background.type !== 'none' && true : false}
-			column
-			style={background.type === 'none' ?
-				{
-					color: 'black',
-					cursor: isEditorReadOnly ? 'cursor' : 'text',
-					minHeight: isEditorReadOnly ? 0 : 140,
-					maxHeight: isEditorReadOnly ? '100%' : 250,
-					overflow: isEditorReadOnly ? 'default' : 'auto',
+		<FlexBox column className="draft-editor-wrapper">
+			<FlexBox
+				align={background ? background.type !== 'none' && true : false}
+				justify={background ? background.type !== 'none' && true : false}
+				column
+				style={background.type === 'none' ?
+					{
+						color: 'black',
+						cursor: isEditorReadOnly ? 'cursor' : 'text',
+						minHeight: isEditorReadOnly ? 0 : 140,
+						maxHeight: isEditorReadOnly ? '100%' : 250,
+						overflow: isEditorReadOnly ? 'default' : 'auto',
+					}
+					:
+					{
+						...style,
+						color: background ? background.textColor.length > 6 ? hexToRgba(getRgbaHexFromArgbHex(background.textColor)) : background.textColor : 'black',
+						cursor: isEditorReadOnly ? 'cursor' : 'text',
+						height: 250,
+					}
 				}
-				:
-				{
-					...style,
-					color: background ? background.textColor.length > 6 ? hexToRgba(getRgbaHexFromArgbHex(background.textColor)) : background.textColor : 'black',
-					cursor: isEditorReadOnly ? 'cursor' : 'text',
-					height: 250,
-				}
-			}
-			className={isEditorReadOnly ? 'draft-editor-container read-only' : 'draft-editor-container'}
-			onClick={() => { editorRef.current.focus(); }}
-			ref={containerRef}
-		>
-			<Container
-				className={isEditorReadOnly && background.type === 'none' ? 'draft-editor-inner-container no-padding' : 'draft-editor-inner-container'}
-				style={{ fontSize }}
+				className={isEditorReadOnly ? 'draft-editor-container read-only' : 'draft-editor-container'}
+				onClick={() => { editorRef.current.focus(); }} // beacause current is undefined at first
+				ref={containerRef}
 			>
-				<Editor
-					editorState={editorState}
-					stripPastedStyles
-					handleBeforeInput={handeBeforeInput}
-					handlePastedText={handlePastedText}
-					handleReturn={handleReturn}
-					onChange={editorState => setEditorState(editorState)}
-					textAlignment={background ? background.type !== 'none' && 'center' : 'left'}
-					ref={editorRef}
-					placeholder={t('user_post.user-post-placeholder')}
-					plugins={plugins}
-					onEscape={handleEscape}
-					readOnly={isEditorReadOnly}
-				/>
-				<MentionSuggestions
-					onSearchChange={getSuggestions}
-					suggestions={suggestions}
-					entryComponent={Entry}
-					onOpen={() => setSuggestionsOpened(true)}
-					onClose={() => setSuggestionsOpened(false)}
-				/>
-			</Container>
+				<Container
+					className={isEditorReadOnly && background.type === 'none' ? 'draft-editor-inner-container no-padding' : 'draft-editor-inner-container'}
+					style={{ fontSize }}
+				>
+					<Editor
+						editorState={editorState}
+						stripPastedStyles
+						handleBeforeInput={handeBeforeInput}
+						handlePastedText={handlePastedText}
+						handleReturn={handleReturn}
+						onChange={editorState => setEditorState(editorState)}
+						textAlignment={background ? background.type !== 'none' && 'center' : 'left'}
+						ref={editorRef}
+						placeholder={t('user_post.user-post-placeholder')}
+						plugins={plugins}
+						onEscape={handleEscape}
+						readOnly={isEditorReadOnly}
+					/>
+					<MentionSuggestions
+						onSearchChange={getSuggestions}
+						suggestions={suggestions}
+						entryComponent={Entry}
+						onOpen={() => setSuggestionsOpened(true)}
+						onClose={() => setSuggestionsOpened(false)}
+					/>
+				</Container>
+			</FlexBox>
+			{!isEditorReadOnly &&
+				<FlexBox
+					justifyEnd
+					align
+					className={`user-post-max-length-container ${background.type === 'none' && 'with-border'}`}
+				>
+					{/* <Container>
+						<EmojiSelect />
+						<EmojiSuggestions />
+					</Container> */}
+					<SecondaryTextBlock className="count">
+						{editorState.getCurrentContent() ? editorState.getCurrentContent().getPlainText().length : 0} / {USER_POST_MAX_LENGTH}
+					</SecondaryTextBlock>
+				</FlexBox>
+			}
 		</FlexBox>
 	);
 };

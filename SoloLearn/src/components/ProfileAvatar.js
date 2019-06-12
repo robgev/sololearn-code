@@ -41,7 +41,7 @@ const ProfileAvatar = ({
 		>
 			<div className={`avatar-wrapper ${vertical ? 'vertical' : ''} ${className || ''}`}>
 				<div className="profile-picture-container">
-					{ avatarUrl ?
+					{avatarUrl ?
 						<Avatar
 							size={size}
 							src={avatarUrl}
@@ -61,14 +61,14 @@ const ProfileAvatar = ({
 						>{userName ? userName.toUpperCase().charAt(0) : ''}
 						</Avatar>
 					}
-					{ levelBadge && !(modBadge && withBorder) &&
+					{levelBadge && !(modBadge && withBorder) &&
 						<img
 							alt="LB"
 							className="level-badge"
 							src={`/assets/badge_${levelBadge}${withBorder ? '_profile' : ''}.png`}
 						/>
 					}
-					{ (withBorder && modBadge) &&
+					{(withBorder && modBadge) &&
 						<ModBadge
 							badge={modBadge}
 							className="big absolute"
@@ -84,7 +84,7 @@ const ProfileAvatar = ({
 						<div>
 							<p className="avatar-user-name hoverable">
 								<span className="avatar-user-name-wrapper">{userName}</span>
-								{ !omitInlineModBadge &&
+								{!omitInlineModBadge &&
 									<ModBadge
 										badge={modBadge}
 										className="small"
