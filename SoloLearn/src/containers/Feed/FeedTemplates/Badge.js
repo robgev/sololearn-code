@@ -19,7 +19,7 @@ const Badge = ({ achievement, url }) => (
 				<Image alt="achievement" src="/assets/achievement.png" className="badge-icon" />
 			</Container>
 			<FlexBox column className="details" >
-				<Link to={url}><SecondaryTextBlock className="title">{achievement.title}</SecondaryTextBlock></Link>
+				<Link className="badgeLink" to={url}><SecondaryTextBlock className="title">{achievement.title}</SecondaryTextBlock></Link>
 				<SecondaryTextBlock className="description">{achievement.description}</SecondaryTextBlock>
 			</FlexBox>
 		</Container>
