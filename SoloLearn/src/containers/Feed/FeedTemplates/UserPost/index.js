@@ -97,7 +97,7 @@ const UserPost = ({
 			<FlexBox column className="user-post-feed-item-container">
 				{message ?
 					<Container
-						className={`up-feed-editor-container ${!imageUrl && !background ? 'with-bottom-padding' : ''}`}
+						className={`up-feed-editor-container ${!background ? 'with-bottom-padding' : ''}`}
 					>
 						<Container
 							style={{
