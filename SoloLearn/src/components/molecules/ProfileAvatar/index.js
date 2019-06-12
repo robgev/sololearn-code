@@ -9,7 +9,7 @@ import './styles.scss';
 const ProfileAvatar = ({
 	user,
 	size,
-	className,
+	className = '',
 }) => (
 	<UserTooltip userData={user} placement="top">
 		<Container
