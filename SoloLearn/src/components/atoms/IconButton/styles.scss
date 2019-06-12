@@ -1,9 +1,11 @@
 @import '~styles/colors';
 
 .atom_icon-button-root {
+	color: $icon_color;
+	padding: 0;
 	&:hover,
 	&.active {
 		background: none;
-		color: $primary_color;
+		color: $icon_color_selected;
 	}
 }

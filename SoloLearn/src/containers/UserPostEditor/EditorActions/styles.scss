@@ -1,9 +1,21 @@
 @import '~styles/colors';
 
 .user-post-actions-container {
-	margin-top: 10px;
-	padding: 15px;
+	margin: 0;
+	width: 220px;
+	height: 32px;
+	font-size: 15px;
 	.user-post-cancel-button {
-		margin-right: 7px;
+		color: $primary_color;
+		margin-right: 24px;
+		text-transform: none;
+	}
+	.up-share-button {
+		width: 120px;
+		height: 32px;
+		border-radius: 25px;
+		text-transform: none;
+		min-height: 0;
+		box-shadow: none;
 	}
 }

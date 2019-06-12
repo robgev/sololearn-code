@@ -7,12 +7,7 @@ export {
 	RadioButtonChecked,
 	RadioButtonUnchecked,
 	Clear,
-	RemoveRedEye as Views,
-	Comment,
 	ArrowDropDown,
-	KeyboardArrowUp as ArrowUp,
-	KeyboardArrowDown as ArrowDown,
-	MoreVert,
 	QuestionAnswer,
 	Star as Follow,
 	Check as Accepted,
@@ -27,9 +22,7 @@ export {
 	DeleteForever as Delete,
 	Person,
 	Dehaze as Feed,
-	ThumbUp,
 	EventNote as Date,
-	ThumbDown,
 	Edit,
 	DragIndicator as DragIcon,
 	AddPhotoAlternate,
@@ -37,4 +30,12 @@ export {
 	Share as ShareIcon,
 	Image as ImageIcon,
 } from '@material-ui/icons';
+export { default as Comment } from './Comment';
+export { default as Level } from './Level';
+export { default as MoreVert } from './MoreVert';
 export { default as Notifications } from './NotificationIcon';
+export { default as ArrowDown } from './ThumbDown';
+export { default as ArrowUp } from './ThumbUp';
+export { default as ThumbDown } from './ThumbDown';
+export { default as ThumbUp } from './ThumbUp';
+export { default as Views } from './Views';

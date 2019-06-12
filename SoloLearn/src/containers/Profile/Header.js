@@ -139,8 +139,8 @@ class Header extends Component {
 								>
 									{t('common.block-user')}
 								</MenuItem>
-								{(accessLevel > 0
-									&& !determineAccessLevel(profile.accessLevel) > 0) &&
+								{(accessLevel > 1
+									&& !(determineAccessLevel(profile.accessLevel) > 0)) &&
 									<MenuItem
 										onClick={this.toggleDeactivationPopup}
 									>

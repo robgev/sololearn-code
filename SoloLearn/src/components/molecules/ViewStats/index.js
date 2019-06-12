@@ -7,17 +7,12 @@ import { FlexBox, IconLabel } from 'components/atoms';
 import './styles.scss';
 
 const ViewStats = ({
-	views, votes, comments, link,
+	views, votes, comments, link, className,
 }) => (
-	<FlexBox align>
+	<FlexBox align className={className}>
 		{Number.isInteger(votes) && // Can have negative votes
 			<IconWithText justify Icon={Arrows} className="molecule_view-stats">
 				<IconLabel>{votes > 0 ? `+${numberFormatter(votes)}` : numberFormatter(votes)}</IconLabel>
-			</IconWithText>
-		}
-		{views >= 0 &&
-			<IconWithText justify Icon={Views} className="molecule_view-stats">
-				<IconLabel>{numberFormatter(views)}</IconLabel>
 			</IconWithText>
 		}
 		{comments >= 0 &&
@@ -26,6 +21,11 @@ const ViewStats = ({
 					<IconLabel>{numberFormatter(comments)}</IconLabel>
 				</IconWithText>
 			</ContainerLink>
+		}
+		{views >= 0 &&
+			<IconWithText justify Icon={Views} className="molecule_view-stats">
+				<IconLabel>{numberFormatter(views)}</IconLabel>
+			</IconWithText>
 		}
 	</FlexBox>
 );
