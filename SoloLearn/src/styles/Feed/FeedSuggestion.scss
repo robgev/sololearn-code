@@ -1,3 +1,5 @@
+@import '~styles/colors';
+
 .feed-suggestions {
 	height: 150px;
 	margin: 10px;
@@ -24,9 +26,11 @@
 			align-items: center;
 			text-align: center;
 			flex-direction: column;
-			height: 140px;
-			width: 140px;
-			margin: 5px;
+			width: 142px;
+			height: 148px;
+			margin-right: 7px;
+			box-shadow: none;
+			border: 1px solid #EDF0F0;
 
 
 		.userName {
@@ -57,6 +61,33 @@
 					}
 				}
 			}
+		}
+
+		.feed-suggestion-info-container {
+			margin-bottom: 8px;
+			.suggestion-info-container-1 {
+				margin-right: 10px;
+			}
+			.suggestion-follower-icon {
+				width: 8px;
+				height: 9px;
+				padding-right: 2px;
+			}
+			.suggestion-level-icon {
+				widows: 10px;
+				height: 9.5px;
+				padding-right: 2px;
+			}
+		}
+
+		.suggestion-follow-button {
+			width: 86px;
+			height: 24px;
+			background: none;
+			border: 1px solid $primary_color;
+			border-radius: 16px;
+			text-transform: none;
+			color: $primary_color;
 		}
 	}
 }
