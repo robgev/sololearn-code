@@ -1,0 +1,40 @@
+@import '~styles/colors';
+
+.feedItemWrapper {
+	.challenge {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		.user-container {
+			white-space: nowrap;
+			margin: 0 16px;
+			.username {
+			    overflow: hidden;
+			    text-overflow: ellipsis;
+			}
+			.challenger_info {
+				white-space: pre;
+				.challenge_icon {
+					color: $icon_color;
+					.challenge_label {
+						font-weight: initial
+					}
+				}
+			}
+			&.player {
+				text-align: right;
+			}
+			&.opponent {
+				text-align: left;
+			}
+		}
+		.score {
+			font-size: 22px;
+			font-weight: 800;
+			margin: 0 45px;
+			color: $primary_colored_text;
+		}
+	}
+}
+
+

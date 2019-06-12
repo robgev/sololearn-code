@@ -32,6 +32,7 @@ const FeedBottomBarFullStatistics = ({
 				views={views}
 				comments={comments}
 				link={commentIconLink}
+				className="feed-bbfs_view-stats"
 			/>
 		</FlexBox>
 		{withDate ? <SecondaryTextBlock className="date">{updateDate(date)}</SecondaryTextBlock> : null}

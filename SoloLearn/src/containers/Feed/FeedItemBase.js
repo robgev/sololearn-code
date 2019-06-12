@@ -11,7 +11,7 @@ import 'styles/Feed/FeedItemBase.scss';
 import FeedDateContainer from './FeedDateContainer';
 
 const FeedItemBase = ({
-	title, user, children, date,
+	title, user, children, date, hideTitle,
 }) => (
 	<Container className="feed-item-content">
 
@@ -30,9 +30,11 @@ const FeedItemBase = ({
 					className="badge"
 					badge={user.badge}
 				/>
-				<TextBlock className="title">
-					{title}
-				</TextBlock>
+				{ !hideTitle &&
+					<TextBlock className="title">
+						{title}
+					</TextBlock>
+				}
 			</FlexBox>
 			<Container>
 				<FeedDateContainer date={date} />
