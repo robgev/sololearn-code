@@ -55,7 +55,6 @@ class FeedItem extends Component {
 			feedItem,
 			voteFeedItem,
 		} = this.props;
-		console.log('FeedItem render', feedItem);
 		switch (feedItem.type) {
 		case types.badgeUnlocked:
 			this.url = `/profile/${feedItem.user.id}/badges?badgeID=${feedItem.achievement.id}`;
