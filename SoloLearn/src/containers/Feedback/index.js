@@ -58,7 +58,10 @@ const Feedback = ({ openFeedback, toggleFeedback, t }) => {
 				</Container>
 			</PopupContent>
 			<PopupActions>
-				<FlatButton onClick={() => sendFeedback(value, inputValue)}>
+			<FlatButton onClick={toggleFeedback}>
+					{t('common.cancel-title')}
+				</FlatButton>
+				<FlatButton onClick={() => sendFeedback(value, inputValue)} disabled={inputValue === ''}>
 					{t('feedback.send-item-title')}
 				</FlatButton>
 			</PopupActions>

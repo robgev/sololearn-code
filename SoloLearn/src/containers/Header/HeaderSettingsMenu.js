@@ -51,7 +51,7 @@ class SettingsMenu extends PureComponent {
 	}
 
 	toggleFeedback=() => {
-		this.setState({ openFeedback: !this.state.openFeedback });
+		this.setState(s => ({openFeedback: !s.openFeedback}));
 	}
 
 	render() {
