@@ -31,6 +31,7 @@ export {
 	Image as ImageIcon,
 } from '@material-ui/icons';
 export { default as Comment } from './Comment';
+export { default as Level } from './Level';
 export { default as MoreVert } from './MoreVert';
 export { default as Notifications } from './NotificationIcon';
 export { default as ArrowDown } from './ThumbDown';
