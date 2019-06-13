@@ -7,4 +7,6 @@ export default {
 	challenge: 6,
 	userLessonComment: 7,
 	lesson: 8,
+	userPost: 9,
+	postComment: 10,
 };

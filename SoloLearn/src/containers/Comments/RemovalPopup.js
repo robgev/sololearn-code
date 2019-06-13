@@ -23,7 +23,8 @@ class RemovalPopup extends Component {
 			if (accessLevel > 1
 				&& (itemType === ReportItemTypes.lessonComment
 				|| itemType === ReportItemTypes.userLessonComment
-				|| itemType === ReportItemTypes.codeComment)) {
+				|| itemType === ReportItemTypes.codeComment
+				|| itemType === ReportItemTypes.userPostComment)) {
 				deleteComment();
 			} else {
 				report();
@@ -42,7 +43,7 @@ class RemovalPopup extends Component {
 			commentsType,
 			onClose,
 		} = this.props;
-		const cannotRemove = accessLevel === 1 && (commentsType !== 'lesson' && commentsType !== 'userLesson');
+		const cannotRemove = accessLevel === 1; // && (commentsType !== 'lesson' && commentsType !== 'userLesson');
 		const actions = [
 			<FlatButton
 				variant="contained"
