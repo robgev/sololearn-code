@@ -11,24 +11,24 @@ import {
 	SecondaryTextBlock,
 	FlexBox,
 } from 'components/atoms';
-import { RadioButtonGroup, FlatButton } from 'components/molecules';
+import { RadioButtonGroup, FlatButton, PromiseButton } from 'components/molecules';
 import Service from 'api/service';
 
 import 'styles/components/ReportPopup.scss';
 
 @translate()
-class ReportPopup extends PureComponent {
+class DeclinePopup extends PureComponent {
 	constructor() {
 		super();
 		this.customReasonMaxLength = 256;
 		this.state = {
-			reportReason: 1,
+			reportReason: 401,
 			customReason: '',
 		};
 	}
 
 	componentWillReceiveProps = () => {
-		this.setState({ reportReason: 1, customReason: '' });
+		this.setState({ reportReason: 401, customReason: '' });
 	}
 
 	handleReasonChange = (event) => {
@@ -46,33 +46,21 @@ class ReportPopup extends PureComponent {
 		onClose(false);
 	}
 
-	submitReport = async () => {
-		const {
-			itemId,
-			itemType,
-			onClose,
-		} = this.props;
-		const { reportReason, customReason } = this.state;
-		try {
-			this.setState({
-				reportReason: 1,
-				customReason: '',
-			});
-			onClose(true);
-			await Service.request('ReportItem', {
+	submitDecline = async () => {
+		const {itemId} = this.props;
+		const {reportReason, customReason} = this.state;
+		return  Service.request('ReportItem', {
 				itemId,
-				itemType,
+				itemType: 11,
 				reason: reportReason,
-				message: customReason === '' ? null : customReason,
-			});
-		} catch (e) {
-			console.log(e);
-		}
+				message: customReason,
+			}).then(this.onClose);
+
 	}
 
 	render() {
 		const { reportReason, customReason } = this.state;
-		const { onClose, open, t } = this.props;
+		const { open, t } = this.props;
 		return (
 			<Popup
 				className="report-popup"
@@ -80,7 +68,7 @@ class ReportPopup extends PureComponent {
 				onClose={this.onClose}
 			>
 				<PopupTitle>
-					{t('report.report-popup-title')}
+					Select a resaon
 				</PopupTitle>
 				<PopupContent>
 					<PopupContentText className="report-popup-content">
@@ -90,16 +78,24 @@ class ReportPopup extends PureComponent {
 							onChange={this.handleReasonChange}
 						>
 							<RadioButton
-								value={1}
-								label={t('report.report-option-1')}
+								value={401}
+								label="Too Many Similar Questions"
 							/>
 							<RadioButton
-								value={2}
-								label={t('report.report-option-2')}
+								value={402}
+								label="Too General or Specific"
 							/>
 							<RadioButton
-								value={3}
-								label={t('report.report-option-3')}
+								value={403}
+								label="Something is Missing"
+							/>
+							<RadioButton
+								value={404}
+								label="Wrong Format"
+							/>
+							<RadioButton
+								value={405}
+								label="Structural Problem"
 							/>
 							<RadioButton
 								value={0}
@@ -123,20 +119,21 @@ class ReportPopup extends PureComponent {
 					<FlatButton
 						color="primary"
 						onClick={this.onClose}
+						autoFocus
 					>
 						{t('common.cancel-title')}
 					</FlatButton>
-					<FlatButton
+					<PromiseButton
 						color="primary"
-						autoFocus
-						onClick={this.submitReport}
+
+						fire={this.submitDecline}
 					>
-						{t('common.report-action-title')}
-					</FlatButton>
+						Decline
+					</PromiseButton>
 				</PopupActions>
 			</Popup>
 		);
 	}
 }
 
-export default ReportPopup;
+export default DeclinePopup;

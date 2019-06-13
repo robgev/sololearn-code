@@ -11,10 +11,11 @@ import { logout } from 'actions/login.action';
 
 import 'styles/Header/HeaderSettingsMenu.scss';
 
-const mapStateToProps = ({ userProfile }) => ({
+const mapStateToProps = ({ userProfile, locale }) => ({
 	avatarUrl: userProfile ? userProfile.avatarUrl : null,
 	userName: userProfile ? userProfile.name : null,
 	userID: userProfile ? userProfile.id : 0,
+	locale,
 });
 
 const mapDispatchToProps = {
@@ -51,6 +52,7 @@ class SettingsMenu extends PureComponent {
 			userID,
 			avatarUrl,
 			userName,
+			locale,
 		} = this.props;
 		return !(avatarUrl || userName) ? null : (
 			<div className="header-settings-menu-container">
@@ -62,7 +64,7 @@ class SettingsMenu extends PureComponent {
 				/>
 				<IconMenu
 					icon={ArrowDown}
-					iconProps={{className:"header-icon-menu"}}
+					iconProps={{ className: 'header-icon-menu' }}
 				>
 					<MenuItem
 						onClick={this.goToLeaderboards}
@@ -74,11 +76,14 @@ class SettingsMenu extends PureComponent {
 					>
 						{t('lesson-factory.title')}
 					</MenuItem>
-					<MenuItem
-						onClick={this.goToQuizFactory}
-					>
-						{t('factory.title')}
-					</MenuItem>
+					{
+						locale === 'en' &&
+						<MenuItem
+							onClick={this.goToQuizFactory}
+						>
+							{t('factory.title')}
+						</MenuItem>
+					}
 					<MenuItem
 						onClick={this.goToSettings}
 					>

@@ -134,7 +134,11 @@ render() {
 										}
 										{(comment.userID !== userProfileId && accessLevel > 0) &&
 										<MenuItem onClick={toggleRemovalPopup}>
-											{ t('discuss.forum_request_removal_prompt_title')}
+											{
+												accessLevel > 1
+													? t('common.remove-title')
+													: t('discuss.forum_request_removal_prompt_title')
+											}
 										</MenuItem>
 										}
 									</IconMenu>
