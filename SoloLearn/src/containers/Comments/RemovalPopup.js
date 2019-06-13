@@ -46,6 +46,7 @@ class RemovalPopup extends Component {
 		const actions = [
 			<FlatButton
 				variant="contained"
+				autoFocus
 				onClick={onClose}
 			>
 				{t('common.cancel-title')}
