@@ -5,7 +5,8 @@ $heading_size: $primary_text_size;
 $heading_color: #616B6E;
 
 .atom_heading {
-  display: inline-block;
+	display: inline-block;
+	font-weight: 700;
 	font-size: $heading_size;
 	color: $heading_color;
   margin-bottom: $primary_gap_size;

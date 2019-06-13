@@ -579,11 +579,11 @@
 	},
 	"profile": {
 		"tab": {
-			"codes": "CODES",
-			"posts": "POSTS",
-			"activity": "ACTIVITY",
-			"skills": "SKILLS",
-			"badges": "BADGES"
+			"codes": "Codes",
+			"posts": "Posts",
+			"activity": "Activity",
+			"skills": "Skills",
+			"badges": "Badges"
 		},
 		"no-codes": "No Codes",
 		"edit-prfile": "EDIT PROFILE",
@@ -632,7 +632,7 @@
 	},
 	"followers": {
 		"tab": {
-			"followers-title": "FOLLOWERS"
+			"followers-title": "Followers"
 		}
 	},
 	"play": {

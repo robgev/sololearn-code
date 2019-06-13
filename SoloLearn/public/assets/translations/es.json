@@ -582,11 +582,11 @@
   },
   "profile": {
     "tab": {
-      "codes": "CÓDIGOS",
-      "posts": "ENTRADAS",
-      "activity": "ACTIVIDAD",
-      "skills": "TALENTOS",
-      "badges": "INSIGNIAS"
+      "codes": "Códigos",
+      "posts": "Entradas",
+      "activity": "Actividad",
+      "skills": "Talentos",
+      "badges": "Insignias"
 		},
 		"no-codes": "Sin Códigos",
     "edit-prfile": "Editar Perfil",
@@ -635,7 +635,7 @@
   },
   "followers": {
     "tab": {
-      "followers-title": "SEGUIDORES"
+      "followers-title": "Seguidores"
     }
   },
   "play": {

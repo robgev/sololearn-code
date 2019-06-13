@@ -7,91 +7,12 @@
 	/*cursor: pointer;*/
 	background-color: $white;
 	border: 1px solid $border_color;
+	border-radius: 4px;
 	position: relative;
 	padding: 16px;
 	margin: 8px 5px;
 	margin-top: 0;
 	&.userPost {
 		padding: 15px 0;
-	}
-
-	.levelup-title{
-		font-size: 15px;
-		margin:6px;
-	}
-
-	.itemContent{
-		padding: 0 0 0 64px;
-		width: 100%;
-	}
-
-	.achievement{
-		align-items: unset;
-		margin-top:12px;
-
-		.details{
-			width: 100%;
-			border: 1px solid #E6E9E9;
-			border-left: 0;
-			background-color: #f9fafa;
-			padding: 12px 0 0 16px;
-		}
-		.badge-base{
-			width: 64px;
-			height: 64px;
-		}
-
-		.title{
-			font-size: 15px;
-			font-weight: 600;
-			color: #009D7E;
-		}
-		
-		.badgeLink:hover{
-			text-decoration: none;
-		}
-
-		.description{
-			font-size: 15px;
-			color: #273338;
-		}
-	}
-
-	.courseContainer{
-		margin-top:12px;
-
-		.course{
-			align-items: unset;
-			margin: 0;
-
-			.courseIcon{
-				width: 64px;
-				height: 64px;
-			}
-
-			.details{
-				width: 100%;
-				border: 1px solid #E6E9E9;
-				border-left: 0;
-				background-color: #f9fafa;
-				padding: 12px 0 0 16px;
-			}
-
-			.courseName{
-				font-size: 15px;
-				font-weight: 600;
-				color: #009D7E;
-				padding: 0;
-			}
-
-			.courseLink:hover{
-				text-decoration: none;
-			}
-
-			.description{
-				font-size: 15px;
-				color: #273338;			
-			}
-		}
 	}
 }

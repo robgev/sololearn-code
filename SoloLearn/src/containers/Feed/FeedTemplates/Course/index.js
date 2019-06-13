@@ -13,7 +13,7 @@ import {
 import { AppDefaults } from 'api/service';
 import { getCourseByAlias } from 'reducers/courses.reducer';
 
-import 'styles/Feed/FeedTemplates/Course.scss';
+import './styles.scss';
 
 const Course = ({ course, courses }) => (
 	<Container className="courseContainer" to={`/learn/${toSeoFriendly(course.alias)}`}>

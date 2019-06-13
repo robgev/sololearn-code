@@ -7,7 +7,7 @@ import {
 	FlexBox,
 	SecondaryTextBlock,
 } from 'components/atoms';
-import 'styles/Feed/FeedTemplates/Badge.scss';
+import './styles.scss';
 
 const Badge = ({ achievement, url }) => (
 	<Fragment>

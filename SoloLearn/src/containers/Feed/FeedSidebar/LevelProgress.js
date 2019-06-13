@@ -43,6 +43,7 @@ const LevelProgress = ({ profile, levels, t }) => {
 				className="progress-bar"
 				progressProps={{
 					color: 'primary',
+					className: 'progress-bar_main',
 				}}
 				value={(100 * currentXp) / maxXp}
 				minText={currentBadge ? t(`profile.status-${currentBadge}`) : ''}

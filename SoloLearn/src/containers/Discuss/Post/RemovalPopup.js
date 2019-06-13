@@ -7,6 +7,7 @@ import { Popup, PopupTitle, PopupContent, PopupActions } from 'components/atoms'
 import { FlatButton } from 'components/molecules';
 import Service from 'api/service';
 import { determineAccessLevel } from 'utils';
+import ReportItemTypes from 'constants/ReportItemTypes';
 
 const mapStateToProps = state => ({
 	canDelete: determineAccessLevel(state.userProfile.accessLevel) >= 2,
@@ -32,7 +33,7 @@ class RemovalPopup extends PureComponent {
 				}
 			} else {
 				Service.request('ReportItem', {
-					itemType: 'post',
+					itemType: ReportItemTypes.post,
 					reason: 100, // Server reason for moderator prompt.
 					itemId: id,
 				});

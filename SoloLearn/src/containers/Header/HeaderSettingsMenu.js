@@ -12,10 +12,11 @@ import { logout } from 'actions/login.action';
 import 'styles/Header/HeaderSettingsMenu.scss';
 import Feedback from 'containers/Feedback';
 
-const mapStateToProps = ({ userProfile }) => ({
+const mapStateToProps = ({ userProfile, locale }) => ({
 	avatarUrl: userProfile ? userProfile.avatarUrl : null,
 	userName: userProfile ? userProfile.name : null,
 	userID: userProfile ? userProfile.id : 0,
+	locale,
 });
 
 const mapDispatchToProps = {
@@ -51,7 +52,7 @@ class SettingsMenu extends PureComponent {
 	}
 
 	toggleFeedback=() => {
-		this.setState(s => ({openFeedback: !s.openFeedback}));
+		this.setState(s => ({ openFeedback: !s.openFeedback }));
 	}
 
 	render() {
@@ -60,6 +61,7 @@ class SettingsMenu extends PureComponent {
 			userID,
 			avatarUrl,
 			userName,
+			locale,
 		} = this.props;
 		const {
 			openFeedback,
@@ -91,11 +93,14 @@ class SettingsMenu extends PureComponent {
 					>
 						{t('lesson-factory.title')}
 					</MenuItem>
-					<MenuItem
-						onClick={this.goToQuizFactory}
-					>
-						{t('factory.title')}
-					</MenuItem>
+					{
+						locale === 'en' &&
+						<MenuItem
+							onClick={this.goToQuizFactory}
+						>
+							{t('factory.title')}
+						</MenuItem>
+					}
 					<MenuItem
 						onClick={this.toggleFeedback}
 					>
