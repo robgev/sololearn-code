@@ -120,7 +120,7 @@ class Profile extends PureComponent {
 		return this.props.updateProfile({
 			name,
 			email,
-			countryCode: countryCode || 'NST', // Not set value is NST. This is done to fix the cosmetic bug with material-ui
+			countryCode: countryCode === 'NST' ? '' : countryCode, // Not set value is NST. This is done to fix the cosmetic bug with material-ui
 		})
 			.then(() => {
 				this.setState({ snackbarOpen: true });
