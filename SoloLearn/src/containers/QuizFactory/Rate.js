@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
+import { connect } from 'react-redux';
 import { PaperContainer, Loading, FlexBox } from 'components/atoms';
 import { FlatButton, RaisedButton, IconWithText } from 'components/molecules';
 import { ThumbUp, ThumbDown } from 'components/icons';
 import Quiz, { CheckIndicator } from 'components/Quiz';
 import { showError } from 'utils';
 import Layout from './Layout';
+import DeclinePopup from './components/DeclinePopup';
 import { getReviewChallenge, voteChallenge } from './api';
 import './rateStyles.scss';
 
+const mapStateToProps = state => ({
+	isGoldReviewer: state.userProfile.badges.find(b => b.id === 108).isUnlocked,
+});
+
 @translate()
+@connect(mapStateToProps)
 class Rate extends Component {
 	constructor(props) {
 		super(props);
@@ -19,6 +26,7 @@ class Rate extends Component {
 			isQuizComplete: false,
 			checkResult: null,
 			isFetching: false,
+			declinePopupOpened: false,
 		};
 		document.title = 'Sololearn | Rate Quizes';
 		this.preloaded = null;
@@ -40,6 +48,10 @@ class Rate extends Component {
 				showError(e, 'Something went wrong when trying to vote');
 			});
 		this.getChallenge();
+	}
+
+	toggleDeclinePopup = () => {
+		this.setState(s => ({ declinePopupOpened: !s.declinePopupOpened }));
 	}
 	getChallenge = async () => {
 		this.closeChallenge();
@@ -96,9 +108,9 @@ class Rate extends Component {
 	}
 	render() {
 		const {
-			challenge, voteOpen, checkResult, isQuizComplete, isFetching,
+			challenge, voteOpen, checkResult, isQuizComplete, isFetching, declinePopupOpened,
 		} = this.state;
-		const { t } = this.props;
+		const { t, isGoldReviewer } = this.props;
 		return (
 			<Layout className="quiz_factory-rate">
 				<FlexBox align column>
@@ -145,32 +157,71 @@ class Rate extends Component {
 				{voteOpen
 					? (
 						<FlexBox justify className="vote-container">
-							<RaisedButton
-								className="button"
-								onClick={this.like}
-								color="secondary"
-							>
-								<IconWithText
-									Icon={ThumbUp}
-									iconClassname="vote-icon"
-								>
-									{t('factory.button-like')}
-								</IconWithText>
-							</RaisedButton>
-							<RaisedButton
-								className="dislike"
-								onClick={this.dislike}
-							>
-								<IconWithText
-									Icon={ThumbDown}
-									iconClassname="vote-icon"
-								>
-									{t('factory.button-dislike')}
-								</IconWithText>
-							</RaisedButton>
+							{
+								isGoldReviewer ?
+									<React.Fragment>
+										<RaisedButton
+											className="button"
+											onClick={this.like}
+											color="secondary"
+										>
+											<IconWithText
+												Icon={ThumbUp}
+												iconClassname="vote-icon"
+											>
+									Approve
+											</IconWithText>
+										</RaisedButton>
+										<RaisedButton
+											className="dislike"
+											onClick={this.toggleDeclinePopup}
+										>
+											<IconWithText
+												Icon={ThumbDown}
+												iconClassname="vote-icon"
+											>
+									Decline
+											</IconWithText>
+										</RaisedButton>
+									</React.Fragment>
+									: <React.Fragment>
+										<RaisedButton
+											className="button"
+											onClick={this.like}
+											color="secondary"
+										>
+											<IconWithText
+												Icon={ThumbUp}
+												iconClassname="vote-icon"
+											>
+												{t('factory.button-like')}
+											</IconWithText>
+										</RaisedButton>
+										<RaisedButton
+											className="dislike"
+											onClick={this.dislike}
+										>
+											<IconWithText
+												Icon={ThumbDown}
+												iconClassname="vote-icon"
+											>
+												{t('factory.button-dislike')}
+											</IconWithText>
+										</RaisedButton>
+									</React.Fragment>
+							}
+
 						</FlexBox>
 					)
 					: null
+				}
+				{
+					isGoldReviewer &&
+					<DeclinePopup
+						open={declinePopupOpened}
+						onClose={this.toggleDeclinePopup}
+						itemId={challenge && challenge.id}
+					/>
 				}
 			</Layout>
 		);
