@@ -1,27 +1,28 @@
 import React from 'react';
 import { translate } from 'react-i18next';
-import { PaperContainer, FlexBox } from 'components/atoms';
-import { UsernameLink } from 'components/molecules';
-import ProfileAvatar from 'components/ProfileAvatar';
+import { PaperContainer, FlexBox, Container } from 'components/atoms';
+import { UsernameLink, ProfileAvatar, ModBadge } from 'components/molecules';
 import SectionStats from './SectionStats';
 import LevelProgress from './LevelProgress';
 
 const ProfileInfo = ({ t, profile, levels }) => (
 	<PaperContainer className="profile-info">
 		<FlexBox align column fullWidth className="avatar">
-			<ProfileAvatar
-				size={72}
-				userID={profile.id}
-				level={profile.level}
-				badge={profile.badge}
-				userName={profile.name}
-				avatarUrl={profile.avatarUrl}
-			/>
+			<Container className="profile-info_avatar">
+				<ProfileAvatar
+					size="normal"
+					user={profile}
+				/>
+				<ModBadge
+					className="profile-info_badge"
+					badge={profile.badge}
+				/>
+			</Container>
 			<UsernameLink className="username" to={`/profile/${profile.id}`}>
 				{profile.name}
 			</UsernameLink>
 			<LevelProgress profile={profile} levels={levels} />
-			<FlexBox fullWidth justifyBetween>
+			<FlexBox fullWidth justifyBetween className="activity_stats">
 				<SectionStats
 					name={t('profile.tab.codes')}
 					stat={profile.codes}

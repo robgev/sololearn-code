@@ -1,9 +1,9 @@
 @import '~styles/colors';
 
-.atom_progress-color {
-	background-color: $secondary_color;
+.atom_progress-bar_root {
+	height: 6px;
 }
 
-.atom_progress-bg-color {
-	background-color: $secondary_color_disabled;
+.atom_progress-bar {
+	border-radius: 10px;
 }

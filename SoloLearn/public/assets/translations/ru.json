@@ -582,11 +582,11 @@
   },
   "profile": {
     "tab": {
-      "codes": "КОДЫ",
-      "posts": "ПОСТЫ",
-      "activity": "ЛЕНТА",
-      "skills": "НАВЫКИ",
-      "badges": "ЗНАЧКИ"
+      "codes": "Коды",
+      "posts": "Посты",
+      "activity": "Лента",
+      "skills": "Навыки",
+      "badges": "Значки"
 		},
 		"no-codes": "Нет Кодов",
     "edit-prfile": "Редактировать",
@@ -635,7 +635,7 @@
   },
   "followers": {
     "tab": {
-      "followers-title": "ПОДПИСЧИКИ"
+      "followers-title": "Подписчики"
     }
   },
   "play": {
