@@ -5,11 +5,12 @@ import { connect } from 'react-redux';
 import ProfileAvatar from 'components/ProfileAvatar';
 import { MenuItem } from 'components/atoms';
 import { IconMenu } from 'components/molecules';
-import { ArrowDown } from 'components/icons';
+import { ArrowDropDown } from 'components/icons';
 
 import { logout } from 'actions/login.action';
 
 import 'styles/Header/HeaderSettingsMenu.scss';
+import Feedback from 'containers/Feedback';
 
 const mapStateToProps = ({ userProfile, locale }) => ({
 	avatarUrl: userProfile ? userProfile.avatarUrl : null,
@@ -25,6 +26,10 @@ const mapDispatchToProps = {
 @connect(mapStateToProps, mapDispatchToProps)
 @translate()
 class SettingsMenu extends PureComponent {
+	state={
+		openFeedback: false,
+	}
+
 	singOut = () => {
 		browserHistory.push('/signin');
 		this.props.logout();
@@ -46,6 +51,10 @@ class SettingsMenu extends PureComponent {
 		browserHistory.push('/quiz-factory');
 	}
 
+	toggleFeedback=() => {
+		this.setState(s => ({ openFeedback: !s.openFeedback }));
+	}
+
 	render() {
 		const {
 			t,
@@ -54,16 +63,24 @@ class SettingsMenu extends PureComponent {
 			userName,
 			locale,
 		} = this.props;
+		const {
+			openFeedback,
+		} = this.state;
 		return !(avatarUrl || userName) ? null : (
 			<div className="header-settings-menu-container">
 				<ProfileAvatar
 					userID={userID}
 					userName={userName}
 					avatarUrl={avatarUrl}
-					avatarStyle={{ border: '1px solid white' }}
+					avatarStyle={{
+						width: 36,
+						height: 36,
+						margin: 0,
+						marginLeft: 5,
+					}}
 				/>
 				<IconMenu
-					icon={ArrowDown}
+					icon={ArrowDropDown}
 					iconProps={{ className: 'header-icon-menu' }}
 				>
 					<MenuItem
@@ -85,6 +102,11 @@ class SettingsMenu extends PureComponent {
 						</MenuItem>
 					}
 					<MenuItem
+						onClick={this.toggleFeedback}
+					>
+						{t('feedback.title')}
+					</MenuItem>
+					<MenuItem
 						onClick={this.goToSettings}
 					>
 						{t('settings.title')}
@@ -95,6 +117,11 @@ class SettingsMenu extends PureComponent {
 						{t('settings.signout-action-title')}
 					</MenuItem>
 				</IconMenu>
+
+				<Feedback
+					openFeedback={openFeedback}
+					toggleFeedback={this.toggleFeedback}
+				/>
 			</div>
 		);
 	}

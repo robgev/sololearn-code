@@ -1,22 +1,38 @@
 @import '~styles/_colors';
 
-.draft-editor-container {
+.draft-editor-wrapper {
 	width: 100%;
 	box-sizing: border-box;
-	margin: 5px 0;
-	border-top: 1px solid $primary_color;
-	border-bottom: 1px solid $primary_color;
-	&.read-only {
-		border: none;
-	}
-	.draft-editor-inner-container {
+	.draft-editor-container {
 		width: 100%;
-		padding: 15px;
-		.underline {
-			text-decoration: underline;
+		box-sizing: border-box;
+		border-color: #EAEAEA;
+		border-style: solid;
+		border-width: 1px 1px 0 1px;
+		&.read-only {
+			border: none;
 		}
-		&.no-padding {
-			padding: 0px;
+		.draft-editor-inner-container {
+			width: 100%;
+			padding: 15px;
+			.underline {
+				text-decoration: underline;
+			}
+			&.no-padding {
+				padding: 0px;
+			}
+		}
+	}
+	.user-post-max-length-container {
+		padding: 0 5px 5px 0;
+		&.with-border {
+			border-color: #EAEAEA;
+			border-style: solid;
+			border-width: 0px 1px 1px 1px;
+		}
+		.count {
+			font-size: 11px;
+			color: #616B6E;
 		}
 	}
 }

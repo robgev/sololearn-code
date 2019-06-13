@@ -2,10 +2,14 @@
 .notifications-button-container {
 	position: relative;
 	.notifications-badge {
-		top: 0;
-		right: 0;
+		top: 6px;
+		right: 6px;
 		background-color: $error-red;
 		color: white;
+		width: 16px;
+		height: 16px;
+		font-size: 10px;
+		font-weight: 800;
 	}
 	.notifications-button-icon {
 		color: $white;

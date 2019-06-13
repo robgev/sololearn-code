@@ -1,0 +1,42 @@
+@import '~styles/colors';
+
+.courseContainer {
+	margin-top:12px;
+
+	.course {
+		display: flex;
+		margin: 0;
+		position: relative;
+		z-index: 2;
+		text-decoration: none;
+
+		.courseIcon {
+			width: 64px;
+			height: 64px;
+		}
+
+		.details {
+			width: 100%;
+			border: 1px solid $border-color;
+			border-left: 0;
+			background-color: #f9fafa;
+			padding: 12px 0 0 16px;
+		}
+
+		.courseName {
+			font-size: 15px;
+			font-weight: 600;
+			color: $primary_color_hover;
+			padding: 0;
+		}
+
+		.courseLink:hover {
+			text-decoration: none;
+		}
+
+		.description {
+			font-size: 15px;
+			color: $content_text_color;
+		}
+	}
+}

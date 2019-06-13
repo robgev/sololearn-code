@@ -1,0 +1,41 @@
+@import '~styles/colors';
+
+.achievement {
+	display: flex;
+	margin-top:12px;
+
+	.details {
+		width: 100%;
+		border: 1px solid $border-color;
+		border-left: 0;
+		background-color: #f9fafa;
+		padding: 12px 0 0 16px;
+	}
+	.badge-base {
+		width: 64px;
+		height: 64px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+	}
+	.badge-icon {
+		width: 80%;
+	}
+
+	.title {
+		font-size: 15px;
+		font-weight: 600;
+		color: $primary_color_hover;
+	}
+
+	.badgeLink:hover {
+		text-decoration: none;
+	}
+
+	.description {
+		display: block;
+		font-size: 15px;
+		color: $content_text_color;
+	}
+}

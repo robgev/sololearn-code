@@ -1,18 +1,18 @@
 @import '~styles/medias';
 
-$layout_max_size: $desktop-media;
-$layouts_gap: 20px;
+$layouts_gap: 12px;
 
 .molecule_layout {
 	margin: auto;
-	padding: $layouts_gap;
-	max-width: $layout_max_size;
+	padding-top: $layouts_gap;
+	width: 70.83%;
+	max-width: 1190px;
 	min-width: $phone_media;
 	transition: all 150ms cubic-bezier(0.075, 0.82, 0.165, 1);
 	&.with-sidebar {
 		display: grid;
 		grid-gap: $layouts_gap;
-		grid-template-columns: minmax(0, 5fr) 275px;
+		grid-template-columns: minmax(0, 3fr) 288px;
 		align-items: start;
 	}
 }

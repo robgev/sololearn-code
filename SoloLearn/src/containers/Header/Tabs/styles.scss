@@ -1,0 +1,54 @@
+@import '~styles/medias';
+@import '~styles/colors';
+
+.header_tabs {
+	display: flex;
+	.header_tab-item {
+		display: flex;
+		align-items: center;
+		position: relative;
+		padding: 3px 26px 3px 0px;
+		color: $white;
+		.header_tab-icon {
+			flex-shrink: 0;
+			width: 45px;
+		}
+		.header_tab-text {
+			color: $white;
+			font-size: 15px;
+		}
+		&.active {
+			border-bottom-color: $primary_color;
+			&:after {
+				transform: scaleX(1);
+			}
+		}
+		&:after {
+			display: block;
+			content: '';
+			position: absolute;
+			width: 100%;
+			bottom: 0;
+			right: 0;
+			border-bottom: 2px solid $primary_color;
+			-webkit-transform: scaleX(0);
+			transform: scaleX(0);
+			transition: -webkit-transform .2s ease-in-out;
+			transition: transform .2s ease-in-out;
+			transition: transform .2s ease-in-out, -webkit-transform .2s ease-in-out;
+		}
+	}
+}
+
+@include for-until-tablet {
+	.header_tabs {
+		flex-grow: 4;
+		.header_tab-item {
+			flex-grow: 1;
+			justify-content: center;
+			> span {
+				display: none;
+			}
+		}
+	}
+}

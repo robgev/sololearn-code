@@ -4,9 +4,10 @@
 $max_size: $badge_size * 5;
 
 .molecule_mod-badge-container {
-	max-width: $max_size;
-	border-radius: $badge_size;
-	color: $white;
+	// max-width: $max_size;
+	// border-radius: $badge_size;
+	// color: $white;
+	padding: 0;
 	.molecule_mod-badge-icon {
 		width: $badge_size;
 		margin-right: 2px;
@@ -14,26 +15,26 @@ $max_size: $badge_size * 5;
 			width: 100%;
 		}
 	}
-	.molecule_mod-badge-label {
-		display: inline-block;
-		font-size: $badge_size;
-	}
+	// .molecule_mod-badge-label {
+	// 	display: inline-block;
+	// 	font-size: $badge_size;
+	// }
 	&.big {
 		padding: 3px;
 	}
-	&.small {
-		.molecule_mod-badge-label {
-			font-size: $label_text_size;
-			line-height: $badge_size;
-		}
-	}
-	&.mod {
-		background-color: $mod_badge_color;
-	}
-	&.gold_mod {
-		background-color: $gold_mod_bagde_color;
-	}
-	&.platinum_mod {
-		background-color: $platinum_mod_badge_color;
-	}
+	// &.small {
+	// 	.molecule_mod-badge-label {
+	// 		font-size: $label_text_size;
+	// 		line-height: $badge_size;
+	// 	}
+	// }
+	// &.mod {
+	// 	background-color: $mod_badge_color;
+	// }
+	// &.gold_mod {
+	// 	background-color: $gold_mod_bagde_color;
+	// }
+	// &.platinum_mod {
+	// 	background-color: $platinum_mod_badge_color;
+	// }
 }

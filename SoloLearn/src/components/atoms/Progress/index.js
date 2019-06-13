@@ -6,6 +6,10 @@ const Progress = props => (
 	<LinearProgress
 		variant="determinate"
 		color="secondary"
+		classes={{
+			root: 'atom_progress-bar_root',
+			bar: 'atom_progress-bar',
+		}}
 		{...props}
 	/>
 );

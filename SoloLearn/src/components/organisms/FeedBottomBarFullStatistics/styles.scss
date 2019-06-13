@@ -1,0 +1,19 @@
+.feed-bbfs-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 4px;
+	margin-bottom: -10px;
+	// Hacky solution :)
+	margin-left: -13px;
+	.feed-bbfs_view-stats {
+		.molecule_view-stats {
+			margin-right: 20px;
+		}
+	}
+	.date {
+		font-size: 11px;
+		color: #939393;
+		padding-right: 10px;
+	}
+}

@@ -4,6 +4,8 @@ import { SecondaryTextBlock, Container, FlexBox } from 'components/atoms';
 import { ViewStats } from 'components/molecules';
 import { VoteActions } from 'components/organisms';
 
+import './styles.scss';
+
 const FeedBottomBarFullStatistics = ({
 	date,
 	userVote,
@@ -17,7 +19,7 @@ const FeedBottomBarFullStatistics = ({
 	withDate = true,
 	commentIconLink,
 }) => (
-	<Container className={`feed-toolbar-container ${className}`}>
+	<Container className={`feed-bbfs-container ${className}`}>
 		<FlexBox>
 			<VoteActions
 				id={id}
@@ -30,6 +32,7 @@ const FeedBottomBarFullStatistics = ({
 				views={views}
 				comments={comments}
 				link={commentIconLink}
+				className="feed-bbfs_view-stats"
 			/>
 		</FlexBox>
 		{withDate ? <SecondaryTextBlock className="date">{updateDate(date)}</SecondaryTextBlock> : null}

@@ -17,19 +17,28 @@ import {
 	Image,
 	Title,
 	SecondaryTextBlock,
+	TextBlock,
 	FlexBox,
 } from 'components/atoms';
+import { ChevronUp, ChevronDown } from 'components/icons';
 import { FlatButton, ContainerLink, ProfileAvatar } from 'components/molecules';
 
 import 'styles/Feed/FeedPin.scss';
 
 class FeedPin extends Component {
+	state={
+		showMoreOpened: false,
+	}
+
+	toggleShowMore = () => {
+		this.setState(s => ({ showMoreOpened: !s.showMoreOpened }));
+	}
 	// Render pin courses
 	generateCourses() {
 		const { pin } = this.props;
 
 		return pin.courses.map(course => (
-			<Course key={`pinCourse ${course.id} ${pin.id}`} showDate={false} course={course} openPopup={this.props.openPopup} />
+			<Course key={`pinCourse ${course.id} ${pin.id}`} course={course} openPopup={this.props.openPopup} />
 		));
 	}
 
@@ -45,8 +54,8 @@ class FeedPin extends Component {
 	// Render pin codes
 	generateCodes() {
 		const { pin } = this.props;
-
-		return pin.codes.map(code => (
+		const codes = this.state.showMoreOpened ? pin.codes : pin.codes.slice(0, 2);
+		return codes.map(code => (
 			<Link to={`/playground/${code.publicID}`} className="code" key={`pinCode ${code.id} ${pin.id}`}>
 				<Container
 					className="languageIcon"
@@ -57,9 +66,9 @@ class FeedPin extends Component {
 					{code.language}
 				</Container>
 				<Container >
-					<SecondaryTextBlock >{code.name}</SecondaryTextBlock>
+					<TextBlock className="code-name">{code.name}</TextBlock>
 					<br />
-					<SecondaryTextBlock >{code.userName}</SecondaryTextBlock>
+					<SecondaryTextBlock className="code-username">{code.userName}</SecondaryTextBlock>
 
 				</Container>
 			</Link>
@@ -124,7 +133,7 @@ class FeedPin extends Component {
 				const firstPost = pin.userPosts[0];
 				url = `/userPost/${firstPost.id}`;
 			} else if (pin.courses) {
-				url = `/learn/${toSeoFriendly(pin.courses[0].alias)}`;
+				url = `/learn/${toSeoFriendly(pin.courses[0].name)}`;
 			}
 		} else {
 			const parts = url.split('/');
@@ -155,38 +164,72 @@ class FeedPin extends Component {
 
 	render() {
 		const { pin } = this.props;
+		const { showMoreOpened } = this.state;
+		let moreItemsCount = 0;
+		let type = '';
+		if (pin.courses && pin.courses.length > 2)	{
+			moreItemsCount = pin.courses.length - 2;
+			type = 'courses';
+		} else if (pin.users && pin.users.length > 2)	{
+			moreItemsCount = pin.users.length - 2;
+			type = 'users';
+		} else if (pin.codes && pin.codes.length > 2)	{
+			moreItemsCount = pin.codes.length - 2;
+			type = 'codes';
+		} else if (pin.lessons && pin.lessons.length > 2)	{
+			moreItemsCount = pin.lessons.length - 2;
+			type = 'lessons';
+		} else if (pin.posts && pin.posts.length > 2)	{
+			moreItemsCount = pin.posts.length - 2;
+			type = 'posts';
+		}
 		return (
-			<ContainerLink className="feed-pin-wrapper" to={this.getPinUrl()} target="_blank">
-				<PaperContainer className="feed-pin-content">
-					<FlexBox column className="heading">
-						<Title className="title" >{pin.title}</Title>
-						<SecondaryTextBlock >{pin.message}</SecondaryTextBlock>
-					</FlexBox>
+			<Container className="feedItem feedItem-pin ">
+				<Container className="feed-item-content-wrapper">
+					<Container className="feed-item-content">
+					<Image className="feed-pin-logo" src="/assets/pin_item_logo.png" />
+						<Container className="wrapper">
+					<FlexBox align className="feed-item-title">
+								<TextBlock className="title">
+									{pin.title}
+								</TextBlock>
+							</FlexBox>
+
 					{pin.imageUrl &&
-						<Image
+							<Image
 							alt="Pinned item"
 							className="pinImage"
 							src={pin.imageUrl}
 						/>
-					}
+							}
 					{pin.courses && <Container className="courses" >{this.generateCourses()}</Container>}
 					{pin.users && <Container className="users" >{this.generateUsers()}</Container>}
-					{pin.codes && <Container className="codes">{this.generateCodes()}</Container>}
-					{pin.lessons && <Container className="lessons" >{this.generateLessons()}</Container>}
-					{pin.posts && <Container className="posts" >{this.generatePosts()}</Container>}
-					<FlexBox className="actions">
-						<FlatButton color="primary">
-							<Link to={this.getPinUrl()}>
-								{pin.actionName}
-							</Link>
-						</FlatButton>
-					</FlexBox>
-				</PaperContainer>
-				{pin.courses ?
-					<SecondaryTextBlock className="feed-pin" onClick={this.openCoursePopup} /> :
-					<Link className="feed-pin" to={this.getPinUrl()} />
+					{pin.codes && <FlexBox className="codes">{this.generateCodes()}</FlexBox>}
+							{pin.lessons && <Container className="lessons" >{this.generateLessons()}</Container>}
+							{pin.posts && <Container className="posts" >{this.generatePosts()}</Container>}
+
+    </Container>
+				</Container>
+				</Container>
+				{
+					moreItemsCount > 0 &&
+					<FlexBox align justify className="pin-show-more-bar" onClick={this.toggleShowMore}>
+			<TextBlock className="show-more-pins">
+				{
+					showMoreOpened
+						? 'See less'
+						: `${moreItemsCount} more ${type}`
 				}
-			</ContainerLink>
+			</TextBlock>
+			{
+				showMoreOpened
+					? <ChevronUp />
+					: <ChevronDown />
+			}
+		</FlexBox>
+				}
+   </Container>
+
 		);
 	}
 }

@@ -1,7 +1,8 @@
 $phone_media: 480px;
-$tablet_media: 736px;
+$tablet_media: 938px;
 $desktop_media: 1024px;
-$big_desktop_media: 1280px;
+$big_desktop_media: 1238px;
+$big_desktop_up: 1680px;
 
 @mixin for-phone-only {
   @media all and (max-width: $phone_media) { @content; }
@@ -19,6 +20,10 @@ $big_desktop_media: 1280px;
   @media screen and (max-width: $big_desktop_media) { @content; }
 }
 
+@mixin for-until-big-desktop-up {
+  @media screen and (max-width: $big_desktop_up) { @content; }
+}
+
 @mixin for-big-desktop-up {
-  @media (min-width: 1690px) { @content; }
+  @media (min-width: $big_desktop_up) { @content; }
 }

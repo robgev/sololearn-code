@@ -9,20 +9,14 @@ import { convertToRaw } from 'draft-js';
 import {
 	PopupTitle,
 	FlexBox,
-	Chip,
 	Loading,
 	Container,
 	Image as AtomImage,
 	IconButton,
-	SecondaryTextBlock,
 	Snackbar,
 } from 'components/atoms';
-import {
-	ProfileAvatar,
-	UsernameLink,
-	ModBadge,
-} from 'components/molecules';
-import { AddPhotoAlternate, Close } from 'components/icons';
+import { ProfileAvatar } from 'components/molecules';
+import { Close } from 'components/icons';
 import { getMentionsValue } from 'utils';
 
 import { getUserSelector } from 'reducers/reducer_user';
@@ -56,6 +50,8 @@ const UserPostEditor = ({
 	initialUserPostId = null,
 	updateListItems = () => { },
 	getNewFeedItemsInternal,
+	openImageInput = false,
+	toggleImageInput = null,
 	t,
 }) => {
 	const [ backgrounds, setBackgrounds ] = useState([]);
@@ -95,9 +91,15 @@ const UserPostEditor = ({
 		getPostBackgrounds()
 			.then((res) => {
 				setBackgrounds([ { type: 'none', id: -1 }, ...res.backgrounds ]);
+				if (openImageInput) {
+					imageInputRef.current.click();
+				}
 			});
 		if (initialImageSource) {
 			setImageSource(initialImageSource);
+		}
+		if (toggleImageInput) {
+			return toggleImageInput();
 		}
 	}, []);
 
@@ -243,90 +245,83 @@ const UserPostEditor = ({
 	return (
 		<Container>
 			<Container className="user-post-main-container">
-				<FlexBox justifyBetween align>
-					<PopupTitle className="user-post-main-title">
-						{`${(draftEditorInitialText && initialUserPostId) || (initialImageSource && initialUserPostId) ? t('user_post.edit-post-title') : t('user_post.new-post-title')}`}
-					</PopupTitle>
-					<IconButton onClick={closePopup}>
-						<Close />
-					</IconButton>
-				</FlexBox>
+				{!toggleImageInput &&
+					<FlexBox justifyBetween align>
+						<PopupTitle className="user-post-main-title">
+							{`${(draftEditorInitialText && initialUserPostId) || (initialImageSource && initialUserPostId) ? t('user_post.edit-post-title') : t('user_post.new-post-title')}`}
+						</PopupTitle>
+						<IconButton onClick={closePopup}>
+							<Close />
+						</IconButton>
+					</FlexBox>
+				}
 				<Container className="user-post-main-content">
 					{backgrounds && backgrounds.length ?
-						<FlexBox column fullWith>
-							<FlexBox align className="up-top-bar">
-								<FlexBox align>
-									<ProfileAvatar
-										user={profile}
-									/>
-									<FlexBox>
-										<UsernameLink
-											to={`/profile/${profile.id}`}
-											className="up-profile-username-link"
-										>
-											{profile.name}
-										</UsernameLink>
-										<ModBadge
-											badge={profile.badge}
-										/>
-									</FlexBox>
-								</FlexBox>
-							</FlexBox>
-							<DraftEditor
-								background={background}
-								setEditorText={setEditorText}
-								editorInitialText={draftEditorInitialText}
-								onEscape={closePopup}
-							// emojiPlugin={emojiPlugin}
+						<FlexBox className="up-inner-container">
+							<ProfileAvatar
+								user={profile}
+								className="up-editor-profile-avatar"
 							/>
-							<FlexBox justifyEnd align className="user-post-max-length-container">
-								{/* <Container>
-									<EmojiSelect />
-									<EmojiSuggestions />
-								</Container> */}
-								<SecondaryTextBlock className="count">
-									{editorText ? editorText.getPlainText().length : 0} / {USER_POST_MAX_LENGTH}
-								</SecondaryTextBlock>
-							</FlexBox>
-							<FlexBox justify align>
-								<Container className="user-post-image-preview-container">
-									<IconButton
-										onClick={() => {
-											imageInputRef.current.value = '';
-											removeImage();
-										}}
-										className="image-preview-remove-icon"
-										style={{ display: imageSource ? 'block' : 'none' }}
-									>
-										<Close />
-									</IconButton>
-									<AtomImage src={imageSource || ''} className="user-post-image-preview" />
-								</Container>
-							</FlexBox>
-
-							<FlexBox align justify className="add-image-and-backgrounds-container">
-								<Chip
-									icon={<AddPhotoAlternate className="add-image-icon" />}
-									label={imageSource ? 'Change Image' : 'Add Image'}
-									className="add-image-chip"
-									onClick={() => imageInputRef.current.click()}
+							<FlexBox column fullWidth>
+								<DraftEditor
+									background={background}
+									setEditorText={setEditorText}
+									editorInitialText={draftEditorInitialText}
+									onEscape={closePopup}
+								// emojiPlugin={emojiPlugin}
 								/>
-								<UploadImageInput inputRef={imageInputRef} handleChange={onImageSelect} />
-								{
-									canApplyBackground
-										? (
-											<FlexBox className="backgrounds-container">
-												{
-													backgrounds.map(el =>
-														(<BackgroundIconButton
-															onSelect={setSelectedBackgroundId}
-															background={el}
-														/>))
-												}
-											</FlexBox>
-										)
-										: null
+
+								{imageSource &&
+									<FlexBox justify align >
+										<Container className="user-post-image-preview-container">
+											<IconButton
+												onClick={() => {
+													imageInputRef.current.value = '';
+													removeImage();
+												}}
+												className="image-preview-remove-icon"
+												style={{ display: imageSource ? 'block' : 'none' }}
+											>
+												<Close />
+											</IconButton>
+											<AtomImage src={imageSource || ''} className="user-post-image-preview" />
+										</Container>
+									</FlexBox>
 								}
+
+								<FlexBox
+									align
+									justifyBetween
+									className="up-editor-actions-container"
+								>
+									<AtomImage
+										onClick={() => imageInputRef.current.click()}
+										src="/assets/image_icon_2x.png"
+										className="add-image-icon"
+									/>
+									<UploadImageInput inputRef={imageInputRef} handleChange={onImageSelect} />
+									{
+										canApplyBackground
+											? (
+												<FlexBox className="backgrounds-container">
+													{
+														backgrounds.map(el =>
+															(<BackgroundIconButton
+																onSelect={setSelectedBackgroundId}
+																background={el}
+															/>))
+													}
+												</FlexBox>
+											)
+											: null
+									}
+									<EditorActions
+										isPostButtonDisabled={isPostButtonDisabled}
+										createOrEditPostHandler={initialUserPostId ? editPostHandler : createPostHandler}
+										closePopup={closePopup}
+										initialUserPostId={initialUserPostId}
+									/>
+								</FlexBox>
 							</FlexBox>
 
 						</FlexBox>
@@ -336,12 +331,6 @@ const UserPostEditor = ({
 						</FlexBox>
 					}
 				</Container>
-				<EditorActions
-					isPostButtonDisabled={isPostButtonDisabled}
-					createOrEditPostHandler={initialUserPostId ? editPostHandler : createPostHandler}
-					closePopup={closePopup}
-					initialUserPostId={initialUserPostId}
-				/>
 				<Snackbar
 					anchorOrigin={{
 						vertical: 'bottom',
