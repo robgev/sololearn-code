@@ -127,7 +127,6 @@ class FeedList extends Component {
 																		key={`pin${pin.id}`}
 																	/>
 																))}
-																<Title className="sub-title" key="separator">{t('feed.most-recent-title')}</Title>
 															</React.Fragment>
 															}
 														</Container>

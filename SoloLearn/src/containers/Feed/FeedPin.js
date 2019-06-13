@@ -20,18 +20,18 @@ import {
 	TextBlock,
 	FlexBox,
 } from 'components/atoms';
-import {ChevronUp, ChevronDown} from 'components/icons';
+import { ChevronUp, ChevronDown } from 'components/icons';
 import { FlatButton, ContainerLink, ProfileAvatar } from 'components/molecules';
 
 import 'styles/Feed/FeedPin.scss';
 
 class FeedPin extends Component {
 	state={
-		showMoreOpened: false
+		showMoreOpened: false,
 	}
 
 	toggleShowMore = () => {
-		this.setState(s => ({showMoreOpened: !s.showMoreOpened}))
+		this.setState(s => ({ showMoreOpened: !s.showMoreOpened }));
 	}
 	// Render pin courses
 	generateCourses() {
@@ -54,7 +54,7 @@ class FeedPin extends Component {
 	// Render pin codes
 	generateCodes() {
 		const { pin } = this.props;
-		const codes = this.state.showMoreOpened ? pin.codes : pin.codes.slice(0,2);
+		const codes = this.state.showMoreOpened ? pin.codes : pin.codes.slice(0, 2);
 		return codes.map(code => (
 			<Link to={`/playground/${code.publicID}`} className="code" key={`pinCode ${code.id} ${pin.id}`}>
 				<Container
@@ -66,9 +66,9 @@ class FeedPin extends Component {
 					{code.language}
 				</Container>
 				<Container >
-					<TextBlock className='code-name'>{code.name}</TextBlock>
+					<TextBlock className="code-name">{code.name}</TextBlock>
 					<br />
-					<SecondaryTextBlock className='code-username'>{code.userName}</SecondaryTextBlock>
+					<SecondaryTextBlock className="code-username">{code.userName}</SecondaryTextBlock>
 
 				</Container>
 			</Link>
@@ -164,75 +164,71 @@ class FeedPin extends Component {
 
 	render() {
 		const { pin } = this.props;
-		const {showMoreOpened} = this.state;
+		const { showMoreOpened } = this.state;
 		let moreItemsCount = 0;
-		let type = "";
-		if(pin.courses && pin.courses.length > 2)	{
+		let type = '';
+		if (pin.courses && pin.courses.length > 2)	{
 			moreItemsCount = pin.courses.length - 2;
-			type = "courses";
-		} else if(pin.users && pin.users.length > 2)	{
+			type = 'courses';
+		} else if (pin.users && pin.users.length > 2)	{
 			moreItemsCount = pin.users.length - 2;
-			type = "users";
-		} else if(pin.codes && pin.codes.length > 2)	{
+			type = 'users';
+		} else if (pin.codes && pin.codes.length > 2)	{
 			moreItemsCount = pin.codes.length - 2;
-			type = "codes";
-		} else if(pin.lessons && pin.lessons.length > 2)	{
+			type = 'codes';
+		} else if (pin.lessons && pin.lessons.length > 2)	{
 			moreItemsCount = pin.lessons.length - 2;
-			type = "lessons";
-		} else if(pin.posts && pin.posts.length > 2)	{
+			type = 'lessons';
+		} else if (pin.posts && pin.posts.length > 2)	{
 			moreItemsCount = pin.posts.length - 2;
-			type = "posts";
+			type = 'posts';
 		}
 		return (
-			<PaperContainer className="feedItem feedItem-pin ">
-			<Container className="feed-item-content-wrapper">
-			<Container className="feed-item-content">
-		<Image className="feed-pin-logo" src={'/assets/pin_item_logo.png'}/>
-		<Container className="wrapper">
-			<FlexBox align className="feed-item-title">
-				<TextBlock className="title">
-					{pin.title}
-				</TextBlock>
-			</FlexBox>
-
+			<Container className="feedItem feedItem-pin ">
+				<Container className="feed-item-content-wrapper">
+					<Container className="feed-item-content">
+					<Image className="feed-pin-logo" src="/assets/pin_item_logo.png" />
+						<Container className="wrapper">
+					<FlexBox align className="feed-item-title">
+								<TextBlock className="title">
+									{pin.title}
+								</TextBlock>
+							</FlexBox>
 
 					{pin.imageUrl &&
-						<Image
+							<Image
 							alt="Pinned item"
 							className="pinImage"
 							src={pin.imageUrl}
 						/>
-					}
+							}
 					{pin.courses && <Container className="courses" >{this.generateCourses()}</Container>}
 					{pin.users && <Container className="users" >{this.generateUsers()}</Container>}
 					{pin.codes && <FlexBox className="codes">{this.generateCodes()}</FlexBox>}
-					{pin.lessons && <Container className="lessons" >{this.generateLessons()}</Container>}
-					{pin.posts && <Container className="posts" >{this.generatePosts()}</Container>}
+							{pin.lessons && <Container className="lessons" >{this.generateLessons()}</Container>}
+							{pin.posts && <Container className="posts" >{this.generatePosts()}</Container>}
 
-
-
-		</Container>
-	</Container>
-	</Container>
-	{
-		moreItemsCount > 0 &&
-		<FlexBox align justify className="pin-show-more-bar" onClick={this.toggleShowMore}>
+    </Container>
+				</Container>
+				</Container>
+				{
+					moreItemsCount > 0 &&
+					<FlexBox align justify className="pin-show-more-bar" onClick={this.toggleShowMore}>
 			<TextBlock className="show-more-pins">
 				{
 					showMoreOpened
-					? "See less"
-					: `${moreItemsCount} more ${type}`
+						? 'See less'
+						: `${moreItemsCount} more ${type}`
 				}
 			</TextBlock>
 			{
 				showMoreOpened
-				? <ChevronUp/>
-				: <ChevronDown/>
+					? <ChevronUp />
+					: <ChevronDown />
 			}
 		</FlexBox>
-	}
-</PaperContainer>
-
+				}
+   </Container>
 
 		);
 	}
