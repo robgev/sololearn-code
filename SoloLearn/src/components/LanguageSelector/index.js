@@ -35,7 +35,7 @@ const LanguageSelector = ({
 				{filteredCourses.length === 0 ? <EmptyCard loading={coursesLoading || loading} /> : null}
 				<List>
 					{filteredCourses.map(course => (
-						<Container key={course.id} onKeyDown={e => handleEnter(e, course)} onClick={() => onChoose(course)} tabIndex={0} role="button">
+						<Container key={course.id} onKeyDown={e => handleEnter(e, course)} onClick={() => onChoose(course)} role="button">
 							<ListItem button>
 								<FlexBox align className="language_selector-card-container">
 									<LanguageCard language={course.language} />

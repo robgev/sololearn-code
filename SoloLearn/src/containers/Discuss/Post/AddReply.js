@@ -24,6 +24,12 @@ class AddReply extends Component {
 		this.props.submit(this.input.current.popValue());
 	}
 
+	onEnter = (e) => {
+		if (e.keyCode === 13) {
+			this.submit();
+		}
+	}
+
 	renderSubmitButton = ({ isExpanded, charCount }) => {
 		const { t } = this.props;
 		const { isSubmitEnabled } = this.state;
@@ -33,6 +39,7 @@ class AddReply extends Component {
 					className={`post-button ${isSubmitEnabled ? 'enabled' : ''}`}
 					disabled={!isSubmitEnabled}
 					onMouseDown={this.submit}
+					onKeyDown={this.onEnter}
 				>
 					{t('common.post-action-title')}
 				</RaisedButton>
