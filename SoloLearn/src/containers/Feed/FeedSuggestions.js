@@ -30,7 +30,7 @@ const mapStateToProps = (state, { number }) => ({
 // };
 
 const FeedSuggestions = ({ suggestions }) => (
-	<FlexBox className="feed-suggestions">
+	<FlexBox className="feed-suggestions" >
 		{suggestions.map(suggestion => (
 			<Container
 				key={`suggestion${suggestion.id}`}
