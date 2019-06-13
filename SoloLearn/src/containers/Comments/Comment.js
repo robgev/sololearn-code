@@ -83,7 +83,6 @@ class Comment extends Component {
 	onRequestRemoval = () => {
 		const { id } = this.props.comment;
 		const itemType = ReportItemTypes[`${this.props.commentsAPI.commentsType}Comment`];
-		console.log(itemType);
 		this.props.commentsAPI.requestRemoval({ itemId: id, itemType });
 		// this.hideComment(id, itemType); comment must hide after reload
 	}
