@@ -18,7 +18,6 @@ class RemovalPopup extends Component {
 			deleteComment, commentsType, report, onClose, accessLevel,
 		} = this.props;
 		const itemType = ReportItemTypes[`${commentsType}Comment`];
-		console.log(itemType);
 		try {
 			if (accessLevel > 1
 				&& (itemType === ReportItemTypes.lessonComment
@@ -47,6 +46,7 @@ class RemovalPopup extends Component {
 		const actions = [
 			<FlatButton
 				variant="contained"
+				autoFocus
 				onClick={onClose}
 			>
 				{t('common.cancel-title')}
