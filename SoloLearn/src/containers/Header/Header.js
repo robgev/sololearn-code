@@ -15,28 +15,33 @@ const mapStateToProps = state => ({
 	isSignedIn: state.userProfile !== null,
 });
 
-const Header = ({ pathname, isSignedIn }) => (
-	<Container className="header mui-fixed">
-		<Container className="header-wrapper">
-			<FlexBox align className="header-logo">
-				<ContainerLink to="/feed" className="home-icon">
-					<Container className="header_home-icon_small">
-						<HomeIcon />
-					</Container>
-					<Container className="header_home-icon_big">
-						<Image className="header_home-icon_image" src="/assets/logo_full.png" />
-					</Container>
-				</ContainerLink>
-			</FlexBox>
-			<FlexBox align className="header-left">
-				<TabList pathname={pathname} />
-			</FlexBox>
-			<FlexBox align justifyEnd className="header-right">
-				{isSignedIn && <Notifications />}
-				<SettingsMenu />
-			</FlexBox>
-		</Container>
-	</Container>
-);
+const Header = ({ pathname, isSignedIn }) => {
+	const scrollTop = () => {
+		window.scrollTo(0, 0);
+	};
 
+	return (
+		<Container className="header mui-fixed">
+			<Container className="header-wrapper">
+				<FlexBox align className="header-logo">
+					<ContainerLink to="/feed" className="home-icon" onClick={scrollTop}>
+						<Container className="header_home-icon_small">
+							<HomeIcon />
+						</Container>
+						<Container className="header_home-icon_big">
+							<Image className="header_home-icon_image" src="/assets/logo_full.png" />
+						</Container>
+					</ContainerLink>
+				</FlexBox>
+				<FlexBox align className="header-left">
+					<TabList pathname={pathname} />
+				</FlexBox>
+				<FlexBox align justifyEnd className="header-right">
+					{isSignedIn && <Notifications />}
+					<SettingsMenu />
+				</FlexBox>
+			</Container>
+		</Container>
+	);
+};
 export default connect(mapStateToProps)(Header);
