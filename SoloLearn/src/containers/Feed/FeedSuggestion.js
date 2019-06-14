@@ -5,8 +5,18 @@ import { connect } from 'react-redux';
 // import ProfileAvatar from './ProfileAvatar';
 import { followUserSuggestion } from 'actions/feed';
 import { numberFormatter } from 'utils';
-import { PaperContainer, FlexBox, Image, SecondaryTextBlock } from 'components/atoms';
-import { UsernameLink, RaisedButton, ProfileAvatar } from 'components/molecules';
+import {
+	FlexBox,
+	IconLabel,
+	Container,
+} from 'components/atoms';
+import {
+	UsernameLink,
+	FlatButton,
+	ProfileAvatar,
+	IconWithText,
+} from 'components/molecules';
+import { Level, Followers } from 'components/icons';
 
 import 'styles/Feed/FeedSuggestion.scss';
 
@@ -20,37 +30,28 @@ const FeedSuggestion = ({ t, suggestion, followUser }) => {
 		followers,
 		isFollowing,
 	} = suggestion;
-	console.clear();
-	console.log('suggestion: ', suggestion);
 	return (
-		<PaperContainer className="user">
+		<Container className="user">
 			<ProfileAvatar
 				user={suggestion}
 				className="feed-suggestion-avatar"
 			/>
 			<UsernameLink to={`/profile/${suggestion.id}`}>{suggestion.name}</UsernameLink>
 			<FlexBox align className="feed-suggestion-info-container">
-				<FlexBox align className="suggestion-info-container-1">
-					<Image src="/assets/followers_icon_2x.png" className="suggestion-follower-icon" />
-					<SecondaryTextBlock>
-						{numberFormatter(followers)}
-					</SecondaryTextBlock>
-				</FlexBox>
-				<FlexBox align>
-					<Image src="/assets/level_icon.png" className="suggestion-level-icon" />
-					<SecondaryTextBlock>
-						{suggestion.level}
-					</SecondaryTextBlock>
-				</FlexBox>
+				<IconWithText justify Icon={Followers} className="suggestion-info-container">
+					<IconLabel>{numberFormatter(followers)}</IconLabel>
+				</IconWithText>
+				<IconWithText justify Icon={Level} className="suggestion-info-container">
+					<IconLabel>{suggestion.level}</IconLabel>
+				</IconWithText>
 			</FlexBox>
-			<RaisedButton
+			<FlatButton
 				color="primary"
 				onClick={() => followUser({ id, isFollowing })}
-				className="suggestion-follow-button"
 			>
 				{isFollowing ? t('common.user-following') : t('common.follow-user')}
-			</RaisedButton>
-		</PaperContainer>
+			</FlatButton>
+		</Container>
 	);
 };
 
