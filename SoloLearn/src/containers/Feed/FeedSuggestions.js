@@ -10,8 +10,8 @@ import FeedSuggestion from './FeedSuggestion';
 const mapStateToProps = (state, { number }) => ({
 	suggestions: getEntitiesByIds(
 		state,
-		discoverIdsSelector(state).slice(number * 10, (number * 10) + 10),
-	).slice(0, 5),
+		discoverIdsSelector(state).slice(number * 5, (number * 5) + 5),
+	),
 });
 
 // const generateBreakpoints = () => {
@@ -30,7 +30,7 @@ const mapStateToProps = (state, { number }) => ({
 // };
 
 const FeedSuggestions = ({ suggestions }) => (
-	<FlexBox className="feed-suggestions" >
+	<FlexBox className="feed-suggestions">
 		{suggestions.map(suggestion => (
 			<Container
 				key={`suggestion${suggestion.id}`}
