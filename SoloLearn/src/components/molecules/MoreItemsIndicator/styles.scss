@@ -1,0 +1,11 @@
+@import '~styles/colors';
+
+.molecule_more-items-indicator {
+	padding: 13px 0;
+	cursor: pointer;
+	.molecule_more-items-indicator_show-more-text {
+		color: $primary_color_hover;
+		font-weight: 700;
+		font-size: 12px;
+	}
+}

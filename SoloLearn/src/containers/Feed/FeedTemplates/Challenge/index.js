@@ -6,8 +6,10 @@ import {
 	SecondaryTextBlock,
 	FlexBox,
 	IconLabel,
+	HorizontalDivider,
 } from 'components/atoms';
 import { UsernameLink, ProfileAvatar, IconWithText } from 'components/molecules';
+import { formatDate } from 'utils';
 import { Level } from 'components/icons';
 
 import './styles.scss';
@@ -15,13 +17,18 @@ import './styles.scss';
 const Challenge = ({
 	t,
 	date,
+	merged,
+	language,
 	contest: {
 		player, opponent,
 	},
 }) => (
 	<Fragment>
-		<Container className="challenge">
-			<FlexBox align>
+		<FlexBox justify align className={`challenge ${merged ? 'merged' : ''}`}>
+			{ merged &&
+			<SecondaryTextBlock className="challenge-date">{formatDate(date)}</SecondaryTextBlock>
+			}
+			<FlexBox align justifyEnd className="challenger_container">
 				<FlexBox className="user-container player" column>
 					<UsernameLink className="username" to={`/Profile/${player.id}`}>{player.name}</UsernameLink>
 					<FlexBox align className="challenger_info">
@@ -36,10 +43,15 @@ const Challenge = ({
 					user={player}
 				/>
 			</FlexBox>
-			<Container>
-				<TextBlock className="score">{`${player.score} : ${opponent.score}`}</TextBlock>
-			</Container>
-			<FlexBox align>
+			<FlexBox align justify column>
+				<TextBlock className="challenge-text score">
+					{`${player.score} : ${opponent.score}`}
+				</TextBlock>
+				<TextBlock className="challenge-text language">
+					{language}
+				</TextBlock>
+			</FlexBox>
+			<FlexBox align justifyStart className="challenger_container">
 				<ProfileAvatar
 					user={opponent}
 				/>
@@ -54,7 +66,10 @@ const Challenge = ({
 					</FlexBox>
 				</FlexBox>
 			</FlexBox>
-		</Container>
+		</FlexBox>
+		{ merged &&
+		<HorizontalDivider className="challenge-divider" />
+		}
 	</Fragment>
 );
 

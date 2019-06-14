@@ -21,7 +21,7 @@ import {
 	FlexBox,
 } from 'components/atoms';
 import { ChevronUp, ChevronDown } from 'components/icons';
-import { FlatButton, ContainerLink, ProfileAvatar } from 'components/molecules';
+import { MoreItemsIndicator, ProfileAvatar } from 'components/molecules';
 
 import 'styles/Feed/FeedPin.scss';
 
@@ -187,48 +187,38 @@ class FeedPin extends Component {
 			<Container className="feedItem feedItem-pin ">
 				<Container className="feed-item-content-wrapper">
 					<Container className="feed-item-content">
-					<Image className="feed-pin-logo" src="/assets/pin_item_logo.png" />
+						<Image className="feed-pin-logo" src="/assets/pin_item_logo.png" />
 						<Container className="wrapper">
-					<FlexBox align className="feed-item-title">
+							<FlexBox align className="feed-item-title">
 								<TextBlock className="title">
 									{pin.title}
 								</TextBlock>
 							</FlexBox>
 
-					{pin.imageUrl &&
+							{pin.imageUrl &&
 							<Image
-							alt="Pinned item"
-							className="pinImage"
-							src={pin.imageUrl}
-						/>
+								alt="Pinned item"
+								className="pinImage"
+								src={pin.imageUrl}
+							/>
 							}
-					{pin.courses && <Container className="courses" >{this.generateCourses()}</Container>}
-					{pin.users && <Container className="users" >{this.generateUsers()}</Container>}
-					{pin.codes && <FlexBox className="codes">{this.generateCodes()}</FlexBox>}
+							{pin.courses && <Container className="courses" >{this.generateCourses()}</Container>}
+							{pin.users && <Container className="users" >{this.generateUsers()}</Container>}
+							{pin.codes && <FlexBox className="codes">{this.generateCodes()}</FlexBox>}
 							{pin.lessons && <Container className="lessons" >{this.generateLessons()}</Container>}
 							{pin.posts && <Container className="posts" >{this.generatePosts()}</Container>}
 
-    </Container>
+						</Container>
+					</Container>
 				</Container>
-				</Container>
-				{
-					moreItemsCount > 0 &&
-					<FlexBox align justify className="pin-show-more-bar" onClick={this.toggleShowMore}>
-			<TextBlock className="show-more-pins">
-				{
-					showMoreOpened
-						? 'See less'
-						: `${moreItemsCount} more ${type}`
-				}
-			</TextBlock>
-			{
-				showMoreOpened
-					? <ChevronUp />
-					: <ChevronDown />
-			}
-		</FlexBox>
-				}
-   </Container>
+				<MoreItemsIndicator
+					condition={moreItemsCount > 0}
+					open={showMoreOpened}
+					onClick={this.toggleShowMore}
+					closedText={`${moreItemsCount} more ${type}`}
+					className="pin-show-more-bar"
+				/>
+			</Container>
 
 		);
 	}

@@ -2,38 +2,58 @@
 
 .feedItemWrapper {
 	.challenge {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		.user-container {
-			white-space: nowrap;
-			margin: 0 16px;
-			.username {
-			    overflow: hidden;
-			    text-overflow: ellipsis;
-			}
-			.challenger_info {
-				white-space: pre;
-				.challenge_icon {
-					color: $icon_color;
-					.challenge_label {
-						font-weight: initial
+		position: relative;
+		.challenge-date {
+			position: absolute;
+			left: 0;
+		}
+		.challenger_container {
+			flex: 1;
+			.user-container {
+				white-space: nowrap;
+				margin: 0 16px;
+				.username {
+						overflow: hidden;
+						text-overflow: ellipsis;
+				}
+				.challenger_info {
+					white-space: pre;
+					.challenge_icon {
+						color: $icon_color;
+						.challenge_label {
+							font-weight: initial
+						}
 					}
 				}
-			}
-			&.player {
-				text-align: right;
-			}
-			&.opponent {
-				text-align: left;
+				&.player {
+					text-align: right;
+				}
+				&.opponent {
+					text-align: left;
+				}
 			}
 		}
-		.score {
-			font-size: 22px;
-			font-weight: 800;
+		.challenge-text {
 			margin: 0 45px;
+			font-weight: 800;
 			color: $primary_colored_text;
+			text-align: center;
+			&.language {
+				font-size: 14px;
+			}
+			&.score {
+				font-size: 22px;
+				margin-bottom: 7px;
+			}
 		}
+		&.merged {
+			padding: 14px 0;
+		}
+	}
+	.challenge-divider {
+		background-color: $border-color;
+		margin-left: -80px;
+		margin-right: -16px;
 	}
 }
 
