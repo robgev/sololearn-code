@@ -7,10 +7,12 @@ import { discoverIdsSelector, getEntitiesByIds } from 'reducers/discover.reducer
 // Additional data and components
 import FeedSuggestion from './FeedSuggestion';
 
+const suggestionsCount = () => (document.body.clientWidth > 1024 ? 6 : 5);
+
 const mapStateToProps = (state, { number }) => ({
 	suggestions: getEntitiesByIds(
 		state,
-		discoverIdsSelector(state).slice(number * 5, (number * 5) + 5),
+		discoverIdsSelector(state).slice(number * suggestionsCount(), (number * suggestionsCount()) + suggestionsCount()),
 	),
 });
 
