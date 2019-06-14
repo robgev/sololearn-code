@@ -24,18 +24,15 @@
 		}
 	}
 	.user {
-			display: inline-flex;
-			justify-content: center;
-			align-items: center;
-			text-align: center;
-			flex-direction: column;
-			width: 142px;
-			height: 148px;
-			margin-right: 7px;
-			box-shadow: none;
-			border: 1px solid #EDF0F0;
-
-
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		flex-direction: column;
+		width: 142px;
+		height: 148px;
+		margin-right: 7px;
+		border: 1px solid $border-color;
 		.userName {
 			font-size: 13px;
 			margin: 0 0 5px 0;
@@ -68,32 +65,9 @@
 
 		.feed-suggestion-info-container {
 			margin-bottom: 8px;
-			.suggestion-info-container-1 {
+			.suggestion-info-container {
 				margin-right: 10px;
 			}
-			.suggestion-follower-icon {
-				width: 8px;
-				height: 9px;
-				padding-right: 2px;
-			}
-			.suggestion-level-icon {
-				widows: 10px;
-				height: 9.5px;
-				padding-right: 2px;
-			}
-		}
-
-		.suggestion-follow-button {
-			width: 86px;
-			height: 24px;
-			background: none;
-			border: 1px solid $primary_color;
-			border-radius: 16px;
-			text-transform: none;
-			color: $primary_color;
-			font-size: 9px;
-			box-shadow: none;
-			line-height: unset;
 		}
 	}
 }

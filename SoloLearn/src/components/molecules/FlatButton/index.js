@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button } from 'components/atoms';
 
+import './styles.scss';
+
 const FlatButton = ({
 	className, variant, autoFocus, ...props
 }) => (

@@ -1,12 +1,14 @@
 import React from 'react';
 import { Button } from 'components/atoms';
 
+import './styles.scss';
+
 const RaisedButton = ({
 	className, autoFocus, variant, ...props
 }) => (
 	<Button
 		variant="contained"
-		className={`molecule_flat_button ${className}`}
+		className={`molecule_raised_button ${className}`}
 		action={
 			actions => autoFocus && actions.focusVisible()
 		}
