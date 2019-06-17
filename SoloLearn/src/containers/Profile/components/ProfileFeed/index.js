@@ -8,6 +8,7 @@ import FeedList from 'containers/Feed/FeedList';
 import UserPostEditor from 'containers/UserPostEditor';
 
 import './styles.scss';
+import { has } from 'mobx';
 
 const ProfileFeed = ({
 	feed,
@@ -33,7 +34,6 @@ const ProfileFeed = ({
 	const resetNewFlag = () => {
 		setHasNew(false);
 	};
-
 	return (
 		<Container className="profile-feed-container">
 			<FeedList
