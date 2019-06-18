@@ -15,7 +15,7 @@ const PromiseButton = ({
 				<Button
 					disabled={pending}
 					{...(mouseDown
-						? { onMouseDown: _fire }
+						? { onMouseDown: _fire, onKeyDown: (e) => { if (e.keyCode === 13) _fire(e); } }
 						: { onClick: _fire })
 					}
 					{...props}

@@ -1,15 +1,20 @@
 // React modules
-import React, { Component } from 'react';
-import { observable, action } from 'mobx';
-import { observer } from 'mobx-react';
+import React, { useState, useEffect } from 'react';
 import ReactGA from 'react-ga';
 import { browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
+
+import {
+	filterExisting,
+	groupFeedItems,
+	showError,
+	forceOpenFeed,
+} from 'utils';
+import feedTypes from 'defaults/appTypes';
 import { CodesList, AddCodeButton } from 'containers/Playground/components';
 import BusyWrapper from 'components/BusyWrapper';
 import ProfileHeaderShimmer from 'components/Shimmers/ProfileHeaderShimmer';
-import FeedList from 'containers/Feed/FeedList';
 import QuestionList, { AddQuestionButton } from 'containers/Discuss/QuestionsList';
 import {
 	Tabs,
@@ -28,7 +33,14 @@ import Skills from './Skills';
 import Badges from './Badges';
 import FollowersBase from './FollowersBase';
 import ProfileSidebar from './ProfileSidebar';
-import IProfile from './IProfile';
+
+import {
+	getFeed,
+	getProfile,
+	followUser,
+	getCodes,
+	getQuestions,
+} from './profile.api';
 
 const capitalize = str => str.charAt(0).toUpperCase() + str.substr(1);
 const TABS = {
@@ -39,156 +51,260 @@ const TABS = {
 	badges: 'badges',
 };
 
-@translate()
-@observer
-class Profile extends Component {
-	@observable activeTab = 'activity';
-	@observable profile = new IProfile({
-		id: parseInt(this.props.params.id, 10),
-		isMe: parseInt(this.props.params.id, 10) === this.props.userId,
-	});
+const Profile = ({
+	params: { id, tab }, userId, location, levels, t,
+}) => {
+	const [ feed, setFeed ] = useState([]);
+	const [ gettingFeed, setGettingFeed ] = useState(false);
+	const [ data, setData ] = useState({});
+	const [ gettingData, setGettingData ] = useState(false);
+	const [ followerPopupOpen, setFollowerPopupOpen ] = useState(false);
+	const [ feedHasMore, setFeedHasMore ] = useState(true);
+	const [ feedGetMore, setFeedGetMore ] = useState(false);
 
-	@observable followerPopupOpen = false;
+	const [ codes, setCodes ] = useState([]);
+	const [ gettingCodes, setGettingCodes ] = useState(false);
+	const [ codesHasMore, setCodesHasMore ] = useState(true);
 
-	componentWillMount() {
-		const { id, tab } = this.props.params;
+	const [ questions, setQuestions ] = useState([]);
+	const [ gettingQuestions, setGettingQuestions ] = useState(false);
+	const [ questionsHasMore, setQuestionsHasMore ] = useState(true);
+
+	useEffect(() => {
 		if (!id) {
 			browserHistory.replace({
-				...this.props.location,
-				pathname: `/profile/${this.props.userId}/${TABS.activity}`,
+				...location,
+				pathname: `/profile/${userId}/${TABS.activity}`,
 			});
 			return;
 		}
 		if (TABS[id]) { // if first parameter is tab name
 			browserHistory.replace({
-				...this.props.location,
-				pathname: `/profile/${this.props.userId}/${id}`,
+				...location,
+				pathname: `/profile/${userId}/${id}/${TABS.activity}`,
 			});
-			return;
 		}
 
-		this.handleTabChange(null, tab || TABS.activity);
-		ReactGA.ga('send', 'screenView', { screenName: 'Profile Page' });
-	}
-
-	componentWillReceiveProps(newProps) {
-		const { id, tab } = newProps.params;
-
-		if (this.props.params.id !== id) {
-			this.profile = new IProfile({ id });
-			this.followerPopupOpen = false;
-		}
-		if (tab !== this.activeTab) {
-			const { location } = newProps;
+		if (!tab) { // no tab specified
 			browserHistory.replace({
 				...location,
-				pathname: `/profile/${id}/${tab || TABS.activity}`,
+				pathname: `/profile/${id}/${TABS.activity}`,
 			});
-			this.activeTab = tab || 'activity';
 		}
-	}
+	}, []);
 
-	@action handleTabChange = (_, activeTab) => {
-		const { location, params } = this.props;
-		this.activeTab = activeTab;
+	const feedFromId = () => {
+		const lastItem = feed[feed.length - 1];
+		return feed.length === 0
+			? null
+			: lastItem.type === feedTypes.mergedChallange
+				? lastItem.groupedItems[lastItem.groupedItems.length - 1].id
+				: lastItem.id;
+	};
+
+	const loadFeedItems = () => {
+		if (gettingFeed || !feedHasMore) return;
+		setGettingFeed(true);
+		const count = 20;
+		getFeed({ fromId: feedFromId(), profileId: id, count })
+			.then(({ feed: newItems }) => {
+				const feedItems = groupFeedItems(newItems);
+				const isFirstItemGrouppedChallenge =
+				feed.length === 0
+						&& feedItems.length
+						&& feedItems[0].type === feedTypes.mergedChallange;
+				const forceOpenedFeed = isFirstItemGrouppedChallenge
+					? forceOpenFeed(feedItems[0])
+					: feedItems;
+				const filtered = filterExisting(feed, forceOpenedFeed);
+				setFeed([ ...feed, ...filtered ]);
+				if (newItems.length < count) {
+					setFeedHasMore(false);
+				}
+				setGettingFeed(false);
+				const feedItemsCount = feed.length + forceOpenedFeed.length;
+				if (feedItemsCount < count / 2 && feedHasMore) {
+					const lastItem = forceOpenedFeed[forceOpenedFeed.length - 1];
+					if (lastItem !== undefined) {
+						setFeedGetMore(true);
+					}
+				}
+			});
+	};
+
+	useEffect(() => {
+		if (feedGetMore) {
+			setFeedGetMore(false);
+			loadFeedItems();
+		}
+	}, [ feedGetMore ]);
+
+	useEffect(() => {
+		setData({});
+		setGettingData(true);
+		setFeed([]);
+		setCodes([]);
+		setQuestions([]);
+		getProfile(id).then(({ profile }) => {
+			setData(profile);
+			setGettingData(false);
+		});
+	}, [ id ]);
+
+	useEffect(() => {
+		if (feed.length === 0) {
+			loadFeedItems();
+		}
+	}, [ feed ]);
+
+	useEffect(() => {
+		if (codes.length === 0) {
+			loadCodes();
+		}
+	}, [ codes ]);
+
+	useEffect(() => {
+		if (questions.length === 0) {
+			loadQuestions();
+		}
+	}, [ questions ]);
+
+	const toggleFollowerPopup = () => {
+		setFollowerPopupOpen(!followerPopupOpen);
+	};
+	const handleTabChange = (_, newTab) => {
 		browserHistory.replace({
 			...location,
-			pathname: `/profile/${params.id}/${this.activeTab}`,
+			pathname: `/profile/${id}/${newTab}`,
 		});
-		ReactGA.ga('send', 'screenView', { screenName: `Profile ${capitalize(this.activeTab)} Page` });
-	}
+		ReactGA.ga('send', 'screenView', { screenName: `Profile ${capitalize(newTab)} Page` });
+	};
+	const onFollowUser = () => {
+		followUser({ id: data.id, shouldFollow: !data.isFollowing });
+		setData({ ...data, isFollowing: !data.isFollowing });
+	};
+	const onVote = ({
+		vote,
+		newVote,
+		id: feedItemId,
+		votes: totalVotes,
+	}) => {
+		const userVote = vote === newVote ? 0 : newVote;
+		const votes = (totalVotes + userVote) - vote;
+		const feedItem = feed.find(i => i.id === feedItemId);
+		feedItem.vote = userVote;
+		feedItem.votes = votes;
+		setFeed([ ...feed ]);
+	};
+	const appendFeedItem = (item) => {
+		setFeed([ item, ...feed ]);
+	};
 
-	@action toggleFollowerPopup = () => {
-		this.followerPopupOpen = !this.followerPopupOpen;
-	}
-
-	render() {
-		const {
-			data, questions, codes, feed,
-		} = this.profile;
-		const {
-			t,
-			levels,
-			userId,
-		} = this.props;
-
-		return (
-			<LayoutWithSidebar className="profile-container" sidebar={<ProfileSidebar />}>
-				<PaperContainer className="profile-overlay">
-					<BusyWrapper
-						isBusy={data.id === undefined}
-						style={{ display: 'initial' }}
-						loadingComponent={<ProfileHeaderShimmer />}
-					>
-						<Header
-							levels={levels}
-							profile={data}
-							openFollowerPopup={this.toggleFollowerPopup}
-							onFollow={this.profile.onFollowUser}
-						/>
-						<Tabs
-							value={this.activeTab}
-							onChange={this.handleTabChange}
-						>
-							<Tab
-								value={TABS.codes}
-								label={<TextBlock>{t('profile.tab.codes')}</TextBlock>}
-								icon={<TextBlock>{data.codes}</TextBlock>}
-							/>
-							<Tab
-								value={TABS.discussion}
-								label={<TextBlock>{t('profile.tab.posts')}</TextBlock>}
-								icon={<TextBlock>{data.posts}</TextBlock>}
-							/>
-							<Tab
-								value={TABS.activity}
-								label={<TextBlock>{t('profile.tab.activity')}</TextBlock>}
-								icon={<Feed className="feed-icon" />}
-							/>
-							<Tab
-								value={TABS.skills}
-								label={<TextBlock>{t('profile.tab.skills')}</TextBlock>}
-								icon={
-									<TextBlock>
-										{data.skills ? data.skills.length : 0}
-									</TextBlock>
-								}
-							/>
-							<Tab
-								value={TABS.badges}
-								label={<TextBlock>{t('profile.tab.badges')}</TextBlock>}
-								icon={
-									<TextBlock>
-										{data.badges ? data.badges.filter(item => item.isUnlocked).length : 0}
-									</TextBlock>
-								}
-							/>
-						</Tabs>
-					</BusyWrapper>
-				</PaperContainer>
-				{
-					data.id !== undefined && this.activeTab === TABS.activity &&
-					<ProfileFeed
-						feed={feed.entities}
-						hasMore={feed.hasMore}
-						showFab={data.id === userId}
-						loadMore={this.profile.getFeed}
-						voteFeedItem={this.profile.voteFeedItem}
-						loading={this.profile.getFeedPromise !== null}
-						appendFeedItem={this.profile.appendFeedItem}
-					/>
+	const loadCodes = () => {
+		if (gettingCodes) return;
+		setGettingCodes(true);
+		const count = 20;
+		getCodes({ index: codes.length, count, profileID: id })
+			.then(({ codes: newCodes }) => {
+				if (newCodes.length < count) {
+					setCodesHasMore(false);
 				}
-				{
-					data.id !== undefined && this.activeTab === TABS.codes &&
-					<InfiniteScroll
-						hasMore={codes.hasMore}
-						isLoading={this.profile.isCodesFetching}
-						loadMore={this.profile.getCodes}
+				setCodes([ ...codes, ...newCodes ]);
+				setGettingCodes(false);
+			});
+	};
+
+	const loadQuestions = () => {
+		if (gettingQuestions) return;
+		setGettingQuestions(true);
+		const count = 20;
+		getQuestions({ index: questions.length, count, profileID: id })
+			.then(({ posts }) => {
+				if (posts.length < count) {
+					setQuestionsHasMore(false);
+				}
+				setQuestions([ ...questions, ...posts ]);
+				setGettingQuestions(false);
+			});
+	};
+
+	return (
+		<LayoutWithSidebar className="profile-container" sidebar={<ProfileSidebar />}>
+			<PaperContainer className="profile-overlay">
+				<BusyWrapper
+					isBusy={gettingData}
+					style={{ display: 'initial' }}
+					loadingComponent={<ProfileHeaderShimmer />}
+				>
+					<Header
+						levels={levels}
+						profile={data}
+						openFollowerPopup={toggleFollowerPopup}
+						onFollow={onFollowUser}
+					/>
+					<Tabs
+						value={tab}
+						onChange={handleTabChange}
 					>
-						<PaperContainer className={`codes-wrapper section ${!codes.hasMore && 'wrapper-end'}`}>
+						<Tab
+							value={TABS.codes}
+							label={<TextBlock>{t('profile.tab.codes')}</TextBlock>}
+							icon={<TextBlock>{data.codes}</TextBlock>}
+						/>
+						<Tab
+							value={TABS.discussion}
+							label={<TextBlock>{t('profile.tab.posts')}</TextBlock>}
+							icon={<TextBlock>{data.posts}</TextBlock>}
+						/>
+						<Tab
+							value={TABS.activity}
+							label={<TextBlock>{t('profile.tab.activity')}</TextBlock>}
+							icon={<Feed className="feed-icon" />}
+						/>
+						<Tab
+							value={TABS.skills}
+							label={<TextBlock>{t('profile.tab.skills')}</TextBlock>}
+							icon={
+								<TextBlock>
+									{data.skills ? data.skills.length : 0}
+								</TextBlock>
+							}
+						/>
+						<Tab
+							value={TABS.badges}
+							label={<TextBlock>{t('profile.tab.badges')}</TextBlock>}
+							icon={
+								<TextBlock>
+									{data.badges ? data.badges.filter(item => item.isUnlocked).length : 0}
+								</TextBlock>
+							}
+						/>
+					</Tabs>
+				</BusyWrapper>
+			</PaperContainer>
+			{
+				tab === TABS.activity &&
+				<ProfileFeed
+					feed={feed}
+					hasMore={feedHasMore}
+					showFab={id === userId}
+					loadMore={loadFeedItems}
+					voteFeedItem={onVote}
+					loading={gettingFeed}
+					appendFeedItem={appendFeedItem}
+				/>
+			}
+			{
+				tab === TABS.codes &&
+					<InfiniteScroll
+						hasMore={codesHasMore}
+						isLoading={gettingCodes}
+						loadMore={loadCodes}
+					>
+						<PaperContainer className={`codes-wrapper section ${!codesHasMore && 'wrapper-end'}`}>
 							<CodesList
-								codes={codes.entities}
-								hasMore={codes.hasMore}
+								codes={codes}
+								hasMore={codesHasMore}
 							/>
 							{data.id === userId &&
 								<AddCodeButton>
@@ -197,57 +313,56 @@ class Profile extends Component {
 							}
 						</PaperContainer>
 					</InfiniteScroll>
-				}
-				{
-					data.id !== undefined && this.activeTab === TABS.discussion && (
-						<InfiniteScroll
-							hasMore={questions.hasMore}
-							isLoading={this.profile.isQuestionsFetching}
-							loadMore={this.profile.getQuestions}
-						>
-							<PaperContainer className={`discuss_questions-list ${!questions.hasMore && 'wrapper-end'}`}>
-								<QuestionList
-									fromProfile
-									questions={questions.entities}
-									hasMore={questions.hasMore}
-								/>
-								{data.id === userId &&
-									<AddQuestionButton />
-								}
-							</PaperContainer>
-						</InfiniteScroll>
-					)
-				}
-				{
-					data.id !== undefined && this.activeTab === TABS.skills &&
+			}
+			{
+				tab === TABS.discussion && (
+					<InfiniteScroll
+						hasMore={questionsHasMore}
+						isLoading={gettingQuestions}
+						loadMore={loadQuestions}
+					>
+						<PaperContainer className={`discuss_questions-list ${!questionsHasMore && 'wrapper-end'}`}>
+							<QuestionList
+								fromProfile
+								questions={questions}
+								hasMore={questionsHasMore}
+							/>
+							{data.id === userId &&
+							<AddQuestionButton />
+							}
+						</PaperContainer>
+					</InfiniteScroll>
+				)
+			}
+			{
+				tab === TABS.skills &&
 					<Skills
 						levels={levels}
 						profile={data}
 						currentUserId={userId}
 						skills={data.skills}
 					/>
-				}
-				{
-					data.id !== undefined && this.activeTab === TABS.badges && data.badges &&
+			}
+			{
+				tab === TABS.badges && data.badges &&
 					<Badges
 						badges={data.badges}
-						key={this.props.location.query.badgeID || 0}
-						selectedId={this.props.location.query.badgeID || 0}
+						key={location.query.badgeID || 0}
+						selectedId={location.query.badgeID || 0}
 					/>
-				}
-				<FollowersBase
-					open={this.followerPopupOpen}
-					profile={this.profile}
-					closePopup={this.toggleFollowerPopup}
-				/>
-			</LayoutWithSidebar>
-		);
-	}
-}
+			}
+			<FollowersBase
+				open={followerPopupOpen}
+				userId={id}
+				closePopup={toggleFollowerPopup}
+			/>
+		</LayoutWithSidebar>
+	);
+};
 
 const mapStateToProps = state => ({
 	levels: state.levels,
 	userId: state.userProfile.id,
 });
 
-export default connect(mapStateToProps)(Profile);
+export default translate()(connect(mapStateToProps)(Profile));

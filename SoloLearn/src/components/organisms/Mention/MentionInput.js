@@ -52,11 +52,16 @@ class MentionInput extends Component {
 		this.mentionPlugin = createMentionPlugin({
 			positionSuggestions: ({ decoratorRect }) => {
 				const containerRect = this.containerRef.current.getBoundingClientRect();
+				const { editorState } = this.state;
+				const currentBlockKey = editorState.getSelection().getStartKey();
+				const currentBlockIndex = editorState.getCurrentContent().getBlockMap()
+					.keySeq().findIndex(k => k === currentBlockKey);
+				const rowPositionOffset = currentBlockIndex * 20; // line height
 				const baseStyles = {
 					fontSize: 'initial',
 					transform: 'scale(1)',
 					transformOrigin: '1em 0%',
-					top: `${decoratorRect.height + 11}px`, // Counting padding in
+					top: `${decoratorRect.height + rowPositionOffset + 11}px`, // Counting padding in
 					transition: 'all 0.25s cubic-bezier(0.3, 1.2, 0.2, 1) 0s',
 				};
 				if (decoratorRect.right - containerRect.left > (containerRect.width / 2)) {

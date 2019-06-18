@@ -15,4 +15,10 @@ const updateDate = (date) => {
 	return postDate.fromNow();
 };
 
+export const formatDate = (date) => {
+	moment.locale(i18n.language);
+	const postDate = moment.utc(date);
+	return postDate.format('MMM D HH:mm');
+};
+
 export default updateDate;
