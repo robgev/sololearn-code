@@ -8,7 +8,6 @@ import FeedList from 'containers/Feed/FeedList';
 import UserPostEditor from 'containers/UserPostEditor';
 
 import './styles.scss';
-import { has } from 'mobx';
 
 const ProfileFeed = ({
 	feed,
