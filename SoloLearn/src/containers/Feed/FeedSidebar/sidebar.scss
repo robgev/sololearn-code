@@ -2,8 +2,72 @@
 @import '~styles/colors';
 
 .feed-sidebar {
+	.discover-peers {
+		padding-left: 0;
+		padding-right: 0;
+
+		.discover-peers-heading{
+			padding-left: 14px;
+		}
+
+		.discover-peers-shimmer{
+			padding-left:14px; 
+		}
+	
+		.discover-peers-list{
+			padding-left: 14px;
+			padding-right: 14px;
+		}
+	
+		.feed-sidebar_view-more {
+			margin-top: $primary_gap_size;
+			align-self: center;
+			text-transform: none;
+			color: #009085;
+			font-weight: bold;
+		}
+		
+		.discover-peers-li{
+			margin:20px 0;
+			
+			.profile{
+				display: block;
+			}
+			
+			.discover-profile-info{
+				margin-left: 12px;
+				
+				.follower-icon{
+					margin-right: 2px;
+				}
+				
+				.follow-button{
+					width:86px;
+				}
+			}
+			
+			.profile-name{
+				max-width: 145px;
+				display: inline-block;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				
+				.name{
+					margin-right: 8px;
+			}
+		}
+	}
+	
+		.discover-peers-li:last-of-type{
+			margin-bottom: 0;
+		}
+	
+	}
 	.profile-info {
 		margin-bottom: $secondary_gap_size;
+		
+		
 		.avatar {
 			margin-top: 2px;
 			.profile-info_avatar {
@@ -16,6 +80,12 @@
 				}
 			}
 		}
+
+		.followers{
+			margin-left: 8px;
+			color: #616B6E;
+		}
+
 		.username {
 			margin-top: $primary_gap_size;
 			margin-bottom: 14px;
@@ -46,12 +116,6 @@
 				font-size: 16px;
 				color: $primary_color;
 			}
-		}
-	}
-	.discover-peers {
-		.feed-sidebar_view-more {
-			margin-top: $primary_gap_size;
-			align-self: center;
 		}
 	}
 }

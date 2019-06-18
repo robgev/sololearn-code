@@ -39,16 +39,3 @@
 		}
 	}
 }
-
-@include for-until-tablet {
-	.header_tabs {
-		flex-grow: 4;
-		.header_tab-item {
-			flex-grow: 1;
-			justify-content: center;
-			> span {
-				display: none;
-			}
-		}
-	}
-}
