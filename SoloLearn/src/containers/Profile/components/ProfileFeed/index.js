@@ -33,7 +33,6 @@ const ProfileFeed = ({
 	const resetNewFlag = () => {
 		setHasNew(false);
 	};
-
 	return (
 		<Container className="profile-feed-container">
 			<FeedList

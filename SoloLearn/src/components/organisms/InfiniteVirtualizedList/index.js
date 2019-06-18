@@ -20,7 +20,6 @@ const InfiniteVirtualizedList = ({
 	isRowLoaded,
 	loadMore,
 	rowCount,
-	hasMore,
 	listRowCount,
 	shouldReset,
 	afterReset,
@@ -29,6 +28,7 @@ const InfiniteVirtualizedList = ({
 	const _windowScroller = useRef(null);
 	const _list = useRef(null);
 	const _cache_ = useRef(null);
+	const _lastPosition = useRef(0);
 	// Cache shouldn't change on every render
 	// We need to lazily set cache
 	// https://reactjs.org/docs/hooks-faq.html
@@ -88,13 +88,23 @@ const InfiniteVirtualizedList = ({
 		</CellMeasurer>
 	);
 	const _isRowLoaded = index => isRowLoaded(index);
-	const _loadMore = loading ? () => { } : loadMore;
+	const _loadMore = () => {
+		if (loading) {
+			return;
+		}
+		loadMore();
+	};
+	const loadMoreOnScroll = ({ clientHeight, scrollTop, scrollHeight }) => { // if feed's last element is groupped challange, load more element on scroll
+		if (scrollHeight - (scrollTop + clientHeight) < 10) {
+			_loadMore(_lastPosition.current);
+		}
+	};
 
 	return (
 		<Container className="infinite-loader_container">
 			<InfiniteLoader
 				isRowLoaded={_isRowLoaded}
-				loadMoreRows={_loadMore}
+				loadMoreRows={() => {}}
 				rowCount={rowCount}
 			>
 				{({ onRowsRendered, registerChild }) => (
@@ -117,7 +127,7 @@ const InfiniteVirtualizedList = ({
 											overscanRowCount={5}
 											rowCount={listRowCount}
 											isScrolling={isScrolling}
-											onScroll={onChildScroll}
+											onScroll={(param) => { loadMoreOnScroll(param); onChildScroll(param); }}
 											rowRenderer={_rowRenderer}
 											rowHeight={_cache.rowHeight}
 											scrollToIndex={_scrollToIndex}
@@ -131,7 +141,7 @@ const InfiniteVirtualizedList = ({
 					</WindowScroller>
 				)}
 			</InfiniteLoader>
-			{(loading && hasMore) &&
+			{loading &&
 				<Loading />
 			}
 		</Container>
