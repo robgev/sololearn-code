@@ -87,7 +87,6 @@ class Skills extends PureComponent {
 		if (!skills) {
 			return null;
 		}
-
 		return (
 			<Container className="skills-container">
 				<PaperContainer className="skills-group">

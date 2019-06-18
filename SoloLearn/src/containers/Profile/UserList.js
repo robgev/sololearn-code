@@ -18,7 +18,7 @@ const UserList = observer(({
 				isLoading={loading}
 			>
 				{users.map(el =>
-					<FollowItem key={el.id} follow={el} onFollowClick={onFollowClick} />)}
+					<FollowItem key={el.id} follow={el} onFollowClick={() => { onFollowClick(el.id, el.isFollowing) ;}} />)}
 			</InfiniteScroll>
 		)
 ));
