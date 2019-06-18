@@ -75,8 +75,7 @@ class SettingsMenu extends PureComponent {
 					avatarStyle={{
 						width: 36,
 						height: 36,
-						margin: 0,
-						marginLeft: 5,
+						margin: '0 9px 0 15px',
 					}}
 				/>
 				<IconMenu

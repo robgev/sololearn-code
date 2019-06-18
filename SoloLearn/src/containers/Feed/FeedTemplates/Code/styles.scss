@@ -1,0 +1,26 @@
+@import '~styles/colors';
+@import '~styles/variables';
+
+.code-item-container {
+	margin-top: 12px;
+	.code-feed-item-wrapper {
+		display: flex;
+		position: relative;
+		z-index: 2;
+		text-decoration: none;
+		background-color: $content_text_color;
+		.feed-template_code-preview {
+			background-color: $content_text_color;
+			.ace_gutter {
+				background-color: #2F3A3F;
+				padding: 6px 0 6px 9px;
+			}
+			.ace_content {
+				padding: 6px 0 4px 10px;
+			}
+		}
+		.language-tag {
+			height: $language_label_size;
+		}
+	}
+}

@@ -6,7 +6,7 @@ const truncate = (text, maxLength, maxLines, addElipsis) => {
 
 	if (lines.length > maxLines) {
 		isTruncated = true;
-		truncatedText = `${lines[0]}\n${lines[1]}\n${lines[2]}\n${lines[4]}\n${lines[5]}`;
+		truncatedText = lines.reduce((acc, item, idx) => (idx + 1 > maxLines ? acc : `${acc}${item}${idx + 1 === maxLines ? '' : '\n'}`), '');
 	}
 	if (truncatedText.length > maxLength) {
 		isTruncated = true;
