@@ -9,6 +9,8 @@ import {
 	FlexBox,
 	IconLabel,
 	Container,
+	PaperContainer,
+	Image,
 } from 'components/atoms';
 import {
 	UsernameLink,
@@ -31,18 +33,18 @@ const FeedSuggestion = ({ t, suggestion, followUser }) => {
 		isFollowing,
 	} = suggestion;
 	return (
-		<Container className="user">
+		<PaperContainer className="user">
 			<ProfileAvatar
 				user={suggestion}
 				className="feed-suggestion-avatar"
 			/>
-			<UsernameLink to={`/profile/${suggestion.id}`}>{suggestion.name}</UsernameLink>
+			<UsernameLink to={`/profile/${suggestion.id}`} className="userName">{suggestion.name}</UsernameLink>
 			<FlexBox align className="feed-suggestion-info-container">
-				<IconWithText justify Icon={Followers} className="suggestion-info-container">
-					<IconLabel>{numberFormatter(followers)}</IconLabel>
+				<IconWithText justify Icon={Followers} >
+					<IconLabel className="suggestion-info-container">{numberFormatter(followers)}</IconLabel>
 				</IconWithText>
-				<IconWithText justify Icon={Level} className="suggestion-info-container">
-					<IconLabel>{suggestion.level}</IconLabel>
+				<IconWithText justify Icon={Level} >
+					<IconLabel className="suggestion-info-container">{suggestion.level}</IconLabel>
 				</IconWithText>
 			</FlexBox>
 			<FlatButton
@@ -51,7 +53,7 @@ const FeedSuggestion = ({ t, suggestion, followUser }) => {
 			>
 				{isFollowing ? t('common.user-following') : t('common.follow-user')}
 			</FlatButton>
-		</Container>
+		</PaperContainer>
 	);
 };
 
