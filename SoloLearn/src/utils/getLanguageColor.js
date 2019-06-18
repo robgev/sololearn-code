@@ -9,23 +9,23 @@ const getLanguageColor = (language) => {
 	case 'java':
 		return '#F99924';
 	case 'py':
-		return '#1E415E';
+		return '#236A98';
 	case 'rb':
-		return '#E14E40';
+		return '#DB3B2E';
 	case 'php':
-		return '#5F83BB';
+		return '#777AB7';
 	case 'css':
 		return '#24ABE2';
 	case 'web':
-		return '#E54D26';
+		return '#E83C46';
 	case 'html':
-		return '#F26525';
+		return '#E83C46';
 	case 'c':
-		return '#1482B7';
+		return '#1F82C7';
 	case 'kt':
-		return '#3495D8';
+		return '#5D75E7';
 	case 'swift':
-		return '#F57B38';
+		return '#F4741E';
 	default:
 		return '';
 	}

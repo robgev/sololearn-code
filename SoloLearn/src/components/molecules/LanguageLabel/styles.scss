@@ -1,6 +1,9 @@
 @import '~styles/colors';
+@import '~styles/variables';
 
 .molecule_language-label {
-	width: 30px;
+	font-size: 9px;
+	font-weight: 800;
+	width: $language_label_size;
 	color: $white;
 }

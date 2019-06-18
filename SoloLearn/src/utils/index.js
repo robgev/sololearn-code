@@ -37,6 +37,7 @@ export { default as isObjectEqual } from './isObjectEqual';
 export { default as normalize } from './normalizr';
 export { default as stopPropagation } from './stopPropagation';
 export { default as getCountryName } from './getCountryName';
+export { formatDate } from './updateDate';
 
 const hash = pass => hmacsha1('password', pass).slice(0, -1);
 const checkWeb = alias => [ 'html', 'css', 'js' ].includes(alias);

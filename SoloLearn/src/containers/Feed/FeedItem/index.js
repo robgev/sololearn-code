@@ -6,6 +6,7 @@ import { observer } from 'mobx-react';
 import { toSeoFriendly } from 'utils';
 import { CourseCard } from 'containers/Learn/components';
 import { Container } from 'components/atoms';
+import { MoreItemsIndicator } from 'components/molecules';
 import types from 'defaults/appTypes';
 
 import FeedItemBase from '../FeedItemBase';
@@ -110,7 +111,7 @@ class FeedItem extends Component {
 			);
 		case types.completedChallange:
 			this.url = `/profile/${feedItem.contest.player.id}`;
-			return <Challenge date={feedItem.date} contest={feedItem.contest} />;
+			return <Challenge date={feedItem.date} contest={feedItem.contest} language={feedItem.course.languageName} />;
 		case types.suggestions:
 			return <FeedSuggestions number={feedItem.number} />;
 		case types.postedLessonComment:
@@ -218,11 +219,14 @@ class FeedItem extends Component {
 				</Container>
 			);
 		} else if (feedItem.type === types.mergedChallange) {
+			const groupedItems = this.props.open
+				? feedItem.groupedItems
+				: feedItem.groupedItems.slice(0, 2);
+			const { length: itemCount } = feedItem.groupedItems;
 			return (
 				<Container style={style} className="feedItemWrapper">
 					<Container
 						className="feedItem"
-						onClick={this.handleChallengesOpen}
 					>
 						<FeedItemBase
 							feedItemId={feedItem.id}
@@ -231,38 +235,36 @@ class FeedItem extends Component {
 							date={feedItem.date}
 							votes={this.votes}
 							hideTitle
-						/>
-					</Container>
-					{ this.props.open &&
-					<Container
-						id="feed-items"
-						className={`merged-items-container ${this.props.open ? 'open' : ''}`}
-					>
-						{feedItem.groupedItems.map(currentItem => (
+						>
 							<Container
-								key={currentItem.type === types.mergedChallange ?
-									`feedGroup${currentItem.toId}` :
-									`feedItem${currentItem.id}`}
-								className="feedItemWrapper"
+								id="feed-items"
+								className="merged-items-container"
 							>
-								<Container className="feedItem">
-									<FeedItemBase
-										feedItemId={currentItem.id}
-										title={currentItem.title}
-										user={currentItem.user}
-										votes={this.votes}
-										date={currentItem.date}
-										hideTitle
+								{groupedItems.map(currentItem => (
+									<Container
+										key={currentItem.type === types.mergedChallange ?
+											`feedGroup${currentItem.toId}` :
+											`feedItem${currentItem.id}`}
+										className="feedItemWrapper"
 									>
-										{/* this.url = `/profile/${currentItem.contest.player.id}`; */}
-										<Challenge date={currentItem.date} contest={currentItem.contest} />
-									</FeedItemBase>
-								</Container>
-
+										<Challenge
+											merged
+											date={currentItem.date}
+											contest={currentItem.contest}
+											language={currentItem.course.languageName}
+										/>
+									</Container>
+								))}
 							</Container>
-						))}
+							<MoreItemsIndicator
+								open={this.props.open}
+								condition={itemCount > 2}
+								onClick={this.handleChallengesOpen}
+								className="merged-challenges-indicator"
+								closedText={`${itemCount - 2} more challenges`}
+							/>
+						</FeedItemBase>
 					</Container>
-					}
 				</Container>
 			);
 		}

@@ -137,8 +137,8 @@ class Leaderboards extends PureComponent {
 			this.props.setFilters({ ...DEFAULT_FILTERS, ...newLocation.query, mode: TABS[tab] });
 			// Fetch and send google event
 			const length = await this.props.getLeaderboard({
- userId, mode: TABS[tab], index: 0, count: 20
-});
+				userId, mode: TABS[tab], index: 0, count: 20,
+			});
 			this.setState({ loading: false, startIndex: length, hasMore: length === loadCount });
 		} else if (newLeaderboards.length !== leaderboards.length
 			|| !isEqual(newLeaderboards, leaderboards)) {
@@ -205,7 +205,7 @@ class Leaderboards extends PureComponent {
 			countryCode,
 			leaderboards,
 			userId: currentUserId,
-			params:{ tab }
+			params: { tab },
 		} = this.props;
 		const {
 			userId,
@@ -215,6 +215,7 @@ class Leaderboards extends PureComponent {
 			shouldHideButton,
 			loadingData,
 		} = this.state;
+
 		return (
 			<Layout className="leaderboards-container">
 				<PaperContainer className="leaderboards-header-container">
@@ -251,7 +252,7 @@ class Leaderboards extends PureComponent {
 							? (
 								<Fragment>
 									{
-										leaderboards.length === 0 ?
+										leaderboards.length === 0 && !loading ?
 											<Title>{t('leaderboard.no-social-message')}</Title>
 											: filters.range === 0 ?
 												<InfiniteLeaderboard

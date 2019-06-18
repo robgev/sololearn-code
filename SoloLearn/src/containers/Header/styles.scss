@@ -10,7 +10,7 @@
 	.header-wrapper {
 		display: grid;
 		grid-gap: 12px;
-		grid-template-columns: minmax(0, 3fr) 288px;
+		grid-template-columns: minmax(0, 1fr);
 		width: 70.83%;
 		max-width: 1190px;
     min-width: 480px;
@@ -36,6 +36,13 @@
 					fill: white;
 				}
 			}
+		}
+		.header-right {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			right: 0;
+			padding-right: 24px;
 		}
 		.header-left {
 			position: relative;
@@ -85,9 +92,10 @@
 	.header {
 		.header-wrapper {
 			.header-logo {
+				padding-right: 10px;
 				.home-icon {
 					.header_home-icon_big {
-						width: 150px;
+						width: 170px;
 					}
 				}
 			}
@@ -98,13 +106,15 @@
 @include for-until-big-desktop {
 	.header {
 		.header-wrapper {
-			.header-logo {
-				.home-icon {
-					.header_home-icon_big {
-						width: 110px;
-					}
-				}
-			}
+			width: 65%;
+		}
+	}
+}
+
+@include for-until-desktop {
+	.header {
+		.header-wrapper {
+			width: 60%;
 		}
 	}
 }
@@ -112,15 +122,23 @@
 @include for-until-tablet {
 	.header {
 		.header-wrapper {
-			width: 100%;
-			grid-gap: 0;
-			grid-template-columns: minmax(0, 6fr) minmax(0, 2fr);
-			align-items: center;
+			width: 82%;
 			// .header-left {
 			// 	.header-search-container {
 			// 		flex-grow: 1;
 			// 	}
 			// }
+			.header-logo {
+				.home-icon {
+					.header_home-icon_big {
+						display: none;
+					}
+					.header_home-icon_small {
+						display: block;
+						width: 32px;
+					}
+				}
+			}
 			.header-right {
 				.notifications-button-container,
 				.header-settings-menu-container {
