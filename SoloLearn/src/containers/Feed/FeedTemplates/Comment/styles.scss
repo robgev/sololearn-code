@@ -1,19 +1,21 @@
-.code-item-container, .comment-item-container {
-	.code-feed-item-wrapper, .comment-feed-item-wrapper {
+@import '~styles/variables';
+
+.comment-item-container {
+	.comment-feed-item-wrapper {
 		display: flex;
 		position: relative;
 		padding: 7px;
 		z-index: 2;
 		text-decoration: none;
 		background-color: #F5F5F5;
-		.code-snippet, .comment-text {
+		.comment-text {
 			flex: 2;
 			margin: 0 10px;
 			white-space: pre-wrap;
 			word-break: break-word;
 		}
 		.language-tag {
-			height: 30px;
+			height: $language_label_size;
 		}
 	}
 }

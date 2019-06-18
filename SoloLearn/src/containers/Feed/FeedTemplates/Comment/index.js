@@ -1,6 +1,5 @@
 import React from 'react';
 import { truncate } from 'utils';
-import BottomToolbarWithVotes from '../BottomToolbarWithVotes'
 import {
 	Container,
 	Link,
@@ -8,9 +7,10 @@ import {
 } from 'components/atoms';
 import { QuoteIcon } from 'components/icons';
 
-import 'styles/Feed/codeFeedItem.scss';
+import './styles.scss';
+import BottomToolbarWithVotes from '../../BottomToolbarWithVotes';
 
-const Comment = ({ 
+const Comment = ({
 	comment,
 	url,
 	date,
@@ -22,11 +22,11 @@ const Comment = ({
 	<Container>
 		<Container className="comment-item-container">
 			<Link to={url} className="comment-feed-item-wrapper">
-				<QuoteIcon/>
+				<QuoteIcon />
 				<SecondaryTextBlock className="comment-text">
 					{truncate(comment.message, 200, 5, true)}
 				</SecondaryTextBlock>
-				<QuoteIcon/>
+				<QuoteIcon />
 			</Link>
 		</Container>
 		<BottomToolbarWithVotes

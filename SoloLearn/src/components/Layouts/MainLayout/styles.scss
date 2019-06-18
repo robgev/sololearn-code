@@ -1,0 +1,11 @@
+@import '~styles/medias';
+
+.main-layout_content-container {
+	padding: 50px 10px 0 10px;
+}
+
+@include for-until-tablet {
+	.main-layout_content-container {
+		padding: 50px 24px 0 24px;
+	}
+}
