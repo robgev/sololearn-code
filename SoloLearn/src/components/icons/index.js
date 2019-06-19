@@ -41,4 +41,4 @@ export { default as ThumbUp } from './ThumbUp';
 export { default as Views } from './Views';
 export { default as ChevronUp } from './ChevronUp';
 export { default as ChevronDown } from './ChevronDown';
-
+export { default as SearchBtn } from './Search';

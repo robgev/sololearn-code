@@ -4,5 +4,9 @@
 	flex-wrap: wrap;
 	.tag {
 		margin: $secondary_gap_size $secondary_gap_size $secondary_gap_size 0;
+		font-size: 12px;
+		font-weight: bold;
+		color: #009085;
+		margin: 6px 6px 0 0;
 	}	
 }

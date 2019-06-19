@@ -11,7 +11,7 @@ const ViewStats = ({
 }) => (
 	<FlexBox align className={className}>
 		{Number.isInteger(votes) && // Can have negative votes
-			<IconWithText justify Icon={Arrows} className="molecule_view-stats">
+			<IconWithText justify isIconComponent={false} Icon="/assets/ic_like_dislike.png" className="molecule_view-stats">
 				<IconLabel>{votes > 0 ? `+${numberFormatter(votes)}` : numberFormatter(votes)}</IconLabel>
 			</IconWithText>
 		}

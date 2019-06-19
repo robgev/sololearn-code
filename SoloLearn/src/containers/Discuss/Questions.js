@@ -2,6 +2,7 @@
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
+import Header from './Header';
 import { showError, queryDifference, isObjectEqual } from 'utils';
 import {
 	getPosts, emptyPosts, setDiscussFilters, getSidebarQuestions,
@@ -13,9 +14,9 @@ import {
 	discussHasMoreSelector,
 	isDiscussFetchingSelector,
 } from 'reducers/discuss.reducer';
-import { Heading, PaperContainer, FlexBox, Select, MenuItem } from 'components/atoms';
-import { LayoutWithSidebar, InfiniteScroll } from 'components/molecules';
-import QuestionList, { Sidebar, AddQuestionButton } from './QuestionsList';
+import { FlexBox, Select, MenuItem, Title } from 'components/atoms';
+import { LayoutWithSidebar, InfiniteScroll, TitleTab } from 'components/molecules';
+import QuestionList, { Sidebar } from './QuestionsList';
 import './QuestionsList/styles.scss';
 
 const mapStateToProps = state => ({
@@ -32,6 +33,24 @@ const mapDispatchToProps = {
 @connect(mapStateToProps, mapDispatchToProps)
 @translate()
 class Questions extends Component {
+	state={
+		avtiveFilter: 8,
+		search: null,
+	}
+
+	constructor(props) {
+		super(props);
+		this.discussFilters = [
+			{ value: 8, text: this.props.t('discuss.filter.trending') },
+			{ value: 9, text: this.props.t('discuss.filter.your-network') },
+			{ value: 1, text: this.props.t('discuss.filter.most-recent') },
+			{ value: 2, text: this.props.t('discuss.filter.most-popular') },
+			{ value: 4, text: this.props.t('discuss.filter.unanswered') },
+			{ value: 5, text: this.props.t('discuss.filter.my-questions') },
+			{ value: 6, text: this.props.t('discuss.filter.my-answers') },
+		];
+	}
+
 	componentDidMount() {
 		document.title = 'Sololearn | Discuss';
 		const { location, filters } = this.props;
@@ -63,50 +82,60 @@ class Questions extends Component {
 				showError(e, 'Something went wrong when trying to fetch questions');
 			});
 	}
-	handleOrderByFilterChange = (e) => {
-		const orderBy = e.target.value;
+	handleOrderByFilterChange = (value) => {
+		const orderBy = value;
 		const { location } = this.props;
 		browserHistory.push({ ...location, query: { ...location.query, orderBy } });
+		this.setState({ avtiveFilter: orderBy });
 	}
 	removeQuery = () => {
 		const { location } = this.props;
 		browserHistory.push({ ...location, query: { ...location.query, query: '' } });
 	}
+
+	searchQuestion=() => {
+		const { location } = this.props;
+		const { search } = this.state;
+		browserHistory.push({ ...location, query: { ...location.query, query: search } });
+	}
+
+	onSearchChange=(e) => {
+		this.setState({ search: e.target.value });
+	}
+
 	render() {
 		const {
 			t, posts, filters, hasMore, isFetching,
 		} = this.props;
+		const {
+			avtiveFilter,
+		} = this.state;
 		return (
 			<LayoutWithSidebar
+				paper={false}
 				sidebar={
 					<Sidebar />
 				}
 			>
+				<Header
+					searchQuestion={this.searchQuestion}
+					onSearchChange={this.onSearchChange}
+				/>
+
+				<FlexBox align justifyBetween className="discuss-filters">
+					<TitleTab
+						tabs={this.discussFilters}
+						activeTab={avtiveFilter}
+						handleTabChange={this.handleOrderByFilterChange}
+					/>
+				</FlexBox>
 				<InfiniteScroll
 					hasMore={hasMore}
 					isLoading={isFetching}
 					loadMore={this.getPosts}
 				>
-					<PaperContainer className="discuss_questions-list">
-						<FlexBox className="toolbar">
-							<Heading>{t('discuss.title')}</Heading>
-							<Select
-								className="select"
-								value={filters.orderBy}
-								onChange={this.handleOrderByFilterChange}
-							>
-								<MenuItem value={8}>{t('discuss.filter.trending')}</MenuItem>
-								<MenuItem value={9}>{t('discuss.filter.your-network')}</MenuItem>
-								<MenuItem value={1}>{t('discuss.filter.most-recent')}</MenuItem>
-								<MenuItem value={2}>{t('discuss.filter.most-popular')}</MenuItem>
-								<MenuItem value={4}>{t('discuss.filter.unanswered')}</MenuItem>
-								<MenuItem value={5}>{t('discuss.filter.my-questions')}</MenuItem>
-								<MenuItem value={6}>{t('discuss.filter.my-answers')}</MenuItem>
-							</Select>
-						</FlexBox>
-						<QuestionList hasMore={hasMore} questions={posts} />
-						<AddQuestionButton />
-					</PaperContainer>
+
+					<QuestionList hasMore={hasMore} questions={posts} />
 				</InfiniteScroll>
 			</LayoutWithSidebar>
 		);

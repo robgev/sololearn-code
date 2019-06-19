@@ -1,0 +1,25 @@
+.header-container{
+    padding: 16px;
+
+    .search{
+        margin-right: 16px;
+
+        .search_input{
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .search-icon{
+            color: #19BC9C;
+        }
+    }
+
+    .add-question-btn{
+        width: 186px;
+        text-transform: none;
+
+        .add-icon{
+            margin-right: 8px;
+        }
+    }
+}
