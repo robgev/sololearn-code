@@ -112,7 +112,6 @@ class FeedItem extends Component {
 			this.url = `/profile/${feedItem.contest.player.id}`;
 			return <Challenge date={feedItem.date} contest={feedItem.contest} />;
 		case types.suggestions:
-			console.log(feedItem);
 			return <FeedSuggestions number={feedItem.number} />;
 		case types.postedLessonComment:
 		case types.postedLessonCommentReply:
