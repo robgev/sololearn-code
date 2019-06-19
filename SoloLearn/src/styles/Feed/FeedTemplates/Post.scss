@@ -4,26 +4,21 @@
 	.post {
 		display: flex;
 		width: inherit;
-		padding: 7px;
+		padding: 16px 12px;
 		background-color: $background_color;
 		position: relative;
+		border: 1px solid $border-color;
+		border-radius: 4px;
+		background-color: #F9FAFA;
 		&:hover {
 			text-decoration: none;
-		}
-		
-	}
-	.quoteIcon {
-		&.base {
-			flex: none;
-		}
-		&.bottom {
-			transform: scale(-1 -1);
-			align-self: flex-end;
 		}
 	}
 	.postName {
 		margin: 0 10px;
 		flex: 2;
+		font-size: 15px;
+		color: $content_text_color;
 		word-break: break-word;
 	}
 }

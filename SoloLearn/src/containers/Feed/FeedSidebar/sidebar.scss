@@ -42,8 +42,14 @@
 					margin-top: 8px;
 					width: 86px;
 				}
-				.followers {
+				.discover-peers_followers {
 					color: $icon_color;
+					.discover-peers_label {
+						font-size: 12px;
+						font-weight: 400;
+						color: inherit;
+						margin-left: 2px;
+					}
 				}
 			}
 			.profile-name {

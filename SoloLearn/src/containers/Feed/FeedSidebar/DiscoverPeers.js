@@ -47,8 +47,8 @@ const DiscoverPeers = ({
 															badge={badge}
 														/>
 													</Container>
-													<IconWithText justify Icon={Followers}>
-														<IconLabel>{ numberFormatter(followers) }</IconLabel>
+													<IconWithText className="discover-peers_followers" justify Icon={Followers}>
+														<IconLabel className="discover-peers_label">{ numberFormatter(followers) }</IconLabel>
 													</IconWithText>
 												</FlexBox>
 												<FlatButton

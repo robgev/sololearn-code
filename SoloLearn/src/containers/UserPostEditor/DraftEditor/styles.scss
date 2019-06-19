@@ -15,6 +15,9 @@
 		.draft-editor-inner-container {
 			width: 100%;
 			padding: 15px;
+			.public-DraftEditorPlaceholder-root {
+				color: rgba(58, 70, 74, 0.5);
+			}
 			.underline {
 				text-decoration: underline;
 			}
