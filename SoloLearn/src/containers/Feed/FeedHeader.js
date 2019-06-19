@@ -51,7 +51,8 @@ const FeedHeader = ({ profile, t, afterPostCallback }) => {
 							/>
 							<Input
 								variant="outlined"
-								placeholder={`${t(randomHint)}, ${profile.name}`}
+								fullWidth
+								value={`${t(randomHint)} ${profile.name}`}
 								className="user-post-hints-input-container"
 								onClick={inputClickHandler}
 								inputProps={{ className: 'user-post-hints-input' }}
