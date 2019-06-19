@@ -60,9 +60,16 @@
 			margin-bottom: 8px;
 			color: $icon_color;
 			.suggestion-info-container {
-				margin-right: 10px;
+				margin-left: 2px;
 				font-size: 12px;
-				font-weight: 700;
+				font-weight: 400;
+			}
+
+			.suggestion-info-separator {
+				margin: 0 2px;
+				font-size: 20px;
+				line-height: 9px;
+				padding-bottom: 5px;
 			}
 
 		}
