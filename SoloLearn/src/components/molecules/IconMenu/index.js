@@ -66,7 +66,7 @@ class IconMenu extends Component {
 }
 
 IconMenu.propTypes = {
-	icon: PropTypes.node,
+	icon: PropTypes.func,
 	closeOnClick: PropTypes.bool,
 	onClick: PropTypes.func,
 };
@@ -75,10 +75,6 @@ IconMenu.defaultProps = {
 	icon: MoreVert,
 	closeOnClick: true,
 	onClick: () => { },
-};
-
-IconMenu.propTypes = {
-	icon: PropTypes.node,
 };
 
 export default IconMenu;

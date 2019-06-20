@@ -1,6 +1,79 @@
 @import '~styles/variables';
 @import '~styles/colors';
 
+
+.discuss-filters{
+	margin:0 15px;
+}
+
+.discuss-sidebar{
+	.hot-today-item{
+		margin:14px 0;
+
+		.hot-today-content{
+			margin-left: 12px;
+			
+			.hot-today-question{
+				max-width: 200px;
+				display: block;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				color: #009D7E;
+				font-size: 15px;
+				font-weight: bold;
+			}
+		}
+	}
+}
+
+.question-conatainer{
+	width:100%;
+	padding: 16px 16px 0 16px;
+
+	.info{
+
+		.user-avatar{
+			margin-right: 16px;
+		}
+
+		.question-info{
+			font-size: 17px;
+			font-weight: bold;
+
+			.question-title{
+				font-weight: bold;
+			}
+
+			.question-view_stats{
+				margin:4px;
+			}
+		}
+	}
+
+	.author{
+		min-width: 214px;
+
+		.text{
+			white-space: nowrap;
+		}
+
+		.author-name{
+			margin: 0 0 0 8px;
+			line-height: 14px;
+			display: block;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
+
+		.badge{
+			align-items: flex-start;
+			margin-left: 8px;
+		}
+	}
+}
+
 .discuss_questions-list {
 	position: relative;
 	.toolbar {

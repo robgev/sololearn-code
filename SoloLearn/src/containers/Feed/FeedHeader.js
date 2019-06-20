@@ -44,7 +44,7 @@ const FeedHeader = ({ profile, t, afterPostCallback }) => {
 			{!isCreatePostOpen ?
 				(
 					<PaperContainer className="feed-header">
-						<FlexBox className="actions" align fullWith>
+						<FlexBox className="actions" align fullWidth>
 							<ProfileAvatar
 								user={profile}
 								className="up-fh-profile-avatar-container"
