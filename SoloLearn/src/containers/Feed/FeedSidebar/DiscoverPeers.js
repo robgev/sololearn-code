@@ -5,9 +5,13 @@ import { followSuggestion } from 'actions/discover';
 import { numberFormatter } from 'utils';
 import {
 	Container, FlexBox, HorizontalDivider, PaperContainer,
-	List, ListItem, SecondaryTextBlock, Heading, TextBlock,
+	List, ListItem, IconLabel, Heading,
 } from 'components/atoms';
-import { UsernameLink, ViewMoreLink, ProfileAvatar, ModBadge, FlatButton } from 'components/molecules';
+import {
+	IconWithText, UsernameLink, ViewMoreLink,
+	ProfileAvatar, ModBadge, FlatButton,
+} from 'components/molecules';
+import { Followers } from 'components/icons';
 import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
 
 const DiscoverPeers = ({
@@ -32,7 +36,7 @@ const DiscoverPeers = ({
 												className="profile"
 												user={discoverEntities[id]}
 											/>
-											<FlexBox column className="discover-profile-info profile-info">
+											<FlexBox column className="discover-profile-info">
 												<FlexBox align >
 													<Container className="profile-name">
 														<UsernameLink className="name" to={`/profile/${id}`} >
@@ -43,14 +47,9 @@ const DiscoverPeers = ({
 															badge={badge}
 														/>
 													</Container>
-													<SecondaryTextBlock className="followers">
-														<img src="/assets/ic_followers.png" alt="folowerImg" className="follower-icon" />
-														{
-															followers === 1
-																? '1'
-																: `${numberFormatter(followers)} `
-														}
-													</SecondaryTextBlock>
+													<IconWithText justify Icon={Followers}>
+														<IconLabel>{ numberFormatter(followers) }</IconLabel>
+													</IconWithText>
 												</FlexBox>
 												<FlatButton
 													className="follow-button"
