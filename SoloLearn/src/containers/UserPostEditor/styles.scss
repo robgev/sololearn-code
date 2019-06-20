@@ -3,7 +3,7 @@
 
 .user-post-main-container {
 	padding: 12px 24px 12px 16px;
-	min-height: 241px;
+	min-height: 228px;
 	.user-post-main-title {
 		margin-bottom: 5px;
 		padding: 10px;
@@ -30,6 +30,11 @@
 			.backgrounds-container {
 				flex-flow: wrap;
 			}
+
+		}
+		.backgrounds-container-separate {
+			margin-top: 12px;
+			display: none;
 		}
 		.up-loader-container {
 			min-height: 241px;
@@ -66,3 +71,15 @@
 		}
 	}
 }
+
+@media screen and (max-width: 680px) {
+	.user-post-main-container {
+		.backgrounds-container {
+			display: none;
+			&.backgrounds-container-separate {
+				display: flex;
+			}
+		}
+	}
+
+ }

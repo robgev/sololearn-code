@@ -288,7 +288,22 @@ const UserPostEditor = ({
 										</Container>
 									</FlexBox>
 								}
-
+								{
+									canApplyBackground
+										? (
+											<FlexBox justify align className="backgrounds-container backgrounds-container-separate">
+												{
+													backgrounds.map(el =>
+														(<BackgroundIconButton
+															onSelect={setSelectedBackgroundId}
+															background={el}
+															withBorder={el.id === -1}
+														/>))
+												}
+											</FlexBox>
+										)
+										: null
+								}
 								<FlexBox
 									align
 									justifyBetween
@@ -309,6 +324,7 @@ const UserPostEditor = ({
 															(<BackgroundIconButton
 																onSelect={setSelectedBackgroundId}
 																background={el}
+																withBorder={el.id === -1}
 															/>))
 													}
 												</FlexBox>
