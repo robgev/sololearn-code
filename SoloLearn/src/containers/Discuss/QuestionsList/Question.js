@@ -24,6 +24,7 @@ const Question = ({ question, t, fromProfile }) => {
 		name: question.userName,
 		avatarUrl: question.avatarUrl,
 		badge: question.badge,
+		level: question.level,
 	};
 
 	return (

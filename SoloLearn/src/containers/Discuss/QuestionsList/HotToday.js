@@ -16,6 +16,7 @@ const HotToday = ({ isEmpty, questions, t }) => (
 							name: question.userName,
 							avatarUrl: question.avatarUrl,
 							badge: question.badge,
+							level: question.level,
 						};
 						return (
 							<ListItem key={question.id} className="hot-today-item">

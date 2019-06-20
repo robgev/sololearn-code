@@ -1,8 +1,6 @@
 export {
 	FormatQuote as QuoteIcon,
-	Search,
 	Close,
-	Add,
 	Done,
 	RadioButtonChecked,
 	RadioButtonUnchecked,
@@ -41,4 +39,6 @@ export { default as ThumbUp } from './ThumbUp';
 export { default as Views } from './Views';
 export { default as ChevronUp } from './ChevronUp';
 export { default as ChevronDown } from './ChevronDown';
-export { default as SearchBtn } from './Search';
+export { default as Search } from './Search';
+export { default as Add } from './Add';
+export { default as LikeDislike } from './LikeDislike';

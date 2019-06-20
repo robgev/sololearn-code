@@ -51,7 +51,7 @@ const Challenge = ({
 					{language}
 				</TextBlock>
 			</FlexBox>
-			<FlexBox align justifyStart className="challenger_container">
+			<FlexBox align className="challenger_container">
 				<ProfileAvatar
 					user={opponent}
 				/>

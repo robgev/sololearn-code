@@ -1,6 +1,6 @@
 import React from 'react';
 import { numberFormatter } from 'utils';
-import { Arrows, Views, Comment } from 'components/icons';
+import { Arrows, Views, Comment, LikeDislike } from 'components/icons';
 import { IconWithText, ContainerLink } from 'components/molecules';
 import { FlexBox, IconLabel } from 'components/atoms';
 
@@ -11,7 +11,7 @@ const ViewStats = ({
 }) => (
 	<FlexBox align className={className}>
 		{Number.isInteger(votes) && // Can have negative votes
-			<IconWithText justify isIconComponent={false} Icon="/assets/ic_like_dislike.png" className="molecule_view-stats">
+			<IconWithText justify Icon={LikeDislike} className="molecule_view-stats">
 				<IconLabel>{votes > 0 ? `+${numberFormatter(votes)}` : numberFormatter(votes)}</IconLabel>
 			</IconWithText>
 		}

@@ -6,12 +6,13 @@ import {
 	Input,
 	TextBlock,
 	InputAdornment,
+	Container,
 } from 'components/atoms';
 import {
 	FlatButton,
 } from 'components/molecules';
 import './styles.scss';
-import { SearchBtn } from 'components/icons';
+import { Search, Add } from 'components/icons';
 
 const Header = ({ searchQuestion, onSearchChange }) => (
 	<PaperContainer className="header-container">
@@ -25,18 +26,21 @@ const Header = ({ searchQuestion, onSearchChange }) => (
 				InputProps={{
 					endAdornment: (
 						<InputAdornment position="end" className="search-icon">
-							<SearchBtn onClick={searchQuestion} />
+							<Search onClick={searchQuestion} />
 						</InputAdornment>
 					),
+					classes: { underline: 'adornmentEnd' },
 				}}
 				inputProps={{
 					className: 'search_input',
 				}}
 			/>
 			<FlatButton className="add-question-btn">
-				<img className="add-icon" src="/assets/ic_add.png" alt="add_icon" />
-				<TextBlock>
-				 Ask a Question
+				<Container className="add-icon">
+					<Add />
+				</Container>
+				<TextBlock className="button-text">
+				 	Ask a Question
 				</TextBlock>
 			</FlatButton>
 		</FlexBox>

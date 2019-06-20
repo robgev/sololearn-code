@@ -104,7 +104,7 @@ const UserPostDetails = ({
 			{userPost &&
 				<Container className="user-post-details-page-container">
 					<PaperContainer className="user-post-details-main-container">
-						<FlexBox fullwidth column>
+						<FlexBox fullWidth column>
 							<FlexBox justifyBetween align className="up-details-top-bar-container">
 								<FlexBox align>
 									<ProfileAvatar
@@ -135,28 +135,28 @@ const UserPostDetails = ({
 										canEdit
 											? <MenuItem onClick={() => toggleCreatePostPopupOpen(true)}>
 												{t('common.edit-action-title')}
-											</MenuItem>
+             </MenuItem>
 											: null
 									}
 									{
 										canReport
 											? <MenuItem onClick={() => toggleReportPopup(true)}>
 												{t('common.report-action-title')}
-             </MenuItem>
+											</MenuItem>
 											: null
 									}
 									{
 										canRequestRemoval
 											? <MenuItem onClick={() => toggleDeleteConfirmationOpen(true)}>
 												Request Removal
-             </MenuItem>
+											</MenuItem>
 											: null
 									}
 									{
 										canRemove
 											? <MenuItem onClick={() => toggleDeleteConfirmationOpen(true)}>
 												{t('common.delete-title')}
-             </MenuItem>
+											</MenuItem>
 											: null
 									}
 								</IconMenu>

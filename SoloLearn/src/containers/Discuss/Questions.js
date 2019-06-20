@@ -1,4 +1,4 @@
-﻿import React, { Component } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
@@ -82,8 +82,7 @@ class Questions extends Component {
 				showError(e, 'Something went wrong when trying to fetch questions');
 			});
 	}
-	handleOrderByFilterChange = (value) => {
-		const orderBy = value;
+	handleOrderByFilterChange = (orderBy) => {
 		const { location } = this.props;
 		browserHistory.push({ ...location, query: { ...location.query, orderBy } });
 		this.setState({ avtiveFilter: orderBy });
@@ -105,7 +104,7 @@ class Questions extends Component {
 
 	render() {
 		const {
-			t, posts, filters, hasMore, isFetching,
+			t, posts, hasMore, isFetching,
 		} = this.props;
 		const {
 			avtiveFilter,
