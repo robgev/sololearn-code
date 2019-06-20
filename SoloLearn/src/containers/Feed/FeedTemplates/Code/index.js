@@ -43,7 +43,6 @@ const Code = ({
 	const calculatedLanguage = language === 'web'
 		? isJSLonger ? 'js' : 'html'
 		: language;
-	console.log(truncate(previewCode, 500, 18, false));
 	return (
 		<Container>
 			<Container className="code-item-container">

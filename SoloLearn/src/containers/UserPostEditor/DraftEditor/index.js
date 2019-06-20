@@ -216,7 +216,7 @@ const DraftEditor = ({
 		}
 		const newLinesCount = (text.match(/\n/g) || []).length;
 		if (!isEditorReadOnly) {
-			setFontSize(getFontSize(text.length, newLinesCount));
+			setFontSize(getFontSize(text.length, newLinesCount, background.type !== 'none'));
 		}
 		measure();
 	}, [ editorState ]);
