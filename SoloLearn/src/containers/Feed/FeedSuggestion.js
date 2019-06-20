@@ -5,8 +5,21 @@ import { connect } from 'react-redux';
 // import ProfileAvatar from './ProfileAvatar';
 import { followUserSuggestion } from 'actions/feed';
 import { numberFormatter } from 'utils';
-import { PaperContainer, SecondaryTextBlock } from 'components/atoms';
-import { UsernameLink, RaisedButton, ProfileAvatar } from 'components/molecules';
+import {
+	FlexBox,
+	IconLabel,
+	Container,
+	PaperContainer,
+	Image,
+	TextBlock,
+} from 'components/atoms';
+import {
+	UsernameLink,
+	FlatButton,
+	ProfileAvatar,
+	IconWithText,
+} from 'components/molecules';
+import { Level, Followers } from 'components/icons';
 
 import 'styles/Feed/FeedSuggestion.scss';
 
@@ -26,19 +39,22 @@ const FeedSuggestion = ({ t, suggestion, followUser }) => {
 				user={suggestion}
 				className="feed-suggestion-avatar"
 			/>
-			<UsernameLink to={`/profile/${suggestion.id}`}>{suggestion.name}</UsernameLink>
-			<SecondaryTextBlock className="followers">
-				{
-					followers === 1
-						? `1 ${t('user-followers-one')}`
-						: `${numberFormatter(followers)} ${t('common.user-followers')}`
-				}
-			</SecondaryTextBlock>
-			<RaisedButton
+			<UsernameLink to={`/profile/${suggestion.id}`} className="userName">{suggestion.name}</UsernameLink>
+			<FlexBox align className="feed-suggestion-info-container">
+				<IconWithText justify Icon={Followers} >
+					<IconLabel className="suggestion-info-container">{numberFormatter(followers)} </IconLabel>
+				</IconWithText>
+				<TextBlock className="suggestion-info-separator">·</TextBlock>
+				<IconWithText justify Icon={Level} >
+					<IconLabel className="suggestion-info-container"> {suggestion.level}</IconLabel>
+				</IconWithText>
+			</FlexBox>
+			<FlatButton
+				color="primary"
 				onClick={() => followUser({ id, isFollowing })}
 			>
 				{isFollowing ? t('common.user-following') : t('common.follow-user')}
-			</RaisedButton>
+			</FlatButton>
 		</PaperContainer>
 	);
 };

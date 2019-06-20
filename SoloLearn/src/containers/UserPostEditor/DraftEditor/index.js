@@ -16,7 +16,7 @@ import { USER_POST_MAX_LENGTH } from '../UserPostEditor';
 import 'draft-js-linkify-plugin/lib/plugin.css';
 import './styles.scss';
 
-const readOnlyFontSizeWithoutBackground = 14;
+const readOnlyFontSizeWithoutBackground = 15;
 const defaultFontSize = 24;
 
 const DraftEditor = ({
@@ -41,7 +41,11 @@ const DraftEditor = ({
 		component: ({ children, href }) => (
 			<RefLink
 				className={hasBackground ? 'underline' : null}
-				style={{ color: hasBackground ? background.textColor : '#607D8B', fontSize }}
+				style={{
+					color: hasBackground ? background.textColor : '#009D7E',
+					fontSize,
+					fontWeight: 600,
+				}}
 				to={href}
 			>
 				{children}
@@ -72,7 +76,7 @@ const DraftEditor = ({
 			? (
 				<Link
 					className="hoverable"
-					style={{ color: hasBackground ? background.textColor : '#607D8B', fontSize }}
+					style={{ color: hasBackground ? background.textColor : '#273338', fontSize }}
 					to={`/profile/${mention.id}`}
 				>
 					{children}
@@ -212,7 +216,7 @@ const DraftEditor = ({
 		}
 		const newLinesCount = (text.match(/\n/g) || []).length;
 		if (!isEditorReadOnly) {
-			setFontSize(getFontSize(text.length, newLinesCount));
+			setFontSize(getFontSize(text.length, newLinesCount, background.type !== 'none'));
 		}
 		measure();
 	}, [ editorState ]);
@@ -242,7 +246,7 @@ const DraftEditor = ({
 					:
 					{
 						...style,
-						color: background ? background.textColor.length > 6 ? hexToRgba(getRgbaHexFromArgbHex(background.textColor)) : background.textColor : 'black',
+						color: background ? background.textColor.length > 6 ? hexToRgba(getRgbaHexFromArgbHex(background.textColor)) : background.textColor : '#273338',
 						cursor: isEditorReadOnly ? 'cursor' : 'text',
 						height: 250,
 					}
@@ -253,7 +257,10 @@ const DraftEditor = ({
 			>
 				<Container
 					className={isEditorReadOnly && background.type === 'none' ? 'draft-editor-inner-container no-padding' : 'draft-editor-inner-container'}
-					style={{ fontSize }}
+					style={{
+						fontSize,
+						fontWeight: background.type === 'none' ? 400 : 600,
+					}}
 				>
 					<Editor
 						editorState={editorState}

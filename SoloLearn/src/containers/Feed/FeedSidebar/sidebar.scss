@@ -3,22 +3,23 @@
 
 .feed-sidebar {
 	.discover-peers {
+		border: 1px solid $border-color;
 		padding-left: 0;
 		padding-right: 0;
 
-		.discover-peers-heading{
+		.discover-peers-heading {
 			padding-left: 14px;
 		}
 
-		.discover-peers-shimmer{
-			padding-left:14px; 
+		.discover-peers-shimmer {
+			padding-left:14px;
 		}
-	
-		.discover-peers-list{
+
+		.discover-peers-list {
 			padding-left: 14px;
 			padding-right: 14px;
 		}
-	
+
 		.feed-sidebar_view-more {
 			margin-top: $primary_gap_size;
 			align-self: center;
@@ -26,43 +27,51 @@
 			color: #009085;
 			font-weight: bold;
 		}
-		
-		.discover-peers-li{
+
+		.discover-peers-li {
 			margin:20px 0;
-			
-			.profile{
+			.profile {
 				display: block;
 			}
-			
-			.discover-profile-info{
+			.discover-profile-info {
 				margin-left: 12px;
-				
-				.follower-icon{
+				.follower-icon {
 					margin-right: 2px;
 				}
-				
-				.follow-button{
-					width:86px;
+				.follow-button {
+					margin-top: 8px;
+					width: 86px;
+				}
+				.discover-peers_followers {
+					color: $icon_color;
+					.discover-peers_label {
+						font-size: 12px;
+						font-weight: 400;
+						color: inherit;
+						margin-left: 2px;
+					}
 				}
 			}
-			
-			.profile-name{
+			.profile-name {
 				max-width: 145px;
 				display: inline-block;
 				overflow: hidden;
 				white-space: nowrap;
 				text-overflow: ellipsis;
-				
-				.name{
+				.name {
 					margin-right: 8px;
+				}
+				.badge {
+					margin-right: 8px;
+				}
+			}
+			&:first-of-type {
+				margin-top: 2px;
+			}
+			&:last-of-type {
+				margin-bottom: 21px;
 			}
 		}
-	}
-	
-		.discover-peers-li:last-of-type{
-			margin-bottom: 0;
-		}
-	
 	}
 	
 }

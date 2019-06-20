@@ -9,7 +9,7 @@ import {
 	Container,
 } from 'components/atoms';
 import {
-	FlatButton,
+	RaisedButton,
 } from 'components/molecules';
 import './styles.scss';
 import { Search, Add } from 'components/icons';
@@ -35,14 +35,19 @@ const Header = ({ searchQuestion, onSearchChange }) => (
 					className: 'search_input',
 				}}
 			/>
-			<FlatButton className="add-question-btn">
-				<Container className="add-icon">
-					<Add />
-				</Container>
-				<TextBlock className="button-text">
+			<RaisedButton
+				color="primary"
+				className="add-question-btn"
+			>
+				<FlexBox align justify fullWidth>
+					<Container className="add-icon">
+						<Add />
+					</Container>
+					<TextBlock className="button-text">
 				 	Ask a Question
-				</TextBlock>
-			</FlatButton>
+					</TextBlock>
+				</FlexBox>
+			</RaisedButton>
 		</FlexBox>
 	</PaperContainer>
 );

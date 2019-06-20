@@ -7,7 +7,6 @@ import {
 	Container,
 } from 'components/atoms';
 import { LanguageLabel } from 'components/molecules';
-import { FeedBottomBarFullStatistics } from 'components/organisms';
 import { editorModeNames } from 'containers/Playground/utils/Mappings';
 
 import 'brace/mode/html';
@@ -23,6 +22,7 @@ import 'brace/mode/swift';
 import 'brace/theme/monokai'; // Editor dark theme
 import 'brace/ext/language_tools';
 
+import BottomToolbarWithVotes from '../../BottomToolbarWithVotes';
 import './styles.scss';
 
 const Code = ({
@@ -43,7 +43,6 @@ const Code = ({
 	const calculatedLanguage = language === 'web'
 		? isJSLonger ? 'js' : 'html'
 		: language;
-	console.log(truncate(previewCode, 500, 18, false));
 	return (
 		<Container>
 			<Container className="code-item-container">
@@ -79,17 +78,13 @@ const Code = ({
 					/>
 				</Link>
 			</Container>
-			<FeedBottomBarFullStatistics
-				id={code.id}
-				key={code.id}
-				date={date}
-				views={code.viewCount}
-				userVote={userVote}
+			<BottomToolbarWithVotes
 				type="code"
-				withDate={false}
+				id={code.id}
+				date={date}
+				userVote={userVote}
 				totalVotes={totalVotes}
 				onChange={onChange}
-				comments={0}
 			/>
 		</Container>
 	);

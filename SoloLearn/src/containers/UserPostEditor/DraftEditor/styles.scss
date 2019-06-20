@@ -15,6 +15,9 @@
 		.draft-editor-inner-container {
 			width: 100%;
 			padding: 15px;
+			.public-DraftEditorPlaceholder-root {
+				color: rgba(58, 70, 74, 0.5);
+			}
 			.underline {
 				text-decoration: underline;
 			}
@@ -24,15 +27,15 @@
 		}
 	}
 	.user-post-max-length-container {
-		padding: 0 5px 5px 0;
+		padding: 0 8px 8px 0;
 		&.with-border {
 			border-color: #EAEAEA;
 			border-style: solid;
 			border-width: 0px 1px 1px 1px;
 		}
 		.count {
-			font-size: 11px;
-			color: #616B6E;
+			font-size: 12px;
+			color: rgba(97, 107, 110, .49);
 		}
 	}
 }

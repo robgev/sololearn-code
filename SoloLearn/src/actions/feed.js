@@ -35,7 +35,7 @@ export const getFeedItemsInternal = isHighlights => async (dispatch, getState) =
 		const forceOpenedFeed = isFirstItemGrouppedChallenge ? forceOpenFeed(feedItems[0]) : feedItems;
 		const feedItemsCount = feed.length + feedItems.length;
 		if (feed.length + length >= requestLimitCount * (1 + suggestionsBatch) && discoverSuggestions.entities &&
-			suggestionsBatch * 10 < discoverSuggestions.ids.length) {
+			suggestionsBatch * 5 < discoverSuggestions.ids.length) {
 			const suggestionsObj = {
 				number: suggestionsBatch,
 				type: feedTypes.suggestions,

@@ -12,7 +12,7 @@ const EditorActions = ({
 	initialUserPostId,
 	t,
 }) => (
-	<PopupActions>
+	<PopupActions className="user-post-popup-actions">
 		<Container className="user-post-actions-container">
 			<FlatButton
 				onClick={closePopup}

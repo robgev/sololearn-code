@@ -5,9 +5,13 @@ import { followSuggestion } from 'actions/discover';
 import { numberFormatter } from 'utils';
 import {
 	Container, FlexBox, HorizontalDivider, PaperContainer,
-	List, ListItem, SecondaryTextBlock, Heading, TextBlock,
+	List, ListItem, SecondaryTextBlock, Heading,
 } from 'components/atoms';
-import { UsernameLink, ViewMoreLink, ProfileAvatar, ModBadge, FlatButton } from 'components/molecules';
+import {
+	IconWithText, UsernameLink, ViewMoreLink,
+	ProfileAvatar, ModBadge, FlatButton,
+} from 'components/molecules';
+import { Followers } from 'components/icons';
 import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
 
 const DiscoverPeers = ({

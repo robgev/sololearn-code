@@ -1,0 +1,12 @@
+@import '~styles/colors';
+
+.molecule_flat_button {
+	padding: 0 23px;
+	border: 1px solid $primary_colored_text;
+	border-radius: 16px;
+	text-transform: none;
+	color: $primary_color_hover;
+	font-size: 12px;
+	font-weight: 700;
+	min-height: 24px;
+}

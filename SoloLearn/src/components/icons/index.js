@@ -42,3 +42,4 @@ export { default as ChevronDown } from './ChevronDown';
 export { default as Search } from './Search';
 export { default as Add } from './Add';
 export { default as LikeDislike } from './LikeDislike';
+export { default as Followers } from './Followers';

@@ -6,7 +6,6 @@ import {
 	Link,
 	SecondaryTextBlock,
 } from 'components/atoms';
-import { QuoteIcon } from 'components/icons';
 
 import 'styles/Feed/FeedTemplates/Post.scss';
 
@@ -26,22 +25,16 @@ const Post = ({
 			to={url}
 			className="post"
 		>
-			<QuoteIcon
-				className="quoteIcon base bottom"
-			/>
 			<SecondaryTextBlock
 				className="postName"
 			>
 				{truncate(isQuestion ? post.title : post.message, 200, 5, true)}
 			</SecondaryTextBlock>
-			<QuoteIcon
-				className="quoteIcon base bottom"
-			/>
 		</Link>
 		{ !noVotes &&
 			<BottomToolbarWithVotes
 				date={date}
-				type='post'
+				type="post"
 				userVote={vote}
 				id={id}
 				totalVotes={votes}
