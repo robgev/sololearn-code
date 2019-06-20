@@ -10,6 +10,7 @@
 		border-left: 0;
 		background-color: #f9fafa;
 		padding: 12px 0 0 16px;
+		min-width: 0;
 	}
 	.badge-base {
 		width: 64px;
@@ -37,5 +38,8 @@
 		display: block;
 		font-size: 15px;
 		color: $content_text_color;
+		white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 	}
 }

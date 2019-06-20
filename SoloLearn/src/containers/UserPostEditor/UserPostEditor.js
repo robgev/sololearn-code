@@ -262,7 +262,7 @@ const UserPostEditor = ({
 								user={profile}
 								className="up-editor-profile-avatar"
 							/>
-							<FlexBox column fullWidth>
+							<FlexBox column className="up-editor-draft-wrapper">
 								<DraftEditor
 									background={background}
 									setEditorText={setEditorText}

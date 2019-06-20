@@ -1,16 +1,22 @@
 @import '~styles/variables';
+@import '~styles/colors';
 
 .comment-item-container {
+	margin-top: 12px;
 	.comment-feed-item-wrapper {
 		display: flex;
 		position: relative;
-		padding: 7px;
+		padding: 16px 12px;
 		z-index: 2;
+		border: 1px solid $border-color;
+		border-radius: 4px;
 		text-decoration: none;
-		background-color: #F5F5F5;
+		background-color: #F9FAFA;
 		.comment-text {
 			flex: 2;
 			margin: 0 10px;
+			font-size: 15px;
+			color: $content_text_color;
 			white-space: pre-wrap;
 			word-break: break-word;
 		}
