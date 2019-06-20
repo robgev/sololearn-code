@@ -8,12 +8,21 @@ const IconWithText = ({
 	children,
 	className,
 	iconClassname = '',
+	isIconComponent,
 	...props
 }) => (
 	<FlexBox align className={`molecule_icon-with-text ${className}`} {...props}>
-		<Icon className={`${iconClassname} icon`} />
+		{
+			isIconComponent
+				? <Icon className={`${iconClassname} icon`} />
+				: <img src={Icon} alt="icon" />
+		}
 		{children}
 	</FlexBox>
 );
+
+IconWithText.defaultProps = {
+	isIconComponent: true,
+};
 
 export default IconWithText;

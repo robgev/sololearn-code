@@ -2,35 +2,24 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { sidebarQuestionsSelector, isDiscussSidebarEmpty } from 'reducers/discuss.reducer';
-import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
-import { Container, Heading, List, ListItem, SecondaryTextBlock, Link } from 'components/atoms';
-import { IconWithText } from 'components/molecules';
-import { QuestionAnswer } from 'components/icons';
+import { FlexBox } from 'components/atoms';
+import ProfileInfo from 'containers/Feed/FeedSidebar/ProfileInfo';
+import HotToday from './HotToday';
 
 const mapStateToProps = state => ({
 	questions: sidebarQuestionsSelector(state),
 	isEmpty: isDiscussSidebarEmpty(state),
+	userProfile: state.userProfile,
+	levels: state.levels,
 });
 
-const DiscussSidebar = ({ isEmpty, questions, t }) => (
-	<Container className="discuss-sidebar">
-		<Heading>{t('discuss.filter.hot-today')}</Heading>
-		{isEmpty
-			? <SidebarShimmer noTitle />
-			: (
-				<List>
-					{questions.map(question => (
-						<ListItem key={question.id}>
-							<Link to={`/discuss/${question.id}`}>
-								<IconWithText Icon={QuestionAnswer}>
-									<SecondaryTextBlock>{question.title}</SecondaryTextBlock>
-								</IconWithText>
-							</Link>
-						</ListItem>
-					))}
-				</List>
-			)}
-	</Container>
+const DiscussSidebar = ({
+	isEmpty, questions, t, userProfile, levels,
+}) => (
+	<FlexBox column justify className="discuss-sidebar">
+		<ProfileInfo profile={userProfile} levels={levels} />
+		<HotToday isEmpty={isEmpty} questions={questions} t={t} />
+	</FlexBox>
 );
 
 export default connect(mapStateToProps)(translate()(DiscussSidebar));

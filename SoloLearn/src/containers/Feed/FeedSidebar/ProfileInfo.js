@@ -4,6 +4,7 @@ import { PaperContainer, FlexBox, Container } from 'components/atoms';
 import { UsernameLink, ProfileAvatar, ModBadge } from 'components/molecules';
 import SectionStats from './SectionStats';
 import LevelProgress from './LevelProgress';
+import './sidebar.scss';
 
 const ProfileInfo = ({ t, profile, levels }) => (
 	<PaperContainer className="profile-info">

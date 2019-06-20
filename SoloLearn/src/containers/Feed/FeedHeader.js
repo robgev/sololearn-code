@@ -44,14 +44,15 @@ const FeedHeader = ({ profile, t, afterPostCallback }) => {
 			{!isCreatePostOpen ?
 				(
 					<PaperContainer className="feed-header">
-						<FlexBox className="actions" align fullWith>
+						<FlexBox className="actions" align fullWidth>
 							<ProfileAvatar
 								user={profile}
 								className="up-fh-profile-avatar-container"
 							/>
 							<Input
 								variant="outlined"
-								placeholder={`${t(randomHint)}, ${profile.name}`}
+								fullWidth
+								value={`${t(randomHint)} ${profile.name}`}
 								className="user-post-hints-input-container"
 								onClick={inputClickHandler}
 								inputProps={{ className: 'user-post-hints-input' }}

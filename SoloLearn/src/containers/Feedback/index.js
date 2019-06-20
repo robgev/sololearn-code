@@ -44,7 +44,7 @@ const Feedback = ({ openFeedback, toggleFeedback, t }) => {
 						>
 							{
 								feedbackTypes.map(i =>
-									<MenuItem value={i}>{t(`feedback.type.${i}`)}</MenuItem>)
+									<MenuItem key={i} value={i}>{t(`feedback.type.${i}`)}</MenuItem>)
 							}
 						</Select>
 					</FlexBox>
@@ -58,7 +58,7 @@ const Feedback = ({ openFeedback, toggleFeedback, t }) => {
 				</Container>
 			</PopupContent>
 			<PopupActions>
-			<FlatButton onClick={toggleFeedback}>
+				<FlatButton onClick={toggleFeedback}>
 					{t('common.cancel-title')}
 				</FlatButton>
 				<FlatButton onClick={() => sendFeedback(value, inputValue)} disabled={inputValue === ''}>

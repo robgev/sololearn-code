@@ -5,9 +5,13 @@ import { followSuggestion } from 'actions/discover';
 import { numberFormatter } from 'utils';
 import {
 	Container, FlexBox, HorizontalDivider, PaperContainer,
-	List, ListItem, SecondaryTextBlock, Heading, TextBlock,
+	List, ListItem, SecondaryTextBlock, Heading,
 } from 'components/atoms';
-import { UsernameLink, ViewMoreLink, ProfileAvatar, ModBadge, FlatButton } from 'components/molecules';
+import {
+	IconWithText, UsernameLink, ViewMoreLink,
+	ProfileAvatar, ModBadge, FlatButton,
+} from 'components/molecules';
+import { Followers } from 'components/icons';
 import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
 
 const DiscoverPeers = ({
@@ -25,44 +29,41 @@ const DiscoverPeers = ({
 								name, followers, badge, isFollowing,
 							} = discoverEntities[id];
 							return (
-								<Fragment>
-									<ListItem className="discover-peers-li">
-										<FlexBox>
-											<ProfileAvatar
-												className="profile"
-												user={discoverEntities[id]}
-											/>
-											<FlexBox column className="discover-profile-info profile-info">
-												<FlexBox align >
-													<Container className="profile-name">
-														<UsernameLink className="name" to={`/profile/${id}`} >
-															{name}
-														</UsernameLink>
-														<ModBadge
-															className="badge"
-															badge={badge}
-														/>
-													</Container>
-													<SecondaryTextBlock className="followers">
-														<img src="/assets/ic_followers.png" alt="folowerImg" className="follower-icon" />
-														{
-															followers === 1
-																? '1'
-																: `${numberFormatter(followers)} `
-														}
-													</SecondaryTextBlock>
-												</FlexBox>
-												<FlatButton
-													className="follow-button"
-													onClick={() => { followSuggestion({ id, isFollowing }); }}
-												>
-													{isFollowing ? t('common.user-following') : t('common.follow-user')}
-												</FlatButton>
+								<ListItem className="discover-peers-li" key={id}>
+									<FlexBox>
+										<ProfileAvatar
+											className="profile"
+											user={discoverEntities[id]}
+										/>
+										<FlexBox column className="discover-profile-info profile-info">
+											<FlexBox align >
+												<Container className="profile-name">
+													<UsernameLink className="name" to={`/profile/${id}`} >
+														{name}
+													</UsernameLink>
+													<ModBadge
+														className="badge"
+														badge={badge}
+													/>
+												</Container>
+												<SecondaryTextBlock className="followers">
+													<img src="/assets/ic_followers.png" alt="folowerImg" className="follower-icon" />
+													{
+														followers === 1
+															? '1'
+															: `${numberFormatter(followers)} `
+													}
+												</SecondaryTextBlock>
 											</FlexBox>
+											<FlatButton
+												className="follow-button"
+												onClick={() => { followSuggestion({ id, isFollowing }); }}
+											>
+												{isFollowing ? t('common.user-following') : t('common.follow-user')}
+											</FlatButton>
 										</FlexBox>
-									</ListItem>
-									{/* <HorizontalDivider /> */}
-								</Fragment>
+									</FlexBox>
+								</ListItem>
 							);
 						})
 					}

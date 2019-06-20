@@ -262,7 +262,7 @@ const UserPostEditor = ({
 								user={profile}
 								className="up-editor-profile-avatar"
 							/>
-							<FlexBox column fullWidth>
+							<FlexBox column className="up-editor-draft-wrapper">
 								<DraftEditor
 									background={background}
 									setEditorText={setEditorText}
@@ -288,7 +288,22 @@ const UserPostEditor = ({
 										</Container>
 									</FlexBox>
 								}
-
+								{
+									canApplyBackground
+										? (
+											<FlexBox justify align className="backgrounds-container backgrounds-container-separate">
+												{
+													backgrounds.map(el =>
+														(<BackgroundIconButton
+															onSelect={setSelectedBackgroundId}
+															background={el}
+															withBorder={el.id === -1}
+														/>))
+												}
+											</FlexBox>
+										)
+										: null
+								}
 								<FlexBox
 									align
 									justifyBetween
@@ -309,6 +324,7 @@ const UserPostEditor = ({
 															(<BackgroundIconButton
 																onSelect={setSelectedBackgroundId}
 																background={el}
+																withBorder={el.id === -1}
 															/>))
 													}
 												</FlexBox>
