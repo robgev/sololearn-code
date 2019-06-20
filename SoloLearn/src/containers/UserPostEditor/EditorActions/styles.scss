@@ -1,16 +1,25 @@
 @import '~styles/colors';
-
-.user-post-actions-container {
+.user-post-popup-actions {
 	margin: 0;
-	width: 220px;
-	height: 32px;
-	font-size: 15px;
-	.user-post-cancel-button {
-		color: $primary_color;
-		margin-right: 24px;
-		text-transform: none;
-	}
-	.up-share-button {
-		padding: 6px 39px;
+	.user-post-actions-container {
+		margin: 0;
+		height: 32px;
+		font-size: 15px;
+		.user-post-cancel-button {
+			color: $primary_color;
+			margin-right: 20px;
+			height: 32px;
+			padding-top: 4px;
+			text-transform: none;
+		}
+		.up-share-button {
+			width: 120px;
+			padding-top: 4px;
+			height: 32px;
+			border-radius: 25px;
+			text-transform: none;
+			min-height: 0;
+			box-shadow: none;
+		}
 	}
 }

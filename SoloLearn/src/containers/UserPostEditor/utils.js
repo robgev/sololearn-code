@@ -9,8 +9,8 @@ export const getBackgroundStyle = (background, { isPreview }) => {
 			// gradients are rendering in other way on mobile
 			backgroundImage:
 				`linear-gradient(${90 - background.angle}deg, ${background.startColor}, ${background.endColor})`,
-				// :
-				// `linear-gradient(${background.angle}deg, ${background.endColor}, ${background.startColor})`,
+			// :
+			// `linear-gradient(${background.angle}deg, ${background.endColor}, ${background.startColor})`,
 			// backgroundImage: `linear-gradient(${background.angle}deg, ${background.endColor}, ${background.startColor})`,
 		};
 	case 'image':
@@ -28,9 +28,9 @@ export const getBackgroundStyle = (background, { isPreview }) => {
 	}
 };
 
-export const getFontSize = (textLength, newLineCount) => {
+export const getFontSize = (textLength, newLineCount, hasGradient) => {
 	if (textLength < 50) {
-		if (newLineCount < 5) { return 30; }
+		 if (newLineCount < 5 && hasGradient) { return 30; }
 		return 24;
 	} else if (textLength < 200) {
 		if (newLineCount < 5) { return 20; }
