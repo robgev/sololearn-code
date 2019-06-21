@@ -1,7 +1,10 @@
 @import '~styles/utils';
+@import '~styles/colors';
 @import '~styles/variables';
 
 .playground-codes-container {
+	border: 1px solid $border-color;
+	padding: 16px;
 	position: relative;
 	.playground-codes-toolbar {
 		display: flex;

@@ -58,24 +58,24 @@ const CodeItem = ({ code, minimal }) => {
 
 					{minimal ?
 						<SecondaryTextBlock>{updateDate(code.modifiedDate)}</SecondaryTextBlock> :
-						<FlexBox align>
-							<FlexBox column className="code-item-user-details">
-								<Container>
+						<FlexBox fullWidth justifyEnd className="code-item-secondary-details">
+							<FlexBox align>
+								<FlexBox className="code-item-user-details">
 									<UsernameLink className="code-item-user-name" to={`/profile/${user.id}`}>
 										{user.name}
 									</UsernameLink>
 									<ModBadge
 										badge={user.badge}
-										className="small"
+										className="code-item-mod-badge"
 									/>
-								</Container>
+								</FlexBox>
+								<ProfileAvatar size="extra-small" user={user} />
 							</FlexBox>
-							<ProfileAvatar className="user" user={user} />
 						</FlexBox>
 					}
 				</FlexBox>
 			</ListItem>
-			<HorizontalDivider />
+			<HorizontalDivider className="code-item-divider" />
 		</Fragment>
 	);
 };

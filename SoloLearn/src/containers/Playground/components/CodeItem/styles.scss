@@ -7,6 +7,8 @@ $icon_size: 18px;
 	display: flex;
 	align-items: stretch;
 	color: inherit;
+	margin-bottom: 4px;
+	margin-top: 16px;
 
 	.language-card {
 		text-decoration: none;
@@ -14,9 +16,22 @@ $icon_size: 18px;
 
 	.code-item_details-container {
 		flex: 1;
+		.code-item-secondary-details {
+			align-items: flex-start;
+			.code-item-user-details {
+				.code-item-user-name {
+					margin-right: 12px;
+				}
+				.code-item-mod-badge {
+					margin-right: 12px;
+				}
+			}
+		}
 	}
 
 	.title {
+		display: inline-block;
+		margin-bottom: 3px;
 		color: $primary_color_hover;
 		font-size: 15px;
 		font-weight: 600;
@@ -36,11 +51,9 @@ $icon_size: 18px;
 				color: $icon_color;
 			}
 		}
-		.code-item-user-details {
-			align-items: flex-end;
-			.code-item-user-name {
-				margin-right: 10px;
-			}
-		}
 	}
+}
+.code-item-divider {
+	margin-left: 80px;
+	background-color: $border-color;
 }
