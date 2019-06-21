@@ -15,13 +15,16 @@ import { Search, Add } from 'components/icons';
 import AddCodeButton from '../AddCodeButton';
 import './styles.scss';
 
-const Header = ({ value, searchCodes, onSearchChange }) => (
+const Header = ({
+	value, searchCodes, onSearchChange, handleKeyDown,
+}) => (
 	<PaperContainer className="header-container">
 		<FlexBox fullWidth justifyBetween>
 			<Input
 				onChange={onSearchChange}
 				value={value}
 				fullWidth
+				onKeyDown={handleKeyDown}
 				className="search"
 				placeholder="Search code"
 				variant="outlined"

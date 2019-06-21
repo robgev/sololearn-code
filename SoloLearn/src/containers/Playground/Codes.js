@@ -84,8 +84,14 @@ class Codes extends Component {
 	onSearchChange = (e) => {
 		this.setState({ searchValue: e.currentTarget.value });
 	}
+
+	handleKeyDown = (e) => {
+		if (e.keyCode === 13) {
+			this.searchCodes();
+		}
+	}
+
 	searchCodes = () => {
-		console.warn('lav ches');
 		const { location } = this.props;
 		const { searchValue } = this.state;
 		browserHistory.push({ ...location, query: { ...location.query, query: searchValue } });
@@ -104,6 +110,7 @@ class Codes extends Component {
 						value={this.state.searchValue}
 						onSearchChange={this.onSearchChange}
 						searchCodes={this.searchCodes}
+						handleKeyDown={this.handleKeyDown}
 					/>
 					<FlexBox justifyBetween className="playground-menu-container">
 						<TitleTab
