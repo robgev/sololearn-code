@@ -18,7 +18,7 @@ import { PaperContainer, Select, MenuItem, FlexBox } from 'components/atoms';
 import { FloatingActionButton, InfiniteScroll, LayoutWithSidebar, TitleTab } from 'components/molecules';
 
 import 'styles/Playground/CodesBase.scss';
-import { CodesList, AddCodeButton, Header } from './components';
+import { CodesList, Header } from './components';
 import PlaygroundSidebar from './PlaygroundSidebar';
 
 const mapStateToProps = state => ({
@@ -84,8 +84,14 @@ class Codes extends Component {
 	onSearchChange = (e) => {
 		this.setState({ searchValue: e.currentTarget.value });
 	}
+
+	handleKeyDown = (e) => {
+		if (e.keyCode === 13) {
+			this.searchCodes();
+		}
+	}
+
 	searchCodes = () => {
-		console.warn('lav ches');
 		const { location } = this.props;
 		const { searchValue } = this.state;
 		browserHistory.push({ ...location, query: { ...location.query, query: searchValue } });
@@ -104,8 +110,9 @@ class Codes extends Component {
 						value={this.state.searchValue}
 						onSearchChange={this.onSearchChange}
 						searchCodes={this.searchCodes}
+						handleKeyDown={this.handleKeyDown}
 					/>
-					<FlexBox justifyBetween>
+					<FlexBox justifyBetween className="playground-menu-container">
 						<TitleTab
 							activeTab={filters.ordering}
 							handleTabChange={this.handleOrderByFilterChange}
@@ -146,13 +153,7 @@ class Codes extends Component {
 							codes={codes}
 							hasMore={hasMore}
 						/>
-						<AddCodeButton>
-							{({ togglePopup }) => (
-								<FloatingActionButton color="secondary" alignment="right" onClick={togglePopup}>
-									<Add />
-								</FloatingActionButton>
-							)}
-						</AddCodeButton>
+
 					</PaperContainer>
 				</InfiniteScroll>
 			</LayoutWithSidebar>

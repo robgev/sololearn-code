@@ -13,6 +13,7 @@
 		padding-bottom: 0;
 		.playground-menus {
 			margin-top: -4px;
+
 			.playground-menu-spaced {
 				margin-right: $primary_gap_size;
 			}
@@ -22,4 +23,8 @@
 
 .playground-menu-item {
 	min-width: 160px;
+}
+
+.playground-menu-container {
+	padding-left: 16px;
 }
