@@ -1,0 +1,42 @@
+@import '~styles/colors';
+
+.header-container {
+	padding: 16px;
+
+	.search {
+			margin-right: 16px;
+
+			.adornmentEnd {
+					padding: 0;
+			}
+
+			.search_input {
+					padding-top: 10px;
+					padding-bottom: 10px;
+			}
+
+			.search-icon {
+					color: $primary_color;
+					cursor: pointer;
+			}
+	}
+
+	.add-codes-btn {
+			min-width: 186px;
+			text-transform: none;
+			color: #fff;
+			padding: 11px 27px;
+
+			.button-text {
+					color: #fff;
+					line-height: 14px;
+					font-size: 14px;
+			}
+
+			.add-icon {
+					margin-right: 8px;
+					height: 16px;
+					line-height: 14px;
+			}
+	}
+}

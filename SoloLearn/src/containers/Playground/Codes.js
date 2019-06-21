@@ -14,11 +14,11 @@ import {
 import { showError, queryDifference, isObjectEqual } from 'utils';
 
 import { Add } from 'components/icons';
-import { PaperContainer, Container, Select, MenuItem, FlexBox } from 'components/atoms';
+import { PaperContainer, Select, MenuItem, FlexBox } from 'components/atoms';
 import { FloatingActionButton, InfiniteScroll, LayoutWithSidebar, TitleTab } from 'components/molecules';
 
 import 'styles/Playground/CodesBase.scss';
-import { CodesList, AddCodeButton } from './components';
+import { CodesList, AddCodeButton, Header } from './components';
 import PlaygroundSidebar from './PlaygroundSidebar';
 
 const mapStateToProps = state => ({
@@ -34,6 +34,9 @@ const mapDispatchToProps = {
 @translate()
 @connect(mapStateToProps, mapDispatchToProps)
 class Codes extends Component {
+	state = {
+		searchValue: '',
+	}
 	componentDidMount() {
 		document.title = 'Sololearn | Code Playground';
 		const { location, filters } = this.props;
@@ -78,6 +81,15 @@ class Codes extends Component {
 		this.props.getCodes(params)
 			.catch(e => showError(e, 'Something went wrong when trying to fetch codes'));
 	}
+	onSearchChange = (e) => {
+		this.setState({ searchValue: e.currentTarget.value });
+	}
+	searchCodes = () => {
+		console.warn('lav ches');
+		const { location } = this.props;
+		const { searchValue } = this.state;
+		browserHistory.push({ ...location, query: { ...location.query, query: searchValue } });
+	}
 	render() {
 		const {
 			codes, filters, hasMore, t,
@@ -88,6 +100,11 @@ class Codes extends Component {
 					hasMore={hasMore}
 					loadMore={this.getCodes}
 				>
+					<Header
+						value={this.state.searchValue}
+						onSearchChange={this.onSearchChange}
+						searchCodes={this.searchCodes}
+					/>
 					<FlexBox justifyBetween>
 						<TitleTab
 							activeTab={filters.ordering}
