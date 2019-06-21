@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+﻿import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
@@ -14,7 +14,7 @@ import {
 	discussHasMoreSelector,
 	isDiscussFetchingSelector,
 } from 'reducers/discuss.reducer';
-import { FlexBox, Select, MenuItem, Title } from 'components/atoms';
+import { FlexBox, Select, MenuItem, Title, PaperContainer } from 'components/atoms';
 import { LayoutWithSidebar, InfiniteScroll, TitleTab } from 'components/molecules';
 import QuestionList, { Sidebar } from './QuestionsList';
 import './QuestionsList/styles.scss';
@@ -147,7 +147,9 @@ class Questions extends Component {
 					loadMore={this.getPosts}
 				>
 
-					<QuestionList hasMore={hasMore} questions={posts} />
+					<PaperContainer className="question-conatainer">
+						<QuestionList hasMore={hasMore} questions={posts} />
+					</PaperContainer>
 				</InfiniteScroll>
 			</LayoutWithSidebar>
 		);
