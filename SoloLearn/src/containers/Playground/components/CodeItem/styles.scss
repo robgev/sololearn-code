@@ -17,8 +17,9 @@ $icon_size: 18px;
 	}
 
 	.title {
-		color: $primary_color;
-		size: 15px;
+		color: $primary_color_hover;
+		font-size: 15px;
+		font-weight: 600;
 	}
 
 	.user {
