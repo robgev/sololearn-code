@@ -7,3 +7,4 @@ export { default as CodeOutput } from './CodeOutput';
 export { default as Editor } from './Editor';
 export { default as InputPopup } from './InputPopup';
 export { default as SplitPane } from './SplitPane';
+export { default as ButtonMenu } from './ButtonMenu';

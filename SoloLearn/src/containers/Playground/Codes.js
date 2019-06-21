@@ -14,8 +14,8 @@ import {
 import { showError, queryDifference, isObjectEqual } from 'utils';
 
 import { Add } from 'components/icons';
-import { PaperContainer, Heading, Container, Select, MenuItem } from 'components/atoms';
-import { FloatingActionButton, InfiniteScroll, LayoutWithSidebar } from 'components/molecules';
+import { PaperContainer, Container, Select, MenuItem, FlexBox } from 'components/atoms';
+import { FloatingActionButton, InfiniteScroll, LayoutWithSidebar, TitleTab } from 'components/molecules';
 
 import 'styles/Playground/CodesBase.scss';
 import { CodesList, AddCodeButton } from './components';
@@ -67,11 +67,11 @@ class Codes extends Component {
 			query: { ...location.query, language },
 		});
 	}
-	handleOrderByFilterChange = (event) => {
+	handleOrderByFilterChange = (value) => {
 		const { location } = this.props;
 		browserHistory.push({
 			...location,
-			query: { ...location.query, ordering: event.target.value },
+			query: { ...location.query, ordering: value },
 		});
 	}
 	getCodes = (params) => {
@@ -88,40 +88,43 @@ class Codes extends Component {
 					hasMore={hasMore}
 					loadMore={this.getCodes}
 				>
+					<FlexBox justifyBetween>
+						<TitleTab
+							activeTab={filters.ordering}
+							handleTabChange={this.handleOrderByFilterChange}
+							tabs={[
+								{ value: 'HotToday', text: t('code.filter.hot-today') },
+								{ value: 'Trending', text: t('code.filter.trending') },
+								{ value: 'YourNetwork', text: t('code.filter.your-network') },
+								{ value: 'MostPopular', text: t('code.filter.most-popular') },
+								{ value: 'MostRecent', text: t('code.filter.most-recent') },
+								{ value: 'MyCodes', text: t('code.filter.my-codes') },
+							]}
+						/>
+						<Select
+							value={filters.language || 'all'}
+							className="playground-menu-spaced"
+							onChange={this.handleLanguageFilterChange}
+						>
+							<MenuItem value="all">{t('code.language-filter.all')}</MenuItem>
+							<MenuItem value="web">Web</MenuItem>
+							<MenuItem value="cpp">C++</MenuItem>
+							<MenuItem value="c">C</MenuItem>
+							<MenuItem value="cs">C#</MenuItem>
+							<MenuItem value="java">Java</MenuItem>
+							<MenuItem value="kt">Kotlin</MenuItem>
+							<MenuItem value="swift">Swift</MenuItem>
+							<MenuItem value="py">Python</MenuItem>
+							<MenuItem value="rb">Ruby</MenuItem>
+							<MenuItem value="php">PHP</MenuItem>
+						</Select>
+					</FlexBox>
 					<PaperContainer className="playground-codes-container">
-						<Container className="playground-codes-toolbar">
-							<Heading>{t('code_playground.title')}</Heading>
+						{/* <Container className="playground-codes-toolbar">
 							<Container className="playground-menus">
-								<Select
-									value={filters.language || 'all'}
-									className="playground-menu-spaced"
-									onChange={this.handleLanguageFilterChange}
-								>
-									<MenuItem value="all">{t('code.language-filter.all')}</MenuItem>
-									<MenuItem value="web">Web</MenuItem>
-									<MenuItem value="cpp">C++</MenuItem>
-									<MenuItem value="c">C</MenuItem>
-									<MenuItem value="cs">C#</MenuItem>
-									<MenuItem value="java">Java</MenuItem>
-									<MenuItem value="kt">Kotlin</MenuItem>
-									<MenuItem value="swift">Swift</MenuItem>
-									<MenuItem value="py">Python</MenuItem>
-									<MenuItem value="rb">Ruby</MenuItem>
-									<MenuItem value="php">PHP</MenuItem>
-								</Select>
-								<Select
-									value={filters.ordering}
-									onChange={this.handleOrderByFilterChange}
-								>
-									<MenuItem value="HotToday">{t('code.filter.hot-today')}</MenuItem>
-									<MenuItem value="Trending">{t('code.filter.trending')}</MenuItem>
-									<MenuItem value="YourNetwork">{t('code.filter.your-network')}</MenuItem>
-									<MenuItem value="MostPopular">{t('code.filter.most-popular')}</MenuItem>
-									<MenuItem value="MostRecent">{t('code.filter.most-recent')}</MenuItem>
-									<MenuItem value="MyCodes">{t('code.filter.my-codes')}</MenuItem>
-								</Select>
+
 							</Container>
-						</Container>
+						</Container> */}
 						<CodesList
 							codes={codes}
 							hasMore={hasMore}

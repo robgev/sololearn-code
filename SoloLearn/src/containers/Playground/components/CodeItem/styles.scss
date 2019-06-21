@@ -8,8 +8,17 @@ $icon_size: 18px;
 	align-items: stretch;
 	color: inherit;
 
-	.language-card{
+	.language-card {
 		text-decoration: none;
+	}
+
+	.code-item_details-container {
+		flex: 1;
+	}
+
+	.title {
+		color: $primary_color;
+		size: 15px;
 	}
 
 	.user {

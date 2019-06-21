@@ -1,0 +1,10 @@
+@import '~styles/colors';
+
+.codes_button-menu {
+	.block {
+		cursor: pointer;
+		&.active {
+			color: $primary_color;
+		}
+	}
+}
