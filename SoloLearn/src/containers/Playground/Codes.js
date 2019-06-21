@@ -123,17 +123,17 @@ class Codes extends Component {
 							className="playground-menu-spaced"
 							onChange={this.handleLanguageFilterChange}
 						>
-							<MenuItem value="all">{t('code.language-filter.all')}</MenuItem>
-							<MenuItem value="web">Web</MenuItem>
-							<MenuItem value="cpp">C++</MenuItem>
-							<MenuItem value="c">C</MenuItem>
-							<MenuItem value="cs">C#</MenuItem>
-							<MenuItem value="java">Java</MenuItem>
-							<MenuItem value="kt">Kotlin</MenuItem>
-							<MenuItem value="swift">Swift</MenuItem>
-							<MenuItem value="py">Python</MenuItem>
-							<MenuItem value="rb">Ruby</MenuItem>
-							<MenuItem value="php">PHP</MenuItem>
+							<MenuItem className="playground-menu-item" value="all">{t('code.language-filter.all')}</MenuItem>
+							<MenuItem className="playground-menu-item" value="web">Web</MenuItem>
+							<MenuItem className="playground-menu-item" value="cpp">C++</MenuItem>
+							<MenuItem className="playground-menu-item" value="c">C</MenuItem>
+							<MenuItem className="playground-menu-item" value="cs">C#</MenuItem>
+							<MenuItem className="playground-menu-item" value="java">Java</MenuItem>
+							<MenuItem className="playground-menu-item" value="kt">Kotlin</MenuItem>
+							<MenuItem className="playground-menu-item" value="swift">Swift</MenuItem>
+							<MenuItem className="playground-menu-item" value="py">Python</MenuItem>
+							<MenuItem className="playground-menu-item" value="rb">Ruby</MenuItem>
+							<MenuItem className="playground-menu-item" value="php">PHP</MenuItem>
 						</Select>
 					</FlexBox>
 					<PaperContainer className="playground-codes-container">
