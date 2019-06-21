@@ -12,6 +12,7 @@ import {
 	RaisedButton,
 } from 'components/molecules';
 import { Search, Add } from 'components/icons';
+import AddCodeButton from '../AddCodeButton';
 import './styles.scss';
 
 const Header = ({ value, searchCodes, onSearchChange }) => (
@@ -38,19 +39,24 @@ const Header = ({ value, searchCodes, onSearchChange }) => (
 					className: 'search_input',
 				}}
 			/>
-			<RaisedButton
-				color="primary"
-				className="add-codes-btn"
-			>
-				<FlexBox align justify fullWidth>
-					<Container className="add-icon">
-						<Add />
-					</Container>
-					<TextBlock className="button-text">
+			<AddCodeButton>
+				{({ togglePopup }) => (
+					<RaisedButton
+						color="primary"
+						className="add-codes-btn"
+						onClick={togglePopup}
+					>
+						<FlexBox align justify fullWidth>
+							<Container className="add-icon">
+								<Add />
+							</Container>
+							<TextBlock className="button-text">
 						Create New Code
-					</TextBlock>
-				</FlexBox>
-			</RaisedButton>
+							</TextBlock>
+						</FlexBox>
+					</RaisedButton>
+				)}
+			</AddCodeButton>
 		</FlexBox>
 	</PaperContainer>
 );
