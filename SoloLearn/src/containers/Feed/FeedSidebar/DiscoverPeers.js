@@ -30,12 +30,12 @@ const DiscoverPeers = ({
 							} = discoverEntities[id];
 							return (
 								<ListItem className="discover-peers-li" key={id}>
-									<FlexBox>
+									<FlexBox alignEnd>
 										<ProfileAvatar
 											className="profile"
 											user={discoverEntities[id]}
 										/>
-										<FlexBox column className="discover-profile-info profile-info">
+										<FlexBox column className="discover-profile-info">
 											<FlexBox align >
 												<Container className="profile-name">
 													<UsernameLink className="name" to={`/profile/${id}`} >
