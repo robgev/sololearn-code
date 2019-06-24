@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+﻿import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
@@ -14,7 +14,7 @@ import {
 	discussHasMoreSelector,
 	isDiscussFetchingSelector,
 } from 'reducers/discuss.reducer';
-import { FlexBox, Select, MenuItem, Title } from 'components/atoms';
+import { FlexBox, Select, MenuItem, Title, PaperContainer } from 'components/atoms';
 import { LayoutWithSidebar, InfiniteScroll, TitleTab } from 'components/molecules';
 import QuestionList, { Sidebar } from './QuestionsList';
 import './QuestionsList/styles.scss';
@@ -59,6 +59,10 @@ class Questions extends Component {
 			...(location.query.query != null ? DEFAULT_DISCUSS_FILTERS : filters),
 			...location.query,
 		};
+		if (query.query !== '') {
+			console.log(query.query);
+			this.setState({ search: query.query });
+		}
 		this.props.setDiscussFilters(query);
 		const changed = queryDifference(DEFAULT_DISCUSS_FILTERS, query);
 		browserHistory.replace({ ...location, query: changed });
@@ -102,12 +106,19 @@ class Questions extends Component {
 		this.setState({ search: e.target.value });
 	}
 
+	enterKeyPress=(e) => {
+		if (e.keyCode === 13) {
+			this.searchQuestion();
+		}
+	}
+
 	render() {
 		const {
 			t, posts, hasMore, isFetching,
 		} = this.props;
 		const {
 			avtiveFilter,
+			search,
 		} = this.state;
 		return (
 			<LayoutWithSidebar
@@ -119,6 +130,8 @@ class Questions extends Component {
 				<Header
 					searchQuestion={this.searchQuestion}
 					onSearchChange={this.onSearchChange}
+					enterKeyPress={this.enterKeyPress}
+					query={search}
 				/>
 
 				<FlexBox align justifyBetween className="discuss-filters">
@@ -134,7 +147,9 @@ class Questions extends Component {
 					loadMore={this.getPosts}
 				>
 
-					<QuestionList hasMore={hasMore} questions={posts} />
+					<PaperContainer className="question-conatainer">
+						<QuestionList hasMore={hasMore} questions={posts} />
+					</PaperContainer>
 				</InfiniteScroll>
 			</LayoutWithSidebar>
 		);

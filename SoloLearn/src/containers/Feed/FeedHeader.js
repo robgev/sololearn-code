@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { translate } from 'react-i18next';
 import {
 	Container,
@@ -25,9 +25,9 @@ const FeedHeader = ({ profile, t, afterPostCallback }) => {
 		'user_post.hints.user-post-form-hint-2',
 		'user_post.hints.user-post-form-hint-3',
 	];
-	const randomHint = userPostHintsArray[
+	const randomHint = useRef(userPostHintsArray[
 		Math.floor(Math.random() * userPostHintsArray.length)
-	];
+	]);
 
 	const inputClickHandler = (e) => {
 		e.target.blur();
@@ -52,7 +52,7 @@ const FeedHeader = ({ profile, t, afterPostCallback }) => {
 							<Input
 								variant="outlined"
 								fullWidth
-								value={`${t(randomHint)} ${profile.name}`}
+								value={`${t(randomHint.current)} ${profile.name}`}
 								className="user-post-hints-input-container"
 								onClick={inputClickHandler}
 								inputProps={{ className: 'user-post-hints-input' }}
