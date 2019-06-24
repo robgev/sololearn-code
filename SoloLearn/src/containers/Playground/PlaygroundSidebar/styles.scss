@@ -1,14 +1,14 @@
 @import '~styles/variables';
 
 .playground_sidebar {
-	.item {
-		margin-bottom: $primary_gap_size;
-		&.title {
-			margin-top: $primary_gap_size;
-		}
-	}
-	.playground_view-more-link {
-		margin-top: $primary_gap_size;
-		align-self: center;
+	.hot-today-content {
+		max-width: 200px;
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: #009D7E;
+    font-size: 15px;
+    font-weight: bold;
 	}
 }

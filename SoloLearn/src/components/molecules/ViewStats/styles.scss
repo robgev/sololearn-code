@@ -6,6 +6,10 @@ $icon_size: 20px;
 .molecule_view-stats {
 	color: $icon_color;
 	margin-right: $primary_gap_size;
+	.small {
+		font-size: 12px;
+    font-weight: bold;
+	}
 }
 
 .molecule_view-stats-icon {

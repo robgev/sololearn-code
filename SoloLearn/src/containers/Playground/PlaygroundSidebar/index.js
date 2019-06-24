@@ -1,55 +1,92 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { Heading, SecondaryTextBlock, Title, FlexBox, List } from 'components/atoms';
-import { ViewMoreLink, RaisedButton } from 'components/molecules';
+import { Heading, SecondaryTextBlock, Title, FlexBox, List, PaperContainer, ListItem, Link } from 'components/atoms';
+import { ViewMoreLink, RaisedButton, UsernameLink, ModBadge, ViewStats } from 'components/molecules';
 import { sidebarCodesSelector } from 'reducers/codes.reducer';
 import SidebarShimmer from 'components/Shimmers/SidebarShimmer';
 
-import { CodeItem, AddCodeButton } from '../components';
+import ProfileInfo from 'containers/Feed/FeedSidebar/ProfileInfo';
+
+import LanguageCard from 'components/LanguageCard';
+
+import { AddCodeButton } from '../components';
 import './styles.scss';
 
 const mapStateToProps = state => ({
 	userID: state.userProfile.id,
 	sidebarItems: sidebarCodesSelector(state),
+	userProfile: state.userProfile,
+	levels: state.levels,
 });
 
-const PlaygroundSidebar = ({ t, sidebarItems, userID }) => (
+const PlaygroundSidebar = ({
+	t, sidebarItems, userID, userProfile, levels,
+}) => (
 	<FlexBox column className="playground_sidebar">
-		<Heading>{t('code.filter.my-codes')}</Heading>
-		{sidebarItems === null
-			? <SidebarShimmer round noTitle />
-			:	sidebarItems.length === 0
-				?	(
-					<FlexBox column justify align>
-						<Title className="item title">{t('code.no-saved-code-title')}</Title>
-						<SecondaryTextBlock className="item">{t('code.no-saved-code-message')}</SecondaryTextBlock>
-						<AddCodeButton>
-							{({ togglePopup }) =>
+		<ProfileInfo profile={userProfile} levels={levels} />
+		<PaperContainer>
+			<Heading>{t('code.filter.hot-today')}</Heading>
+			{sidebarItems === null
+				? <SidebarShimmer round noTitle />
+				:	sidebarItems.length === 0
+					?	(
+						<FlexBox column justify align>
+							<Title className="item title">{t('code.no-saved-code-title')}</Title>
+							<SecondaryTextBlock className="item">{t('code.no-saved-code-message')}</SecondaryTextBlock>
+							<AddCodeButton>
+								{({ togglePopup }) =>
+									(
+										<RaisedButton
+											color="secondary"
+											onClick={togglePopup}
+										>
+											{t('code.no-saved-code-action-title')}
+										</RaisedButton>
+									)
+								}
+							</AddCodeButton>
+						</FlexBox>
+					)
+					: (
+						<List>
+							{sidebarItems.map(code =>
 								(
-									<RaisedButton
-										color="secondary"
-										onClick={togglePopup}
-									>
-										{t('code.no-saved-code-action-title')}
-									</RaisedButton>
-								)
-							}
-						</AddCodeButton>
-					</FlexBox>
-				)
-				: (
-					<List>
-						{sidebarItems.map(code => <CodeItem minimal key={code.id} code={code} />)}
-					</List>
-				)
-		}
-		{sidebarItems && sidebarItems.length > 0 && sidebarItems.length === 10 &&
-		// Check if got whole 10 else no more code available
-			<ViewMoreLink className="playground_view-more-link" to={`/profile/${userID}/codes`} >
-				{t('common.loadMore')}
-			</ViewMoreLink>
-		}
+									<ListItem key={code.id} className="hot-today-item">
+										<FlexBox>
+											<FlexBox>
+												<LanguageCard language={code.language} />
+											</FlexBox>
+											<FlexBox column>
+												<FlexBox column className="hot-today-content">
+													<Link to={`/playground/${code.publicID}`} className="hot-today-question">
+														{code.name}
+													</Link>
+													<FlexBox>
+														<UsernameLink className="author-name" to={`/profile/${code.userID}`}>{code.userName}</UsernameLink>
+														<ModBadge
+															className="badge"
+															badge={code.badge}
+														/>
+													</FlexBox>
+												</FlexBox>
+												<FlexBox>
+													<ViewStats
+														small
+														votes={code.votes}
+														comments={code.comments}
+														views={code.viewCount}
+													/>
+												</FlexBox>
+											</FlexBox>
+										</FlexBox>
+									</ListItem>
+								))}
+						</List>
+					)
+			}
+
+		</PaperContainer>
 	</FlexBox>
 );
 

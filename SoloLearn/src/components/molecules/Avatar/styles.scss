@@ -5,6 +5,11 @@
 	display: inline-block;
 	.profile-image {
 		font-size: 50%;
+		&.extra-small {
+			height: $xtra-small-avatar-size;
+			width: $xtra-small-avatar-size;
+			font-size: $xtra-small-avatar-size / 2;
+		}
 		&.small {
 			height: $small-avatar-size;
 			width: $small-avatar-size;

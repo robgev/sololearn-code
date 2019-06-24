@@ -7,15 +7,16 @@ import {
 	Container,
 	ListItem,
 	HorizontalDivider,
+	SecondaryTextBlock,
 } from 'components/atoms';
 import {
 	ViewStats,
 	ModBadge,
 	ProfileAvatar,
 	UsernameLink,
-	DateInfo,
 } from 'components/molecules';
 import LanguageCard from 'components/LanguageCard';
+import { updateDate } from 'utils';
 
 import './styles.scss';
 
@@ -31,43 +32,50 @@ const CodeItem = ({ code, minimal }) => {
 		<Fragment>
 			<ListItem className="code-item-wrapper">
 				<Link to={`/playground/${code.publicID}`} className="language-card">
-					<LanguageCard  big language={code.language} />
+					<LanguageCard big language={code.language} />
 				</Link>
-				<FlexBox fullWidth column className="details-wrapper">
-					<Link to={`/playground/${code.publicID}`}>
-						<Title>
-							{code.name}
-						</Title>
-					</Link>
-					<FlexBox align fullWidth justifyBetween>
+				<FlexBox justifyBetween className="code-item_details-container">
+					<FlexBox fullWidth column className="details-wrapper">
+						<Link to={`/playground/${code.publicID}`}>
+							<Title className="title">
+								{code.name}
+							</Title>
+						</Link>
+						{!minimal &&
+							<SecondaryTextBlock>{updateDate(code.modifiedDate)}</SecondaryTextBlock>
+						}
 						<Container className="stats">
-							<ViewStats votes={code.votes} comments={code.comments} />
+							<ViewStats
+								votes={code.votes}
+								comments={code.comments}
+								views={!minimal ? code.viewCount : undefined}
+							/>
 							{!code.isPublic &&
 								<Lock className="code_item-lock" />
 							}
 						</Container>
-						{minimal ?
-							<DateInfo date={code.modifiedDate} /> :
-							<FlexBox align>
-								<FlexBox column justify className="code-item-user-details">
-									<Container>
-										<UsernameLink className="code-item-user-name" to={`/profile/${user.id}`}>
-											{user.name}
-										</UsernameLink>
-										<ModBadge
-											badge={user.badge}
-											className="small"
-										/>
-									</Container>
-									<DateInfo date={code.modifiedDate} />
-								</FlexBox>
-								<ProfileAvatar className="user" user={user} />
-							</FlexBox>
-						}
 					</FlexBox>
+
+					{minimal ?
+						<SecondaryTextBlock>{updateDate(code.modifiedDate)}</SecondaryTextBlock> :
+						<FlexBox fullWidth justifyEnd className="code-item-secondary-details">
+							<FlexBox align>
+								<FlexBox className="code-item-user-details">
+									<UsernameLink className="code-item-user-name" to={`/profile/${user.id}`}>
+										{user.name}
+									</UsernameLink>
+									<ModBadge
+										badge={user.badge}
+										className="code-item-mod-badge"
+									/>
+								</FlexBox>
+								<ProfileAvatar size="extra-small" user={user} />
+							</FlexBox>
+						</FlexBox>
+					}
 				</FlexBox>
 			</ListItem>
-			<HorizontalDivider />
+			<HorizontalDivider className="code-item-divider" />
 		</Fragment>
 	);
 };
