@@ -15,10 +15,11 @@
 			margin-bottom: 2px;
 		}
 		.header_tab-text {
-			color: $white;
+			color: inherit;
 			font-size: 15px;
 		}
 		&.active {
+			color: $primary_color;
 			border-bottom-color: $primary_color;
 			&:after {
 				transform: scaleX(1);

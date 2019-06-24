@@ -7,7 +7,7 @@ const TitleTab = ({ tabs, activeTab, handleTabChange }) => (
 	tabs.map(tab => (
 		<Title
 			key={tab.value}
-			className={`sub-title ${activeTab === tab.value ? 'active' : ''}`}
+			className={`molecule_title-tab_sub-title ${activeTab === tab.value ? 'active' : ''}`}
 			onClick={() => handleTabChange(tab.value)}
 		>
 			{tab.text}

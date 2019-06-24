@@ -3,8 +3,9 @@
 
 .feed-items-wrapper {
 	.feed-filters {
-		padding-left: 16px;
+		padding: 23px 14px;
 		.sub-title {
+			@extend %title-text;
 			display: block;
 			cursor: pointer;
 			margin-right: 48px;

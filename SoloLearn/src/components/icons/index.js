@@ -43,3 +43,6 @@ export { default as Search } from './Search';
 export { default as Add } from './Add';
 export { default as LikeDislike } from './LikeDislike';
 export { default as Followers } from './Followers';
+export { default as CommentSmall } from './CommentSmall';
+export { default as LikeDislikeSmall } from './LikeDislikeSmall';
+export { default as ViewsSmall } from './ViewsSmall';

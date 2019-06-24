@@ -5,10 +5,12 @@ $box-size: $small-avatar-size;
 .colored-box {
 	width: $box-size;
 	height: $box-size;
-	font-size: $secondary_text_size;
-	margin: 0px 10px 0 0;
+	font-size: $primary_text_size;
+	font-weight: 800;
+	margin: 0px 16px 0 0;
+	border-radius: 4px;
 	&.big {
-		width: $box-size + 5px;
-		height: $box-size + 5px;
+		width: $box-size + 16px;
+		height: $box-size + 16px;
 	}
 }

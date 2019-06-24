@@ -1,15 +1,13 @@
+@import '~styles/utils';
 @import '~styles/colors';
 
-.sub-title{
-    display: block;
-    cursor: pointer;
-    margin:23px 0;
-    color:$icon_color;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.sub-title.active{
-    font-weight: 800;
-    color: $primary_color_hover;
+.molecule_title-tab_sub-title {
+	@extend %title-text;
+	display: block;
+	cursor: pointer;
+	margin: 23px 0;
+	&.active{
+			font-weight: 800;
+			color: $primary_color_hover;
+	}
 }

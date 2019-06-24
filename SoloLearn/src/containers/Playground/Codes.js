@@ -13,13 +13,12 @@ import {
 } from 'reducers/codes.reducer';
 import { showError, queryDifference, isObjectEqual } from 'utils';
 
-import { Add } from 'components/icons';
-import { PaperContainer, Heading, Container, Select, MenuItem } from 'components/atoms';
-import { FloatingActionButton, InfiniteScroll, LayoutWithSidebar } from 'components/molecules';
+import { PaperContainer, Select, MenuItem, FlexBox } from 'components/atoms';
+import { InfiniteScroll, LayoutWithSidebar, TitleTab } from 'components/molecules';
 
-import 'styles/Playground/CodesBase.scss';
-import { CodesList, AddCodeButton } from './components';
+import { CodesList, Header } from './components';
 import PlaygroundSidebar from './PlaygroundSidebar';
+import 'styles/Playground/CodesBase.scss';
 
 const mapStateToProps = state => ({
 	codes: codesSelector(state),
@@ -34,6 +33,9 @@ const mapDispatchToProps = {
 @translate()
 @connect(mapStateToProps, mapDispatchToProps)
 class Codes extends Component {
+	state = {
+		searchValue: '',
+	}
 	componentDidMount() {
 		document.title = 'Sololearn | Code Playground';
 		const { location, filters } = this.props;
@@ -67,72 +69,90 @@ class Codes extends Component {
 			query: { ...location.query, language },
 		});
 	}
-	handleOrderByFilterChange = (event) => {
+	handleOrderByFilterChange = (value) => {
 		const { location } = this.props;
 		browserHistory.push({
 			...location,
-			query: { ...location.query, ordering: event.target.value },
+			query: { ...location.query, ordering: value },
 		});
 	}
 	getCodes = (params) => {
 		this.props.getCodes(params)
 			.catch(e => showError(e, 'Something went wrong when trying to fetch codes'));
 	}
+	onSearchChange = (e) => {
+		this.setState({ searchValue: e.currentTarget.value });
+	}
+
+	handleKeyDown = (e) => {
+		if (e.keyCode === 13) {
+			this.searchCodes();
+		}
+	}
+
+	searchCodes = () => {
+		const { location } = this.props;
+		const { searchValue } = this.state;
+		browserHistory.push({ ...location, query: { ...location.query, query: searchValue } });
+	}
 	render() {
 		const {
 			codes, filters, hasMore, t,
 		} = this.props;
 		return (
-			<LayoutWithSidebar sidebar={<PlaygroundSidebar />}>
+			<LayoutWithSidebar paper={false} sidebar={<PlaygroundSidebar />}>
 				<InfiniteScroll
 					hasMore={hasMore}
 					loadMore={this.getCodes}
 				>
+					<Header
+						value={this.state.searchValue}
+						onSearchChange={this.onSearchChange}
+						searchCodes={this.searchCodes}
+						handleKeyDown={this.handleKeyDown}
+					/>
+					<FlexBox justifyBetween className="playground-menu-container">
+						<TitleTab
+							activeTab={filters.ordering}
+							handleTabChange={this.handleOrderByFilterChange}
+							tabs={[
+								// { value: 'HotToday', text: t('code.filter.hot-today') },
+								{ value: 'Trending', text: t('code.filter.trending') },
+								{ value: 'YourNetwork', text: t('code.filter.your-network') },
+								{ value: 'MostPopular', text: t('code.filter.most-popular') },
+								{ value: 'MostRecent', text: t('code.filter.most-recent') },
+								{ value: 'MyCodes', text: t('code.filter.my-codes') },
+							]}
+						/>
+						<Select
+							value={filters.language || 'all'}
+							className="playground-menu-spaced"
+							onChange={this.handleLanguageFilterChange}
+						>
+							<MenuItem className="playground-menu-item" value="all">{t('code.language-filter.all')}</MenuItem>
+							<MenuItem className="playground-menu-item" value="web">Web</MenuItem>
+							<MenuItem className="playground-menu-item" value="cpp">C++</MenuItem>
+							<MenuItem className="playground-menu-item" value="c">C</MenuItem>
+							<MenuItem className="playground-menu-item" value="cs">C#</MenuItem>
+							<MenuItem className="playground-menu-item" value="java">Java</MenuItem>
+							<MenuItem className="playground-menu-item" value="kt">Kotlin</MenuItem>
+							<MenuItem className="playground-menu-item" value="swift">Swift</MenuItem>
+							<MenuItem className="playground-menu-item" value="py">Python</MenuItem>
+							<MenuItem className="playground-menu-item" value="rb">Ruby</MenuItem>
+							<MenuItem className="playground-menu-item" value="php">PHP</MenuItem>
+						</Select>
+					</FlexBox>
 					<PaperContainer className="playground-codes-container">
-						<Container className="playground-codes-toolbar">
-							<Heading>{t('code_playground.title')}</Heading>
+						{/* <Container className="playground-codes-toolbar">
 							<Container className="playground-menus">
-								<Select
-									value={filters.language || 'all'}
-									className="playground-menu-spaced"
-									onChange={this.handleLanguageFilterChange}
-								>
-									<MenuItem value="all">{t('code.language-filter.all')}</MenuItem>
-									<MenuItem value="web">Web</MenuItem>
-									<MenuItem value="cpp">C++</MenuItem>
-									<MenuItem value="c">C</MenuItem>
-									<MenuItem value="cs">C#</MenuItem>
-									<MenuItem value="java">Java</MenuItem>
-									<MenuItem value="kt">Kotlin</MenuItem>
-									<MenuItem value="swift">Swift</MenuItem>
-									<MenuItem value="py">Python</MenuItem>
-									<MenuItem value="rb">Ruby</MenuItem>
-									<MenuItem value="php">PHP</MenuItem>
-								</Select>
-								<Select
-									value={filters.ordering}
-									onChange={this.handleOrderByFilterChange}
-								>
-									<MenuItem value="HotToday">{t('code.filter.hot-today')}</MenuItem>
-									<MenuItem value="Trending">{t('code.filter.trending')}</MenuItem>
-									<MenuItem value="YourNetwork">{t('code.filter.your-network')}</MenuItem>
-									<MenuItem value="MostPopular">{t('code.filter.most-popular')}</MenuItem>
-									<MenuItem value="MostRecent">{t('code.filter.most-recent')}</MenuItem>
-									<MenuItem value="MyCodes">{t('code.filter.my-codes')}</MenuItem>
-								</Select>
+
 							</Container>
-						</Container>
+						</Container> */}
 						<CodesList
 							codes={codes}
 							hasMore={hasMore}
 						/>
-						<AddCodeButton>
-							{({ togglePopup }) => (
-								<FloatingActionButton color="secondary" alignment="right" onClick={togglePopup}>
-									<Add />
-								</FloatingActionButton>
-							)}
-						</AddCodeButton>
+
 					</PaperContainer>
 				</InfiniteScroll>
 			</LayoutWithSidebar>

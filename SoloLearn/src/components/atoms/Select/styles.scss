@@ -2,8 +2,9 @@
 @import '~styles/variables';
 
 .atom_select {
-	font-size: $secondary_text_size;
-	color: $primary_color;
+	font-size: $primary_text_size;
+	color: $content_text_color;
+	font-weight: 700;
 	&:after {
 		border: none;
 	}
@@ -12,6 +13,13 @@
 	}
 	div[aria-pressed]:focus {
 		background: none;
+	}
+	.atom_select-root {
+		padding: 5px 0 6px 14px;
+		border: 1px solid #EEEFF0;
+		background: white;
+		border-radius: 4px;
+		min-width: 120px;
 	}
 	.atom_select-icon {
 		top: calc(50% - 14px);
