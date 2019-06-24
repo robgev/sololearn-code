@@ -95,7 +95,7 @@
 
 	.followers{
 		margin-left: 8px;
-		color: #616B6E;
+		color: $icon_color;
 	}
 
 	.username {
@@ -122,7 +122,7 @@
 			font-weight: 700;
 			font-size: 12px;
 			margin-bottom: 4px;
-			color: #616B6E
+			color: $icon_color;
 
 		}
 		.stat {
