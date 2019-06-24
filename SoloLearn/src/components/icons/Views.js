@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Views = props => (
-	<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" fill="currentColor" width="100%" height="100%" viewBox="0 0 48 48" {...props}>
+const Views = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" fill="currentColor" width="48" height="48" viewBox="0 0 48 48">
 		<defs>
 			<clipPath id="clip-path">
 				<rect className="cls-1" width="48" height="48" />

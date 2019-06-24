@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Followers = props => (
-	<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="100%" height="100%" viewBox="0 0 8 9" {...props}>
+const Followers = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="8" height="9" viewBox="0 0 8 9">
 
 		<g id="ic_followers" className="cls-2">
 			<g id="Union_16" data-name="Union 16" transform="translate(65 -972)">
