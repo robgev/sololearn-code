@@ -1,30 +1,30 @@
 import React from 'react';
 import { numberFormatter } from 'utils';
-import { Arrows, Views, Comment, LikeDislike } from 'components/icons';
+import { Views, Comment, LikeDislike, ViewsSmall, CommentSmall, LikeDislikeSmall } from 'components/icons';
 import { IconWithText, ContainerLink } from 'components/molecules';
 import { FlexBox, IconLabel } from 'components/atoms';
 
 import './styles.scss';
 
 const ViewStats = ({
-	views, votes, comments, link, className,
+	views, votes, comments, link, className, small,
 }) => (
 	<FlexBox align className={className}>
 		{Number.isInteger(votes) && // Can have negative votes
-			<IconWithText justify Icon={LikeDislike} className="molecule_view-stats">
-				<IconLabel>{votes > 0 ? `+${numberFormatter(votes)}` : numberFormatter(votes)}</IconLabel>
+			<IconWithText justify Icon={small ? LikeDislikeSmall : LikeDislike} className="molecule_view-stats">
+				<IconLabel className={small ? 'small' : ''}>{votes > 0 ? `+${numberFormatter(votes)}` : numberFormatter(votes)}</IconLabel>
 			</IconWithText>
 		}
 		{comments >= 0 &&
 			<ContainerLink to={link}>
-				<IconWithText justify Icon={Comment} className="molecule_view-stats">
-					<IconLabel>{numberFormatter(comments)}</IconLabel>
+				<IconWithText justify Icon={small ? CommentSmall : Comment} className="molecule_view-stats">
+					<IconLabel className={small ? 'small' : ''}>{numberFormatter(comments)}</IconLabel>
 				</IconWithText>
 			</ContainerLink>
 		}
 		{views >= 0 &&
-			<IconWithText justify Icon={Views} className="molecule_view-stats">
-				<IconLabel>{numberFormatter(views)}</IconLabel>
+			<IconWithText justify Icon={small ? ViewsSmall : Views} className="molecule_view-stats">
+				<IconLabel className={small ? 'small' : ''}>{numberFormatter(views)}</IconLabel>
 			</IconWithText>
 		}
 	</FlexBox>
