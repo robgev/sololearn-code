@@ -32,7 +32,7 @@ const hasMore = (state = true, action) => {
 	}
 };
 
-export const DEFAULT_CODES_FILTERS = { ordering: 'HotToday', language: '', query: '' };
+export const DEFAULT_CODES_FILTERS = { ordering: 'Trending', language: '', query: '' };
 
 const filters = (state = DEFAULT_CODES_FILTERS, action) => {
 	switch (action.type) {
