@@ -31,8 +31,8 @@ const MoreItemsIndicator = ({
 			</TextBlock>
 			{
 				open
-					? <ChevronUp />
-					: <ChevronDown />
+					? <ChevronUp className="molecule_more-items-indicator_icon" />
+					: <ChevronDown className="molecule_more-items-indicator_icon" />
 			}
 		</FlexBox>
 	)
