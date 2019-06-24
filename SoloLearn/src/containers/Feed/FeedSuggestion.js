@@ -41,11 +41,11 @@ const FeedSuggestion = ({ t, suggestion, followUser }) => {
 			/>
 			<UsernameLink to={`/profile/${suggestion.id}`} className="userName">{suggestion.name}</UsernameLink>
 			<FlexBox align className="feed-suggestion-info-container">
-				<IconWithText justify Icon={Followers} >
+				<IconWithText justify Icon={Followers} className="suggestion-followers">
 					<IconLabel className="suggestion-info-container">{numberFormatter(followers)} </IconLabel>
 				</IconWithText>
 				<TextBlock className="suggestion-info-separator">·</TextBlock>
-				<IconWithText justify Icon={Level} >
+				<IconWithText justify Icon={Level} className="suggestion-level">
 					<IconLabel className="suggestion-info-container"> {suggestion.level}</IconLabel>
 				</IconWithText>
 			</FlexBox>
