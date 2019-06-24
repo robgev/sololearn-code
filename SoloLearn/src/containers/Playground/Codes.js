@@ -13,13 +13,12 @@ import {
 } from 'reducers/codes.reducer';
 import { showError, queryDifference, isObjectEqual } from 'utils';
 
-import { Add } from 'components/icons';
 import { PaperContainer, Select, MenuItem, FlexBox } from 'components/atoms';
-import { FloatingActionButton, InfiniteScroll, LayoutWithSidebar, TitleTab } from 'components/molecules';
+import { InfiniteScroll, LayoutWithSidebar, TitleTab } from 'components/molecules';
 
-import 'styles/Playground/CodesBase.scss';
 import { CodesList, Header } from './components';
 import PlaygroundSidebar from './PlaygroundSidebar';
+import 'styles/Playground/CodesBase.scss';
 
 const mapStateToProps = state => ({
 	codes: codesSelector(state),
@@ -101,7 +100,7 @@ class Codes extends Component {
 			codes, filters, hasMore, t,
 		} = this.props;
 		return (
-			<LayoutWithSidebar sidebar={<PlaygroundSidebar />}>
+			<LayoutWithSidebar paper={false} sidebar={<PlaygroundSidebar />}>
 				<InfiniteScroll
 					hasMore={hasMore}
 					loadMore={this.getCodes}
@@ -117,7 +116,7 @@ class Codes extends Component {
 							activeTab={filters.ordering}
 							handleTabChange={this.handleOrderByFilterChange}
 							tabs={[
-								{ value: 'HotToday', text: t('code.filter.hot-today') },
+								// { value: 'HotToday', text: t('code.filter.hot-today') },
 								{ value: 'Trending', text: t('code.filter.trending') },
 								{ value: 'YourNetwork', text: t('code.filter.your-network') },
 								{ value: 'MostPopular', text: t('code.filter.most-popular') },
