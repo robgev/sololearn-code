@@ -11,31 +11,31 @@ const ProfileAvatar = ({
 	size,
 	className = '',
 }) => (
-	<UserTooltip userData={user} placement="top">
-		<Container
-			className={`molecule_profile-avatar ${className}`}
-		>
-			<Container className="avatar-wrapper">
-				<Container className="profile-container">
-					<Avatar
-						avatarUrl={user.avatarUrl}
-						userName={user.name}
-						userID={user.id}
-						badge={user.badge}
-						variant={size}
-						disabled
-					/>
-					{/* { levelBadge &&
+	// <UserTooltip userData={user} placement="top">
+	<Container
+		className={`molecule_profile-avatar ${className}`}
+	>
+		<Container className="avatar-wrapper">
+			<Container className="profile-container">
+				<Avatar
+					avatarUrl={user.avatarUrl}
+					userName={user.name}
+					userID={user.id}
+					badge={user.badge}
+					variant={size}
+					disabled
+				/>
+				{/* { levelBadge &&
 							<Image
 								alt="LB"
 								className="level-badge"
 								src={`/assets/badge_${levelBadge}.png`}
 							/>
 						} */}
-				</Container>
 			</Container>
 		</Container>
-	</UserTooltip>
+	</Container>
+	// </UserTooltip>
 );
 
 ProfileAvatar.defaultProps = {

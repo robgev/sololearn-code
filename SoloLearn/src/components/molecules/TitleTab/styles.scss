@@ -1,13 +1,15 @@
+@import '~styles/colors';
+
 .sub-title{
     display: block;
     cursor: pointer;
     margin:23px 0;
-    color:#616B6E;
+    color:$icon_color;
     font-weight: 600;
     text-transform: uppercase;
 }
 
 .sub-title.active{
     font-weight: 800;
-    color: #009D7E;
+    color: $primary_color_hover;
 }
