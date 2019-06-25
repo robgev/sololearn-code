@@ -78,8 +78,7 @@
 
 .profile-info {
 	margin-bottom: $secondary_gap_size;
-
-
+	border: 1px solid $border-color;
 	.avatar {
 		margin-top: 2px;
 		.profile-info_avatar {

@@ -4,7 +4,7 @@ $text-margin: 8px;
 
 .molecule_progress-bar {
 	position: relative;
-	margin-bottom: $text-margin;
+	margin-bottom: 2 * $text-margin;
 
 	.molecule_progress-bar-label {
 		position: absolute;
@@ -12,6 +12,7 @@ $text-margin: 8px;
 		font-size: 12px;
 		font-weight: 400;
 		color: $icon_color;
+		opacity: 0.8;
 		&.molecule_progress-bar-label-left {
 			left: 0;
 		}

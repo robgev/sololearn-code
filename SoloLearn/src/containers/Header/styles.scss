@@ -1,9 +1,10 @@
 @import '~styles/medias';
+@import '~styles/variables';
 
 .header {
 	position: fixed;
 	width: 100%;
-	height: 56px;
+	height: $header_size;
 	z-index: 999;
 	background-color: #3A464A;
 	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px;
