@@ -112,18 +112,20 @@ class Codes extends Component {
 						handleKeyDown={this.handleKeyDown}
 					/>
 					<FlexBox justifyBetween className="playground-menu-container">
-						<TitleTab
-							activeTab={filters.ordering}
-							handleTabChange={this.handleOrderByFilterChange}
-							tabs={[
+						<FlexBox fullWidth justifyBetween className="tabs-container">
+							<TitleTab
+								activeTab={filters.ordering}
+								handleTabChange={this.handleOrderByFilterChange}
+								tabs={[
 								// { value: 'HotToday', text: t('code.filter.hot-today') },
-								{ value: 'Trending', text: t('code.filter.trending') },
-								{ value: 'YourNetwork', text: t('code.filter.your-network') },
-								{ value: 'MostPopular', text: t('code.filter.most-popular') },
-								{ value: 'MostRecent', text: t('code.filter.most-recent') },
-								{ value: 'MyCodes', text: t('code.filter.my-codes') },
-							]}
-						/>
+									{ value: 'Trending', text: t('code.filter.trending') },
+									{ value: 'YourNetwork', text: t('code.filter.your-network') },
+									{ value: 'MostPopular', text: t('code.filter.most-popular') },
+									{ value: 'MostRecent', text: t('code.filter.most-recent') },
+									{ value: 'MyCodes', text: t('code.filter.my-codes') },
+								]}
+							/>
+						</FlexBox>
 						<Select
 							value={filters.language || 'all'}
 							className="playground-menu-spaced"
