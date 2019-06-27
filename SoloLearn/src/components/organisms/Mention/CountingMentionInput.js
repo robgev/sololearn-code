@@ -8,6 +8,7 @@ class CountingMentionInput extends Component {
 		maxLength: 2048,
 		renderButton: () => null,
 		onSubmitEnabledChange: () => { }, // noop
+		className: '',
 	}
 	constructor(props) {
 		super(props);
@@ -39,28 +40,28 @@ class CountingMentionInput extends Component {
 	isEmpty = () => this.getValue().trim().length === 0;
 	render() {
 		const {
-			containerStyle, counterStyle, renderButton, ...rest
+			containerStyle, counterStyle, renderButton, className, ...rest
 		} = this.props;
 		const { isExpanded, charCount } = this.state;
 		return (
-			<Container className="organism_counting-mention-input">
-				<MentionInput
-					ref={this.mentionInput}
-					onLengthChange={this.onLengthChange}
-					onFocus={this.onFocus}
-					onBlur={this.onBlur}
-					className={isExpanded ? 'expanded' : ''}
-					{...rest}
-				/>
+			<FlexBox column={isExpanded} justifyBetween fullWidth className="organism_counting-mention-input">
+				<FlexBox fullWidth>
+					<MentionInput
+						ref={this.mentionInput}
+						onLengthChange={this.onLengthChange}
+						onFocus={this.onFocus}
+						onBlur={this.onBlur}
+						maxLength={this.props.maxLength}
+						charCount={charCount}
+						className={`${className} ${isExpanded ? 'expanded' : ''}`}
+						{...rest}
+					/>
+				</FlexBox>
 				<FlexBox className="bottom-toolbar-container">
-					{isExpanded &&
-						<SecondaryTextBlock className="counter">
-							{charCount} / {this.props.maxLength}
-						</SecondaryTextBlock>
-					}
+
 					{renderButton({ isExpanded, charCount, onBlur: this.onBlur })}
 				</FlexBox>
-			</Container>
+			</FlexBox>
 		);
 	}
 }

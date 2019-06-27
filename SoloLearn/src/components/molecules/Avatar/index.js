@@ -55,15 +55,15 @@ Avatar.propTypes = {
 	badge: PropTypes.string,
 	disabled: PropTypes.bool,
 	userName: PropTypes.string.isRequired,
-	variant: PropTypes.oneOf([ 'small', 'normal', 'big' ]),
-	className:PropTypes.string,
+	variant: PropTypes.oneOf([ 'extra-small', 'small', 'normal', 'big' ]),
+	className: PropTypes.string,
 };
 
 Avatar.defaultProps = {
 	badge: null,
 	disabled: false,
 	variant: 'small',
-	className:'',
+	className: '',
 };
 
 export default Avatar;

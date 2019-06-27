@@ -21,6 +21,7 @@ const HotToday = ({ isEmpty, questions, t }) => (
 						return (
 							<ListItem key={question.id} className="hot-today-item">
 								<ProfileAvatar
+									size="extra-small"
 									className="user-avatar"
 									user={user}
 								/>

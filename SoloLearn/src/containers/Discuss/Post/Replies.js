@@ -7,7 +7,7 @@ import {
 	SecondaryTextBlock, Select, MenuItem,
 	Snackbar, FlexBox,
 } from 'components/atoms';
-import { InfiniteScroll, RaisedButton, EmptyCard } from 'components/molecules';
+import { InfiniteScroll, RaisedButton, EmptyCard, TitleTab } from 'components/molecules';
 import AddReply from './AddReply';
 import ReplyItem from './ReplyItem';
 import IReplies from './IReplies';
@@ -22,7 +22,17 @@ const mapStateToProps = ({ userProfile }) => ({
 class Replies extends Component {
 	state = {
 		isAcceptSnackbarOpen: false,
+		avtiveFilter: IReplies.ORDER_BY_VOTE,
 	}
+
+	constructor(props) {
+		super(props);
+		this.replyFilters = [
+			{ value: IReplies.ORDER_BY_VOTE, text: this.props.t('discuss.answers.filter.vote') },
+			{ value: IReplies.ORDER_BY_DATE, text: this.props.t('discuss.answers.filter.date') },
+		];
+	}
+
 	repliesRefs = {}
 	addReplyInput = React.createRef();
 
@@ -68,8 +78,8 @@ class Replies extends Component {
 		this.replies.dispose();
 	}
 
-	onOrderChange = (e) => {
-		this.replies.setOrderBy(e.target.value);
+	onOrderChange = (orderBy) => {
+		this.replies.setOrderBy(orderBy);
 	}
 
 	onAcceptReply = (id) => {
@@ -85,32 +95,24 @@ class Replies extends Component {
 
 	render() {
 		const { count, t, askerID } = this.props;
+		const { avtiveFilter } = this.state;
 		return (
 			<Container className="replies">
-				<Container className="replies-toolbar">
-					<SecondaryTextBlock>
-						{count} {t(count === 1 ? 'discuss.answer-one-format' : 'discuss.answer-other-format')}
-					</SecondaryTextBlock>
-					<FlexBox align className="filters">
-						<SecondaryTextBlock className="title">
-							{t('discuss.answers.filter.title')}
-						</SecondaryTextBlock>
-						<Select
-							value={this.replies.orderBy}
-							onChange={this.onOrderChange}
-						>
-							<MenuItem value={IReplies.ORDER_BY_VOTE}>{t('discuss.answers.filter.vote')}</MenuItem>
-							<MenuItem value={IReplies.ORDER_BY_DATE}>{t('discuss.answers.filter.date')}</MenuItem>
-						</Select>
-					</FlexBox>
-				</Container>
+				<FlexBox align className="filters">
+					<TitleTab
+						className="filter"
+						tabs={this.replyFilters}
+						activeTab={avtiveFilter}
+						handleTabChange={this.onOrderChange}
+					/>
+				</FlexBox>
 				<InfiniteScroll
 					hasMore={this.replies.hasMore}
 					loadMore={this.replies.getReplies}
 					initialLoad={false}
 					isLoading={this.replies.isFetching}
 				>
-					<PaperContainer>
+					<Container>
 						<AddReply
 							postID={this.props.postID}
 							submit={this.addReply}
@@ -148,7 +150,7 @@ class Replies extends Component {
 							)
 							: <EmptyCard />
 						}
-					</PaperContainer>
+					</Container>
 				</InfiniteScroll>
 				<Snackbar
 					onClose={this.closeAcceptSnackbar}

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { changePostRepliesCount, removePostFromList } from 'actions/discuss';
+import { changePostRepliesCount, removePostFromList,getSidebarQuestions } from 'actions/discuss';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 import { LayoutWithSidebar, EmptyCard } from 'components/molecules';
 import Replies from './Replies';
 import Question from './Question';
-import PostSidebar from './PostSidebar';
+import DiscussSidebar from '../QuestionsList/Sidebar';
 import IPost from './IPost';
 
 import './styles.scss';
@@ -15,6 +15,7 @@ import './styles.scss';
 const mapDispatchToProps = {
 	changePostRepliesCount,
 	removePostFromList,
+	getSidebarQuestions,
 };
 
 @connect(null, mapDispatchToProps)
@@ -27,17 +28,15 @@ class Post extends Component {
 
 	post = new IPost({ id: this.props.id })
 
-	handleDelete = () => {
-		return this.post.deletePost()
-			.then(this.props.removePostFromList)
-			.then(() => {
-				const currentLocation=browserHistory.getCurrentLocation();
+	handleDelete = () => this.post.deletePost()
+		.then(this.props.removePostFromList)
+		.then(() => {
+			const currentLocation = browserHistory.getCurrentLocation();
 
-				currentLocation.search===''
-				?browserHistory.replace('/discuss')
-				:browserHistory.goBack();
-			});
-	}
+			currentLocation.search === ''
+				? browserHistory.replace('/discuss')
+				: browserHistory.goBack();
+		})
 
 	handlePostRepliesCountChange = (countChange) => {
 		this.props.changePostRepliesCount({ id: this.post.id, countChange });
@@ -49,13 +48,15 @@ class Post extends Component {
 			.then((post) => {
 				this.props.setRouteAlias(post.title);
 			});
+			this.props.getSidebarQuestions();
 	}
 
 	render() {
 		const { id, replyID } = this.props;
 		return (
 			<LayoutWithSidebar
-				sidebar={<PostSidebar />}
+				paper={false}
+				sidebar={<DiscussSidebar />}
 				className="discuss_post"
 			>
 				{

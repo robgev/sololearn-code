@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { IconButton } from 'components/atoms';
+import { IconWithText } from 'components/molecules';
 import { Accepted } from 'components/icons';
 import { determineAccessLevel } from 'utils';
 
@@ -18,23 +18,25 @@ class Options extends Component {
 		return (
 			isMyQuestion || canAcceptReply
 				? (
-					<IconButton
+					<IconWithText
+						Icon={Accepted}
 						className="accepted-icon"
 						active={isAccepted}
 						onClick={onClick}
 					>
-						<Accepted />
-					</IconButton>
+						Mark as best
+					</IconWithText>
 				)
 				: isAccepted
 					? (
-						<IconButton
+						<IconWithText
+							Icon={Accepted}
 							disabled
 							className="accepted-icon"
 							active
 						>
-							<Accepted />
-						</IconButton>
+							Best Answer
+						</IconWithText>
 					)
 					: null
 		);

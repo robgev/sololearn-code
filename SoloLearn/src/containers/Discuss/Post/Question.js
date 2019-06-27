@@ -4,16 +4,17 @@ import { browserHistory } from 'react-router';
 import { observer } from 'mobx-react';
 import {
 	PaperContainer, Container, Title,
-	IconButton, Loading, FlexBox, Snackbar,
+	IconButton, Loading, FlexBox, Snackbar, SecondaryTextBlock,
 } from 'components/atoms';
-import { VoteActions, Mention } from 'components/organisms';
+import { ProfileAvatar, ViewStats, UsernameLink, IconWithText } from 'components/molecules';
+import { VoteActions, Mention, FeedBottomBarFullStatistics } from 'components/organisms';
 import { Follow } from 'components/icons';
 import ReportPopup from 'components/ReportPopup';
 import RemovalPopup from './RemovalPopup';
 import DeletePopup from './DeletePopup';
-import Author from './Author';
 import Options from './Options';
 import Tags from '../Tags';
+import { updateDate } from 'utils';
 
 @translate()
 @observer
@@ -59,6 +60,13 @@ class Question extends Component {
 		const {
 			post, onDelete, t,
 		} = this.props;
+		const user = post !== null && {
+			id: post.userID,
+			avatarUrl: post.avatarUrl,
+			name: post.userName,
+			level: post.level,
+		};
+
 		return (
 			<PaperContainer className="main-post">
 				{
@@ -69,57 +77,70 @@ class Question extends Component {
 							</FlexBox>
 						)
 						: (
-							<Container className="post">
-								<Container className="info">
-									<Container className="toolbar">
-										<Container className="votes">
-											<VoteActions
-												id={post.id}
-												type="post"
-												vertical
-												initialCount={post.votes}
-												initialVote={post.vote}
-											/>
-										</Container>
-										<Container className="follow">
-											<IconButton active={post.isFollowing} onClick={this.onFollowClick}>
-												<Follow />
-											</IconButton>
+							<FlexBox fullWidth className="post">
+								<ProfileAvatar
+									className="user-avatar"
+									user={user}
+								/>
+								<FlexBox fullWidth column justifyBetween>
+									<Container className="info">
+										<Container className="question">
+											<FlexBox justifyBetween fullWidth>
+												<Container>
+													<Container className="title">
+														<Title className="title-content">
+															{post.title}
+														</Title>
+													</Container>
+													<Container className="user-name">
+														<UsernameLink className="author-name" to={`/profile/${post.userID}`}>{post.userName}</UsernameLink>
+													</Container>
+												</Container>
+												<FlexBox className="options" justifyEnd>
+													<IconWithText className="follow" Icon={Follow}>
+														Follow
+													</IconWithText>
+													<Options
+														userID={post.userID}
+														deletePost={this.openDeletePopup}
+														editPost={this.editPost}
+														reportPost={this.openReportPopup}
+														requestRemoval={this.openRemovalPopup}
+													/>
+												</FlexBox>
+											</FlexBox>
+											<Container className="message">
+												<Mention text={post.message} />
+											</Container>
+											{
+												post.modifyDate && post.modifyUserID && post.modifyUserName &&
+												<SecondaryTextBlock className="edit-message">
+													{t('discuss.edited-by-format').replace('()', post.modifyUserName)},
+													{updateDate(post.modifyDate)}
+												</SecondaryTextBlock>
+											}
+											<Container className="tags">
+												<Tags tags={post.tags} />
+											</Container>
+											<FlexBox justifyBetween alignEnd fullWidth>
+												<FeedBottomBarFullStatistics
+													id={post.id}
+													key={post.id}
+													date={post.date}
+													views={post.viewCount}
+													userVote={post.vote}
+													type="post"
+													withDate={false}
+													totalVotes={post.votes}
+													// onChange={onChange}
+													comments={post.answers}
+													// className="up-feed-item-bottom-bar"
+												/>
+												<SecondaryTextBlock className="text">{updateDate(post.date)} </SecondaryTextBlock>
+											</FlexBox>
 										</Container>
 									</Container>
-									<Container className="question">
-										<Container className="title">
-											<Title>
-												{post.title}
-											</Title>
-										</Container>
-										<Container className="tags">
-											<Tags tags={post.tags} />
-										</Container>
-										<Container className="message">
-											<Mention text={post.message} />
-										</Container>
-									</Container>
-									<Container className="options">
-										<Options
-											userID={post.userID}
-											deletePost={this.openDeletePopup}
-											editPost={this.editPost}
-											reportPost={this.openReportPopup}
-											requestRemoval={this.openRemovalPopup}
-										/>
-									</Container>
-								</Container>
-								<Container className="user">
-									<Author
-										badge={post.badge}
-										userID={post.userID}
-										avatarUrl={post.avatarUrl}
-										userName={post.userName}
-										date={post.date}
-										level={post.level}
-									/>
-								</Container>
+								</FlexBox>
 								<Snackbar
 									onClose={this.closeFollowSnackbar}
 									open={isFollowSnackbarOpen}
@@ -142,7 +163,7 @@ class Question extends Component {
 									onClose={this.closeDeletePopup}
 									onDelete={onDelete}
 								/>
-							</Container>
+							</FlexBox>
 						)
 				}
 			</PaperContainer>

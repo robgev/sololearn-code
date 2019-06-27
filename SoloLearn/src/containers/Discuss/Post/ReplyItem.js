@@ -1,12 +1,13 @@
 import React, { Component, Fragment, createRef } from 'react';
 import { translate } from 'react-i18next';
 import { observer } from 'mobx-react';
-import { ListItem, HorizontalDivider, Container, FlexBox } from 'components/atoms';
-import { RaisedButton } from 'components/molecules';
+import { ListItem, HorizontalDivider, Container, FlexBox, PaperContainer, SecondaryTextBlock } from 'components/atoms';
+import { RaisedButton, ProfileAvatar, UsernameLink, ModBadge, IconWithText } from 'components/molecules';
 import { VoteActions, Mention, CountingMentionInput } from 'components/organisms';
+import { Follow } from 'components/icons';
 import ReportPopup from 'components/ReportPopup';
 import PreviewItem from 'components/PreviewItem';
-import { generatePreviews } from 'utils';
+import { generatePreviews, updateDate } from 'utils';
 import RemovalPopup from './RemovalPopup';
 import DeletePopup from './DeletePopup';
 import Options from './Options';
@@ -94,6 +95,15 @@ class ReplyItem extends Component {
 		const {
 			reply, deleteReply, onAccept, askerID, t,
 		} = this.props;
+
+		console.log(askerID);
+		const user = reply !== null && {
+			id: reply.userID,
+			avatarUrl: reply.avatarUrl,
+			name: reply.userName,
+			level: reply.level,
+		};
+
 		if (isEditing) {
 			return (
 				<FlexBox column className="editing-post">
@@ -128,33 +138,49 @@ class ReplyItem extends Component {
 		return (
 			<Fragment>
 				<ListItem>
-					<Container
+					<PaperContainer
 						ref={this.postContainer}
 						className={`post ${isHighlighted ? 'animate-highlight' : ''} ${reply.isAccepted ? 'accepted' : ''}`}
 					>
-						<Container className="info">
-							<Container className="toolbar">
-								<Container className="votes">
-									<VoteActions
-										id={reply.id}
-										type="post"
-										vertical
-										initialCount={reply.votes}
-										initialVote={reply.vote}
-									/>
-								</Container>
-								<Container>
-									<AcceptReply
-										askerID={askerID}
-										isAccepted={reply.isAccepted}
-										onClick={onAccept}
-									/>
-								</Container>
-							</Container>
-							<Container className="question">
-								<Container>
+						<FlexBox className="info">
+							<ProfileAvatar
+								className="user-avatar"
+								user={user}
+							/>
+							<FlexBox className="question">
+								<FlexBox fullWidth justifyBetween>
+									<Container className="user-name">
+										<UsernameLink className="author-name" to={`/profile/${reply.userID}`}>{reply.userName}</UsernameLink>
+										<ModBadge
+											className="badge"
+											badge={reply.badge}
+										/>
+									</Container>
+									<FlexBox alignEnd className="options" justifyEnd>
+										<AcceptReply
+											askerID={askerID}
+											isAccepted={reply.isAccepted}
+											onClick={onAccept}
+										/>
+										<Options
+											userID={reply.userID}
+											deletePost={this.openDeletePopup}
+											editPost={this.toggleEdit}
+											reportPost={this.openReportPopup}
+											requestRemoval={this.openRemovalPopup}
+										/>
+									</FlexBox>
+								</FlexBox>
+								<Container className="message">
 									<Mention text={reply.message} />
 								</Container>
+								{
+									reply.modifyDate && reply.modifyUserID && reply.modifyUserName &&
+									<SecondaryTextBlock className="edit-message">
+										{t('discuss.edited-by-format').replace('()', reply.modifyUserName)},
+										{updateDate(reply.modifyDate)}
+									</SecondaryTextBlock>
+								}
 								<Container className="question-preview-container">
 									{generatePreviews(reply.message).map(preview => (
 										<Container key={preview.link} className="preview">
@@ -164,18 +190,18 @@ class ReplyItem extends Component {
 										</Container>
 									))}
 								</Container>
-							</Container>
-							<Container className="options">
-								<Options
-									userID={reply.userID}
-									deletePost={this.openDeletePopup}
-									editPost={this.toggleEdit}
-									reportPost={this.openReportPopup}
-									requestRemoval={this.openRemovalPopup}
-								/>
-							</Container>
-						</Container>
-						<Container className="user">
+								<FlexBox justifyBetween fullWidth alignEnd>
+									<VoteActions
+										id={reply.id}
+										type="post"
+										initialCount={reply.votes}
+										initialVote={reply.vote}
+									/>
+									<SecondaryTextBlock className="text">{updateDate(reply.date)} </SecondaryTextBlock>
+								</FlexBox>
+							</FlexBox>
+						</FlexBox>
+						{/* <Container className="user">
 							<Author
 								level={reply.level}
 								badge={reply.badge}
@@ -184,10 +210,10 @@ class ReplyItem extends Component {
 								userName={reply.userName}
 								date={reply.date}
 							/>
-						</Container>
-					</Container>
+						</Container> */}
+					</PaperContainer>
 				</ListItem>
-				<HorizontalDivider />
+				{/* <HorizontalDivider /> */}
 				<ReportPopup
 					open={isReportPopupOpen}
 					onClose={this.closeReportPopup}

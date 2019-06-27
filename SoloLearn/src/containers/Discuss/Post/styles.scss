@@ -2,6 +2,11 @@
 @import '~styles/colors';
 
 .discuss_post {
+
+	.main-post{
+		padding: 16px;
+	}
+
 	.loading-question {
 		min-height: $empty_card_size;
 		width: 100%;
@@ -11,31 +16,41 @@
 		width: 100%;
 		display: flex;
 		flex-direction: column;
-		.post-button {
-			margin-top: 10px;
+
+		.post{
+			padding: 16px;
 		}
+
 		.add-reply {
 			margin-bottom: $primary_gap_size;
 			display: flex;
+			padding: 12px;
 			flex-direction: column;
+
+			.reply-editor{
+				border-radius: 4px;
+				background-color: $white;
+				width: 100%;
+			}
+
 			.post-button {
-				align-self: flex-end;
-				margin-bottom: $primary_gap_size;
+				margin:4px 0 4px 16px;
 				&.enabled {
 					color: $white;
 					background-color: $primary_color;
 				}
 			}
 		}
-		.replies-toolbar {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			margin: $primary_gap_size;
-			.filters {
-				.title {
-					margin-right: $secondary_gap_size;
-				}
+		
+		.filters {
+			margin:0 23px;
+
+			.filter{
+				margin-right: 16px;
+			}
+			
+			.title {
+				margin-right: $secondary_gap_size;
 			}
 		}
 	}
@@ -50,18 +65,32 @@
 			}
 		}
 	}
+
 	.post {
 		display: flex;
-		flex-direction: column;
 		width: 100%;
 		&.accepted {
-			border-left: $secondary_gap_size solid $secondary_color;
+			border: 1px solid #19BC9C;//$secondary_color;
 		}
+
+		.user-avatar{
+			margin-right: 16px;
+		}
+
 		.info {
-			width: 100%;
+			width:100%;
 			display: flex;
 			flex-direction: row;
 			justify-content: space-between;
+
+			.options{
+				font-size: 13px;
+				font-weight: bold;
+				color: $primary_color_hover;
+				align-items: end;
+				min-width: 120px;
+			}
+
 			.toolbar {
 				display: flex;
 				flex-direction: column;
@@ -83,7 +112,21 @@
 				.question-preview-container {
 					max-width: 100%;
 				}
-				.title, .tags, .message, .preview {
+
+				.edit-message{
+					margin-top: 10px;
+				}
+
+				.title-content{
+					font-size: 20px;
+					font-weight: 600;
+				}
+
+				.tags{
+					margin-top: 16px;
+				}
+
+				 .message, .preview {
 					margin: $secondary_gap_size 0 0 0;
 				}
 			}
