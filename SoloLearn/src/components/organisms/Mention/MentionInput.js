@@ -245,11 +245,11 @@ class MentionInput extends Component {
 					handleReturn={this.handleReturn}
 				/>
 				<FlexBox fullWidth justifyEnd alignEnd>
-					{/* {this.isFocused && */}
+					{this.isFocused &&
 					<SecondaryTextBlock className="counter">
 						{charCount} / {maxLength}
 					</SecondaryTextBlock>
-					{/* } */}
+					}
 				</FlexBox>
 				<MentionSuggestions
 					onSearchChange={this.onSearchChange}
