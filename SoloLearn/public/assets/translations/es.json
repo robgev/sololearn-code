@@ -567,7 +567,8 @@
     "actions": {
       "save": "Guardar",
       "save-as": "Guardar como",
-      "rename": "Renombrar",
+			"rename": "Renombrar",
+			"reset": "Reiniciar",
       "reset-code": "Restaurar código",
       "delete-code": "Eliminar",
       "reset-font-size": "Restaurar tamaño de la fuente"

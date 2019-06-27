@@ -1,5 +1,6 @@
 @import '~styles/medias';
 @import '~styles/colors';
+@import '~styles/variables';
 
 .molecule_layout {
 	&.fullscreen {
@@ -7,20 +8,22 @@
 		grid-template-columns: minmax(0, 5fr) minmax(0, 2fr);
     align-items: start;
 		max-width: 100%;
-		padding: 0;
+		padding-top: $header_size;
+		padding-right: 0;
+		padding-left: 0;
 		.playground_full-loading {
-			height: calc(100vh - 50px);
+			height: calc(100vh - #{$header_size});
 		}
 		.playground_main-container {
 			display: flex;
 			flex-direction: column;
 			justify-content: flex-start;
 			padding: 0;
-			height: calc(100vh - 50px);
+			height: calc(100vh - #{$header_size});
 			overflow-y: hidden;
 		}
 		.playground_sidebar {
-			height: calc(100vh - 50px);
+			height: calc(100vh - #{$header_size});
 			overflow-y: scroll;
 			.comments-container {
 				margin-top: 0;

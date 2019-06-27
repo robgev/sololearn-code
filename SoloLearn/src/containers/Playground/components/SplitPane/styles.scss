@@ -1,13 +1,11 @@
 @import '~styles/colors';
+@import '~styles/variables';
 
 .playground_split-pane-container {
 	position: relative;
-	height: 600px;
+	height: calc(100vh - #{$header_size});
 	&.split-pane_inline {
 		height: 200px;
-	}
-	&.split-pane_fullscreen {
-		height: calc(100vh - 50px);
 	}
 }
 

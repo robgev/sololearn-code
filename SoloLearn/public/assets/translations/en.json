@@ -565,6 +565,7 @@
 		"actions": {
 			"save-as": "Save As",
 			"rename": "Rename",
+			"reset": "Reset",
 			"reset-code": "Reset Code",
 			"delete-code": "Delete",
 			"reset-font-size": "Reset font size"

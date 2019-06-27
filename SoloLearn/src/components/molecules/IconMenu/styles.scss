@@ -10,7 +10,8 @@
 		&.top {
 			transform-origin: center bottom;
 		}
-		padding: 0;
+		padding: 12px 0;
+		min-width: 235px;
 		.list {
 			padding: 0;
 		}

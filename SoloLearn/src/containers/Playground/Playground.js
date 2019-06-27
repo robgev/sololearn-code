@@ -55,17 +55,14 @@ class Playground extends Component {
 		const LayoutContainer = isInline ? Container : Layout;
 		const MainContainer = isInline ? Container : PaperContainer;
 		const EditorContainer = !hasLiveOutput ? SplitPane : Fragment;
-		const fullScreenCN = isFullscreen ? 'fullscreen' : '';
-		const sidebarCN = (isFullscreen && isMinimal) ? 'no-sidebar' : '';
+		const fullScreenCN = isInline ? '' : 'fullscreen';
+		const sidebarCN = (isFullscreen || isMinimal) ? 'no-sidebar' : '';
 		return (
 			<LayoutContainer className={`${fullScreenCN} ${sidebarCN}`}>
 				{isFetching
 					? <EmptyCard className="playground_full-loading" loading />
 					: (
 						<Fragment>
-							{ !(isMinimal || isFullscreen) &&
-								<CodeInfoToolbar playground={this.playground} />
-							}
 							<MainContainer className={`playground_main-container ${isInline ? 'bordered' : ''}`}>
 								<EditorContainer
 									playground={this.playground}
@@ -76,11 +73,9 @@ class Playground extends Component {
 								<CodeActions playground={this.playground} />
 								<InputPopup playground={this.playground} />
 							</MainContainer>
-							{!isMinimal &&
+							{!(isMinimal || isFullscreen) &&
 								<Container className="playground_sidebar scrollbar">
-									{ isFullscreen &&
-										<CodeInfoToolbar playground={this.playground} />
-									}
+									<CodeInfoToolbar playground={this.playground} />
 									<Comments
 										type={1}
 										id={data.id}

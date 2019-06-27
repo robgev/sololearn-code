@@ -37,7 +37,7 @@ const Editor = ({
 		width="100%"
 		// Height is 100% in all cases except when it's web, in which
 		// case it's not a child of SplitPane
-		height={(hasLiveOutput && !isFullscreen)
+		height={hasLiveOutput
 			? (isInline ? '200px' : '500px')
 			: '100%'
 		}
@@ -54,6 +54,7 @@ const Editor = ({
 		name={publicId}
 		onChange={changeEditorState}
 		editorProps={{ $blockScrolling: Infinity }}
+		className="playground_editor"
 		onLoad={(editor) => {
 			editor.focus();
 			editor.getSession().setUseWrapMode(true);

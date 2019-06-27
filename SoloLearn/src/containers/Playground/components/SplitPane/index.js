@@ -6,8 +6,7 @@ import './styles.scss';
 
 const SplitPane = ({ playground, ...props }) => {
 	const inlineCN = playground.isInline ? 'split-pane_inline' : '';
-	const fullScreenCN = playground.isFullscreen ? 'split-pane_fullscreen' : '';
-	const fullCN = `playground_split-pane-container ${inlineCN} ${fullScreenCN}`;
+	const fullCN = `playground_split-pane-container ${inlineCN}`;
 	return (
 		<Container className={fullCN}>
 			<RSplitPane

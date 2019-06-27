@@ -34,7 +34,6 @@ class IPlayground {
 		this.lessonCodeId = lessonCodeId;
 		this.publicId = publicId;
 		this.isInline = inline;
-		this.isFullscreen = !inline;
 		this.isDark = !inline;
 		this.language = language;
 		this.editorState = {

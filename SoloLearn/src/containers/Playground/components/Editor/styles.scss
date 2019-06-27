@@ -1,3 +1,5 @@
+@import '~styles/colors';
+
 $fontSize: 12px;
 $fontLineHeight: normal;
 $fontStack: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
@@ -13,5 +15,20 @@ $fontStack: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', mon
 	font: $fontSize/$fontLineHeight $fontStack;
 	span {
 		font: $fontSize/$fontLineHeight $fontStack;
+	}
+}
+
+.playground_editor {
+	.ace_gutter {
+		padding: 6px 0 6px 9px;
+	}
+	.ace_content {
+		padding: 6px 0 4px 10px;
+	}
+	&.ace-monokai {
+		background-color: #1C2428;
+		.ace_gutter {
+			background-color: #222B2F;
+		}
 	}
 }
