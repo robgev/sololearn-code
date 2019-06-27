@@ -1,17 +1,11 @@
 import React from 'react';
 
 const ViewsSmall = props => (
-	<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" fill="currentColor" width="100%" height="100%" viewBox="0 0 22 22" {...props}>
-		<defs>
-			<clipPath id="clip-path">
-				<rect className="cls-1" width="22" height="22" />
-			</clipPath>
-		</defs>
-		<g id="ic_Impressions_small">
-			<rect id="Rectangle_359" data-name="Rectangle 359" width="22" height="22" fill="none" />
-			<g id="Group_512" data-name="Group 512" transform="translate(3 6)">
-				<path id="Path_608" data-name="Path 608" d="M1237.8,638.648a8.306,8.306,0,0,0-15.738,0l-.131.352.131.352a8.306,8.306,0,0,0,15.738,0l.131-.352ZM1229.932,643a4.3,4.3,0,1,1,5.871-4A6.424,6.424,0,0,1,1229.932,643Z" transform="translate(-1221.932 -633)" />
-				<circle id="Ellipse_146" data-name="Ellipse 146" cx="2" cy="2" r="2" transform="translate(6 4)" />
+	<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="16" height="12" viewBox="0 0 16 12" {...props}>
+		<g id="Layer_2" data-name="Layer 2">
+			<g id="Layer_1-2" data-name="Layer 1">
+				<path className="cls-1" d="M15.87,5.65A8.42,8.42,0,0,0,8,0,8.42,8.42,0,0,0,.13,5.65L0,6l.13.35A8.42,8.42,0,0,0,8,12a8.42,8.42,0,0,0,7.87-5.65L16,6ZM8,10A6.42,6.42,0,0,1,2.13,6,6.42,6.42,0,0,1,8,2a6.42,6.42,0,0,1,5.87,4A6.42,6.42,0,0,1,8,10Z" />
+				<ellipse className="cls-1" cx="8" cy="6" rx="1.98" ry="2" />
 			</g>
 		</g>
 	</svg>
