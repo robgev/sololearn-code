@@ -8,4 +8,6 @@ else
 	cp $CONFIG/* .
 fi
 
+service ssh start
+echo "SSH Service started"
 dotnet SoloLearn.dll 
