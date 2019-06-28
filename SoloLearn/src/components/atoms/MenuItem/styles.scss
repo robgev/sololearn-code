@@ -13,6 +13,8 @@
 		}
 	}
 	&:hover {
+		color: $primary_color_hover;
+		font-weight: 700;
 		background-color: rgba(25, 190, 157, 0.08);
 	}
 }

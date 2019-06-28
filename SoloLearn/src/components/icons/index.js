@@ -1,29 +1,19 @@
 export {
-	FormatQuote as QuoteIcon,
 	Close,
-	Done,
 	RadioButtonChecked,
 	RadioButtonUnchecked,
 	Clear,
 	ArrowDropDown,
-	QuestionAnswer,
-	Star as Follow,
-	Check as Accepted,
 	Bookmark,
 	BookmarkBorder,
-	ThumbsUpDown as Arrows,
+	Dehaze as Feed,
 	Lock,
 	Fullscreen,
 	FullscreenExit,
 	PlayArrow as Run,
-	InsertLink,
-	DeleteForever as Delete,
-	Person,
-	Dehaze as Feed,
 	EventNote as Date,
-	Edit,
+	Person,
 	DragIndicator as DragIcon,
-	AddPhotoAlternate,
 	CheckCircle,
 	Share as ShareIcon,
 	Image as ImageIcon,
@@ -46,3 +36,8 @@ export { default as Followers } from './Followers';
 export { default as CommentSmall } from './CommentSmall';
 export { default as LikeDislikeSmall } from './LikeDislikeSmall';
 export { default as ViewsSmall } from './ViewsSmall';
+export { default as Accepted } from './Check';
+export { default as Done } from './Check';
+export { default as Follow } from './Star';
+export { default as Edit } from './Edit';
+export { default as Answer } from './Answer';
