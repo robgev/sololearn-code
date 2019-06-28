@@ -8,4 +8,4 @@ else
 	cp $CONFIG/* .
 fi
 
-dotnet SoloLearn.dll >> /logs/web.log 2>&1 
+dotnet SoloLearn.dll 
