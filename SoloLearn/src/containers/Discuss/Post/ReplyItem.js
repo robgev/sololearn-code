@@ -149,13 +149,13 @@ class ReplyItem extends Component {
 							/>
 							<FlexBox className="question">
 								<FlexBox fullWidth justifyBetween>
-									<Container className="user-name">
+									<FlexBox className="author">
 										<UsernameLink className="author-name" to={`/profile/${reply.userID}`}>{reply.userName}</UsernameLink>
 										<ModBadge
 											className="badge"
 											badge={reply.badge}
 										/>
-									</Container>
+									</FlexBox>
 									<FlexBox alignEnd className="options" justifyEnd>
 										<AcceptReply
 											askerID={askerID}

@@ -1,6 +1,8 @@
 @import '~styles/variables';
 @import '~styles/colors';
 
+$icon_accepted_color: $primary_colored_text;
+
 .discuss_post {
 
 	.main-post{
@@ -70,10 +72,10 @@
 		display: flex;
 		width: 100%;
 		&.accepted {
-			border: 1px solid #19BC9C;//$secondary_color;
+			border: 1px solid $icon_accepted_color;
 		}
 
-		.user-avatar{
+		.user-avatar {
 			margin-right: 16px;
 		}
 
@@ -83,12 +85,17 @@
 			flex-direction: row;
 			justify-content: space-between;
 
-			.options{
+			.options {
 				font-size: 13px;
 				font-weight: bold;
 				color: $primary_color_hover;
 				align-items: end;
 				min-width: 120px;
+				margin-top: -6px;
+				.molecule_icon-menu {
+					margin-top: -10px;
+					margin-bottom: -100%; // Icon size reset;
+				}
 			}
 
 			.toolbar {
@@ -122,12 +129,32 @@
 					font-weight: 600;
 				}
 
-				.tags{
+				.tags {
 					margin-top: 16px;
 				}
 
 				 .message, .preview {
 					margin: $secondary_gap_size 0 0 0;
+				}
+
+				.author {
+					min-width: 214px;
+
+					.text {
+						white-space: nowrap;
+					}
+
+					.author-name {
+						display: block;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+						overflow: hidden;
+					}
+
+					.badge {
+						align-items: flex-start;
+						margin-left: 8px;
+					}
 				}
 			}
 		}

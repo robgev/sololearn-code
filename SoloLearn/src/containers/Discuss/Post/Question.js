@@ -92,9 +92,9 @@ class Question extends Component {
 															{post.title}
 														</Title>
 													</Container>
-													<Container className="user-name">
+													<FlexBox align className="author">
 														<UsernameLink className="author-name" to={`/profile/${post.userID}`}>{post.userName}</UsernameLink>
-													</Container>
+													</FlexBox>
 												</Container>
 												<FlexBox className="options" justifyEnd>
 													<IconWithText className="follow" Icon={Follow}>
