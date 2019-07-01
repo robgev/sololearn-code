@@ -1,17 +1,15 @@
 import React from 'react';
 
 const ViewsSmall = props => (
-	<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" fill="currentColor" width="100%" height="100%" viewBox="0 0 22 22" {...props}>
-		<defs>
-			<clipPath id="clip-path">
-				<rect className="cls-1" width="22" height="22" />
-			</clipPath>
-		</defs>
-		<g id="ic_Impressions_small">
-			<rect id="Rectangle_359" data-name="Rectangle 359" width="22" height="22" fill="none" />
-			<g id="Group_512" data-name="Group 512" transform="translate(3 6)">
-				<path id="Path_608" data-name="Path 608" d="M1237.8,638.648a8.306,8.306,0,0,0-15.738,0l-.131.352.131.352a8.306,8.306,0,0,0,15.738,0l.131-.352ZM1229.932,643a4.3,4.3,0,1,1,5.871-4A6.424,6.424,0,0,1,1229.932,643Z" transform="translate(-1221.932 -633)" />
-				<circle id="Ellipse_146" data-name="Ellipse 146" cx="2" cy="2" r="2" transform="translate(6 4)" />
+	<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="22" height="22" viewBox="0 0 22 22" {...props} >
+		<rect id="backgroundrect" width="100%" height="100%" x="0" y="0" fill="none" stroke="none" />
+
+		<g className="currentLayer">
+			<g id="Layer_2" data-name="Layer 2" className="">
+				<g id="Layer_1-2" data-name="Layer 1">
+					<path className="cls-1" d="M18.739565134048462,10.51956558227539 A8.420000076293945,8.420000076293945 0 0 0 10.86956524848938,4.869565486907959 A8.420000076293945,8.420000076293945 0 0 0 2.9995652437210083,10.51956558227539 L2.86956524848938,10.869565486907959 l0.12999999523162842,0.3499999940395355 A8.420000076293945,8.420000076293945 0 0 0 10.86956524848938,16.86956548690796 a8.420000076293945,8.420000076293945 0 0 0 7.869999885559082,-5.650000095367432 L18.86956524848938,10.869565486907959 zM10.86956524848938,14.869565486907959 A6.420000076293945,6.420000076293945 0 0 1 4.999565362930298,10.869565486907959 A6.420000076293945,6.420000076293945 0 0 1 10.86956524848938,6.869565486907959 a6.420000076293945,6.420000076293945 0 0 1 5.869999885559082,4 A6.420000076293945,6.420000076293945 0 0 1 10.86956524848938,14.869565486907959 z" id="svg_1" />
+					<ellipse className="cls-1" cx="10.86956524848938" cy="10.869565486907959" rx="1.9800000190734863" ry="2" id="svg_2" />
+				</g>
 			</g>
 		</g>
 	</svg>
