@@ -21,12 +21,12 @@ pipelines:
           - docker build -t $NEXUSURL/web:latest .
           - docker push $NEXUSURL/web:latest
     - step:
-        name: Deploy to staging
-        deployment: staging   # can be test, staging or production.
-        # trigger: manual  # Uncomment to make this a manual deployment.
-        script:
-          - echo "Deploying to staging environment"
-          #- ssh lkhachat@$HOST '/opt/scripts/updateTalent.sh $NEXUSURL/talent:latest'
+       name: Deploy to test
+       deployment: test
+       trigger: manual  # Uncomment to make this a manual deployment.
+       script:
+         - echo "Deploying to test Azure"
+         - curl -X POST $AZURE_HOOK -H"content-length:0"
 
 options:
   docker: true
