@@ -50,6 +50,8 @@ class ReplyItem extends Component {
 	}
 
 	highlight = () => {
+		console.clear();
+		console.log(this.postContainer.current);
 		this.postContainer.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
 		this.setState({ isHighlighted: true });
 		this.unhighlight = setTimeout(() => {
@@ -136,10 +138,9 @@ class ReplyItem extends Component {
 			);
 		}
 		return (
-			<Fragment>
+			<Container ref={this.postContainer}>
 				<ListItem>
 					<PaperContainer
-						ref={this.postContainer}
 						className={`post ${isHighlighted ? 'animate-highlight' : ''} ${reply.isAccepted ? 'accepted' : ''}`}
 					>
 						<FlexBox className="info">
@@ -156,7 +157,7 @@ class ReplyItem extends Component {
 											badge={reply.badge}
 										/>
 									</FlexBox>
-									<FlexBox alignEnd className="options" justifyEnd>
+									<FlexBox align className="options" justifyEnd>
 										<AcceptReply
 											askerID={askerID}
 											isAccepted={reply.isAccepted}
@@ -190,12 +191,13 @@ class ReplyItem extends Component {
 										</Container>
 									))}
 								</Container>
-								<FlexBox justifyBetween fullWidth alignEnd>
+								<FlexBox justifyBetween fullWidth align>
 									<VoteActions
 										id={reply.id}
 										type="post"
 										initialCount={reply.votes}
 										initialVote={reply.vote}
+										className="discuss-reply-item-vote-actions"
 									/>
 									<SecondaryTextBlock className="text">{updateDate(reply.date)} </SecondaryTextBlock>
 								</FlexBox>
@@ -231,7 +233,7 @@ class ReplyItem extends Component {
 					onClose={this.closeDeletePopup}
 					onDelete={deleteReply}
 				/>
-			</Fragment>
+			</Container>
 		);
 	}
 }

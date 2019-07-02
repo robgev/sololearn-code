@@ -16,7 +16,7 @@ class Options extends Component {
 			isMyQuestion, canAcceptReply, onClick, isAccepted,
 		} = this.props;
 		return (
-			isMyQuestion || canAcceptReply
+			(isMyQuestion && !isAccepted) || (canAcceptReply && !isAccepted)
 				? (
 					<IconWithText
 						Icon={Accepted}

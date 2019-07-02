@@ -45,10 +45,11 @@ class PostPreview extends PureComponent {
 				<ProfileAvatar
 					disabled
 					user={postData}
+					avatarImageClassName="preview-avatar"
 				/>
 				<FlexBox className="preview-info" column>
-					<Link to={this.props.to} className="item">{title}</Link>
-					<SecondaryTextBlock className="item">{userName}</SecondaryTextBlock>
+					<Link to={this.props.to} className="item-name item">{title}</Link>
+					<SecondaryTextBlock className="item item-user-name">{userName}</SecondaryTextBlock>
 				</FlexBox>
 			</PaperContainer>
 		);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { Container, PaperContainer, FlexBox } from 'components/atoms';
+import { PaperContainer, FlexBox } from 'components/atoms';
 import { RaisedButton, ProfileAvatar } from 'components/molecules';
 import { CountingMentionInput } from 'components/organisms';
 

@@ -10,6 +10,8 @@ const ProfileAvatar = ({
 	user,
 	size,
 	className = '',
+	avatarClassName = '',
+	avatarImageClassName = '',
 }) => (
 	// <UserTooltip userData={user} placement="top">
 	<Container
@@ -24,6 +26,8 @@ const ProfileAvatar = ({
 					badge={user.badge}
 					variant={size}
 					disabled
+					className={avatarClassName}
+					avatarImageClassName={avatarImageClassName}
 				/>
 				{/* { levelBadge &&
 							<Image
