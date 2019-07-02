@@ -34,6 +34,8 @@ $icon_accepted_color: $primary_colored_text;
 				border-radius: 4px;
 				background-color: $white;
 				width: 100%;
+				max-height: 160px;
+				overflow: auto;
 			}
 			.add-reply-action-container {
 				&.expanded {

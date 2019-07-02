@@ -32,7 +32,7 @@ class AddReply extends Component {
 		});
 
 	renderSubmitButton = ({ isExpanded, charCount }) => {
-		// const { t } = this.props;
+		const { t } = this.props;
 		const { isSubmitEnabled } = this.state;
 		return (
 			<FlexBox
@@ -44,8 +44,9 @@ class AddReply extends Component {
 					<FlatButton
 						className="cancel-button"
 						onClick={() => this.input.current.blur()}
+						onMouseDown={() => this.input.current.blur()}
 					>
-						Cancel
+						{t('common.cancel-title')}
 					</FlatButton>
 				}
 				<PromiseButton
@@ -61,7 +62,10 @@ class AddReply extends Component {
 						isIconComponent
 						className="answer-icon"
 					>
-						<IconLabel className="add-reply-button-label">Answer</IconLabel>
+						{ /* needs translation */ }
+						<IconLabel className="add-reply-button-label">
+							Answer
+						</IconLabel>
 					</IconWithText>
 				</PromiseButton>
 			</FlexBox>
@@ -74,6 +78,7 @@ class AddReply extends Component {
 			<PaperContainer className="add-reply">
 				<FlexBox>
 					<ProfileAvatar user={userProfile} />
+					{ /* placeholder needs translation */ }
 					<CountingMentionInput
 						className="reply-editor"
 						ref={this.input}
