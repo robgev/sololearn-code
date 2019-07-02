@@ -21,6 +21,26 @@
 			padding: 0;
 			height: calc(100vh - #{$header_size});
 			overflow-y: hidden;
+			border-radius: 0;
+			position: relative;
+			.playground_run-button {
+				right: 8px;
+				width: 92px;
+				.molecule_fab-button-root {
+					bottom: 8px;
+					width: 92px;
+					height: 32px;
+					border-radius: 17px;
+					background-color: $primary_colored_text;
+					box-shadow: none;
+				}
+				.playground_run-text {
+					font-weight: 700;
+					text-transform: initial;
+					color: white;
+					margin-left: 12px;
+				}
+			}
 		}
 		.playground_sidebar {
 			height: calc(100vh - #{$header_size});

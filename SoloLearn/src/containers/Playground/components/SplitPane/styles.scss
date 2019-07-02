@@ -7,10 +7,15 @@
 	&.split-pane_inline {
 		height: 200px;
 	}
+	&.dark {
+		.Resizer {
+			background: $content_text_color;
+		}
+	}
 }
 
 .Resizer {
-	background:$primary_color;
+	background: $white;
 	opacity: 1;
 	z-index: 1;
 	box-sizing: border-box;
@@ -24,16 +29,16 @@
 }
 
 .Resizer.horizontal {
-	height: 13px;
-	margin: -5px 0;
-	border-top: 5px solid rgba(255, 255, 255, 0);
+	height: 8px;
+	margin-bottom: -5px;
+	border-top: 0;
 	border-bottom: 5px solid rgba(255, 255, 255, 0);
 	cursor: row-resize;
 	width: 100%;
 }
 
 .Resizer.horizontal:hover {
-	border-top: 5px solid rgba(0, 0, 0, 0.1);
+	border-top: 0;
 	border-bottom: 5px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -50,6 +55,6 @@
 }
 
 .Pane.Pane2 {
-	height: 200px;
+	height: 45px;
 	overflow-y: auto;
 }

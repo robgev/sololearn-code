@@ -10,6 +10,7 @@ const FloatingActionButton = ({
 	className,
 	children,
 	onClick,
+	color,
 	...props
 }) =>
 	(
@@ -17,7 +18,7 @@ const FloatingActionButton = ({
 			<Button
 				onClick={onClick}
 				variant="fab"
-				color="secondary"
+				color={color}
 				classes={{ root: 'molecule_fab-button-root' }}
 			>
 				{children}
@@ -26,6 +27,7 @@ const FloatingActionButton = ({
 	);
 
 FloatingActionButton.defaultProps = {
+	color: 'secondary',
 	className: '',
 	alignment: '',
 	variant: 'text',

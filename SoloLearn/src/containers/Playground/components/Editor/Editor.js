@@ -26,8 +26,6 @@ const Editor = ({
 		isInline,
 		publicId,
 		language,
-		isFullscreen,
-		hasLiveOutput,
 		changeEditorState,
 	},
 }) => (
@@ -35,12 +33,7 @@ const Editor = ({
 		wrapEnabled
 		value={code}
 		width="100%"
-		// Height is 100% in all cases except when it's web, in which
-		// case it's not a child of SplitPane
-		height={hasLiveOutput
-			? (isInline ? '200px' : '500px')
-			: '100%'
-		}
+		height={isInline ? '200px' : '825px'}
 		showPrintMargin={false}
 		theme={isDark ? 'monokai' : 'chrome'}
 		mode={editorModeNames[language]}

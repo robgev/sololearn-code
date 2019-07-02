@@ -3,8 +3,9 @@ import ReactGA from 'react-ga';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
-import { Container, PaperContainer } from 'components/atoms';
-import { Layout, EmptyCard } from 'components/molecules';
+import { Container, PaperContainer, TextBlock } from 'components/atoms';
+import { Layout, EmptyCard, FloatingActionButton } from 'components/molecules';
+import { Run } from 'components/icons';
 import Comments from 'containers/Comments/CommentsBase';
 
 import IPlayground from './IPlayground';
@@ -13,7 +14,6 @@ import {
 	SplitPane,
 	CodeOutput,
 	InputPopup,
-	CodeActions,
 	CodeInfoToolbar,
 } from './components';
 import './styles.scss';
@@ -70,7 +70,19 @@ class Playground extends Component {
 									<Editor onClose={this.props.onClose} playground={this.playground} />
 									<CodeOutput playground={this.playground} />
 								</EditorContainer>
-								<CodeActions playground={this.playground} />
+								<FloatingActionButton
+									color="primary"
+									alignment="right"
+									className="playground_run-button"
+									onClick={this.playground.isWeb
+										? this.playground.runWebCode
+										: this.playground.runCompiledCode
+									}
+								>
+									<Run />
+									<TextBlock className="playground_run-text">Run</TextBlock>
+								</FloatingActionButton>
+
 								<InputPopup playground={this.playground} />
 							</MainContainer>
 							{!(isMinimal || isFullscreen) &&

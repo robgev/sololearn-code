@@ -12,11 +12,6 @@ export {
 	Bookmark,
 	BookmarkBorder,
 	ThumbsUpDown as Arrows,
-	Lock,
-	Fullscreen,
-	FullscreenExit,
-	PlayArrow as Run,
-	InsertLink,
 	DeleteForever as Delete,
 	Person,
 	Dehaze as Feed,
@@ -46,3 +41,12 @@ export { default as Followers } from './Followers';
 export { default as CommentSmall } from './CommentSmall';
 export { default as LikeDislikeSmall } from './LikeDislikeSmall';
 export { default as ViewsSmall } from './ViewsSmall';
+export { default as Editor } from './Editor';
+export { default as Fullscreen } from './Fullscreen';
+export { default as FullscreenExit } from './FullscreenExit';
+export { default as Save } from './Save';
+export { default as Run } from './Run';
+export { default as BackArrow } from './BackArrow';
+export { default as Globe } from './Globe';
+export { default as Lock } from './Lock';
+export { default as Output } from './Output';
