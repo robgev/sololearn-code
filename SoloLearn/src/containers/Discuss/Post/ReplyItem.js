@@ -50,8 +50,6 @@ class ReplyItem extends Component {
 	}
 
 	highlight = () => {
-		console.clear();
-		console.log(this.postContainer.current);
 		this.postContainer.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
 		this.setState({ isHighlighted: true });
 		this.unhighlight = setTimeout(() => {

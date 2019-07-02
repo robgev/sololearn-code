@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { PaperContainer, FlexBox } from 'components/atoms';
-import { RaisedButton, ProfileAvatar } from 'components/molecules';
+import { PaperContainer, FlexBox, IconLabel } from 'components/atoms';
+import {
+	PromiseButton,
+	ProfileAvatar,
+	IconWithText,
+	FlatButton,
+} from 'components/molecules';
+// this should be changed to svg icon
+import { Answer } from 'components/icons';
 import { CountingMentionInput } from 'components/organisms';
 
 const mapStateToProps = ({ userProfile }) => ({ userProfile });
@@ -19,29 +26,45 @@ class AddReply extends Component {
 		this.setState({ isSubmitEnabled });
 	}
 
-	submit = () => {
-		this.input.current.blur();
-		this.props.submit(this.input.current.popValue());
-	}
-
-	onEnter = (e) => {
-		if (e.keyCode === 13) {
-			this.submit();
-		}
-	}
+	submit = () => this.props.submit(this.input.current.popValue())
+		.then(() => {
+			this.input.current.blur();
+		});
 
 	renderSubmitButton = ({ isExpanded, charCount }) => {
-		const { t } = this.props;
+		// const { t } = this.props;
 		const { isSubmitEnabled } = this.state;
 		return (
-			<RaisedButton
-				className={`post-button ${isSubmitEnabled ? 'enabled' : ''}`}
-				disabled={!isSubmitEnabled}
-				onMouseDown={this.submit}
-				onKeyDown={this.onEnter}
+			<FlexBox
+				className="add-reply-action-container"
+				style={{ marginTop: isExpanded ? 8 : 0 }}
+				align
 			>
-				{t('common.post-action-title')}
-			</RaisedButton>
+				{isExpanded &&
+					<FlatButton
+						className="cancel-button"
+						onClick={() => this.input.current.blur()}
+					>
+						Cancel
+					</FlatButton>
+				}
+				<PromiseButton
+					className={`post-button ${isSubmitEnabled ? 'enabled' : ''}`}
+					disabled={!isSubmitEnabled}
+					fire={this.submit}
+					mouseDown
+					style={{ marginLeft: isExpanded ? 24 : 16 }}
+					raised
+				>
+					<IconWithText
+						Icon={Answer}
+						isIconComponent
+						className="answer-icon"
+					>
+						<IconLabel className="add-reply-button-label">Answer</IconLabel>
+					</IconWithText>
+				</PromiseButton>
+			</FlexBox>
 		);
 	}
 
@@ -54,13 +77,12 @@ class AddReply extends Component {
 					<CountingMentionInput
 						className="reply-editor"
 						ref={this.input}
-						placeholder={t('discuss.new-answer-placeholder')}
+						placeholder="Write your reply here"
 						getUsers={{ type: 'discuss', params: { postId: postID } }}
 						onSubmitEnabledChange={this.setIsSubmitEnabled}
 						renderButton={this.renderSubmitButton}
 					/>
 				</FlexBox>
-				{/* <HorizontalDivider /> */}
 			</PaperContainer>
 		);
 	}

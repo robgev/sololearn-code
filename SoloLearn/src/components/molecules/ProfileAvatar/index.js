@@ -9,9 +9,9 @@ import './styles.scss';
 const ProfileAvatar = ({
 	user,
 	size,
-	className = '',
-	avatarClassName = '',
-	avatarImageClassName = '',
+	className,
+	avatarClassName,
+	avatarImageClassName,
 }) => (
 	// <UserTooltip userData={user} placement="top">
 	<Container
@@ -21,7 +21,7 @@ const ProfileAvatar = ({
 			<Container className="profile-container">
 				<Avatar
 					avatarUrl={user.avatarUrl}
-					userName={user.name}
+					userName={user.name || user.userName}
 					userID={user.id}
 					badge={user.badge}
 					variant={size}
@@ -44,6 +44,8 @@ const ProfileAvatar = ({
 
 ProfileAvatar.defaultProps = {
 	className: '',
+	avatarClassName: '',
+	avatarImageClassName: '',
 	size: 'small',
 };
 

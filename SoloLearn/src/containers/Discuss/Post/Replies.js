@@ -60,13 +60,11 @@ class Replies extends Component {
 		}
 	}
 
-	addReply = (message) => {
-		this.replies.addReply(message)
-			.then((id) => {
-				this.highlight(id);
-				this.props.onCountChange(1);
-			});
-	}
+	addReply = message => this.replies.addReply(message)
+		.then((id) => {
+			this.highlight(id);
+			this.props.onCountChange(1);
+		})
 
 	deleteReply = id => this.replies.deleteReply(id)
 		.then(() => {
