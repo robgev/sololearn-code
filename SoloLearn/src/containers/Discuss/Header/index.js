@@ -10,6 +10,7 @@ import {
 } from 'components/atoms';
 import {
 	RaisedButton,
+	ContainerLink,
 } from 'components/molecules';
 import './styles.scss';
 import { Search, Add } from 'components/icons';
@@ -39,19 +40,21 @@ const Header = ({
 					className: 'search_input',
 				}}
 			/>
-			<RaisedButton
-				color="primary"
-				className="add-question-btn"
-			>
-				<FlexBox align justify fullWidth>
-					<Container className="add-icon">
-						<Add />
-					</Container>
-					<TextBlock className="button-text">
-				 	Ask a Question
-					</TextBlock>
-				</FlexBox>
-			</RaisedButton>
+			<ContainerLink to="/discuss/new" className="ask-question-button-container">
+				<RaisedButton
+					color="primary"
+					className="add-question-btn"
+				>
+					<FlexBox align justify fullWidth>
+						<Container className="add-icon">
+							<Add />
+						</Container>
+						<TextBlock className="button-text">
+							Ask a Question
+						</TextBlock>
+					</FlexBox>
+				</RaisedButton>
+			</ContainerLink>
 		</FlexBox>
 	</PaperContainer>
 );

@@ -23,16 +23,17 @@ const createPreviewData = ({ message, regexp, type }) => {
 const generatePreviews = (message) => {
 	const lessonRegex = /https?:\/\/(?:www\.)?sololearn\.com\/learn\/(\d+)\/?\??.*/gi;
 	const courseRegex = /https?:\/\/(?:www\.)?sololearn\.com\/(?:learn|course|courses)\/([A-Za-z_]+)(?:\/(\d+))?\/?\??.*/gi;
-	// const profileRegex = /https?:\/\/(?:www\.)?sololearn\.com\/profile\/(\d+)/gi;
 	const codeRegex = /https?:\/\/code\.sololearn\.com\/([a-zA-Z0-9]{10,})/gi;
 	const discussRegex = /https?:\/\/(?:www\.)?sololearn\.com\/discuss\/(\d+)/gi;
 	const userPostRegex = /https?:\/\/(?:www\.)?sololearn\.com\/post\/(\d+)/gi;
+	const profileRegex = /https?:\/\/(?:www\.)?sololearn\.com\/profile\/(\d+)/gi;
 
 	const lessonPreviewData = createPreviewData({ message, regexp: lessonRegex, type: 'slayLesson' });
 	const codePreviewData = createPreviewData({ message, regexp: codeRegex, type: 'code' });
 	const discussPreviewData = createPreviewData({ message, regexp: discussRegex, type: 'discuss' });
 	const coursePreviewData = createPreviewData({ message, regexp: courseRegex, type: 'course' });
 	const userPostPreviewData = createPreviewData({ message, regexp: userPostRegex, type: 'userPost' });
+	const profilePreviewData = createPreviewData({ message, regexp: profileRegex, type: 'profile' });
 
 	return [
 		...lessonPreviewData,
@@ -40,6 +41,7 @@ const generatePreviews = (message) => {
 		...discussPreviewData,
 		...coursePreviewData,
 		...userPostPreviewData,
+		...profilePreviewData,
 	];
 };
 

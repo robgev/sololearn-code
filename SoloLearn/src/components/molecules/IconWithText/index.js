@@ -7,7 +7,7 @@ const IconWithText = ({
 	Icon,
 	children,
 	className,
-	iconClassname = '',
+	iconClassname,
 	isIconComponent,
 	...props
 }) => (
@@ -23,6 +23,7 @@ const IconWithText = ({
 
 IconWithText.defaultProps = {
 	isIconComponent: true,
+	iconClassname: '',
 };
 
 export default IconWithText;

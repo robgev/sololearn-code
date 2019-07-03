@@ -3,12 +3,29 @@ import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 import { observer } from 'mobx-react';
 import {
-	PaperContainer, Container, Title,
-	IconButton, Loading, FlexBox, Snackbar, SecondaryTextBlock,
+	PaperContainer,
+	Container,
+	Title,
+	Loading,
+	FlexBox,
+	Snackbar,
+	SecondaryTextBlock,
 } from 'components/atoms';
-import { ProfileAvatar, ViewStats, UsernameLink, IconWithText } from 'components/molecules';
-import { VoteActions, Mention, FeedBottomBarFullStatistics } from 'components/organisms';
-import { Follow } from 'components/icons';
+import {
+	ProfileAvatar,
+	// ViewStats,
+	UsernameLink,
+	IconWithText,
+} from 'components/molecules';
+import {
+	// VoteActions,
+	Mention,
+	FeedBottomBarFullStatistics,
+} from 'components/organisms';
+import {
+	Follow,
+	Edit as EditIcon,
+} from 'components/icons';
 import ReportPopup from 'components/ReportPopup';
 import RemovalPopup from './RemovalPopup';
 import DeletePopup from './DeletePopup';
@@ -96,9 +113,9 @@ class Question extends Component {
 														<UsernameLink className="author-name" to={`/profile/${post.userID}`}>{post.userName}</UsernameLink>
 													</FlexBox>
 												</Container>
-												<FlexBox className="options" justifyEnd>
-													<IconWithText className="follow" Icon={Follow}>
-														Follow
+												<FlexBox className="options" justifyEnd align>
+													<IconWithText Icon={Follow}>
+														<SecondaryTextBlock className="follow-text">Follow</SecondaryTextBlock>
 													</IconWithText>
 													<Options
 														userID={post.userID}
@@ -114,15 +131,20 @@ class Question extends Component {
 											</Container>
 											{
 												post.modifyDate && post.modifyUserID && post.modifyUserName &&
-												<SecondaryTextBlock className="edit-message">
-													{t('discuss.edited-by-format').replace('()', post.modifyUserName)},
-													{updateDate(post.modifyDate)}
-												</SecondaryTextBlock>
+												<FlexBox className="edit-message-container" align>
+													<Container className="edit-message-icon" >
+														<EditIcon />
+													</Container>
+													<SecondaryTextBlock>
+														{t('discuss.edited-by-format').replace('()', post.modifyUserName)},
+														{updateDate(post.modifyDate)}
+													</SecondaryTextBlock>
+												</FlexBox>
 											}
 											<Container className="tags">
 												<Tags tags={post.tags} />
 											</Container>
-											<FlexBox justifyBetween alignEnd fullWidth>
+											<FlexBox justifyBetween fullWidth alignEnd>
 												<FeedBottomBarFullStatistics
 													id={post.id}
 													key={post.id}
@@ -134,7 +156,6 @@ class Question extends Component {
 													totalVotes={post.votes}
 													// onChange={onChange}
 													comments={post.answers}
-													// className="up-feed-item-bottom-bar"
 												/>
 												<SecondaryTextBlock className="text">{updateDate(post.date)} </SecondaryTextBlock>
 											</FlexBox>

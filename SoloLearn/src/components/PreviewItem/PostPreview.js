@@ -7,7 +7,7 @@ import {
 	PaperContainer,
 	SecondaryTextBlock,
 } from 'components/atoms';
-import { ProfileAvatar } from 'components/molecules';
+import { ProfileAvatar, ModBadge } from 'components/molecules';
 
 class PostPreview extends PureComponent {
 	constructor() {
@@ -37,7 +37,7 @@ class PostPreview extends PureComponent {
 			return null;
 		}
 		const {
-			title, userName,
+			title, userName, badge,
 		} = postData;
 		// Will need badge in future too. Destructure badge if needed.
 		return (
@@ -45,10 +45,14 @@ class PostPreview extends PureComponent {
 				<ProfileAvatar
 					disabled
 					user={postData}
+					avatarImageClassName="preview-avatar"
 				/>
 				<FlexBox className="preview-info" column>
-					<Link to={this.props.to} className="item">{title}</Link>
-					<SecondaryTextBlock className="item">{userName}</SecondaryTextBlock>
+					<Link to={this.props.to} className="item-name item">{title}</Link>
+					<FlexBox align>
+						<SecondaryTextBlock className="item item-user-name">{userName}</SecondaryTextBlock>
+						<ModBadge badge={badge} />
+					</FlexBox>
 				</FlexBox>
 			</PaperContainer>
 		);

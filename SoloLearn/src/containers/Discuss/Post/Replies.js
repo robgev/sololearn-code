@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { observer } from 'mobx-react';
 import {
-	Container, List, PaperContainer,
-	SecondaryTextBlock, Select, MenuItem,
-	Snackbar, FlexBox,
+	Container,
+	List,
+	Snackbar,
+	FlexBox,
 } from 'components/atoms';
 import { InfiniteScroll, RaisedButton, EmptyCard, TitleTab } from 'components/molecules';
 import AddReply from './AddReply';
@@ -59,20 +60,16 @@ class Replies extends Component {
 		}
 	}
 
-	addReply = (message) => {
-		this.replies.addReply(message)
-			.then((id) => {
-				this.highlight(id);
-				this.props.onCountChange(1);
-			});
-	}
+	addReply = message => this.replies.addReply(message)
+		.then((id) => {
+			this.highlight(id);
+			this.props.onCountChange(1);
+		})
 
-	deleteReply = (id) => {
-		this.replies.deleteReply(id)
-			.then(() => {
-				this.props.onCountChange(-1);
-			});
-	}
+	deleteReply = id => this.replies.deleteReply(id)
+		.then(() => {
+			this.props.onCountChange(-1);
+		})
 
 	componentWillUnmount() {
 		this.replies.dispose();

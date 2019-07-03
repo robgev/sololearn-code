@@ -20,22 +20,24 @@
             cursor: pointer;
         }
     }
+		.ask-question-button-container {
+			cursor: pointer;
+			.add-question-btn {
+					min-width: 186px;
+					text-transform: none;
+					color: $white;
+					padding: 11px 27px;
 
-    .add-question-btn {
-        min-width: 186px;
-        text-transform: none;
-        color: $white;
-        padding: 11px 27px;
+					.button-text {
+							color: $white;
+							line-height: 14px;
+					}
 
-        .button-text {
-            color: $white;
-            line-height: 14px;
-        }
-
-        .add-icon {
-            margin-right: 8px;
-            height: 16px;
-            line-height: 14px;
-        }
-    }
+					.add-icon {
+							margin-right: 8px;
+							height: 16px;
+							line-height: 14px;
+					}
+			}
+		}
 }

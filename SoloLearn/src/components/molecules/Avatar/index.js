@@ -17,6 +17,7 @@ const Avatar = ({
 	userName,
 	link,
 	className,
+	avatarImageClassName,
 	...props
 }) => {
 	const ConditionalContainer = disabled ? Container : Link;
@@ -33,12 +34,12 @@ const Avatar = ({
 				? (
 					<RoundImage
 						src={avatarUrl}
-						className={`profile-image ${variant} ${modBadge || ''}`}
+						className={`profile-image ${variant} ${modBadge || ''} ${avatarImageClassName}`}
 					/>
 				)
 				: (
 					<RoundImage
-						className={`profile-image ${variant} ${modBadge || ''}`}
+						className={`profile-image ${variant} ${modBadge || ''} ${avatarImageClassName}`}
 						style={{
 							backgroundColor: AvatarColors[userID % AvatarColors.length],
 						}}
@@ -57,6 +58,7 @@ Avatar.propTypes = {
 	userName: PropTypes.string.isRequired,
 	variant: PropTypes.oneOf([ 'extra-small', 'small', 'normal', 'big' ]),
 	className: PropTypes.string,
+	avatarImageClassName: PropTypes.string,
 };
 
 Avatar.defaultProps = {
@@ -64,6 +66,7 @@ Avatar.defaultProps = {
 	disabled: false,
 	variant: 'small',
 	className: '',
+	avatarImageClassName: '',
 };
 
 export default Avatar;

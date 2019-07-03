@@ -42,8 +42,8 @@ class CodePreview extends PureComponent {
 			<PaperContainer className="preview-wrapper">
 				<LanguageLabel className="code-preview_language-label" language={language} />
 				<FlexBox className="preview-info" column>
-					<Link to={this.props.to} className="item">{name}</Link>
-					<SecondaryTextBlock className="item"> {userName}</SecondaryTextBlock>
+					<Link to={this.props.to} className="item-name item">{name}</Link>
+					<SecondaryTextBlock className="item-user-name item"> {userName}</SecondaryTextBlock>
 				</FlexBox>
 			</PaperContainer>
 		);
