@@ -33,7 +33,7 @@ const Editor = ({
 		wrapEnabled
 		value={code}
 		width="100%"
-		height={isInline ? '200px' : '825px'}
+		height={isInline ? '200px' : 'calc(100% - 56px)'}
 		showPrintMargin={false}
 		theme={isDark ? 'monokai' : 'chrome'}
 		mode={editorModeNames[language]}

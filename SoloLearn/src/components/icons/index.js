@@ -50,3 +50,4 @@ export { default as BackArrow } from './BackArrow';
 export { default as Globe } from './Globe';
 export { default as Lock } from './Lock';
 export { default as Output } from './Output';
+export { default as Code } from './Code';

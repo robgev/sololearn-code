@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 import { Container, PaperContainer, TextBlock } from 'components/atoms';
 import { Layout, EmptyCard, FloatingActionButton } from 'components/molecules';
-import { Run } from 'components/icons';
+import { Run, Code } from 'components/icons';
 import Comments from 'containers/Comments/CommentsBase';
 
 import IPlayground from './IPlayground';
@@ -47,8 +47,10 @@ class Playground extends Component {
 			publicId,
 			isFetching,
 			isFullscreen,
+			isOutputOpen,
 			hasLiveOutput,
 		} = this.playground;
+		const { t } = this.props;
 		// If it's not a public code or we are not in fullscreen mode
 		// We don't need some of the elements on the page.
 		const isMinimal = !data.id || isInline || !publicId;
@@ -70,18 +72,33 @@ class Playground extends Component {
 									<Editor onClose={this.props.onClose} playground={this.playground} />
 									<CodeOutput playground={this.playground} />
 								</EditorContainer>
-								<FloatingActionButton
-									color="primary"
-									alignment="right"
-									className="playground_run-button"
-									onClick={this.playground.isWeb
-										? this.playground.runWebCode
-										: this.playground.runCompiledCode
-									}
-								>
-									<Run />
-									<TextBlock className="playground_run-text">Run</TextBlock>
-								</FloatingActionButton>
+								{ !(hasLiveOutput && isOutputOpen)
+									? (
+										<FloatingActionButton
+											color="primary"
+											alignment="right"
+											className="playground_run-button"
+											onClick={this.playground.isWeb
+												? this.playground.runWebCode
+												: this.playground.runCompiledCode
+											}
+										>
+											<Run />
+											<TextBlock className="playground_run-text">Run</TextBlock>
+										</FloatingActionButton>
+									)
+									: (
+										<FloatingActionButton
+											color="primary"
+											alignment="right"
+											className="playground_run-button"
+											onClick={this.playground.hideOutput}
+										>
+											<Code />
+											<TextBlock className="playground_run-text">{t('code.title')}</TextBlock>
+										</FloatingActionButton>
+									)
+								}
 
 								<InputPopup playground={this.playground} />
 							</MainContainer>
