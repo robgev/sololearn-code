@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { TextBlock } from 'components/atoms';
 import { UsernameLink, Linkify } from 'components/molecules';
 
-import './mentionStyles.scss';
+import './inputMentionStyles.scss';
 
 class Mention extends PureComponent {
 	static itemTypes = {
