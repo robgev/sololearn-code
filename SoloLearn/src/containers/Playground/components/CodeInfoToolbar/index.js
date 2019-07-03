@@ -5,25 +5,25 @@ import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
 import {
 	FlexBox,
-	Container,
+	TextBlock,
 	MenuItem,
-	SwitchToggle,
+	IconButton,
 	PaperContainer,
-	SecondaryTextBlock,
 } from 'components/atoms';
 import {
-	DateInfo,
 	IconMenu,
+	ModBadge,
+	ViewStats,
 	ProfileAvatar,
 	UsernameLink,
 	ConsecutiveSnackbar,
 } from 'components/molecules';
 import { VoteActions } from 'components/organisms';
+import { Globe, Lock } from 'components/icons';
 import ReportPopup from 'components/ReportPopup';
-import LanguageCard from 'components/LanguageCard';
 import ReportItemTypes from 'constants/ReportItemTypes';
 
-import { determineAccessLevel } from 'utils';
+import { determineAccessLevel, updateDate } from 'utils';
 import { removeCode } from 'actions/playground';
 
 import RemovalPopup from './RemovalPopup';
@@ -91,7 +91,6 @@ class CodeInfoToolbar extends Component {
 			name,
 			badge,
 			userID,
-			language,
 			avatarUrl,
 			userName = '',
 		} = this.props.playground.data;
@@ -106,16 +105,24 @@ class CodeInfoToolbar extends Component {
 		};
 		return (
 			<PaperContainer className={`top-toolbar ${this.props.playground.isFullscreen ? 'fullscreen' : ''}`}>
-				<Container className="toolbar-left">
-					<FlexBox className="code-info-toolbar_code-data">
-						<LanguageCard big language={language} />
-						<FlexBox column>
-							<SecondaryTextBlock>
-								{name}
-							</SecondaryTextBlock>
-							<DateInfo date={this.props.playground.data.modifiedDate} />
+				<FlexBox align>
+					<ProfileAvatar user={userData} />
+					<FlexBox column className="code-info-toolbar_main-info">
+						<TextBlock className="code-info-toolbar_code-name">
+							{name}
+						</TextBlock>
+						<FlexBox align>
+							<UsernameLink to={`/profile/${userID}`} className="code-info-toobar_user-name">
+								{userName}
+							</UsernameLink>
+							<ModBadge
+								className="badge"
+								badge={badge}
+							/>
 						</FlexBox>
 					</FlexBox>
+				</FlexBox>
+				<FlexBox align className="code-info-toolbar_secondary-info">
 					<VoteActions
 						id={id}
 						type="code"
@@ -123,47 +130,36 @@ class CodeInfoToolbar extends Component {
 						initialCount={votes}
 						className="code-info-toolbar_vote-actions"
 					/>
-				</Container>
-				<Container className="toolbar-right">
-					<FlexBox className={`my-code-actions ${isMe ? 'justify-between' : ''}`}>
-						{/* {isMe &&
-						<RaisedButton className="delete-button" onClick={this.togglePopup}>
-							<Delete />
-							{t('common.delete-title')}
-						</RaisedButton>
-						} */}
+					<ViewStats views={this.props.playground.data.viewCount} />
+					<FlexBox align className="code-info-toolbar_date-info">
+						<TextBlock className="code-info-toolbar_date-text">
+							{updateDate(this.props.playground.data.modifiedDate)}
+						</TextBlock>
 						{(isMe || accessLevel > 1) &&
-						<SwitchToggle
-							labelPlacement="start"
-							onChange={this.togglePublic}
-							labelClassName="code-info-toolbar_switch-label"
-							defaultChecked={this.props.playground.data.isPublic}
-							label={t('code_playground.popups.save-popup-public-toggle-title')}
-						/>
+						<IconButton onClick={this.togglePublic}>
+							{this.props.playground.data.isPublic
+								? <Globe />
+								:	<Lock />
+							}
+						</IconButton>
 						}
-						<IconMenu>
-							{isMe &&
-								<MenuItem key={`remove-${id}`} onClick={this.togglePopup}>
-									{t('common.delete-title')}
-								</MenuItem>
-							}
-							{!isMe &&
-								<MenuItem onClick={this.toggleReportPopup}>
-									{t('common.report-action-title')}
-								</MenuItem>
-							}
-							<MenuItem onClick={this.toggleDetailsPopup}>
-								{t('code_playground.details.title')}
-							</MenuItem>
-						</IconMenu>
 					</FlexBox>
-					<FlexBox align>
-						<UsernameLink className="code-info-toolbar_user-name" to={`/profile/${userID}`}>
-							{userName}
-						</UsernameLink>
-						<ProfileAvatar user={userData} />
-					</FlexBox>
-				</Container>
+				</FlexBox>
+				<IconMenu iconClassName="code-info-toolbar_menu">
+					{isMe &&
+					<MenuItem key={`remove-${id}`} onClick={this.togglePopup}>
+						{t('common.delete-title')}
+					</MenuItem>
+					}
+					{!isMe &&
+					<MenuItem onClick={this.toggleReportPopup}>
+						{t('common.report-action-title')}
+					</MenuItem>
+					}
+					<MenuItem onClick={this.toggleDetailsPopup}>
+						{t('code_playground.details.title')}
+					</MenuItem>
+				</IconMenu>
 				<ReportPopup
 					itemId={id}
 					open={isReportPopupOpen}

@@ -2,6 +2,7 @@
 @import '~styles/variables';
 
 .molecule_text-link {
-	font-size: $link_size;
-  color: $secondary_color;
+	font-size: 15px;
+	font-weight: 600;
+  color: $primary_color_hover;
 }
