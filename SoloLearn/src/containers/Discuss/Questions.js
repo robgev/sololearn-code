@@ -60,7 +60,6 @@ class Questions extends Component {
 			...location.query,
 		};
 		if (query.query !== '') {
-			console.log(query.query);
 			this.setState({ search: query.query });
 		}
 		this.props.setDiscussFilters(query);

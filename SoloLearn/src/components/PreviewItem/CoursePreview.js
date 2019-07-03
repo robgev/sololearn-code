@@ -22,12 +22,12 @@ class CodePreview extends Component {
 				<CourseChip
 					disabled
 					noName
-					size={40}
+					size={32}
 					noBoxShadow
 					itemType={1}
 					iconUrl={iconUrl}
 				/>
-				<Link to={this.props.to} className="item">{name}</Link>
+				<Link to={this.props.to} className="item-name item">{name}</Link>
 			</PaperContainer>
 		);
 	}

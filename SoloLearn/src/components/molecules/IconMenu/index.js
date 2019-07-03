@@ -28,7 +28,7 @@ class IconMenu extends Component {
 	render() {
 		const { anchorEl } = this.state;
 		const {
-			icon: Icon, children, iconProps, onClick, ...props
+			icon: Icon, children, iconProps, onClick, className, ...props
 		} = this.props;
 		const open = Boolean(anchorEl);
 
@@ -48,7 +48,7 @@ class IconMenu extends Component {
 					{({ TransitionProps, placement }) => (
 						<Grow
 							{...TransitionProps}
-							className={`grow ${placement === 'bottom' ? 'top' : 'bottom'}`}
+							className={`grow ${className} ${placement === 'bottom' ? 'top' : 'bottom'}`}
 						>
 							<PaperContainer>
 								<ClickAwayListener onClickAway={this.handleClose}>

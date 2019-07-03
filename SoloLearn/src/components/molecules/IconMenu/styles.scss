@@ -1,7 +1,12 @@
+@import '~styles/colors';
+
 .molecule_icon-menu {
 	padding: 0;
 }
 .molecule_icon-menu-popper {
+	border: 1px solid $border_color;
+	box-shadow: 0 3px 6px -3px #3A464A;
+	border-radius: 6px;
 	z-index: 10;
 	.grow {
 		&.bottom {
@@ -10,7 +15,8 @@
 		&.top {
 			transform-origin: center bottom;
 		}
-		padding: 0;
+		padding: 12px 0;
+		min-width: 235px;
 		.list {
 			padding: 0;
 		}

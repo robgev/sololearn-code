@@ -5,6 +5,7 @@ import { sidebarQuestionsSelector, isDiscussSidebarEmpty } from 'reducers/discus
 import { FlexBox } from 'components/atoms';
 import ProfileInfo from 'containers/Feed/FeedSidebar/ProfileInfo';
 import HotToday from './HotToday';
+import './styles.scss';
 
 const mapStateToProps = state => ({
 	questions: sidebarQuestionsSelector(state),

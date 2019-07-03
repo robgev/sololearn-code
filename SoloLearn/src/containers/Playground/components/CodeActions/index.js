@@ -49,12 +49,6 @@ class Toolbar extends Component {
 						onChange={playground.toggleTheme}
 						label={t('code_playground.dark-theme')}
 					/>
-					{/* {playground.isWeb && !playground.isInline &&
-						<FlatButton onClick={this.toggleSourcePopup}>
-							External Resources
-							<InsertLink />
-						</FlatButton>
-					} */}
 				</Container>
 				<Container>
 					{!playground.isInline &&
