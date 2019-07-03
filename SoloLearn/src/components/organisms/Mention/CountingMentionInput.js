@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, SecondaryTextBlock, FlexBox } from 'components/atoms';
+import { FlexBox } from 'components/atoms';
 import MentionInput from './MentionInput';
 import './countingMentionInput.scss';
 
@@ -58,7 +58,6 @@ class CountingMentionInput extends Component {
 					/>
 				</FlexBox>
 				<FlexBox className="bottom-toolbar-container">
-
 					{renderButton({ isExpanded, charCount, onBlur: this.onBlur })}
 				</FlexBox>
 			</FlexBox>

@@ -22,9 +22,23 @@
 			font-size: 12px;
 			font-weight: bold;
 			color: $content_text_color;
+			margin-right: $secondary_gap_size;
 		}
 		.preview-info {
 			overflow: hidden;
+			.item-up-message {
+				font-weight: unset;
+				font-size: 12px;
+				color: #273338;
+				margin-left: $secondary_gap_size;
+			}
+			.profile-info-container {
+				font-size: 12px;
+				color: $icon_color;
+				.profile-info-xp {
+					margin-right: 10px;
+				}
+			}
 		}
 		.code-preview_language-label {
 			height: 32px;

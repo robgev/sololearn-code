@@ -7,7 +7,8 @@ import LessonPreview from './LessonPreview';
 import CodePreview from './CodePreview';
 import PostPreview from './PostPreview';
 import CoursePreview from './CoursePreview';
-import UserPost from './UserPost';
+import UserPostPreview from './UserPostPreview';
+import ProfilePreview from './ProfilePreview';
 
 const constructLink = (link, type) => (type === 'code' ? `/playground/${link.split('https://code.sololearn.com/')[1]}` : link);
 
@@ -29,7 +30,9 @@ const PreviewBody = ({
 			? <LessonPreview to={to} id={id} type={type} />
 			: <CoursePreview to={to} courseAlias={courseAlias} />;
 	case 'userPost':
-		return <UserPost id={id} to={to} />;
+		return <UserPostPreview id={id} to={to} />;
+	case 'profile':
+		return <ProfilePreview to={to} id={id} />;
 	default:
 		return null;
 	}
