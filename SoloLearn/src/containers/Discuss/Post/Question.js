@@ -114,8 +114,8 @@ class Question extends Component {
 													</FlexBox>
 												</Container>
 												<FlexBox className="options" justifyEnd align>
-													<IconWithText className="follow" Icon={Follow}>
-														Follow
+													<IconWithText Icon={Follow}>
+														<SecondaryTextBlock className="follow-text">Follow</SecondaryTextBlock>
 													</IconWithText>
 													<Options
 														userID={post.userID}
