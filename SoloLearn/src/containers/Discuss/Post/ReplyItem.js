@@ -1,17 +1,16 @@
 import React, { Component, Fragment, createRef } from 'react';
 import { translate } from 'react-i18next';
 import { observer } from 'mobx-react';
-import { ListItem, HorizontalDivider, Container, FlexBox, PaperContainer, SecondaryTextBlock } from 'components/atoms';
-import { RaisedButton, ProfileAvatar, UsernameLink, ModBadge, IconWithText } from 'components/molecules';
+import { ListItem, Container, FlexBox, PaperContainer, SecondaryTextBlock } from 'components/atoms';
+import { RaisedButton, ProfileAvatar, UsernameLink, ModBadge } from 'components/molecules';
 import { VoteActions, Mention, CountingMentionInput } from 'components/organisms';
-import { Follow } from 'components/icons';
 import ReportPopup from 'components/ReportPopup';
 import PreviewItem from 'components/PreviewItem';
 import { generatePreviews, updateDate } from 'utils';
 import RemovalPopup from './RemovalPopup';
 import DeletePopup from './DeletePopup';
 import Options from './Options';
-import Author from './Author';
+// import Author from './Author';
 import AcceptReply from './AcceptReply';
 
 @translate(null, { withRef: true })
