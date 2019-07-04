@@ -9,6 +9,7 @@
 		width: inherit;
 		.sidebar-main-content {
 			min-height: 20px;
+
 		}
 		.sidebar-static-pages {
 			display: flex;
@@ -19,10 +20,11 @@
 				color: $icon_color;
 				padding: 0 20px;
 				font-size: 12px;
-				&:not(:last-child) {
-					border-right: 1px solid #CCCCCC;
 				}
-			}
+				.divider {
+					border-color: #E3E3E3;
+					height: 8.31px;
+				}
 		}
 		&.sticky {
 			position: fixed;

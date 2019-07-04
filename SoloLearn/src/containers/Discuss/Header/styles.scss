@@ -5,14 +5,17 @@
 
     .search {
         margin-right: 16px;
-
+			fieldset {
+				border-color: $border_color;
+				border-width: 1px;
+			}
         .adornmentEnd {
             padding: 0;
         }
 
         .search_input {
             padding-top: 10px;
-            padding-bottom: 10px;
+						padding-bottom: 10px;
         }
 
         .search-icon {
