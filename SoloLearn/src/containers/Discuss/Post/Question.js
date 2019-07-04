@@ -27,20 +27,25 @@ import {
 	Edit as EditIcon,
 } from 'components/icons';
 import ReportPopup from 'components/ReportPopup';
+import { updateDate } from 'utils';
+
 import RemovalPopup from './RemovalPopup';
 import DeletePopup from './DeletePopup';
 import Options from './Options';
 import Tags from '../Tags';
-import { updateDate } from 'utils';
 
 @translate()
 @observer
 class Question extends Component {
-	state = {
-		isFollowSnackbarOpen: false,
-		isReportPopupOpen: false,
-		isRemovalPopupOpen: false,
-		isDeletePopupOpen: false,
+	constructor(props) {
+		super(props);
+		this.state = {
+			isFollowSnackbarOpen: false,
+			isReportPopupOpen: false,
+			isRemovalPopupOpen: false,
+			isDeletePopupOpen: false,
+			isFollowing: false,
+		};
 	}
 	openDeletePopup = () => {
 		this.setState({ isDeletePopupOpen: true });
@@ -65,14 +70,26 @@ class Question extends Component {
 	}
 	onFollowClick = () => {
 		this.props.onFollowClick();
-		this.setState({ isFollowSnackbarOpen: true });
+		this.setState(prevState => ({
+			isFollowSnackbarOpen: true,
+			isFollowing: !prevState.isFollowing,
+		}));
 	}
 	editPost = () => {
 		browserHistory.push(`/discuss/edit/${this.props.post.id}`);
 	}
+	componentDidUpdate(prevProps) {
+		if (this.props.post !== prevProps.post && this.props.post) {
+			this.setState({ isFollowing: this.props.post.isFollowing });
+		}
+	}
 	render() {
 		const {
-			isFollowSnackbarOpen, isReportPopupOpen, isRemovalPopupOpen, isDeletePopupOpen,
+			isFollowSnackbarOpen,
+			isReportPopupOpen,
+			isRemovalPopupOpen,
+			isDeletePopupOpen,
+			isFollowing,
 		} = this.state;
 		const {
 			post, onDelete, t,
@@ -102,7 +119,7 @@ class Question extends Component {
 								<FlexBox fullWidth column justifyBetween>
 									<Container className="info">
 										<Container className="question">
-											<FlexBox justifyBetween fullWidth>
+											<FlexBox className="title-and-options-container" justifyBetween fullWidth>
 												<Container>
 													<Container className="title">
 														<Title className="title-content">
@@ -114,8 +131,10 @@ class Question extends Component {
 													</FlexBox>
 												</Container>
 												<FlexBox className="options" justifyEnd align>
-													<IconWithText Icon={Follow}>
-														<SecondaryTextBlock className="follow-text">Follow</SecondaryTextBlock>
+													<IconWithText onClick={this.onFollowClick} Icon={Follow}>
+														<SecondaryTextBlock className="follow-text">
+															{isFollowing ? 'Unfollow' : 'Follow'}
+														</SecondaryTextBlock>
 													</IconWithText>
 													<Options
 														userID={post.userID}

@@ -106,11 +106,12 @@ $icon_accepted_color: $primary_colored_text;
 			justify-content: space-between;
 
 			.options {
+				cursor: pointer;
 				font-size: 13px;
 				font-weight: bold;
 				color: $primary_color_hover;
 				// align-items: end;
-				min-width: 120px;
+				min-width: 150px;
 				margin-top: -16px;
 				.accepted-icon {
 					cursor: pointer;
@@ -133,6 +134,9 @@ $icon_accepted_color: $primary_colored_text;
 				flex-direction: column;
 				align-items: flex-start;
 				word-break: break-word;
+				.title-and-options-container {
+					align-items: flex-start;
+				}
 				.discuss-reply-item-vote-actions {
 					margin-bottom: -8px;
 					margin-left: -13px;
