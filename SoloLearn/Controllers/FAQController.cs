@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SoloLearn.Extensions;
+using SoloLearn.Service;
 
 namespace SoloLearn.Controllers
 {
@@ -20,25 +21,9 @@ namespace SoloLearn.Controllers
 		}
 		public async Task<IActionResult> Index()
 		{
-			var values = new Dictionary<string, string>
-			{
-					{ "alias", "FAQ" }
-			};
-			var content = new FormUrlEncodedContent(values);
-
-			ProxyOptions proxyOptions = new ProxyOptions
-			{
-				Scheme = _configuration["Api1:Scheme"],
-				Host = _configuration["Api1:Host"],
-				Url = _configuration["Api1:Url"]
-			};
-
-			string url = $"{proxyOptions.Scheme}://{proxyOptions.Host}:{proxyOptions.Port}/GetStaticPage";
-			var response = await Client.PostAsync(url, content);
-
-			var responseString = await response.Content.ReadAsStringAsync();
-			dynamic responseObj = JsonConvert.DeserializeObject(responseString);
-			ViewData["message"] = responseObj.Page.PageContent;
+	  StaticPagesService pagesService = new StaticPagesService(_configuration);
+	  dynamic page = await pagesService.GetPage("FAQ");
+			ViewData["message"] = page.PageContent;
 			return View();
 		}
   }
