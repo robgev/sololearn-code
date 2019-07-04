@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Newtonsoft.Json;
 
 namespace SoloLearn
 {
@@ -41,6 +42,25 @@ namespace SoloLearn
 				  EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
 				  ValidationAlgorithm = ValidationAlgorithm.HMACSHA512
 				});
+
+	  services.AddRendertron(options =>
+	  {
+			options.RendertronUrl = Configuration["RendertronUrl"];
+
+			String filePath = Configuration["CrawlerAgentsFilePath"];
+			using (StreamReader r = new StreamReader(filePath))
+			{
+				string json = r.ReadToEnd();
+				dynamic array = JsonConvert.DeserializeObject(json);
+				foreach (var item in array)
+				{
+					options.UserAgents.Add((String)item.pattern);
+				}
+			}
+			// use http compression
+			options.AcceptCompression = true;
+			options.Timeout = TimeSpan.FromSeconds(60);
+	  });
 	}
 
 	// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,7 +106,7 @@ namespace SoloLearn
 		  ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={cachePeriod}");
 		}
 	  });
-
+	  app.UseRendertron();
 	  app.UseMvc(routes =>
 	  {
 		routes.MapRoute(
