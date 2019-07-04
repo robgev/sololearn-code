@@ -68,18 +68,10 @@ class Question extends Component {
 	}
 	onFollowClick = () => {
 		this.props.onFollowClick();
-		this.setState(prevState => ({
-			isFollowSnackbarOpen: true,
-			isFollowing: !prevState.isFollowing,
-		}));
+		this.setState({ isFollowSnackbarOpen: true });
 	}
 	editPost = () => {
 		browserHistory.push(`/discuss/edit/${this.props.post.id}`);
-	}
-	componentDidUpdate(prevProps) {
-		if (this.props.post !== prevProps.post && this.props.post) {
-			this.setState({ isFollowing: this.props.post.isFollowing });
-		}
 	}
 	render() {
 		const {
@@ -87,7 +79,6 @@ class Question extends Component {
 			isReportPopupOpen,
 			isRemovalPopupOpen,
 			isDeletePopupOpen,
-			isFollowing,
 		} = this.state;
 		const {
 			post, onDelete, t,
@@ -131,7 +122,7 @@ class Question extends Component {
 												<FlexBox className="options" justifyEnd align>
 													<IconWithText className="follow-container" onClick={this.onFollowClick} Icon={Follow}>
 														<SecondaryTextBlock className="follow-text">
-															{isFollowing ? 'Unfollow' : 'Follow'}
+															{post.isFollowing ? 'Unfollow' : 'Follow'}
 														</SecondaryTextBlock>
 													</IconWithText>
 													<Options
