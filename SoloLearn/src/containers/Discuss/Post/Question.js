@@ -38,16 +38,13 @@ import Tags from '../Tags';
 @translate()
 @observer
 class Question extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			isFollowSnackbarOpen: false,
-			isReportPopupOpen: false,
-			isRemovalPopupOpen: false,
-			isDeletePopupOpen: false,
-			isFollowing: false,
-		};
-	}
+	state = {
+		isFollowSnackbarOpen: false,
+		isReportPopupOpen: false,
+		isRemovalPopupOpen: false,
+		isDeletePopupOpen: false,
+		isFollowing: false,
+	};
 	openDeletePopup = () => {
 		this.setState({ isDeletePopupOpen: true });
 	}
@@ -184,7 +181,7 @@ class Question extends Component {
 													withDate={false}
 													totalVotes={post.votes}
 													// onChange={onChange}
-													comments={post.answers}
+													// comments={post.answers}
 													withoutCommentCount
 												/>
 												<SecondaryTextBlock className="statistics-date">{updateDate(post.date)} </SecondaryTextBlock>
