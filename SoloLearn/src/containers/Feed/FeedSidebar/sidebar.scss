@@ -79,8 +79,22 @@
 .profile-info {
 	margin-bottom: $secondary_gap_size;
 	border: 1px solid $border-color;
+	padding-top: 15px;
 	.avatar {
-		margin-top: 2px;
+		position: relative;
+		.edit-profile {
+			position: absolute;
+			top: 0px;
+			right: 0px;
+			color: rgba(0, 144, 133, 0.8);
+			font-size: 12px;
+			font-weight: bold;
+			cursor: pointer;
+			&:hover {
+				text-decoration: none;
+			}
+		}
+
 		.profile-info_avatar {
 			position: relative;
 			.profile-info_badge {
@@ -123,12 +137,12 @@
 			font-size: 12px;
 			margin-bottom: 4px;
 			color: $icon_color;
-
 		}
 		.stat {
 			font-weight: 700;
 			font-size: 16px;
 			color: $primary_color_hover;
+			opacity: 0.8;
 		}
 	}
 }

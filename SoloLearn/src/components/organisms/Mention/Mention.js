@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { TextBlock } from 'components/atoms';
 import { UsernameLink, Linkify } from 'components/molecules';
 
+import './inputMentionStyles.scss';
+
 class Mention extends PureComponent {
 	static itemTypes = {
 		TEXT: 1,
@@ -33,7 +35,7 @@ class Mention extends PureComponent {
 			// Have to linkify text here due to the nature of how linkification works
 			return (
 				<Linkify>
-					<TextBlock>
+					<TextBlock className="input-main-text">
 						{item.value}
 					</TextBlock>
 				</Linkify>

@@ -6,7 +6,7 @@ import { withRouter } from 'react-router';
 import { translate } from 'react-i18next';
 import { CountingMentionInput } from 'components/organisms';
 import { ProfileAvatar, FlatButton, InfiniteScroll, EmptyCard } from 'components/molecules';
-import { Container, PaperContainer } from 'components/atoms';
+import { Container } from 'components/atoms';
 import CommentsAPI from './comments.api';
 import IComment from './IComment';
 import CommentsToolbar from './CommentsToolbar';
@@ -277,7 +277,7 @@ class Comments extends Component {
 				useWindow={useWindow}
 				className="comment-list"
 			>
-				<PaperContainer className="comments-container">
+				<Container className="comments-container">
 					<CommentsToolbar
 						count={this.commentsCount}
 						value={this.orderBy}
@@ -333,7 +333,7 @@ class Comments extends Component {
 							/>
 						)
 					}
-				</PaperContainer>
+				</Container>
 			</InfiniteScroll>
 
 		);

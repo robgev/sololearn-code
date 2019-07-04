@@ -62,7 +62,7 @@ const PlaygroundSidebar = ({
 													<Link to={`/playground/${code.publicID}`} className="hot-today-question">
 														{code.name}
 													</Link>
-													<FlexBox>
+													<FlexBox className="author-name-container">
 														<UsernameLink className="author-name" to={`/profile/${code.userID}`}>{code.userName}</UsernameLink>
 														<ModBadge
 															className="badge"

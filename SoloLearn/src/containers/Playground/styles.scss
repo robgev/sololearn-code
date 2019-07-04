@@ -46,6 +46,7 @@
 			height: calc(100vh - #{$header_size});
 			overflow-y: scroll;
 			.comments-container {
+				padding: 0 16px;
 				margin-top: 0;
 				box-shadow: none;
 				border-radius: 0;

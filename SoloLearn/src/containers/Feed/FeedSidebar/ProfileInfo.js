@@ -1,6 +1,6 @@
 import React from 'react';
 import { translate } from 'react-i18next';
-import { PaperContainer, FlexBox, Container } from 'components/atoms';
+import { PaperContainer, FlexBox, Container, Link } from 'components/atoms';
 import { UsernameLink, ProfileAvatar, ModBadge } from 'components/molecules';
 import SectionStats from './SectionStats';
 import LevelProgress from './LevelProgress';
@@ -9,6 +9,7 @@ import './sidebar.scss';
 const ProfileInfo = ({ t, profile, levels }) => (
 	<PaperContainer className="profile-info">
 		<FlexBox align column fullWidth className="avatar">
+			<Container className="edit-profile"><Link to="/settings">Edit</Link></Container>
 			<Container className="profile-info_avatar">
 				<ProfileAvatar
 					size="normal"
@@ -19,6 +20,7 @@ const ProfileInfo = ({ t, profile, levels }) => (
 					badge={profile.badge}
 				/>
 			</Container>
+
 			<UsernameLink className="username" to={`/profile/${profile.id}`}>
 				{profile.name}
 			</UsernameLink>

@@ -6,7 +6,7 @@ import createMentionPlugin from 'draft-js-mention-plugin';
 import { mentionUsers, getMentionsList } from 'utils';
 import 'draft-js-mention-plugin/lib/plugin.css';
 import 'draft-js/dist/Draft.css';
-import { Container } from 'components/atoms';
+import { Container, FlexBox, SecondaryTextBlock } from 'components/atoms';
 import Entry from './Entry';
 import getCurrentSelectedLength from './getCurrentSelectedLength';
 import './editorStyles.scss';
@@ -221,6 +221,7 @@ class MentionInput extends Component {
 	render() {
 		const { MentionSuggestions } = this.mentionPlugin;
 		const plugins = [ this.mentionPlugin ];
+		const { maxLength, charCount } = this.props;
 
 		return (
 			<Container
@@ -243,6 +244,13 @@ class MentionInput extends Component {
 					handlePastedText={this.handlePastedText}
 					handleReturn={this.handleReturn}
 				/>
+				<FlexBox fullWidth justifyEnd alignEnd>
+					{this.isFocused &&
+					<SecondaryTextBlock className="counter">
+						{charCount} / {maxLength}
+					</SecondaryTextBlock>
+					}
+				</FlexBox>
 				<MentionSuggestions
 					onSearchChange={this.onSearchChange}
 					suggestions={this.state.suggestions}

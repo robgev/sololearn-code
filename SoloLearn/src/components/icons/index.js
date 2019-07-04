@@ -1,14 +1,9 @@
 export {
-	FormatQuote as QuoteIcon,
 	Close,
-	Done,
 	RadioButtonChecked,
 	RadioButtonUnchecked,
 	Clear,
 	ArrowDropDown,
-	QuestionAnswer,
-	Star as Follow,
-	Check as Accepted,
 	Bookmark,
 	BookmarkBorder,
 	ThumbsUpDown as Arrows,
@@ -16,9 +11,7 @@ export {
 	Person,
 	Dehaze as Feed,
 	EventNote as Date,
-	Edit,
 	DragIndicator as DragIcon,
-	AddPhotoAlternate,
 	CheckCircle,
 	Share as ShareIcon,
 	Image as ImageIcon,
@@ -51,3 +44,8 @@ export { default as Globe } from './Globe';
 export { default as Lock } from './Lock';
 export { default as Output } from './Output';
 export { default as Code } from './Code';
+export { default as Accepted } from './Check';
+export { default as Done } from './Check';
+export { default as Follow } from './Star';
+export { default as Edit } from './Edit';
+export { default as Answer } from './Answer';

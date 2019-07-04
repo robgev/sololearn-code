@@ -23,7 +23,7 @@ pipelines:
     - step:
        name: Deploy to test
        deployment: test
-       trigger: manual  # Uncomment to make this a manual deployment.
+       #trigger: manual  # Uncomment to make this a manual deployment.
        script:
          - echo "Deploying to test Azure"
          - curl -X POST $AZURE_HOOK -H"content-length:0"
