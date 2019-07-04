@@ -6,7 +6,7 @@ import { translate } from 'react-i18next';
 import { Container, PaperContainer } from 'components/atoms';
 import { Layout, EmptyCard } from 'components/molecules';
 import Comments from 'containers/Comments/CommentsBase';
-
+import SignInPopup from 'components/SignInPopup';
 import IPlayground from './IPlayground';
 import {
 	Editor,
@@ -21,6 +21,10 @@ import './styles.scss';
 @translate()
 @observer
 class Playground extends Component {
+state={
+	openSigninPopup:false,
+}
+
 	constructor(props) {
 		super(props);
 		this.playground = new IPlayground({
@@ -40,6 +44,10 @@ class Playground extends Component {
 		}
 	}
 
+	toggleSigninPopup=()=>{
+		this.setState(({openSigninPopup})=>({openSigninPopup:!openSigninPopup}));
+	}
+
 	render() {
 		const {
 			data,
@@ -57,6 +65,8 @@ class Playground extends Component {
 		const EditorContainer = !hasLiveOutput ? SplitPane : Fragment;
 		const fullScreenCN = isFullscreen ? 'fullscreen' : '';
 		const sidebarCN = (isFullscreen && isMinimal) ? 'no-sidebar' : '';
+		const {openSigninPopup}=this.state;
+
 		return (
 			<LayoutContainer className={`${fullScreenCN} ${sidebarCN}`}>
 				{isFetching
@@ -73,17 +83,24 @@ class Playground extends Component {
 									<Editor onClose={this.props.onClose} playground={this.playground} />
 									<CodeOutput playground={this.playground} />
 								</EditorContainer>
-								<CodeActions playground={this.playground} />
+								<CodeActions
+								 playground={this.playground}
+								 toggleSigninPopup={this.toggleSigninPopup}
+								  />
 								<InputPopup playground={this.playground} />
 							</MainContainer>
 							{!isMinimal &&
 								<Container className="playground_sidebar scrollbar">
 									{ isFullscreen &&
-										<CodeInfoToolbar playground={this.playground} />
+										<CodeInfoToolbar 
+										playground={this.playground} 
+										toggleSigninPopup={this.toggleSigninPopup}
+										/>
 									}
 									<Comments
 										type={1}
 										id={data.id}
+										toggleSigninPopup={this.toggleSigninPopup}
 										useWindow={false}
 										commentsType="code"
 										commentsCount={data.comments}
@@ -93,6 +110,11 @@ class Playground extends Component {
 						</Fragment>
 					)
 				}
+				<SignInPopup 
+					url={`/playground/${publicId}`}
+					open={openSigninPopup}
+					onClose={this.toggleSigninPopup}
+				/>
 			</LayoutContainer>
 		);
 	}

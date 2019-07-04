@@ -14,8 +14,9 @@ import {
 	discussHasMoreSelector,
 	isDiscussFetchingSelector,
 } from 'reducers/discuss.reducer';
-import { FlexBox, Select, MenuItem, Title, PaperContainer } from 'components/atoms';
-import { LayoutWithSidebar, InfiniteScroll, TitleTab } from 'components/molecules';
+import { FlexBox, Select, MenuItem, Container, PaperContainer, TextBlock } from 'components/atoms';
+import { LayoutWithSidebar, InfiniteScroll, TitleTab, FlatButton } from 'components/molecules';
+import SignInPopup from 'components/SignInPopup';
 import QuestionList, { Sidebar } from './QuestionsList';
 import './QuestionsList/styles.scss';
 
@@ -24,6 +25,7 @@ const mapStateToProps = state => ({
 	filters: discussFiltersSelector(state),
 	hasMore: discussHasMoreSelector(state),
 	isFetching: isDiscussFetchingSelector(state),
+	isLoggedIn: !!state.userProfile,
 });
 
 const mapDispatchToProps = {
@@ -36,6 +38,7 @@ class Questions extends Component {
 	state={
 		avtiveFilter: 8,
 		search: null,
+		openSigninPopup: false,
 	}
 
 	constructor(props) {
@@ -59,9 +62,11 @@ class Questions extends Component {
 			...(location.query.query != null ? DEFAULT_DISCUSS_FILTERS : filters),
 			...location.query,
 		};
+
 		if (query.query !== '') {
 			this.setState({ search: query.query });
 		}
+
 		this.props.setDiscussFilters(query);
 		const changed = queryDifference(DEFAULT_DISCUSS_FILTERS, query);
 		browserHistory.replace({ ...location, query: changed });
@@ -69,6 +74,8 @@ class Questions extends Component {
 	}
 	componentWillUpdate(nextProps) {
 		// Source of truth is the route
+		// this.setState({ avtiveFilter: parseInt(query.orderBy) });
+
 		const { location } = nextProps;
 		if (!isObjectEqual(location.query, this.props.location.query)) {
 			const changed = queryDifference(DEFAULT_DISCUSS_FILTERS, location.query);
@@ -105,19 +112,33 @@ class Questions extends Component {
 		this.setState({ search: e.target.value });
 	}
 
+	toggleSigninPopup=() => {
+		this.setState(({ openSigninPopup }) => ({ openSigninPopup: !openSigninPopup }));
+	}
+
 	enterKeyPress=(e) => {
 		if (e.keyCode === 13) {
 			this.searchQuestion();
 		}
 	}
 
+	addQuestion=() => {
+		const { isLoggedIn } = this.props;
+		if (!isLoggedIn) {
+			this.toggleSigninPopup();
+		} else {
+			browserHistory.push('/discuss/new');
+		}
+	}
+
 	render() {
 		const {
-			t, posts, hasMore, isFetching,
+			t, posts, hasMore, isFetching, isLoggedIn,
 		} = this.props;
 		const {
 			avtiveFilter,
 			search,
+			openSigninPopup,
 		} = this.state;
 		return (
 			<LayoutWithSidebar
@@ -127,6 +148,7 @@ class Questions extends Component {
 				}
 			>
 				<Header
+					addQuestion={this.addQuestion}
 					searchQuestion={this.searchQuestion}
 					onSearchChange={this.onSearchChange}
 					enterKeyPress={this.enterKeyPress}
@@ -147,9 +169,23 @@ class Questions extends Component {
 				>
 
 					<PaperContainer className="question-conatainer">
-						<QuestionList hasMore={hasMore} questions={posts} />
+						{
+							!isLoggedIn && (avtiveFilter === 5 || avtiveFilter === 6 || avtiveFilter === 9)
+								? (
+									<FlexBox column align justifyBetween>
+										<TextBlock>Sign in</TextBlock>
+										<FlatButton onClick={() => browserHistory.push('signin')}>Sign In</FlatButton>
+									</FlexBox>
+								)
+								: <QuestionList hasMore={hasMore} questions={posts} />
+						}
 					</PaperContainer>
 				</InfiniteScroll>
+				<SignInPopup
+					url="/discuss"
+					open={openSigninPopup}
+					onClose={this.toggleSigninPopup}
+				/>
 			</LayoutWithSidebar>
 		);
 	}

@@ -18,7 +18,7 @@ const DiscussSidebar = ({
 	isEmpty, questions, t, userProfile, levels,
 }) => (
 	<FlexBox column justify className="discuss-sidebar">
-		<ProfileInfo profile={userProfile} levels={levels} />
+		{userProfile && <ProfileInfo profile={userProfile} levels={levels} />}
 		<HotToday isEmpty={isEmpty} questions={questions} t={t} />
 	</FlexBox>
 );

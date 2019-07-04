@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 
@@ -6,21 +7,29 @@ import { Container, Checkbox, FlexBox } from 'components/atoms';
 import { ConsecutiveSnackbar, FlatButton } from 'components/molecules';
 import { Run } from 'components/icons'; // InsertLink
 import SavePopup from './SavePopup';
+import SignInPopup from 'components/SignInPopup';
 // import ExternalResourcePopup from './ExternalResourcePopup';
 
 import './styles.scss';
 
+const mapStateToProps = state => ({
+	isLoggedIn: !!state.userProfile,
+});
+
 @translate()
+@connect(mapStateToProps)
 @observer
 class Toolbar extends Component {
 	state = {
 		isSavePopupOpen: false,
-		isSourcePopupOpen: false,
+		// isSourcePopupOpen: false,
 	};
 
 	handleSaveClick = () => {
-		const { playground } = this.props;
-		if (playground.isMyCode) {
+		const { playground, isLoggedIn,toggleSigninPopup } = this.props;
+		if (!isLoggedIn) {
+			toggleSigninPopup();
+		} else if (playground.isMyCode) {
 			playground.saveCode();
 		} else {
 			this.toggleSavePopup();
@@ -28,7 +37,13 @@ class Toolbar extends Component {
 	}
 
 	toggleSavePopup = () => {
-		this.setState(({ isSavePopupOpen }) => ({ isSavePopupOpen: !isSavePopupOpen }));
+		const { isLoggedIn,toggleSigninPopup } = this.props;
+
+		if (!isLoggedIn) {
+			toggleSigninPopup();
+		} else {
+			this.setState(({ isSavePopupOpen }) => ({ isSavePopupOpen: !isSavePopupOpen }));
+		}
 	}
 
 	// toggleSourcePopup = () => {
