@@ -193,9 +193,13 @@ $icon_accepted_color: $primary_colored_text;
 				}
 
 				 .message, .preview {
-					margin: $secondary_gap_size 0 0 0;
+					margin: $secondary_gap_size 48px 0 0;
 				}
 
+				.reply-item-date {
+					white-space: nowrap;
+					margin: 8px 12px 0 0;
+				}
 				.author {
 					min-width: 214px;
 
@@ -213,6 +217,12 @@ $icon_accepted_color: $primary_colored_text;
 					.badge {
 						align-items: flex-start;
 						margin-left: 8px;
+					}
+				}
+				.statistics-container {
+					.statistics-date {
+						white-space: nowrap;
+						margin: 13px 12px 0 0;
 					}
 				}
 			}

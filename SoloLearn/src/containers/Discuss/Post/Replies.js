@@ -98,7 +98,7 @@ class Replies extends Component {
 			<Container className="replies">
 				<FlexBox justifyBetween align className="filters">
 					<TextBlock className="filter-comments-count">{`${count} ${t('common.comments-format')}`}</TextBlock>
-					<FlexBox>
+					<FlexBox align>
 						<TitleTab
 							className="filter"
 							tabs={this.replyFilters}

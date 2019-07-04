@@ -222,7 +222,7 @@ class ReplyItem extends Component {
 										initialVote={reply.vote}
 										className="discuss-reply-item-vote-actions"
 									/>
-									<SecondaryTextBlock className="text">{updateDate(reply.date)} </SecondaryTextBlock>
+									<SecondaryTextBlock className="reply-item-date">{updateDate(reply.date)} </SecondaryTextBlock>
 								</FlexBox>
 							</FlexBox>
 						</FlexBox>

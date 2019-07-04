@@ -163,7 +163,7 @@ class Question extends Component {
 											<Container className="tags">
 												<Tags tags={post.tags} />
 											</Container>
-											<FlexBox justifyBetween fullWidth alignEnd>
+											<FlexBox justifyBetween fullWidth align className="statistics-container">
 												<FeedBottomBarFullStatistics
 													id={post.id}
 													key={post.id}
@@ -177,7 +177,7 @@ class Question extends Component {
 													comments={post.answers}
 													withoutCommentCount
 												/>
-												<SecondaryTextBlock className="text">{updateDate(post.date)} </SecondaryTextBlock>
+												<SecondaryTextBlock className="statistics-date">{updateDate(post.date)} </SecondaryTextBlock>
 											</FlexBox>
 										</Container>
 									</Container>
