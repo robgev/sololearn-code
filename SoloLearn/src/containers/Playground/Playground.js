@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
@@ -16,36 +17,40 @@ import {
 	CodeActions,
 	CodeInfoToolbar,
 } from './components';
+import Storage from 'api/storage';
 import './styles.scss';
 
 @translate()
 @observer
 class Playground extends Component {
 state={
-	openSigninPopup:false,
+	openSigninPopup: false,
 }
 
-	constructor(props) {
-		super(props);
-		this.playground = new IPlayground({
-			inline: this.props.inline,
-			userId: this.props.userId,
-			publicId: this.props.publicId === 'new' ? null : this.props.publicId,
-			language: this.props.language,
-			lessonCodeId: this.props.lessonCodeId,
-		});
-		this.playground.getCode();
-		ReactGA.ga('send', 'screenView', { screenName: 'Code Editor Page' });
-	}
+constructor(props) {
+	super(props);
+	const unsaveCode = Storage.load('code');
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.language !== this.playground.language) {
-			this.playground.changeLanguage(nextProps.language);
-		}
-	}
+	this.playground = new IPlayground({
+		inline: this.props.inline,
+		userId: this.props.userId,
+		publicId: this.props.publicId === 'new' ? null : this.props.publicId,
+		language: this.props.language,
+		lessonCodeId: this.props.lessonCodeId,
+	});
 
-	toggleSigninPopup=()=>{
-		this.setState(({openSigninPopup})=>({openSigninPopup:!openSigninPopup}));
+	this.playground.getCode(unsaveCode && unsaveCode.id === this.props.publicId ? unsaveCode.data : null);
+	ReactGA.ga('send', 'screenView', { screenName: 'Code Editor Page' });
+}
+
+componentWillReceiveProps(nextProps) {
+	if (nextProps.language !== this.playground.language) {
+		this.playground.changeLanguage(nextProps.language);
+	}
+}
+
+	toggleSigninPopup=() => {
+		this.setState(({ openSigninPopup }) => ({ openSigninPopup: !openSigninPopup }));
 	}
 
 	render() {
@@ -65,7 +70,7 @@ state={
 		const EditorContainer = !hasLiveOutput ? SplitPane : Fragment;
 		const fullScreenCN = isFullscreen ? 'fullscreen' : '';
 		const sidebarCN = (isFullscreen && isMinimal) ? 'no-sidebar' : '';
-		const {openSigninPopup}=this.state;
+		const { openSigninPopup } = this.state;
 
 		return (
 			<LayoutContainer className={`${fullScreenCN} ${sidebarCN}`}>
@@ -84,17 +89,17 @@ state={
 									<CodeOutput playground={this.playground} />
 								</EditorContainer>
 								<CodeActions
-								 playground={this.playground}
-								 toggleSigninPopup={this.toggleSigninPopup}
-								  />
+									playground={this.playground}
+									toggleSigninPopup={this.toggleSigninPopup}
+								/>
 								<InputPopup playground={this.playground} />
 							</MainContainer>
 							{!isMinimal &&
 								<Container className="playground_sidebar scrollbar">
 									{ isFullscreen &&
-										<CodeInfoToolbar 
-										playground={this.playground} 
-										toggleSigninPopup={this.toggleSigninPopup}
+										<CodeInfoToolbar
+											playground={this.playground}
+											toggleSigninPopup={this.toggleSigninPopup}
 										/>
 									}
 									<Comments
@@ -110,7 +115,7 @@ state={
 						</Fragment>
 					)
 				}
-				<SignInPopup 
+				<SignInPopup
 					url={`/playground/${publicId}`}
 					open={openSigninPopup}
 					onClose={this.toggleSigninPopup}

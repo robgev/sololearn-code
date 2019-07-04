@@ -7,7 +7,7 @@ import { Container, Checkbox, FlexBox } from 'components/atoms';
 import { ConsecutiveSnackbar, FlatButton } from 'components/molecules';
 import { Run } from 'components/icons'; // InsertLink
 import SavePopup from './SavePopup';
-import SignInPopup from 'components/SignInPopup';
+import Storage from 'api/storage';
 // import ExternalResourcePopup from './ExternalResourcePopup';
 
 import './styles.scss';
@@ -26,8 +26,9 @@ class Toolbar extends Component {
 	};
 
 	handleSaveClick = () => {
-		const { playground, isLoggedIn,toggleSigninPopup } = this.props;
+		const { playground, isLoggedIn, toggleSigninPopup } = this.props;
 		if (!isLoggedIn) {
+			Storage.save('code', { id: playground.publicId, data: { ...playground.data, ...playground.editorState } });
 			toggleSigninPopup();
 		} else if (playground.isMyCode) {
 			playground.saveCode();
@@ -37,9 +38,10 @@ class Toolbar extends Component {
 	}
 
 	toggleSavePopup = () => {
-		const { isLoggedIn,toggleSigninPopup } = this.props;
+		const { isLoggedIn, toggleSigninPopup, playground } = this.props;
 
 		if (!isLoggedIn) {
+			Storage.save('code', { id: playground.publicId, data: { ...playground.data, ...playground.editorState } });
 			toggleSigninPopup();
 		} else {
 			this.setState(({ isSavePopupOpen }) => ({ isSavePopupOpen: !isSavePopupOpen }));

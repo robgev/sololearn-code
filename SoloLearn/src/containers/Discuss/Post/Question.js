@@ -58,7 +58,7 @@ class Question extends Component {
 		this.setState({ isReportPopupOpen: false });
 	}
 	openReportPopup = () => {
-		const {isLoggedIn,toggleSigninPopup}=this.props;
+		const { isLoggedIn, toggleSigninPopup } = this.props;
 
 		if (!isLoggedIn) {
 			toggleSigninPopup();
@@ -70,13 +70,13 @@ class Question extends Component {
 		this.setState({ isFollowSnackbarOpen: false });
 	}
 	onFollowClick = () => {
-		const {isLoggedIn,toggleSigninPopup,onFollowClick}=this.props;
+		const { isLoggedIn, toggleSigninPopup, onFollowClick } = this.props;
 
-		if(!isLoggedIn){
+		if (!isLoggedIn) {
 			toggleSigninPopup();
-		} else{
-		onFollowClick();
-		this.setState({ isFollowSnackbarOpen: true });
+		} else {
+			onFollowClick();
+			this.setState({ isFollowSnackbarOpen: true });
 		}
 	}
 	editPost = () => {
@@ -88,7 +88,7 @@ class Question extends Component {
 			isFollowSnackbarOpen, isReportPopupOpen, isRemovalPopupOpen, isDeletePopupOpen,
 		} = this.state;
 		const {
-			post, onDelete, t,toggleSigninPopup,
+			post, onDelete, t, toggleSigninPopup,
 		} = this.props;
 		const user = post !== null && {
 			id: post.userID,
@@ -169,6 +169,7 @@ class Question extends Component {
 													totalVotes={post.votes}
 													// onChange={onChange}
 													comments={post.answers}
+													toggleSigninPopup={toggleSigninPopup}
 												/>
 												<SecondaryTextBlock className="text">{updateDate(post.date)} </SecondaryTextBlock>
 											</FlexBox>
