@@ -31,11 +31,10 @@ $icon_accepted_color: $primary_colored_text;
 			font-size: 14px;
 			font-weight: bold;
 			.reply-editor{
+				margin-left: 16px;
 				border-radius: 4px;
 				background-color: $white;
 				width: 100%;
-				max-height: 160px;
-				overflow: auto;
 			}
 			.add-reply-action-container {
 				&.expanded {
@@ -47,13 +46,6 @@ $icon_accepted_color: $primary_colored_text;
 						background-color: $primary_color;
 					}
 				}
-				.cancel-button {
-					font-size: 15px;
-					font-weight: bold;
-					border: none;
-					padding: 5px;
-					background: none;
-				}
 				.add-reply-button-label {
 					color: unset;
 					padding-left: 4px;
@@ -63,9 +55,16 @@ $icon_accepted_color: $primary_colored_text;
 				}
 			}
 		}
+		.cancel-button {
+			font-size: 15px;
+			font-weight: bold;
+			border: none;
+			padding: 5px;
+			background: none;
+		}
 
 		.filters {
-			margin:0 23px;
+			margin:0 18px;
 
 			.filter{
 				margin-right: 16px;
@@ -74,17 +73,31 @@ $icon_accepted_color: $primary_colored_text;
 			.title {
 				margin-right: $secondary_gap_size;
 			}
+
+			.filter-comments-count {
+				font-weight: bold;
+				font-size: 14px;
+				color: $content_text_color;
+				text-transform: uppercase;
+			}
 		}
 	}
 	.editing-post {
-		align-items: flex-end;
 		width: 100%;
+		align-items: flex-end;
+		background-color: $white;
+		.editing-post-input {
+			margin: 12px 0;
+			border-radius: 4px;
+			background-color: $white;
+			width: 100%;
+		}
+		.editing-post-button {
+			margin-left: 24px;
+		}
 		.buttons {
 			display: flex;
 			justify-content: flex-end;
-			.cancel {
-				margin-right: $secondary_gap_size;
-			}
 		}
 	}
 
@@ -113,10 +126,13 @@ $icon_accepted_color: $primary_colored_text;
 				min-width: 150px;
 				margin-top: -16px;
 				.accepted-icon {
+					color: $icon_color;
 					cursor: pointer;
-					&:hover,
-					&.active {
-						color: $secondary_color;
+					&:hover {
+						color: $primary_color_hover;
+					}
+					&.best-answer {
+						color: $primary_color_hover;
 					}
 				}
 				.follow-container {
@@ -154,9 +170,16 @@ $icon_accepted_color: $primary_colored_text;
 
 				.edit-message-container {
 					margin-top: 16px;
+					&.other-margin {
+						margin-top: 10px;
+					}
 					.edit-message-icon {
 						padding-right: 8px;
 						color: $icon_color;
+					}
+					.edited-message {
+						font-size: 12px;
+						font-style: italic;
 					}
 				}
 

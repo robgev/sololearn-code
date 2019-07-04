@@ -154,7 +154,7 @@ class Question extends Component {
 													<Container className="edit-message-icon" >
 														<EditIcon />
 													</Container>
-													<SecondaryTextBlock>
+													<SecondaryTextBlock className="edited-message">
 														{t('discuss.edited-by-format').replace('()', post.modifyUserName)},
 														{updateDate(post.modifyDate)}
 													</SecondaryTextBlock>
@@ -175,6 +175,7 @@ class Question extends Component {
 													totalVotes={post.votes}
 													// onChange={onChange}
 													comments={post.answers}
+													withoutCommentCount
 												/>
 												<SecondaryTextBlock className="text">{updateDate(post.date)} </SecondaryTextBlock>
 											</FlexBox>

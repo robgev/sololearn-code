@@ -7,6 +7,7 @@ import {
 	List,
 	Snackbar,
 	FlexBox,
+	TextBlock,
 } from 'components/atoms';
 import { InfiniteScroll, RaisedButton, EmptyCard, TitleTab } from 'components/molecules';
 import AddReply from './AddReply';
@@ -95,13 +96,16 @@ class Replies extends Component {
 		const { avtiveFilter } = this.state;
 		return (
 			<Container className="replies">
-				<FlexBox align className="filters">
-					<TitleTab
-						className="filter"
-						tabs={this.replyFilters}
-						activeTab={avtiveFilter}
-						handleTabChange={this.onOrderChange}
-					/>
+				<FlexBox justifyBetween align className="filters">
+					<TextBlock className="filter-comments-count">{`${count} ${t('common.comments-format')}`}</TextBlock>
+					<FlexBox>
+						<TitleTab
+							className="filter"
+							tabs={this.replyFilters}
+							activeTab={avtiveFilter}
+							handleTabChange={this.onOrderChange}
+						/>
+					</FlexBox>
 				</FlexBox>
 				<InfiniteScroll
 					hasMore={this.replies.hasMore}
