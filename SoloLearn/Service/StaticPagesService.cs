@@ -21,7 +21,7 @@ namespace SoloLearn.Service
 	{
 	  var values = new Dictionary<string, string>
 			{
-					{ "alias", "FAQ" }
+					{ "alias", alias }
 			};
 	  var content = new FormUrlEncodedContent(values);
 
