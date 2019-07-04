@@ -14,7 +14,7 @@ import {
 import { Level } from 'components/icons';
 
 const ProfilePreview = ({ id, to }) => {
-	const [profile, setProfile] = useState(null);
+	const [ profile, setProfile ] = useState(null);
 	useEffect(() => {
 		Service.request('Profile/GetProfile', { id })
 			.then(({ profile }) => setProfile(profile));
@@ -30,7 +30,7 @@ const ProfilePreview = ({ id, to }) => {
 
 					<FlexBox className="preview-info" column>
 						<FlexBox align>
-							<UsernameLink className="item item-user-name">{profile.name || profile.userName}</UsernameLink>
+							<UsernameLink to={to} className="item item-user-name">{profile.name || profile.userName}</UsernameLink>
 							<ModBadge badge={profile.badge} />
 						</FlexBox>
 						<FlexBox align className="profile-info-container" >

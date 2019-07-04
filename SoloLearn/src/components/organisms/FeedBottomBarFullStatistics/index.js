@@ -34,7 +34,7 @@ const FeedBottomBarFullStatistics = ({
 				comments={comments}
 				link={commentIconLink}
 				className="feed-bbfs_view-stats"
-				withoutCommentCount
+				withoutCommentCount={withoutCommentCount}
 			/>
 		</FlexBox>
 		{withDate ? <SecondaryTextBlock className="date">{updateDate(date)}</SecondaryTextBlock> : null}

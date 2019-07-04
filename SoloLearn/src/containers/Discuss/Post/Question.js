@@ -27,7 +27,8 @@ import {
 	Edit as EditIcon,
 } from 'components/icons';
 import ReportPopup from 'components/ReportPopup';
-import { updateDate } from 'utils';
+import PreviewItem from 'components/PreviewItem';
+import { generatePreviews, updateDate } from 'utils';
 
 import RemovalPopup from './RemovalPopup';
 import DeletePopup from './DeletePopup';
@@ -162,6 +163,15 @@ class Question extends Component {
 											}
 											<Container className="tags">
 												<Tags tags={post.tags} />
+											</Container>
+											<Container className="question-preview-container">
+												{generatePreviews(post.message).map(preview => (
+													<Container key={preview.link} className="preview">
+														<PreviewItem
+															{...preview}
+														/>
+													</Container>
+												))}
 											</Container>
 											<FlexBox justifyBetween fullWidth align className="statistics-container">
 												<FeedBottomBarFullStatistics
