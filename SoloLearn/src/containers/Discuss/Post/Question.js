@@ -131,7 +131,7 @@ class Question extends Component {
 													</FlexBox>
 												</Container>
 												<FlexBox className="options" justifyEnd align>
-													<IconWithText onClick={this.onFollowClick} Icon={Follow}>
+													<IconWithText className="follow-container" onClick={this.onFollowClick} Icon={Follow}>
 														<SecondaryTextBlock className="follow-text">
 															{isFollowing ? 'Unfollow' : 'Follow'}
 														</SecondaryTextBlock>
