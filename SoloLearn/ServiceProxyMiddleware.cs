@@ -44,7 +44,7 @@ namespace SoloLearn
                 }
                 else
                 {
-                    _options.Port = "43540";
+                    _options.Port = "80";
                 }
 
             }
