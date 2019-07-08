@@ -48,11 +48,13 @@ render() {
 		onEditButtonEnabledChange,
 		getMentionUsers,
 		isEditButtonEnabled,
+		toggleSigninPopup
 	} = this.props;
 	const {
 		id,
 	} = comment;
 	const profile = CommentItem.serializeProfile(comment);
+
 	return (
 		<Fragment>
 			<ListItem>
@@ -152,6 +154,7 @@ render() {
 								<VoteActions
 									id={comment.id}
 									type={`${type}Comment`}
+									toggleSigninPopup={toggleSigninPopup}
 									initialVote={comment.vote}
 									initialCount={comment.votes}
 									onChange={(vote) => { onVote(vote); }}

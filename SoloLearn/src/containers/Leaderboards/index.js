@@ -14,7 +14,7 @@ import { queryDifference } from 'utils';
 import BusyWrapper from 'components/BusyWrapper';
 import LeaderboardShimmer from 'components/Shimmers/LeaderboardShimmer';
 import texts from 'texts';
-import { Layout, RaisedButton } from 'components/molecules';
+import { Layout, RaisedButton, FlatButton } from 'components/molecules';
 import {
 	Container,
 	PaperContainer,
@@ -23,6 +23,8 @@ import {
 	Select,
 	MenuItem,
 	Title,
+	FlexBox,
+	TextBlock,
 } from 'components/atoms';
 import { ArrowDown } from 'components/icons';
 import { NoLocationCard } from './components';
@@ -57,8 +59,8 @@ const sendGoogleEvent = (mode) => {
 const mapStateToProps = state => ({
 	leaderboards: leaderboardsDataSelector(state),
 	filters: leaderboardsFiltersSelector(state),
-	userId: state.userProfile.id,
-	countryCode: state.userProfile.countryCode,
+	userId: state.userProfile && state.userProfile.id,
+	countryCode: state.userProfile && state.userProfile.countryCode,
 });
 
 @connect(mapStateToProps, { getLeaderboard, setFilters, loadMore })
@@ -70,7 +72,7 @@ class Leaderboards extends PureComponent {
 		const calculatedUserId = parseInt(userId || this.props.userId, 10);
 		this.state = {
 			userRank: -1,
-			loading: true,
+			loading: false,
 			startIndex: 0,
 			loadCount: 20,
 			hasMore: true,
@@ -86,6 +88,11 @@ class Leaderboards extends PureComponent {
 			userId, startIndex, loadCount,
 		} = this.state;
 		const { location, filters, params: { tab } } = this.props;
+
+		if (userId || (!userId && TABS[tab] !== TABS.local && TABS[tab] !== TABS.following)) {
+			this.setState(({ loading }) => ({ loading: !loading }));
+		}
+
 		const query = {
 			...filters,
 			...location.query,
@@ -127,7 +134,10 @@ class Leaderboards extends PureComponent {
 		}
 		const { location, leaderboards } = this.props;
 		if (!isEqual(newLocation.query, location.query) || tab !== this.props.params.tab) {
-			this.setState({ loading: true });
+			if (userId || (!userId && TABS[tab] !== TABS.local && TABS[tab] !== TABS.following)) {
+				this.setState({ loading: true });
+			}
+
 			sendGoogleEvent(newProps.filters.mode);
 			// Check against default filters and show only the ones that are different
 			// From the defaults in the address bar
@@ -248,31 +258,39 @@ class Leaderboards extends PureComponent {
 						wrapperClassName="leaderboards-body"
 						loadingComponent={<LeaderboardShimmer />}
 					>
-						{countryCode || TABS[tab] !== TABS.local
-							? (
-								<Fragment>
-									{
-										leaderboards.length === 0 && !loading ?
-											<Title>{t('leaderboard.no-social-message')}</Title>
-											: filters.range === 0 ?
-												<InfiniteLeaderboard
-													userId={userId}
-													hasMore={hasMore}
-													leaderboards={leaderboards}
-													loadMore={this.handleNextFetch}
-													onScrollVisibility={this.onScrollVisibility}
-													isLoading={loadingData}
-												/> :
-												<LeaderboardCard
-													userId={userId}
-													leaderboards={leaderboards}
-													isMine={currentUserId === userId}
-													onScrollVisibility={this.onScrollVisibility}
-												/>
-									}
-								</Fragment>
-							)
-							: <NoLocationCard />
+						{
+							!userId && (TABS[tab] === TABS.local || TABS[tab] === TABS.following)
+								? (
+									<FlexBox column align justifyBetween>
+										<TextBlock>Sign in</TextBlock>
+										<FlatButton onClick={() => browserHistory.push('/signin?url=leaderboard/local')}>Sign In</FlatButton>
+									</FlexBox>
+								)
+								: countryCode || TABS[tab] !== TABS.local
+									? (
+										<Fragment>
+											{
+												leaderboards.length === 0 && !loading ?
+													<Title>{t('leaderboard.no-social-message')}</Title>
+													: filters.range === 0 ?
+														<InfiniteLeaderboard
+															userId={userId}
+															hasMore={hasMore}
+															leaderboards={leaderboards}
+															loadMore={this.handleNextFetch}
+															onScrollVisibility={this.onScrollVisibility}
+															isLoading={loadingData}
+														/> :
+														<LeaderboardCard
+															userId={userId}
+															leaderboards={leaderboards}
+															isMine={currentUserId === userId}
+															onScrollVisibility={this.onScrollVisibility}
+														/>
+											}
+										</Fragment>
+									)
+									: <NoLocationCard />
 						}
 						{(userRank > 0 && countryCode && !shouldHideButton) &&
 							<Container

@@ -14,7 +14,7 @@ import ReplyItem from './ReplyItem';
 import IReplies from './IReplies';
 
 const mapStateToProps = ({ userProfile }) => ({
-	userInfo: { userName: userProfile.name, avatarUrl: userProfile.avatarUrl },
+	userInfo: userProfile && { userName: userProfile.name, avatarUrl: userProfile.avatarUrl },
 });
 
 @connect(mapStateToProps)
@@ -91,8 +91,10 @@ class Replies extends Component {
 	}
 
 	render() {
-		const { count, t, askerID } = this.props;
-		const { avtiveFilter } = this.state;
+		const {
+			count, t, askerID, userInfo,toggleSigninPopup
+        } = this.props;
+        const { avtiveFilter } = this.state;
 		return (
 			<Container className="replies">
 				<FlexBox align className="filters">
@@ -109,11 +111,11 @@ class Replies extends Component {
 					initialLoad={false}
 					isLoading={this.replies.isFetching}
 				>
-					<Container>
-						<AddReply
+                    <Container>
+						{userInfo && <AddReply
 							postID={this.props.postID}
 							submit={this.addReply}
-						/>
+						/>}
 						{this.replies.canLoadAbove
 							? (
 								<RaisedButton
@@ -131,6 +133,7 @@ class Replies extends Component {
 									{
 										this.replies.entities.map(reply => (
 											<ReplyItem
+												userInfo={userInfo}
 												ref={(replyView) => {
 													this.repliesRefs[reply.id] = replyView;
 												}}
@@ -140,6 +143,7 @@ class Replies extends Component {
 												reply={reply}
 												deleteReply={() => this.deleteReply(reply.id)}
 												onAccept={() => this.onAcceptReply(reply.id)}
+												toggleSigninPopup={toggleSigninPopup}
 											/>
 										))
 									}

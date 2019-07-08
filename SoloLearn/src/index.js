@@ -45,14 +45,14 @@ class App extends PureComponent {
 		};
 	}
 	componentWillMount() {
-		Service.getSession()
-			.then((user) => {
-				if (user === null && shouldRedirect(window.location.pathname)) {
-					browserHistory.replace('/signin');
-				} else {
-					this.props.getUserProfileAsync();
-				}
-			});
+		Service.getSession();
+		// .then((user) => {
+		// 	if (user === null && shouldRedirect(window.location.pathname)) {
+		// 		browserHistory.replace('/signin');
+		// 	} else {
+		// 		this.props.getUserProfileAsync();
+		// 	}
+		// });
 		this.props.getCourses()
 			.then(() => {
 				if (this.state.isLoading) {
