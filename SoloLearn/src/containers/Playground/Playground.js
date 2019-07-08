@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
-import { Container, PaperContainer, TextBlock } from 'components/atoms';
+import { Container, PaperContainer, TextBlock, FlexBox } from 'components/atoms';
 import { Layout, EmptyCard, FloatingActionButton } from 'components/molecules';
 import { Run, Code } from 'components/icons';
 import Comments from 'containers/Comments/CommentsBase';
@@ -118,7 +117,7 @@ componentWillReceiveProps(nextProps) {
 								<InputPopup playground={this.playground} />
 							</MainContainer>
 							{!(isMinimal || isFullscreen) &&
-								<Container className="playground_sidebar scrollbar">
+								<FlexBox column className="playground_sidebar scrollbar">
 									<CodeInfoToolbar
 										playground={this.playground}
 										toggleSigninPopup={this.toggleSigninPopup}
@@ -131,7 +130,7 @@ componentWillReceiveProps(nextProps) {
 										commentsType="code"
 										commentsCount={data.comments}
 									/>
-								</Container>
+								</FlexBox>
 							}
 						</Fragment>
 					)

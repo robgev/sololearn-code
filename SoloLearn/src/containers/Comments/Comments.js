@@ -317,7 +317,7 @@ class Comments extends Component {
 				</Container>
 				{userProfile &&
 					<Container className="input-bar">
-						<ProfileAvatar user={userProfile} />
+						<ProfileAvatar user={userProfile} size="extra-small" />
 						<CountingMentionInput
 							ref={(i) => { this.mentionInput = i; }}
 							onSubmitEnabledChange={this.submitEnabledChange}

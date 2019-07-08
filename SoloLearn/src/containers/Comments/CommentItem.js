@@ -137,6 +137,7 @@ render() {
 							{
 								comment.parentID === null && comment.replies > 0 && (
 									<PromiseButton
+										className="comments_text-button"
 										fire={onRepliesButtonClick}
 										mouseDown
 									>
@@ -146,6 +147,7 @@ render() {
 							}
 							<FlatButton
 								onClick={onReply}
+								className="comments_text-button"
 							>
 								{t('comments.reply')}
 							</FlatButton>

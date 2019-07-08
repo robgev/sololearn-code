@@ -1,5 +1,26 @@
+@import '~styles/colors';
+
 .comment-list {
 	display: flex;
+	flex: 1;
 	width: 100%;
 	flex-direction: column;
+	position: relative;
+	.input-bar {
+		display: flex;
+		width: 400px;
+		position: fixed;
+		bottom: 0;
+		background-color: white;
+		padding: 14px 16px;
+		.editor {
+			border: 1px solid $icon_color;
+			border-radius: 4px;
+			background-color: white;
+			margin-left: 8px;
+			.public-DraftEditorPlaceholder-root {
+				color: #3A464A;
+			}
+		}
+	}
 }

@@ -13,22 +13,22 @@
 		position: relative;
 		.comment-item_comment-container {
 			margin-right: 20px;
-		}
-		.comment-item_author {
-			display: inline-flex;
-			.comment-item_user-name,
-			.comment-item_user-badge {
-				margin-right: 3px;
+			.comment-item_author {
+				display: inline-flex;
+				.comment-item_user-name,
+				.comment-item_user-badge {
+					margin-right: 3px;
+				}
+				.comment-item_user-badge {
+					margin-left: 3px;
+				}
 			}
-			.comment-item_user-badge {
-				margin-left: 3px;
+			.counting-mention-input {
+				min-height: 50px;
 			}
-		}
-		.counting-mention-input {
-			min-height: 50px;
-		}
-		.comment_item-text {
-			display: inline;
+			.comment_item-text {
+				display: inline;
+			}
 		}
 		.comment-item_icon-menu {
 			position: absolute;
@@ -36,9 +36,19 @@
 			right: 0;
 		}
 	}
+	.comments_text-button {
+		border: none;
+		padding: 0;
+		font-size: 12px;
+		font-weight: 700;
+		color: $primary_color_hover;
+		background: none;
+	}
 	.reply-input {
 		.editor {
 			margin-left: 0;
+			border: 1px solid $icon_color;
+			border-radius: 4px;
 		}
 	}
 }
