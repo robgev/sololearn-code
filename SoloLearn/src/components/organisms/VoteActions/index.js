@@ -78,10 +78,13 @@ class VoteActions extends Component {
 	}
 
 	render() {
-		const { t, vertical, className } = this.props;
+		const {
+			t, vertical, className, small,
+		} = this.props;
 		return (
 			<Fragment>
 				<VoteButtons
+					small={small}
 					vertical={vertical}
 					likes={this.likes}
 					className={className}
@@ -103,9 +106,11 @@ class VoteActions extends Component {
 VoteActions.defaultProps = {
 	vertical: false,
 	onChange: () => { },
+	small: false,
 };
 
 VoteActions.propTypes = {
+	small: PropTypes.bool,
 	id: PropTypes.number.isRequired,
 	type: PropTypes
 		.oneOf([ 'code', 'post', 'userPost', 'lessonComment', 'userLessonComment', 'codeComment' ]).isRequired,

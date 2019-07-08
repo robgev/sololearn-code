@@ -5,22 +5,35 @@
 	.comment-item_wrapper {
 		min-width: 0;
 		word-break: break-all;
-		.comment-item_bubble-container {
-			background-color: $white;
-			border-radius: 8px;
-			border: 1px solid $border-color;
-			padding: $primary_gap_size 1.5 * $primary_gap_size;
-			margin-left: 10px;
-			.comment-item_body {
-				min-width: 0;
-				.counting-mention-input {
-					min-height: 50px;
-				}
+		background-color: $white;
+		border-radius: 8px;
+		border: 1px solid $border-color;
+		padding: $primary_gap_size 1.5 * $primary_gap_size;
+		margin-left: 8px;
+		position: relative;
+		.comment-item_comment-container {
+			margin-right: 20px;
+		}
+		.comment-item_author {
+			display: inline-flex;
+			.comment-item_user-name,
+			.comment-item_user-badge {
+				margin-right: 3px;
 			}
-			.comment-item_icon-menu {
-				align-self: flex-start;
-				margin-top: 7px;
+			.comment-item_user-badge {
+				margin-left: 3px;
 			}
+		}
+		.counting-mention-input {
+			min-height: 50px;
+		}
+		.comment_item-text {
+			display: inline;
+		}
+		.comment-item_icon-menu {
+			position: absolute;
+			top: 0;
+			right: 0;
 		}
 	}
 	.reply-input {

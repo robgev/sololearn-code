@@ -67,8 +67,8 @@
 		"delete-comment-alert-title": "Delete comment",
 		"filter": {
 			"title": "Sort by:",
-			"most-recent": "Most Recent",
-			"most-popular": "Most Popular"
+			"most-recent": "Recent",
+			"most-popular": "Popular"
 		},
 		"replying-to-format": "Replying to",
 		"write-reply-placeholder": "Write a reply",

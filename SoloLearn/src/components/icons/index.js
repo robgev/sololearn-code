@@ -49,3 +49,5 @@ export { default as Done } from './Check';
 export { default as Follow } from './Star';
 export { default as Edit } from './Edit';
 export { default as Answer } from './Answer';
+export { default as ThumbDownSmall } from './ThumbDownSmall';
+export { default as ThumbUpSmall } from './ThumbUpSmall';
