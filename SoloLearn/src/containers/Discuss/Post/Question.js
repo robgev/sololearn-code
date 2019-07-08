@@ -58,24 +58,37 @@ class Question extends Component {
 		this.setState({ isReportPopupOpen: false });
 	}
 	openReportPopup = () => {
-		this.setState({ isReportPopupOpen: true });
+		const { isLoggedIn, toggleSigninPopup } = this.props;
+
+		if (!isLoggedIn) {
+			toggleSigninPopup();
+		} else {
+			this.setState({ isReportPopupOpen: true });
+		}
 	}
 	closeFollowSnackbar = () => {
 		this.setState({ isFollowSnackbarOpen: false });
 	}
 	onFollowClick = () => {
-		this.props.onFollowClick();
-		this.setState({ isFollowSnackbarOpen: true });
+		const { isLoggedIn, toggleSigninPopup, onFollowClick } = this.props;
+
+		if (!isLoggedIn) {
+			toggleSigninPopup();
+		} else {
+			onFollowClick();
+			this.setState({ isFollowSnackbarOpen: true });
+		}
 	}
 	editPost = () => {
 		browserHistory.push(`/discuss/edit/${this.props.post.id}`);
 	}
+
 	render() {
 		const {
 			isFollowSnackbarOpen, isReportPopupOpen, isRemovalPopupOpen, isDeletePopupOpen,
 		} = this.state;
 		const {
-			post, onDelete, t,
+			post, onDelete, t, toggleSigninPopup,
 		} = this.props;
 		const user = post !== null && {
 			id: post.userID,
@@ -156,6 +169,7 @@ class Question extends Component {
 													totalVotes={post.votes}
 													// onChange={onChange}
 													comments={post.answers}
+													toggleSigninPopup={toggleSigninPopup}
 												/>
 												<SecondaryTextBlock className="text">{updateDate(post.date)} </SecondaryTextBlock>
 											</FlexBox>
