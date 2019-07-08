@@ -93,7 +93,9 @@ class FeedItemsBase extends Component {
 		this.setState({ currentFilter }, () => {
 			clearFeedItems();
 			this.getFeedItems();
-			getPinnedFeedItems(null, null, null);
+			if (currentFilter === 0) {
+				getPinnedFeedItems(null, null, null);
+			}
 			Storage.save('currentFilter', currentFilter);
 		});
 	}
