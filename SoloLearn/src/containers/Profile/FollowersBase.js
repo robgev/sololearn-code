@@ -24,7 +24,7 @@ const TabTypes = {
 };
 
 const FollowersBase = ({
-	t, open, closePopup, userId,
+	t, open, closePopup, userId,toggleSigninPopup,isLoggedIn
 }) => {
 	const [ activeTab, setActiveTab ] = useState(TabTypes.Followers);
 	const [ followers, setFollowers ] = useState([]);
@@ -72,11 +72,15 @@ const FollowersBase = ({
 	}, []);
 
 	const onFollow = (id, isFollowing) => {
+		if(!isLoggedIn){
+			toggleSigninPopup();
+		} else {
 		followUser({ id, shouldFollow: !isFollowing });
 		followers.findIndex(f => f.id === id && ((f.isFollowing = !isFollowing) || true));
 		setFollowers([ ...followers ]);
 		following.findIndex(f => f.id === id && ((f.isFollowing = !isFollowing) || true));
 		setFollowing([ ...following ]);
+		}
 	};
 
 	return (

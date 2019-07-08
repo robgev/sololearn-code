@@ -7,6 +7,7 @@ import {
 	checkForInput,
 	wrapCodeWithComment,
 } from './utils/Functions';
+import Storage from 'api/storage';
 
 class IPlayground {
 	MAX_INPUT_LENGTH = 100;
@@ -45,8 +46,11 @@ class IPlayground {
 		this.type = null;
 	}
 
-	@action getCode = async () => {
-		if (this.getCodePromise === null && (this.publicId !== null || this.lessonCodeId !== null)) {
+	@action getCode = async (code) => {
+		if (code) {
+			this.getEditorState(code);
+			Storage.remove('code');
+		} else if (this.getCodePromise === null && (this.publicId !== null || this.lessonCodeId !== null)) {
 			if (this.publicId !== null) {
 				this.getCodePromise = Service.request('Playground/GetCode', { publicId: this.publicId });
 			} else
@@ -55,17 +59,21 @@ class IPlayground {
 			}
 			try {
 				const { code } = await this.getCodePromise;
-				this.data = code;
-				const { cssCode, jsCode, sourceCode } = code;
-				this.editorState = { cssCode, jsCode, sourceCode };
-				if (this.language === null) {
-					this.language = this.data.language === 'web' ? 'html' : this.data.language;
-				}
+				this.getEditorState(code);
 			} finally {
 				this.getCodePromise = null;
 			}
 		}
 		return this.getCodePromise;
+	}
+
+	getEditorState=(code) => {
+		this.data = code;
+		const { cssCode, jsCode, sourceCode } = code;
+		this.editorState = { cssCode, jsCode, sourceCode };
+		if (this.language === null) {
+			this.language = this.data.language === 'web' ? 'html' : this.data.language;
+		}
 	}
 
 	extractCodeFromObject(target) {

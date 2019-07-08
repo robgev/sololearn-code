@@ -17,6 +17,7 @@ const CommentList = observer(props => (
 				commentsAPI={props.commentsAPI}
 				toggleReplyBox={props.toggleReplyBox}
 				hideComment={props.hideComment}
+				toggleSigninPopup={props.toggleSigninPopup}
 			/>
 		))}
 	</Fragment>

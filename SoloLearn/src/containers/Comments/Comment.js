@@ -22,7 +22,7 @@ import { filterExisting } from './comments.utils';
 
 const mapStateToProps = ({ userProfile }) => ({
 	userProfile,
-	accessLevel: determineAccessLevel(userProfile.accessLevel),
+	accessLevel: userProfile && determineAccessLevel(userProfile.accessLevel),
 });
 
 @connect(mapStateToProps, null, null, { withRef: true })
@@ -242,7 +242,9 @@ class Comment extends Component {
 	}
 
 	render() {
-		const { t, userProfile, accessLevel } = this.props;
+		const {
+			t, userProfile, accessLevel, toggleSigninPopup,
+		} = this.props;
 		const {
 			replies,
 			repliesArray,
@@ -266,6 +268,7 @@ class Comment extends Component {
 					onReply={this.toggleReplyBox}
 					onRequestRemoval={this.onRequestRemoval}
 					ref={(node) => { this.commentRef = node; }}
+					toggleSigninPopup={toggleSigninPopup}
 				/>
 				{
 					repliesArray !== null && (
@@ -280,6 +283,7 @@ class Comment extends Component {
 							<CommentList
 								comments={repliesArray}
 								delete={this.deleteReply}
+								toggleSigninPopup={toggleSigninPopup}
 								commentsRef={this.addReplyRef}
 								commentsAPI={this.props.commentsAPI}
 								toggleReplyBox={this.toggleReplyBox}

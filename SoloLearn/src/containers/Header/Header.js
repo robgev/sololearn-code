@@ -1,7 +1,7 @@
 // React modules
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Image, Container, FlexBox } from 'components/atoms';
+import { Image, Container, FlexBox, Link } from 'components/atoms';
 import { ContainerLink } from 'components/molecules';
 import HomeIcon from 'components/HomeIcon';
 
@@ -37,8 +37,20 @@ const Header = ({ pathname, isSignedIn }) => {
 					<TabList pathname={pathname} />
 				</FlexBox>
 				<FlexBox align justifyEnd className="header-right">
-					{isSignedIn && <Notifications />}
-					<SettingsMenu />
+					{
+						isSignedIn
+							? (
+								<Fragment>
+									<Notifications />
+									<SettingsMenu />
+								</Fragment>
+							)
+							: (
+								 <Link to="/signin">
+									Sign In
+								</Link>
+							)
+					}
 				</FlexBox>
 			</Container>
 		</Container>

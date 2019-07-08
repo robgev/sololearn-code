@@ -35,16 +35,29 @@ import WebTabs from './WebTabs';
 import './styles.scss';
 
 const PlaygroundTabs = ({
-	t, playground, onClose, codes,
+	t,
+	codes,
+	onClose,
+	playground,
+	isLoggedIn,
+	toggleSigninPopup,
 }) => {
 	const [ isSavePopupOpen, setOpen ] = useState(false);
 
 	const toggleSavePopup = () => {
-		setOpen(!isSavePopupOpen);
+		if (!isLoggedIn) {
+			Storage.save('code', { id: playground.publicId, data: { ...playground.data, ...playground.editorState } });
+			toggleSigninPopup();
+		} else {
+			setOpen(!isSavePopupOpen);
+		}
 	};
 
 	const handleSaveClick = () => {
-		if (playground.isMyCode) {
+		if (!isLoggedIn) {
+			Storage.save('code', { id: playground.publicId, data: { ...playground.data, ...playground.editorState } });
+			toggleSigninPopup();
+		} else if (playground.isMyCode) {
 			playground.saveCode();
 		} else {
 			toggleSavePopup();
@@ -199,6 +212,7 @@ const PlaygroundTabs = ({
 
 const mapStateToProps = state => ({
 	codes: state.userProfile.codes,
+	isLoggedIn: !!state.userProfile,
 });
 
 export default translate()(connect(mapStateToProps)(PlaygroundTabs));

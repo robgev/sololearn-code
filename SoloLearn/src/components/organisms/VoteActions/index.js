@@ -7,6 +7,7 @@ import { observable, action } from 'mobx';
 import { vote } from 'actions/vote';
 import { Snackbar } from 'components/atoms';
 import getFaultReason from 'utils/faultGenerator';
+import SignInPopup from 'components/SignInPopup';
 import ILikes from './ILikes';
 import VoteButtons from './VoteButtons';
 import LikesPopup from './LikesPopup';
@@ -14,7 +15,11 @@ import './styles.scss';
 
 const mapDispatchToProps = { vote };
 
-@connect(null, mapDispatchToProps)
+const mapStateToProps = state => ({
+	isLoggedIn: !!state.userProfile,
+});
+
+@connect(mapStateToProps, mapDispatchToProps)
 @translate()
 @observer
 class VoteActions extends Component {
@@ -54,27 +59,41 @@ class VoteActions extends Component {
 	}
 
 	onUpvote = () => {
-		const { type, id, vote } = this.props;
-		this.likes.vote({ newVote: 1 })
-			.then(() => {
-				this.props.onChange({ vote: this.likes.userVote, votes: this.likes.voteCount });
-				vote({
-					type, id, vote: this.likes.userVote, votes: this.likes.voteCount,
-				});
-			})
-			.catch(this.catchError);
+		const {
+			type, id, vote, isLoggedIn, toggleSigninPopup,
+		} = this.props;
+
+		if (!isLoggedIn) {
+			toggleSigninPopup();
+		} else {
+			this.likes.vote({ newVote: 1 })
+				.then(() => {
+					this.props.onChange({ vote: this.likes.userVote, votes: this.likes.voteCount });
+					vote({
+						type, id, vote: this.likes.userVote, votes: this.likes.voteCount,
+					});
+				})
+				.catch(this.catchError);
+		}
 	}
 
 	onDownvote = () => {
-		const { type, id, vote } = this.props;
-		this.likes.vote({ newVote: -1 })
-			.then(() => {
-				this.props.onChange({ vote: this.likes.userVote, votes: this.likes.voteCount });
-				vote({
-					type, id, vote: this.likes.userVote, votes: this.likes.voteCount,
-				});
-			})
-			.catch(this.catchError);
+		const {
+			type, id, vote, isLoggedIn, toggleSigninPopup,
+		} = this.props;
+
+		if (!isLoggedIn) {
+			toggleSigninPopup();
+		} else {
+			this.likes.vote({ newVote: -1 })
+				.then(() => {
+					this.props.onChange({ vote: this.likes.userVote, votes: this.likes.voteCount });
+					vote({
+						type, id, vote: this.likes.userVote, votes: this.likes.voteCount,
+					});
+				})
+				.catch(this.catchError);
+		}
 	}
 
 	render() {

@@ -31,7 +31,7 @@ import DetailsPopup from './DetailsPopup';
 import './styles.scss';
 
 const mapStateToProps = state => ({
-	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
+	accessLevel: state.userProfile && determineAccessLevel(state.userProfile.accessLevel),
 });
 
 const mapDispatchToProps = {
@@ -82,7 +82,7 @@ class CodeInfoToolbar extends Component {
 			isReportPopupOpen,
 			isSnackbarOpen,
 		} = this.state;
-		const { t, accessLevel } = this.props;
+		const { t, accessLevel,toggleSigninPopup } = this.props;
 		const {
 			id,
 			vote,
@@ -93,6 +93,7 @@ class CodeInfoToolbar extends Component {
 			userID,
 			avatarUrl,
 			userName = '',
+			publicID,
 		} = this.props.playground.data;
 		const isMe = userID === this.props.playground.userId;
 		const userData = {
@@ -103,6 +104,7 @@ class CodeInfoToolbar extends Component {
 			name: userName,
 			id: userID,
 		};
+
 		return (
 			<PaperContainer className={`top-toolbar ${this.props.playground.isFullscreen ? 'fullscreen' : ''}`}>
 				<FlexBox align>
@@ -126,6 +128,7 @@ class CodeInfoToolbar extends Component {
 					<VoteActions
 						id={id}
 						type="code"
+						toggleSigninPopup={toggleSigninPopup}
 						initialVote={vote}
 						initialCount={votes}
 						className="code-info-toolbar_vote-actions"

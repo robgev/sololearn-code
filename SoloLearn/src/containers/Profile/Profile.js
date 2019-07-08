@@ -33,6 +33,7 @@ import Skills from './Skills';
 import Badges from './Badges';
 import FollowersBase from './FollowersBase';
 import ProfileSidebar from './ProfileSidebar';
+import SignInPopup from 'components/SignInPopup';
 
 import {
 	getFeed,
@@ -61,6 +62,7 @@ const Profile = ({
 	const [ followerPopupOpen, setFollowerPopupOpen ] = useState(false);
 	const [ feedHasMore, setFeedHasMore ] = useState(true);
 	const [ feedGetMore, setFeedGetMore ] = useState(false);
+	const [ openSigninPopup, setOpenSigninPopup ] = useState(false);
 
 	const [ codes, setCodes ] = useState([]);
 	const [ gettingCodes, setGettingCodes ] = useState(false);
@@ -101,6 +103,10 @@ const Profile = ({
 				? lastItem.groupedItems[lastItem.groupedItems.length - 1].id
 				: lastItem.id;
 	};
+	
+	const toggleSigninPopup=()=>{
+		setOpenSigninPopup(!openSigninPopup);
+	}
 
 	const loadFeedItems = () => {
 		if (gettingFeed || !feedHasMore) return;
@@ -180,8 +186,12 @@ const Profile = ({
 		ReactGA.ga('send', 'screenView', { screenName: `Profile ${capitalize(newTab)} Page` });
 	};
 	const onFollowUser = () => {
-		followUser({ id: data.id, shouldFollow: !data.isFollowing });
-		setData({ ...data, isFollowing: !data.isFollowing });
+		if (!userId) {
+			toggleSigninPopup();
+		} else {
+			followUser({ id: data.id, shouldFollow: !data.isFollowing });
+			setData({ ...data, isFollowing: !data.isFollowing });
+		}
 	};
 	const onVote = ({
 		vote,
@@ -241,6 +251,7 @@ const Profile = ({
 						profile={data}
 						openFollowerPopup={toggleFollowerPopup}
 						onFollow={onFollowUser}
+						toggleSigninPopup={toggleSigninPopup}
 					/>
 					<Tabs
 						value={tab}
@@ -354,7 +365,14 @@ const Profile = ({
 			<FollowersBase
 				open={followerPopupOpen}
 				userId={id}
+				isLoggedIn={userId}
 				closePopup={toggleFollowerPopup}
+				toggleSigninPopup={toggleSigninPopup}
+			/>
+			<SignInPopup
+				open={openSigninPopup}
+				url={`/profle/${data.id}`}
+				onClose={toggleSigninPopup}
 			/>
 		</LayoutWithSidebar>
 	);
@@ -362,7 +380,7 @@ const Profile = ({
 
 const mapStateToProps = state => ({
 	levels: state.levels,
-	userId: state.userProfile.id,
+	userId: state.userProfile ? state.userProfile.id : 0,
 });
 
 export default translate()(connect(mapStateToProps)(Profile));

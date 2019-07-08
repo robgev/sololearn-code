@@ -19,7 +19,7 @@ const TabTypes = {
 };
 
 const mapStateToProps = state => ({
-	canAccessDownvotes: determineAccessLevel(state.userProfile.accessLevel) > 2,
+	canAccessDownvotes: state.userProfile && determineAccessLevel(state.userProfile.accessLevel) > 2,
 });
 
 @connect(mapStateToProps)
