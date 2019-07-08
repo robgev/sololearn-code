@@ -156,7 +156,9 @@ class Codes extends Component {
 								? (
 									<FlexBox column align justifyBetween>
 										<TextBlock>Sign in</TextBlock>
-										<FlatButton onClick={() => browserHistory.push('signin')}>Sign In</FlatButton>
+										<FlatButton onClick={() => browserHistory.push(`/signin?url=codes?ordering=${filters.ordering}`)}>
+										Sign In
+										</FlatButton>
 									</FlexBox>
 								)
 								: <CodesList
