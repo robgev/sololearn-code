@@ -93,9 +93,9 @@ class Replies extends Component {
 
 	render() {
 		const {
-			count, t, askerID, userInfo,toggleSigninPopup
-        } = this.props;
-        const { avtiveFilter } = this.state;
+			count, t, askerID, userInfo, toggleSigninPopup,
+		} = this.props;
+		const { avtiveFilter } = this.state;
 		return (
 			<Container className="replies">
 				<FlexBox justifyBetween align className="filters">
@@ -115,7 +115,7 @@ class Replies extends Component {
 					initialLoad={false}
 					isLoading={this.replies.isFetching}
 				>
-                    <Container>
+					<Container>
 						{userInfo && <AddReply
 							postID={this.props.postID}
 							submit={this.addReply}
