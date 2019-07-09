@@ -15,14 +15,14 @@ const ViewStats = ({
 				<IconLabel className={small ? 'small' : ''}>{votes > 0 ? `+${numberFormatter(votes)}` : numberFormatter(votes)}</IconLabel>
 			</IconWithText>
 		}
-		{comments >= 0 &&
+		{comments && comments >= 0 &&
 			<ContainerLink to={link}>
 				<IconWithText justify Icon={small ? CommentSmall : Comment} className="molecule_view-stats">
 					<IconLabel className={small ? 'small' : ''}>{numberFormatter(comments)}</IconLabel>
 				</IconWithText>
 			</ContainerLink>
 		}
-		{views >= 0 &&
+		{views && views >= 0 &&
 			<IconWithText justify Icon={small ? ViewsSmall : Views} className="molecule_view-stats">
 				<IconLabel className={small ? 'small' : ''}>{numberFormatter(views)}</IconLabel>
 			</IconWithText>

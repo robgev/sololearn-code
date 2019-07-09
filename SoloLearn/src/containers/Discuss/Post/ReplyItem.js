@@ -1,10 +1,27 @@
-import React, { Component, Fragment, createRef } from 'react';
-import { browserHistory } from 'react-router';
+import React, { Component, createRef } from 'react';
+// import { browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
 import { observer } from 'mobx-react';
-import { ListItem, Container, FlexBox, PaperContainer, SecondaryTextBlock } from 'components/atoms';
-import { RaisedButton, ProfileAvatar, UsernameLink, ModBadge } from 'components/molecules';
-import { VoteActions, Mention, CountingMentionInput } from 'components/organisms';
+import {
+	ListItem,
+	Container,
+	FlexBox,
+	PaperContainer,
+	SecondaryTextBlock,
+} from 'components/atoms';
+import {
+	RaisedButton,
+	FlatButton,
+	ProfileAvatar,
+	UsernameLink,
+	ModBadge,
+} from 'components/molecules';
+import {
+	VoteActions,
+	Mention,
+	CountingMentionInput,
+} from 'components/organisms';
+import { Edit as EditIcon } from 'components/icons';
 import ReportPopup from 'components/ReportPopup';
 import PreviewItem from 'components/PreviewItem';
 import { generatePreviews, updateDate } from 'utils';
@@ -49,7 +66,7 @@ class ReplyItem extends Component {
 		if (!this.props.userInfo) {
 			this.props.toggleSigninPopup();
 		} else {
-		this.setState({ isReportPopupOpen: true });
+			this.setState({ isReportPopupOpen: true });
 		}
 	}
 
@@ -110,33 +127,37 @@ class ReplyItem extends Component {
 
 		if (isEditing) {
 			return (
-				<FlexBox column className="editing-post">
-					<CountingMentionInput
-						getUsers={{ type: 'discuss', params: { postId: reply.id } }}
-						initText={reply.message}
-						ref={this.editInput}
-						onSubmitEnabledChange={this.setCanEdit}
-						placeholder={t('discuss.editTitle')}
-						autofocus
-					/>
-					<Container className="buttons">
-						<RaisedButton
-							className="cancel"
-							onKeyDown={this.handleCancelEditEnter}
-							onMouseDown={this.toggleEdit}
-						>
-							{t('common.cancel-title')}
-						</RaisedButton>
-						<RaisedButton
-							color="primary"
-							onMouseDown={this.edit}
-							onKeyDown={this.handleEditEnter}
-							disabled={!isEditEnabled}
-						>
-							{t('common.edit-action-title')}
-						</RaisedButton>
-					</Container>
-				</FlexBox>
+				<PaperContainer className="post">
+					<FlexBox column className="editing-post">
+						<CountingMentionInput
+							getUsers={{ type: 'discuss', params: { postId: reply.id } }}
+							initText={reply.message}
+							ref={this.editInput}
+							onSubmitEnabledChange={this.setCanEdit}
+							placeholder={t('discuss.editTitle')}
+							autofocus
+							className="editing-post-input"
+						/>
+						<Container className="buttons">
+							<FlatButton
+								className="cancel-button"
+								onKeyDown={this.handleCancelEditEnter}
+								onMouseDown={this.toggleEdit}
+							>
+								{t('common.cancel-title')}
+							</FlatButton>
+							<RaisedButton
+								color="primary"
+								onMouseDown={this.edit}
+								onKeyDown={this.handleEditEnter}
+								disabled={!isEditEnabled}
+								className="editing-post-button"
+							>
+								{t('common.edit-action-title')}
+							</RaisedButton>
+						</Container>
+					</FlexBox>
+				</PaperContainer>
 			);
 		}
 		return (
@@ -179,10 +200,15 @@ class ReplyItem extends Component {
 								</Container>
 								{
 									reply.modifyDate && reply.modifyUserID && reply.modifyUserName &&
-									<SecondaryTextBlock className="edit-message">
-										{t('discuss.edited-by-format').replace('()', reply.modifyUserName)},
-										{updateDate(reply.modifyDate)}
-									</SecondaryTextBlock>
+									<FlexBox className="edit-message-container other-margin" align>
+										<Container className="edit-message-icon" >
+											<EditIcon />
+										</Container>
+										<SecondaryTextBlock className="edited-message">
+											{t('discuss.edited-by-format').replace('()', reply.modifyUserName)},
+											{updateDate(reply.modifyDate)}
+										</SecondaryTextBlock>
+									</FlexBox>
 								}
 								<Container className="question-preview-container">
 									{generatePreviews(reply.message).map(preview => (
@@ -199,10 +225,10 @@ class ReplyItem extends Component {
 										type="post"
 										initialCount={reply.votes}
 										initialVote={reply.vote}
-                                        className="discuss-reply-item-vote-actions"
-                                        toggleSigninPopup={toggleSigninPopup}
+										className="discuss-reply-item-vote-actions"
+										toggleSigninPopup={toggleSigninPopup}
 									/>
-									<SecondaryTextBlock className="text">{updateDate(reply.date)} </SecondaryTextBlock>
+									<SecondaryTextBlock className="reply-item-date">{updateDate(reply.date)} </SecondaryTextBlock>
 								</FlexBox>
 							</FlexBox>
 						</FlexBox>

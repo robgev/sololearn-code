@@ -32,7 +32,7 @@ class Options extends Component {
 						<IconWithText
 							Icon={Accepted}
 							disabled
-							className="accepted-icon"
+							className="accepted-icon best-answer"
 							active
 						>
 							Best Answer
