@@ -1,4 +1,4 @@
-FROM nexus.sololearn.com/nodejs-dotnet:2.1-sdk AS builder
+FROM nexus.sololearn.com/nodejs-dotnet:2.2-sdk AS builder
 WORKDIR /source
 
 COPY SoloLearn/*.csproj .
