@@ -6,17 +6,17 @@ import './styles.scss';
 
 const SplitPane = ({ playground, ...props }) => {
 	const inlineCN = playground.isInline ? 'split-pane_inline' : '';
-	const fullScreenCN = playground.isFullscreen ? 'split-pane_fullscreen' : '';
-	const fullCN = `playground_split-pane-container ${inlineCN} ${fullScreenCN}`;
+	const darkCN = playground.isDark ? 'dark' : '';
+	const fullCN = `playground_split-pane-container ${inlineCN} ${darkCN}`;
 	return (
 		<Container className={fullCN}>
 			<RSplitPane
 				minSize={0}
-				maxSize={-100}
+				maxSize={-45}
 				primary="first"
 				split="horizontal"
-				allowResize={playground.isOutputOpen}
-				defaultSize={playground.isOutputOpen ? 'calc(100% - 200px)' : '100%'}
+				allowResize
+				defaultSize={playground.isOutputOpen ? '70%' : 'calc(100% - 45px)'}
 				{...props}
 			/>
 		</Container>

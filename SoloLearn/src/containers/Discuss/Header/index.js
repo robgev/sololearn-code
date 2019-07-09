@@ -16,7 +16,7 @@ import './styles.scss';
 import { Search, Add } from 'components/icons';
 
 const Header = ({
-	searchQuestion, onSearchChange, enterKeyPress, query,
+	searchQuestion, onSearchChange, enterKeyPress, query, addQuestion,
 }) => (
 	<PaperContainer className="header-container">
 		<FlexBox fullWidth justifyBetween>
@@ -43,7 +43,8 @@ const Header = ({
 			<ContainerLink to="/discuss/new" className="ask-question-button-container">
 				<RaisedButton
 					color="primary"
-					className="add-question-btn"
+                        className="add-question-btn"
+                        onClick={addQuestion}
 				>
 					<FlexBox align justify fullWidth>
 						<Container className="add-icon">

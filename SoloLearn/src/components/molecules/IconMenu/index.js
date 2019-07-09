@@ -10,7 +10,12 @@ class IconMenu extends Component {
 	};
 
 	handleClick = (event) => {
-		this.setState({ anchorEl: event.currentTarget });
+		const open = Boolean(this.state.anchorEl);
+		if (open) {
+			this.setState({ anchorEl: null });
+		} else {
+			this.setState({ anchorEl: event.currentTarget });
+		}
 	};
 
 	handleClose = () => {
@@ -28,7 +33,7 @@ class IconMenu extends Component {
 	render() {
 		const { anchorEl } = this.state;
 		const {
-			icon: Icon, children, iconProps, onClick, className, ...props
+			icon: Icon, children, iconProps, onClick, className, iconClassName, ...props
 		} = this.props;
 		const open = Boolean(anchorEl);
 
@@ -39,7 +44,7 @@ class IconMenu extends Component {
 					aria-haspopup="true"
 					aria-owns={open ? 'long-menu' : undefined}
 					onClick={this.handleClick}
-					className="molecule_icon-menu"
+					className={`molecule_icon-menu ${iconClassName}`}
 					{...iconProps}
 				>
 					<Icon />

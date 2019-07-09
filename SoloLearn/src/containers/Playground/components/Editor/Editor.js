@@ -26,8 +26,6 @@ const Editor = ({
 		isInline,
 		publicId,
 		language,
-		isFullscreen,
-		hasLiveOutput,
 		changeEditorState,
 	},
 }) => (
@@ -35,12 +33,7 @@ const Editor = ({
 		wrapEnabled
 		value={code}
 		width="100%"
-		// Height is 100% in all cases except when it's web, in which
-		// case it's not a child of SplitPane
-		height={(hasLiveOutput && !isFullscreen)
-			? (isInline ? '200px' : '500px')
-			: '100%'
-		}
+		height={isInline ? '200px' : 'calc(100% - 56px)'}
 		showPrintMargin={false}
 		theme={isDark ? 'monokai' : 'chrome'}
 		mode={editorModeNames[language]}
@@ -54,6 +47,7 @@ const Editor = ({
 		name={publicId}
 		onChange={changeEditorState}
 		editorProps={{ $blockScrolling: Infinity }}
+		className="playground_editor"
 		onLoad={(editor) => {
 			editor.focus();
 			editor.getSession().setUseWrapMode(true);

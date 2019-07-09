@@ -27,8 +27,8 @@ import BlockPopup from './BlockPopup';
 import { UserAvatar } from './components';
 
 const mapStateToProps = state => ({
-	userId: state.userProfile.id,
-	accessLevel: determineAccessLevel(state.userProfile.accessLevel),
+	userId: state.userProfile && state.userProfile.id,
+	accessLevel: state.userProfile && determineAccessLevel(state.userProfile.accessLevel),
 });
 
 const mapDispatchToProps = {
@@ -56,7 +56,13 @@ class Header extends Component {
 	@observable isReportSnackbarOpen = false;
 
 	@action openReportPopup = () => {
-		this.isReportPopupOpen = true;
+		const { toggleSigninPopup, userId } = this.props;
+
+		if (!userId) {
+			toggleSigninPopup();
+		} else {
+			this.isReportPopupOpen = true;
+		}
 	}
 	@action closeReportPopup = (isReported) => {
 		this.isReportPopupOpen = false;
@@ -74,7 +80,13 @@ class Header extends Component {
 	}
 
 	@action toggleBlockPopup = () => {
-		this.isBlockPopupOpen = !this.isBlockPopupOpen;
+		const { toggleSigninPopup, userId } = this.props;
+
+		if (!userId) {
+			toggleSigninPopup();
+		} else {
+			this.isBlockPopupOpen = !this.isBlockPopupOpen;
+		}
 	}
 
 	@action toggleBlockSnackbar = () => {

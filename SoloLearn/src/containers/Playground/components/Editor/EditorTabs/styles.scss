@@ -1,7 +1,80 @@
 @import '~styles/colors';
 
+$dark_border_color: #3A464A;
+
 .playground_editor-tabs-root {
+	background-color: $white;
+	padding: 4px 0;
+	.playground_editor-tabs_back-button {
+		margin-left: 14px;
+	}
+	.playground_editor-language-name {
+		font-size: 14px;
+		font-weight: 600;
+		color: $content_text_color;
+		margin-left: 37px;
+	}
+
+	.playground_code-actions-menu {
+		border: 1px solid $border-color;
+		box-shadow: 0px 3px 6px 0px rgba(58,70,74,0.15);
+		-webkit-box-shadow: 0px 3px 6px 0px rgba(58,70,74,0.15);
+		-moz-box-shadow: 0px 3px 6px 0px rgba(58,70,74,0.15);
+		.playground_code-actions-divider {
+			background-color: #FAFBFB;
+		}
+		.playground_code-actions-number {
+			font-size: 12px;
+			font-weight: 700;
+			color: $primary_color;
+			margin-right: 4px;
+		}
+		.playground_code-actions-menu-item {
+			&:hover {
+				color: $primary_color_hover;
+			}
+		}
+		&.dark {
+			background-color: $content_text_color;
+			border: 1px solid $dark_border_color;
+			.playground_code-actions-menu-item {
+				color: $white;
+			}
+			.playground_code-actions-divider {
+				background-color: $dark_border_color
+			}
+		}
+	}
+	.playground_web-tabs-root {
+		margin-left: 23px;
+	}
 	&.fullscreen {
 		border-right: 1px solid $secondary_background_color;
+	}
+	&.dark {
+		background-color: #263236;
+		.playground_editor-tabs_back-button {
+			.playground_editor-button {
+					opacity: 1;
+			}
+		}
+		.playground_editor-button {
+			color: white;
+			opacity: 0.7;
+		}
+		.playground_web-tabs-root {
+			.atom_tab {
+				color: rgba(255, 255, 255, 0.7);
+				&:hover,
+				&.atom_tab-selected {
+					opacity: 1;
+					color: $primary_color;
+					background-color: rgba(30, 209, 174, 0.1);
+				}
+			}
+		}
+		.playground_editor-language-name {
+			color: rgba(255, 255, 255, 0.7);
+		}
 	}
 }

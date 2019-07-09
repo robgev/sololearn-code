@@ -6,10 +6,10 @@ import { IconMenu } from 'components/molecules';
 import { determineAccessLevel } from 'utils';
 
 const mapStateToProps = (state, ownProps) => ({
-	canRequestRemoval: determineAccessLevel(state.userProfile.accessLevel) === 1,
-	canRemove: determineAccessLevel(state.userProfile.accessLevel) > 1,
-	canEdit: determineAccessLevel(state.userProfile.accessLevel) > 1,
-	isMe: state.userProfile.id === ownProps.userID,
+	canRequestRemoval: state.userProfile && determineAccessLevel(state.userProfile.accessLevel) === 1,
+	canRemove: state.userProfile && determineAccessLevel(state.userProfile.accessLevel) > 1,
+	canEdit: state.userProfile && determineAccessLevel(state.userProfile.accessLevel) > 1,
+	isMe: state.userProfile && state.userProfile.id === ownProps.userID,
 });
 
 @translate()

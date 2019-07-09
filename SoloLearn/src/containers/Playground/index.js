@@ -32,7 +32,7 @@ PlaygroundRoute.defaultProps = {
 };
 
 const mapStateToProps = ({ userProfile }) => ({
-	userId: userProfile.id,
+	userId: userProfile && userProfile.id,
 });
 
 export default connect(mapStateToProps)(PlaygroundRoute);

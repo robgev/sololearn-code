@@ -21,7 +21,10 @@ const Sidebar = ({
 	}
 	return (
 		<FlexBox column justify className="feed-sidebar">
-			<ProfileInfo profile={userProfile} levels={levels} />
+			{
+				userProfile &&
+				<ProfileInfo profile={userProfile} levels={levels} />
+			}
 			<DiscoverPeers discoverEntities={discoverEntities} discoverIds={discoverIds} />
 		</FlexBox>
 	);

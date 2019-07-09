@@ -80,7 +80,6 @@ class ILikes {
 	@action vote = ({ newVote }) => {
 		const initialVoteCount = this.voteCount;
 		const initialUserVote = this.userVote;
-
 		const vote = initialUserVote === newVote ? 0 : newVote;
 		this.voteCount = (initialVoteCount + vote) - initialUserVote;
 		this.userVote = vote;

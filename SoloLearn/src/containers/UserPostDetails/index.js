@@ -80,7 +80,6 @@ const UserPostDetails = ({
 	const canReport = userPost && profile.id !== userPost.userID;
 	const canRequestRemoval = userPost && profile.id !== userPost.userID && determineAccessLevel(profile.accessLevel) === 1;
 	const canRemove = userPost && (profile.id === userPost.userID || determineAccessLevel(profile.accessLevel) > 1);
-	console.log(canRemove, determineAccessLevel(profile.accessLevel));
 	const deletePostHandler = () => {
 		if (canRemove) {
 			return deleteUserPost(userPost.id)
@@ -135,28 +134,28 @@ const UserPostDetails = ({
 										canEdit
 											? <MenuItem onClick={() => toggleCreatePostPopupOpen(true)}>
 												{t('common.edit-action-title')}
-             </MenuItem>
+											</MenuItem>
 											: null
 									}
 									{
 										canReport
 											? <MenuItem onClick={() => toggleReportPopup(true)}>
 												{t('common.report-action-title')}
-											</MenuItem>
+             </MenuItem>
 											: null
 									}
 									{
 										canRequestRemoval
 											? <MenuItem onClick={() => toggleDeleteConfirmationOpen(true)}>
 												Request Removal
-											</MenuItem>
+             </MenuItem>
 											: null
 									}
 									{
 										canRemove
 											? <MenuItem onClick={() => toggleDeleteConfirmationOpen(true)}>
 												{t('common.delete-title')}
-											</MenuItem>
+             </MenuItem>
 											: null
 									}
 								</IconMenu>
