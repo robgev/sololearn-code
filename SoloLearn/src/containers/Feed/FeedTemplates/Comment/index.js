@@ -19,7 +19,7 @@ const Comment = ({
 	type,
 }) => (
 	<Container>
-		<Container className="comment-item-container">
+		<Container className="feed_comment-item-container">
 			<Link to={url} className="comment-feed-item-wrapper">
 				<SecondaryTextBlock className="comment-text">
 					{truncate(comment.message, 200, 5, true)}

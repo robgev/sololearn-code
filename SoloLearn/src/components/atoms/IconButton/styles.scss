@@ -6,6 +6,7 @@
 	&:hover,
 	&.active {
 		background: none;
-		color: $icon_color_selected;
+		color: $icon_color_selected !important;
+		opacity: 1 !important;
 	}
 }

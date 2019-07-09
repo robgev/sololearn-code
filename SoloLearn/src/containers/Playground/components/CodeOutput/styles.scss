@@ -29,3 +29,22 @@ $console_light_bg_color: $background_color;
 		height: 100%;
 	}
 }
+
+.playground_compiled-output-container {
+	padding: 11px 24px;
+	border-radius: 0;
+	height: 100%;
+	.playground_compiled-output-heading {
+		font-weight: 700;
+		margin-bottom: 0;
+		color: $content_text_color;
+	}
+	&.dark {
+		background-color: $content_text_color;
+		color: $white;
+		.playground_compiled-output-heading {
+			font-weight: 600;
+			color: $white;
+		}
+	}
+}

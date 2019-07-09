@@ -15,6 +15,7 @@ import {
 	UsernameLink,
 	ProfileAvatar,
 	PromiseButton,
+	ModBadge,
 	IconMenu,
 } from 'components/molecules';
 import { Mention, CountingMentionInput, VoteActions } from 'components/organisms';
@@ -48,7 +49,7 @@ render() {
 		onEditButtonEnabledChange,
 		getMentionUsers,
 		isEditButtonEnabled,
-		toggleSigninPopup
+		toggleSigninPopup,
 	} = this.props;
 	const {
 		id,
@@ -60,132 +61,136 @@ render() {
 			<ListItem>
 				<FlexBox fullWidth className={`comment-item-container ${comment.parentID === null ? '' : 'replay'}`}>
 					<Container>
-						<ProfileAvatar user={profile} />
+						<ProfileAvatar
+							size="extra-small"
+							user={profile}
+						/>
 					</Container>
 					<FlexBox column fullWidth className="comment-item_wrapper">
-						<FlexBox className="comment-item_bubble-container">
-							<FlexBox fullWidth align justifyBetween>
-								<FlexBox column fullWidth className="comment-item_body">
-									<FlexBox justifyBetween fullWidth align>
-										<UsernameLink to={`/profile/${profile.id}`}>
-											{profile.name}
-										</UsernameLink>
-									</FlexBox>
-									<Container>
-										{
-											isEditing
-												? (
-													<Container className="comment-input-toolbar">
-														<Container className="input-bar reply-input">
-															<CountingMentionInput
-																className="counting-mention-input"
-																ref={(i) => { this.editMentionInput = i; }}
-																getUsers={getMentionUsers}
-																initText={comment.message}
-																onSubmitEnabledChange={onEditButtonEnabledChange}
-																placeholder={t('comments.write-comment-placeholder')}
-																maxLength={1024}
-															/>
-														</Container>
-														<FlatButton onMouseDown={toggleEdit}>
-															{t('common.cancel-title')}
-														</FlatButton>
-														<FlatButton
-															disabled={!isEditButtonEnabled}
-															onMouseDown={() => {
-																edit({ message: this.editMentionInput.popValue(), id });
-																toggleEdit();
-															}}
-														>
-															{t('common.edit-action-title')}
-														</FlatButton>
-													</Container>
-												)
-												: (
-													<Container>
-														<Mention text={comment.message} />
-														{generatePreviews(comment.message).map(singlePreviewData => (
-															<PreviewItem
-																{...singlePreviewData}
-																key={singlePreviewData.link}
-																className="comment-preview"
-															/>
-														))}
-													</Container>
-												)
-										}
-									</Container>
-								</FlexBox>
-								<Container className="comment-item_icon-menu">
-									{ !isEditing &&
-									<IconMenu>
-										{comment.userID === userProfileId &&
-										<Fragment>
-											<MenuItem onClick={toggleEdit}>
-												{t('common.edit-action-title')}
-											</MenuItem>
-											<MenuItem onClick={toggleDeleteDialog}>
-												{t('common.delete-title')}
-											</MenuItem>
-										</Fragment>
-										}
-										{comment.userID !== userProfileId &&
-										<MenuItem onClick={toggleReportPopup}>
-											{t('common.report-action-title')}
-										</MenuItem>
-										}
-										{(comment.userID !== userProfileId && accessLevel > 0) &&
-										<MenuItem onClick={toggleRemovalPopup}>
-											{
-												accessLevel > 1
-													? t('common.remove-title')
-													: t('discuss.forum_request_removal_prompt_title')
-											}
-										</MenuItem>
-										}
-									</IconMenu>
-									}
-								</Container>
+						<Container className="comment-item_comment-container">
+							<FlexBox align className="comment-item_author">
+								<UsernameLink
+									className="comment-item_user-name"
+									to={`/profile/${profile.id}`}
+								>
+									{profile.name}
+								</UsernameLink>
+								<ModBadge
+									className="badge comment-item_user-badge"
+									badge={profile.badge}
+								/>
 							</FlexBox>
-						</FlexBox>
+							{
+								isEditing
+									? (
+										<Container className="comment-input-toolbar">
+											<Container className="input-bar reply-input">
+												<CountingMentionInput
+													className="counting-mention-input"
+													ref={(i) => { this.editMentionInput = i; }}
+													getUsers={getMentionUsers}
+													initText={comment.message}
+													onSubmitEnabledChange={onEditButtonEnabledChange}
+													placeholder={t('comments.write-comment-placeholder')}
+													maxLength={1024}
+												/>
+											</Container>
+											<FlatButton onMouseDown={toggleEdit}>
+												{t('common.cancel-title')}
+											</FlatButton>
+											<FlatButton
+												disabled={!isEditButtonEnabled}
+												onMouseDown={() => {
+													edit({ message: this.editMentionInput.popValue(), id });
+													toggleEdit();
+												}}
+											>
+												{t('common.edit-action-title')}
+											</FlatButton>
+										</Container>
+									)
+									: (
+										<Container className="comment_item-text">
+											<Mention text={comment.message} />
+											{generatePreviews(comment.message).map(singlePreviewData => (
+												<PreviewItem
+													{...singlePreviewData}
+													key={singlePreviewData.link}
+													className="comment-preview"
+												/>
+											))}
+										</Container>
+									)
+							}
+						</Container>
 						{!isEditing &&
 						<FlexBox align justifyBetween>
+							<VoteActions
+								small
+								id={comment.id}
+								type={`${type}Comment`}
+								toggleSigninPopup={toggleSigninPopup}
+								initialVote={comment.vote}
+								initialCount={comment.votes}
+								onChange={(vote) => { onVote(vote); }}
+							/>
+							{
+								comment.parentID === null && comment.replies > 0 && (
+									<PromiseButton
+										className="comments_text-button"
+										fire={onRepliesButtonClick}
+										mouseDown
+									>
+										{comment.replies === 1 ? t('comments.replies-one') : `${comment.replies} ${t('comments.replies-other')}`}
+									</PromiseButton>
+								)
+							}
+							<FlatButton
+								onClick={onReply}
+								className="comments_text-button"
+							>
+								{t('comments.reply')}
+							</FlatButton>
 							<Container>
-								<VoteActions
-									id={comment.id}
-									type={`${type}Comment`}
-									toggleSigninPopup={toggleSigninPopup}
-									initialVote={comment.vote}
-									initialCount={comment.votes}
-									onChange={(vote) => { onVote(vote); }}
-								/>
-							</Container>
-							<Container>
-								{
-									comment.parentID === null && comment.replies > 0 && (
-										<PromiseButton
-											fire={onRepliesButtonClick}
-											mouseDown
-										>
-											{comment.replies === 1 ? t('comments.replies-one') : `${comment.replies} ${t('comments.replies-other')}`}
-										</PromiseButton>
-									)
-								}
-								<FlatButton
-									onClick={onReply}
-								>
-									{t('comments.reply')}
-								</FlatButton>
 								<SecondaryTextBlock>
 									{updateDate(comment.date)}
 								</SecondaryTextBlock>
 							</Container>
 						</FlexBox>
 						}
+						<Container className="comment-item_icon-menu">
+							{ !isEditing &&
+							<IconMenu>
+								{comment.userID === userProfileId &&
+								<Fragment>
+									<MenuItem onClick={toggleEdit}>
+										{t('common.edit-action-title')}
+									</MenuItem>
+									<MenuItem onClick={toggleDeleteDialog}>
+										{t('common.delete-title')}
+									</MenuItem>
+								</Fragment>
+								}
+								{comment.userID !== userProfileId &&
+								<MenuItem onClick={toggleReportPopup}>
+									{t('common.report-action-title')}
+								</MenuItem>
+								}
+								{(comment.userID !== userProfileId && accessLevel > 0) &&
+								<MenuItem onClick={toggleRemovalPopup}>
+									{
+										accessLevel > 1
+											? t('common.remove-title')
+											: t('discuss.forum_request_removal_prompt_title')
+									}
+								</MenuItem>
+								}
+							</IconMenu>
+							}
+						</Container>
 					</FlexBox>
 				</FlexBox>
 			</ListItem>
-			<HorizontalDivider />
 		</Fragment>
 	);
 }

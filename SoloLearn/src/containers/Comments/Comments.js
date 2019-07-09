@@ -5,8 +5,8 @@ import { observer } from 'mobx-react';
 import { withRouter } from 'react-router';
 import { translate } from 'react-i18next';
 import { CountingMentionInput } from 'components/organisms';
-import { ProfileAvatar, FlatButton, InfiniteScroll, EmptyCard } from 'components/molecules';
-import { Container, PaperContainer } from 'components/atoms';
+import { ProfileAvatar, RaisedButton, InfiniteScroll, EmptyCard } from 'components/molecules';
+import { Container } from 'components/atoms';
 import CommentsAPI from './comments.api';
 import IComment from './IComment';
 import CommentsToolbar from './CommentsToolbar';
@@ -280,38 +280,12 @@ class Comments extends Component {
 				useWindow={useWindow}
 				className="comment-list"
 			>
-				<PaperContainer className="comments-container">
+				<Container className="comments-container">
 					<CommentsToolbar
 						count={this.commentsCount}
 						value={this.orderBy}
 						onChange={this.changeOrder}
 					/>
-					{
-						userProfile &&
-						<Container className="input-bar">
-							<ProfileAvatar user={userProfile} />
-							<CountingMentionInput
-								ref={(i) => { this.mentionInput = i; }}
-								onSubmitEnabledChange={this.submitEnabledChange}
-								getUsers={this.commentsAPI.getMentionUsers}
-								placeholder={t('comments.write-comment-placeholder')}
-								maxLength={1024}
-								renderButton={({ isExpanded, onBlur }) => (isExpanded
-									? (
-										<FlatButton
-											onMouseDown={this.addComment(onBlur)}
-											disabled={!this.isSubmitEnabled}
-										>
-										Comment
-										</FlatButton>
-									)
-									: null)
-
-								}
-							/>
-						</Container>
-					}
-
 					{
 						this.isOnReply &&
 						<FlatButton onClick={this.reset} >
@@ -340,7 +314,32 @@ class Comments extends Component {
 							/>
 						)
 					}
-				</PaperContainer>
+				</Container>
+				{userProfile &&
+					<Container className="input-bar">
+						<ProfileAvatar user={userProfile} size="extra-small" />
+						<CountingMentionInput
+							ref={(i) => { this.mentionInput = i; }}
+							onSubmitEnabledChange={this.submitEnabledChange}
+							getUsers={this.commentsAPI.getMentionUsers}
+							placeholder={t('comments.write-comment-placeholder')}
+							maxLength={1024}
+							renderButton={({ isExpanded, onBlur }) => (isExpanded
+								? (
+									<RaisedButton
+										className="comments_submit-button"
+										onMouseDown={this.addComment(onBlur)}
+										disabled={!this.isSubmitEnabled}
+									>
+									Comment
+									</RaisedButton>
+								)
+								: null)
+
+							}
+						/>
+					</Container>
+				}
 			</InfiniteScroll>
 
 		);

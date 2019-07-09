@@ -60,7 +60,7 @@ class VoteActions extends Component {
 
 	onUpvote = () => {
 		const {
-			type, id, vote, isLoggedIn,toggleSigninPopup
+			type, id, vote, isLoggedIn, toggleSigninPopup,
 		} = this.props;
 
 		if (!isLoggedIn) {
@@ -79,7 +79,7 @@ class VoteActions extends Component {
 
 	onDownvote = () => {
 		const {
-			type, id, vote, isLoggedIn,toggleSigninPopup
+			type, id, vote, isLoggedIn, toggleSigninPopup,
 		} = this.props;
 
 		if (!isLoggedIn) {
@@ -98,11 +98,12 @@ class VoteActions extends Component {
 
 	render() {
 		const {
-			t, vertical, className, 
+			t, vertical, className, small,
 		} = this.props;
 		return (
 			<Fragment>
 				<VoteButtons
+					small={small}
 					vertical={vertical}
 					likes={this.likes}
 					className={className}
@@ -124,9 +125,11 @@ class VoteActions extends Component {
 VoteActions.defaultProps = {
 	vertical: false,
 	onChange: () => { },
+	small: false,
 };
 
 VoteActions.propTypes = {
+	small: PropTypes.bool,
 	id: PropTypes.number.isRequired,
 	type: PropTypes
 		.oneOf([ 'code', 'post', 'userPost', 'lessonComment', 'userLessonComment', 'codeComment' ]).isRequired,

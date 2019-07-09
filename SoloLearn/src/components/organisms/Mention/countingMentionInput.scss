@@ -1,11 +1,16 @@
 @import '~styles/variables';
+@import '~styles/colors';
 
 .organism_counting-mention-input {
-	
+
 	.expanded {
 		min-height: $expanded_editor_height;
 	}
 	.bottom-toolbar-container {
 		justify-content: flex-end;
+		.comments_submit-button {
+			color: $white;
+			margin-top: 12px;
+		}
 	}
 }
