@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import { withRouter } from 'react-router';
 import { translate } from 'react-i18next';
 import { CountingMentionInput } from 'components/organisms';
-import { ProfileAvatar, FlatButton, InfiniteScroll, EmptyCard } from 'components/molecules';
+import { ProfileAvatar, RaisedButton, InfiniteScroll, EmptyCard } from 'components/molecules';
 import { Container } from 'components/atoms';
 import CommentsAPI from './comments.api';
 import IComment from './IComment';
@@ -326,12 +326,13 @@ class Comments extends Component {
 							maxLength={1024}
 							renderButton={({ isExpanded, onBlur }) => (isExpanded
 								? (
-									<FlatButton
+									<RaisedButton
+										className="comments_submit-button"
 										onMouseDown={this.addComment(onBlur)}
 										disabled={!this.isSubmitEnabled}
 									>
 									Comment
-									</FlatButton>
+									</RaisedButton>
 								)
 								: null)
 
