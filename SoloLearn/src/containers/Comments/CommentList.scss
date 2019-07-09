@@ -14,10 +14,14 @@
 		background-color: white;
 		padding: 14px 16px;
 		.editor {
-			border: 1px solid $icon_color;
+			border: 1px solid rgba(97, 107, 110, 0.3);
 			border-radius: 4px;
 			background-color: white;
 			margin-left: 8px;
+			padding: 10px 16px;
+			&.expanded {
+				padding: 8px;
+			}
 			.public-DraftEditorPlaceholder-root {
 				color: #3A464A;
 			}
