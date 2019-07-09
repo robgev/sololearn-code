@@ -1,4 +1,5 @@
 import React, { Component, createRef } from 'react';
+// import { browserHistory } from 'react-router';
 import { translate } from 'react-i18next';
 import { observer } from 'mobx-react';
 import {
@@ -62,7 +63,11 @@ class ReplyItem extends Component {
 		this.setState({ isReportPopupOpen: false });
 	}
 	openReportPopup = () => {
-		this.setState({ isReportPopupOpen: true });
+		if (!this.props.userInfo) {
+			this.props.toggleSigninPopup();
+		} else {
+			this.setState({ isReportPopupOpen: true });
+		}
 	}
 
 	highlight = () => {
@@ -109,7 +114,7 @@ class ReplyItem extends Component {
 			isEditEnabled, isRemovalPopupOpen, isDeletePopupOpen,
 		} = this.state;
 		const {
-			reply, deleteReply, onAccept, askerID, t,
+			reply, deleteReply, onAccept, askerID, t, toggleSigninPopup,
 		} = this.props;
 
 		console.log(askerID);
@@ -221,6 +226,7 @@ class ReplyItem extends Component {
 										initialCount={reply.votes}
 										initialVote={reply.vote}
 										className="discuss-reply-item-vote-actions"
+										toggleSigninPopup={toggleSigninPopup}
 									/>
 									<SecondaryTextBlock className="reply-item-date">{updateDate(reply.date)} </SecondaryTextBlock>
 								</FlexBox>

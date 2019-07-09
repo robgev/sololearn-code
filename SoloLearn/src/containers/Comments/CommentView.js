@@ -13,6 +13,7 @@ import {
 	PopupContentText,
 } from 'components/atoms';
 import { FlatButton } from 'components/molecules';
+import SignInPopup from 'components/SignInPopup';
 import RemovalPopup from './RemovalPopup';
 import CommentItem from './CommentItem';
 import './comment.scss';
@@ -20,14 +21,28 @@ import './comment.scss';
 @translate(null, { withRef: true })
 @observer
 class CommentView extends Component {
+	state={
+		signinPopupOpen: false,
+	}
 	@observable highlighted = false;
 	@observable deleteOpen = false;
 	@observable isEditing = false;
 	@observable removalPopupOpen = false;
 	@observable reportPopupOpen = false;
+
 	@action toggleReportPopup = () => {
-		this.reportPopupOpen = !this.reportPopupOpen;
+		const {userProfile,toggleSigninPopup}=this.props;
+		if (!userProfile) {
+			toggleSigninPopup();
+		} else {
+			this.reportPopupOpen = !this.reportPopupOpen;
+		}
 	}
+
+	@action toggleSigninPopup=() => {
+		this.setState({ signinPopupOpen: !this.state.signinPopupOpen });
+	}
+
 	@action toggleRemovalPopup = () => {
 		this.removalPopupOpen = !this.removalPopupOpen;
 	}
@@ -45,22 +60,28 @@ class CommentView extends Component {
 		}, 2000);
 	}
 	onReply = () => {
-		const {
-			id, userID, userName, parentID,
-		} = this.props.comment;
-		const isReply = parentID !== null;
-		this.props.onReply({
-			id, userID, userName, isReply,
-		});
+		const {toggleSigninPopup,userProfile}=this.props;
+		if (!userProfile) {
+			toggleSigninPopup();
+		} else {
+			const {
+				id, userID, userName, parentID,
+			} = this.props.comment;
+			const isReply = parentID !== null;
+			this.props.onReply({
+				id, userID, userName, isReply,
+			});
+		}
 	}
 	render() {
 		const {
 			id,
 		} = this.props.comment;
+		const { signinPopupOpen } = this.state;
 		const {
 			commentsType, userProfile,
 			onVote, selfDestruct, onRepliesButtonClick,
-			t, onRequestRemoval, accessLevel, onReply,
+			t, onRequestRemoval, accessLevel, onReply, toggleSigninPopup,
 			...rest
 		} = this.props;
 
@@ -76,11 +97,12 @@ class CommentView extends Component {
 					onReply={this.onReply}
 					onRepliesButtonClick={onRepliesButtonClick}
 					accessLevel={accessLevel}
-					userProfileId={userProfile.id}
+					userProfileId={userProfile && userProfile.id}
 					toggleDeleteDialog={this.toggleDeleteDialog}
 					toggleReportPopup={this.toggleReportPopup}
 					toggleRemovalPopup={this.toggleRemovalPopup}
 					toggleEdit={this.toggleEdit}
+					toggleSigninPopup={toggleSigninPopup}
 					{...rest}
 				/>
 				<Popup

@@ -268,7 +268,10 @@ class Comments extends Component {
 	}
 
 	render() {
-		const { t, userProfile, useWindow } = this.props;
+		const {
+			t, userProfile, useWindow, toggleSigninPopup,
+		} = this.props;
+
 		return (
 			<InfiniteScroll
 				loadMore={this.loadMore}
@@ -283,28 +286,31 @@ class Comments extends Component {
 						value={this.orderBy}
 						onChange={this.changeOrder}
 					/>
-					<Container className="input-bar">
-						<ProfileAvatar user={userProfile} />
-						<CountingMentionInput
-							ref={(i) => { this.mentionInput = i; }}
-							onSubmitEnabledChange={this.submitEnabledChange}
-							getUsers={this.commentsAPI.getMentionUsers}
-							placeholder={t('comments.write-comment-placeholder')}
-							maxLength={1024}
-							renderButton={({ isExpanded, onBlur }) => (isExpanded
-								? (
-									<FlatButton
-										onMouseDown={this.addComment(onBlur)}
-										disabled={!this.isSubmitEnabled}
-									>
+					{
+						userProfile &&
+						<Container className="input-bar">
+							<ProfileAvatar user={userProfile} />
+							<CountingMentionInput
+								ref={(i) => { this.mentionInput = i; }}
+								onSubmitEnabledChange={this.submitEnabledChange}
+								getUsers={this.commentsAPI.getMentionUsers}
+								placeholder={t('comments.write-comment-placeholder')}
+								maxLength={1024}
+								renderButton={({ isExpanded, onBlur }) => (isExpanded
+									? (
+										<FlatButton
+											onMouseDown={this.addComment(onBlur)}
+											disabled={!this.isSubmitEnabled}
+										>
 										Comment
-									</FlatButton>
-								)
-								: null)
+										</FlatButton>
+									)
+									: null)
 
-							}
-						/>
-					</Container>
+								}
+							/>
+						</Container>
+					}
 
 					{
 						this.isOnReply &&
@@ -330,6 +336,7 @@ class Comments extends Component {
 								commentsAPI={this.commentsAPI}
 								key={this.orderBy}
 								hideComment={this.hideComment}
+								toggleSigninPopup={toggleSigninPopup}
 							/>
 						)
 					}

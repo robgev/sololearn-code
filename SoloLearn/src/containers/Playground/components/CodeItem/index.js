@@ -41,9 +41,7 @@ const CodeItem = ({ code, minimal }) => {
 								{code.name}
 							</Title>
 						</Link>
-						{!minimal &&
-							<SecondaryTextBlock>{updateDate(code.modifiedDate)}</SecondaryTextBlock>
-						}
+
 						<Container className="stats">
 							<ViewStats
 								votes={code.votes}
@@ -60,14 +58,20 @@ const CodeItem = ({ code, minimal }) => {
 						<SecondaryTextBlock>{updateDate(code.modifiedDate)}</SecondaryTextBlock> :
 						<FlexBox fullWidth justifyEnd className="code-item-secondary-details">
 							<FlexBox align>
-								<FlexBox className="code-item-user-details">
-									<UsernameLink className="code-item-user-name" to={`/profile/${user.id}`}>
-										{user.name}
-									</UsernameLink>
-									<ModBadge
-										badge={user.badge}
-										className="code-item-mod-badge"
-									/>
+								<FlexBox column alignEnd className="code-item-user-details">
+									<FlexBox >
+										<UsernameLink to={`/profile/${user.id}`} className="code-item-user-name">
+											{user.name}
+										</UsernameLink>
+										<ModBadge
+											badge={user.badge}
+											className="code-item-mod-badge"
+										/>
+									</FlexBox>
+
+									{!minimal &&
+										<SecondaryTextBlock>{updateDate(code.modifiedDate)}</SecondaryTextBlock>
+									}
 								</FlexBox>
 								<ProfileAvatar size="extra-small" user={user} />
 							</FlexBox>

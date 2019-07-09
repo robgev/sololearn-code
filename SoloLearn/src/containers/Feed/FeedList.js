@@ -18,7 +18,7 @@ import FeedItem from './FeedItem';
 import 'styles/Feed/FeedList.scss';
 
 const mapStateToProps = state => ({
-	skills: state.userProfile.skills,
+	skills: state.userProfile && state.userProfile.skills,
 	courses: state.courses,
 });
 
