@@ -19,10 +19,11 @@
 				color: $icon_color;
 				padding: 0 20px;
 				font-size: 12px;
-				&:not(:last-child) {
-					border-right: 1px solid #CCCCCC;
 				}
-			}
+				.divider {
+					border-color: #E3E3E3;
+					height: 8px;
+				}
 		}
 		&.sticky {
 			position: fixed;

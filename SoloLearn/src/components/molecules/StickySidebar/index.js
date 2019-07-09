@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container } from 'components/atoms';
+import { Container, VerticalDivider, FlexBox } from 'components/atoms';
 import { RefLink } from '../RefLink';
 
 import './styles.scss';
@@ -60,17 +60,19 @@ class Sidebar extends Component {
 					<Container className="sidebar-main-content">
 						{children}
 					</Container>
-					<Container className="sidebar-static-pages">
+					<FlexBox className="sidebar-static-pages" align>
 						<RefLink className="static-link hoverable" to="/privacy">
 							Privacy
 						</RefLink>
+						<VerticalDivider className="divider" />
 						<RefLink className="static-link hoverable" to="/faq">
 							FAQ
 						</RefLink>
+						<VerticalDivider className="divider" />
 						<RefLink className="static-link hoverable" to="/contact">
 							Contact
 						</RefLink>
-					</Container>
+					</FlexBox>
 				</Container>
 			</Container>
 		);
