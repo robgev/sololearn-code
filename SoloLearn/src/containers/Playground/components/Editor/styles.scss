@@ -19,18 +19,18 @@ $fontStack: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', mon
 }
 
 .playground_editor {
-	.ace_gutter {
-		padding: 6px 0 6px 9px;
-	}
-	.ace_content {
-		padding: 6px 0 4px 10px;
-	}
-	.ace_gutter-active-line {
-		margin-top: 6px;
-	}
-	.ace_marker-layer {
-		margin-left: -10px;
-	}
+	// .ace_gutter {
+	// 	padding: 6px 0 6px 9px;
+	// }
+	// .ace_content {
+	// 	padding: 6px 0 4px 10px;
+	// }
+	// .ace_gutter-active-line {
+	// 	margin-top: 6px;
+	// }
+	// .ace_marker-layer {
+	// 	margin-left: -10px;
+	// }
 	&.ace-monokai {
 		background-color: #1C2428;
 		.ace_gutter {
