@@ -69,7 +69,7 @@ const FeedHeader = ({ profile, t, afterPostCallback }) => {
 				(
 					<React.Fragment>
 						<Container className="up-feed-blur" />
-						<ClickAwayListener onClickAway={() => toggleCreatePost(false)}>
+						<ClickAwayListener onClickAway={() => toggleCreatePost(false)} mouseEvent="onMouseDown">
 							<PaperContainer className="up-wrapper-in-feed-header">
 								<UserPostEditor
 									closePopup={() => toggleCreatePost(false)}
