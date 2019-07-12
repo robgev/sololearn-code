@@ -27,11 +27,13 @@ import {
 	Edit as EditIcon,
 } from 'components/icons';
 import ReportPopup from 'components/ReportPopup';
+import PreviewItem from 'components/PreviewItem';
+import { generatePreviews, updateDate } from 'utils';
+
 import RemovalPopup from './RemovalPopup';
 import DeletePopup from './DeletePopup';
 import Options from './Options';
 import Tags from '../Tags';
-import { updateDate } from 'utils';
 
 @translate()
 @observer
@@ -41,7 +43,8 @@ class Question extends Component {
 		isReportPopupOpen: false,
 		isRemovalPopupOpen: false,
 		isDeletePopupOpen: false,
-	}
+		isFollowing: false,
+	};
 	openDeletePopup = () => {
 		this.setState({ isDeletePopupOpen: true });
 	}
@@ -58,24 +61,40 @@ class Question extends Component {
 		this.setState({ isReportPopupOpen: false });
 	}
 	openReportPopup = () => {
-		this.setState({ isReportPopupOpen: true });
+		const { isLoggedIn, toggleSigninPopup } = this.props;
+
+		if (!isLoggedIn) {
+			toggleSigninPopup();
+		} else {
+			this.setState({ isReportPopupOpen: true });
+		}
 	}
 	closeFollowSnackbar = () => {
 		this.setState({ isFollowSnackbarOpen: false });
 	}
 	onFollowClick = () => {
-		this.props.onFollowClick();
-		this.setState({ isFollowSnackbarOpen: true });
+		const { isLoggedIn, toggleSigninPopup, onFollowClick } = this.props;
+
+		if (!isLoggedIn) {
+			toggleSigninPopup();
+		} else {
+			onFollowClick();
+			this.setState({ isFollowSnackbarOpen: true });
+		}
 	}
 	editPost = () => {
 		browserHistory.push(`/discuss/edit/${this.props.post.id}`);
 	}
+
 	render() {
 		const {
-			isFollowSnackbarOpen, isReportPopupOpen, isRemovalPopupOpen, isDeletePopupOpen,
+			isFollowSnackbarOpen,
+			isReportPopupOpen,
+			isRemovalPopupOpen,
+			isDeletePopupOpen,
 		} = this.state;
 		const {
-			post, onDelete, t,
+			post, onDelete, t, toggleSigninPopup,
 		} = this.props;
 		const user = post !== null && {
 			id: post.userID,
@@ -102,7 +121,7 @@ class Question extends Component {
 								<FlexBox fullWidth column justifyBetween>
 									<Container className="info">
 										<Container className="question">
-											<FlexBox justifyBetween fullWidth>
+											<FlexBox className="title-and-options-container" justifyBetween fullWidth>
 												<Container>
 													<Container className="title">
 														<Title className="title-content">
@@ -114,8 +133,10 @@ class Question extends Component {
 													</FlexBox>
 												</Container>
 												<FlexBox className="options" justifyEnd align>
-													<IconWithText Icon={Follow}>
-														<SecondaryTextBlock className="follow-text">Follow</SecondaryTextBlock>
+													<IconWithText className="follow-container" onClick={this.onFollowClick} Icon={Follow}>
+														<SecondaryTextBlock className="follow-text">
+															{post.isFollowing ? 'Unfollow' : 'Follow'}
+														</SecondaryTextBlock>
 													</IconWithText>
 													<Options
 														userID={post.userID}
@@ -135,7 +156,7 @@ class Question extends Component {
 													<Container className="edit-message-icon" >
 														<EditIcon />
 													</Container>
-													<SecondaryTextBlock>
+													<SecondaryTextBlock className="edited-message">
 														{t('discuss.edited-by-format').replace('()', post.modifyUserName)},
 														{updateDate(post.modifyDate)}
 													</SecondaryTextBlock>
@@ -144,7 +165,16 @@ class Question extends Component {
 											<Container className="tags">
 												<Tags tags={post.tags} />
 											</Container>
-											<FlexBox justifyBetween fullWidth alignEnd>
+											<Container className="question-preview-container">
+												{generatePreviews(post.message).map(preview => (
+													<Container key={preview.link} className="preview">
+														<PreviewItem
+															{...preview}
+														/>
+													</Container>
+												))}
+											</Container>
+											<FlexBox justifyBetween fullWidth align className="statistics-container">
 												<FeedBottomBarFullStatistics
 													id={post.id}
 													key={post.id}
@@ -155,9 +185,9 @@ class Question extends Component {
 													withDate={false}
 													totalVotes={post.votes}
 													// onChange={onChange}
-													comments={post.answers}
+													toggleSigninPopup={toggleSigninPopup}
 												/>
-												<SecondaryTextBlock className="text">{updateDate(post.date)} </SecondaryTextBlock>
+												<SecondaryTextBlock className="statistics-date">{updateDate(post.date)} </SecondaryTextBlock>
 											</FlexBox>
 										</Container>
 									</Container>

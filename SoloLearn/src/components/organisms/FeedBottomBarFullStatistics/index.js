@@ -18,6 +18,7 @@ const FeedBottomBarFullStatistics = ({
 	comments = null,
 	withDate = true,
 	commentIconLink,
+	toggleSigninPopup,
 }) => (
 	<Container className={`feed-bbfs-container ${className}`}>
 		<FlexBox>
@@ -27,6 +28,7 @@ const FeedBottomBarFullStatistics = ({
 				initialVote={userVote}
 				initialCount={totalVotes}
 				onChange={onChange}
+				toggleSigninPopup={toggleSigninPopup}
 			/>
 			<ViewStats
 				views={views}

@@ -1,5 +1,39 @@
+@import '~styles/colors';
+
 .comment-list {
 	display: flex;
+	flex: 1;
 	width: 100%;
 	flex-direction: column;
+	position: relative;
+	.molecule_infinit-scroll-loading {
+		margin-top: -150px;
+	}
+}
+
+.comments_input-bar-container {
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	.input-bar {
+		display: flex;
+		width: 400px;
+		position: fixed;
+		bottom: 0;
+		background-color: white;
+		padding: 14px 16px;
+		.editor {
+			border: 1px solid rgba(97, 107, 110, 0.3);
+			border-radius: 4px;
+			background-color: white;
+			margin-left: 8px;
+			padding: 10px 16px;
+			&.expanded {
+				padding: 8px;
+			}
+			.public-DraftEditorPlaceholder-root {
+				color: #3A464A;
+			}
+		}
+	}
 }

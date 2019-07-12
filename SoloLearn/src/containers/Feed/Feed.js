@@ -28,7 +28,7 @@ const mapStateToProps = state => ({
 	feed: feedSelector(state),
 	hasMore: feedHasMoreSelector(state),
 	feedPins: state.feedPins,
-	userProfile: state.userProfile,
+	userProfile: state.userProfile && state.userProfile,
 	levels: state.levels,
 });
 
@@ -50,18 +50,22 @@ class FeedItemsBase extends Component {
 		this.state = {
 			hasNewItems: false,
 			loading: false,
-			currentFilter,
+			currentFilter: !this.props.userProfile ? 1 : currentFilter,
 		};
 	}
 
 	componentDidMount() {
-		const { isLoaded } = this.props;
+		const { isLoaded, userProfile } = this.props;
 		document.title = 'Sololearn | Feed';
 		ReactGA.ga('send', 'screenView', { screenName: 'Feed Page' });
 		if (!isLoaded) {
 			this.getFeedItems();
-			this.props.getPinnedFeedItems(null, null, null)
-				.catch(e => showError(e, 'Something went wrong when trying to fetch pins'));
+
+			if (userProfile) {
+				this.props.getPinnedFeedItems(null, null, null)
+					.catch(e => showError(e, 'Something went wrong when trying to fetch pins'));
+			}
+
 			this.props.getDiscoverSuggestions()
 				.catch(e => showError(e, 'Something went wrong when trying to fetch user suggestions'));
 		}
@@ -124,19 +128,25 @@ class FeedItemsBase extends Component {
 				sidebar={<FeedSidebar />}
 			>
 				<Container className="feed-items-wrapper">
-					<FeedHeader
-						profile={userProfile}
-						levels={levels}
-						afterPostCallback={this.loadNewFeedItems}
-					/>
+					{
+						userProfile &&
+						<FeedHeader
+							profile={userProfile}
+							levels={levels}
+							afterPostCallback={this.loadNewFeedItems}
+						/>
+					}
 					<FlexBox align className="feed-filters">
-						<Title
-							value={0}
-							className={`sub-title ${currentFilter === 0 ? 'active' : ''}`}
-							onClick={this.handleFeedFilterChange(0)}
-						>
-							{t('feed.title')}
-						</Title>
+						{
+							userProfile &&
+							<Title
+								value={0}
+								className={`sub-title ${currentFilter === 0 ? 'active' : ''}`}
+								onClick={this.handleFeedFilterChange(0)}
+							>
+								{t('feed.title')}
+							</Title>
+						}
 						<Title
 							value={1}
 							className={`sub-title ${currentFilter === 1 ? 'active' : ''}`}

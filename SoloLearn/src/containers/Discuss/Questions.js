@@ -14,8 +14,9 @@ import {
 	discussHasMoreSelector,
 	isDiscussFetchingSelector,
 } from 'reducers/discuss.reducer';
-import { FlexBox, Select, MenuItem, Title, PaperContainer } from 'components/atoms';
-import { LayoutWithSidebar, InfiniteScroll, TitleTab } from 'components/molecules';
+import { FlexBox, PaperContainer, TextBlock } from 'components/atoms';
+import { LayoutWithSidebar, InfiniteScroll, TitleTab, FlatButton } from 'components/molecules';
+import SignInPopup from 'components/SignInPopup';
 import QuestionList, { Sidebar } from './QuestionsList';
 import './QuestionsList/styles.scss';
 
@@ -24,6 +25,7 @@ const mapStateToProps = state => ({
 	filters: discussFiltersSelector(state),
 	hasMore: discussHasMoreSelector(state),
 	isFetching: isDiscussFetchingSelector(state),
+	isLoggedIn: !!state.userProfile,
 });
 
 const mapDispatchToProps = {
@@ -33,6 +35,15 @@ const mapDispatchToProps = {
 @connect(mapStateToProps, mapDispatchToProps)
 @translate()
 class Questions extends Component {
+<<<<<<< HEAD
+=======
+	state={
+		activeFilter: 8,
+		search: null,
+		openSigninPopup: false,
+	}
+
+>>>>>>> f39d8246ac86699bc5bed2d009b72929c1a34095
 	constructor(props) {
 		super(props);
 		document.title = 'Sololearn | Discuss';
@@ -43,9 +54,11 @@ class Questions extends Component {
 			...(location.query.orderBy == null ? DEFAULT_DISCUSS_FILTERS : filters),
 			...location.query,
 		};
+
 		if (query.query !== '') {
 			this.setState({ search: query.query });
 		}
+
 		this.props.setDiscussFilters(query);
 		const changed = queryDifference(DEFAULT_DISCUSS_FILTERS, query);
 		browserHistory.replace({ ...location, query: changed });
@@ -69,6 +82,8 @@ class Questions extends Component {
 
 	componentWillUpdate(nextProps) {
 		// Source of truth is the route
+		// this.setState({ activeFilter: parseInt(query.orderBy) });
+
 		const { location } = nextProps;
 		if (!isObjectEqual(location.query, this.props.location.query)) {
 			const changed = queryDifference(DEFAULT_DISCUSS_FILTERS, location.query);
@@ -88,7 +103,7 @@ class Questions extends Component {
 	handleOrderByFilterChange = (orderBy) => {
 		const { location } = this.props;
 		browserHistory.push({ ...location, query: { ...location.query, orderBy } });
-		this.setState({ avtiveFilter: orderBy });
+		this.setState({ activeFilter: orderBy });
 	}
 	removeQuery = () => {
 		const { location } = this.props;
@@ -105,19 +120,33 @@ class Questions extends Component {
 		this.setState({ search: e.target.value });
 	}
 
+	toggleSigninPopup=() => {
+		this.setState(({ openSigninPopup }) => ({ openSigninPopup: !openSigninPopup }));
+	}
+
 	enterKeyPress=(e) => {
 		if (e.keyCode === 13) {
 			this.searchQuestion();
 		}
 	}
 
+	addQuestion=() => {
+		const { isLoggedIn } = this.props;
+		if (!isLoggedIn) {
+			this.toggleSigninPopup();
+		} else {
+			browserHistory.push('/discuss/new');
+		}
+	}
+
 	render() {
 		const {
-			t, posts, hasMore, isFetching,
+			t, posts, hasMore, isFetching, isLoggedIn,
 		} = this.props;
 		const {
-			avtiveFilter,
+			activeFilter,
 			search,
+			openSigninPopup,
 		} = this.state;
 		return (
 			<LayoutWithSidebar
@@ -127,6 +156,7 @@ class Questions extends Component {
 				}
 			>
 				<Header
+					addQuestion={this.addQuestion}
 					searchQuestion={this.searchQuestion}
 					onSearchChange={this.onSearchChange}
 					enterKeyPress={this.enterKeyPress}
@@ -136,7 +166,7 @@ class Questions extends Component {
 				<FlexBox align justifyBetween className="discuss-filters">
 					<TitleTab
 						tabs={this.discussFilters}
-						activeTab={avtiveFilter}
+						activeTab={activeFilter}
 						handleTabChange={this.handleOrderByFilterChange}
 					/>
 				</FlexBox>
@@ -147,9 +177,23 @@ class Questions extends Component {
 				>
 
 					<PaperContainer className="question-conatainer">
-						<QuestionList hasMore={hasMore} questions={posts} />
+						{
+							!isLoggedIn && (activeFilter === 5 || activeFilter === 6 || activeFilter === 9)
+								? (
+									<FlexBox column align justifyBetween>
+										<TextBlock>Sign in</TextBlock>
+										<FlatButton onClick={() => browserHistory.push('signin')}>Sign In</FlatButton>
+									</FlexBox>
+								)
+								: <QuestionList hasMore={hasMore} questions={posts} />
+						}
 					</PaperContainer>
 				</InfiniteScroll>
+				<SignInPopup
+					url="/discuss"
+					open={openSigninPopup}
+					onClose={this.toggleSigninPopup}
+				/>
 			</LayoutWithSidebar>
 		);
 	}

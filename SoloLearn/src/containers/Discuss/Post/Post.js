@@ -11,6 +11,7 @@ import DiscussSidebar from '../QuestionsList/Sidebar';
 import IPost from './IPost';
 
 import './styles.scss';
+import SignInPopup from '../../../components/SignInPopup';
 
 const mapDispatchToProps = {
 	changePostRepliesCount,
@@ -18,10 +19,18 @@ const mapDispatchToProps = {
 	getSidebarQuestions,
 };
 
-@connect(null, mapDispatchToProps)
+const mapStateToProps = ({ userProfile }) => ({
+	isLoggedIn: !!userProfile,
+});
+
+@connect(mapStateToProps, mapDispatchToProps)
 @translate()
 @observer
 class Post extends Component {
+state={
+	openSigninPopup: false,
+}
+
 	static defaultProps = {
 		replyID: null,
 	}
@@ -43,16 +52,21 @@ class Post extends Component {
 		this.post.changeCount(countChange);
 	}
 
+	toggleSigninPopup=() => {
+		this.setState(({ openSigninPopup }) => ({ openSigninPopup: !openSigninPopup }));
+	}
+
 	componentDidMount() {
 		this.post.getPost()
 			.then((post) => {
-				this.props.setRouteAlias(post.title);
+				post &&				this.props.setRouteAlias(post.title);
 			});
 			this.props.getSidebarQuestions();
 	}
 
 	render() {
-		const { id, replyID } = this.props;
+		const { id, replyID, isLoggedIn } = this.props;
+		const { openSigninPopup } = this.state;
 		return (
 			<LayoutWithSidebar
 				paper={false}
@@ -63,9 +77,11 @@ class Post extends Component {
 					this.post.error === null
 						? (
 							<Question
+								isLoggedIn={isLoggedIn}
 								post={this.post.data}
 								onFollowClick={this.post.onFollow}
 								onDelete={this.handleDelete}
+								toggleSigninPopup={this.toggleSigninPopup}
 							/>
 						)
 						: <EmptyCard paper />
@@ -80,9 +96,15 @@ class Post extends Component {
 							replyID={replyID}
 							count={this.post.count}
 							onCountChange={this.handlePostRepliesCountChange}
+							toggleSigninPopup={this.toggleSigninPopup}
 						/>
 					)
 				}
+				<SignInPopup
+					url={`/discuss/${id}`}
+					open={openSigninPopup}
+					onClose={this.toggleSigninPopup}
+				/>
 			</LayoutWithSidebar>
 		);
 	}

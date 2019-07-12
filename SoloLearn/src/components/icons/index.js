@@ -6,13 +6,11 @@ export {
 	ArrowDropDown,
 	Bookmark,
 	BookmarkBorder,
-	Dehaze as Feed,
-	Lock,
-	Fullscreen,
-	FullscreenExit,
-	PlayArrow as Run,
-	EventNote as Date,
+	ThumbsUpDown as Arrows,
+	DeleteForever as Delete,
 	Person,
+	Dehaze as Feed,
+	EventNote as Date,
 	DragIndicator as DragIcon,
 	CheckCircle,
 	Share as ShareIcon,
@@ -36,8 +34,20 @@ export { default as Followers } from './Followers';
 export { default as CommentSmall } from './CommentSmall';
 export { default as LikeDislikeSmall } from './LikeDislikeSmall';
 export { default as ViewsSmall } from './ViewsSmall';
+export { default as Editor } from './Editor';
+export { default as Fullscreen } from './Fullscreen';
+export { default as FullscreenExit } from './FullscreenExit';
+export { default as Save } from './Save';
+export { default as Run } from './Run';
+export { default as BackArrow } from './BackArrow';
+export { default as Globe } from './Globe';
+export { default as Lock } from './Lock';
+export { default as Output } from './Output';
+export { default as Code } from './Code';
 export { default as Accepted } from './Check';
 export { default as Done } from './Check';
 export { default as Follow } from './Star';
 export { default as Edit } from './Edit';
 export { default as Answer } from './Answer';
+export { default as ThumbDownSmall } from './ThumbDownSmall';
+export { default as ThumbUpSmall } from './ThumbUpSmall';

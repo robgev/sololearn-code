@@ -31,11 +31,10 @@ $icon_accepted_color: $primary_colored_text;
 			font-size: 14px;
 			font-weight: bold;
 			.reply-editor{
+				margin-left: 16px;
 				border-radius: 4px;
 				background-color: $white;
 				width: 100%;
-				max-height: 160px;
-				overflow: auto;
 			}
 			.add-reply-action-container {
 				&.expanded {
@@ -47,13 +46,6 @@ $icon_accepted_color: $primary_colored_text;
 						background-color: $primary_color;
 					}
 				}
-				.cancel-button {
-					font-size: 15px;
-					font-weight: bold;
-					border: none;
-					padding: 5px;
-					background: none;
-				}
 				.add-reply-button-label {
 					color: unset;
 					padding-left: 4px;
@@ -63,9 +55,16 @@ $icon_accepted_color: $primary_colored_text;
 				}
 			}
 		}
+		.cancel-button {
+			font-size: 15px;
+			font-weight: bold;
+			border: none;
+			padding: 5px;
+			background: none;
+		}
 
 		.filters {
-			margin:0 23px;
+			margin:0 18px;
 
 			.filter{
 				margin-right: 16px;
@@ -74,17 +73,31 @@ $icon_accepted_color: $primary_colored_text;
 			.title {
 				margin-right: $secondary_gap_size;
 			}
+
+			.filter-comments-count {
+				font-weight: bold;
+				font-size: 14px;
+				color: $content_text_color;
+				text-transform: uppercase;
+			}
 		}
 	}
 	.editing-post {
-		align-items: flex-end;
 		width: 100%;
+		align-items: flex-end;
+		background-color: $white;
+		.editing-post-input {
+			margin: 12px 0;
+			border-radius: 4px;
+			background-color: $white;
+			width: 100%;
+		}
+		.editing-post-button {
+			margin-left: 24px;
+		}
 		.buttons {
 			display: flex;
 			justify-content: flex-end;
-			.cancel {
-				margin-right: $secondary_gap_size;
-			}
 		}
 	}
 
@@ -109,16 +122,27 @@ $icon_accepted_color: $primary_colored_text;
 				font-size: 13px;
 				font-weight: bold;
 				color: $primary_color_hover;
-				// align-items: end;
-				min-width: 120px;
+				min-width: 160px;
 				margin-top: -16px;
 				.accepted-icon {
+					color: $icon_color;
 					cursor: pointer;
-					&:hover,
-					&.active {
-						color: $secondary_color;
+					&:hover {
+						color: $primary_color_hover;
 					}
-			}
+					&.best-answer {
+						color: $primary_color_hover;
+					}
+				}
+				.follow-container {
+					cursor: pointer;
+					margin-right: 8px;
+					.follow-text {
+						font-size: 13px;
+						font-weight: bold;
+						color: $primary_color_hover;
+					}
+				}
 			}
 
 			.toolbar {
@@ -133,6 +157,9 @@ $icon_accepted_color: $primary_colored_text;
 				flex-direction: column;
 				align-items: flex-start;
 				word-break: break-word;
+				.title-and-options-container {
+					align-items: flex-start;
+				}
 				.discuss-reply-item-vote-actions {
 					margin-bottom: -8px;
 					margin-left: -13px;
@@ -143,9 +170,16 @@ $icon_accepted_color: $primary_colored_text;
 
 				.edit-message-container {
 					margin-top: 16px;
+					&.other-margin {
+						margin-top: 10px;
+					}
 					.edit-message-icon {
 						padding-right: 8px;
 						color: $icon_color;
+					}
+					.edited-message {
+						font-size: 12px;
+						font-style: italic;
 					}
 				}
 
@@ -159,9 +193,13 @@ $icon_accepted_color: $primary_colored_text;
 				}
 
 				 .message, .preview {
-					margin: $secondary_gap_size 0 0 0;
+					margin: $secondary_gap_size 48px 0 0;
 				}
 
+				.reply-item-date {
+					white-space: nowrap;
+					margin: 8px 12px 0 0;
+				}
 				.author {
 					min-width: 214px;
 
@@ -179,6 +217,12 @@ $icon_accepted_color: $primary_colored_text;
 					.badge {
 						align-items: flex-start;
 						margin-left: 8px;
+					}
+				}
+				.statistics-container {
+					.statistics-date {
+						white-space: nowrap;
+						margin: 13px 12px 0 0;
 					}
 				}
 			}

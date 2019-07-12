@@ -14,17 +14,16 @@ import { AddCodeButton } from '../components';
 import './styles.scss';
 
 const mapStateToProps = state => ({
-	userID: state.userProfile.id,
 	sidebarItems: sidebarCodesSelector(state),
 	userProfile: state.userProfile,
 	levels: state.levels,
 });
 
 const PlaygroundSidebar = ({
-	t, sidebarItems, userID, userProfile, levels,
+	t, sidebarItems, userProfile, levels,
 }) => (
 	<FlexBox column className="playground_sidebar">
-		<ProfileInfo profile={userProfile} levels={levels} />
+		{userProfile && <ProfileInfo profile={userProfile} levels={levels} />}
 		<PaperContainer>
 			<Heading>{t('code.filter.hot-today')}</Heading>
 			{sidebarItems === null

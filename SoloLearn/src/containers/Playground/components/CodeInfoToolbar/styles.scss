@@ -2,46 +2,48 @@
 
 .top-toolbar {
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 10px;
+	flex-direction: column;
+	position: relative;
+	border-radius: 0;
+	padding: 16px;
+	padding-bottom: 4px;
 	&.fullscreen {
 		margin: 0;
 		border-radius: 0;
 		border-bottom: 1px solid $secondary_background_color;
 	}
-	.toolbar-left {
-		flex-grow: 1;
-		.code-info-toolbar_code-data {
-			align-items: stretch;
+	.code-info-toolbar_main-info {
+		margin-left: 14px;
+		.code-info-toolbar_code-name {
+			color: $primary_color_hover;
+			font-size: 15px;
+			font-weight: 600;
+			margin-bottom: 6px;
 		}
-		.code-info-toolbar_vote-actions {
-			justify-content: flex-start;
-			margin-left: -12px; // compensate material button padding
+		.code-info-toobar_user-name {
+			color: $content_text_color;
+			margin-right: 5px;
 		}
 	}
-	.toolbar-right {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		align-items: flex-end;
-		flex-grow: 1;
-		.my-code-actions {
-			align-items: flex-start;
-			min-height: 48px;
-			&.justify-between {
-				justify-content: space-between;
-				min-width: 150px;
-			}
-			.code-info-toolbar_switch-label {
-				margin-top: -12px; // compensate material button padding
-			}
-			.delete-button {
-				margin-right: 5px;
+	.code-info-toolbar_secondary-info {
+		margin-top: 7px;
+		.code-info-toolbar_vote-actions {
+			justify-content: flex-start;
+			margin-left: -8px; // compensate material button padding
+			margin-right: 8px;
+		}
+		.code-info-toolbar_date-info {
+			margin-left: auto;
+			.code-info-toolbar_date-text {
+				color: rgba(97, 107, 110, 0.8);
+				font-size: 12px;
+				margin-right: 2px;
 			}
 		}
-		.code-info-toolbar_user-name {
-			padding-right: 10px;
-		}
+	}
+	.code-info-toolbar_menu {
+		position: absolute;
+		top: 4px;
+		right: 4px;
 	}
 }
