@@ -31,6 +31,7 @@ const mapDispatchToProps = {
 @connect(mapStateToProps, mapDispatchToProps)
 class NotificationManager extends PureComponent {
 	static REFRESH_TIMEOUT = 20 * 1000;
+	_isMounted=true;
 
 	state = { isOpened: false };
 
@@ -39,6 +40,7 @@ class NotificationManager extends PureComponent {
 	}
 
 	componentWillUnmount() {
+		this._isMounted = false;
 		this.unsibscribe();
 	}
 
@@ -63,10 +65,13 @@ class NotificationManager extends PureComponent {
 				);
 			}
 		});
-		this.refreshInterval = setTimeout(
-			this.refreshNotifications,
-			NotificationManager.REFRESH_TIMEOUT,
-		);
+
+		if (this._isMounted) {
+			this.refreshInterval = setTimeout(
+				this.refreshNotifications,
+				NotificationManager.REFRESH_TIMEOUT,
+			);
+		}
 	}
 
 	toggleNotificationsOpen = () => {

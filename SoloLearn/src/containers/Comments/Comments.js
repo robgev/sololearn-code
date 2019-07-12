@@ -122,7 +122,7 @@ class Comments extends Component {
 	@action unlockInitial = () => {
 		this.initial = false;
 	}
-	static DEFAULT_INITAL_COUNT = 3;
+	static DEFAULT_INITAL_COUNT = 20;
 	@action initialRequest = async () => {
 		this.loading = true;
 		this.unlockInitial();

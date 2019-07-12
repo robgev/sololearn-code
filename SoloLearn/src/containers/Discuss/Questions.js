@@ -43,23 +43,12 @@ class Questions extends Component {
 
 	constructor(props) {
 		super(props);
-		this.discussFilters = [
-			{ value: 8, text: this.props.t('discuss.filter.trending') },
-			{ value: 9, text: this.props.t('discuss.filter.your-network') },
-			{ value: 1, text: this.props.t('discuss.filter.most-recent') },
-			{ value: 2, text: this.props.t('discuss.filter.most-popular') },
-			{ value: 4, text: this.props.t('discuss.filter.unanswered') },
-			{ value: 5, text: this.props.t('discuss.filter.my-questions') },
-			{ value: 6, text: this.props.t('discuss.filter.my-answers') },
-		];
-	}
-
-	componentDidMount() {
 		document.title = 'Sololearn | Discuss';
 		const { location, filters } = this.props;
-		// if searching (location.query.query), default filer has to be selected
+
 		const query = {
 			...(location.query.query != null ? DEFAULT_DISCUSS_FILTERS : filters),
+			...(location.query.orderBy == null ? DEFAULT_DISCUSS_FILTERS : filters),
 			...location.query,
 		};
 
@@ -71,7 +60,18 @@ class Questions extends Component {
 		const changed = queryDifference(DEFAULT_DISCUSS_FILTERS, query);
 		browserHistory.replace({ ...location, query: changed });
 		this.props.getSidebarQuestions();
+
+		this.discussFilters = [
+			{ value: 8, text: this.props.t('discuss.filter.trending') },
+			{ value: 9, text: this.props.t('discuss.filter.your-network') },
+			{ value: 1, text: this.props.t('discuss.filter.most-recent') },
+			{ value: 2, text: this.props.t('discuss.filter.most-popular') },
+			{ value: 4, text: this.props.t('discuss.filter.unanswered') },
+			{ value: 5, text: this.props.t('discuss.filter.my-questions') },
+			{ value: 6, text: this.props.t('discuss.filter.my-answers') },
+		];
 	}
+
 	componentWillUpdate(nextProps) {
 		// Source of truth is the route
 		// this.setState({ activeFilter: parseInt(query.orderBy) });
