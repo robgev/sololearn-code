@@ -35,15 +35,12 @@ const mapDispatchToProps = {
 @connect(mapStateToProps, mapDispatchToProps)
 @translate()
 class Questions extends Component {
-<<<<<<< HEAD
-=======
 	state={
 		activeFilter: 8,
 		search: null,
 		openSigninPopup: false,
 	}
 
->>>>>>> f39d8246ac86699bc5bed2d009b72929c1a34095
 	constructor(props) {
 		super(props);
 		document.title = 'Sololearn | Discuss';
@@ -73,11 +70,6 @@ class Questions extends Component {
 			{ value: 5, text: this.props.t('discuss.filter.my-questions') },
 			{ value: 6, text: this.props.t('discuss.filter.my-answers') },
 		];
-
-		this.state = {
-			avtiveFilter: location.query.orderBy ? +location.query.orderBy : 8,
-			search: null,
-		};
 	}
 
 	componentWillUpdate(nextProps) {
