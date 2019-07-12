@@ -6,6 +6,7 @@ import { observer } from 'mobx-react';
 import {
 	FlatButton,
 	ProfileAvatar,
+	RaisedButton,
 } from 'components/molecules';
 import { CountingMentionInput, Mention } from 'components/organisms';
 import {
@@ -315,14 +316,13 @@ class Comment extends Component {
 									placeholder={t('comments.write-reply-placeholder')}
 								/>
 							</Container>
-							<FlatButton
+							<RaisedButton
 								className="save-button"
 								disabled={!this.isReplyButtonEnabled}
 								onClick={this.addReply}
 							>
 								{t('comments.reply')}
-							</FlatButton>
-							<HorizontalDivider />
+							</RaisedButton>
 						</Container>
 					)
 				}
