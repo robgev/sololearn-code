@@ -27,7 +27,6 @@ import { generatePreviews, updateDate } from 'utils';
 import RemovalPopup from './RemovalPopup';
 import DeletePopup from './DeletePopup';
 import Options from './Options';
-// import Author from './Author';
 import AcceptReply from './AcceptReply';
 
 @translate(null, { withRef: true })
@@ -169,7 +168,12 @@ class ReplyItem extends Component {
 							<FlexBox className="question">
 								<FlexBox fullWidth justifyBetween>
 									<FlexBox className="author">
-										<UsernameLink className="author-name" to={`/profile/${reply.userID}`}>{reply.userName}</UsernameLink>
+										<UsernameLink
+											className="author-name"
+											to={`/profile/${reply.userID}`}
+										>
+											{reply.userName}
+										</UsernameLink>
 										<ModBadge
 											className="badge"
 											badge={reply.badge}
@@ -226,19 +230,8 @@ class ReplyItem extends Component {
 								</FlexBox>
 							</FlexBox>
 						</FlexBox>
-						{/* <Container className="user">
-							<Author
-								level={reply.level}
-								badge={reply.badge}
-								userID={reply.userID}
-								avatarUrl={reply.avatarUrl}
-								userName={reply.userName}
-								date={reply.date}
-							/>
-						</Container> */}
 					</PaperContainer>
 				</ListItem>
-				{/* <HorizontalDivider /> */}
 				<ReportPopup
 					open={isReportPopupOpen}
 					onClose={this.closeReportPopup}

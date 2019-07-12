@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
+import { connect } from 'react-redux';
 
 import { PaperContainer, Input, Heading, FlexBox, SecondaryTextBlock } from 'components/atoms';
-import { PromiseButton } from 'components/molecules';
+import {
+	PromiseButton,
+	FlatButton,
+	ProfileAvatar,
+	UsernameLink,
+	ModBadge,
+} from 'components/molecules';
 import { CountingMentionInput } from 'components/organisms';
 
 import TagsInput from './TagsInput';
@@ -102,7 +109,7 @@ class QuestionEditor extends Component {
 	/* End mention input functions */
 
 	render() {
-		const { t, isNew } = this.props;
+		const { t, isNew, profile } = this.props;
 		const {
 			title, titleErrorText, tags, tagsError,
 			isReplyBoxOpen, replyLength,
@@ -110,49 +117,81 @@ class QuestionEditor extends Component {
 		return (
 			<PaperContainer className="discuss_question-editor">
 				<FlexBox column>
-					<Heading>{isNew ? t('question.title') : t('discuss.editTitle')}</Heading>
-					<FlexBox column className="counting-input">
-						<Input
-							error={titleErrorText !== ''}
-							fullWidth
-							value={title}
-							onChange={this.onTitleChange}
-							label={titleErrorText !== '' ? titleErrorText : t('question.title-placeholder')}
-							maxLength={QuestionEditor.maxTitleLength}
+					<Heading className="question-heading">{isNew ? t('question.title') : t('discuss.editTitle')}</Heading>
+					<FlexBox fullWidth>
+						<ProfileAvatar
+							className="user-avatar"
+							user={profile}
 						/>
-						<SecondaryTextBlock className="count">
-							{title.length} / {QuestionEditor.maxTitleLength}
-						</SecondaryTextBlock>
+						<FlexBox column className="discuss-main-wrapper">
+							<FlexBox className="author" align>
+								<UsernameLink
+									className="user-name"
+									to={`/profile/${profile.id}`}
+								>
+									{profile.name}
+								</UsernameLink>
+								<ModBadge
+									className="badge"
+									badge={profile.badge}
+								/>
+							</FlexBox>
+
+							<FlexBox column className="counting-input">
+								<SecondaryTextBlock className="discuss-input-titles">{t('code_playground.details.name')}</SecondaryTextBlock>
+								<Input
+									variant="outlined"
+									error={titleErrorText !== ''}
+									fullWidth
+									value={title}
+									onChange={this.onTitleChange}
+									maxLength={QuestionEditor.maxTitleLength}
+									className="discuss-input"
+								/>
+								<SecondaryTextBlock className="count">
+									{title.length} / {QuestionEditor.maxTitleLength}
+								</SecondaryTextBlock>
+							</FlexBox>
+							<SecondaryTextBlock className="discuss-input-titles">{t('question.message-placeholder')}</SecondaryTextBlock>
+							<CountingMentionInput
+								ref={(input) => { this.mentionInput = input; }}
+								initText={this.props.post !== null ? this.props.post.message : null}
+								getUsers={{ type: 'discuss' }}
+								// placeholder={!isReplyBoxOpen && replyLength === 0 ? t('question.message-placeholder') : ''}
+								maxLength={QuestionEditor.maxQuestionLength}
+								className="question-editor-description-input discuss-input"
+							/>
+							<SecondaryTextBlock className="discuss-input-titles">Tags</SecondaryTextBlock> {/* needs translation */}
+							<FlexBox column className="counting-input">
+								<TagsInput
+									error={tagsError}
+									tags={tags}
+									addTag={this.addTag}
+									deleteTag={this.deleteTag}
+									setTagsError={this.setTagsError}
+									canAddTag={this.canAddTag()}
+									className="discuss-input discuss-tags-input"
+								/>
+								<SecondaryTextBlock className="count">
+									{tags.length} / {QuestionEditor.maxTagsLength}
+								</SecondaryTextBlock>
+							</FlexBox>
+							<FlexBox className="actions-container">
+								<FlatButton>
+									CANCEL
+								</FlatButton>
+								<PromiseButton
+									raised
+									className="submit-button"
+									color="primary"
+									mouseDown
+									fire={this.handleSubmit}
+								>
+									{isNew ? t('common.post-action-title') : t('common.save-action-title')}
+								</PromiseButton>
+							</FlexBox>
+						</FlexBox>
 					</FlexBox>
-					<CountingMentionInput
-						ref={(input) => { this.mentionInput = input; }}
-						initText={this.props.post !== null ? this.props.post.message : null}
-						getUsers={{ type: 'discuss' }}
-						placeholder={!isReplyBoxOpen && replyLength === 0 ? t('question.message-placeholder') : ''}
-						maxLength={QuestionEditor.maxQuestionLength}
-					/>
-					<FlexBox column className="counting-input">
-						<TagsInput
-							error={tagsError}
-							tags={tags}
-							addTag={this.addTag}
-							deleteTag={this.deleteTag}
-							setTagsError={this.setTagsError}
-							canAddTag={this.canAddTag()}
-						/>
-						<SecondaryTextBlock className="count">
-							{tags.length} / {QuestionEditor.maxTagsLength}
-						</SecondaryTextBlock>
-					</FlexBox>
-					<PromiseButton
-						raised
-						className="submit-button"
-						color="primary"
-						mouseDown
-						fire={this.handleSubmit}
-					>
-						{isNew ? t('common.post-action-title') : t('common.save-action-title')}
-					</PromiseButton>
 				</FlexBox>
 			</PaperContainer>
 		);
@@ -163,4 +202,8 @@ QuestionEditor.defaultProps = {
 	post: null,
 };
 
-export default QuestionEditor;
+const mapStateToProps = state => ({
+	profile: state.userProfile,
+});
+
+export default connect(mapStateToProps)(QuestionEditor);

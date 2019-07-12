@@ -21,14 +21,13 @@ class TagsInput extends Component {
 	);
 
 	static Input = ({
-		placeholder, classes, autoFocus, value, onChange, onAdd, onDelete, tags, ref, ...other
+		classes, autoFocus, value, onChange, onAdd, onDelete, tags, ref, ...other
 	}) => (
 		<MUIChipInput
 			allowDuplicates
 			fullWidth
 			blurBehavior="add"
 			newChipKeyCodes={[ 13, 32 ]}
-			label={placeholder}
 			onUpdateInput={onChange}
 			onAdd={onAdd}
 			onDelete={onDelete}
@@ -109,7 +108,7 @@ class TagsInput extends Component {
 				renderSuggestionsContainer={TagsInput.SuggestionsContainer}
 				renderInputComponent={TagsInput.Input}
 				inputProps={{
-					placeholder: t('question.tags-placeholder'),
+					variant: 'outlined',
 					tags,
 					value,
 					onAdd: this.addTag,

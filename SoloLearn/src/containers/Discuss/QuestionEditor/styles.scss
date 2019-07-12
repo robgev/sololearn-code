@@ -1,39 +1,66 @@
 @import '~styles/variables';
+@import '~styles/colors';
 
 .discuss_question-editor {
-	.counting-input {
-		.count {
-			align-self: flex-end;
-			margin: $primary_gap_size;
+	padding: 12px 16px 16px 16px;
+	.question-heading {
+		margin-bottom: 16px;
+	}
+	.user-avatar {
+		margin-right: 16px;
+	}
+	.discuss-main-wrapper {
+		padding-top: 15px;
+		flex: 1;
+		.author {
+			margin-bottom: $primary_gap_size;
+			.user-name {
+				margin-right: $secondary_gap_size;
+			}
 		}
-	}
-	.submit-button {
-		align-self: flex-end;
-		margin: $primary_gap_size;
-	}
-	.react-autosuggest__container {
-		flex-grow: 1;
-		position: relative;
-	}
-	.react-autosuggest__suggestions-container {
-		padding: 0;
-	}
-	.react-autosuggest__suggestions-container--open {
-		padding: 10;
-		position: absolute;
-		left: 0;
-		right: 0;
-		z-index: 1;
-	}
-	.react-autosuggest__suggestion {
-		display: block;
-	}
-	.react-autosuggest__suggestions-list {
-		margin: 0;
-		padding: 0;
-		list-style-type: none;
-	}
-	.autosuggest-input {
-		margin-top: 10px;
+		.counting-input {
+			.count {
+				align-self: flex-end;
+				margin-top: 4px;
+			}
+		}
+		.discuss-input-titles {
+			margin-bottom: $secondary_gap_size;
+		}
+		.question-editor-description-input {
+			margin: 0;
+		}
+		.discuss-input {
+			border: 1px solid $border-color;
+			border-radius: 4px;
+		}
+		.react-autosuggest__container {
+			flex-grow: 1;
+			position: relative;
+		}
+		.react-autosuggest__suggestions-container {
+			padding: 0;
+		}
+		.react-autosuggest__suggestions-container--open {
+			padding: 10;
+			position: absolute;
+			left: 0;
+			right: 0;
+			z-index: 1;
+		}
+		.react-autosuggest__suggestion {
+			display: block;
+		}
+		.react-autosuggest__suggestions-list {
+			margin: 0;
+			padding: 0;
+			list-style-type: none;
+		}
+		.autosuggest-input {
+			margin-top: 10px;
+		}
+		.actions-container {
+
+		}
 	}
 }
