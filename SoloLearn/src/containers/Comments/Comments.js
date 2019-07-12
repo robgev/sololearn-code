@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { observable, action, autorun, computed } from 'mobx';
 import { observer } from 'mobx-react';
 import { withRouter } from 'react-router';
 import { translate } from 'react-i18next';
 import { CountingMentionInput } from 'components/organisms';
-import { ProfileAvatar, RaisedButton, InfiniteScroll, EmptyCard } from 'components/molecules';
+import { ProfileAvatar, FlatButton, RaisedButton, InfiniteScroll, EmptyCard } from 'components/molecules';
 import { Container } from 'components/atoms';
 import CommentsAPI from './comments.api';
 import IComment from './IComment';
@@ -273,75 +273,79 @@ class Comments extends Component {
 		} = this.props;
 
 		return (
-			<InfiniteScroll
-				loadMore={this.loadMore}
-				hasMore={this.hasMore}
-				isLoading={this.loading}
-				useWindow={useWindow}
-				className="comment-list"
-			>
-				<Container className="comments-container">
-					<CommentsToolbar
-						count={this.commentsCount}
-						value={this.orderBy}
-						onChange={this.changeOrder}
-					/>
-					{
-						this.isOnReply &&
-						<FlatButton onClick={this.reset} >
-							{t('common.back-action-title')}
-						</FlatButton>
-					}
-					{
-						this.hasMoreAbove &&
-						<FlatButton onClick={this.getCommentsAbove}>
-							{t('common.loadMore')}
-						</FlatButton>
-					}
-					{(!this.loading && !this.comments.length)
-						? <EmptyCard />
-						: (
-							<CommentList
-								comments={this.comments}
-								onCommentAdd={this.onCommentAdd}
-								onCommentDelete={this.onCommentDelete}
-								commentsRef={this.addRef}
-								delete={this.deleteComment}
-								commentsAPI={this.commentsAPI}
-								key={this.orderBy}
-								hideComment={this.hideComment}
-								toggleSigninPopup={toggleSigninPopup}
-							/>
-						)
-					}
-				</Container>
-				{userProfile &&
-					<Container className="input-bar">
-						<ProfileAvatar user={userProfile} size="extra-small" />
-						<CountingMentionInput
-							ref={(i) => { this.mentionInput = i; }}
-							onSubmitEnabledChange={this.submitEnabledChange}
-							getUsers={this.commentsAPI.getMentionUsers}
-							placeholder={t('comments.write-comment-placeholder')}
-							maxLength={1024}
-							renderButton={({ isExpanded, onBlur }) => (isExpanded
-								? (
-									<RaisedButton
-										className="comments_submit-button"
-										onMouseDown={this.addComment(onBlur)}
-										disabled={!this.isSubmitEnabled}
-									>
-									Comment
-									</RaisedButton>
-								)
-								: null)
-
-							}
+			<Fragment>
+				<InfiniteScroll
+					loadMore={this.loadMore}
+					hasMore={this.hasMore}
+					isLoading={this.loading}
+					useWindow={useWindow}
+					outerLoading={false}
+					className="comment-list"
+				>
+					<Container className="comments-container">
+						<CommentsToolbar
+							count={this.commentsCount}
+							value={this.orderBy}
+							onChange={this.changeOrder}
 						/>
+						{
+							this.isOnReply &&
+							<FlatButton onClick={this.reset} >
+								{t('common.back-action-title')}
+							</FlatButton>
+						}
+						{
+							this.hasMoreAbove &&
+							<FlatButton onClick={this.getCommentsAbove}>
+								{t('common.loadMore')}
+							</FlatButton>
+						}
+						{(!this.loading && !this.comments.length)
+							? <EmptyCard />
+							: (
+								<CommentList
+									comments={this.comments}
+									onCommentAdd={this.onCommentAdd}
+									onCommentDelete={this.onCommentDelete}
+									commentsRef={this.addRef}
+									delete={this.deleteComment}
+									commentsAPI={this.commentsAPI}
+									key={this.orderBy}
+									hideComment={this.hideComment}
+									toggleSigninPopup={toggleSigninPopup}
+								/>
+							)
+						}
+					</Container>
+				</InfiniteScroll>
+				{userProfile &&
+					<Container className="comments_input-bar-container">
+						<Container className="input-bar">
+							<ProfileAvatar user={userProfile} size="extra-small" />
+							<CountingMentionInput
+								ref={(i) => { this.mentionInput = i; }}
+								onSubmitEnabledChange={this.submitEnabledChange}
+								getUsers={this.commentsAPI.getMentionUsers}
+								placeholder={t('comments.write-comment-placeholder')}
+								maxLength={1024}
+								renderButton={({ isExpanded, onBlur }) => (isExpanded
+									? (
+										<RaisedButton
+											className="comments_submit-button"
+											onMouseDown={this.addComment(onBlur)}
+											disabled={!this.isSubmitEnabled}
+										>
+										Comment
+										</RaisedButton>
+									)
+									: null)
+
+								}
+							/>
+						</Container>
 					</Container>
 				}
-			</InfiniteScroll>
-
+			</Fragment>
 		);
 	}
 }

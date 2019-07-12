@@ -6,6 +6,15 @@
 	width: 100%;
 	flex-direction: column;
 	position: relative;
+	.molecule_infinit-scroll-loading {
+		margin-top: -150px;
+	}
+}
+
+.comments_input-bar-container {
+	position: absolute;
+	width: 100%;
+	bottom: 0;
 	.input-bar {
 		display: flex;
 		width: 400px;
