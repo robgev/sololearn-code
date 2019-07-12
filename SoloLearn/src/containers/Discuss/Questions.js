@@ -14,7 +14,7 @@ import {
 	discussHasMoreSelector,
 	isDiscussFetchingSelector,
 } from 'reducers/discuss.reducer';
-import { FlexBox, Select, MenuItem, Container, PaperContainer, TextBlock } from 'components/atoms';
+import { FlexBox, PaperContainer, TextBlock } from 'components/atoms';
 import { LayoutWithSidebar, InfiniteScroll, TitleTab, FlatButton } from 'components/molecules';
 import SignInPopup from 'components/SignInPopup';
 import QuestionList, { Sidebar } from './QuestionsList';
@@ -36,7 +36,7 @@ const mapDispatchToProps = {
 @translate()
 class Questions extends Component {
 	state={
-		avtiveFilter: 8,
+		activeFilter: 8,
 		search: null,
 		openSigninPopup: false,
 	}
@@ -74,7 +74,7 @@ class Questions extends Component {
 	}
 	componentWillUpdate(nextProps) {
 		// Source of truth is the route
-		// this.setState({ avtiveFilter: parseInt(query.orderBy) });
+		// this.setState({ activeFilter: parseInt(query.orderBy) });
 
 		const { location } = nextProps;
 		if (!isObjectEqual(location.query, this.props.location.query)) {
@@ -95,7 +95,7 @@ class Questions extends Component {
 	handleOrderByFilterChange = (orderBy) => {
 		const { location } = this.props;
 		browserHistory.push({ ...location, query: { ...location.query, orderBy } });
-		this.setState({ avtiveFilter: orderBy });
+		this.setState({ activeFilter: orderBy });
 	}
 	removeQuery = () => {
 		const { location } = this.props;
@@ -136,7 +136,7 @@ class Questions extends Component {
 			t, posts, hasMore, isFetching, isLoggedIn,
 		} = this.props;
 		const {
-			avtiveFilter,
+			activeFilter,
 			search,
 			openSigninPopup,
 		} = this.state;
@@ -158,7 +158,7 @@ class Questions extends Component {
 				<FlexBox align justifyBetween className="discuss-filters">
 					<TitleTab
 						tabs={this.discussFilters}
-						activeTab={avtiveFilter}
+						activeTab={activeFilter}
 						handleTabChange={this.handleOrderByFilterChange}
 					/>
 				</FlexBox>
@@ -170,7 +170,7 @@ class Questions extends Component {
 
 					<PaperContainer className="question-conatainer">
 						{
-							!isLoggedIn && (avtiveFilter === 5 || avtiveFilter === 6 || avtiveFilter === 9)
+							!isLoggedIn && (activeFilter === 5 || activeFilter === 6 || activeFilter === 9)
 								? (
 									<FlexBox column align justifyBetween>
 										<TextBlock>Sign in</TextBlock>
