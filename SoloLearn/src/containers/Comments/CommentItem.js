@@ -5,13 +5,13 @@ import PreviewItem from 'components/PreviewItem';
 import {
 	ListItem,
 	FlexBox,
-	HorizontalDivider,
 	Container,
 	SecondaryTextBlock,
 	MenuItem,
 } from 'components/atoms';
 import {
 	FlatButton,
+	RaisedButton,
 	UsernameLink,
 	ProfileAvatar,
 	PromiseButton,
@@ -66,8 +66,13 @@ render() {
 							user={profile}
 						/>
 					</Container>
-					<FlexBox column fullWidth className="comment-item_wrapper">
+					<FlexBox
+						column
+						fullWidth
+						className={`comment-item_wrapper ${isEditing ? 'edit' : ''}`}
+					>
 						<Container className="comment-item_comment-container">
+							{ !isEditing &&
 							<FlexBox align className="comment-item_author">
 								<UsernameLink
 									className="comment-item_user-name"
@@ -80,11 +85,12 @@ render() {
 									badge={profile.badge}
 								/>
 							</FlexBox>
+							}
 							{
 								isEditing
 									? (
 										<Container className="comment-input-toolbar">
-											<Container className="input-bar reply-input">
+											<Container className="input-bar edit-input">
 												<CountingMentionInput
 													className="counting-mention-input"
 													ref={(i) => { this.editMentionInput = i; }}
@@ -95,10 +101,11 @@ render() {
 													maxLength={1024}
 												/>
 											</Container>
-											<FlatButton onMouseDown={toggleEdit}>
+											<FlatButton className="comments_text-button" onMouseDown={toggleEdit}>
 												{t('common.cancel-title')}
 											</FlatButton>
-											<FlatButton
+											<RaisedButton
+												className="comment-edit-button"
 												disabled={!isEditButtonEnabled}
 												onMouseDown={() => {
 													edit({ message: this.editMentionInput.popValue(), id });
@@ -106,7 +113,7 @@ render() {
 												}}
 											>
 												{t('common.edit-action-title')}
-											</FlatButton>
+											</RaisedButton>
 										</Container>
 									)
 									: (
