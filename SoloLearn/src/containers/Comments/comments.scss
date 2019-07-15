@@ -1,4 +1,5 @@
 @import '~styles/variables';
+@import '~styles/colors';
 
 .comments-container {
 	margin-top: $primary_gap_size;
@@ -6,6 +7,11 @@
 		display: flex;
 		width: 100%;
 		justify-content: flex-start;
+		&.reply-input {
+			display: flex;
+			background-color: white;
+			padding: 14px 16px;
+		}
 	}
 
 	.replay-loader {
@@ -18,7 +24,10 @@
 		justify-content: space-between;
 		align-items: center;
 		width: 100%;
-		padding: 0 0 15px 0;
+		.comments-heading {
+			margin-bottom: 0;
+			color: $content_text_color;
+		}
 		.comments-tooblar_select {
 			margin-top: -6px;
 		}

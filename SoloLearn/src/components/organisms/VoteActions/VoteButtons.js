@@ -1,12 +1,13 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { IconButton, FlexBox, SecondaryTextBlock } from 'components/atoms';
-import { ArrowUp, ArrowDown } from 'components/icons';
+import { ArrowUp, ArrowDown, ThumbUpSmall, ThumbDownSmall } from 'components/icons';
 import PropTypes from 'prop-types';
 
 import { numberFormatter } from 'utils';
 
 const VoteActionsView = ({
+	small,
 	likes,
 	vertical,
 	onUpvote,
@@ -22,13 +23,19 @@ const VoteActionsView = ({
 		{...props}
 	>
 		<IconButton active={likes.userVote === 1} onClick={onUpvote}>
-			<ArrowUp />
+			{ small
+				? <ThumbUpSmall />
+				: <ArrowUp />
+			}
 		</IconButton>
 		<SecondaryTextBlock size="small" className="organism_vote-actions-label" onClick={onLabelClick}>
 			{likes.voteCount > 0 && '+'}{numberFormatter(likes.voteCount)}
 		</SecondaryTextBlock>
 		<IconButton active={likes.userVote === -1} onClick={onDownvote}>
-			<ArrowDown />
+			{ small
+				? <ThumbDownSmall />
+				: <ArrowDown />
+			}
 		</IconButton>
 	</FlexBox>
 );

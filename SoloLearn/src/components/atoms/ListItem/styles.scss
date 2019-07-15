@@ -1,4 +1,7 @@
 .atom_list-item {
 	margin: 10px 0;
 	padding: 0;
+	&:first-of-type {
+		margin-top: 0;
+	}
 }

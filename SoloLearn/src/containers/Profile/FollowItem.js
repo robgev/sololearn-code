@@ -11,47 +11,50 @@ import {
 	ProfileAvatar,
 	UsernameLink,
 	RaisedButton,
-} from 'components/molecules'
+} from 'components/molecules';
 import { translate } from 'react-i18next';
 
 import './FollowItem.scss';
 
-const mapStateToProps = state => ({ userID: state.userProfile.id });
+const mapStateToProps = state => ({ userID: state.userProfile && state.userProfile.id });
 
 @connect(mapStateToProps)
 @translate()
 @observer
 class FollowItem extends Component {
+
 	handleFollowClick = () => {
-		this.props.onFollowClick(this.props.follow.id);
+			this.props.onFollowClick(this.props.follow.id);
 	}
-	render() {
-		const {
-			t, follow,
-		} = this.props;
-		return (
-			<Container className="follower">
-				<Container className="details">
-					<ProfileAvatar user={follow} />
-					<Container className="username-container" >
-						<UsernameLink className="username" to={`/profile/${follow.id}`}>
-							{follow.name}
-						</UsernameLink>
-						<SecondaryTextBlock>{follow.followers} {t('common.user-followers')} | {t('common.user-level')} {follow.level}</SecondaryTextBlock>
-					</Container>
+
+render() {
+	const {
+		t, follow,
+	} = this.props;
+
+	return (
+		<Container className="follower">
+			<Container className="details">
+				<ProfileAvatar user={follow} />
+				<Container className="username-container" >
+					<UsernameLink className="username" to={`/profile/${follow.id}`}>
+						{follow.name}
+					</UsernameLink>
+					<SecondaryTextBlock>{follow.followers} {t('common.user-followers')} | {t('common.user-level')} {follow.level}</SecondaryTextBlock>
 				</Container>
-				{
-					this.props.userID !== follow.id &&
+			</Container>
+			{
+				this.props.userID !== follow.id &&
 					<RaisedButton
 						color={follow.isFollowing ? 'secondary' : 'primary'}
 						onClick={this.handleFollowClick}
 					>
 						{follow.isFollowing ? t('common.user-following') : t('common.follow-user')}
 					</RaisedButton>
-				}
-			</Container>
-		);
-	}
+			}
+		</Container>
+	);
+}
 }
 
 export default FollowItem;

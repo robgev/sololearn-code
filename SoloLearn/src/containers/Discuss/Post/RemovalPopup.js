@@ -10,7 +10,7 @@ import { determineAccessLevel } from 'utils';
 import ReportItemTypes from 'constants/ReportItemTypes';
 
 const mapStateToProps = state => ({
-	canDelete: determineAccessLevel(state.userProfile.accessLevel) >= 2,
+	canDelete: state.userProfile && determineAccessLevel(state.userProfile.accessLevel) >= 2,
 });
 
 @connect(mapStateToProps)

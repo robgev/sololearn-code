@@ -14,6 +14,6 @@ export default createMuiTheme({
 		},
 	},
 	typography: {
-		fontFamily: '\'Muli\', sans-serif',
+		fontFamily: 'Muli, sans-serif',
 	},
 });

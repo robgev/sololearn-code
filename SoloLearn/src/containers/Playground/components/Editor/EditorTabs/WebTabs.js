@@ -1,14 +1,21 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import { withRouter, browserHistory } from 'react-router';
+import { translate } from 'react-i18next';
+import { Tab, Tabs } from 'components/atoms';
 
 const onLanguageChange = location =>
-	(_, language) => browserHistory.replace({ ...location, query: { ...location.query, language } });
+	(_, language) => {
+		if (language !== '') {
+			browserHistory.replace({ ...location, query: { ...location.query, language } });
+		}
+	};
 
-const WebTabs = ({ location, languages, playground }) => (
+const WebTabs = ({
+	t, location, languages, playground,
+}) => (
 	<Tabs
+		className="playground_web-tabs-root"
 		value={playground.isOutputOpen ? '' : playground.language} // Hide selected tab when output is open
 		onChange={onLanguageChange(location)}
 	>
@@ -41,7 +48,15 @@ const WebTabs = ({ location, languages, playground }) => (
 			onClick={playground.hideOutput}
 		/>
 		}
+
+		{ !playground.isInline &&
+		<Tab
+			value=""
+			label={t('code_playground.output')}
+			onClick={playground.language === 'php' ? playground.runCompiledCode : playground.runWebCode}
+		/>
+		}
 	</Tabs>
 );
 
-export default withRouter(observer(WebTabs));
+export default translate()(withRouter(observer(WebTabs)));

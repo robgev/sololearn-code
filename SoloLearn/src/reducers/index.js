@@ -49,6 +49,9 @@ import searchBar from './searchBar.reducer';
 // Localization
 import locale from './locale.reducer';
 
+// Userpost
+import userpostBackgrounds from './userpostBackgrounds.reducer';
+
 const reducers = combineReducers({
 	slay,
 	settings,
@@ -80,6 +83,7 @@ const reducers = combineReducers({
 	searchBar,
 	// Localization
 	locale,
+	userpostBackgrounds,
 });
 
 const initialStore = {

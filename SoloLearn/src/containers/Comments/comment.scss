@@ -1,3 +1,5 @@
+@import '~styles/colors';
+
 @keyframes highlight {
   from {
     background-color: yellow;
@@ -11,12 +13,14 @@
 
 	.comment-input-toolbar {
 		text-align: right;
+		.save-button {
+			color: $white;
+			margin: 12px 0;
+		}
 	}
 
 	.comment-item {
 		.comment-item-container {
-			padding-top: 10px;
-
 			&.replay {
 				padding-left: 20px;
 			}

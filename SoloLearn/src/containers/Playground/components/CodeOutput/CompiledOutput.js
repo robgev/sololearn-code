@@ -9,8 +9,8 @@ import {
 } from 'components/atoms';
 
 const CompiledOutput = ({ t, playground }) => (
-	<PaperContainer className="playground_compiled-output-container">
-		<Heading>{t('code_playground.output')}</Heading>
+	<PaperContainer className={`playground_compiled-output-container ${playground.isDark ? 'dark' : ''}`}>
+		<Heading className="playground_compiled-output-heading">{t('code_playground.output')}</Heading>
 		{ playground.isRunning
 			?	<Loading />
 			: (

@@ -119,7 +119,6 @@ $icon_accepted_color: $primary_colored_text;
 			justify-content: space-between;
 
 			.options {
-				cursor: pointer;
 				font-size: 13px;
 				font-weight: bold;
 				color: $primary_color_hover;
@@ -136,6 +135,7 @@ $icon_accepted_color: $primary_colored_text;
 					}
 				}
 				.follow-container {
+					cursor: pointer;
 					margin-right: 8px;
 					.follow-text {
 						font-size: 13px;

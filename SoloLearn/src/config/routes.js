@@ -93,14 +93,14 @@ export default ([
 	<Route onEnter={() => window.scrollTo(0, 0)} path="/faq" component={Faq} />,
 	<Route onEnter={() => window.scrollTo(0, 0)} path="/contact" component={Contact} />,
 	<Route onEnter={() => window.scrollTo(0, 0)} path="/terms-of-use" component={ToS} />,
-	<Route component={redirector(MainLayout)} key="mainLayoutRoutes">
+	<Route component={MainLayout} key="mainLayoutRoutes">
 		<Redirect exact path="/" to="/feed" />
 		<Redirect path="/blog" to="/discuss" />
 		<Redirect path="/blog/*" to="/discuss" />
 		<Redirect path="/user" to="/profile" />
 		<Redirect path="/user/edit" to="/settings" />
 		{/* alternativ paths */}
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn" component={SlayHome} />
+		<Route onEnter={() => window.scrollTo(0, 0)} path="/learn" component={redirector(SlayHome)} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/courses" component={SlayHome} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/course" component={SlayHome} />
 

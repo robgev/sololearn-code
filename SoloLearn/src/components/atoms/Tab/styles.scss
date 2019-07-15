@@ -1,3 +1,27 @@
+@import '~styles/colors';
+
+$tab_text_color: $icon_color;
+
 .atom_tab {
+	margin-right: 45px;
 	min-width: unset;
+	font-size: 15px;
+	font-weight: 600;
+	color: $tab_text_color;
+	border-radius: 4px;
+	min-height: 40px;
+	.atom_tab-wrapper {
+		> * {
+			padding: 6px 14px;
+		}
+	}
+	&:hover,
+	&.atom_tab-selected {
+		opacity: 1;
+		color: $primary_color_hover;
+		background-color: rgba(30, 209, 174, 0.1);
+	}
+	&:last-of-type {
+		margin-right: 0;
+	}
 }

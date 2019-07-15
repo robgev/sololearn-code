@@ -13,8 +13,8 @@ import {
 } from 'reducers/codes.reducer';
 import { showError, queryDifference, isObjectEqual } from 'utils';
 
-import { PaperContainer, Select, MenuItem, FlexBox } from 'components/atoms';
-import { InfiniteScroll, LayoutWithSidebar, TitleTab } from 'components/molecules';
+import { PaperContainer, Select, MenuItem, FlexBox, TextBlock } from 'components/atoms';
+import { InfiniteScroll, LayoutWithSidebar, TitleTab, FlatButton } from 'components/molecules';
 
 import { CodesList, Header } from './components';
 import PlaygroundSidebar from './PlaygroundSidebar';
@@ -24,6 +24,7 @@ const mapStateToProps = state => ({
 	codes: codesSelector(state),
 	filters: codesFiltersSelector(state),
 	hasMore: codesHasMoreSelector(state),
+	isLoggedIn: !!state.userProfile,
 });
 
 const mapDispatchToProps = {
@@ -97,7 +98,7 @@ class Codes extends Component {
 	}
 	render() {
 		const {
-			codes, filters, hasMore, t,
+			codes, filters, hasMore, t, isLoggedIn,
 		} = this.props;
 		return (
 			<LayoutWithSidebar paper={false} sidebar={<PlaygroundSidebar />}>
@@ -112,18 +113,20 @@ class Codes extends Component {
 						handleKeyDown={this.handleKeyDown}
 					/>
 					<FlexBox justifyBetween className="playground-menu-container">
-						<TitleTab
-							activeTab={filters.ordering}
-							handleTabChange={this.handleOrderByFilterChange}
-							tabs={[
+						<FlexBox fullWidth justifyBetween className="tabs-container">
+							<TitleTab
+								activeTab={filters.ordering}
+								handleTabChange={this.handleOrderByFilterChange}
+								tabs={[
 								// { value: 'HotToday', text: t('code.filter.hot-today') },
-								{ value: 'Trending', text: t('code.filter.trending') },
-								{ value: 'YourNetwork', text: t('code.filter.your-network') },
-								{ value: 'MostPopular', text: t('code.filter.most-popular') },
-								{ value: 'MostRecent', text: t('code.filter.most-recent') },
-								{ value: 'MyCodes', text: t('code.filter.my-codes') },
-							]}
-						/>
+									{ value: 'Trending', text: t('code.filter.trending') },
+									{ value: 'YourNetwork', text: t('code.filter.your-network') },
+									{ value: 'MostPopular', text: t('code.filter.most-popular') },
+									{ value: 'MostRecent', text: t('code.filter.most-recent') },
+									{ value: 'MyCodes', text: t('code.filter.my-codes') },
+								]}
+							/>
+						</FlexBox>
 						<Select
 							value={filters.language || 'all'}
 							className="playground-menu-spaced"
@@ -148,11 +151,21 @@ class Codes extends Component {
 
 							</Container>
 						</Container> */}
-						<CodesList
-							codes={codes}
-							hasMore={hasMore}
-						/>
-
+						{
+							!isLoggedIn && (filters.ordering === 'YourNetwork' || filters.ordering === 'MyCodes')
+								? (
+									<FlexBox column align justifyBetween>
+										<TextBlock>Sign in</TextBlock>
+										<FlatButton onClick={() => browserHistory.push(`/signin?url=codes?ordering=${filters.ordering}`)}>
+										Sign In
+										</FlatButton>
+									</FlexBox>
+								)
+								: <CodesList
+									codes={codes}
+									hasMore={hasMore}
+								/>
+						}
 					</PaperContainer>
 				</InfiniteScroll>
 			</LayoutWithSidebar>

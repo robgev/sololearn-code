@@ -15,7 +15,7 @@ import ReplyItem from './ReplyItem';
 import IReplies from './IReplies';
 
 const mapStateToProps = ({ userProfile }) => ({
-	userInfo: { userName: userProfile.name, avatarUrl: userProfile.avatarUrl },
+	userInfo: userProfile && { userName: userProfile.name, avatarUrl: userProfile.avatarUrl },
 });
 
 @connect(mapStateToProps)
@@ -78,6 +78,7 @@ class Replies extends Component {
 
 	onOrderChange = (orderBy) => {
 		this.replies.setOrderBy(orderBy);
+		this.setState({ avtiveFilter: orderBy });
 	}
 
 	onAcceptReply = (id) => {
@@ -92,7 +93,9 @@ class Replies extends Component {
 	}
 
 	render() {
-		const { count, t, askerID } = this.props;
+		const {
+			count, t, askerID, userInfo, toggleSigninPopup,
+		} = this.props;
 		const { avtiveFilter } = this.state;
 		return (
 			<Container className="replies">
@@ -114,10 +117,10 @@ class Replies extends Component {
 					isLoading={this.replies.isFetching}
 				>
 					<Container>
-						<AddReply
+						{userInfo && <AddReply
 							postID={this.props.postID}
 							submit={this.addReply}
-						/>
+						/>}
 						{this.replies.canLoadAbove
 							? (
 								<RaisedButton
@@ -135,6 +138,7 @@ class Replies extends Component {
 									{
 										this.replies.entities.map(reply => (
 											<ReplyItem
+												userInfo={userInfo}
 												ref={(replyView) => {
 													this.repliesRefs[reply.id] = replyView;
 												}}
@@ -144,6 +148,7 @@ class Replies extends Component {
 												reply={reply}
 												deleteReply={() => this.deleteReply(reply.id)}
 												onAccept={() => this.onAcceptReply(reply.id)}
+												toggleSigninPopup={toggleSigninPopup}
 											/>
 										))
 									}
