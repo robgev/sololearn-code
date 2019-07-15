@@ -176,9 +176,12 @@ class QuestionEditor extends Component {
 									{tags.length} / {QuestionEditor.maxTagsLength}
 								</SecondaryTextBlock>
 							</FlexBox>
-							<FlexBox className="actions-container">
-								<FlatButton>
-									CANCEL
+							<FlexBox className="actions-container" justifyEnd align>
+								<FlatButton
+									className="cancel-button"
+									onClick={this.props.handleCancel}
+								>
+									{t('common.cancel-title')}
 								</FlatButton>
 								<PromiseButton
 									raised

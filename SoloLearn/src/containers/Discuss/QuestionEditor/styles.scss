@@ -60,7 +60,13 @@
 			margin-top: 10px;
 		}
 		.actions-container {
-
+			.cancel-button {
+				margin-right: 24px;
+				border: none;
+				background-color: none;
+				font-size: 15px;
+				font-weight: bold;
+			}
 		}
 	}
 }

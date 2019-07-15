@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
-import { browserHistory } from 'react-router';
 import { observer } from 'mobx-react';
 import {
 	PaperContainer,
@@ -34,6 +33,7 @@ import RemovalPopup from './RemovalPopup';
 import DeletePopup from './DeletePopup';
 import Options from './Options';
 import Tags from '../Tags';
+import QuestionEditor from '../QuestionEditor';
 
 @translate()
 @observer
@@ -43,6 +43,7 @@ class Question extends Component {
 		isReportPopupOpen: false,
 		isRemovalPopupOpen: false,
 		isDeletePopupOpen: false,
+		isEditMode: false,
 		isFollowing: false,
 	};
 	openDeletePopup = () => {
@@ -83,15 +84,24 @@ class Question extends Component {
 		}
 	}
 	editPost = () => {
-		browserHistory.push(`/discuss/edit/${this.props.post.id}`);
+		// browserHistory.push(`/discuss/edit/${this.props.post.id}`);
+		this.setState({ isEditMode: true });
 	}
 
+<<<<<<< Updated upstream
+=======
+	cancelEdit = () => {
+		this.setState({ isEditMode: false });
+	}
+
+>>>>>>> Stashed changes
 	render() {
 		const {
 			isFollowSnackbarOpen,
 			isReportPopupOpen,
 			isRemovalPopupOpen,
 			isDeletePopupOpen,
+			isEditMode,
 		} = this.state;
 		const {
 			post, onDelete, t, toggleSigninPopup,
@@ -112,7 +122,7 @@ class Question extends Component {
 								<Loading />
 							</FlexBox>
 						)
-						: (
+						: !isEditMode ? (
 							<FlexBox fullWidth className="post">
 								<ProfileAvatar
 									className="user-avatar"
@@ -215,7 +225,8 @@ class Question extends Component {
 									onDelete={onDelete}
 								/>
 							</FlexBox>
-						)
+						) :
+							<QuestionEditor post={post} handleCancel={this.handleCancel} />
 				}
 			</PaperContainer>
 		);
