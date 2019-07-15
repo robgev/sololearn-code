@@ -20,6 +20,8 @@ import { Close } from 'components/icons';
 import { getMentionsValue } from 'utils';
 
 import { getUserSelector } from 'reducers/reducer_user';
+import { getUserpostBackgroundsSelector } from 'reducers/userpostBackgrounds.reducer';
+import { getUserpostBackgrounds } from 'actions/userpost';
 
 import EditorActions from './EditorActions';
 import DraftEditor from './DraftEditor';
@@ -52,9 +54,11 @@ const UserPostEditor = ({
 	getNewFeedItemsInternal,
 	openImageInput = false,
 	toggleImageInput = null,
+	backgrounds,
+	getUserpostBackgrounds,
 	t,
 }) => {
-	const [ backgrounds, setBackgrounds ] = useState([]);
+	// const [ backgrounds, setBackgrounds ] = useState([]);
 	const [ canApplyBackground, setCanApplyBackground ] = useState(true);
 	const [ selectedBackgroundId, setSelectedBackgroundId ] = useState(initialSelectedBackgroundId);
 
@@ -88,13 +92,9 @@ const UserPostEditor = ({
 	};
 
 	useEffect(() => {
-		getPostBackgrounds()
-			.then((res) => {
-				setBackgrounds([ { type: 'none', id: -1 }, ...res.backgrounds ]);
-				if (openImageInput) {
-					imageInputRef.current.click();
-				}
-			});
+		if (backgrounds.length === 0) {
+			getUserpostBackgrounds();
+		}
 		if (initialImageSource) {
 			setImageSource(initialImageSource);
 		}
@@ -168,7 +168,6 @@ const UserPostEditor = ({
 	const backgroundId = canApplyBackground ? selectedBackgroundId : -1;
 
 	const background = backgrounds.find(b => b.id === backgroundId);
-
 	// Calback after post create-edit-repost
 	const afterPostHandler = (post) => {
 		closePopup();
@@ -364,6 +363,7 @@ const UserPostEditor = ({
 
 const mapStateToProps = state => ({
 	profile: getUserSelector(state),
+	backgrounds: getUserpostBackgroundsSelector(state),
 });
 
-export default translate()(connect(mapStateToProps, { getNewFeedItemsInternal })(withRouter(UserPostEditor)));
+export default translate()(connect(mapStateToProps, { getNewFeedItemsInternal, getUserpostBackgrounds })(withRouter(UserPostEditor)));

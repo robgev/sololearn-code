@@ -78,6 +78,7 @@ class Replies extends Component {
 
 	onOrderChange = (orderBy) => {
 		this.replies.setOrderBy(orderBy);
+		this.setState({ avtiveFilter: orderBy });
 	}
 
 	onAcceptReply = (id) => {

@@ -117,7 +117,6 @@ class ReplyItem extends Component {
 			reply, deleteReply, onAccept, askerID, t, toggleSigninPopup,
 		} = this.props;
 
-		console.log(askerID);
 		const user = reply !== null && {
 			id: reply.userID,
 			avatarUrl: reply.avatarUrl,

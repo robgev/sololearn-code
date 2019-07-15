@@ -3,6 +3,7 @@ import * as types from 'constants/ActionTypes';
 import {
 	discussPostsSelector,
 	discussFiltersSelector,
+	isDiscussFetchingSelector,
 } from 'reducers/discuss.reducer';
 import { setSearchValue, toggleSearch, onSearchSectionChange } from 'actions/searchBar';
 import { SECTIONS } from 'reducers/searchBar.reducer';
@@ -24,6 +25,9 @@ export const getPosts = ({
 	count = 20,
 } = {}) => async (dispatch, getState) => {
 	const stateBefore = getState();
+	if (isDiscussFetchingSelector(stateBefore)) {
+		return;
+	}
 	dispatch({ type: types.REQUEST_POSTS });
 	const filters = discussFiltersSelector(stateBefore);
 	const { length } = discussPostsSelector(stateBefore);
