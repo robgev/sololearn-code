@@ -82,7 +82,8 @@ namespace SoloLearn
 		Scheme = Configuration["Api1:Scheme"],
 		Host = Configuration["Api1:Host"],
 		Path = Configuration["Api1:Path"],
-		Url = Configuration["Api1:Url"]
+		Url = Configuration["Api1:Url"],
+		Port=Configuration["Api1:Port"]
 	  }));
 
 	  app.UseMiddleware<ServiceProxyMiddleware>(Options.Create(new ProxyOptions
