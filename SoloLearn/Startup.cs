@@ -91,7 +91,8 @@ namespace SoloLearn
 		Scheme = Configuration["Api2:Scheme"],
 		Host = Configuration["Api2:Host"],
 		Path = Configuration["Api2:Path"],
-		Url = Configuration["Api2:Url"]
+		Url = Configuration["Api2:Url"],
+		Port=Configuration["Api2:Port"]
 	  }));
 
 	  // Initialise ReactJS.NET. Must be before static files.
