@@ -28,6 +28,10 @@ class NewQuestion extends Component {
 			}
 		})
 
+	handleCancel = () => {
+		browserHistory.push('/discuss');
+	}
+
 	render() {
 		return (
 			<LayoutWithSidebar
@@ -35,7 +39,11 @@ class NewQuestion extends Component {
 					<GuideLinesSidebar />
 				}
 			>
-				<QuestionEditor isNew submit={this.submit} />
+				<QuestionEditor
+					isNew
+					submit={this.submit}
+					handleCancel={this.handleCancel}
+				/>
 			</LayoutWithSidebar>
 		);
 	}

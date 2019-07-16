@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { connect } from 'react-redux';
 
-import { PaperContainer, Input, Heading, FlexBox, SecondaryTextBlock } from 'components/atoms';
+import {
+	PaperContainer,
+	FlexBox,
+	Input,
+	Heading,
+	SecondaryTextBlock,
+} from 'components/atoms';
 import {
 	PromiseButton,
 	FlatButton,
@@ -11,6 +17,7 @@ import {
 	ModBadge,
 } from 'components/molecules';
 import { CountingMentionInput } from 'components/organisms';
+import { Close } from 'components/icons';
 
 import TagsInput from './TagsInput';
 import './styles.scss';
@@ -27,6 +34,7 @@ class QuestionEditor extends Component {
 			tagsError: false,
 			isReplyBoxOpen: false,
 			replyLength: 0,
+			descriptionLength: 0,
 		};
 	}
 
@@ -106,10 +114,15 @@ class QuestionEditor extends Component {
 			this.setState({ replyLength });
 		}
 	}
+	onDescriptionLengthChange = (length) => {
+		this.setState({ descriptionLength: length });
+	}
 	/* End mention input functions */
 
 	render() {
-		const { t, isNew, profile } = this.props;
+		const {
+			t, isNew, profile, handleCancel,
+		} = this.props;
 		const {
 			title, titleErrorText, tags, tagsError,
 			isReplyBoxOpen, replyLength,
@@ -117,7 +130,10 @@ class QuestionEditor extends Component {
 		return (
 			<PaperContainer className="discuss_question-editor">
 				<FlexBox column>
-					<Heading className="question-heading">{isNew ? t('question.title') : t('discuss.editTitle')}</Heading>
+					<FlexBox justifyBetween>
+						<Heading className="question-heading">{isNew ? t('question.title') : t('discuss.editTitle')}</Heading>
+						<Close className="close-icon" onClick={handleCancel} />
+					</FlexBox>
 					<FlexBox fullWidth>
 						<ProfileAvatar
 							className="user-avatar"
@@ -146,21 +162,31 @@ class QuestionEditor extends Component {
 									value={title}
 									onChange={this.onTitleChange}
 									maxLength={QuestionEditor.maxTitleLength}
-									className="discuss-input"
+									inputProps={{
+										className: 'discuss-input',
+									}}
 								/>
 								<SecondaryTextBlock className="count">
 									{title.length} / {QuestionEditor.maxTitleLength}
 								</SecondaryTextBlock>
 							</FlexBox>
-							<SecondaryTextBlock className="discuss-input-titles">{t('question.message-placeholder')}</SecondaryTextBlock>
-							<CountingMentionInput
-								ref={(input) => { this.mentionInput = input; }}
-								initText={this.props.post !== null ? this.props.post.message : null}
-								getUsers={{ type: 'discuss' }}
-								// placeholder={!isReplyBoxOpen && replyLength === 0 ? t('question.message-placeholder') : ''}
-								maxLength={QuestionEditor.maxQuestionLength}
-								className="question-editor-description-input discuss-input"
-							/>
+							<FlexBox column className="mention-input-container">
+								<SecondaryTextBlock className="discuss-input-titles">{t('question.message-placeholder')}</SecondaryTextBlock>
+								<CountingMentionInput
+									ref={(input) => { this.mentionInput = input; }}
+									initText={this.props.post !== null ? this.props.post.message : null}
+									getUsers={{ type: 'discuss' }}
+									// placeholder={!isReplyBoxOpen && replyLength === 0 ? t('question.message-placeholder') : ''}
+									maxLength={QuestionEditor.maxQuestionLength}
+									exportCharLength={this.onDescriptionLengthChange}
+									withoutCharLength
+									innerContainerClassName="question-editor-description-input"
+									className="discuss-input"
+								/>
+								<SecondaryTextBlock className="count">
+									{this.state.descriptionLength} / {QuestionEditor.maxQuestionLength}
+								</SecondaryTextBlock>
+							</FlexBox>
 							<SecondaryTextBlock className="discuss-input-titles">Tags</SecondaryTextBlock> {/* needs translation */}
 							<FlexBox column className="counting-input">
 								<TagsInput
@@ -170,6 +196,7 @@ class QuestionEditor extends Component {
 									deleteTag={this.deleteTag}
 									setTagsError={this.setTagsError}
 									canAddTag={this.canAddTag()}
+									helperText="Ex: time, coding, student, management"
 									className="discuss-input discuss-tags-input"
 								/>
 								<SecondaryTextBlock className="count">
@@ -179,7 +206,7 @@ class QuestionEditor extends Component {
 							<FlexBox className="actions-container" justifyEnd align>
 								<FlatButton
 									className="cancel-button"
-									onClick={this.props.handleCancel}
+									onClick={handleCancel}
 								>
 									{t('common.cancel-title')}
 								</FlatButton>

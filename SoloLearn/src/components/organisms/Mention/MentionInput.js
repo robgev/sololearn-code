@@ -244,13 +244,15 @@ class MentionInput extends Component {
 					handlePastedText={this.handlePastedText}
 					handleReturn={this.handleReturn}
 				/>
-				<FlexBox fullWidth justifyEnd alignEnd>
-					{this.isFocused &&
-					<SecondaryTextBlock className="counter">
-						{charCount} / {maxLength}
-					</SecondaryTextBlock>
-					}
-				</FlexBox>
+				{!this.props.withoutCharLength &&
+					<FlexBox fullWidth justifyEnd alignEnd>
+						{this.isFocused &&
+							<SecondaryTextBlock className="counter">
+								{charCount} / {maxLength}
+							</SecondaryTextBlock>
+						}
+					</FlexBox>
+				}
 				<MentionSuggestions
 					onSearchChange={this.onSearchChange}
 					suggestions={this.state.suggestions}
@@ -267,6 +269,7 @@ MentionInput.defaultProps = {
 	placeholder: '',
 	maxLength: 2048,
 	initText: null,
+	withoutCharLength: false,
 	onFocus: () => { }, // noop
 	onBlur: () => { }, // noop
 	onLengthChange: () => { }, // noop
@@ -281,6 +284,7 @@ MentionInput.propTypes = {
 	onFocus: PropTypes.func,
 	onBlur: PropTypes.func,
 	initText: PropTypes.string,
+	withoutCharLength: PropTypes.bool,
 	onLengthChange: PropTypes.func,
 	maxLength: PropTypes.number,
 	placeholder: PropTypes.string,

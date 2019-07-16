@@ -33,7 +33,7 @@ import RemovalPopup from './RemovalPopup';
 import DeletePopup from './DeletePopup';
 import Options from './Options';
 import Tags from '../Tags';
-import QuestionEditor from '../QuestionEditor';
+import EditQuestion from '../EditQuestion';
 
 @translate()
 @observer
@@ -88,13 +88,10 @@ class Question extends Component {
 		this.setState({ isEditMode: true });
 	}
 
-<<<<<<< Updated upstream
-=======
-	cancelEdit = () => {
+	exitEditMode = () => {
 		this.setState({ isEditMode: false });
 	}
 
->>>>>>> Stashed changes
 	render() {
 		const {
 			isFollowSnackbarOpen,
@@ -114,7 +111,7 @@ class Question extends Component {
 		};
 
 		return (
-			<PaperContainer className="main-post">
+			<Container>
 				{
 					post === null
 						? (
@@ -123,112 +120,120 @@ class Question extends Component {
 							</FlexBox>
 						)
 						: !isEditMode ? (
-							<FlexBox fullWidth className="post">
-								<ProfileAvatar
-									className="user-avatar"
-									user={user}
-								/>
-								<FlexBox fullWidth column justifyBetween>
-									<Container className="info">
-										<Container className="question">
-											<FlexBox className="title-and-options-container" justifyBetween fullWidth>
-												<Container>
-													<Container className="title">
-														<Title className="title-content">
-															{post.title}
-														</Title>
+							<PaperContainer className="main-post">
+								<FlexBox fullWidth className="post">
+									<ProfileAvatar
+										className="user-avatar"
+										user={user}
+									/>
+									<FlexBox fullWidth column justifyBetween>
+										<Container className="info">
+											<Container className="question">
+												<FlexBox className="title-and-options-container" justifyBetween fullWidth>
+													<Container>
+														<Container className="title">
+															<Title className="title-content">
+																{post.title}
+															</Title>
+														</Container>
+														<FlexBox align className="author">
+															<UsernameLink className="author-name" to={`/profile/${post.userID}`}>{post.userName}</UsernameLink>
+														</FlexBox>
 													</Container>
-													<FlexBox align className="author">
-														<UsernameLink className="author-name" to={`/profile/${post.userID}`}>{post.userName}</UsernameLink>
-													</FlexBox>
-												</Container>
-												<FlexBox className="options" justifyEnd align>
-													<IconWithText className="follow-container" onClick={this.onFollowClick} Icon={Follow}>
-														<SecondaryTextBlock className="follow-text">
-															{post.isFollowing ? 'Unfollow' : 'Follow'}
-														</SecondaryTextBlock>
-													</IconWithText>
-													<Options
-														userID={post.userID}
-														deletePost={this.openDeletePopup}
-														editPost={this.editPost}
-														reportPost={this.openReportPopup}
-														requestRemoval={this.openRemovalPopup}
-													/>
-												</FlexBox>
-											</FlexBox>
-											<Container className="message">
-												<Mention text={post.message} />
-											</Container>
-											{
-												post.modifyDate && post.modifyUserID && post.modifyUserName &&
-												<FlexBox className="edit-message-container" align>
-													<Container className="edit-message-icon" >
-														<EditIcon />
-													</Container>
-													<SecondaryTextBlock className="edited-message">
-														{t('discuss.edited-by-format').replace('()', post.modifyUserName)},
-														{updateDate(post.modifyDate)}
-													</SecondaryTextBlock>
-												</FlexBox>
-											}
-											<Container className="tags">
-												<Tags tags={post.tags} />
-											</Container>
-											<Container className="question-preview-container">
-												{generatePreviews(post.message).map(preview => (
-													<Container key={preview.link} className="preview">
-														<PreviewItem
-															{...preview}
+													<FlexBox className="options" justifyEnd align>
+														<IconWithText className="follow-container" onClick={this.onFollowClick} Icon={Follow}>
+															<SecondaryTextBlock className="follow-text">
+																{post.isFollowing ? 'Unfollow' : 'Follow'}
+															</SecondaryTextBlock>
+														</IconWithText>
+														<Options
+															userID={post.userID}
+															deletePost={this.openDeletePopup}
+															editPost={this.editPost}
+															reportPost={this.openReportPopup}
+															requestRemoval={this.openRemovalPopup}
 														/>
-													</Container>
-												))}
+													</FlexBox>
+												</FlexBox>
+												<Container className="message">
+													<Mention text={post.message} />
+												</Container>
+												{
+													post.modifyDate && post.modifyUserID && post.modifyUserName &&
+													<FlexBox className="edit-message-container" align>
+														<Container className="edit-message-icon" >
+															<EditIcon />
+														</Container>
+														<SecondaryTextBlock className="edited-message">
+															{t('discuss.edited-by-format').replace('()', post.modifyUserName)},
+															{updateDate(post.modifyDate)}
+														</SecondaryTextBlock>
+													</FlexBox>
+												}
+												<Container className="tags">
+													<Tags tags={post.tags} />
+												</Container>
+												<Container className="question-preview-container">
+													{generatePreviews(post.message).map(preview => (
+														<Container key={preview.link} className="preview">
+															<PreviewItem
+																{...preview}
+															/>
+														</Container>
+													))}
+												</Container>
+												<FlexBox justifyBetween fullWidth align className="statistics-container">
+													<FeedBottomBarFullStatistics
+														id={post.id}
+														key={post.id}
+														date={post.date}
+														views={post.viewCount}
+														userVote={post.vote}
+														type="post"
+														withDate={false}
+														totalVotes={post.votes}
+														// onChange={onChange}
+														toggleSigninPopup={toggleSigninPopup}
+													/>
+													<SecondaryTextBlock className="statistics-date">{updateDate(post.date)} </SecondaryTextBlock>
+												</FlexBox>
 											</Container>
-											<FlexBox justifyBetween fullWidth align className="statistics-container">
-												<FeedBottomBarFullStatistics
-													id={post.id}
-													key={post.id}
-													date={post.date}
-													views={post.viewCount}
-													userVote={post.vote}
-													type="post"
-													withDate={false}
-													totalVotes={post.votes}
-													// onChange={onChange}
-													toggleSigninPopup={toggleSigninPopup}
-												/>
-												<SecondaryTextBlock className="statistics-date">{updateDate(post.date)} </SecondaryTextBlock>
-											</FlexBox>
 										</Container>
-									</Container>
+									</FlexBox>
+									<Snackbar
+										onClose={this.closeFollowSnackbar}
+										open={isFollowSnackbarOpen}
+										message={post.isFollowing ? t('discuss.following-title') : t('discuss.not-following-title')}
+									/>
+									<ReportPopup
+										open={isReportPopupOpen}
+										onClose={this.closeReportPopup}
+										itemId={post.id}
+										itemType={2}
+									/>
+									<RemovalPopup
+										open={isRemovalPopupOpen}
+										id={post.id}
+										deletePost={onDelete}
+										onClose={this.closeRemovalPopup}
+									/>
+									<DeletePopup
+										open={isDeletePopupOpen}
+										onClose={this.closeDeletePopup}
+										onDelete={onDelete}
+									/>
 								</FlexBox>
-								<Snackbar
-									onClose={this.closeFollowSnackbar}
-									open={isFollowSnackbarOpen}
-									message={post.isFollowing ? t('discuss.following-title') : t('discuss.not-following-title')}
-								/>
-								<ReportPopup
-									open={isReportPopupOpen}
-									onClose={this.closeReportPopup}
-									itemId={post.id}
-									itemType={2}
-								/>
-								<RemovalPopup
-									open={isRemovalPopupOpen}
-									id={post.id}
-									deletePost={onDelete}
-									onClose={this.closeRemovalPopup}
-								/>
-								<DeletePopup
-									open={isDeletePopupOpen}
-									onClose={this.closeDeletePopup}
-									onDelete={onDelete}
-								/>
-							</FlexBox>
-						) :
-							<QuestionEditor post={post} handleCancel={this.handleCancel} />
+							</PaperContainer>
+						)
+							:
+							<EditQuestion
+								post={post}
+								setNewPost={editedPost => this.setState({ post: editedPost })}
+								handleCancel={this.handleCancel}
+								exitEditMode={this.exitEditMode}
+							/>
 				}
-			</PaperContainer>
+			</Container>
 		);
 	}
 }

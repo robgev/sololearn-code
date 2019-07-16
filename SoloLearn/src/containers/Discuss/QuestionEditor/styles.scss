@@ -6,6 +6,11 @@
 	.question-heading {
 		margin-bottom: 16px;
 	}
+	.close-icon {
+		width: 25px;
+		height: 25px;
+		cursor: pointer;
+	}
 	.user-avatar {
 		margin-right: 16px;
 	}
@@ -19,20 +24,47 @@
 			}
 		}
 		.counting-input {
+			.tags-input-root {
+				display: inline-flex;
+				padding-top: 10px;
+				.tags-input {
+					padding: 0 0 8px 0;
+				}
+			}
+			.tags-helper-text {
+				font-size: $secondary_text_size;
+				color: $icon_color;
+				opacity: 0.5;
+			}
 			.count {
 				align-self: flex-end;
 				margin-top: 4px;
+				opacity: 0.5;
 			}
 		}
 		.discuss-input-titles {
+			font-size: 14px;
+
 			margin-bottom: $secondary_gap_size;
 		}
-		.question-editor-description-input {
-			margin: 0;
+		.mention-input-container {
+			.question-editor-description-input {
+				height: 155px;
+				overflow: auto;
+				word-break: break-all;
+				margin: 0;
+			}
+			.count {
+				align-self: flex-end;
+				margin-top: 4px;
+				opacity: 0.5;
+			}
 		}
 		.discuss-input {
 			border: 1px solid $border-color;
 			border-radius: 4px;
+			padding: 14px;
+			margin: 0;
 		}
 		.react-autosuggest__container {
 			flex-grow: 1;
@@ -56,16 +88,20 @@
 			padding: 0;
 			list-style-type: none;
 		}
-		.autosuggest-input {
-			margin-top: 10px;
-		}
 		.actions-container {
+			margin-top: 16px;
 			.cancel-button {
 				margin-right: 24px;
+				padding: 0;
 				border: none;
-				background-color: none;
+				background-color: unset;
 				font-size: 15px;
 				font-weight: bold;
+			}
+			.submit-button {
+				font-size: 14px;
+				font-weight: bold;
+				padding: 11px 24px;
 			}
 		}
 	}

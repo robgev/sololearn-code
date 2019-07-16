@@ -1,39 +1,16 @@
-import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { editPostInList } from 'actions/discuss';
 import Service from 'api/service';
 
-import { LayoutWithSidebar } from 'components/molecules';
 import { Loading } from 'components/atoms';
 
 import QuestionEditor from './QuestionEditor';
-import GuideLinesSidebar from './GuideLinesSidebar';
 
 @connect(null, { editPostInList })
 class EditQuestion extends Component {
-	state = {
-		post: null,
-	}
-
-	componentDidMount() {
-		this._isMounted = true;
-		document.title = 'Create a new question';
-		const { id } = this.props.params;
-		Service.request('Discussion/GetPost', { id })
-			.then(({ post }) => {
-				if (this._isMounted) {
-					this.setState({ post });
-				}
-			});
-	}
-
-	componentWillUnmount() {
-		this._isMounted = false;
-	}
-
 	submit = ({ title, message, tags }) => {
-		const { id } = this.state.post;
+		const { id } = this.props.post;
 		return Service.request('Discussion/EditPost', {
 			id, message, title, tags,
 		})
@@ -41,26 +18,28 @@ class EditQuestion extends Component {
 				this.props.editPostInList({
 					id, title, message, tags,
 				});
-				if (this._isMounted) {
-					browserHistory.replace(`/discuss/${id}`);
-				}
+			})
+			.then(() => {
+				this.props.exitEditMode();
 			});
 	}
 
 	render() {
-		const { post } = this.state;
+		const { post } = this.props;
 		return (
-			<LayoutWithSidebar
-				sidebar={
-					<GuideLinesSidebar />
-				}
-			>
+			<Fragment>
 				{
-					post === null
-						? <Loading />
-						: <QuestionEditor isNew={false} submit={this.submit} post={post} />
+					post === null ?
+						<Loading />
+						:
+						<QuestionEditor
+							isNew={false}
+							submit={this.submit}
+							post={post}
+							handleCancel={this.props.exitEditMode}
+						/>
 				}
-			</LayoutWithSidebar>
+			</Fragment>
 		);
 	}
 }

@@ -36,6 +36,11 @@ class TagsInput extends Component {
 			InputProps={{
 				value,
 			}}
+			classes={{
+				inputRoot: 'tags-input-root',
+				input: 'tags-input',
+				helperText: 'tags-helper-text',
+			}}
 			{...other}
 		/>
 	);
@@ -94,7 +99,7 @@ class TagsInput extends Component {
 		const {
 			suggestions, value,
 		} = this.state;
-		const { error, tags } = this.props;
+		const { error, tags, helperText } = this.props;
 		const { t } = this.props;
 		return (
 			<Autosuggest
@@ -117,6 +122,7 @@ class TagsInput extends Component {
 					newChipKeyCodes: [ 13, 32 ],
 					error,
 					chipRenderer: TagsInput.Chip,
+					helperText,
 					className: 'autosuggest-input',
 				}}
 			/>
