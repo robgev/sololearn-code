@@ -172,15 +172,21 @@ const PlaygroundTabs = ({
 								>
 									{t('common.share-title')}
 								</MenuItem>
-								<HorizontalDivider className="playground_code-actions-divider" />
-								<MenuItem
-									className="playground_code-actions-menu-item"
-								>
-									<FlexBox justifyBetween align fullWidth>
-										{t('code.filter.my-codes')}
-										<TextBlock className="playground_code-actions-number">{codes}</TextBlock>
-									</FlexBox>
-								</MenuItem>
+								{
+									isLoggedIn && (
+										<Fragment>
+											<HorizontalDivider className="playground_code-actions-divider" />
+											<MenuItem
+												className="playground_code-actions-menu-item"
+											>
+												<FlexBox justifyBetween align fullWidth>
+													{t('code.filter.my-codes')}
+													<TextBlock className="playground_code-actions-number">{codes}</TextBlock>
+												</FlexBox>
+											</MenuItem>
+										</Fragment>
+									)
+								}
 							</IconMenu>
 							{playground.isInline &&
 							<ButtonTooltip
@@ -211,7 +217,7 @@ const PlaygroundTabs = ({
 };
 
 const mapStateToProps = state => ({
-	codes: state.userProfile.codes,
+	codes: state.userProfile && state.userProfile.codes,
 	isLoggedIn: !!state.userProfile,
 });
 
