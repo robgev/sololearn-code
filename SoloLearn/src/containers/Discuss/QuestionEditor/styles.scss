@@ -24,11 +24,35 @@
 			}
 		}
 		.counting-input {
+			.title-input-container {
+				fieldset {
+					border: none;
+				}
+			}
 			.tags-input-root {
-				display: inline-flex;
-				padding-top: 10px;
-				.tags-input {
-					padding: 0 0 8px 0;
+				border: 1px solid $border-color;
+				border-radius: 4px;
+				fieldset {
+					border: none;
+				}
+			}
+			.tags-chip-container {
+				.tags-chip {
+					background-color: #F4F5F5;
+					border-radius: 12px;
+					opacity: 0.8;
+					.tags-label {
+						color: $content_text_color;
+						font-family: 'Muli SemiBold';
+						font-size: 14px;
+						font-weight: 600;
+					}
+					.tags-delete-icon {
+						width: 14px;
+						height: 14px;
+						color: $content_text_color;
+						font-weight: bold;
+					}
 				}
 			}
 			.tags-helper-text {
@@ -53,6 +77,11 @@
 				overflow: auto;
 				word-break: break-all;
 				margin: 0;
+				.mention-editor-input {
+					margin: 0;
+					padding: 0;
+					border: none;
+				}
 			}
 			.count {
 				align-self: flex-end;
@@ -79,6 +108,8 @@
 			left: 0;
 			right: 0;
 			z-index: 1;
+			border: 1px solid $border-color;
+			border-top: none;
 		}
 		.react-autosuggest__suggestion {
 			display: block;

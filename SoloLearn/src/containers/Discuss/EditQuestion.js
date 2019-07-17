@@ -4,6 +4,7 @@ import { editPostInList } from 'actions/discuss';
 import Service from 'api/service';
 
 import { Loading } from 'components/atoms';
+import { BluredBackground } from 'components/molecules';
 
 import QuestionEditor from './QuestionEditor';
 
@@ -32,12 +33,14 @@ class EditQuestion extends Component {
 					post === null ?
 						<Loading />
 						:
-						<QuestionEditor
-							isNew={false}
-							submit={this.submit}
-							post={post}
-							handleCancel={this.props.exitEditMode}
-						/>
+						<BluredBackground clickAwayAction={this.props.exitEditMode}>
+							<QuestionEditor
+								isNew={false}
+								submit={this.submit}
+								post={post}
+								handleCancel={this.props.exitEditMode}
+							/>
+						</BluredBackground>
 				}
 			</Fragment>
 		);

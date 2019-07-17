@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import Autosuggest from 'react-autosuggest';
-import { MenuItem, PaperContainer, Chip } from 'components/atoms';
 import MUIChipInput from 'material-ui-chip-input';
+
+import { MenuItem, PaperContainer, Chip } from 'components/atoms';
+import { Close } from 'components/icons';
+
 import Service from 'api/service';
 
 @translate()
@@ -36,11 +39,7 @@ class TagsInput extends Component {
 			InputProps={{
 				value,
 			}}
-			classes={{
-				inputRoot: 'tags-input-root',
-				input: 'tags-input',
-				helperText: 'tags-helper-text',
-			}}
+			classes={classes}
 			{...other}
 		/>
 	);
@@ -52,7 +51,14 @@ class TagsInput extends Component {
 	);
 
 	static Chip = ({ value, handleDelete, className }, key) => (
-		<Chip className={className} label={value} key={key} onDelete={handleDelete} />
+		<Chip
+			className={className}
+			label={`#${value}`}
+			key={key}
+			onDelete={handleDelete}
+			classes={{ label: 'tags-label' }}
+			deleteIcon={<Close className="tags-delete-icon" />}
+		/>
 	);
 
 	static getSuggestionValue = suggestion => suggestion
@@ -95,15 +101,18 @@ class TagsInput extends Component {
 		}
 	};
 
+	onBlurHandler = () => {
+		console.clear();
+		console.log('I\'m work!');
+	}
+
 	render() {
 		const {
 			suggestions, value,
 		} = this.state;
 		const { error, tags, helperText } = this.props;
-		const { t } = this.props;
 		return (
 			<Autosuggest
-				className="test"
 				suggestions={suggestions}
 				onSuggestionsFetchRequested={this.getSuggestions}
 				onSuggestionsClearRequested={this.clearSuggestions}
@@ -124,6 +133,13 @@ class TagsInput extends Component {
 					chipRenderer: TagsInput.Chip,
 					helperText,
 					className: 'autosuggest-input',
+					classes: {
+						inputRoot: 'tags-input-root',
+						input: 'tags-input',
+						helperText: 'tags-helper-text',
+						chipContainer: 'tags-chip-container',
+						chip: 'tags-chip',
+					},
 				}}
 			/>
 		);

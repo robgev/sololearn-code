@@ -165,6 +165,7 @@ class QuestionEditor extends Component {
 									inputProps={{
 										className: 'discuss-input',
 									}}
+									className="title-input-container"
 								/>
 								<SecondaryTextBlock className="count">
 									{title.length} / {QuestionEditor.maxTitleLength}
@@ -180,8 +181,8 @@ class QuestionEditor extends Component {
 									maxLength={QuestionEditor.maxQuestionLength}
 									exportCharLength={this.onDescriptionLengthChange}
 									withoutCharLength
-									innerContainerClassName="question-editor-description-input"
-									className="discuss-input"
+									innerContainerClassName="question-editor-description-input discuss-input" // this is wrappers className
+									className="mention-editor-input" // this is editor's className
 								/>
 								<SecondaryTextBlock className="count">
 									{this.state.descriptionLength} / {QuestionEditor.maxQuestionLength}

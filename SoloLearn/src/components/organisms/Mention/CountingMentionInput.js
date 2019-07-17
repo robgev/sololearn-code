@@ -59,7 +59,7 @@ class CountingMentionInput extends Component {
 					<MentionInput
 						ref={this.mentionInput}
 						onLengthChange={this.onLengthChange}
-						onFocus={this.onFocus}
+						onFocus={!withoutCharLength ? this.onFocus : () => {}}
 						onBlur={this.onBlur}
 						maxLength={this.props.maxLength}
 						charCount={charCount}
