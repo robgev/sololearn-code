@@ -15,7 +15,10 @@ class EditQuestion extends Component {
 		return Service.request('Discussion/EditPost', {
 			id, message, title, tags,
 		})
-			.then(() => {
+			.then(({ post }) => {
+				this.props.post.title = post.title;
+				this.props.post.message = post.message;
+				this.props.post.tags = post.tags;
 				this.props.editPostInList({
 					id, title, message, tags,
 				});

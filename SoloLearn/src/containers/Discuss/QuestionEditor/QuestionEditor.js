@@ -129,7 +129,7 @@ class QuestionEditor extends Component {
 
 	render() {
 		const {
-			t, isNew, profile, handleCancel,
+			t, isNew, profile, handleCancel, post,
 		} = this.props;
 		const {
 			title, titleErrorText, tags, tagsError,
@@ -184,7 +184,7 @@ class QuestionEditor extends Component {
 								<SecondaryTextBlock className="discuss-input-titles">{t('question.message-placeholder')}</SecondaryTextBlock>
 								<CountingMentionInput
 									ref={(input) => { this.mentionInput = input; }}
-									initText={this.props.post !== null ? this.props.post.message : null}
+									initText={post !== null ? post.message : null}
 									getUsers={{ type: 'discuss' }}
 									// placeholder={!isReplyBoxOpen && replyLength === 0 ? t('question.message-placeholder') : ''}
 									maxLength={QuestionEditor.maxQuestionLength}
