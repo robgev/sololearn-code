@@ -34,7 +34,7 @@ class QuestionEditor extends Component {
 			tagsError: false,
 			isReplyBoxOpen: false,
 			replyLength: 0,
-			descriptionLength: 0,
+			trimmedDescriptionLength: 0,
 		};
 	}
 
@@ -114,10 +114,18 @@ class QuestionEditor extends Component {
 			this.setState({ replyLength });
 		}
 	}
-	onDescriptionLengthChange = (length) => {
-		this.setState({ descriptionLength: length });
+	ontrimmedDescriptionLengthChange = (trimmedLength) => {
+		this.setState({ trimmedDescriptionLength: trimmedLength });
 	}
 	/* End mention input functions */
+
+	isSubmitBtnDisabled = () => {
+		const { title, tags, trimmedDescriptionLength } = this.state;
+		if (title.trim() && trimmedDescriptionLength && tags.length) {
+			return false;
+		}
+		return true;
+	}
 
 	render() {
 		const {
@@ -125,8 +133,9 @@ class QuestionEditor extends Component {
 		} = this.props;
 		const {
 			title, titleErrorText, tags, tagsError,
-			isReplyBoxOpen, replyLength,
+			// isReplyBoxOpen, replyLength,
 		} = this.state;
+		const submitButtonDisabled = this.isSubmitBtnDisabled();
 		return (
 			<PaperContainer className="discuss_question-editor">
 				<FlexBox column>
@@ -179,13 +188,13 @@ class QuestionEditor extends Component {
 									getUsers={{ type: 'discuss' }}
 									// placeholder={!isReplyBoxOpen && replyLength === 0 ? t('question.message-placeholder') : ''}
 									maxLength={QuestionEditor.maxQuestionLength}
-									exportCharLength={this.onDescriptionLengthChange}
+									exportTrimmedCharCount={this.ontrimmedDescriptionLengthChange}
 									withoutCharLength
 									innerContainerClassName="question-editor-description-input discuss-input" // this is wrappers className
 									className="mention-editor-input" // this is editor's className
 								/>
 								<SecondaryTextBlock className="count">
-									{this.state.descriptionLength} / {QuestionEditor.maxQuestionLength}
+									{this.state.trimmedDescriptionLength} / {QuestionEditor.maxQuestionLength}
 								</SecondaryTextBlock>
 							</FlexBox>
 							<SecondaryTextBlock className="discuss-input-titles">Tags</SecondaryTextBlock> {/* needs translation */}
@@ -217,6 +226,7 @@ class QuestionEditor extends Component {
 									color="primary"
 									mouseDown
 									fire={this.handleSubmit}
+									disabled={submitButtonDisabled}
 								>
 									{isNew ? t('common.post-action-title') : t('common.save-action-title')}
 								</PromiseButton>

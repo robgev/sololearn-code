@@ -29,7 +29,6 @@ import BackgroundIconButton from './BackgroundIconButton';
 import UploadImageInput from './UploadImageInput';
 
 import {
-	getPostBackgrounds,
 	uploadPostImage,
 	createPost,
 	editPost,
@@ -98,10 +97,30 @@ const UserPostEditor = ({
 		if (initialImageSource) {
 			setImageSource(initialImageSource);
 		}
+		if (openImageInput) {
+			setTimeout(() => {
+				if (imageInputRef.current) {
+					imageInputRef.current.click();
+				} else {
+					setTimeout(() => {
+						imageInputRef.current.click();
+					}, 300);
+				}
+			}, 300);
+		}
 		if (toggleImageInput) {
 			return toggleImageInput();
 		}
 	}, []);
+
+	// this doesn't work on late responce
+	// useEffect(() => {
+	// 	if (imageInputRef.current) {
+	// 		if (openImageInput) {
+	// 			imageInputRef.current.click();
+	// 		}
+	// 	}
+	// }, [ imageInputRef.current ]);
 
 	// Post button disabled toggler
 	useEffect(() => {

@@ -24,10 +24,10 @@ class CountingMentionInput extends Component {
 	onBlur = () => {
 		this.setState({ isExpanded: false });
 	}
-	onLengthChange = (charCount) => {
+	onLengthChange = (charCount, trimmedCharCount) => {
 		this.setState({ charCount });
-		if (this.props.exportCharLength) {
-			this.props.exportCharLength(charCount);
+		if (this.props.exportTrimmedCharCount) {
+			this.props.exportTrimmedCharCount(trimmedCharCount);
 		}
 		const isSubmitEnabled = !this.isEmpty();
 		this.props.onSubmitEnabledChange(isSubmitEnabled);
@@ -49,7 +49,7 @@ class CountingMentionInput extends Component {
 			className,
 			innerContainerClassName = '',
 			withoutCharLength = false,
-			exportCharLength,
+			exportEditorValue,
 			...rest
 		} = this.props;
 		const { isExpanded, charCount } = this.state;
@@ -64,7 +64,7 @@ class CountingMentionInput extends Component {
 						maxLength={this.props.maxLength}
 						charCount={charCount}
 						className={`${className} ${isExpanded && !withoutCharLength ? 'expanded' : ''}`}
-						exportCharLength={exportCharLength}
+						exportEditorValue={exportEditorValue}
 						withoutCharLength={withoutCharLength}
 						{...rest}
 					/>

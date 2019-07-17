@@ -6,7 +6,6 @@ import {
 	FlexBox,
 	Input,
 	Image,
-	ClickAwayListener,
 } from 'components/atoms';
 import {
 	ProfileAvatar,
