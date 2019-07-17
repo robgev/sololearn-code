@@ -19,6 +19,7 @@ const RaisedButton = ({
 RaisedButton.defaultProps = {
 	className: '',
 	variant: 'contained',
+	color: 'primary',
 	autoFocus: false,
 };
 
