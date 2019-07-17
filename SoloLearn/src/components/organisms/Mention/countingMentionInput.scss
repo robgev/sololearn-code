@@ -2,7 +2,10 @@
 @import '~styles/colors';
 
 .organism_counting-mention-input {
-
+	.DraftEditor-root {
+		max-height: 200px;
+		overflow: auto;
+	}
 	.expanded {
 		min-height: $expanded_editor_height;
 	}

@@ -15,7 +15,7 @@
   &.expanded {
     .DraftEditor-root {
 			word-break: break-word;
-      min-height: $expanded_editor_height;
+			min-height: $expanded_editor_height;
     }
   }
 }

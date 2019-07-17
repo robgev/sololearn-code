@@ -35,6 +35,12 @@
 			top: 0;
 			right: 0;
 		}
+		&.edit {
+			padding: 8px;
+			.comment-item_comment-container {
+				margin-right: 0;
+			}
+		}
 	}
 	.comments_text-button {
 		border: none;
@@ -43,6 +49,18 @@
 		font-weight: 700;
 		color: $primary_color_hover;
 		background: none;
+	}
+	.edit-input {
+		.editor {
+			border: 1px solid $border-color;
+			border-radius: 4px;
+			background: $white;
+			margin-left: 0;
+			margin-bottom: 8px;
+		}
+		.comment-edit-button {
+			color: $white;
+		}
 	}
 	.reply-input {
 		.editor {
