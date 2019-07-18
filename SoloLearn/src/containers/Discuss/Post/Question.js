@@ -93,21 +93,17 @@ class Question extends Component {
 		this.setState({ isEditMode: false });
 	}
 
-	handleEditQuestionSubmit = ({ title, message, tags }) => {
-		console.clear();
-		console.log(this.props.post);
-		return editQuestion({
-			id: this.props.post.id, title, message, tags,
+	handleEditQuestionSubmit = ({ title, message, tags }) => editQuestion({
+		id: this.props.post.id, title, message, tags,
+	})
+		.then(({ post }) => {
+			this.props.post.title = post.title;
+			this.props.post.message = post.message;
+			// this.props.post.tags = post.tags;
 		})
-			.then(({ post }) => {
-				this.props.post.title = post.title;
-				this.props.post.message = post.message;
-				// this.props.post.tags = post.tags;
-			})
-			.then(() => {
-				this.exitEditMode();
-			});
-	}
+		.then(() => {
+			this.exitEditMode();
+		})
 
 	render() {
 		const {

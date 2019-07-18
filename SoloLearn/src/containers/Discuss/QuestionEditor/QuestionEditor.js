@@ -36,9 +36,7 @@ class QuestionEditor extends Component {
 			titleErrorText: '',
 			tags: post !== null ? post.tags : [],
 			tagsError: false,
-			isReplyBoxOpen: false,
-			replyLength: 0,
-			trimmedDescriptionLength: 0,
+			descriptionTextLength: 0,
 		};
 	}
 
@@ -58,7 +56,7 @@ class QuestionEditor extends Component {
 		}
 	}
 
-	/* Chip input */
+	/* Tag input */
 
 	canAddTag = () => this.state.tags.length < QuestionEditor.maxTagsLength;
 
@@ -116,29 +114,10 @@ class QuestionEditor extends Component {
 			});
 	}
 
-	/* Mention input functions */
-	openReplyBox = () => {
-		this.setState({ isReplyBoxOpen: true });
-	}
-	closeReplyBox = () => {
-		this.setState({ isReplyBoxOpen: false });
-	}
-	handleBlur = () => {
-		if (this.state.replyLength <= 1) { this.closeReplyBox(); }
-	}
-	onLengthChange = (replyLength) => {
-		if (this.mentionInput) {
-			this.setState({ replyLength });
-		}
-	}
-	onTrimmedDescriptionLengthChange = (trimmedLength) => {
-		this.setState({ trimmedDescriptionLength: trimmedLength });
-	}
-	/* End mention input functions */
-
 	isSubmitBtnDisabled = () => {
-		const { title, tags, trimmedDescriptionLength } = this.state;
-		if (title.trim() && trimmedDescriptionLength && tags.length) {
+		const { title, tags } = this.state;
+		const descriptionText = this.mentionInput ? this.mentionInput.getValue() : '';
+		if (title.trim() && descriptionText.trim() && tags.length) {
 			return false;
 		}
 		return true;
@@ -150,7 +129,6 @@ class QuestionEditor extends Component {
 		} = this.props;
 		const {
 			title, titleErrorText, tags, tagsError,
-			// isReplyBoxOpen, replyLength,
 		} = this.state;
 		const submitButtonDisabled = this.isSubmitBtnDisabled();
 		return (
@@ -204,16 +182,15 @@ class QuestionEditor extends Component {
 										ref={(input) => { this.mentionInput = input; }}
 										initText={post !== null ? post.message : null}
 										getUsers={{ type: 'discuss' }}
-										// placeholder={!isReplyBoxOpen && replyLength === 0 ? t('question.message-placeholder') : ''}
 										maxLength={QuestionEditor.maxQuestionLength}
-										exportTrimmedCharCount={this.onTrimmedDescriptionLengthChange}
+										exportCharLength={length => this.setState({ descriptionTextLength: length })}
 										withoutCharLength
 										withoutExpand
 										editorContainerClassName="question-editor-description-input discuss-input" // this is wrappers className
 										className="mention-editor-input" // this is editor's className
 									/>
 									<SecondaryTextBlock className="count">
-										{this.state.trimmedDescriptionLength} / {QuestionEditor.maxQuestionLength}
+										{this.state.descriptionTextLength} / {QuestionEditor.maxQuestionLength}
 									</SecondaryTextBlock>
 								</FlexBox>
 								<SecondaryTextBlock className="discuss-input-titles">Tags</SecondaryTextBlock> {/* needs translation */}

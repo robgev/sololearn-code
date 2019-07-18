@@ -8,6 +8,7 @@ class CountingMentionInput extends Component {
 		maxLength: 2048,
 		renderButton: () => null,
 		onSubmitEnabledChange: () => { }, // noop
+		exportCharLength: () => {},
 		className: '',
 	}
 	constructor(props) {
@@ -26,11 +27,9 @@ class CountingMentionInput extends Component {
 	}
 	onLengthChange = (charCount, trimmedCharCount) => {
 		this.setState({ charCount });
-		if (this.props.exportTrimmedCharCount) {
-			this.props.exportTrimmedCharCount(trimmedCharCount);
-		}
 		const isSubmitEnabled = !this.isEmpty();
 		this.props.onSubmitEnabledChange(isSubmitEnabled);
+		this.props.exportCharLength(charCount);
 	}
 	getValue = () => this.mentionInput.current.getValue();
 	popValue = () => this.mentionInput.current.popValue();
@@ -50,7 +49,6 @@ class CountingMentionInput extends Component {
 			editorContainerClassName = '',
 			withoutCharLength = false,
 			withoutExpand = false,
-			exportEditorValue,
 			...rest
 		} = this.props;
 		const { isExpanded, charCount } = this.state;
@@ -65,7 +63,6 @@ class CountingMentionInput extends Component {
 						maxLength={this.props.maxLength}
 						charCount={charCount}
 						className={`${className} ${!withoutExpand && isExpanded ? 'expanded' : ''}`}
-						exportEditorValue={exportEditorValue}
 						withoutCharLength={withoutCharLength}
 						withoutExpand={withoutExpand}
 						{...rest}

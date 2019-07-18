@@ -59,6 +59,7 @@
 				font-size: $secondary_text_size;
 				color: $icon_color;
 				opacity: 0.5;
+				margin-left: 0;
 			}
 			.count {
 				align-self: flex-end;
@@ -103,7 +104,7 @@
 			padding: 0;
 		}
 		.react-autosuggest__suggestions-container--open {
-			padding: 10;
+			// padding: 10;
 			position: absolute;
 			left: 0;
 			right: 0;

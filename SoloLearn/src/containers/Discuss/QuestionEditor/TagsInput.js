@@ -30,10 +30,12 @@ class TagsInput extends Component {
 			allowDuplicates
 			fullWidth
 			blurBehavior="add"
+			delayBeforeAdd
 			newChipKeyCodes={[ 13, 32 ]}
 			onUpdateInput={onChange}
 			onAdd={onAdd}
 			onDelete={onDelete}
+			errorText="armen"
 			value={tags}
 			inputRef={ref}
 			InputProps={{
@@ -100,11 +102,6 @@ class TagsInput extends Component {
 			}
 		}
 	};
-
-	onBlurHandler = () => {
-		console.clear();
-		console.log('I\'m work!');
-	}
 
 	render() {
 		const {
