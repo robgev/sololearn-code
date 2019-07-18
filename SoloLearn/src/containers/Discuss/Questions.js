@@ -122,13 +122,13 @@ class Questions extends Component {
 		}
 	}
 
-	addQuestion=() => {
+	canAddQuestion=() => {
 		const { isLoggedIn } = this.props;
 		if (!isLoggedIn) {
 			this.toggleSigninPopup();
-		} else {
-			browserHistory.push('/discuss/new');
+			return false;
 		}
+		return true;
 	}
 
 	render() {
@@ -148,7 +148,7 @@ class Questions extends Component {
 				}
 			>
 				<Header
-					addQuestion={this.addQuestion}
+					canAddQuestion={this.canAddQuestion}
 					searchQuestion={this.searchQuestion}
 					onSearchChange={this.onSearchChange}
 					enterKeyPress={this.enterKeyPress}

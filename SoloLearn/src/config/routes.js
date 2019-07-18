@@ -36,8 +36,6 @@ const LessonManager = Loadable({ loader: () => import('containers/Learn/LessonMa
 // Discuss
 const Questions = Loadable({ loader: () => import('containers/Discuss/Questions') });
 const Post = Loadable({ loader: () => import('containers/Discuss/Post/index') });
-const NewQuestion = Loadable({ loader: () => import('containers/Discuss/NewQuestion') });
-const EditQuestion = Loadable({ loader: () => import('containers/Discuss/EditQuestion') });
 
 // Playground
 const Codes = Loadable({ loader: () => import('containers/Playground/CodesBase') });
@@ -131,8 +129,6 @@ export default ([
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/playground/:publicId" component={Playground} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/settings(/:settingID)" component={Settings} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss" component={Questions} />
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss/new" component={NewQuestion} />
-		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss/edit/:id" component={EditQuestion} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss/filter/:query" component={Questions} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/discuss/:id(/:questionName)(/:replyId)" component={Post} />
 		<Route onEnter={() => window.scrollTo(0, 0)} path="/feed" component={Feed} />
