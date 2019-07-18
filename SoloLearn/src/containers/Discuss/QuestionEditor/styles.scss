@@ -10,6 +10,7 @@
 		width: 25px;
 		height: 25px;
 		cursor: pointer;
+		color: $icon_color;
 	}
 	.user-avatar {
 		margin-right: 16px;
@@ -29,23 +30,21 @@
 					border: none;
 				}
 			}
-			.tags-input-root {
+			.tags-chip-container {
 				border: 1px solid $border-color;
 				border-radius: 4px;
-				fieldset {
-					border: none;
-				}
-			}
-			.tags-chip-container {
+				padding: 10px 12px 6px 12px;
+				align-items: center;
 				.tags-chip {
-					background-color: #F4F5F5;
+					height: 20px;
+					margin: 0 4px 4px 0;
+					background-color: rgba(244, 245, 245, 0.8);
 					border-radius: 12px;
-					opacity: 0.8;
 					.tags-label {
 						color: $content_text_color;
 						font-family: 'Muli SemiBold';
-						font-size: 14px;
-						font-weight: 600;
+						font-size: 12px;
+						// font-weight: 600;
 					}
 					.tags-delete-icon {
 						width: 14px;
@@ -53,6 +52,18 @@
 						color: $content_text_color;
 						font-weight: bold;
 					}
+				}
+				.tags-input {
+					padding: 0;
+					margin-bottom: 5px;
+				}
+				&::before {
+					width: 0;
+					height: 0;
+				}
+				&::after {
+					width: 0;
+					height: 0;
 				}
 			}
 			.tags-helper-text {
@@ -64,7 +75,7 @@
 			.count {
 				align-self: flex-end;
 				margin-top: 4px;
-				opacity: 0.5;
+				color: rgba(98, 108, 111, 0.5);
 			}
 		}
 		.discuss-input-titles {
@@ -87,13 +98,13 @@
 			.count {
 				align-self: flex-end;
 				margin-top: 4px;
-				opacity: 0.5;
+				color: rgba(98, 108, 111, 0.5);
 			}
 		}
 		.discuss-input {
 			border: 1px solid $border-color;
 			border-radius: 4px;
-			padding: 14px;
+			padding: 10px;
 			margin: 0;
 		}
 		.react-autosuggest__container {

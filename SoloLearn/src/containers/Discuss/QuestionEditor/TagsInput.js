@@ -119,7 +119,7 @@ class TagsInput extends Component {
 				renderSuggestionsContainer={TagsInput.SuggestionsContainer}
 				renderInputComponent={TagsInput.Input}
 				inputProps={{
-					variant: 'outlined',
+					// variant: 'outlined',
 					tags,
 					value,
 					onAdd: this.addTag,
