@@ -21,6 +21,12 @@ $icon_accepted_color: $primary_colored_text;
 
 		.post{
 			padding: 16px 12px 12px 16px;
+			.reply-edit-delete-icon {
+				width: 25px;
+				height: 25px;
+				cursor: pointer;
+				color: $icon_color;
+			}
 		}
 
 		.add-reply {
@@ -82,17 +88,22 @@ $icon_accepted_color: $primary_colored_text;
 			}
 		}
 	}
-	.editing-post {
-		width: 100%;
-		align-items: flex-end;
-		background-color: $white;
-		.editing-post-input {
-			margin: 12px 0;
+	.editing-reply {
+		.editing-reply-input-container {
+			height: 155px;
+			overflow: auto;
+			margin: 0;
+			padding: 14px;
+			word-break: break-all;
+			border: 1px solid $border-color;
 			border-radius: 4px;
-			background-color: $white;
-			width: 100%;
+			.editing-reply-input {
+				margin: 0;
+				padding: 0;
+				border: none;
+			}
 		}
-		.editing-post-button {
+		.editing-reply-button {
 			margin-left: 24px;
 		}
 		.buttons {

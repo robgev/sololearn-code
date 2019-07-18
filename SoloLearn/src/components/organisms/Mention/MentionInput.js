@@ -246,7 +246,7 @@ class MentionInput extends Component {
 				/>
 				{!this.props.withoutCharLength &&
 					<FlexBox fullWidth justifyEnd alignEnd>
-						{this.isFocused &&
+						{!this.props.whithoutExpand && this.isFocused &&
 							<SecondaryTextBlock className="counter">
 								{charCount} / {maxLength}
 							</SecondaryTextBlock>

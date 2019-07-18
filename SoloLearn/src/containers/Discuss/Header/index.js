@@ -10,18 +10,24 @@ import {
 } from 'components/atoms';
 import {
 	RaisedButton,
-	ContainerLink,
 } from 'components/molecules';
-import './styles.scss';
 import { Search, Add } from 'components/icons';
 
-import NewQuestion from '../NewQuestion';
+import { createQuestion } from '../discuss.api';
+
+import QuestionEditor from '../QuestionEditor';
+
+import './styles.scss';
 
 const Header = ({
-	searchQuestion, onSearchChange, enterKeyPress, query, canAddQuestion,
+	searchQuestion,
+	onSearchChange,
+	enterKeyPress,
+	query,
+	canAddQuestion,
 }) => {
 	const [ editMode, setEditMode ] = useState(false);
-	const handleSubmit = () => {
+	const handleAskButton = () => {
 		if (canAddQuestion()) {
 			setEditMode(true);
 		}
@@ -56,7 +62,7 @@ const Header = ({
 								<RaisedButton
 									color="primary"
 									className="add-question-btn"
-									onClick={handleSubmit}
+									onClick={handleAskButton}
 								>
 									<FlexBox align justify fullWidth>
 										<Container className="add-icon">
@@ -71,7 +77,11 @@ const Header = ({
 						</FlexBox>
 					</PaperContainer>
 				)
-				: <NewQuestion handleCancel={() => setEditMode(false)} />
+				: <QuestionEditor
+					isNew
+					handleCancel={() => setEditMode(false)}
+					submit={createQuestion}
+				/>
 			}
 
 		</React.Fragment>

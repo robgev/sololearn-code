@@ -47,25 +47,27 @@ class CountingMentionInput extends Component {
 			counterStyle,
 			renderButton,
 			className,
-			innerContainerClassName = '',
+			editorContainerClassName = '',
 			withoutCharLength = false,
+			withoutExpand = false,
 			exportEditorValue,
 			...rest
 		} = this.props;
 		const { isExpanded, charCount } = this.state;
 		return (
-			<FlexBox column={isExpanded} justifyBetween fullWidth className={`organism_counting-mention-input ${innerContainerClassName}`}>
+			<FlexBox column={isExpanded} justifyBetween fullWidth className={`organism_counting-mention-input ${editorContainerClassName}`}>
 				<FlexBox fullWidth>
 					<MentionInput
 						ref={this.mentionInput}
 						onLengthChange={this.onLengthChange}
-						onFocus={!withoutCharLength ? this.onFocus : () => {}}
+						onFocus={!withoutExpand ? this.onFocus : () => {}}
 						onBlur={this.onBlur}
 						maxLength={this.props.maxLength}
 						charCount={charCount}
-						className={`${className} ${isExpanded && !withoutCharLength ? 'expanded' : ''}`}
+						className={`${className} ${!withoutExpand && isExpanded ? 'expanded' : ''}`}
 						exportEditorValue={exportEditorValue}
 						withoutCharLength={withoutCharLength}
+						withoutExpand={withoutExpand}
 						{...rest}
 					/>
 				</FlexBox>

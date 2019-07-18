@@ -8,6 +8,7 @@ export {
 	BookmarkBorder,
 	ThumbsUpDown as Arrows,
 	DeleteForever as Delete,
+	DeleteOutline,
 	Person,
 	Dehaze as Feed,
 	EventNote as Date,

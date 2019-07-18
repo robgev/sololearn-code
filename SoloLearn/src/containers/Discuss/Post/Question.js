@@ -33,7 +33,9 @@ import RemovalPopup from './RemovalPopup';
 import DeletePopup from './DeletePopup';
 import Options from './Options';
 import Tags from '../Tags';
-import EditQuestion from '../EditQuestion';
+import QuestionEditor from '../QuestionEditor';
+
+import { editQuestion } from '../discuss.api';
 
 @translate()
 @observer
@@ -84,12 +86,27 @@ class Question extends Component {
 		}
 	}
 	editPost = () => {
-		// browserHistory.push(`/discuss/edit/${this.props.post.id}`);
 		this.setState({ isEditMode: true });
 	}
 
 	exitEditMode = () => {
 		this.setState({ isEditMode: false });
+	}
+
+	handleEditQuestionSubmit = ({ title, message, tags }) => {
+		console.clear();
+		console.log(this.props.post);
+		return editQuestion({
+			id: this.props.post.id, title, message, tags,
+		})
+			.then(({ post }) => {
+				this.props.post.title = post.title;
+				this.props.post.message = post.message;
+				// this.props.post.tags = post.tags;
+			})
+			.then(() => {
+				this.exitEditMode();
+			});
 	}
 
 	render() {
@@ -226,11 +243,11 @@ class Question extends Component {
 							</PaperContainer>
 						)
 							:
-							<EditQuestion
+							<QuestionEditor
+								isNew={false}
 								post={post}
-								setNewPost={editedPost => this.setState({ post: editedPost })}
-								handleCancel={this.handleCancel}
-								exitEditMode={this.exitEditMode}
+								handleCancel={this.exitEditMode}
+								submit={this.handleEditQuestionSubmit}
 							/>
 				}
 			</Container>

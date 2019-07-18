@@ -21,7 +21,7 @@ import {
 	Mention,
 	CountingMentionInput,
 } from 'components/organisms';
-import { Edit as EditIcon } from 'components/icons';
+import { Edit as EditIcon, DeleteOutline } from 'components/icons';
 import ReportPopup from 'components/ReportPopup';
 import PreviewItem from 'components/PreviewItem';
 import { generatePreviews, updateDate } from 'utils';
@@ -126,35 +126,63 @@ class ReplyItem extends Component {
 		if (isEditing) {
 			return (
 				<PaperContainer className="post">
-					<FlexBox column className="editing-post">
-						<CountingMentionInput
-							getUsers={{ type: 'discuss', params: { postId: reply.id } }}
-							initText={reply.message}
-							ref={this.editInput}
-							onSubmitEnabledChange={this.setCanEdit}
-							placeholder={t('discuss.editTitle')}
-							autofocus
-							className="editing-post-input"
+					<FlexBox fullWidth>
+						<ProfileAvatar
+							className="user-avatar"
+							user={user}
 						/>
-						<Container className="buttons">
-							<FlatButton
-								className="cancel-button"
-								onKeyDown={this.handleCancelEditEnter}
-								onMouseDown={this.toggleEdit}
-							>
-								{t('common.cancel-title')}
-							</FlatButton>
-							<RaisedButton
-								color="primary"
-								onMouseDown={this.edit}
-								onKeyDown={this.handleEditEnter}
-								disabled={!isEditEnabled}
-								className="editing-post-button"
-							>
-								{t('common.edit-action-title')}
-							</RaisedButton>
-						</Container>
+						<FlexBox column fullWidth className="editing-reply">
+							<FlexBox justifyBetween>
+								<FlexBox className="author">
+									<UsernameLink
+										className="author-name"
+										to={`/profile/${reply.userID}`}
+									>
+										{reply.userName}
+									</UsernameLink>
+									<ModBadge
+										className="badge"
+										badge={reply.badge}
+									/>
+								</FlexBox>
+								<DeleteOutline className="reply-edit-delete-icon" onClick={this.openDeletePopup} />
+							</FlexBox>
+							<CountingMentionInput
+								getUsers={{ type: 'discuss', params: { postId: reply.id } }}
+								initText={reply.message}
+								ref={this.editInput}
+								onSubmitEnabledChange={this.setCanEdit}
+								placeholder={t('discuss.editTitle')}
+								withoutExpand
+								autofocus
+								editorContainerClassName="editing-reply-input-container"
+								className="editing-reply-input"
+							/>
+							<Container className="buttons">
+								<FlatButton
+									className="cancel-button"
+									onKeyDown={this.handleCancelEditEnter}
+									onMouseDown={this.toggleEdit}
+								>
+									{t('common.cancel-title')}
+								</FlatButton>
+								<RaisedButton
+									color="primary"
+									onMouseDown={this.edit}
+									onKeyDown={this.handleEditEnter}
+									disabled={!isEditEnabled}
+									className="editing-reply-button"
+								>
+									{t('common.edit-action-title')}
+								</RaisedButton>
+							</Container>
+						</FlexBox>
 					</FlexBox>
+					<DeletePopup
+						open={isDeletePopupOpen}
+						onClose={this.closeDeletePopup}
+						onDelete={deleteReply}
+					/>
 				</PaperContainer>
 			);
 		}
