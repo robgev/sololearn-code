@@ -99,7 +99,7 @@ class Question extends Component {
 		.then(({ post }) => {
 			this.props.post.title = post.title;
 			this.props.post.message = post.message;
-			// this.props.post.tags = post.tags;
+			this.props.post.tags = post.tags;
 		})
 		.then(() => {
 			this.exitEditMode();

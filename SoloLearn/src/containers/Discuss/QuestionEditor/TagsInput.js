@@ -35,7 +35,6 @@ class TagsInput extends Component {
 			onUpdateInput={onChange}
 			onAdd={onAdd}
 			onDelete={onDelete}
-			errorText="armen"
 			value={tags}
 			inputRef={ref}
 			InputProps={{

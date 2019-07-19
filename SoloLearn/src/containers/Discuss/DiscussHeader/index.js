@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 
 import {
 	PaperContainer,
@@ -19,7 +19,7 @@ import QuestionEditor from '../QuestionEditor';
 
 import './styles.scss';
 
-const Header = ({
+const DiscussHeader = ({
 	searchQuestion,
 	onSearchChange,
 	enterKeyPress,
@@ -33,7 +33,7 @@ const Header = ({
 		}
 	};
 	return (
-		<React.Fragment>
+		<Fragment>
 			{!editMode ?
 				(
 					<PaperContainer className="header-container">
@@ -83,9 +83,8 @@ const Header = ({
 					submit={createQuestion}
 				/>
 			}
-
-		</React.Fragment>
+		</Fragment>
 	);
 };
 
-export default Header;
+export default DiscussHeader;

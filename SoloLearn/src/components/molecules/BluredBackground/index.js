@@ -1,19 +1,30 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Container, ClickAwayListener } from 'components/atoms';
+import PropTypes from 'prop-types';
 
 import './styles.scss';
 
 const BluredBackground = ({
- children, clickAwayAction, mouseEvent = 'onMouseDown', ...props 
+	children, clickAwayAction, mouseEvent, ...props
 }) => (
-	<React.Fragment>
+	<Fragment>
 		<Container className="molecule_background-blur" />
 		<ClickAwayListener mouseEvent={mouseEvent} onClickAway={clickAwayAction} {...props}>
 			<Container className="molecule_background-blur-inner-container" >
 				{children}
 			</Container>
 		</ClickAwayListener>
-	</React.Fragment>
+	</Fragment>
 );
+
+BluredBackground.defaultProps = {
+	clickAwayAction: () => {},
+	mouseEvent: 'onMouseDown',
+};
+
+BluredBackground.propTypes = {
+	clickAwayAction: PropTypes.func,
+	mouseEvent: PropTypes.string,
+};
 
 export default BluredBackground;

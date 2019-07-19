@@ -2,7 +2,7 @@
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
-import Header from './Header';
+import DiscussHeader from './DiscussHeader';
 import { showError, queryDifference, isObjectEqual } from 'utils';
 import {
 	getPosts, emptyPosts, setDiscussFilters, getSidebarQuestions,
@@ -147,7 +147,7 @@ class Questions extends Component {
 					<Sidebar />
 				}
 			>
-				<Header
+				<DiscussHeader
 					canAddQuestion={this.canAddQuestion}
 					searchQuestion={this.searchQuestion}
 					onSearchChange={this.onSearchChange}
