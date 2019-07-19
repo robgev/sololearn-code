@@ -7,8 +7,6 @@ export {
 	Bookmark,
 	BookmarkBorder,
 	ThumbsUpDown as Arrows,
-	DeleteForever as Delete,
-	DeleteOutline,
 	Person,
 	Dehaze as Feed,
 	EventNote as Date,
@@ -52,3 +50,4 @@ export { default as Edit } from './Edit';
 export { default as Answer } from './Answer';
 export { default as ThumbDownSmall } from './ThumbDownSmall';
 export { default as ThumbUpSmall } from './ThumbUpSmall';
+export { default as Delete } from './Delete';

@@ -21,7 +21,7 @@ import {
 	Mention,
 	CountingMentionInput,
 } from 'components/organisms';
-import { Edit as EditIcon, DeleteOutline } from 'components/icons';
+import { Edit as EditIcon, Delete as DeleteIcon } from 'components/icons';
 import ReportPopup from 'components/ReportPopup';
 import PreviewItem from 'components/PreviewItem';
 import { generatePreviews, updateDate } from 'utils';
@@ -145,7 +145,7 @@ class ReplyItem extends Component {
 										badge={reply.badge}
 									/>
 								</FlexBox>
-								<DeleteOutline className="reply-edit-delete-icon" onClick={this.openDeletePopup} />
+								<DeleteIcon className="reply-edit-delete-icon" onClick={this.openDeletePopup} />
 							</FlexBox>
 							<CountingMentionInput
 								getUsers={{ type: 'discuss', params: { postId: reply.id } }}
