@@ -139,6 +139,16 @@ class QuizManager extends Component {
 		}
 	}
 
+	componentWillReceiveProps(nextProps) {
+		if (this.timeline.length && nextProps.quizNumber !== this.props.quizNumber) {
+			const number = parseInt(nextProps.quizNumber, 10);
+			const {
+				quizId, isText, state,
+			} = this.timeline.find(q => q.number === number);
+			this.loadLessonLink(quizId, number, isText, state);
+		}
+	}
+
 	componentWillUnmount() {
 		this._isMounted = false;
 	}
