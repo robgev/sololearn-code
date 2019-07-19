@@ -8,6 +8,7 @@ class CountingMentionInput extends Component {
 		maxLength: 2048,
 		renderButton: () => null,
 		onSubmitEnabledChange: () => { }, // noop
+		exportCharLength: () => {},
 		className: '',
 	}
 	constructor(props) {
@@ -24,10 +25,11 @@ class CountingMentionInput extends Component {
 	onBlur = () => {
 		this.setState({ isExpanded: false });
 	}
-	onLengthChange = (charCount) => {
+	onLengthChange = (charCount, trimmedCharCount) => {
 		this.setState({ charCount });
 		const isSubmitEnabled = !this.isEmpty();
 		this.props.onSubmitEnabledChange(isSubmitEnabled);
+		this.props.exportCharLength(charCount);
 	}
 	getValue = () => this.mentionInput.current.getValue();
 	popValue = () => this.mentionInput.current.popValue();
@@ -40,20 +42,29 @@ class CountingMentionInput extends Component {
 	isEmpty = () => this.getValue().trim().length === 0;
 	render() {
 		const {
-			containerStyle, counterStyle, renderButton, className, ...rest
+			containerStyle,
+			counterStyle,
+			renderButton,
+			className,
+			editorContainerClassName = '',
+			withoutCharLength = false,
+			withoutExpand = false,
+			...rest
 		} = this.props;
 		const { isExpanded, charCount } = this.state;
 		return (
-			<FlexBox column={isExpanded} justifyBetween fullWidth className="organism_counting-mention-input">
+			<FlexBox column={isExpanded} justifyBetween fullWidth className={`organism_counting-mention-input ${editorContainerClassName}`}>
 				<FlexBox fullWidth>
 					<MentionInput
 						ref={this.mentionInput}
 						onLengthChange={this.onLengthChange}
-						onFocus={this.onFocus}
+						onFocus={!withoutExpand ? this.onFocus : () => {}}
 						onBlur={this.onBlur}
 						maxLength={this.props.maxLength}
 						charCount={charCount}
-						className={`${className} ${isExpanded ? 'expanded' : ''}`}
+						className={`${className} ${!withoutExpand && isExpanded ? 'expanded' : ''}`}
+						withoutCharLength={withoutCharLength}
+						withoutExpand={withoutExpand}
 						{...rest}
 					/>
 				</FlexBox>

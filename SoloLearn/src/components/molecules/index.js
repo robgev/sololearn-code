@@ -33,3 +33,4 @@ export { default as ConsecutiveSnackbar } from './ConsecutiveSnackbar';
 export { default as DateInfo } from './DateInfo';
 export { default as SuccessPopup } from './SuccessPopup';
 export { default as TitleTab } from './TitleTab';
+export { default as BluredBackground } from './BluredBackground';
