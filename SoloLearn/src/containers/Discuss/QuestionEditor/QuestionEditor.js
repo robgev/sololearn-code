@@ -83,7 +83,14 @@ class QuestionEditor extends Component {
 	/* End of tag input */
 
 	handleSubmit = () => {
-		const { t } = this.props;
+		const {
+			t,
+			submit,
+			isNew,
+			emptyPosts,
+			editPostInList,
+			handleCancel,
+		} = this.props;
 		const { title, tags } = this.state;
 		const isTitleEmpty = title.trim().length === 0;
 		const isTagsEmpty = tags.length === 0;
@@ -94,21 +101,21 @@ class QuestionEditor extends Component {
 			});
 			return Promise.resolve();
 		}
-		return this.props.submit({
+		return submit({
 			title,
 			message: this.mentionInput.getValue(),
 			tags,
 		})
 			.then(({ post }) => {
-				if (this.props.isNew) {
-					this.props.emptyPosts();
+				if (isNew) {
+					emptyPosts();
 					browserHistory.push(`/discuss/${post.id}`);
 				} else {
-					this.props.editPostInList({
+					editPostInList({
 						id: post.id, title, message: post.message, tags,
 					})
 						.then(() => {
-							this.props.handleCancel();
+							handleCancel();
 						});
 				}
 			});
@@ -128,7 +135,7 @@ class QuestionEditor extends Component {
 			t, isNew, profile, handleCancel, post,
 		} = this.props;
 		const {
-			title, titleErrorText, tags, tagsError,
+			title, titleErrorText, tags, tagsError, descriptionTextLength,
 		} = this.state;
 		const submitButtonDisabled = this.isSubmitBtnDisabled();
 		return (
@@ -190,7 +197,7 @@ class QuestionEditor extends Component {
 										className="mention-editor-input" // this is editor's className
 									/>
 									<SecondaryTextBlock className="count">
-										{this.state.descriptionTextLength} / {QuestionEditor.maxQuestionLength}
+										{descriptionTextLength} / {QuestionEditor.maxQuestionLength}
 									</SecondaryTextBlock>
 								</FlexBox>
 								<SecondaryTextBlock className="discuss-input-titles">Tags</SecondaryTextBlock> {/* needs translation */}

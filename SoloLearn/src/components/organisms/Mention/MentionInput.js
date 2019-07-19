@@ -221,19 +221,27 @@ class MentionInput extends Component {
 	render() {
 		const { MentionSuggestions } = this.mentionPlugin;
 		const plugins = [ this.mentionPlugin ];
-		const { maxLength, charCount } = this.props;
+		const {
+			maxLength,
+			charCount,
+			withoutCharLength,
+			style,
+			placeholder,
+			whithoutExpand,
+			className,
+		} = this.props;
 
 		return (
 			<Container
 				ref={this.containerRef}
-				className={`editor ${this.props.className}`}
-				style={this.props.style}
+				className={`editor ${className}`}
+				style={style}
 				onClick={this.focus}
 				role="button"
 				tabIndex={0}
 			>
 				<Editor
-					placeholder={this.props.placeholder}
+					placeholder={placeholder}
 					onFocus={this.onFocus}
 					onBlur={this.onBlur}
 					editorState={this.state.editorState}
@@ -244,9 +252,9 @@ class MentionInput extends Component {
 					handlePastedText={this.handlePastedText}
 					handleReturn={this.handleReturn}
 				/>
-				{!this.props.withoutCharLength &&
+				{!withoutCharLength &&
 					<FlexBox fullWidth justifyEnd alignEnd>
-						{!this.props.whithoutExpand && this.isFocused &&
+						{!whithoutExpand && this.isFocused &&
 							<SecondaryTextBlock className="counter">
 								{charCount} / {maxLength}
 							</SecondaryTextBlock>
