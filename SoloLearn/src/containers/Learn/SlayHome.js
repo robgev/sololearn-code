@@ -31,10 +31,8 @@ class SlayHome extends PureComponent {
 		this.props.refreshLessonCollections();
 		if (collections.length <= 0) {
 			await this.props.getBookmarkLessons({ index: startIndex, count: loadCount });
-			const length = await getLessonCollections({ index: startIndex, count: loadCount });
 			this.setState({
 				loading: false,
-				hasMore: length === loadCount,
 				startIndex: startIndex + loadCount,
 			});
 		} else {
