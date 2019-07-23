@@ -8,7 +8,7 @@ class CountingMentionInput extends Component {
 		maxLength: 2048,
 		renderButton: () => null,
 		onSubmitEnabledChange: () => { }, // noop
-		exportCharLength: () => {},
+		exportCharLength: () => { },
 		className: '',
 	}
 	constructor(props) {
@@ -53,12 +53,17 @@ class CountingMentionInput extends Component {
 		} = this.props;
 		const { isExpanded, charCount } = this.state;
 		return (
-			<FlexBox column={isExpanded} justifyBetween fullWidth className={`organism_counting-mention-input ${editorContainerClassName}`}>
+			<FlexBox
+				column={isExpanded}
+				justifyBetween
+				fullWidth
+				className={`organism_counting-mention-input ${editorContainerClassName}`}
+			>
 				<FlexBox fullWidth>
 					<MentionInput
 						ref={this.mentionInput}
 						onLengthChange={this.onLengthChange}
-						onFocus={!withoutExpand ? this.onFocus : () => {}}
+						onFocus={!withoutExpand ? this.onFocus : () => { }}
 						onBlur={this.onBlur}
 						maxLength={this.props.maxLength}
 						charCount={charCount}

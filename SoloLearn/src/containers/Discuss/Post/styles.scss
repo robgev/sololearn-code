@@ -22,8 +22,7 @@ $icon_accepted_color: $primary_colored_text;
 		.post{
 			padding: 16px 12px 12px 16px;
 			.reply-edit-delete-icon {
-				width: 25px;
-				height: 25px;
+				margin-top: -16px;
 				cursor: pointer;
 				color: $icon_color;
 			}
@@ -90,23 +89,27 @@ $icon_accepted_color: $primary_colored_text;
 	}
 	.editing-reply {
 		.editing-reply-input-container {
-			height: 155px;
+			height: 138px;
 			overflow: auto;
 			margin: 0;
-			padding: 14px;
+			padding: 10px;
 			word-break: break-all;
 			border: 1px solid $border-color;
 			border-radius: 4px;
-			.editing-reply-input {
-				margin: 0;
-				padding: 0;
-				border: none;
+			.editing-reply-input-inner-container {
+				.editing-reply-input {
+					height: 100px;
+					margin: 0;
+					padding: 0;
+					border: none;
+				}
 			}
 		}
 		.editing-reply-button {
 			margin-left: 24px;
 		}
 		.buttons {
+			margin: 8px 0 -4px 0;
 			display: flex;
 			justify-content: flex-end;
 		}
@@ -205,6 +208,10 @@ $icon_accepted_color: $primary_colored_text;
 
 				 .message, .preview {
 					margin: $secondary_gap_size 48px 0 0;
+				}
+
+				.reply-message {
+					margin: -8px 48px 0 0;
 				}
 
 				.reply-item-date {
