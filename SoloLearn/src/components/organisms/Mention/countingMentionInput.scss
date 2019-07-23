@@ -8,6 +8,12 @@
 	}
 	.expanded {
 		min-height: $expanded_editor_height;
+		.DraftEditor-editorContainer {
+			min-height: inherit;
+		}
+		.public-DraftEditor-content {
+			min-height: inherit;
+		}
 	}
 	.bottom-toolbar-container {
 		justify-content: flex-end;

@@ -6,10 +6,10 @@ import {
 	FlexBox,
 	Input,
 	Image,
-	ClickAwayListener,
 } from 'components/atoms';
 import {
 	ProfileAvatar,
+	BluredBackground,
 } from 'components/molecules';
 
 import UserPostEditor from 'containers/UserPostEditor';
@@ -67,19 +67,16 @@ const FeedHeader = ({ profile, t, afterPostCallback }) => {
 				)
 				:
 				(
-					<React.Fragment>
-						<Container className="up-feed-blur" />
-						<ClickAwayListener onClickAway={() => toggleCreatePost(false)} mouseEvent="onMouseDown">
-							<PaperContainer className="up-wrapper-in-feed-header">
-								<UserPostEditor
-									closePopup={() => toggleCreatePost(false)}
-									afterPostCallback={afterPostCallback}
-									openImageInput={openImageInput}
-									toggleImageInput={() => toggleImageInput(false)}
-								/>
-							</PaperContainer>
-						</ClickAwayListener>
-					</React.Fragment>
+					<BluredBackground clickAwayAction={() => toggleCreatePost(false)}>
+						<PaperContainer className="up-wrapper-in-feed-header">
+							<UserPostEditor
+								closePopup={() => toggleCreatePost(false)}
+								afterPostCallback={afterPostCallback}
+								openImageInput={openImageInput}
+								toggleImageInput={() => toggleImageInput(false)}
+							/>
+						</PaperContainer>
+					</BluredBackground>
 				)
 			}
 		</Container>

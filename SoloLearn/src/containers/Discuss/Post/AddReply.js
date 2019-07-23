@@ -28,6 +28,7 @@ class AddReply extends Component {
 
 	submit = () => this.props.submit(this.input.current.popValue())
 		.then(() => {
+			// this.input.current.focus();
 			this.input.current.blur();
 		});
 

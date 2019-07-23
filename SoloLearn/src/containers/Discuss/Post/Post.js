@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { changePostRepliesCount, removePostFromList,getSidebarQuestions } from 'actions/discuss';
+import { changePostRepliesCount, removePostFromList, getSidebarQuestions } from 'actions/discuss';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 import { LayoutWithSidebar, EmptyCard } from 'components/molecules';
@@ -27,9 +27,9 @@ const mapStateToProps = ({ userProfile }) => ({
 @translate()
 @observer
 class Post extends Component {
-state={
-	openSigninPopup: false,
-}
+	state = {
+		openSigninPopup: false,
+	}
 
 	static defaultProps = {
 		replyID: null,
@@ -52,16 +52,18 @@ state={
 		this.post.changeCount(countChange);
 	}
 
-	toggleSigninPopup=() => {
+	toggleSigninPopup = () => {
 		this.setState(({ openSigninPopup }) => ({ openSigninPopup: !openSigninPopup }));
 	}
 
 	componentDidMount() {
 		this.post.getPost()
 			.then((post) => {
-				post &&				this.props.setRouteAlias(post.title);
+				if (post) {
+					this.props.setRouteAlias(post.title);
+				}
 			});
-			this.props.getSidebarQuestions();
+		this.props.getSidebarQuestions();
 	}
 
 	render() {

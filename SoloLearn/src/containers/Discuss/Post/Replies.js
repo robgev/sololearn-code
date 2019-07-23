@@ -154,7 +154,7 @@ class Replies extends Component {
 									}
 								</List>
 							)
-							: <EmptyCard />
+							: <EmptyCard paper />
 						}
 					</Container>
 				</InfiniteScroll>

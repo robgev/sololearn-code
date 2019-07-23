@@ -8,6 +8,7 @@ import {
 	FlexBox,
 	PaperContainer,
 	SecondaryTextBlock,
+	IconButton,
 } from 'components/atoms';
 import {
 	RaisedButton,
@@ -21,14 +22,13 @@ import {
 	Mention,
 	CountingMentionInput,
 } from 'components/organisms';
-import { Edit as EditIcon } from 'components/icons';
+import { Edit as EditIcon, Delete as DeleteIcon } from 'components/icons';
 import ReportPopup from 'components/ReportPopup';
 import PreviewItem from 'components/PreviewItem';
 import { generatePreviews, updateDate } from 'utils';
 import RemovalPopup from './RemovalPopup';
 import DeletePopup from './DeletePopup';
 import Options from './Options';
-// import Author from './Author';
 import AcceptReply from './AcceptReply';
 
 @translate(null, { withRef: true })
@@ -126,37 +126,73 @@ class ReplyItem extends Component {
 
 		if (isEditing) {
 			return (
-				<PaperContainer className="post">
-					<FlexBox column className="editing-post">
-						<CountingMentionInput
-							getUsers={{ type: 'discuss', params: { postId: reply.id } }}
-							initText={reply.message}
-							ref={this.editInput}
-							onSubmitEnabledChange={this.setCanEdit}
-							placeholder={t('discuss.editTitle')}
-							autofocus
-							className="editing-post-input"
-						/>
-						<Container className="buttons">
-							<FlatButton
-								className="cancel-button"
-								onKeyDown={this.handleCancelEditEnter}
-								onMouseDown={this.toggleEdit}
-							>
-								{t('common.cancel-title')}
-							</FlatButton>
-							<RaisedButton
-								color="primary"
-								onMouseDown={this.edit}
-								onKeyDown={this.handleEditEnter}
-								disabled={!isEditEnabled}
-								className="editing-post-button"
-							>
-								{t('common.edit-action-title')}
-							</RaisedButton>
-						</Container>
-					</FlexBox>
-				</PaperContainer>
+				<Container>
+					<ListItem>
+						<PaperContainer className="post">
+							<FlexBox fullWidth>
+								<ProfileAvatar
+									className="user-avatar"
+									user={user}
+								/>
+								<FlexBox column fullWidth className="editing-reply">
+									<FlexBox justifyBetween>
+										<FlexBox className="author">
+											<UsernameLink
+												className="author-name"
+												to={`/profile/${reply.userID}`}
+											>
+												{reply.userName}
+											</UsernameLink>
+											<ModBadge
+												className="badge"
+												badge={reply.badge}
+											/>
+										</FlexBox>
+										<IconButton className="reply-edit-delete-icon" onClick={this.openDeletePopup}>
+											<DeleteIcon />
+										</IconButton>
+									</FlexBox>
+									<Container className="editing-reply-input-container">
+										<CountingMentionInput
+											getUsers={{ type: 'discuss', params: { postId: reply.id } }}
+											initText={reply.message}
+											ref={this.editInput}
+											onSubmitEnabledChange={this.setCanEdit}
+											placeholder={t('discuss.editTitle')}
+											withoutExpand
+											autofocus
+											editorContainerClassName="editing-reply-input-inner-container"
+											className="editing-reply-input"
+										/>
+									</Container>
+									<Container className="buttons">
+										<FlatButton
+											className="cancel-button"
+											onKeyDown={this.handleCancelEditEnter}
+											onMouseDown={this.toggleEdit}
+										>
+											{t('common.cancel-title')}
+										</FlatButton>
+										<RaisedButton
+											color="primary"
+											onMouseDown={this.edit}
+											onKeyDown={this.handleEditEnter}
+											disabled={!isEditEnabled}
+											className="editing-reply-button"
+										>
+											{t('common.save-action-title')}
+										</RaisedButton>
+									</Container>
+								</FlexBox>
+							</FlexBox>
+							<DeletePopup
+								open={isDeletePopupOpen}
+								onClose={this.closeDeletePopup}
+								onDelete={deleteReply}
+							/>
+						</PaperContainer>
+					</ListItem>
+				</Container>
 			);
 		}
 		return (
@@ -171,32 +207,39 @@ class ReplyItem extends Component {
 								user={user}
 							/>
 							<FlexBox className="question">
-								<FlexBox fullWidth justifyBetween>
-									<FlexBox className="author">
-										<UsernameLink className="author-name" to={`/profile/${reply.userID}`}>{reply.userName}</UsernameLink>
-										<ModBadge
-											className="badge"
-											badge={reply.badge}
-										/>
+								<FlexBox column fullWidth>
+									<FlexBox fullWidth justifyBetween>
+										<FlexBox className="author">
+											<UsernameLink
+												className="author-name"
+												to={`/profile/${reply.userID}`}
+											>
+												{reply.userName}
+											</UsernameLink>
+											<ModBadge
+												className="badge"
+												badge={reply.badge}
+											/>
+										</FlexBox>
+										<FlexBox align className="options" justifyEnd>
+											<AcceptReply
+												askerID={askerID}
+												isAccepted={reply.isAccepted}
+												onClick={onAccept}
+											/>
+											<Options
+												userID={reply.userID}
+												deletePost={this.openDeletePopup}
+												editPost={this.toggleEdit}
+												reportPost={this.openReportPopup}
+												requestRemoval={this.openRemovalPopup}
+											/>
+										</FlexBox>
 									</FlexBox>
-									<FlexBox align className="options" justifyEnd>
-										<AcceptReply
-											askerID={askerID}
-											isAccepted={reply.isAccepted}
-											onClick={onAccept}
-										/>
-										<Options
-											userID={reply.userID}
-											deletePost={this.openDeletePopup}
-											editPost={this.toggleEdit}
-											reportPost={this.openReportPopup}
-											requestRemoval={this.openRemovalPopup}
-										/>
-									</FlexBox>
+									<Container className="reply-message">
+										<Mention text={reply.message} />
+									</Container>
 								</FlexBox>
-								<Container className="message">
-									<Mention text={reply.message} />
-								</Container>
 								{
 									reply.modifyDate && reply.modifyUserID && reply.modifyUserName &&
 									<FlexBox className="edit-message-container other-margin" align>
@@ -231,19 +274,8 @@ class ReplyItem extends Component {
 								</FlexBox>
 							</FlexBox>
 						</FlexBox>
-						{/* <Container className="user">
-							<Author
-								level={reply.level}
-								badge={reply.badge}
-								userID={reply.userID}
-								avatarUrl={reply.avatarUrl}
-								userName={reply.userName}
-								date={reply.date}
-							/>
-						</Container> */}
 					</PaperContainer>
 				</ListItem>
-				{/* <HorizontalDivider /> */}
 				<ReportPopup
 					open={isReportPopupOpen}
 					onClose={this.closeReportPopup}

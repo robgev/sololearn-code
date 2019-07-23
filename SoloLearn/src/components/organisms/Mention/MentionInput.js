@@ -221,19 +221,27 @@ class MentionInput extends Component {
 	render() {
 		const { MentionSuggestions } = this.mentionPlugin;
 		const plugins = [ this.mentionPlugin ];
-		const { maxLength, charCount } = this.props;
+		const {
+			maxLength,
+			charCount,
+			withoutCharLength,
+			style,
+			placeholder,
+			whithoutExpand,
+			className,
+		} = this.props;
 
 		return (
 			<Container
 				ref={this.containerRef}
-				className={`editor ${this.props.className}`}
-				style={this.props.style}
+				className={`editor ${className}`}
+				style={style}
 				onClick={this.focus}
 				role="button"
 				tabIndex={0}
 			>
 				<Editor
-					placeholder={this.props.placeholder}
+					placeholder={placeholder}
 					onFocus={this.onFocus}
 					onBlur={this.onBlur}
 					editorState={this.state.editorState}
@@ -244,13 +252,15 @@ class MentionInput extends Component {
 					handlePastedText={this.handlePastedText}
 					handleReturn={this.handleReturn}
 				/>
-				<FlexBox fullWidth justifyEnd alignEnd>
-					{this.isFocused &&
-					<SecondaryTextBlock className="counter">
-						{charCount} / {maxLength}
-					</SecondaryTextBlock>
-					}
-				</FlexBox>
+				{!withoutCharLength &&
+					<FlexBox fullWidth justifyEnd alignEnd>
+						{!whithoutExpand && this.isFocused &&
+							<SecondaryTextBlock className="counter">
+								{charCount} / {maxLength}
+							</SecondaryTextBlock>
+						}
+					</FlexBox>
+				}
 				<MentionSuggestions
 					onSearchChange={this.onSearchChange}
 					suggestions={this.state.suggestions}
@@ -267,6 +277,7 @@ MentionInput.defaultProps = {
 	placeholder: '',
 	maxLength: 2048,
 	initText: null,
+	withoutCharLength: false,
 	onFocus: () => { }, // noop
 	onBlur: () => { }, // noop
 	onLengthChange: () => { }, // noop
@@ -281,6 +292,7 @@ MentionInput.propTypes = {
 	onFocus: PropTypes.func,
 	onBlur: PropTypes.func,
 	initText: PropTypes.string,
+	withoutCharLength: PropTypes.bool,
 	onLengthChange: PropTypes.func,
 	maxLength: PropTypes.number,
 	placeholder: PropTypes.string,

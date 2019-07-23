@@ -2,7 +2,7 @@
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { browserHistory } from 'react-router';
-import Header from './Header';
+import DiscussHeader from './DiscussHeader';
 import { showError, queryDifference, isObjectEqual } from 'utils';
 import {
 	getPosts, emptyPosts, setDiscussFilters, getSidebarQuestions,
@@ -122,13 +122,13 @@ class Questions extends Component {
 		}
 	}
 
-	addQuestion=() => {
+	canAddQuestion=() => {
 		const { isLoggedIn } = this.props;
 		if (!isLoggedIn) {
 			this.toggleSigninPopup();
-		} else {
-			browserHistory.push('/discuss/new');
+			return false;
 		}
+		return true;
 	}
 
 	render() {
@@ -147,8 +147,8 @@ class Questions extends Component {
 					<Sidebar />
 				}
 			>
-				<Header
-					addQuestion={this.addQuestion}
+				<DiscussHeader
+					canAddQuestion={this.canAddQuestion}
 					searchQuestion={this.searchQuestion}
 					onSearchChange={this.onSearchChange}
 					enterKeyPress={this.enterKeyPress}

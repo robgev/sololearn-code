@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import Autosuggest from 'react-autosuggest';
-import { MenuItem, PaperContainer, Chip } from 'components/atoms';
 import MUIChipInput from 'material-ui-chip-input';
+
+import { MenuItem, PaperContainer, Chip } from 'components/atoms';
+import { Close } from 'components/icons';
+
 import Service from 'api/service';
 
 @translate()
@@ -21,14 +24,14 @@ class TagsInput extends Component {
 	);
 
 	static Input = ({
-		placeholder, classes, autoFocus, value, onChange, onAdd, onDelete, tags, ref, ...other
+		classes, autoFocus, value, onChange, onAdd, onDelete, tags, ref, ...other
 	}) => (
 		<MUIChipInput
 			allowDuplicates
 			fullWidth
 			blurBehavior="add"
+			delayBeforeAdd
 			newChipKeyCodes={[ 13, 32 ]}
-			label={placeholder}
 			onUpdateInput={onChange}
 			onAdd={onAdd}
 			onDelete={onDelete}
@@ -37,6 +40,7 @@ class TagsInput extends Component {
 			InputProps={{
 				value,
 			}}
+			classes={classes}
 			{...other}
 		/>
 	);
@@ -48,7 +52,14 @@ class TagsInput extends Component {
 	);
 
 	static Chip = ({ value, handleDelete, className }, key) => (
-		<Chip className={className} label={value} key={key} onDelete={handleDelete} />
+		<Chip
+			className={className}
+			label={`#${value}`}
+			key={key}
+			onDelete={handleDelete}
+			classes={{ label: 'tags-label' }}
+			deleteIcon={<Close className="tags-delete-icon" />}
+		/>
 	);
 
 	static getSuggestionValue = suggestion => suggestion
@@ -95,11 +106,9 @@ class TagsInput extends Component {
 		const {
 			suggestions, value,
 		} = this.state;
-		const { error, tags } = this.props;
-		const { t } = this.props;
+		const { error, tags, helperText } = this.props;
 		return (
 			<Autosuggest
-				className="test"
 				suggestions={suggestions}
 				onSuggestionsFetchRequested={this.getSuggestions}
 				onSuggestionsClearRequested={this.clearSuggestions}
@@ -109,7 +118,7 @@ class TagsInput extends Component {
 				renderSuggestionsContainer={TagsInput.SuggestionsContainer}
 				renderInputComponent={TagsInput.Input}
 				inputProps={{
-					placeholder: t('question.tags-placeholder'),
+					// variant: 'outlined',
 					tags,
 					value,
 					onAdd: this.addTag,
@@ -118,7 +127,15 @@ class TagsInput extends Component {
 					newChipKeyCodes: [ 13, 32 ],
 					error,
 					chipRenderer: TagsInput.Chip,
+					helperText,
 					className: 'autosuggest-input',
+					classes: {
+						inputRoot: 'tags-input-root',
+						input: 'tags-input',
+						helperText: 'tags-helper-text',
+						chipContainer: 'tags-chip-container',
+						chip: 'tags-chip',
+					},
 				}}
 			/>
 		);
