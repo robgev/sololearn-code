@@ -53,7 +53,7 @@ export const getCodes = ({
 
 export const getSidebarCodes = () => async (dispatch) => {
 	const { codes } = await Service.request('Playground/GetPublicCodes', {
-		index: 0, query: '', count: 10, ordering: codeFilters.HotToday, language: '',
+		index: 0, query: '', count: 10, orderBy: codeFilters.HotToday, language: '',
 	});
 	dispatch({ type: types.SET_SIDEBAR_CODES, payload: codes });
 };
