@@ -7,7 +7,7 @@ import EditorTabs from './EditorTabs';
 const EditorRoot = ({ playground, onClose }) => (
 	<Fragment>
 		<EditorTabs onClose={onClose} playground={playground} />
-		{!(playground.isOutputOpen && playground.hasLiveOutput) &&
+		{!(playground.hasLiveOutput && playground.isOutputOpen) &&
 			<Editor playground={playground} />
 		}
 	</Fragment>
