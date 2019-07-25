@@ -20,6 +20,7 @@ import { editorModeNames } from 'containers/Playground/utils/Mappings';
 import './styles.scss';
 
 const Editor = ({
+	size,
 	playground: {
 		code,
 		isDark,
@@ -33,6 +34,7 @@ const Editor = ({
 		wrapEnabled
 		value={code}
 		width="100%"
+		key={`editor-${size}`}
 		height={isInline ? '200px' : 'calc(100% - 56px)'}
 		showPrintMargin={false}
 		theme={isDark ? 'monokai' : 'chrome'}

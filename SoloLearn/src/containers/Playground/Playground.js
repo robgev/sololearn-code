@@ -24,6 +24,7 @@ import './styles.scss';
 class Playground extends Component {
 state={
 	openSigninPopup: false,
+	size: 0,
 }
 
 constructor(props) {
@@ -50,6 +51,10 @@ componentWillReceiveProps(nextProps) {
 
 	toggleSigninPopup=() => {
 		this.setState(({ openSigninPopup }) => ({ openSigninPopup: !openSigninPopup }));
+	}
+
+	onDragFinished = (size) => {
+		this.setState({ size });
 	}
 
 	render() {
@@ -82,8 +87,9 @@ componentWillReceiveProps(nextProps) {
 							<MainContainer className={`playground_main-container ${isInline ? 'bordered' : ''}`}>
 								<EditorContainer
 									playground={this.playground}
+									onDragFinished={this.onDragFinished}
 								>
-									<Editor onClose={this.props.onClose} playground={this.playground} toggleSigninPopup={this.toggleSigninPopup} />
+									<Editor size={this.state.size} onClose={this.props.onClose} playground={this.playground} toggleSigninPopup={this.toggleSigninPopup} />
 									<CodeOutput playground={this.playground} />
 								</EditorContainer>
 								{ !(hasLiveOutput && isOutputOpen)

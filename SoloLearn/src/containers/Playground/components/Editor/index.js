@@ -4,11 +4,11 @@ import { observer } from 'mobx-react';
 import Editor from './Editor';
 import EditorTabs from './EditorTabs';
 
-const EditorRoot = ({ playground, onClose }) => (
+const EditorRoot = ({ playground, onClose, size }) => (
 	<Fragment>
 		<EditorTabs onClose={onClose} playground={playground} />
 		{!(playground.hasLiveOutput && playground.isOutputOpen) &&
-			<Editor playground={playground} />
+			<Editor size={size} playground={playground} />
 		}
 	</Fragment>
 );
