@@ -82,7 +82,7 @@ class CodeInfoToolbar extends Component {
 			isReportPopupOpen,
 			isSnackbarOpen,
 		} = this.state;
-		const { t, accessLevel,toggleSigninPopup } = this.props;
+		const { t, accessLevel, toggleSigninPopup } = this.props;
 		const {
 			id,
 			vote,
@@ -183,8 +183,8 @@ class CodeInfoToolbar extends Component {
 					open={isSnackbarOpen}
 					onClose={this.handleSnackbarClose}
 					message={this.props.playground.data.isPublic
-						? t('code_playground.alert.public-title')
-						: t('code_playground.alert.private-title')
+						? isMe ? t('code_playground.alert.public-title') : 'This code is now public'
+						: isMe ? t('code_playground.alert.private-title') : 'This code is now private'
 					}
 				/>
 			</PaperContainer>
