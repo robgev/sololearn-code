@@ -10,6 +10,7 @@ import {
 	codesSelector,
 	codesFiltersSelector,
 	codesHasMoreSelector,
+	isCodesFetchingSelector,
 } from 'reducers/codes.reducer';
 import { showError, queryDifference, isObjectEqual } from 'utils';
 
@@ -24,6 +25,7 @@ const mapStateToProps = state => ({
 	codes: codesSelector(state),
 	filters: codesFiltersSelector(state),
 	hasMore: codesHasMoreSelector(state),
+	isCodesFetching: isCodesFetchingSelector(state),
 	isLoggedIn: !!state.userProfile,
 });
 
@@ -98,13 +100,14 @@ class Codes extends Component {
 	}
 	render() {
 		const {
-			codes, filters, hasMore, t, isLoggedIn,
+			codes, filters, hasMore, t, isLoggedIn, isCodesFetching,
 		} = this.props;
 		return (
 			<LayoutWithSidebar paper={false} sidebar={<PlaygroundSidebar />}>
 				<InfiniteScroll
 					hasMore={hasMore}
 					loadMore={this.getCodes}
+					isLoading={codes.length !== 0 && isCodesFetching}
 				>
 					<Header
 						value={this.state.searchValue}
