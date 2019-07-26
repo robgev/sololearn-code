@@ -44,7 +44,7 @@ class Questions extends Component {
 	constructor(props) {
 		super(props);
 		document.title = 'Sololearn | Discuss';
-		const { location, filters } = this.props;
+		const { location, filters, t } = this.props;
 
 		const query = {
 			...(location.query.query != null ? DEFAULT_DISCUSS_FILTERS : filters),
