@@ -164,7 +164,7 @@ class Questions extends Component {
 				</FlexBox>
 				<InfiniteScroll
 					hasMore={hasMore}
-					isLoading={isFetching}
+					isLoading={isFetching && posts.length}
 					loadMore={this.getPosts}
 				>
 
