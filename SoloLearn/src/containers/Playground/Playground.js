@@ -117,19 +117,21 @@ componentWillReceiveProps(nextProps) {
 								<InputPopup playground={this.playground} />
 							</MainContainer>
 							{!(isMinimal || isFullscreen) &&
-								<FlexBox column className="playground_sidebar scrollbar">
+								<FlexBox column className="playground_sidebar">
 									<CodeInfoToolbar
 										playground={this.playground}
 										toggleSigninPopup={this.toggleSigninPopup}
 									/>
-									<Comments
-										type={1}
-										id={data.id}
-										toggleSigninPopup={this.toggleSigninPopup}
-										useWindow={false}
-										commentsType="code"
-										commentsCount={data.comments}
-									/>
+									<Container className="scrollbar">
+										<Comments
+											type={1}
+											id={data.id}
+											toggleSigninPopup={this.toggleSigninPopup}
+											useWindow={false}
+											commentsType="code"
+											commentsCount={data.comments}
+										/>
+									</Container>
 								</FlexBox>
 							}
 						</Fragment>

@@ -45,6 +45,9 @@
 		.playground_sidebar {
 			height: calc(100vh - #{$header_size});
 			overflow-y: scroll;
+			.scrollbar {
+				overflow-y: scroll;
+			}
 			.comments-container {
 				padding: 0 16px;
 				margin-top: 0;

@@ -3,6 +3,7 @@ import { translate } from 'react-i18next';
 import {
 	Container,
 	Heading,
+	FlexBox,
 } from 'components/atoms';
 import {
 	TitleTab,
@@ -17,14 +18,17 @@ const CommentsToolbar = ({
 				? t('common.comment-format-one')
 				: `${count} ${t('common.comments')}`}
 		</Heading>
-		<TitleTab
-			activeTab={value}
-			handleTabChange={onChange}
-			tabs={[
-				{ value: 2, text: t('comments.filter.most-popular') },
-				{ value: 1, text: t('comments.filter.most-recent') },
-			]}
-		/>
+		<FlexBox>
+			<TitleTab
+				activeTab={value}
+				handleTabChange={onChange}
+				className="comments-toolbar-item"
+				tabs={[
+					{ value: 2, text: t('comments.filter.most-popular') },
+					{ value: 1, text: t('comments.filter.most-recent') },
+				]}
+			/>
+		</FlexBox>
 	</Container>
 );
 
