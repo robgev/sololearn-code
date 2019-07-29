@@ -35,6 +35,7 @@ class LiveOutput extends React.Component {
 	render() {
 		const { t, playground } = this.props;
 		const logColor = playground.isDark ? '#F5F5F5' : '#3A464B';
+		const { logs } = this.state;
 		return (
 			<Container className={`playground_live-output-container ${playground.isFullscreen ? 'playground_output-frame-fullscreen' : ''}`}>
 				{ playground.isRunning
@@ -42,12 +43,12 @@ class LiveOutput extends React.Component {
 					: (
 						<Fragment>
 							<iframe className="playground_output-frame" title="code-output" ref={this.outputWindowRef} />
-							{playground.isWeb &&
+							{playground.isWeb && !!logs.length &&
 							<Container className="playground_console-root">
 								<Heading>{t('code_playground.console.title')}</Heading>
 								<Container className={`playground_console ${playground.isDark ? 'dark' : 'light'}`}>
 									<Console
-										logs={this.state.logs}
+										logs={logs}
 										styles={{ LOG_COLOR: logColor }}
 										variant={playground.isDark ? 'dark' : 'light'}
 										key={`console-${playground.id || ''}-${logColor}`}

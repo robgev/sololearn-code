@@ -71,6 +71,10 @@ $dark_border_color: #3A464A;
 					color: $primary_color;
 					background-color: rgba(30, 209, 174, 0.1);
 				}
+
+			}
+			.playground-tab {
+				min-width: 60px;
 			}
 		}
 		.playground_editor-language-name {

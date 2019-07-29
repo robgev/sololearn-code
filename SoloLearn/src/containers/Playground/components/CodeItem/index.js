@@ -6,7 +6,6 @@ import {
 	Title,
 	Container,
 	ListItem,
-	HorizontalDivider,
 	SecondaryTextBlock,
 } from 'components/atoms';
 import {
@@ -79,7 +78,7 @@ const CodeItem = ({ code, minimal }) => {
 					}
 				</FlexBox>
 			</ListItem>
-			<HorizontalDivider className="code-item-divider" />
+
 		</Fragment>
 	);
 };
