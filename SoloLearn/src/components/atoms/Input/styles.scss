@@ -1,5 +1,13 @@
 @import '~styles/colors';
 
+.atom_input_root {
+	&:hover:not(.atom_input_disabled):not(.atom_input_focused):not(.atom_input_error) .atom_input_outlined {
+		border-color: #999999;
+	}
+}
+.atom_input_underline::before {
+	border-bottom-color: $primary_color;
+}
 .atom_input_underline:after {
 	border-bottom-color: $primary_color;
 }
