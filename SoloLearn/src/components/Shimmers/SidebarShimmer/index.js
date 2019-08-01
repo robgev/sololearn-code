@@ -3,8 +3,8 @@ import { Container, FlexBox } from 'components/atoms';
 import { MainContainer, Avatar, Line } from '../components';
 import './styles.scss';
 
-const SidebarShimmer = ({ round, noTitle }) => (
-	<Container className="sidebar-shimmer-wrapper">
+const SidebarShimmer = ({ className = '', round, noTitle }) => (
+	<Container className={`sidebar-shimmer-wrapper ${className}`}>
 		{ !noTitle &&
 			<MainContainer>
 				<FlexBox align justifyBetween className="sidebar-title">

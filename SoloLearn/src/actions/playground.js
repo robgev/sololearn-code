@@ -5,6 +5,7 @@ import {
 	codesFiltersSelector,
 	isCodesFetchingSelector,
 } from 'reducers/codes.reducer';
+import { getUserSelector } from 'reducers/reducer_user';
 import { setSearchValue, toggleSearch, onSearchSectionChange } from 'actions/searchBar';
 import { SECTIONS } from 'reducers/searchBar.reducer';
 
@@ -37,9 +38,18 @@ export const getCodes = ({
 		const filters = codesFiltersSelector(stateBefore);
 		const { length } = codesSelector(stateBefore);
 		const index = forceRefresh ? 0 : length; // Update the list when entering the page
-		const { codes } = await Service.request('Playground/GetPublicCodes', {
-			index, query, count, ...filters, orderBy: codeFilters[filters.ordering],
-		});
+		// const { codes } = await Service.request('Playground/GetPublicCodes', {
+		// 	index, query, count, ...filters, orderBy: codeFilters[filters.ordering],
+		// });
+		const profile = getUserSelector(stateBefore);
+		const id = profile ? profile.id : null;
+		const codes = await Service.requestApi(`trends/projects/search?
+																							query=${filters.query}
+																							&index=${index}
+																							&count=${count}
+																							&filter=${codeFilters[filters.ordering]}
+																							&language=${filters.language}
+																							&profileId=${id}`);
 		// Ignore action if filters changed
 		if (filters === codesFiltersSelector(getState())) {
 			const actionType = forceRefresh ? types.REFRESH_CODES : types.SET_CODES;
@@ -52,9 +62,13 @@ export const getCodes = ({
 };
 
 export const getSidebarCodes = () => async (dispatch) => {
-	const { codes } = await Service.request('Playground/GetPublicCodes', {
-		index: 0, query: '', count: 10, orderBy: codeFilters.HotToday, language: '',
-	});
+	// const { codes } = await Service.request('Playground/GetPublicCodes', {
+	// 	index: 0, query: '', count: 10, orderBy: codeFilters.HotToday, language: '',
+	// });
+	const codes = await Service.requestApi(`trends/projects/search?
+																							&index=0
+																							&count=10
+																							&filter=${codeFilters.HotToday} `);
 	dispatch({ type: types.SET_SIDEBAR_CODES, payload: codes });
 };
 

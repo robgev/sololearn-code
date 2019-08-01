@@ -9,7 +9,7 @@ import './sidebar.scss';
 const ProfileInfo = ({ t, profile, levels }) => (
 	<PaperContainer className="profile-info">
 		<FlexBox align column fullWidth className="avatar">
-			<Container className="edit-profile"><Link to="/settings">Edit</Link></Container>
+			<Container className="edit-profile"><Link to="/settings">{t('common.edit-action-title')}</Link></Container>
 			<Container className="profile-info_avatar">
 				<ProfileAvatar
 					size="normal"
