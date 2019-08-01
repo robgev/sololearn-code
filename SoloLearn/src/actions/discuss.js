@@ -5,8 +5,11 @@ import {
 	discussFiltersSelector,
 	isDiscussFetchingSelector,
 } from 'reducers/discuss.reducer';
+import { getUserSelector } from 'reducers/reducer_user';
 import { setSearchValue, toggleSearch, onSearchSectionChange } from 'actions/searchBar';
 import { SECTIONS } from 'reducers/searchBar.reducer';
+
+import discussFiltersMap from './discussFiltersMap';
 
 export const removePost = id => (dispatch) => {
 	dispatch({
@@ -31,11 +34,28 @@ export const getPosts = ({
 	dispatch({ type: types.REQUEST_POSTS });
 	const filters = discussFiltersSelector(stateBefore);
 	const { length } = discussPostsSelector(stateBefore);
-	const { posts, error } = await Service.request('Discussion/Search', {
-		index: length, count, ...filters,
-	});
-	if (error) {
-		throw error;
+	const profile = getUserSelector(stateBefore);
+	const id = profile ? profile.id : null;
+	let posts = null;
+	if (discussFiltersMap[filters.orderBy]) {
+		posts = await Service.requestApi(`trends/discussions/search?
+																											index=${length}
+																											&count=${count}
+																											&filter=${discussFiltersMap[filters.orderBy]}
+																											&query=${filters.query}
+																											&profileId=${id}`);
+	} else {
+		const res = await Service.request('Discussion/Search', {
+			index: length,
+			count,
+			orderBy: filters.orderBy,
+			query: filters.query,
+			profileId: id,
+		});
+		if (res.error) {
+			throw res.error;
+		}
+		posts = res.posts;
 	}
 	// Proceed with action only when the filters haven't changed
 	// while waiting for the response
@@ -72,10 +92,14 @@ export const setDiscussFilters = filters => (dispatch, getState) => {
 	}
 };
 
-export const getSidebarQuestions = () => async (dispatch) => {
-	const { posts } = await Service.request('Discussion/Search', {
-		index: 0, query: '', count: 10, orderBy: 10,
-	});
+export const getSidebarQuestions = () => async (dispatch, getState) => {
+	const profile = getUserSelector(getState());
+	const id = profile ? profile.id : null;
+	const posts = await Service.requestApi(`trends/discussions/search?
+																											index=0
+																											&count=10
+																											&filter=4
+																											&profileId=${id}`);
 	dispatch({ type: types.SET_SIDEBAR_QUESTIONS, payload: posts });
 };
 

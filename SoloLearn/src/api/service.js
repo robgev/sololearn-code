@@ -8,8 +8,11 @@ export const AppDefaults = {
 class Service {
 	constructor() {
 		this.getSessionPromise = null;
+		this.getAPITokenPromise = null;
 		this.accessToken = null;
+		this.apiAccessToken = null;
 		this.accessTokenExpireTime = 0;
+		this.apiAccessTokenExpireTime = 0;
 		this.locale = Storage.load('locale') || 'en';
 	}
 	setAccessToken = (accessToken, expiresIn) => {
@@ -27,7 +30,7 @@ class Service {
 				if (res.error) {
 					throw res.error;
 				}
-				return { ...res, ...appendPayload };
+				return appendPayload ? { ...res, ...appendPayload } : res;
 			})
 			.catch((e) => {
 				console.error(e);
@@ -42,7 +45,24 @@ class Service {
 			},
 		);
 		this.setAccessToken(accessToken, expiresIn);
+		this.getAPIToken();
 		return user;
+	}
+
+	getAPIToken = () => {
+		if (this.getAPITokenPromise === null) {
+			this.getAPITokenPromise = this.request('GetMessengerAccessToken', { dev: true })
+				.then(res => this.setApiAccessToken(res.accessToken))
+				.finally(() => {
+					this.getAPITokenPromise = null;
+				});
+		}
+		return this.getAPITokenPromise;
+	}
+
+	setApiAccessToken = (apiAccessToken) => {
+		this.apiAccessToken = apiAccessToken;
+		this.apiAccessTokenExpireTime = Date.now() + (3600 * 1000);
 	}
 
 	fileRequest = async (url, data) => {
@@ -75,6 +95,20 @@ class Service {
 				Authorization: `Bearer ${this.accessToken}`,
 			},
 		}, appendPayload);
+	}
+
+	requestApi = async (url) => {
+		if (
+			this.apiAccessToken === null
+			|| Date.now() > this.apiAccessTokenExpireTime) {
+			await this.getAPIToken();
+		}
+		return this._request(`${AppDefaults.baseUrl}/api2/${url}`, {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: `Bearer ${this.apiAccessToken}`,
+			},
+		});
 	}
 
 	imageRequest = async (url, body = {}) => {

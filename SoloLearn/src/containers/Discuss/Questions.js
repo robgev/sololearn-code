@@ -35,7 +35,7 @@ const mapDispatchToProps = {
 @connect(mapStateToProps, mapDispatchToProps)
 @translate()
 class Questions extends Component {
-	state={
+	state = {
 		activeFilter: 8,
 		search: null,
 		openSigninPopup: false,
@@ -44,7 +44,13 @@ class Questions extends Component {
 	constructor(props) {
 		super(props);
 		document.title = 'Sololearn | Discuss';
-		const { location, filters } = this.props;
+		const {
+			location,
+			filters,
+			t,
+			setDiscussFilters,
+			getSidebarQuestions,
+		} = this.props;
 
 		const query = {
 			...(location.query.query != null ? DEFAULT_DISCUSS_FILTERS : filters),
@@ -56,19 +62,19 @@ class Questions extends Component {
 			this.setState({ search: query.query });
 		}
 
-		this.props.setDiscussFilters(query);
+		setDiscussFilters(query);
 		const changed = queryDifference(DEFAULT_DISCUSS_FILTERS, query);
 		browserHistory.replace({ ...location, query: changed });
-		this.props.getSidebarQuestions();
+		getSidebarQuestions();
 
 		this.discussFilters = [
-			{ value: 8, text: this.props.t('discuss.filter.trending') },
-			{ value: 9, text: this.props.t('discuss.filter.your-network') },
-			{ value: 1, text: this.props.t('discuss.filter.most-recent') },
-			{ value: 2, text: this.props.t('discuss.filter.most-popular') },
-			{ value: 4, text: this.props.t('discuss.filter.unanswered') },
-			{ value: 5, text: this.props.t('discuss.filter.my-questions') },
-			{ value: 6, text: this.props.t('discuss.filter.my-answers') },
+			{ value: 8, text: t('discuss.filter.trending') },
+			{ value: 9, text: t('discuss.filter.your-network') },
+			{ value: 1, text: t('discuss.filter.most-recent') },
+			{ value: 2, text: t('discuss.filter.most-popular') },
+			{ value: 4, text: t('discuss.filter.unanswered') },
+			{ value: 5, text: t('discuss.filter.my-questions') },
+			{ value: 6, text: t('discuss.filter.my-answers') },
 		];
 	}
 
@@ -102,27 +108,27 @@ class Questions extends Component {
 		browserHistory.push({ ...location, query: { ...location.query, query: '' } });
 	}
 
-	searchQuestion=() => {
+	searchQuestion = () => {
 		const { location } = this.props;
 		const { search } = this.state;
 		browserHistory.push({ ...location, query: { ...location.query, query: search } });
 	}
 
-	onSearchChange=(e) => {
+	onSearchChange = (e) => {
 		this.setState({ search: e.target.value });
 	}
 
-	toggleSigninPopup=() => {
+	toggleSigninPopup = () => {
 		this.setState(({ openSigninPopup }) => ({ openSigninPopup: !openSigninPopup }));
 	}
 
-	enterKeyPress=(e) => {
+	enterKeyPress = (e) => {
 		if (e.keyCode === 13) {
 			this.searchQuestion();
 		}
 	}
 
-	canAddQuestion=() => {
+	canAddQuestion = () => {
 		const { isLoggedIn } = this.props;
 		if (!isLoggedIn) {
 			this.toggleSigninPopup();
