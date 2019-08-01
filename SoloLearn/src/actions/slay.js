@@ -1,15 +1,19 @@
 import Service from 'api/service';
-import { slayProgressCollectionsSelector } from 'reducers/slay.reducer';
+import { slayProgressCollectionsSelector, collectionFetchingSelector } from 'reducers/slay.reducer';
 import * as types from 'constants/ActionTypes';
 
-export const getLessonCollections = pagingData => async (dispatch) => {
+export const getLessonCollections = pagingData => async (dispatch, getState) => {
 	try {
-		const { collections } = await Service.request('GetCollections', pagingData);
-		dispatch({
-			type: types.SET_LESSON_COLLECTIONS,
-			payload: collections,
-		});
-		return collections.length;
+		const prevState = getState();
+		if (!collectionFetchingSelector(prevState)) {
+			dispatch({ type: types.GET_LESSON_COLLECTIONS });
+			const { collections } = await Service.request('GetCollections', pagingData);
+			dispatch({
+				type: types.SET_LESSON_COLLECTIONS,
+				payload: collections,
+			});
+			return collections.length;
+		}
 	} catch (e) {
 		console.log(e);
 		return 0;
