@@ -66,12 +66,9 @@ export const getSidebarCodes = () => async (dispatch) => {
 	// 	index: 0, query: '', count: 10, orderBy: codeFilters.HotToday, language: '',
 	// });
 	const codes = await Service.requestApi(`trends/projects/search?
-																							query=
 																							&index=0
 																							&count=10
-																							&filter=${codeFilters.HotToday}
-																							&language=
-																							&profileId=`);
+																							&filter=${codeFilters.HotToday} `);
 	dispatch({ type: types.SET_SIDEBAR_CODES, payload: codes });
 };
 

@@ -46,8 +46,8 @@ const LevelProgress = ({ profile, levels, t }) => {
 					className: 'progress-bar_main',
 				}}
 				value={(100 * currentXp) / maxXp}
-				minText={currentBadge ? t(`${currentBadge}`) : ''}
-				maxText={t(`${nextMilestone}`)}
+				minText={currentBadge ? t(`profile.status-${currentBadge}`) : ''}
+-				maxText={t(`profile.status-${nextMilestone}`)}
 			/>
 		</FlexBox>
 	);

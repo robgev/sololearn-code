@@ -99,7 +99,6 @@ export const getSidebarQuestions = () => async (dispatch, getState) => {
 																											index=0
 																											&count=10
 																											&filter=4
-																											&query=
 																											&profileId=${id}`);
 	dispatch({ type: types.SET_SIDEBAR_QUESTIONS, payload: posts });
 };
