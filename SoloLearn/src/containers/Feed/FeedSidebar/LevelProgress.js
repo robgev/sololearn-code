@@ -47,7 +47,7 @@ const LevelProgress = ({ profile, levels, t }) => {
 				}}
 				value={(100 * currentXp) / maxXp}
 				minText={currentBadge ? t(`profile.status-${currentBadge}`) : ''}
--				maxText={t(`profile.status-${nextMilestone}`)}
+				maxText={t(`profile.status-${nextMilestone}`)}
 			/>
 		</FlexBox>
 	);
