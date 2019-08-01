@@ -32,5 +32,5 @@ export const getCourseByAlias = (state, alias) => {
 
 export const getCourseAliasById = (courses, id) => {
 	const course = courses.find(course => course.id === id);
-	return course.alias;
+	return course ? course.alias : '';
 };
