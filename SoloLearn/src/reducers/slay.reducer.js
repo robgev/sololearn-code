@@ -16,6 +16,7 @@ import {
 	TOGGLE_COURSE,
 	CHANGE_PROGRESS,
 	TOGGLING_COURSE,
+	GET_LESSON_COLLECTIONS,
 } from 'constants/ActionTypes';
 import uniqBy from 'lodash/uniqBy';
 import map from 'lodash/map';
@@ -68,6 +69,17 @@ const selectedCollection = (state = null, action) => {
 	case UNSET_COLLECTION:
 	case RESET_LOCALE_DATA:
 		return null;
+	default:
+		return state;
+	}
+};
+
+const isFetching = (state = false, action) => {
+	switch (action.type) {
+	case GET_LESSON_COLLECTIONS:
+		return true;
+	case SET_LESSON_COLLECTIONS:
+		return false;
 	default:
 		return state;
 	}
@@ -144,6 +156,8 @@ export const slayCollectionsSelector = state =>
 export const slayProgressCollectionsSelector = state =>
 	slayCollectionsSelector(state).filter(c => c.type === 2 || c.type === 4);
 
+export const collectionFetchingSelector = state => state.slay.isFetching;
+
 export default combineReducers({
 	bookmarks,
 	activeLesson,
@@ -152,4 +166,5 @@ export default combineReducers({
 	selectedCollection,
 	filteredCollectionItems,
 	togglingCourse,
+	isFetching,
 });
